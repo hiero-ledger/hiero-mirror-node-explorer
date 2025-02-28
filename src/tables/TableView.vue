@@ -32,7 +32,12 @@
       </tr>
     </thead>
     <tbody>
-      <renderTRs/>
+      <template v-if="compact">
+        <renderCompactTRs/>
+      </template>
+      <template v-else>
+        <renderTRs/>
+      </template>
     </tbody>
   </table>
 </template>
@@ -75,15 +80,44 @@ const renderTRs = (): VNode[] => {
   const result: VNode[] = []
   if (slots.default) {
     const scopeId = getCurrentInstance()?.vnode.scopeId
-    if (scopeId) {
-      for (const row of rows.value) {
-        const TDs: VNode[] = []
-        for (const c of slots.default(row)) {
-          if (TableDataView == c.type) {
-            TDs.push(h('td', {[scopeId]: ""}, c))
-          }
+    const tdProps = scopeId ? { [scopeId]: "" } : {}
+    for (const row of rows.value) {
+      const TDs: VNode[] = []
+      for (const c of slots.default(row)) {
+        if (TableDataView == c.type) {
+          TDs.push(h('td', tdProps, c))
         }
-        result.push(h('tr', {key: keyStringForRow(row), [scopeId]: ""}, TDs))
+      }
+      const trProps = { ...tdProps, key: keyStringForRow(row)}
+      result.push(h('tr', trProps, TDs))
+    }
+  }
+  return result
+}
+
+
+const renderCompactTRs = (): VNode[] => {
+  const result: VNode[] = []
+  if (slots.default) {
+    const scopeId = getCurrentInstance()?.vnode.scopeId
+    for (const row of rows.value) {
+      let titleIndex = 0
+      const children = slots.default(row)
+      for (let i = 0; i < children.length; i++) {
+        const c = children[i]
+        const last = i === children.length - 1
+        if (TableDataView == c.type) {
+          const title = titleIndex < props.columnTitles.length ? props.columnTitles[titleIndex++] : "?"
+          const baseStyleClasses = last ? ["compact", "last"] : ["compact"]
+          const baseProps = scopeId ? { [scopeId]: "" } : {}
+          const leftProps = { ...baseProps, class: baseStyleClasses.concat(["left"]) }
+          const rightProps = { ...baseProps, class:baseStyleClasses.concat(["right"])}
+          const leftTD = h('td', leftProps, h('span',title))
+          const rightTD = h('td', rightProps, c)
+          const key = keyStringForRow(row) + "-" + titleIndex
+          const trProps = { ...baseProps, class:baseStyleClasses, key}
+          result.push(h('tr', trProps, [leftTD, rightTD]))
+        }
       }
     }
   }
@@ -111,6 +145,20 @@ table.table-view-root > tbody > tr > td {
   border-bottom-width: 1px;
   border-bottom-color: var(--table-border);
   padding: 16px 10px;
+}
+
+table.table-view-root > tbody > tr > td.compact {
+  border-bottom-style: none;
+}
+
+table.table-view-root > tbody > tr > td.compact.last {
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-bottom-color: var(--table-border);
+}
+
+table.table-view-root > tbody > tr > td.compact.right {
+  text-align: right
 }
 
 table.table-view-root > thead > tr > th {
