@@ -24,19 +24,15 @@
 
 <template>
   <table class="table-view-root">
-    <thead v-if="props.columnTitles.length >= 1 && !compact">
-      <tr>
-        <template v-for="title in props.columnTitles">
-          <th>{{ title }}</th>
-        </template>
-      </tr>
+    <thead v-if="$slots.tableHeaders && !compact">
+      <renderTHs/>
     </thead>
     <tbody>
       <template v-if="compact">
         <renderCompactTRs/>
       </template>
       <template v-else>
-        <renderTRs/>
+        <renderWideTRs/>
       </template>
     </tbody>
   </table>
@@ -51,14 +47,11 @@
 import {TableController} from "@/utils/table/TableController.ts";
 import {computed, getCurrentInstance, h, PropType, VNode} from "vue";
 import TableDataView from "@/tables/TableDataView.vue";
+import TableHeaderView from "@/tables/TableHeaderView.vue";
 
 const props = defineProps({
   controller: {
     type: Object as PropType<TableController<R,K>>,
-    required: true
-  },
-  columnTitles: {
-    type: Object as PropType<string[]>,
     required: true
   }
 })
@@ -69,28 +62,40 @@ const keyStringForRow = (row: R): string => {
   return props.controller.stringFromKey(props.controller.keyFor(row))
 }
 
-const compact = computed(() => false)
+const compact = computed(() => true)
 
 const slots = defineSlots<{
-  default(row: R): any
+  default(row: R): any,
+  tableHeaders: any
 }>()
 
 
-const renderTRs = (): VNode[] => {
+const renderTHs = (): VNode[] => {
   const result: VNode[] = []
-  if (slots.default) {
+  const tableHeaders = makeTableHeaderNodes()
+  if (tableHeaders.length >= 1) {
     const scopeId = getCurrentInstance()?.vnode.scopeId
-    const tdProps = scopeId ? { [scopeId]: "" } : {}
-    for (const row of rows.value) {
-      const TDs: VNode[] = []
-      for (const c of slots.default(row)) {
-        if (TableDataView == c.type) {
-          TDs.push(h('td', tdProps, c))
-        }
-      }
-      const trProps = { ...tdProps, key: keyStringForRow(row)}
-      result.push(h('tr', trProps, TDs))
+    const thProps = scopeId ? { [scopeId]: "" } : {}
+    const THs: VNode[] = []
+    for (const c of tableHeaders) {
+      THs.push(h('th', thProps, c))
     }
+    result.push(h('tr', thProps, THs))
+  }
+  return result
+}
+
+const renderWideTRs = (): VNode[] => {
+  const result: VNode[] = []
+  const scopeId = getCurrentInstance()?.vnode.scopeId
+  const tdProps = scopeId ? { [scopeId]: "" } : {}
+  for (const row of rows.value) {
+    const TDs: VNode[] = []
+    for (const c of makeTableDataNodes(row)) {
+      TDs.push(h('td', tdProps, c))
+    }
+    const trProps = { ...tdProps, key: keyStringForRow(row)}
+    result.push(h('tr', trProps, TDs))
   }
   return result
 }
@@ -98,27 +103,44 @@ const renderTRs = (): VNode[] => {
 
 const renderCompactTRs = (): VNode[] => {
   const result: VNode[] = []
-  if (slots.default) {
-    const scopeId = getCurrentInstance()?.vnode.scopeId
-    for (const row of rows.value) {
-      let titleIndex = 0
-      const children = slots.default(row)
-      for (let i = 0; i < children.length; i++) {
-        const c = children[i]
-        const last = i === children.length - 1
-        if (TableDataView == c.type) {
-          const title = titleIndex < props.columnTitles.length ? props.columnTitles[titleIndex++] : "?"
-          const baseStyleClasses = last ? ["compact", "last"] : ["compact"]
-          const baseProps = scopeId ? { [scopeId]: "" } : {}
-          const leftProps = { ...baseProps, class: baseStyleClasses.concat(["left"]) }
-          const rightProps = { ...baseProps, class:baseStyleClasses.concat(["right"])}
-          const leftTD = h('td', leftProps, h('span',title))
-          const rightTD = h('td', rightProps, c)
-          const key = keyStringForRow(row) + "-" + titleIndex
-          const trProps = { ...baseProps, class:baseStyleClasses, key}
-          result.push(h('tr', trProps, [leftTD, rightTD]))
-        }
-      }
+  const scopeId = getCurrentInstance()?.vnode.scopeId
+  for (const row of rows.value) {
+    let titleIndex = 0
+    let tableHeaders = makeTableHeaderNodes()
+    const tableDatas = makeTableDataNodes(row)
+    for (let i = 0; i < tableDatas.length; i++) {
+      const c = tableDatas[i]
+      const last = i === tableDatas.length - 1
+      const title = titleIndex < tableHeaders.length ? tableHeaders[titleIndex++] : "?"
+      const baseStyleClasses = last ? ["compact", "last"] : ["compact"]
+      const baseProps = scopeId ? { [scopeId]: "" } : {}
+      const leftProps = { ...baseProps, class: baseStyleClasses.concat(["left"]) }
+      const rightProps = { ...baseProps, class:baseStyleClasses.concat(["right"])}
+      const leftTD = h('td', leftProps, h('span',title))
+      const rightTD = h('td', rightProps, c)
+      const key = keyStringForRow(row) + "-" + titleIndex
+      const trProps = { ...baseProps, class:baseStyleClasses, key}
+      result.push(h('tr', trProps, [leftTD, rightTD]))
+    }
+  }
+  return result
+}
+
+const makeTableHeaderNodes = (): VNode[] => {
+  const result: VNode[] = []
+  for (const c of slots.tableHeaders() ?? []) {
+    if (TableHeaderView == c.type) {
+      result.push(c)
+    }
+  }
+  return result
+}
+
+const makeTableDataNodes = (row: R): VNode[] => {
+  const result: VNode[] = []
+  for (const c of slots.default(row) ?? []) {
+    if (TableDataView == c.type) {
+      result.push(c)
     }
   }
   return result
