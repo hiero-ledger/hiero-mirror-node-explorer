@@ -27,7 +27,7 @@
     <thead v-if="$slots.tableHeaders && !compact">
       <renderTHs/>
     </thead>
-    <tbody>
+    <tbody :class="{ 'clickable': props.clickable }">
       <template v-if="compact">
         <renderCompactTRs/>
       </template>
@@ -45,7 +45,7 @@
 <script setup lang="ts" generic="R,K">
 
 import {TableController} from "@/utils/table/TableController.ts";
-import {computed, getCurrentInstance, h, PropType, VNode} from "vue";
+import {computed, getCurrentInstance, h, PropType, useAttrs, VNode} from "vue";
 import TableDataView from "@/tables/TableDataView.vue";
 import TableHeaderView from "@/tables/TableHeaderView.vue";
 
@@ -53,8 +53,14 @@ const props = defineProps({
   controller: {
     type: Object as PropType<TableController<R,K>>,
     required: true
+  },
+  clickable: {
+    type: Boolean,
+    default: false
   }
 })
+
+const emit = defineEmits(["cell-click"])
 
 const rows = props.controller.rows
 
@@ -62,7 +68,7 @@ const keyStringForRow = (row: R): string => {
   return props.controller.stringFromKey(props.controller.keyFor(row))
 }
 
-const compact = computed(() => true)
+const compact = computed(() => false)
 
 const slots = defineSlots<{
   default(row: R): any,
@@ -88,13 +94,15 @@ const renderTHs = (): VNode[] => {
 const renderWideTRs = (): VNode[] => {
   const result: VNode[] = []
   const scopeId = getCurrentInstance()?.vnode.scopeId
-  const tdProps = scopeId ? { [scopeId]: "" } : {}
+  const baseProps = scopeId ? { [scopeId]: "" } : {}
   for (const row of rows.value) {
     const TDs: VNode[] = []
+    const handleClick = (event: Event) => emit("cell-click",  row, event)
     for (const c of makeTableDataNodes(row)) {
+      const tdProps = { ...baseProps, onClick: handleClick}
       TDs.push(h('td', tdProps, c))
     }
-    const trProps = { ...tdProps, key: keyStringForRow(row)}
+    const trProps = { ...baseProps, key: keyStringForRow(row)}
     result.push(h('tr', trProps, TDs))
   }
   return result
@@ -106,16 +114,17 @@ const renderCompactTRs = (): VNode[] => {
   const scopeId = getCurrentInstance()?.vnode.scopeId
   for (const row of rows.value) {
     let titleIndex = 0
-    let tableHeaders = makeTableHeaderNodes()
-    const tableDatas = makeTableDataNodes(row)
-    for (let i = 0; i < tableDatas.length; i++) {
-      const c = tableDatas[i]
-      const last = i === tableDatas.length - 1
-      const title = titleIndex < tableHeaders.length ? tableHeaders[titleIndex++] : "?"
+    const tableHeaderNodes = makeTableHeaderNodes()
+    const tableDataNodes = makeTableDataNodes(row)
+    const handleClick = (event: Event) => emit("cell-click",  row, event)
+    for (let i = 0; i < tableDataNodes.length; i++) {
+      const c = tableDataNodes[i]
+      const last = i === tableDataNodes.length - 1
+      const title = titleIndex < tableHeaderNodes.length ? tableHeaderNodes[titleIndex++] : "?"
       const baseStyleClasses = last ? ["compact", "last"] : ["compact"]
       const baseProps = scopeId ? { [scopeId]: "" } : {}
-      const leftProps = { ...baseProps, class: baseStyleClasses.concat(["left"]) }
-      const rightProps = { ...baseProps, class:baseStyleClasses.concat(["right"])}
+      const leftProps = { ...baseProps, class: baseStyleClasses.concat(["left"]), onClick: handleClick }
+      const rightProps = { ...baseProps, class:baseStyleClasses.concat(["right"]), onClick: handleClick }
       const leftTD = h('td', leftProps, h('span',title))
       const rightTD = h('td', rightProps, c)
       const key = keyStringForRow(row) + "-" + titleIndex
@@ -155,11 +164,15 @@ const makeTableDataNodes = (row: R): VNode[] => {
 <style scoped>
 
 table.table-view-root {
-  border-collapse: separate;
+  border-collapse: collapse;
 }
 
 table.table-view-root > tbody > tr {
   animation: fadeIn linear 1s;
+}
+
+table.table-view-root > tbody.clickable > tr:hover {
+  background-color: var(--background-primary)
 }
 
 table.table-view-root > tbody > tr > td {
@@ -167,6 +180,10 @@ table.table-view-root > tbody > tr > td {
   border-bottom-width: 1px;
   border-bottom-color: var(--table-border);
   padding: 16px 10px;
+}
+
+table.table-view-root > tbody.clickable > tr > td{
+  cursor: pointer;
 }
 
 table.table-view-root > tbody > tr > td.compact {
