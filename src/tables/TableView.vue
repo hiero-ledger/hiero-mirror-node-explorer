@@ -24,15 +24,15 @@
 
 <template>
   <table class="table-view-root">
-    <thead v-if="$slots.tableHeaders && !compact">
+    <thead v-if="$slots.tableHeaders && isMediumScreen">
       <renderTHs/>
     </thead>
     <tbody :class="{ 'clickable': props.clickable }">
-      <template v-if="compact">
-        <renderCompactTRs/>
+      <template v-if="isMediumScreen">
+        <renderWideTRs/>
       </template>
       <template v-else>
-        <renderWideTRs/>
+        <renderCompactTRs/>
       </template>
     </tbody>
   </table>
@@ -45,7 +45,7 @@
 <script setup lang="ts" generic="R,K">
 
 import {TableController} from "@/utils/table/TableController.ts";
-import {computed, getCurrentInstance, h, PropType, useAttrs, VNode} from "vue";
+import {computed, getCurrentInstance, h, inject, PropType, VNode} from "vue";
 import TableDataView from "@/tables/TableDataView.vue";
 import TableHeaderView from "@/tables/TableHeaderView.vue";
 
@@ -61,6 +61,8 @@ const props = defineProps({
 })
 
 const emit = defineEmits(["cell-click"])
+
+const isMediumScreen = inject('isMediumScreen', true)
 
 const rows = props.controller.rows
 
