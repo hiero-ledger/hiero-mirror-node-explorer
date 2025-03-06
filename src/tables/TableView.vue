@@ -66,6 +66,10 @@ const props = defineProps({
   clickable: {
     type: Boolean,
     default: false
+  },
+  rowHeight: {
+    type: Number,
+    default: 44
   }
 })
 
@@ -154,7 +158,7 @@ const makeWideTRs = (): VNode[] => {
     const tdProps = makePropsForWideTD(row)
     const tdNodes: VNode[] = []
     for (let i = 0; i < columnCount.value; i++) {
-      tdNodes.push(h("td", tdProps, tableDataNodes[i]))
+      tdNodes.push(h("td", tdProps, makeDIV(tableDataNodes[i])))
     }
     result.push(h("tr", makePropsForWideTR(row),tdNodes))
   }
@@ -184,6 +188,20 @@ const makePropsForWideTD = (row: R): Record<string, unknown> => {
   return result
 }
 
+const makeDIV = (tableDataNode: VNode): VNode => {
+  return h("div", makePropsForDIV(), tableDataNode)
+}
+
+const makePropsForDIV = (): Record<string, unknown> => {
+  const result: Record<string, unknown> = {
+    style: "min-height: " + props.rowHeight + "px; max-height: " + props.rowHeight + "px"
+  }
+  const scopeId = getCurrentInstance()?.vnode.scopeId
+  if (scopeId) {
+    result[scopeId] = ""
+  }
+  return result
+}
 
 //
 // TR narrow
@@ -196,8 +214,8 @@ const makeNarrowTRs = (): VNode[] => {
     const tableDataNodes = makeTableDataNodes(row)
     for (let i = 0; i < columnCount.value; i++) {
       const tdNodes = [
-        h('td', makePropsForNarrowTD(row, i, false), tableHeaderNodes[i]),
-        h('td', makePropsForNarrowTD(row, i, true), tableDataNodes[i])
+        h('td', makePropsForNarrowTD(row, i, false), makeDIV(tableHeaderNodes[i])),
+        h('td', makePropsForNarrowTD(row, i, true), makeDIV(tableDataNodes[i]))
       ]
       result.push(h("tr", makePropsForNarrowTR(row, i), tdNodes))
     }
@@ -257,18 +275,28 @@ table.table-view-root.clickable > tbody > tr:hover {
   cursor: pointer;
 }
 
+table.table-view-root > tbody > tr > td > div {
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+table.table-view-root > tbody > tr > td > div * {
+  text-overflow: ellipsis;
+}
+
 
 /* Wide */
 
 table.table-view-root.wide > tbody > tr > td {
   border-bottom-style: solid;
-  padding: 16px 10px;
+  padding: 0 10px;
 }
 
 /* Narrow */
 
 table.table-view-root.narrow > tbody > tr > td {
-  padding: 4px 0px;
+  padding: 0;
 }
 
 table.table-view-root.narrow > tbody > tr > td.right {
