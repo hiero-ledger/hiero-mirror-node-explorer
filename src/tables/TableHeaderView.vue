@@ -34,6 +34,13 @@
 
 // TableHeaderView exists only for TableView to filter its children
 
+const props = defineProps({
+  alignRight: {
+    type: Boolean,
+    default: false
+  }
+})
+
 </script>
 
 <!-- --------------------------------------------------------------------------------------------------------------- -->
