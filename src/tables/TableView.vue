@@ -23,17 +23,28 @@
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <template>
-  <template v-if="isMediumScreen">
-    <div class="table-view-root wide" :style="{'grid-template-columns': wideTemplateColumns}">
-      <makeHeaderCells/>
-      <makeRowCells/>
-    </div>
-  </template>
-  <template v-else>
-    <div class="table-view-root narrow" style="grid-template-columns: auto auto">
-      <makeKeyValueCells/>
-    </div>
-  </template>
+  <table class="table-view-root"
+         :class="{'wide': isMediumScreen, 'narrow': !isMediumScreen, 'clickable': props.clickable}">
+
+    <template v-if="isMediumScreen">
+      <thead v-if="columnCount >= 1">
+      <tr>
+        <makeTHs/>
+      </tr>
+      </thead>
+      <tbody>
+        <makeWideTRs/>
+      </tbody>
+    </template>
+
+    <template v-else>
+      <tbody>
+        <makeNarrowTRs/>
+      </tbody>
+    </template>
+
+  </table>
+
 </template>
 
 <!-- --------------------------------------------------------------------------------------------------------------- -->
@@ -76,17 +87,15 @@ const keyStringForRow = (row: R): string => {
 
 const columnCount = computed(() => {
   let result: number
+  const tableHeaderNodes = makeTableHeaderNodes()
   if (rows.value.length >= 1) {
-    const tableHeaderNodes = makeTableHeaderNodes()
     const tableDataNodes = makeTableDataNodes(rows.value[0])
     result = Math.min(tableHeaderNodes.length, tableDataNodes.length)
   } else {
-    result = 0
+    result = tableHeaderNodes.length
   }
   return result
 })
-
-const wideTemplateColumns = computed(() => "repeat(" + columnCount.value + ", auto)")
 
 
 //
@@ -115,104 +124,113 @@ const makeTableDataNodes = (row: R): VNode[] => {
 
 
 //
-// Header cell
+// TH
 //
 
-const makeHeaderCells = ():VNode[] => {
+const makeTHs = (): VNode[] => {
   const result: VNode[] = []
-  for (const c of makeTableHeaderNodes()) {
-    result.push(h('div', makeHeaderCellProps(), c))
+  const tableHeaderNodes = makeTableHeaderNodes()
+  const thProps = makePropsForTH()
+  for (let i = 0; i < columnCount.value; i += 1) {
+    result.push(h("th", thProps, tableHeaderNodes[i]))
   }
   return result
 }
 
-const makeHeaderCellProps = (): Record<string, unknown> => {
-  const result: Record<string, unknown> = {
-    class: "header-cell"
-  }
+const makePropsForTH = (): Record<string, unknown> => {
   const scopeId = getCurrentInstance()?.vnode.scopeId
-  if (scopeId) {
-    result[scopeId] = ""
-  }
-  return result
+  return scopeId ? { [scopeId]: "" } : {}
 }
 
+
 //
-// Row cell
+// TR wide
 //
 
-const makeRowCells = ():VNode[] => {
+const makeWideTRs = (): VNode[] => {
   const result: VNode[] = []
   for (const row of rows.value) {
     const tableDataNodes = makeTableDataNodes(row)
+    const tdProps = makePropsForWideTD(row)
+    const tdNodes: VNode[] = []
     for (let i = 0; i < columnCount.value; i++) {
-      result.push(h("div", makeRowCellProps(row, i), tableDataNodes[i]))
+      tdNodes.push(h("td", tdProps, tableDataNodes[i]))
     }
+    result.push(h("tr", makePropsForWideTR(row),tdNodes))
   }
   return result
 }
 
-const makeRowCellProps = (row: R, columnIndex: number): Record<string, unknown> => {
+const makePropsForWideTR = (row: R): Record<string, unknown> => {
   const result: Record<string, unknown> = {
-    class: "row-cell",
-    key: keyStringForRow(row) + "/" + columnIndex
+    key: keyStringForRow(row)
   }
   const scopeId = getCurrentInstance()?.vnode.scopeId
   if (scopeId) {
     result[scopeId] = ""
   }
+  return result
+}
+
+const makePropsForWideTD = (row: R): Record<string, unknown> => {
+  const result: Record<string, unknown> = {}
   if (props.clickable) {
     result.onClick = (event: Event) => emit("cell-click",  row, event)
-    result.class += " clickable"
+  }
+  const scopeId = getCurrentInstance()?.vnode.scopeId
+  if (scopeId) {
+    result[scopeId] = ""
   }
   return result
 }
 
+
 //
-// Key/value cell
+// TR narrow
 //
 
-const makeKeyValueCells = ():VNode[] => {
+const makeNarrowTRs = (): VNode[] => {
   const result: VNode[] = []
   for (const row of rows.value) {
     const tableHeaderNodes = makeTableHeaderNodes()
     const tableDataNodes = makeTableDataNodes(row)
     for (let i = 0; i < columnCount.value; i++) {
-      result.push(h('div', makeKeyCellProps(row, i), tableHeaderNodes[i]))
-      result.push(h('div', makeValueCellProps(row, i), tableDataNodes[i]))
+      const tdNodes = [
+        h('td', makePropsForNarrowTD(row, i, false), tableHeaderNodes[i]),
+        h('td', makePropsForNarrowTD(row, i, true), tableDataNodes[i])
+      ]
+      result.push(h("tr", makePropsForNarrowTR(row, i), tdNodes))
     }
   }
   return result
 }
 
-const makeKeyCellProps = (row: R, columnIndex: number):Record<string, unknown> => {
+const makePropsForNarrowTR = (row: R, columnIndex: number): Record<string, unknown> => {
   const result: Record<string, unknown> = {
-    class: "key-cell",
-    key: keyStringForRow(row) + "/" + columnIndex + "/k"
+    key: keyStringForRow(row) + "/" + columnIndex,
   }
   const scopeId = getCurrentInstance()?.vnode.scopeId
   if (scopeId) {
     result[scopeId] = ""
-  }
-  if (props.clickable) {
-    result.onClick = (event: Event) => emit("cell-click",  row, event)
-    result.class += " clickable"
   }
   return result
 }
 
-const makeValueCellProps = (row: R, columnIndex: number):Record<string, unknown> => {
-  const result: Record<string, unknown> = {
-    class: "value-cell",
-    key: keyStringForRow(row) + "/" + columnIndex + "/v"
+const makePropsForNarrowTD = (row: R, columnIndex: number, right: boolean): Record<string, unknown> => {
+  const result: Record<string, unknown> = {}
+  if (props.clickable) {
+    result.onClick = (event: Event) => emit("cell-click",  row, event)
   }
   const scopeId = getCurrentInstance()?.vnode.scopeId
   if (scopeId) {
     result[scopeId] = ""
   }
-  if (props.clickable) {
-    result.onClick = (event: Event) => emit("cell-click",  row, event)
-    result.class += " clickable"
+  result.class = ""
+  if (right) {
+    result.class += " right"
+  }
+  if (columnIndex === columnCount.value - 1) {
+    result.class += " last"
   }
   return result
 }
@@ -225,57 +243,44 @@ const makeValueCellProps = (row: R, columnIndex: number):Record<string, unknown>
 
 <style scoped>
 
-div.table-view-root.wide {
-  display: grid;
-  /* grid-template-columns is setup dynamically */
-}
-
-div.table-view-root.narrow {
-  display: grid;
-  grid-template-columns: auto auto;
-}
-
-div.table-view-root > div {
-  animation: fadeIn linear 1s;
-}
-
-div.table-view-root div.header-cell {
-
-}
-
-div.table-view-root div.row-cell {
-
-}
-
-div.table-view-root div.key-cell {
-
-}
-
-div.table-view-root div.value-cell {
-
-}
-
-div.table-view-root > div.clickable {
-  cursor: pointer;
-}
-
-div.table-view-root > div.clickable:hover {
-  background-color: var(--background-primary);
-}
-/*
-
-
-
-table.table-view-root > tbody.clickable > tr:hover {
-  background-color: var(--background-primary)
+table.table-view-root {
+  border-collapse: collapse;
 }
 
 table.table-view-root > tbody > tr > td {
-  border-bottom-style: solid;
   border-bottom-width: 1px;
   border-bottom-color: var(--table-border);
+}
+
+table.table-view-root.clickable > tbody > tr:hover {
+  background-color: var(--background-primary);
+  cursor: pointer;
+}
+
+
+/* Wide */
+
+table.table-view-root.wide > tbody > tr > td {
+  border-bottom-style: solid;
   padding: 16px 10px;
 }
+
+/* Narrow */
+
+table.table-view-root.narrow > tbody > tr > td {
+  padding: 4px 0px;
+}
+
+table.table-view-root.narrow > tbody > tr > td.right {
+  text-align: right;
+}
+
+table.table-view-root.narrow > tbody > tr > td.last {
+  border-bottom-style: solid;
+}
+
+
+/*
 
 table.table-view-root > tbody.clickable > tr > td{
   cursor: pointer;
