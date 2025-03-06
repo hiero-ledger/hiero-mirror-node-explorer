@@ -69,7 +69,7 @@ const props = defineProps({
   },
   rowHeight: {
     type: Number,
-    default: 44
+    default: 54
   }
 })
 
@@ -136,7 +136,9 @@ const makeTHs = (): VNode[] => {
   const tableHeaderNodes = makeTableHeaderNodes()
   const thProps = makePropsForTH()
   for (let i = 0; i < columnCount.value; i += 1) {
-    result.push(h("th", thProps, tableHeaderNodes[i]))
+    const tableHeaderNode = tableHeaderNodes[i]
+    const alignRight = tableHeaderNode.props && tableHeaderNode.props["align-right"]
+    result.push(h("th", thProps, makeDIV(tableHeaderNode, alignRight, false)))
   }
   return result
 }
@@ -146,19 +148,23 @@ const makePropsForTH = (): Record<string, unknown> => {
   return scopeId ? { [scopeId]: "" } : {}
 }
 
-
 //
 // TR wide
 //
 
 const makeWideTRs = (): VNode[] => {
   const result: VNode[] = []
+  const tableHeaderNodes = makeTableHeaderNodes()
   for (const row of rows.value) {
     const tableDataNodes = makeTableDataNodes(row)
     const tdProps = makePropsForWideTD(row)
     const tdNodes: VNode[] = []
     for (let i = 0; i < columnCount.value; i++) {
-      tdNodes.push(h("td", tdProps, makeDIV(tableDataNodes[i])))
+      const tableHeaderNode = tableHeaderNodes[i]
+      const tableDataNode = tableDataNodes[i]
+      const alignRight = tableHeaderNode.props && tableHeaderNode.props["align-right"]
+      const div = makeDIV(tableDataNode, alignRight, true)
+      tdNodes.push(h("td", tdProps, div))
     }
     result.push(h("tr", makePropsForWideTR(row),tdNodes))
   }
@@ -188,21 +194,6 @@ const makePropsForWideTD = (row: R): Record<string, unknown> => {
   return result
 }
 
-const makeDIV = (tableDataNode: VNode): VNode => {
-  return h("div", makePropsForDIV(), tableDataNode)
-}
-
-const makePropsForDIV = (): Record<string, unknown> => {
-  const result: Record<string, unknown> = {
-    style: "min-height: " + props.rowHeight + "px; max-height: " + props.rowHeight + "px"
-  }
-  const scopeId = getCurrentInstance()?.vnode.scopeId
-  if (scopeId) {
-    result[scopeId] = ""
-  }
-  return result
-}
-
 //
 // TR narrow
 //
@@ -213,9 +204,11 @@ const makeNarrowTRs = (): VNode[] => {
     const tableHeaderNodes = makeTableHeaderNodes()
     const tableDataNodes = makeTableDataNodes(row)
     for (let i = 0; i < columnCount.value; i++) {
+      const leftDIV = makeDIV(tableHeaderNodes[i], false, true)
+      const rightDIV = makeDIV(tableDataNodes[i], true, true)
       const tdNodes = [
-        h('td', makePropsForNarrowTD(row, i, false), makeDIV(tableHeaderNodes[i])),
-        h('td', makePropsForNarrowTD(row, i, true), makeDIV(tableDataNodes[i]))
+        h('td', makePropsForNarrowTD(row, i), leftDIV),
+        h('td', makePropsForNarrowTD(row, i), rightDIV)
       ]
       result.push(h("tr", makePropsForNarrowTR(row, i), tdNodes))
     }
@@ -234,7 +227,7 @@ const makePropsForNarrowTR = (row: R, columnIndex: number): Record<string, unkno
   return result
 }
 
-const makePropsForNarrowTD = (row: R, columnIndex: number, right: boolean): Record<string, unknown> => {
+const makePropsForNarrowTD = (row: R, columnIndex: number): Record<string, unknown> => {
   const result: Record<string, unknown> = {}
   if (props.clickable) {
     result.onClick = (event: Event) => emit("cell-click",  row, event)
@@ -244,14 +237,38 @@ const makePropsForNarrowTD = (row: R, columnIndex: number, right: boolean): Reco
     result[scopeId] = ""
   }
   result.class = ""
-  if (right) {
-    result.class += " right"
-  }
   if (columnIndex === columnCount.value - 1) {
     result.class += " last"
   }
   return result
 }
+
+//
+// DIV
+//
+
+const makeDIV = (tableDataNode: VNode, alignRight: boolean, fixedHeight: boolean): VNode => {
+  return h("div", makePropsForDIV(alignRight, fixedHeight), tableDataNode)
+}
+
+const makePropsForDIV = (alignRight: boolean, fixedHeight: boolean): Record<string, unknown> => {
+  let style = ""
+  if (fixedHeight) {
+    style += "min-height: " + props.rowHeight + "px; max-height: " + props.rowHeight + "px;"
+  }
+  if (alignRight) {
+    style += "justify-content: flex-end; text-align: right;"
+  } else {
+    style += "text-align: left;"
+  }
+  const result: Record<string, unknown> = { style }
+  const scopeId = getCurrentInstance()?.vnode.scopeId
+  if (scopeId) {
+    result[scopeId] = ""
+  }
+  return result
+}
+
 
 </script>
 
@@ -263,6 +280,17 @@ const makePropsForNarrowTD = (row: R, columnIndex: number, right: boolean): Reco
 
 table.table-view-root {
   border-collapse: collapse;
+}
+
+table.table-view-root > thead > tr > th {
+  border-bottom-color: var(--border-secondary);
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  font-family: Inter, sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  padding: 12px 12px;
 }
 
 table.table-view-root > tbody > tr > td {
@@ -297,10 +325,6 @@ table.table-view-root.wide > tbody > tr > td {
 
 table.table-view-root.narrow > tbody > tr > td {
   padding: 0;
-}
-
-table.table-view-root.narrow > tbody > tr > td.right {
-  text-align: right;
 }
 
 table.table-view-root.narrow > tbody > tr > td.last {
