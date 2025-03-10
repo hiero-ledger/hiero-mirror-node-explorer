@@ -5,27 +5,43 @@
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <template>
-  <table class="table-view-root"
-         :class="{'wide': isMediumScreen, 'narrow': !isMediumScreen, 'clickable': props.clickable}">
 
-    <template v-if="isMediumScreen">
-      <thead v-if="columnCount >= 1">
-      <tr>
-        <makeTHs/>
-      </tr>
-      </thead>
-      <tbody>
-        <makeWideTRs/>
-      </tbody>
-    </template>
+  <template v-if="noData">
+    <div class="table-view-no-data" :style="{'min-height': noDataHeight + 'px'}">
+      <slot name="noDataMessage">No data</slot>
+    </div>
+  </template>
 
-    <template v-else>
-      <tbody>
-        <makeNarrowTRs/>
-      </tbody>
-    </template>
+  <template v-else-if="loading">
+    <div class="table-view-loading" :style="{'min-height': loadingHeight + 'px'}">Loading…</div>
+  </template>
 
-  </table>
+  <template v-else>
+    <div class="table-view-content">
+
+      <table :class="{'wide': isMediumScreen, 'narrow': !isMediumScreen, 'clickable': props.clickable}">
+
+        <template v-if="isMediumScreen">
+          <thead v-if="columnCount >= 1">
+          <tr>
+            <makeTHs/>
+          </tr>
+          </thead>
+          <tbody>
+          <makeWideTRs/>
+          </tbody>
+        </template>
+
+        <template v-else>
+          <tbody>
+          <makeNarrowTRs/>
+          </tbody>
+        </template>
+
+      </table>
+
+    </div>
+  </template>
 
 </template>
 
@@ -42,7 +58,7 @@ import TableHeaderView from "@/tables/TableHeaderView.vue";
 
 const props = defineProps({
   controller: {
-    type: Object as PropType<TableController<R,K>>,
+    type: Object as PropType<TableController<R, K>>,
     required: true
   },
   clickable: {
@@ -59,11 +75,12 @@ const emit = defineEmits(["cell-click"])
 
 const slots = defineSlots<{
   default(row: R): any,
-  tableHeaders: any
+  tableHeaders: any,
+  noDataMessage: any
 }>()
 
 
-const isMediumScreen = inject('isMediumScreen', true)
+const isMediumScreen = inject('isMediumScreen', computed(() => true))
 
 const rows = props.controller.rows
 
@@ -82,6 +99,25 @@ const columnCount = computed(() => {
   }
   return result
 })
+
+const estimateTableHeight = (rowCount: number): number => {
+  let result: number
+  if (isMediumScreen.value) {
+    result = props.rowHeight * (rowCount + 1) // +1 for column headers
+  } else {
+    result = columnCount.value * props.rowHeight * rowCount
+  }
+  return result
+}
+
+const noDataHeight = computed(() => estimateTableHeight(5))
+
+const loadingHeight = computed(() => estimateTableHeight(props.controller.pageSize.value))
+
+const loading = props.controller.bare
+
+const noData = computed(
+    () => !props.controller.bare.value && props.controller.totalRowCount.value === 0)
 
 
 //
@@ -260,11 +296,37 @@ const makePropsForDIV = (alignRight: boolean, fixedHeight: boolean): Record<stri
 
 <style scoped>
 
-table.table-view-root {
-  border-collapse: collapse;
+/* no data */
+
+div.table-view-no-data {
+  align-content: center;
+  color: var(--text-secondary);
+  display: flex;
+  font-size: 16px;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
 }
 
-table.table-view-root > thead > tr > th {
+/* loading */
+
+div.table-view-loading {
+  align-content: center;
+  color: var(--text-secondary);
+  display: flex;
+  flex-direction: column;
+  padding-top: 10px;
+  text-align: center;
+}
+
+/* table content */
+
+div.table-view-content > table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+div.table-view-content > table > thead > tr > th {
   border-bottom-color: var(--border-secondary);
   border-bottom-style: solid;
   border-bottom-width: 2px;
@@ -275,76 +337,45 @@ table.table-view-root > thead > tr > th {
   padding: 12px 12px;
 }
 
-table.table-view-root > tbody > tr > td {
+div.table-view-content > table > tbody > tr > td {
   border-bottom-width: 1px;
   border-bottom-color: var(--table-border);
 }
 
-table.table-view-root.clickable > tbody > tr:hover {
+div.table-view-content > table.clickable > tbody > tr:hover {
   background-color: var(--background-primary);
   cursor: pointer;
 }
 
-table.table-view-root > tbody > tr > td > div {
+div.table-view-content > table > tbody > tr > td > div {
   overflow: hidden;
   display: flex;
   align-items: center;
 }
 
-table.table-view-root > tbody > tr > td > div * {
+div.table-view-content > table > tbody > tr > td > div * {
   text-overflow: ellipsis;
 }
 
 
-/* Wide */
+/* table content / wide */
 
-table.table-view-root.wide > tbody > tr > td {
+div.table-view-content > table.wide > tbody > tr > td {
   border-bottom-style: solid;
   padding: 0 10px;
 }
 
-/* Narrow */
+/* table content / narrow */
 
-table.table-view-root.narrow > tbody > tr > td {
+div.table-view-content > table.narrow > tbody > tr > td {
   padding: 0;
 }
 
-table.table-view-root.narrow > tbody > tr > td.last {
+div.table-view-content > table.narrow > tbody > tr > td.last {
   border-bottom-style: solid;
 }
 
 
-/*
-
-table.table-view-root > tbody.clickable > tr > td{
-  cursor: pointer;
-}
-
-table.table-view-root > tbody > tr > td.compact {
-  border-bottom-style: none;
-}
-
-table.table-view-root > tbody > tr > td.compact.last {
-  border-bottom-style: solid;
-  border-bottom-width: 1px;
-  border-bottom-color: var(--table-border);
-}
-
-table.table-view-root > tbody > tr > td.compact.right {
-  text-align: right
-}
-
-table.table-view-root > thead > tr > th {
-  border-bottom-color: var(--table-border);
-  border-bottom-style: solid;
-  border-bottom-width: 1px;
-  color: var(--text-secondary);
-  font-family: Inter, sans-serif;
-  font-size: 12px;
-  font-weight: 500;
-  padding: 12px 9px;
-}
-*/
 
 @keyframes fadeIn {
   0% {
