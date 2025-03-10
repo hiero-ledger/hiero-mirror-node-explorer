@@ -18,7 +18,7 @@ export class RowBuffer<R, K> {
         this.presumedRowCount = presumedRowCount
     }
 
-    public readonly rows: Ref<R[]> = ref([])
+    public readonly rows: Ref<R[]|null> = ref(null)
 
     public readonly startIndex: Ref<number> = ref(0)
 
@@ -28,7 +28,7 @@ export class RowBuffer<R, K> {
 
     public readonly totalRowCount: ComputedRef<number> = computed(() => {
         let result: number
-        const allRowCount = this.shadowRowCount.value + this.rows.value.length
+        const allRowCount = this.shadowRowCount.value + (this.rows.value?.length ?? 0)
         if (this.drained.value) {
             result = +allRowCount
         } else {
@@ -39,20 +39,21 @@ export class RowBuffer<R, K> {
     })
 
     public readonly tailKey: ComputedRef<K | null> = computed(() => {
-        const bufferLength = this.rows.value.length
-        const tailRow = bufferLength >= 1 ? this.rows.value[bufferLength - 1] : null
+        const bufferLength = this.rows.value?.length ?? 0
+        const tailRow = this.rows.value && bufferLength >= 1 ? this.rows.value[bufferLength - 1] : null
         return tailRow !== null ? this.tableController.keyFor(tailRow) : null
     })
 
     public readonly headKey: ComputedRef<K | null> = computed(() => {
-        const bufferLength = this.rows.value.length
-        const headRow = bufferLength >= 1 ? this.rows.value[0] : null
+        const bufferLength = this.rows.value?.length ?? 0
+        const headRow = this.rows.value && bufferLength >= 1 ? this.rows.value[0] : null
         return headRow !== null ? this.tableController.keyFor(headRow) : null
     })
 
     public readonly maxStartIndex: ComputedRef<number> = computed(() => {
+        const bufferLength = this.rows.value?.length ?? 0
         const pageSize = this.tableController.pageSize.value
-        const pageCount = Math.floor((this.shadowRowCount.value + this.rows.value.length) / pageSize) + 1
+        const pageCount = Math.floor((this.shadowRowCount.value + bufferLength) / pageSize) + 1
         return Math.max(0, (pageCount - 1) * pageSize)
     })
 
@@ -63,8 +64,8 @@ export class RowBuffer<R, K> {
     }
 
     public computeFirstVisibleKey(): K | null {
-        const bufferLength = this.rows.value.length
-        const firstRow = this.startIndex.value < bufferLength ? this.rows.value[this.startIndex.value] : null
+        const bufferLength = this.rows.value?.length ?? 0
+        const firstRow = this.rows.value && this.startIndex.value < bufferLength ? this.rows.value[this.startIndex.value] : null
         return firstRow !== null ? this.tableController.keyFor(firstRow) : null
     }
 
@@ -97,7 +98,7 @@ export class RowBuffer<R, K> {
             const newRows = await this.lastLoad(this.headKey.value, pageSize)
             if (this.abortCounter == capturedAbortCounter) {
                 if (newRows !== null) {
-                    this.rows.value = this.concatOrReplace(newRows, this.rows.value)
+                    this.rows.value = this.concatOrReplace(newRows, this.rows.value ?? [])
                     this.startIndex.value = 0
                     // this.drained.value unchanged
                     this.shadowRowCount.value = 0
@@ -134,7 +135,7 @@ export class RowBuffer<R, K> {
         const nextStartIndex = (page - 1) * pageSize
         const nextEndIndex = nextStartIndex + pageSize
         const shadowRowCount = this.shadowRowCount.value
-        const bufferLength = this.rows.value.length
+        const bufferLength = this.rows.value?.length ?? 0
 
         const headKey = this.headKey.value
         const tailKey = this.tailKey.value
@@ -160,7 +161,7 @@ export class RowBuffer<R, K> {
                 const newRows = await this.tailLoad(null, pageSize, false)
                 if (this.abortCounter == captureAbortCounter) {
                     if (newRows !== null) {
-                        this.rows.value = this.rows.value.concat(newRows)
+                        this.rows.value = this.rows.value ? this.rows.value.concat(newRows) : newRows
                         this.drained.value = newRows.length < pageSize
                         this.startIndex.value = Math.min(nextStartIndex - shadowRowCount, this.maxStartIndex.value)
                         // this.shadowRowCount.value unchanged
@@ -176,7 +177,7 @@ export class RowBuffer<R, K> {
                 const newRows = await this.headLoad(headKey, rowCount)
                 if (this.abortCounter == captureAbortCounter) {
                     if (newRows !== null) {
-                        this.rows.value = newRows.concat(this.rows.value)
+                        this.rows.value = this.rows.value ? newRows.concat(this.rows.value) : newRows
                         this.startIndex.value = 0
                         this.shadowRowCount.value -= rowCount
                         // rowBuffer.drained.value unchanged
@@ -192,7 +193,7 @@ export class RowBuffer<R, K> {
                 const newRows = await this.tailLoad(tailKey, rowCount, false)
                 if (this.abortCounter == captureAbortCounter) {
                     if (newRows !== null) {
-                        this.rows.value = this.rows.value.concat(newRows)
+                        this.rows.value = this.rows.value ? this.rows.value.concat(newRows) : newRows
                         this.drained.value = newRows.length < rowCount
                         this.startIndex.value = Math.min(nextStartIndex - shadowRowCount, this.maxStartIndex.value)
                         // rowBuffer.shadowRowCount.value unchanged
@@ -221,7 +222,7 @@ export class RowBuffer<R, K> {
     //
 
     public clear(): void {
-        this.rows.value = []
+        this.rows.value = null
         this.startIndex.value = 0
         this.drained.value = false
         this.shadowRowCount.value = 0
