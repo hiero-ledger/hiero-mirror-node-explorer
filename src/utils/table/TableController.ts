@@ -38,8 +38,10 @@ export abstract class TableController<R, K> implements PlayPauseController {
     public readonly rows: ComputedRef<R[]> = computed(() => {
         const startIndex = this.buffer.startIndex.value
         const endIndex = startIndex + this.pageSize.value
-        return this.buffer.rows.value.slice(startIndex, endIndex)
+        return this.buffer.rows.value?.slice(startIndex, endIndex) ?? []
     })
+
+    public readonly bare = computed(() => this.buffer.rows.value === null)
 
     public readonly refreshCount: ComputedRef<number> = computed(
         () => this.refreshCountRef.value)

@@ -21,6 +21,7 @@ describe("TableController.ts", () => {
 
     test("load() sanity check", async () => {
         const tc = new TestTableController(0, 50, 10)
+        expect(tc.bare.value).toBe(true)
 
         const dummyOp = KeyOperator.lt
 
@@ -81,6 +82,7 @@ describe("TableController.ts", () => {
         expect(tc.rows.value).toStrictEqual([])
         expect(tc.mounted.value).toBe(false)
         expect(tc.loadCounter).toBe(0)
+        expect(tc.bare.value).toBe(true)
         expect(currentRoute.value.query).toStrictEqual({})
 
         await flushPromises()
@@ -93,6 +95,7 @@ describe("TableController.ts", () => {
         expect(tc.rows.value).toStrictEqual([])
         expect(tc.mounted.value).toBe(false)
         expect(tc.loadCounter).toBe(0)
+        expect(tc.bare.value).toBe(true)
         expect(currentRoute.value.query).toStrictEqual({})
 
         // 1) mount
@@ -108,6 +111,7 @@ describe("TableController.ts", () => {
         expect(tc.rows.value).toStrictEqual([49, 48, 47, 46, 45, 44, 43, 42, 41, 40])
         expect(tc.mounted.value).toBe(true)
         expect(tc.loadCounter).toBe(1)
+        expect(tc.bare.value).toBe(false)
         expect(currentRoute.value.query).toStrictEqual({})
 
         // 2) unmount
@@ -122,6 +126,7 @@ describe("TableController.ts", () => {
         expect(tc.rows.value).toStrictEqual([])
         expect(tc.mounted.value).toBe(false)
         expect(tc.loadCounter).toBe(1)
+        expect(tc.bare.value).toBe(true)
         expect(currentRoute.value.query).toStrictEqual({})
 
     })
