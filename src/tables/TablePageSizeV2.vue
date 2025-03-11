@@ -23,7 +23,7 @@
 <!--                                                      SCRIPT                                                     -->
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
-<script lang="ts" setup generic="R,K">
+<script lang="ts" setup>
 
 import {onBeforeUnmount, onMounted, PropType, watch} from "vue";
 import {AppStorage} from "@/AppStorage";
@@ -32,7 +32,7 @@ import {TableController} from "@/utils/table/TableController.ts";
 
 const props = defineProps({
   controller: {
-    type: Object as PropType<TableController<R, K>>,
+    type: Object as PropType<TableController<any, any>>,
     required: true
   },
   storageKey: {
