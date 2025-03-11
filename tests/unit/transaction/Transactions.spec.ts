@@ -9,12 +9,12 @@ import Transactions from "@/pages/Transactions.vue";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import PlayPauseButton from "@/components/PlayPauseButton.vue";
 import TransactionFilterSelect from "@/components/transaction/TransactionFilterSelect.vue";
-import TablePageSize from "@/components/transaction/TablePageSize.vue";
-import TransactionTable from "@/components/transaction/TransactionTable.vue";
+import TransactionTableV2 from "@/components/transaction/TransactionTableV2.vue";
 import MockAdapter from "axios-mock-adapter";
 import Oruga from "@oruga-ui/oruga-next";
 import {HMSF} from "@/utils/HMSF";
 import {fetchGetURLs} from "../MockUtils";
+import TablePageSizeV2 from "@/tables/TablePageSizeV2.vue";
 
 /*
     Bookmarks
@@ -51,7 +51,6 @@ describe("Transactions.vue", () => {
 
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/transactions",
-            "api/v1/transactions",
             "api/v1/network/nodes",
             "api/v1/tokens/" + SAMPLE_TOKEN.token_id,
             "api/v1/blocks",
@@ -76,9 +75,9 @@ describe("Transactions.vue", () => {
             "TOKEN KYC REVOKETOKEN MINTTOKEN PAUSETOKEN REJECTTOKEN UNFREEZETOKEN UNPAUSETOKEN UPDATE" +
             "TOKEN WIPEUNCHECKED SUBMITUPDATE ACCOUNTUPDATE NFTSUPDATE TOPIC")
 
-        const table = card.findComponent(TransactionTable)
+        const table = card.findComponent(TransactionTableV2)
         expect(table.exists()).toBe(true)
-        expect(table.get('thead').text()).toBe("ID TYPE CONTENT TIME")
+        expect(table.get('thead').text()).toBe("IDTYPECONTENTTIME")
         expect(table.get('tbody').text()).toBe(
             "0.0.29624024@1646025139.152901498CRYPTO TRANSFER0.0.29624024\n\n" +
             "123423\n\n" +
@@ -122,17 +121,17 @@ describe("Transactions.vue", () => {
 
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/transactions",
-            "api/v1/transactions",
             "api/v1/network/nodes",
             "api/v1/tokens/" + SAMPLE_TOKEN.token_id,
             "api/v1/blocks",
+            "api/v1/transactions",
         ])
 
         const card = wrapper.findComponent(DashboardCardV2)
         expect(card.exists()).toBe(true)
         expect(card.text()).toMatch(RegExp("^Recent Transactions"))
 
-        const select = card.findComponent(TablePageSize)
+        const select = card.findComponent(TablePageSizeV2)
         expect(select.exists()).toBe(false)
 
         mock.restore()
@@ -173,7 +172,6 @@ describe("Transactions.vue", () => {
 
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/transactions",
-            "api/v1/transactions",
             "api/v1/network/nodes",
             "api/v1/tokens/" + SAMPLE_TOKEN.token_id,
             "api/v1/blocks",
@@ -183,7 +181,7 @@ describe("Transactions.vue", () => {
         expect(card.exists()).toBe(true)
         expect(card.text()).toMatch(RegExp("^Recent Transactions"))
 
-        const select = card.findComponent(TablePageSize)
+        const select = card.findComponent(TablePageSizeV2)
         expect(select.exists()).toBe(true)
 
         expect(select.text()).toBe(
