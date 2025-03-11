@@ -18,7 +18,7 @@
 
     </template>
 
-    <template #default="transaction">
+    <template #tableCells="transaction">
 
       <!-- Bof -->
       <TableDataView>

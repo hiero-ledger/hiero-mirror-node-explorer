@@ -85,8 +85,8 @@ const props = defineProps({
 const emit = defineEmits(["cell-click"])
 
 const slots = defineSlots<{
-  default(row: R): any,
   tableHeaders: any,
+  tableCells(row: R): any,
   noDataMessage: any
 }>()
 
@@ -105,8 +105,8 @@ const columnCount = computed(() => {
   let result: number
   const tableHeaderNodes = makeTableHeaderNodes()
   if (rows.value.length >= 1) {
-    const tableDataNodes = makeTableDataNodes(rows.value[0])
-    result = Math.min(tableHeaderNodes.length, tableDataNodes.length)
+    const tableCellNodes = makeTableCellNodes(rows.value[0])
+    result = Math.min(tableHeaderNodes.length, tableCellNodes.length)
   } else {
     result = tableHeaderNodes.length
   }
@@ -147,9 +147,9 @@ const makeTableHeaderNodes = (): VNode[] => {
   return result
 }
 
-const makeTableDataNodes = (row: R): VNode[] => {
+const makeTableCellNodes = (row: R): VNode[] => {
   const result: VNode[] = []
-  for (const c of slots.default(row) ?? []) {
+  for (const c of slots.tableCells(row) ?? []) {
     if (TableDataView == c.type) {
       result.push(c)
     }
@@ -187,14 +187,14 @@ const makeWideTRs = (): VNode[] => {
   const result: VNode[] = []
   const tableHeaderNodes = makeTableHeaderNodes()
   for (const row of rows.value) {
-    const tableDataNodes = makeTableDataNodes(row)
+    const tableCellNodes = makeTableCellNodes(row)
     const tdProps = makePropsForWideTD(row)
     const tdNodes: VNode[] = []
     for (let i = 0; i < columnCount.value; i++) {
       const tableHeaderNode = tableHeaderNodes[i]
-      const tableDataNode = tableDataNodes[i]
+      const tableCellNode = tableCellNodes[i]
       const alignRight = tableHeaderNode.props && tableHeaderNode.props["align-right"]
-      const div = makeDIV(tableDataNode, alignRight, true)
+      const div = makeDIV(tableCellNode, alignRight, true)
       tdNodes.push(h("td", tdProps, div))
     }
     result.push(h("tr", makePropsForWideTR(row),tdNodes))
@@ -233,10 +233,10 @@ const makeNarrowTRs = (): VNode[] => {
   const result: VNode[] = []
   for (const row of rows.value) {
     const tableHeaderNodes = makeTableHeaderNodes()
-    const tableDataNodes = makeTableDataNodes(row)
+    const tableCellNodes = makeTableCellNodes(row)
     for (let i = 0; i < columnCount.value; i++) {
       const leftDIV = makeDIV(tableHeaderNodes[i], false, true)
-      const rightDIV = makeDIV(tableDataNodes[i], true, true)
+      const rightDIV = makeDIV(tableCellNodes[i], true, true)
       const tdNodes = [
         h('td', makePropsForNarrowTD(row, i), leftDIV),
         h('td', makePropsForNarrowTD(row, i), rightDIV)
@@ -278,8 +278,8 @@ const makePropsForNarrowTD = (row: R, columnIndex: number): Record<string, unkno
 // DIV
 //
 
-const makeDIV = (tableDataNode: VNode, alignRight: boolean, fixedHeight: boolean): VNode => {
-  return h("div", makePropsForDIV(alignRight, fixedHeight), tableDataNode)
+const makeDIV = (tableCellNode: VNode, alignRight: boolean, fixedHeight: boolean): VNode => {
+  return h("div", makePropsForDIV(alignRight, fixedHeight), tableCellNode)
 }
 
 const makePropsForDIV = (alignRight: boolean, fixedHeight: boolean): Record<string, unknown> => {
