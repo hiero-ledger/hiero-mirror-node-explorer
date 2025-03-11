@@ -403,6 +403,13 @@ div.table-view-content > div {
   justify-content: space-between;
 }
 
+/* animation for row insertion */
+
+
+div.table-view-content > table > tbody > tr {
+  animation: fadeIn linear 1s;
+}
+
 @keyframes fadeIn {
   0% {
     opacity: 0;
