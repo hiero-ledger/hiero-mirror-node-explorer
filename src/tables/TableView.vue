@@ -40,8 +40,9 @@
 
       </table>
 
-      <div>
+      <div v-if="showPageSizeSelector">
         <TablePageSizeV2 :controller="props.controller" :storage-key="pageSizeStorageKey"/>
+        <TablePageSelector :controller="props.controller"/>
       </div>
 
     </div>
@@ -60,6 +61,7 @@ import {computed, getCurrentInstance, h, inject, PropType, VNode} from "vue";
 import TableDataView from "@/tables/TableDataView.vue";
 import TableHeaderView from "@/tables/TableHeaderView.vue";
 import TablePageSizeV2 from "@/tables/TablePageSizeV2.vue";
+import TablePageSelector from "@/tables/TablePageSelector.vue";
 
 const props = defineProps({
   controller: {
@@ -93,6 +95,7 @@ const isMediumScreen = inject('isMediumScreen', computed(() => true))
 
 const rows = props.controller.rows
 const pageSize = props.controller.pageSize
+const showPageSizeSelector = props.controller.showPageSizeSelector
 
 const keyStringForRow = (row: R): string => {
   return props.controller.stringFromKey(props.controller.keyFor(row))
