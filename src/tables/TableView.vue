@@ -40,6 +40,10 @@
 
       </table>
 
+      <div>
+        <TablePageSizeV2 :controller="props.controller" :storage-key="pageSizeStorageKey"/>
+      </div>
+
     </div>
   </template>
 
@@ -55,6 +59,7 @@ import {TableController} from "@/utils/table/TableController.ts";
 import {computed, getCurrentInstance, h, inject, PropType, VNode} from "vue";
 import TableDataView from "@/tables/TableDataView.vue";
 import TableHeaderView from "@/tables/TableHeaderView.vue";
+import TablePageSizeV2 from "@/tables/TablePageSizeV2.vue";
 
 const props = defineProps({
   controller: {
@@ -68,6 +73,10 @@ const props = defineProps({
   rowHeight: {
     type: Number,
     default: 54
+  },
+  pageSizeStorageKey: {
+    type: String as PropType<string|null>,
+    default: null
   }
 })
 
@@ -83,6 +92,7 @@ const slots = defineSlots<{
 const isMediumScreen = inject('isMediumScreen', computed(() => true))
 
 const rows = props.controller.rows
+const pageSize = props.controller.pageSize
 
 const keyStringForRow = (row: R): string => {
   return props.controller.stringFromKey(props.controller.keyFor(row))
@@ -112,7 +122,7 @@ const estimateTableHeight = (rowCount: number): number => {
 
 const noDataHeight = computed(() => estimateTableHeight(5))
 
-const loadingHeight = computed(() => estimateTableHeight(props.controller.pageSize.value))
+const loadingHeight = computed(() => estimateTableHeight(pageSize.value))
 
 const loading = props.controller.bare
 
@@ -321,6 +331,13 @@ div.table-view-loading {
 
 /* table content */
 
+div.table-view-content {
+  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  row-gap: 24px;
+}
+
 div.table-view-content > table {
   border-collapse: collapse;
   width: 100%;
@@ -375,7 +392,13 @@ div.table-view-content > table.narrow > tbody > tr > td.last {
   border-bottom-style: solid;
 }
 
+/* table content footer */
 
+div.table-view-content > div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
 
 @keyframes fadeIn {
   0% {
