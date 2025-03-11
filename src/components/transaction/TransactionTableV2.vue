@@ -5,7 +5,9 @@
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <template>
-  <TableView :controller="props.controller" :clickable="true" @cell-click="handleClick">
+  <TableView :controller="props.controller"
+             :clickable="true" @cell-click="handleClick"
+             :page-size-storage-key="props.controller.storageKey">
 
     <template #tableHeaders>
 
