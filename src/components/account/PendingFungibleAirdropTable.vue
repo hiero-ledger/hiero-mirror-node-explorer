@@ -6,82 +6,58 @@
 
 <template>
 
-  <o-table
-      :data="props.controller.rows.value"
-      :loading="props.controller.loading.value"
-      :paginated="props.controller.paginated.value ?? props.fullPage"
-      backend-pagination
-      pagination-order="centered"
-      :range-before="1"
-      :range-after="1"
-      :total="props.controller.totalRowCount.value"
-      :current-page="props.controller.currentPage.value"
-      :per-page="props.controller.pageSize.value"
-      @page-change="props.controller.onPageChange"
-      @cellClick="handleClick"
-
-      :hoverable="true"
-      :narrowed="true"
-      :striped="true"
-      :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
-
-      v-model:checked-rows="checkedRows"
-      :checkable="props.checkEnabled"
-
-      aria-current-label="Current page"
-      aria-next-label="Next page"
-      aria-page-label="Page"
-      aria-previous-label="Previous page"
+  <TableView
+      :controller="props.controller"
+      :clickable="true"
+      :page-size-storage-key="AppStorage.ACCOUNT_TOKENS_TABLE_PAGE_SIZE_KEY"
+      :pagination-disabled="!props.fullPage"
+      @cell-click="handleClick"
   >
-    <o-table-column v-slot="{ row }" field="token_id" label="TOKEN ID">
-      <TokenIOL class="token-id-label" :token-id="row.token_id"/>
-    </o-table-column>
 
-    <o-table-column v-slot="{ row }" field="name" label="NAME">
-      <TokenCell class="is-inline-block" :token-id="row.token_id" :property="TokenCellItem.tokenName"/>
-    </o-table-column>
+    <template #tableHeaders>
 
-    <o-table-column v-slot="{ row }" field="symbol" label="SYMBOL">
-      <TokenCell class="is-inline-block" :token-id="row.token_id" :property="TokenCellItem.tokenSymbol"/>
-    </o-table-column>
+      <TableHeaderView>TOKEN ID</TableHeaderView>
+      <TableHeaderView>NAME</TableHeaderView>
+      <TableHeaderView>SYMBOL</TableHeaderView>
+      <TableHeaderView :align-right="true">AMOUNT</TableHeaderView>
+      <TableHeaderView>SENDER</TableHeaderView>
+      <TableHeaderView>AIRDROP TIME</TableHeaderView>
 
-    <o-table-column v-slot="{ row }" field="amount" label="AMOUNT">
-      <TokenAmount
-          v-if="! row.serial_number"
-          :amount="BigInt(row.amount)"
-          :token-id="row.token_id"
-      />
-    </o-table-column>
-
-    <o-table-column v-slot="{ row }" field="sender" label="SENDER">
-      <div>{{ row.sender_id }}</div>
-    </o-table-column>
-
-    <o-table-column v-slot="{ row }" field="timestamp" label=" AIRDROP TIME">
-      <TimestampValue v-bind:timestamp="row.timestamp.from"/>
-    </o-table-column>
-
-    <template v-slot:bottom-left>
-      <TablePageSize
-          v-if="props.fullPage"
-          v-model:size="props.controller.pageSize.value"
-          :storage-key="AppStorage.ACCOUNT_TOKENS_TABLE_PAGE_SIZE_KEY"
-      />
     </template>
 
-  </o-table>
+    <template #tableCells="airdrop">
 
-  <TablePageSize
-      v-if="!props.controller.paginated.value
-      && props.controller.showPageSizeSelector.value
-      && !props.checkEnabled
-      && props.fullPage"
-      v-model:size="props.controller.pageSize.value"
-      :storage-key="AppStorage.ACCOUNT_TOKENS_TABLE_PAGE_SIZE_KEY"
-      style="width: 102px; margin-left: 4px"
-  />
+      <TableDataView>
+        <TokenIOL class="token-id-label" :token-id="airdrop.token_id"/>
+      </TableDataView>
 
-  <EmptyTable v-if="!props.controller.totalRowCount.value"/>
+      <TableDataView>
+        <TokenCell class="is-inline-block" :token-id="airdrop.token_id" :property="TokenCellItem.tokenName"/>
+      </TableDataView>
+
+      <TableDataView>
+        <TokenCell class="is-inline-block" :token-id="airdrop.token_id" :property="TokenCellItem.tokenSymbol"/>
+      </TableDataView>
+
+      <TableDataView>
+        <TokenAmount
+            v-if="! airdrop.serial_number"
+            :amount="BigInt(airdrop.amount)"
+            :token-id="airdrop.token_id"
+        />
+      </TableDataView>
+
+      <TableDataView>
+        <div>{{ airdrop.sender_id }}</div>
+      </TableDataView>
+
+      <TableDataView>
+        <TimestampValue v-bind:timestamp="airdrop.timestamp.from"/>
+      </TableDataView>
+
+    </template>
+
+  </TableView>
 
 </template>
 
@@ -93,16 +69,16 @@
 
 import {PropType, watch} from 'vue';
 import {TokenAirdrop} from "@/schemas/MirrorNodeSchemas";
-import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
-import EmptyTable from "@/components/EmptyTable.vue";
 import {routeManager} from "@/router";
 import TokenCell, {TokenCellItem} from "@/components/token/TokenCell.vue";
-import TablePageSize from "@/components/transaction/TablePageSize.vue";
 import {AppStorage} from "@/AppStorage";
 import {PendingAirdropTableController} from "@/components/account/PendingAirdropTableController";
 import TokenAmount from "@/components/values/TokenAmount.vue";
 import TokenIOL from "@/components/values/link/TokenIOL.vue";
 import TimestampValue from "@/components/values/TimestampValue.vue";
+import TableDataView from "@/tables/TableDataView.vue";
+import TableView from "@/tables/TableView.vue";
+import TableHeaderView from "@/tables/TableHeaderView.vue";
 
 const props = defineProps({
   controller: {
@@ -126,7 +102,7 @@ const checkedRows = defineModel("checkedAirdrops", {
 
 watch([props.controller.rows, () => props.checkEnabled], () => checkedRows.value.splice(0))
 
-const handleClick = (airdrop: TokenAirdrop, c: unknown, i: number, ci: number, event: MouseEvent) => {
+const handleClick = (airdrop: TokenAirdrop, event: MouseEvent) => {
   if (airdrop.token_id) {
     routeManager.routeToToken(airdrop.token_id, event)
   }
