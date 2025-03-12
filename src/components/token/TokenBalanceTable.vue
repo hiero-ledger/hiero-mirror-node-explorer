@@ -8,56 +8,34 @@
 
   <div id="token-balance-table">
 
-    <o-table
-        :data="tokenBalances"
-        :loading="loading"
-        :paginated="paginated"
-        backend-pagination
-        pagination-order="centered"
-        :range-before="1"
-        :range-after="1"
-        :total="total"
-        v-model:current-page="currentPage"
-        :per-page="perPage"
-        @page-change="onPageChange"
+    <TableView
+        :controller="props.controller"
+        :clickable="true"
+        :page-size-storage-key="AppStorage.TOKEN_BALANCE_TABLE_PAGE_SIZE_KEY"
         @cell-click="handleClick"
-
-        :hoverable="true"
-        :narrowed="true"
-        :striped="true"
-        :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
-
-        aria-current-label="Current page"
-        aria-next-label="Next page"
-        aria-page-label="Page"
-        aria-previous-label="Previous page"
-        customRowKey="account"
     >
-      <o-table-column v-slot="props" field="account" label="ACCOUNT ID">
-        <AccountIOL class="account-id" :account-id="props.row.account"/>
-      </o-table-column>
 
-      <o-table-column v-slot="props" field="balance" label="BALANCE" position="right">
-        <TokenAmount :amount="BigInt(props.row.balance)" :token-id="tokenId"/>
-      </o-table-column>
+      <template #tableHeaders>
 
-      <template v-slot:bottom-left>
-        <TablePageSize
-            v-model:size="perPage"
-            :storage-key="AppStorage.TOKEN_BALANCE_TABLE_PAGE_SIZE_KEY"
-        />
+        <TableHeaderView>ACCOUNT ID</TableHeaderView>
+        <TableHeaderView :align-right="true">BALANCE</TableHeaderView>
+
       </template>
 
-    </o-table>
+      <template #tableCells="account">
 
-    <TablePageSize
-        v-if="!paginated && showPageSizeSelector"
-        v-model:size="perPage"
-        :storage-key="AppStorage.TOKEN_BALANCE_TABLE_PAGE_SIZE_KEY"
-        style="width: 116px; margin-left: 4px"
-    />
+        <TableDataView>
+          <AccountIOL class="account-id" :account-id="account.account"/>
+        </TableDataView>
 
-    <EmptyTable v-if="!tokenBalances.length"/>
+        <TableDataView>
+          <TokenAmount :amount="BigInt(account.balance)" :token-id="tokenId"/>
+        </TableDataView>
+
+      </template>
+
+
+    </TableView>
 
   </div>
 </template>
@@ -72,12 +50,12 @@ import {PropType} from 'vue';
 import {TokenDistribution} from "@/schemas/MirrorNodeSchemas";
 import {routeManager} from "@/router";
 import TokenAmount from "@/components/values/TokenAmount.vue";
-import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
-import EmptyTable from "@/components/EmptyTable.vue";
 import {TokenBalanceTableController} from "@/components/token/TokenBalanceTableController";
 import AccountIOL from "@/components/values/link/AccountIOL.vue";
-import TablePageSize from "@/components/transaction/TablePageSize.vue";
 import {AppStorage} from "@/AppStorage";
+import TableView from "@/tables/TableView.vue";
+import TableHeaderView from "@/tables/TableHeaderView.vue";
+import TableDataView from "@/tables/TableDataView.vue";
 
 const props = defineProps({
   controller: {
@@ -93,14 +71,6 @@ const handleClick = (t: TokenDistribution, c: unknown, i: number, ci: number, ev
 }
 
 const tokenId = props.controller.tokenId.value
-const tokenBalances = props.controller.rows
-const loading = props.controller.loading
-const total = props.controller.totalRowCount
-const currentPage = props.controller.currentPage
-const onPageChange = props.controller.onPageChange
-const perPage = props.controller.pageSize
-const paginated = props.controller.paginated
-const showPageSizeSelector = props.controller.showPageSizeSelector
 
 </script>
 
