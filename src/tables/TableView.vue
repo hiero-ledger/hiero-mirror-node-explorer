@@ -40,7 +40,7 @@
 
       </table>
 
-      <div>
+      <div v-if="!props.paginationDisabled">
         <TablePageSizeV2 v-if="showPageSizeSelector" :controller="props.controller"/>
         <TablePageSelector v-if="paginated" :controller="props.controller"/>
       </div>
@@ -75,6 +75,10 @@ const props = defineProps({
   rowHeight: {
     type: Number,
     default: 54
+  },
+  paginationDisabled: {
+    type: Boolean,
+    default: false
   }
 })
 
