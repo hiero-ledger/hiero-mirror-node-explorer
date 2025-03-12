@@ -6,43 +6,45 @@
 
 <template>
 
-  <template v-if="compact">
-    <HbarTransferGraphC
-        v-if="netAmount > 0"
-        data-cy="hbarTransfers"
-        v-bind:transaction="transaction"/>
-  </template>
-  <template v-else>
-    <HbarTransferGraphF
-        data-cy="hbarTransfers"
-        title="Hbar Transfers"
-        v-bind:class="{'mb-4': displayRewardTransfers || displayNftTransfers || displayTokenTransfers}"
-        v-bind:transaction="transaction"/>
-  </template>
+  <div>
+    <template v-if="compact">
+      <HbarTransferGraphC
+          v-if="netAmount > 0"
+          data-cy="hbarTransfers"
+          v-bind:transaction="transaction"/>
+    </template>
+    <template v-else>
+      <HbarTransferGraphF
+          data-cy="hbarTransfers"
+          title="Hbar Transfers"
+          v-bind:class="{'mb-4': displayRewardTransfers || displayNftTransfers || displayTokenTransfers}"
+          v-bind:transaction="transaction"/>
+    </template>
 
-  <NftTransferGraph
-      data-cy="nftTransfers"
-      v-bind:class="{'mb-4': !compact && (displayTokenTransfers || displayRewardTransfers)}"
-      v-bind:transaction="transaction"
-      v-bind:compact="compact"/>
+    <NftTransferGraph
+        data-cy="nftTransfers"
+        v-bind:class="{'mb-4': !compact && (displayTokenTransfers || displayRewardTransfers)}"
+        v-bind:transaction="transaction"
+        v-bind:compact="compact"/>
 
-  <template v-if="compact">
-    <TokenTransferGraphC
-        data-cy="tokenTransfers"
-        v-bind:transaction="transaction"/>
-  </template>
-  <template v-else>
-    <TokenTransferGraphF
-        data-cy="tokenTransfers"
-        v-bind:class="{'mb-4': displayRewardTransfers}"
-        v-bind:transaction="transaction"/>
-  </template>
+    <template v-if="compact">
+      <TokenTransferGraphC
+          data-cy="tokenTransfers"
+          v-bind:transaction="transaction"/>
+    </template>
+    <template v-else>
+      <TokenTransferGraphF
+          data-cy="tokenTransfers"
+          v-bind:class="{'mb-4': displayRewardTransfers}"
+          v-bind:transaction="transaction"/>
+    </template>
 
-  <template v-if="!compact">
-    <RewardTransferGraph
-        data-cy="rewardTransfers"
-        v-bind:transaction="transaction"/>
-  </template>
+    <template v-if="!compact">
+      <RewardTransferGraph
+          data-cy="rewardTransfers"
+          v-bind:transaction="transaction"/>
+    </template>
+  </div>
 
 </template>
 
