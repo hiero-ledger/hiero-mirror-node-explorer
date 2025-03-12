@@ -41,7 +41,7 @@
       </table>
 
       <div v-if="showPageSizeSelector">
-        <TablePageSizeV2 :controller="props.controller" :storage-key="pageSizeStorageKey"/>
+        <TablePageSizeV2 :controller="props.controller"/>
         <TablePageSelector :controller="props.controller"/>
       </div>
 
@@ -75,10 +75,6 @@ const props = defineProps({
   rowHeight: {
     type: Number,
     default: 54
-  },
-  pageSizeStorageKey: {
-    type: String as PropType<string|null>,
-    default: null
   }
 })
 
