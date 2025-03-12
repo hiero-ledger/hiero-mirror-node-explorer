@@ -16,8 +16,8 @@
 
       <TableHeaderView>NUMBER</TableHeaderView>
       <TableHeaderView>START TIME</TableHeaderView>
-      <TableHeaderView>NO. TRANSACTIONS</TableHeaderView>
-      <TableHeaderView>GAS USED</TableHeaderView>
+      <TableHeaderView :align-right="true">NO. TRANSACTIONS</TableHeaderView>
+      <TableHeaderView :align-right="true">GAS USED</TableHeaderView>
 
     </template>
 
