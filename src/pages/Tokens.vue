@@ -46,7 +46,7 @@
 
 <script setup lang="ts">
 
-import {inject, onBeforeUnmount, onMounted, ref} from 'vue';
+import {inject, onBeforeUnmount, onMounted, ref, watch} from 'vue';
 import TokenTable from "@/components/token/TokenTable.vue";
 import PageFrameV2 from "@/components/page/PageFrameV2.vue";
 import {TokenTableController} from "@/components/token/TokenTableController";
@@ -75,6 +75,12 @@ onBeforeUnmount(() => {
   nftTableController.unmount()
   tokenTableController.unmount()
 })
+
+//
+// Page size of both nft/token tables must be synchronized
+//
+watch(nftTableController.pageSize, (newValue: number) => tokenTableController.pageSize.value = newValue)
+watch(tokenTableController.pageSize, (newValue: number) => nftTableController.pageSize.value = newValue)
 
 </script>
 
