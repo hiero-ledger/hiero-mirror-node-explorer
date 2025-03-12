@@ -6,56 +6,42 @@
 
 <template>
 
-  <o-table
-      :data="tokens"
-      :loading="loading"
-      paginated
-      backend-pagination
-      pagination-order="centered"
-      :range-before="1"
-      :range-after="1"
-      :total="total"
-      v-model:current-page="currentPage"
-      :per-page="perPage"
-      @page-change="onPageChange"
+  <TableView
+      :controller="props.controller"
+      :clickable="true"
+      :page-size-storage-key="AppStorage.TOKEN_TABLE_PAGE_SIZE_KEY"
       @cell-click="handleClick"
-
-      :hoverable="true"
-      :narrowed="narrowed"
-      :striped="true"
-      :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
-
-      aria-current-label="Current page"
-      aria-next-label="Next page"
-      aria-page-label="Page"
-      aria-previous-label="Previous page"
-      customRowKey="token_id"
   >
-    <o-table-column v-slot="props" field="token_id" label="TOKEN">
-      <TokenIOL class="token_id" :token-id="props.row.token_id"/>
-    </o-table-column>
 
-    <o-table-column v-slot="props" field="name" label="NAME">
-      <div class="w250">
-        {{ props.row.name }}
-      </div>
-    </o-table-column>
+    <template #tableHeaders>
 
-    <o-table-column v-slot="props" field="symbol" label="SYMBOL">
-      <div class="w250">
-        {{ props.row.symbol }}
-      </div>
-    </o-table-column>
+      <TableHeaderView>TOKEN</TableHeaderView>
+      <TableHeaderView>NAME</TableHeaderView>
+      <TableHeaderView>SYMBOL</TableHeaderView>
 
-    <template v-slot:bottom-left>
-      <TablePageSize
-          v-model:size="perPage"
-          :storage-key="AppStorage.TOKEN_TABLE_PAGE_SIZE_KEY"
-      />
     </template>
-  </o-table>
 
-  <EmptyTable v-if="!tokens.length"/>
+    <template #tableCells="token">
+
+      <TableDataView>
+        <TokenIOL class="token_id" :token-id="token.token_id"/>
+      </TableDataView>
+
+      <TableDataView>
+        <div class="w250">
+          {{ token.name }}
+        </div>
+      </TableDataView>
+
+      <TableDataView>
+        <div class="w250">
+          {{ token.symbol }}
+        </div>
+      </TableDataView>
+
+    </template>
+
+  </TableView>
 
 </template>
 
@@ -68,12 +54,12 @@
 import {PropType} from 'vue';
 import {routeManager} from "@/router";
 import {Token} from "@/schemas/MirrorNodeSchemas";
-import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
-import EmptyTable from "@/components/EmptyTable.vue";
 import {TokenTableController} from "@/components/token/TokenTableController";
 import TokenIOL from "@/components/values/link/TokenIOL.vue";
-import TablePageSize from "@/components/transaction/TablePageSize.vue";
 import {AppStorage} from "@/AppStorage";
+import TableView from "@/tables/TableView.vue";
+import TableHeaderView from "@/tables/TableHeaderView.vue";
+import TableDataView from "@/tables/TableDataView.vue";
 
 const props = defineProps({
   controller: {
@@ -91,13 +77,6 @@ const handleClick = (t: Token, c: unknown, i: number, ci: number, event: MouseEv
     routeManager.routeToToken(t.token_id, event)
   }
 }
-
-const tokens = props.controller.rows
-const loading = props.controller.loading
-const total = props.controller.totalRowCount
-const currentPage = props.controller.currentPage
-const onPageChange = props.controller.onPageChange
-const perPage = props.controller.pageSize
 
 </script>
 
