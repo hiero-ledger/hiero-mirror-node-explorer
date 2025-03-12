@@ -40,9 +40,9 @@
 
       </table>
 
-      <div v-if="showPageSizeSelector">
-        <TablePageSizeV2 :controller="props.controller"/>
-        <TablePageSelector :controller="props.controller"/>
+      <div>
+        <TablePageSizeV2 v-if="showPageSizeSelector" :controller="props.controller"/>
+        <TablePageSelector v-if="paginated" :controller="props.controller"/>
       </div>
 
     </div>
@@ -91,6 +91,7 @@ const isMediumScreen = inject('isMediumScreen', computed(() => true))
 
 const rows = props.controller.rows
 const pageSize = props.controller.pageSize
+const paginated = props.controller.paginated
 const showPageSizeSelector = props.controller.showPageSizeSelector
 
 const keyStringForRow = (row: R): string => {
