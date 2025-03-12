@@ -7,63 +7,47 @@
 <template>
 
   <div id="topic-message-table">
-    <o-table
-        :data="messages"
-        :loading="loading"
-        :paginated="!isTouchDevice && paginated"
-        backend-pagination
-        pagination-order="centered"
-        :range-before="1"
-        :range-after="1"
-        :total="total"
-        v-model:current-page="currentPage"
-        :per-page="perPage"
-        focusable
-        @page-change="onPageChange"
+
+    <TableView
+        :controller="props.controller"
+        :clickable="true"
+        :row-height="90"
         @cell-click="handleClick"
-
-        :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
-
-        aria-current-label="Current page"
-        aria-next-label="Next page"
-        aria-page-label="Page"
-        aria-previous-label="Previous page"
-        customRowKey="consensus_timestamp"
     >
-      <o-table-column v-slot="props" field="sequence_number" label="SEQ.#">
-        {{ props.row.sequence_number != null ? props.row.sequence_number : "" }}
-      </o-table-column>
 
-      <o-table-column v-slot="props" field="consensus_timestamp" label="TIME">
-        <div style="text-wrap: nowrap">
-          <TimestampValue v-bind:timestamp="props.row.consensus_timestamp"/>
-        </div>
-      </o-table-column>
+      <template #tableHeaders>
 
-      <o-table-column v-slot="props" field="chunk" label="CHUNK">
-        {{ formatChunk(props.row) }}
-      </o-table-column>
+        <TableHeaderView>SEQ.#</TableHeaderView>
+        <TableHeaderView>TIME</TableHeaderView>
+        <TableHeaderView>CHUNK</TableHeaderView>
+        <TableHeaderView>MESSAGE</TableHeaderView>
 
-      <o-table-column v-slot="props" field="message" label="MESSAGE">
-        <BlobValue :blob-value="props.row.message" :base64="true" :show-none="true"/>
-      </o-table-column>
-
-      <template v-slot:bottom-left>
-        <TablePageSize
-            v-model:size="perPage"
-            :storage-key="AppStorage.TOPIC_MESSAGE_TABLE_PAGE_SIZE_KEY"
-        />
       </template>
 
-    </o-table>
+      <template #tableCells="message">
 
-    <TablePageSize
-        v-if="!paginated && showPageSizeSelector"
-        v-model:size="perPage"
-        style="width: 116px; margin-left: 4px"
-    />
+        <TableDataView>
+          {{ message.sequence_number ?? "" }}
+        </TableDataView>
 
-    <EmptyTable v-if="!messages.length"/>
+        <TableDataView>
+          <div style="text-wrap: nowrap">
+            <TimestampValue v-bind:timestamp="message.consensus_timestamp"/>
+          </div>
+        </TableDataView>
+
+        <TableDataView>
+          {{ formatChunk(message) }}
+        </TableDataView>
+
+        <TableDataView>
+          <BlobValue :blob-value="message.message" :base64="true" :show-none="true"/>
+        </TableDataView>
+
+      </template>
+
+    </TableView>
+
   </div>
 
 </template>
@@ -74,16 +58,15 @@
 
 <script setup lang="ts">
 
-import {inject, PropType} from 'vue';
+import {PropType} from 'vue';
 import {TopicMessageTableController} from "@/components/topic/TopicMessageTableController";
 import TimestampValue from "@/components/values/TimestampValue.vue";
 import BlobValue from "@/components/values/BlobValue.vue";
-import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
-import EmptyTable from "@/components/EmptyTable.vue";
 import {TopicMessage} from "@/schemas/MirrorNodeSchemas";
 import {routeManager} from "@/router";
-import TablePageSize from "@/components/transaction/TablePageSize.vue";
-import {AppStorage} from "@/AppStorage";
+import TableView from "@/tables/TableView.vue";
+import TableHeaderView from "@/tables/TableHeaderView.vue";
+import TableDataView from "@/tables/TableDataView.vue";
 
 const props = defineProps({
   controller: {
@@ -92,25 +75,14 @@ const props = defineProps({
   }
 })
 
-const isTouchDevice = inject('isTouchDevice', false)
-
 const formatChunk = (t: TopicMessage) => t.chunk_info ? `${t.chunk_info.number}/${t.chunk_info.total}` : ''
 
-const handleClick = (t: TopicMessage, c: unknown, i: number, ci: number, event: MouseEvent) => {
+const handleClick = (t: TopicMessage, event: MouseEvent) => {
   const consensusTimestamp = t.consensus_timestamp
   if (consensusTimestamp) {
     routeManager.routeToTransactionByTs(consensusTimestamp, event)
   }
 }
-
-const messages = props.controller.rows
-const loading = props.controller.loading
-const total = props.controller.totalRowCount
-const currentPage = props.controller.currentPage
-const onPageChange = props.controller.onPageChange
-const perPage = props.controller.pageSize
-const paginated = props.controller.paginated
-const showPageSizeSelector = props.controller.showPageSizeSelector
 
 </script>
 
