@@ -6,85 +6,62 @@
 
 <template>
 
-  <o-table
-      :data="props.controller.rows.value"
-      :loading="props.controller.loading.value"
-      :paginated="props.controller.paginated.value && props.fullPage"
-      backend-pagination
-      pagination-order="centered"
-      :range-before="1"
-      :range-after="1"
-      :total="props.controller.totalRowCount.value"
-      v-model:current-page="props.controller.currentPage.value"
-      :per-page="props.controller.pageSize.value"
-      @page-change="props.controller.onPageChange"
+  <TableView
+      :controller="props.controller"
+      :clickable="true"
       @cell-click="handleClick"
-      :checkable="props.checkEnabled"
-      v-model:checked-rows="checkedRows"
-
-      :hoverable="true"
-      :narrowed="true"
-      :striped="true"
-      :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
-
-      aria-current-label="Current page"
-      aria-next-label="Next page"
-      aria-page-label="Page"
-      aria-previous-label="Previous page"
   >
 
-    <o-table-column v-slot="{ row }" field="image" label="IMAGE">
-      <NftCell
-          :token-id="row.token_id"
-          :serial-number="row.serial_number"
-          :property="NftCellItem.image"
-          :size="32"
-      />
-    </o-table-column>
+    <template #tableHeaders>
 
-    <o-table-column v-slot="{ row }" field="token-id" label="TOKEN ID">
-      <TokenIOL class="token-id-label" :token-id="row.token_id"/>
-    </o-table-column>
+      <TableHeaderView>IMAGE</TableHeaderView>
+      <TableHeaderView>TOKEN ID</TableHeaderView>
+      <TableHeaderView :align-right="true">SERIAL #</TableHeaderView>
+      <TableHeaderView>COLLECTION NAME</TableHeaderView>
+      <TableHeaderView>SYMBOL</TableHeaderView>
+      <TableHeaderView>NFT NAME</TableHeaderView>
+      <TableHeaderView>CREATOR</TableHeaderView>
 
-    <o-table-column v-slot="{ row }" field="serial" label="SERIAL #">
-      {{ row.serial_number }}
-    </o-table-column>
-
-    <o-table-column v-slot="{ row }" field="token-name" label="COLLECTION NAME">
-      <TokenCell class="is-inline-block" :token-id="row.token_id" :property="TokenCellItem.tokenName"/>
-    </o-table-column>
-
-    <o-table-column v-slot="{ row }" field="token-name" label="SYMBOL">
-      <TokenCell class="is-inline-block" :token-id="row.token_id" :property="TokenCellItem.tokenSymbol"/>
-    </o-table-column>
-
-    <o-table-column v-slot="{ row }" field="name" label="NFT NAME">
-      <NftCell :token-id="row.token_id" :serial-number="row.serial_number" :property="NftCellItem.name"/>
-    </o-table-column>
-
-    <o-table-column v-slot="{ row }" field="creator" label="CREATOR">
-      <NftCell :token-id="row.token_id" :serial-number="row.serial_number" :property="NftCellItem.creator"/>
-    </o-table-column>
-
-    <template v-slot:bottom-left>
-      <TablePageSize
-          v-if="props.fullPage"
-          v-model:size="props.controller.pageSize.value"
-      />
     </template>
 
-  </o-table>
+    <template #tableCells="token">
 
-  <TablePageSize
-      v-if="!props.controller.paginated.value
-      && props.controller.showPageSizeSelector.value
-      && !props.checkEnabled
-      && props.fullPage"
-      v-model:size="props.controller.pageSize.value"
-      style="width: 102px; margin-left: 4px"
-  />
+      <TableDataView>
+        <NftCell
+            :token-id="token.token_id"
+            :serial-number="token.serial_number"
+            :property="NftCellItem.image"
+            :size="32"
+        />
+      </TableDataView>
 
-  <EmptyTable v-if="!props.controller.totalRowCount.value"/>
+      <TableDataView>
+        <TokenIOL class="token-id-label" :token-id="token.token_id"/>
+      </TableDataView>
+
+      <TableDataView>
+        {{ token.serial_number }}
+      </TableDataView>
+
+      <TableDataView>
+        <TokenCell class="is-inline-block" :token-id="token.token_id" :property="TokenCellItem.tokenName"/>
+      </TableDataView>
+
+      <TableDataView>
+        <TokenCell class="is-inline-block" :token-id="token.token_id" :property="TokenCellItem.tokenSymbol"/>
+      </TableDataView>
+
+      <TableDataView>
+        <NftCell :token-id="token.token_id" :serial-number="token.serial_number" :property="NftCellItem.name"/>
+      </TableDataView>
+
+      <TableDataView>
+        <NftCell :token-id="token.token_id" :serial-number="token.serial_number" :property="NftCellItem.creator"/>
+      </TableDataView>
+
+    </template>
+
+  </TableView>
 
 </template>
 
@@ -96,15 +73,14 @@
 
 import {PropType, watch} from 'vue';
 import {Nft, Token} from "@/schemas/MirrorNodeSchemas";
-import EmptyTable from "@/components/EmptyTable.vue";
 import {routeManager} from "@/router";
 import NftCell, {NftCellItem} from "@/components/token/NftCell.vue";
 import {NftsTableController} from "@/components/account/NftsTableController";
 import TokenCell, {TokenCellItem} from "@/components/token/TokenCell.vue";
-import {AppStorage} from "@/AppStorage";
-import TablePageSize from "@/components/transaction/TablePageSize.vue";
 import TokenIOL from "@/components/values/link/TokenIOL.vue";
-import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
+import TableDataView from "@/tables/TableDataView.vue";
+import TableHeaderView from "@/tables/TableHeaderView.vue";
+import TableView from "@/tables/TableView.vue";
 
 const props = defineProps({
   controller: {
@@ -130,7 +106,7 @@ watch([props.controller.rows, () => props.checkEnabled], () =>
     checkedRows.value.splice(0)
 )
 
-const handleClick = (nft: Nft, c: unknown, i: number, ci: number, event: MouseEvent,) => {
+const handleClick = (nft: Nft, event: MouseEvent,) => {
   if (nft.token_id && nft.serial_number) {
     routeManager.routeToSerial(nft.token_id, nft.serial_number, event);
   }
