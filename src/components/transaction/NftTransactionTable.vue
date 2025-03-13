@@ -5,56 +5,60 @@
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <template>
-  <o-table
-      :data="transactions"
-      :loading="loading"
-      paginated
-      backend-pagination
-      pagination-order="centered"
-      :range-before="1"
-      :range-after="1"
-      :total="total"
-      v-model:current-page="currentPage"
-      :per-page="perPage"
-      @page-change="onPageChange"
+
+  <TableView
+      :controller="props.controller"
+      :clickable="true"
       @cell-click="handleClick"
-      :hoverable="true"
-      :narrowed="narrowed"
-      :striped="true"
-      :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
-      aria-current-label="Current page"
-      aria-next-label="Next page"
-      aria-page-label="Page"
-      aria-previous-label="Previous page"
-      customRowKey="consensus_timestamp"
   >
-    <o-table-column v-slot="props" field="timestamp" label="ID">
-      <TransactionLabel
-          :transaction-id="props.row.transaction_id"
-          :result="props.row.result"
-      />
-    </o-table-column>
 
-    <o-table-column v-slot="props" field="type" label="TYPE">
-      <div class="h-has-pill" style="display: inline-block">
-        {{ makeTypeLabel(props.row.type) }}
-      </div>
-    </o-table-column>
+    <template #tableHeaders>
 
-    <o-table-column v-if="showingEthereumTransactions" v-slot="props" field="sender" label="SENDER">
-      <InnerSenderEVMAddress :transaction-id="props.row.transaction_id"/>
-    </o-table-column>
+      <TableHeaderView>ID hello</TableHeaderView>
+      <TableHeaderView>TYPE</TableHeaderView>
+      <TableHeaderView v-if="showingEthereumTransactions">SENDER</TableHeaderView>
+      <TableHeaderView>CONTENT</TableHeaderView>
+      <TableHeaderView>TIME</TableHeaderView>
 
-    <o-table-column v-slot="props" field="content" label="CONTENT">
-      <NftTransactionSummary :transaction="props.row"/>
-    </o-table-column>
+    </template>
 
-    <o-table-column v-slot="props" field="consensus_timestamp" label="TIME">
-      <TimestampValue :timestamp="props.row.consensus_timestamp"/>
-    </o-table-column>
-  </o-table>
+    <template #tableCells="transactionTransfer">
 
-  <EmptyTable v-if="transactions.length === 0"/>
+      <TableDataView>
+        <!-- Original logic does not compile because transactionTransfer has no "result" field -->
+        <!--
+        <TransactionLabel
+            :transaction-id="transaction.transaction_id"
+            :result="transactionTransfer.result"
+        -->
+        <TransactionLabel
+            :transaction-id="transactionTransfer.transaction_id"
+            result="SUCCESS"
+        />
+      </TableDataView>
+
+      <TableDataView>
+        <div class="h-has-pill" style="display: inline-block">
+          {{ makeTypeLabel(transactionTransfer.type) }}
+        </div>
+      </TableDataView>
+
+      <TableDataView v-if="showingEthereumTransactions">
+        <InnerSenderEVMAddress :transaction-id="transactionTransfer.transaction_id"/>
+      </TableDataView>
+
+      <TableDataView>
+        <NftTransactionSummary :transaction="transactionTransfer"/>
+      </TableDataView>
+
+      <TableDataView>
+        <TimestampValue :timestamp="transactionTransfer.consensus_timestamp"/>
+      </TableDataView>
+
+    </template>
+
+  </TableView>
+
 </template>
 
 <!-- --------------------------------------------------------------------------------------------------------------- -->
@@ -69,13 +73,13 @@ import TimestampValue from "@/components/values/TimestampValue.vue"
 import TransactionLabel from "@/components/values/TransactionLabel.vue"
 import {makeTypeLabel} from "@/utils/TransactionTools"
 import {routeManager} from "@/router"
-import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
-import EmptyTable from "@/components/EmptyTable.vue"
 import InnerSenderEVMAddress from "@/components/values/InnerSenderEVMAddress.vue"
 import {NftTransactionTableController} from "./NftTransactionTableController"
+import TableDataView from "@/tables/TableDataView.vue";
+import TableHeaderView from "@/tables/TableHeaderView.vue";
+import TableView from "@/tables/TableView.vue";
 
 const props = defineProps({
-  narrowed: Boolean,
   controller: {
     type: Object as PropType<NftTransactionTableController>,
     required: true,
@@ -89,20 +93,8 @@ const showingEthereumTransactions = computed(() => {
   )
 })
 
-const handleClick = (t: Transaction, c: unknown, i: number, ci: number, event: MouseEvent,) => {
+const handleClick = (t: Transaction, event: MouseEvent,) => {
   routeManager.routeToTransaction(t, event)
 }
-
-const transactions = computed(() => {
-  return props.controller.rows.value.filter(el =>
-      !props.controller.transactionType.value || el.type === props.controller.transactionType.value
-  )
-})
-
-const loading = props.controller.loading
-const total = props.controller.totalRowCount
-const currentPage = props.controller.currentPage
-const onPageChange = props.controller.onPageChange
-const perPage = props.controller.pageSize
 
 </script>

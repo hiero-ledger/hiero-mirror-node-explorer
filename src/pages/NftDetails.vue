@@ -137,7 +137,6 @@
       <template #content>
         <NftTransactionTable
             :controller="transactionTableController"
-            :narrowed="true"
         />
       </template>
     </DashboardCardV2>
