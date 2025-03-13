@@ -7,53 +7,32 @@
 
 <template>
 
-  <o-table
-      :data="rewards"
-      :loading="loading"
-      :paginated="paginated"
-      backend-pagination
-      pagination-order="centered"
-      :range-before="1"
-      :range-after="1"
-      :total="total"
-      v-model:current-page="currentPage"
-      :per-page="perPage"
-      @page-change="onPageChange"
+  <TableView
+      :controller="props.controller"
+      :clickable="true"
       @cell-click="handleClick"
-
-      :hoverable="true"
-      :narrowed="narrowed"
-      :striped="true"
-      :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
-
-      aria-current-label="Current page"
-      aria-next-label="Next page"
-      aria-page-label="Page"
-      aria-previous-label="Previous page"
-      customRowKey="consensus_timestamp"
   >
-    <o-table-column v-slot="props" field="timestamp" label="TIME">
-      <TimestampValue class="timestamp-value" :timestamp="props.row.timestamp"/>
-    </o-table-column>
 
-    <o-table-column v-slot="props" field="amount" label="AMOUNT REWARDED" position="right">
-      <HbarAmount :amount="props.row.amount"/>
-    </o-table-column>
+    <template #tableHeaders>
 
-    <template v-slot:bottom-left>
-      <TablePageSize
-          v-model:size="perPage"
-      />
+      <TableHeaderView>TIME</TableHeaderView>
+      <TableHeaderView :align-right="true">AMOUNT REWARDED</TableHeaderView>
+
     </template>
-  </o-table>
 
-  <TablePageSize
-      v-if="!paginated && showPageSizeSelector"
-      v-model:size="perPage"
-      style="width: 116px; margin-left: 4px"
-  />
+    <template #tableCells="reward">
 
-  <EmptyTable v-if="!rewards.length"/>
+      <TableDataView>
+        <TimestampValue class="timestamp-value" :timestamp="reward.timestamp"/>
+      </TableDataView>
+
+      <TableDataView>
+        <HbarAmount :amount="reward.amount"/>
+      </TableDataView>
+
+    </template>
+
+  </TableView>
 
 </template>
 
@@ -67,11 +46,11 @@ import {onBeforeUnmount, onMounted, PropType} from 'vue';
 import {StakingReward} from '@/schemas/MirrorNodeSchemas.ts';
 import {routeManager} from "@/router";
 import TimestampValue from "@/components/values/TimestampValue.vue";
-import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
-import EmptyTable from "@/components/EmptyTable.vue";
 import HbarAmount from "@/components/values/HbarAmount.vue";
 import {StakingRewardsTableController} from "@/components/staking/StakingRewardsTableController";
-import TablePageSize from "@/components/transaction/TablePageSize.vue";
+import TableDataView from "@/tables/TableDataView.vue";
+import TableHeaderView from "@/tables/TableHeaderView.vue";
+import TableView from "@/tables/TableView.vue";
 
 const props = defineProps({
   narrowed: Boolean,
@@ -84,21 +63,11 @@ const props = defineProps({
 onMounted(() => props.controller.mount())
 onBeforeUnmount(() => props.controller.unmount())
 
-const handleClick = (t: StakingReward, c: unknown, i: number, ci: number, event: MouseEvent) => {
+const handleClick = (t: StakingReward, event: MouseEvent) => {
   if (t.timestamp) {
     routeManager.routeToTransactionByTs(t.timestamp, event)
   }
 }
-
-const rewards = props.controller.rows
-const loading = props.controller.loading
-const total = props.controller.totalRowCount
-const currentPage = props.controller.currentPage
-const onPageChange = props.controller.onPageChange
-const perPage = props.controller.pageSize
-const storageKey = props.controller.storageKey
-const paginated = props.controller.paginated
-const showPageSizeSelector = props.controller.showPageSizeSelector
 
 </script>
 
