@@ -6,88 +6,58 @@
 
 <template>
 
-  <o-table
-      :data="props.controller.rows.value"
-      :loading="props.controller.loading.value"
-      :paginated="props.controller.paginated.value && props.fullPage"
-      backend-pagination
-      pagination-order="centered"
-      :range-before="1"
-      :range-after="1"
-      :total="props.controller.totalRowCount.value"
-      :current-page="props.controller.currentPage.value"
-      :per-page="props.controller.pageSize.value"
-      @page-change="props.controller.onPageChange"
-      @cellClick="handleClick"
-
-      :hoverable="true"
-      :narrowed="true"
-      :striped="true"
-      :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
-
-      v-model:checked-rows="checkedRows"
-      :checkable="props.checkEnabled"
-
-      aria-current-label="Current page"
-      aria-next-label="Next page"
-      aria-page-label="Page"
-      aria-previous-label="Previous page"
+  <TableView
+      :controller="props.controller"
+      :clickable="true"
+      :page-size-storage-key="AppStorage.ACCOUNT_TOKENS_TABLE_PAGE_SIZE_KEY"
+      :pagination-disabled="!props.fullPage"
+      @cell-click="handleClick"
   >
 
-    <o-table-column v-slot="{ row }" field="image" label="IMAGE">
-      <NftCell
-          :token-id="row.token_id"
-          :serial-number="row.serial_number"
-          :property="NftCellItem.image"
-          :size="32"
-      />
-    </o-table-column>
+    <template #tableHeaders>
 
-    <o-table-column v-slot="{ row }" field="token_id" label="TOKEN ID">
-      <TokenIOL class="token-id-label" :token-id="row.token_id"/>
-    </o-table-column>
+      <TableHeaderView>TOKEN ID</TableHeaderView>
+      <TableHeaderView>NAME</TableHeaderView>
+      <TableHeaderView>SYMBOL</TableHeaderView>
+      <TableHeaderView :align-right="true">AMOUNT</TableHeaderView>
+      <TableHeaderView>SENDER</TableHeaderView>
+      <TableHeaderView>AIRDROP TIME</TableHeaderView>
 
-    <o-table-column v-slot="{ row }" field="serial" label="SERIAL #">
-      {{ row.serial_number }}
-    </o-table-column>
-
-    <o-table-column v-slot="{ row }" field="name" label="COLLECTION NAME">
-      <TokenCell class="is-inline-block" :token-id="row.token_id" :property="TokenCellItem.tokenName"/>
-    </o-table-column>
-
-    <o-table-column v-slot="{ row }" field="name" label="SYMBOL">
-      <TokenCell class="is-inline-block" :token-id="row.token_id" :property="TokenCellItem.tokenSymbol"/>
-    </o-table-column>
-
-    <o-table-column v-slot="{ row }" field="sender" label="SENDER">
-      <div>{{ row.sender_id }}</div>
-    </o-table-column>
-
-    <o-table-column v-slot="{ row }" field="timestamp" label="AIRDROP TIME">
-      <TimestampValue v-bind:timestamp="row.timestamp.from"/>
-    </o-table-column>
-
-    <template v-slot:bottom-left>
-      <TablePageSize
-          v-if="props.fullPage"
-          v-model:size="props.controller.pageSize.value"
-          :storage-key="AppStorage.ACCOUNT_TOKENS_TABLE_PAGE_SIZE_KEY"
-      />
     </template>
 
-  </o-table>
+    <template #tableCells="airdrop">
 
-  <TablePageSize
-      v-if="!props.controller.paginated.value
-      && props.controller.showPageSizeSelector.value
-      && !props.checkEnabled
-      && props.fullPage"
-      v-model:size="props.controller.pageSize.value"
-      :storage-key="AppStorage.ACCOUNT_TOKENS_TABLE_PAGE_SIZE_KEY"
-      style="width: 102px; margin-left: 4px"
-  />
+      <TableDataView>
+        <TokenIOL class="token-id-label" :token-id="airdrop.token_id"/>
+      </TableDataView>
 
-  <EmptyTable v-if="!props.controller.totalRowCount.value"/>
+      <TableDataView>
+        <TokenCell class="is-inline-block" :token-id="airdrop.token_id" :property="TokenCellItem.tokenName"/>
+      </TableDataView>
+
+      <TableDataView>
+        <TokenCell class="is-inline-block" :token-id="airdrop.token_id" :property="TokenCellItem.tokenSymbol"/>
+      </TableDataView>
+
+      <TableDataView>
+        <TokenAmount
+            v-if="! airdrop.serial_number"
+            :amount="BigInt(airdrop.amount)"
+            :token-id="airdrop.token_id"
+        />
+      </TableDataView>
+
+      <TableDataView>
+        <div>{{ airdrop.sender_id }}</div>
+      </TableDataView>
+
+      <TableDataView>
+        <TimestampValue v-bind:timestamp="airdrop.timestamp.from"/>
+      </TableDataView>
+
+    </template>
+
+  </TableView>
 
 </template>
 
@@ -99,16 +69,16 @@
 
 import {PropType, watch} from 'vue';
 import {TokenAirdrop} from "@/schemas/MirrorNodeSchemas";
-import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
-import EmptyTable from "@/components/EmptyTable.vue";
 import {routeManager} from "@/router";
 import TokenCell, {TokenCellItem} from "@/components/token/TokenCell.vue";
-import TablePageSize from "@/components/transaction/TablePageSize.vue";
 import {AppStorage} from "@/AppStorage";
 import {PendingAirdropTableController} from "@/components/account/PendingAirdropTableController";
-import NftCell, {NftCellItem} from "@/components/token/NftCell.vue";
 import TokenIOL from "@/components/values/link/TokenIOL.vue";
 import TimestampValue from "@/components/values/TimestampValue.vue";
+import TableDataView from "@/tables/TableDataView.vue";
+import TableView from "@/tables/TableView.vue";
+import TableHeaderView from "@/tables/TableHeaderView.vue";
+import TokenAmount from "@/components/values/TokenAmount.vue";
 
 const props = defineProps({
   controller: {
