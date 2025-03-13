@@ -6,66 +6,45 @@
 
 <template>
 
-  <o-table
-      v-model:current-page="currentPage"
-      :data="results"
-      :hoverable="true"
-      :loading="loading"
-      :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
-      :narrowed="true"
-      :paginated="paginated"
-      pagination-order="centered"
-      :range-before="1"
-      :range-after="1"
-      :per-page="perPage"
-      :striped="true"
-
-      :total="total"
-      aria-current-label="Current page"
-      aria-next-label="Next page"
-      aria-page-label="Page"
-
-      aria-previous-label="Previous page"
-      backend-pagination
-      customRowKey="consensus_timestamp"
-      default-sort="consensus_timestamp"
+  <TableView
+      :controller="props.controller"
+      :clickable="true"
       @cell-click="handleClick"
-      @page-change="onPageChange">
+  >
 
-    <o-table-column v-slot="props" field="timestamp" label="TIME">
-      <div style="display: flex; gap: 8px;">
-        <TimestampValue class="h-is-bold" :timestamp="props.row.timestamp"/>
-        <TriangleAlert v-if="props.row.error_message" :size="18" class="h-text-error"/>
-      </div>
-    </o-table-column>
+    <template #tableHeaders>
 
-    <o-table-column v-slot="props" field="from" label="FROM">
-      <EVMAddress :address="props.row.from" :compact="!isLargeScreen" :enable-copy="false"/>
-    </o-table-column>
+      <TableHeaderView>TIME</TableHeaderView>
+      <TableHeaderView>FROM</TableHeaderView>
+      <TableHeaderView>MESSAGE</TableHeaderView>
+      <TableHeaderView :align-right="true">TRANSFER AMOUNT</TableHeaderView>
 
-    <o-table-column v-slot="props" field="message" label="MESSAGE" position="left">
-      <StringValue :string-value="makeErrorMessage(props.row)"/>
-    </o-table-column>
-
-    <o-table-column v-slot="props" field="amount" label="TRANSFER AMOUNT" position="right">
-      <HbarAmount :amount="props.row.amount"/>
-    </o-table-column>
-
-    <template v-slot:bottom-left>
-      <TablePageSize
-          v-model:size="perPage"
-      />
     </template>
 
-  </o-table>
+    <template #tableCells="result">
 
-  <TablePageSize
-      v-if="!paginated && showPageSizeSelector"
-      v-model:size="perPage"
-      style="width: 116px; margin-left: 4px"
-  />
+      <TableDataView>
+        <div style="display: flex; gap: 8px;">
+          <TimestampValue class="h-is-bold" :timestamp="result.timestamp"/>
+          <TriangleAlert v-if="result.error_message" :size="18" class="h-text-error"/>
+        </div>
+      </TableDataView>
 
-  <EmptyTable v-if="!results.length"/>
+      <TableDataView>
+        <EVMAddress :address="result.from" :compact="!isLargeScreen" :enable-copy="false"/>
+      </TableDataView>
+
+      <TableDataView>
+        <StringValue :string-value="makeErrorMessage(result)"/>
+      </TableDataView>
+
+      <TableDataView>
+        <HbarAmount :amount="result.amount"/>
+      </TableDataView>
+
+    </template>
+
+  </TableView>
 
 </template>
 
@@ -77,18 +56,17 @@
 
 import {inject, PropType} from 'vue';
 import {ContractResult} from "@/schemas/MirrorNodeSchemas";
-import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
 import {ContractResultTableController} from "@/components/contract/ContractResultTableController";
 import TimestampValue from "@/components/values/TimestampValue.vue";
-import EmptyTable from "@/components/EmptyTable.vue";
 import {routeManager} from "@/router";
 import StringValue from "@/components/values/StringValue.vue";
 import EVMAddress from "@/components/values/EVMAddress.vue";
 import {decodeSolidityErrorMessage} from "@/schemas/MirrorNodeUtils.ts";
 import HbarAmount from "@/components/values/HbarAmount.vue";
-import TablePageSize from "@/components/transaction/TablePageSize.vue";
-import {AppStorage} from "@/AppStorage";
 import {TriangleAlert} from 'lucide-vue-next';
+import TableDataView from "@/tables/TableDataView.vue";
+import TableHeaderView from "@/tables/TableHeaderView.vue";
+import TableView from "@/tables/TableView.vue";
 
 const props = defineProps({
   controller: {
@@ -99,22 +77,13 @@ const props = defineProps({
 
 const isLargeScreen = inject('isLargeScreen', true)
 
-const handleClick = (result: ContractResult, c: unknown, i: number, ci: number, event: MouseEvent) => {
+const handleClick = (result: ContractResult, event: MouseEvent) => {
   routeManager.routeToTransactionByTs(result.timestamp, event)
 }
 
 const makeErrorMessage = (result: ContractResult) => {
   return decodeSolidityErrorMessage(result.error_message ?? null)
 }
-
-const results = props.controller.rows
-const loading = props.controller.loading
-const total = props.controller.totalRowCount
-const currentPage = props.controller.currentPage
-const onPageChange = props.controller.onPageChange
-const perPage = props.controller.pageSize
-const paginated = props.controller.paginated
-const showPageSizeSelector = props.controller.showPageSizeSelector
 
 </script>
 
