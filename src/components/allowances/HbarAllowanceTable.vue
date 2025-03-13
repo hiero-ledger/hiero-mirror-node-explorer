@@ -6,61 +6,40 @@
 
 <template>
 
-  <o-table
-      v-model:current-page="currentPage"
-      :data="allowances"
-      :hoverable="false"
-      :loading="loading"
-      :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
-      :narrowed="true"
-      :paginated="paginated"
-      pagination-order="centered"
-      :range-before="1"
-      :range-after="1"
-      :per-page="perPage"
-      :striped="true"
+  <TableView
+      :controller="props.controller"
+  >
 
-      :total="total"
-      aria-current-label="Current page"
-      aria-next-label="Next page"
-      aria-page-label="Page"
+    <template #tableHeaders>
 
-      aria-previous-label="Previous page"
-      backend-pagination
-      customRowKey="spender"
-      default-sort="spender"
-      @page-change="onPageChange">
+      <TableHeaderView>SPENDER</TableHeaderView>
+      <TableHeaderView>TIME</TableHeaderView>
+      <TableHeaderView :align-right="true">AMOUNT</TableHeaderView>
+      <TableHeaderView v-if="isWalletConnected" :align-right="true"></TableHeaderView>
 
-    <o-table-column v-slot="props" field="spender" label="SPENDER">
-      <AccountLink class="entity-id" :account-id="props.row.spender" :show-extra="true"/>
-    </o-table-column>
-
-    <o-table-column v-slot="props" field="timestamp" label="TIME">
-      <TimestampValue v-bind:timestamp="props.row.timestamp.from"/>
-    </o-table-column>
-
-    <o-table-column v-slot="props" field="amount" label="AMOUNT" position="right">
-      <HbarAmount :amount="props.row.amount_granted"/>
-    </o-table-column>
-
-    <o-table-column v-if="isWalletConnected" v-slot="props" position="right">
-      <i class="fa fa-pen" @click="emit('editAllowance', props.row)"/>
-    </o-table-column>
-
-    <template v-slot:bottom-left>
-      <TablePageSize
-          v-model:size="perPage"
-      />
     </template>
-  </o-table>
 
-  <TablePageSize
-      v-if="!paginated && showPageSizeSelector"
-      v-model:size="perPage"
-      style="width: 116px; margin-left: 4px"
-  />
+    <template #tableCells="allowance">
 
-  <EmptyTable v-if="!allowances.length"/>
+      <TableDataView>
+        <AccountLink class="entity-id" :account-id="allowance.spender" :show-extra="true"/>
+      </TableDataView>
+
+      <TableDataView>
+        <TimestampValue v-bind:timestamp="allowance.timestamp.from"/>
+      </TableDataView>
+
+      <TableDataView>
+        <HbarAmount :amount="allowance.amount_granted"/>
+      </TableDataView>
+
+      <TableDataView v-if="isWalletConnected">
+        <i class="fa fa-pen" @click="emit('editAllowance', allowance)"/>
+      </TableDataView>
+
+    </template>
+
+  </TableView>
 
 </template>
 
@@ -71,15 +50,14 @@
 <script setup lang="ts">
 
 import {computed, PropType} from 'vue';
-import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
 import {HbarAllowanceTableController} from "@/components/allowances/HbarAllowanceTableController";
 import TimestampValue from "@/components/values/TimestampValue.vue";
-import EmptyTable from "@/components/EmptyTable.vue";
 import AccountLink from "@/components/values/link/AccountLink.vue";
 import HbarAmount from "@/components/values/HbarAmount.vue";
 import {walletManager} from "@/router";
-import TablePageSize from "@/components/transaction/TablePageSize.vue";
-import {AppStorage} from "@/AppStorage";
+import TableDataView from "@/tables/TableDataView.vue";
+import TableHeaderView from "@/tables/TableHeaderView.vue";
+import TableView from "@/tables/TableView.vue";
 
 const emit = defineEmits(["editAllowance"])
 
@@ -93,15 +71,6 @@ const props = defineProps({
 const isWalletConnected = computed(
     () => walletManager.accountId.value === props.controller.accountId.value
 )
-
-const allowances = props.controller.rows
-const loading = props.controller.loading
-const total = props.controller.totalRowCount
-const currentPage = props.controller.currentPage
-const onPageChange = props.controller.onPageChange
-const perPage = props.controller.pageSize
-const paginated = props.controller.paginated
-const showPageSizeSelector = props.controller.showPageSizeSelector
 
 </script>
 
