@@ -6,72 +6,46 @@
 
 <template>
 
-  <o-table
-      :data="props.controller.rows.value"
-      :loading="props.controller.loading.value"
-      :paginated="props.controller.paginated.value && props.fullPage"
-      backend-pagination
-      pagination-order="centered"
-      :range-before="1"
-      :range-after="1"
-      :total="props.controller.totalRowCount.value"
-      v-model:current-page="props.controller.currentPage.value"
-      :per-page="props.controller.pageSize.value"
-      @page-change="props.controller.onPageChange"
-      @cellClick="handleClick"
-      :checkable="props.checkEnabled"
-      v-model:checked-rows="checkedRows"
-
-      :hoverable="true"
-      :narrowed="true"
-      :striped="true"
-      :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
-
-      aria-current-label="Current page"
-      aria-next-label="Next page"
-      aria-page-label="Page"
-      aria-previous-label="Previous page"
-      customRowKey="token_id"
+  <TableView
+      :controller="props.controller"
+      :clickable="true"
+      @cell-click="handleClick"
   >
-    <o-table-column v-slot="{ row }" field="token_id" label="TOKEN ID">
-      <TokenIOL class="token-id-label" :token-id="row.token_id"/>
-    </o-table-column>
 
-    <o-table-column v-slot="{ row }" field="name" label="NAME">
-      {{ row.name }}
-    </o-table-column>
+    <template #tableHeaders>
 
-    <o-table-column v-slot="{ row }" field="symbol" label="SYMBOL">
-      {{ row.symbol }}
-    </o-table-column>
+      <TableHeaderView>TOKEN ID</TableHeaderView>
+      <TableHeaderView>NAME</TableHeaderView>
+      <TableHeaderView>SYMBOL</TableHeaderView>
+      <TableHeaderView :align-right="true">BALANCE</TableHeaderView>
 
-    <o-table-column v-slot="{ row }" field="balance" label="BALANCE">
-      <TokenCell
-          :account-id="props.controller.accountId.value"
-          :token-id="row.token_id"
-          :property="TokenCellItem.tokenBalance"
-      />
-    </o-table-column>
-
-    <template v-slot:bottom-left>
-      <TablePageSize
-          v-if="props.fullPage"
-          v-model:size="props.controller.pageSize.value"
-      />
     </template>
 
-  </o-table>
+    <template #tableCells="token">
 
-  <TablePageSize
-      v-if="!props.controller.paginated.value
-      && props.controller.showPageSizeSelector.value
-      && !props.checkEnabled
-      && props.fullPage"
-      v-model:size="props.controller.pageSize.value"
-      style="width: 102px; margin-left: 4px"
-  />
+      <TableDataView>
+        <TokenIOL class="token-id-label" :token-id="token.token_id"/>
+      </TableDataView>
 
-  <EmptyTable v-if="!props.controller.totalRowCount.value"/>
+      <TableDataView>
+        {{ token.name }}
+      </TableDataView>
+
+      <TableDataView>
+        {{ token.symbol }}
+      </TableDataView>
+
+      <TableDataView>
+        <TokenCell
+            :account-id="props.controller.accountId.value"
+            :token-id="token.token_id"
+            :property="TokenCellItem.tokenBalance"
+        />
+      </TableDataView>
+
+    </template>
+
+  </TableView>
 
 </template>
 
@@ -83,13 +57,13 @@
 
 import {PropType, watch} from 'vue';
 import {Nft, Token, TokenBalance} from "@/schemas/MirrorNodeSchemas";
-import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
-import EmptyTable from "@/components/EmptyTable.vue";
 import {routeManager} from "@/router";
 import TokenCell, {TokenCellItem} from "@/components/token/TokenCell.vue";
-import TablePageSize from "@/components/transaction/TablePageSize.vue";
 import {FungibleTableController} from "@/components/account/FungibleTableController";
 import TokenIOL from "@/components/values/link/TokenIOL.vue";
+import TableDataView from "@/tables/TableDataView.vue";
+import TableHeaderView from "@/tables/TableHeaderView.vue";
+import TableView from "@/tables/TableView.vue";
 
 const props = defineProps({
   controller: {
