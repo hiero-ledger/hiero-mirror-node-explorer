@@ -3,11 +3,18 @@
 import {KeyOperator, SortOrder, TableController} from "@/utils/table/TableController";
 import {TokenAllowance, TokenAllowancesResponse} from "@/schemas/MirrorNodeSchemas";
 import {Ref} from "vue";
-import axios, {AxiosResponse} from "axios";
+import axios from "axios";
 import {Router} from "vue-router";
 import {AppStorage} from "@/AppStorage.ts";
+import {isValidAssociation} from "@/schemas/MirrorNodeUtils.ts";
 
-export class TokenAllowanceTableController extends TableController<TokenAllowance, string> {
+
+interface DisplayedTokenAllowance {
+    allowance: TokenAllowance
+    isEditable: boolean
+}
+
+export class TokenAllowanceTableController extends TableController<DisplayedTokenAllowance, string> {
 
     //
     // Public
@@ -37,11 +44,11 @@ export class TokenAllowanceTableController extends TableController<TokenAllowanc
         operator: KeyOperator,
         order: SortOrder,
         limit: number
-    ): Promise<TokenAllowance[] | null> {
-        let result: Promise<TokenAllowance[] | null>
+    ): Promise<DisplayedTokenAllowance[] | null> {
+        let result: DisplayedTokenAllowance[] | null
 
         if (this.accountId.value === null) {
-            result = Promise.resolve(null)
+            result = null
         } else {
             const params = {} as {
                 limit: number
@@ -63,18 +70,21 @@ export class TokenAllowanceTableController extends TableController<TokenAllowanc
                     params["token.id"] = token ? KeyOperator.lt + ":" + token : undefined
                 }
             }
-            const cb = (r: AxiosResponse<TokenAllowancesResponse>): Promise<TokenAllowance[] | null> => {
-                return Promise.resolve(r.data.allowances ?? [])
+            const response = await axios.get<TokenAllowancesResponse>(
+                "api/v1/accounts/" + this.accountId.value + "/allowances/tokens", {params: params})
+
+            result = []
+            for (const a of response.data.allowances ?? []) {
+                const editable = await isValidAssociation(a.owner, a.token_id)
+                result.push({ allowance: a, isEditable: editable})
             }
-            result = axios.get<TokenAllowancesResponse>("api/v1/accounts/" + this.accountId.value + "/allowances/tokens", {params: params})
-                .then(cb)
         }
 
-        return result
+        return Promise.resolve(result)
     }
 
-    public keyFor(row: TokenAllowance): string {
-        return row.spender && row.token_id ? `${row.spender}-${row.token_id}` : ""
+    public keyFor(row: DisplayedTokenAllowance): string {
+        return row.allowance.spender && row.allowance.token_id ? `${row.allowance.spender}-${row.allowance.token_id}` : ""
     }
 
     public keyFromString(s: string): string | null {
