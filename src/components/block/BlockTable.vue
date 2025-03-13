@@ -8,7 +8,6 @@
   <TableView
       :controller="props.controller"
       :clickable="true"
-      :page-size-storage-key="AppStorage.BLOCK_TABLE_PAGE_SIZE_KEY"
       @cell-click="handleClick"
   >
 
@@ -57,7 +56,6 @@ import {routeManager} from "@/router";
 import TimestampValue from "@/components/values/TimestampValue.vue";
 import PlainAmount from "@/components/values/PlainAmount.vue";
 import {BlockTableController} from "@/components/block/BlockTableController";
-import {AppStorage} from "@/AppStorage";
 import TableView from "@/tables/TableView.vue";
 import TableHeaderView from "@/tables/TableHeaderView.vue";
 import TableDataView from "@/tables/TableDataView.vue";
