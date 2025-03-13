@@ -7,72 +7,53 @@
 
 <template>
 
-  <o-table
-      :data="transactions"
-      :loading="loading"
-      :paginated="paginated"
-      backend-pagination
-      pagination-order="centered"
-      :range-before="1"
-      :range-after="1"
-      :total="total"
-      v-model:current-page="currentPage"
-      :per-page="perPage"
-      @page-change="onPageChange"
+  <TableView
+      :controller="props.controller"
+      :clickable="true"
       @cell-click="handleClick"
-
-      :hoverable="true"
-      :narrowed="props.narrowed"
-      :striped="true"
-      :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
-
-      aria-current-label="Current page"
-      aria-next-label="Next page"
-      aria-page-label="Page"
-      aria-previous-label="Previous page"
-      customRowKey="consensus_timestamp"
   >
-    <o-table-column v-slot="props" field="timestamp" label="ID">
-      <TransactionLabel
-          class="h-is-bold"
-          :transaction-id="props.row.transaction_id"
-          :result="props.row.result"
-      />
-    </o-table-column>
 
-    <o-table-column v-slot="props" field="name" label="TYPE">
-      <div class="h-has-pill" style="display: inline-block">
-        {{ makeTypeLabel(props.row.name) }}
-      </div>
-    </o-table-column>
+    <template #tableHeaders>
 
-    <o-table-column v-if="showingEthereumTransactions" v-slot="props" field="sender" label="Sender">
-      <InnerSenderEVMAddress :transaction-id="props.row.transaction_id"/>
-    </o-table-column>
+      <TableHeaderView>ID</TableHeaderView>
+      <TableHeaderView>TYPE</TableHeaderView>
+      <TableHeaderView v-if="showingEthereumTransactions">SENDER</TableHeaderView>
+      <TableHeaderView>CONTENT</TableHeaderView>
+      <TableHeaderView>TIME</TableHeaderView>
 
-    <o-table-column v-slot="props" label="CONTENT">
-      <TransactionSummary v-bind:transaction="props.row"/>
-    </o-table-column>
-
-    <o-table-column v-slot="props" field="consensus_timestamp" label="TIME">
-      <TimestampValue v-bind:timestamp="props.row.consensus_timestamp"/>
-    </o-table-column>
-
-    <template v-slot:bottom-left>
-      <TablePageSize
-          v-model:size="perPage"
-      />
     </template>
 
-  </o-table>
+    <template #tableCells="transaction">
 
-  <TablePageSize
-      v-if="!paginated && showPageSizeSelector"
-      v-model:size="perPage"
-      style="width: 116px; margin-left: 4px"
-  />
+      <TableDataView>
+        <TransactionLabel
+            class="h-is-bold"
+            :transaction-id="transaction.transaction_id"
+            :result="transaction.result"
+        />
+      </TableDataView>
 
-  <EmptyTable v-if="transactions.length === 0"/>
+      <TableDataView>
+        <div class="h-has-pill" style="display: inline-block">
+          {{ makeTypeLabel(transaction.name) }}
+        </div>
+      </TableDataView>
+
+      <TableDataView v-if="showingEthereumTransactions">
+        <InnerSenderEVMAddress :transaction-id="transaction.transaction_id"/>
+      </TableDataView>
+
+      <TableDataView>
+        <TransactionSummary v-bind:transaction="transaction"/>
+      </TableDataView>
+
+      <TableDataView>
+        <TimestampValue v-bind:timestamp="transaction.consensus_timestamp"/>
+      </TableDataView>
+
+    </template>
+
+  </TableView>
 
 </template>
 
@@ -89,11 +70,11 @@ import TimestampValue from "@/components/values/TimestampValue.vue";
 import TransactionLabel from "@/components/values/TransactionLabel.vue";
 import {makeTypeLabel} from "@/utils/TransactionTools";
 import {routeManager} from "@/router";
-import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
 import {TransactionTableControllerXL} from "@/components/transaction/TransactionTableControllerXL";
-import EmptyTable from "@/components/EmptyTable.vue";
 import InnerSenderEVMAddress from "@/components/values/InnerSenderEVMAddress.vue";
-import TablePageSize from "@/components/transaction/TablePageSize.vue";
+import TableDataView from "@/tables/TableDataView.vue";
+import TableHeaderView from "@/tables/TableHeaderView.vue";
+import TableView from "@/tables/TableView.vue";
 
 const props = defineProps({
   narrowed: Boolean,
@@ -110,19 +91,9 @@ const showingEthereumTransactions = computed(() => {
   return props.controller.transactionType.value === TransactionType.ETHEREUMTRANSACTION
 })
 
-const handleClick = (t: Transaction, c: unknown, i: number, ci: number, event: MouseEvent) => {
+const handleClick = (t: Transaction, event: MouseEvent) => {
   routeManager.routeToTransaction(t, event)
 }
-
-const transactions = props.controller.rows
-const loading = props.controller.loading
-const total = props.controller.totalRowCount
-const currentPage = props.controller.currentPage
-const onPageChange = props.controller.onPageChange
-const perPage = props.controller.pageSize
-const storageKey = props.controller.storageKey
-const paginated = props.controller.paginated
-const showPageSizeSelector = props.controller.showPageSizeSelector
 
 </script>
 
