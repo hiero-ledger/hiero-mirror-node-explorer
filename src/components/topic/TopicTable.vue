@@ -6,51 +6,37 @@
 
 <template>
 
-  <o-table
-      :data="transactions"
-      :loading="loading"
-      paginated
-      backend-pagination
-      pagination-order="centered"
-      :range-before="1"
-      :range-after="1"
-      :total="total"
-      v-model:current-page="currentPage"
-      :per-page="perPage"
-      @page-change="onPageChange"
+  <TableView
+      :controller="props.controller"
+      :clickable="true"
       @cell-click="handleClick"
-
-      :hoverable="true"
-      :striped="true"
-      :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
-
-      aria-current-label="Current page"
-      aria-next-label="Next page"
-      aria-page-label="Page"
-      aria-previous-label="Previous page"
-      customRowKey="consensus_timestamp"
   >
-    <o-table-column v-slot="props" field="topic_id" label="TOPIC">
-      <TopicIOL class="topic_id" :topic-id="props.row.entity_id"/>
-    </o-table-column>
 
-    <o-table-column v-slot="props" field="created" label="CREATED">
-      <TimestampValue v-bind:timestamp="props.row.valid_start_timestamp"/>
-    </o-table-column>
+    <template #tableHeaders>
 
-    <o-table-column v-slot="props" field="memo" label="MEMO">
-      <BlobValue :blob-value="props.row.memo_base64" :base64="true" :show-none="true"/>
-    </o-table-column>
+      <TableHeaderView>TOPIC</TableHeaderView>
+      <TableHeaderView>CREATED</TableHeaderView>
+      <TableHeaderView>MEMO</TableHeaderView>
 
-    <template v-slot:bottom-left>
-      <TablePageSize
-          v-model:size="perPage"
-          :storage-key="AppStorage.TOPIC_TABLE_PAGE_SIZE_KEY"
-      />
     </template>
-  </o-table>
 
-  <EmptyTable v-if="!transactions.length"/>
+    <template #tableCells="topic">
+
+      <TableDataView>
+        <TopicIOL class="topic_id" :topic-id="topic.entity_id"/>
+      </TableDataView>
+
+      <TableDataView>
+        <TimestampValue v-bind:timestamp="topic.valid_start_timestamp"/>
+      </TableDataView>
+
+      <TableDataView>
+        <BlobValue :blob-value="topic.memo_base64" :base64="true" :show-none="true"/>
+      </TableDataView>
+
+    </template>
+
+  </TableView>
 
 </template>
 
@@ -65,12 +51,11 @@ import {Transaction} from "@/schemas/MirrorNodeSchemas";
 import TimestampValue from "@/components/values/TimestampValue.vue";
 import {routeManager} from "@/router";
 import BlobValue from "@/components/values/BlobValue.vue";
-import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
-import EmptyTable from "@/components/EmptyTable.vue";
 import {TransactionTableController} from "@/components/transaction/TransactionTableController";
 import TopicIOL from "@/components/values/link/TopicIOL.vue";
-import TablePageSize from "@/components/transaction/TablePageSize.vue";
-import {AppStorage} from "@/AppStorage";
+import TableDataView from "@/tables/TableDataView.vue";
+import TableHeaderView from "@/tables/TableHeaderView.vue";
+import TableView from "@/tables/TableView.vue";
 
 const props = defineProps({
   controller: {
@@ -79,18 +64,11 @@ const props = defineProps({
   }
 })
 
-const handleClick = (t: Transaction, c: unknown, i: number, ci: number, event: MouseEvent) => {
+const handleClick = (t: Transaction, event: MouseEvent) => {
   if (t.entity_id) {
     routeManager.routeToTopic(t.entity_id, event)
   }
 }
-
-const transactions = props.controller.rows
-const loading = props.controller.loading
-const total = props.controller.totalRowCount
-const currentPage = props.controller.currentPage
-const onPageChange = props.controller.onPageChange
-const perPage = props.controller.pageSize
 
 </script>
 
