@@ -6,68 +6,47 @@
 
 <template>
 
-  <o-table
-      v-model:current-page="currentPage"
-      :data="nfts"
-      :hoverable="false"
-      :loading="loading"
-      :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
-      :narrowed="true"
-      :paginated="paginated"
-      pagination-order="centered"
-      :range-before="1"
-      :range-after="1"
-      :per-page="perPage"
-      :striped="true"
+  <TableView
+      :controller="props.controller"
+  >
 
-      :total="total"
-      aria-current-label="Current page"
-      aria-next-label="Next page"
-      aria-page-label="Page"
+    <template #tableHeaders>
 
-      aria-previous-label="Previous page"
-      backend-pagination
-      customRowKey="spender"
-      default-sort="spender"
-      @page-change="onPageChange">
+      <TableHeaderView>TOKEN ID</TableHeaderView>
+      <TableHeaderView :align-right="true">SERIAL #</TableHeaderView>
+      <TableHeaderView>SPENDER</TableHeaderView>
+      <TableHeaderView>TIME</TableHeaderView>
+      <TableHeaderView v-if="isWalletConnected" :align-right="true"></TableHeaderView>
 
-    <o-table-column v-slot="props" field="token" label="TOKEN ID">
-      <TokenLink class="entity-id" :token-id="props.row.token_id" :show-extra="true"/>
-    </o-table-column>
-
-    <o-table-column v-slot="props" field="serial" label="SERIAL #">
-      <div class="h-is-numeric">
-        {{ props.row.serial_number }}
-      </div>
-    </o-table-column>
-
-    <o-table-column v-slot="props" field="spender" label="SPENDER">
-      <AccountLink :account-id="props.row.spender" :show-extra="true"/>
-    </o-table-column>
-
-    <o-table-column v-slot="props" field="timestamp" label="TIME">
-      <TimestampValue v-bind:timestamp="props.row.modified_timestamp"/>
-    </o-table-column>
-
-    <o-table-column v-if="isWalletConnected" v-slot="props" field="action" position="right">
-      <i class="far fa-trash-alt" @click="emit('deleteAllowance', props.row)"/>
-    </o-table-column>
-
-    <template v-slot:bottom-left>
-      <TablePageSize
-          v-model:size="perPage"
-      />
     </template>
 
-  </o-table>
+    <template #tableCells="allowance">
 
-  <TablePageSize
-      v-if="!paginated && showPageSizeSelector"
-      v-model:size="perPage"
-      style="width: 116px; margin-left: 4px"
-  />
+      <TableDataView>
+        <TokenLink class="entity-id" :token-id="allowance.token_id ?? undefined" :show-extra="true"/>
+      </TableDataView>
 
-  <EmptyTable v-if="!nfts.length"/>
+      <TableDataView>
+        <div class="h-is-numeric">
+          {{ allowance.serial_number }}
+        </div>
+      </TableDataView>
+
+      <TableDataView>
+        <AccountLink :account-id="allowance.spender" :show-extra="true"/>
+      </TableDataView>
+
+      <TableDataView>
+        <TimestampValue v-bind:timestamp="allowance.modified_timestamp"/>
+      </TableDataView>
+
+      <TableDataView v-if="isWalletConnected">
+        <i class="far fa-trash-alt" @click="emit('deleteAllowance', allowance)"/>
+      </TableDataView>
+
+    </template>
+
+  </TableView>
 
 </template>
 
@@ -78,15 +57,14 @@
 <script setup lang="ts">
 
 import {computed, PropType} from 'vue';
-import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
 import TimestampValue from "@/components/values/TimestampValue.vue";
-import EmptyTable from "@/components/EmptyTable.vue";
 import AccountLink from "@/components/values/link/AccountLink.vue";
 import TokenLink from "@/components/values/link/TokenLink.vue";
 import {walletManager} from "@/router";
 import {NftAllowanceTableController} from "@/components/allowances/NftAllowanceTableController";
-import TablePageSize from "@/components/transaction/TablePageSize.vue";
-import {AppStorage} from "@/AppStorage";
+import TableDataView from "@/tables/TableDataView.vue";
+import TableHeaderView from "@/tables/TableHeaderView.vue";
+import TableView from "@/tables/TableView.vue";
 
 const emit = defineEmits(["deleteAllowance"])
 
@@ -101,15 +79,6 @@ const isWalletConnected = computed(() =>
     walletManager.isHieroWallet.value
     && walletManager.accountId.value === props.controller.accountId.value
 )
-
-const nfts = props.controller.rows
-const loading = props.controller.loading
-const total = props.controller.totalRowCount
-const currentPage = props.controller.currentPage
-const onPageChange = props.controller.onPageChange
-const perPage = props.controller.pageSize
-const paginated = props.controller.paginated
-const showPageSizeSelector = props.controller.showPageSizeSelector
 
 </script>
 
