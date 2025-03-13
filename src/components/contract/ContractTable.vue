@@ -6,57 +6,44 @@
 
 <template>
 
-  <o-table
-      :data="contracts"
-      :loading="loading"
-      paginated
-      backend-pagination
-      pagination-order="centered"
-      :range-before="1"
-      :range-after="1"
-      :total="total"
-      v-model:current-page="currentPage"
-      :per-page="perPage"
-      @page-change="onPageChange"
+  <TableView
+      :controller="props.controller"
+      :clickable="true"
       @cell-click="handleClick"
-
-      :hoverable="true"
-      :narrowed="props.narrowed"
-      :striped="true"
-      :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
-
-      aria-current-label="Current page"
-      aria-next-label="Next page"
-      aria-page-label="Page"
-      aria-previous-label="Previous page"
-      customRowKey="contract_id"
   >
-    <o-table-column v-slot="props" field="contract_id" label="ID">
-      <ContractIOL class="contract_id" :contract-id="props.row.contract_id"/>
-    </o-table-column>
 
-    <o-table-column v-slot="props" field="contract_name" label="CONTRACT NAME">
-      <ContractName :contract-id="props.row.contract_id"/>
-    </o-table-column>
+    <template #tableHeaders>
 
-    <o-table-column v-slot="props" field="created" label="CREATED">
-      <TimestampValue v-bind:timestamp="props.row.created_timestamp"/>
-    </o-table-column>
+      <TableHeaderView>ID</TableHeaderView>
+      <TableHeaderView>CONTRACT NAME</TableHeaderView>
+      <TableHeaderView>CREATED</TableHeaderView>
+      <TableHeaderView>MEMO</TableHeaderView>
 
-    <o-table-column v-slot="props" field="memo" label="MEMO">
-      <div class="h-should-wrap">
-        <BlobValue v-bind:blob-value="props.row.memo" v-bind:base64="true" v-bind:show-none="true"/>
-      </div>
-    </o-table-column>
-
-    <template v-slot:bottom-left>
-      <TablePageSize
-          v-model:size="perPage"
-      />
     </template>
-  </o-table>
 
-  <EmptyTable v-if="!contracts.length"/>
+    <template #tableCells="contract">
+
+      <TableDataView>
+        <ContractIOL class="contract_id" :contract-id="contract.contract_id"/>
+      </TableDataView>
+
+      <TableDataView>
+        <ContractName :contract-id="contract.contract_id ?? ''"/>
+      </TableDataView>
+
+      <TableDataView>
+        <TimestampValue v-bind:timestamp="contract.created_timestamp"/>
+      </TableDataView>
+
+      <TableDataView>
+        <div class="h-should-wrap">
+          <BlobValue v-bind:blob-value="contract.memo" v-bind:base64="true" v-bind:show-none="true"/>
+        </div>
+      </TableDataView>
+
+    </template>
+
+  </TableView>
 
 </template>
 
@@ -71,13 +58,12 @@ import {Contract} from "@/schemas/MirrorNodeSchemas";
 import {routeManager} from "@/router";
 import BlobValue from "@/components/values/BlobValue.vue";
 import TimestampValue from "@/components/values/TimestampValue.vue";
-import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
-import EmptyTable from "@/components/EmptyTable.vue";
 import {ContractTableController} from "@/components/contract/ContractTableController";
 import ContractName from "@/components/values/ContractName.vue";
 import ContractIOL from "@/components/values/link/ContractIOL.vue";
-import TablePageSize from "@/components/transaction/TablePageSize.vue";
-import {AppStorage} from "@/AppStorage";
+import TableDataView from "@/tables/TableDataView.vue";
+import TableHeaderView from "@/tables/TableHeaderView.vue";
+import TableView from "@/tables/TableView.vue";
 
 const props = defineProps({
   controller: {
@@ -93,18 +79,11 @@ const props = defineProps({
 onMounted(() => props.controller.mount())
 onBeforeUnmount(() => props.controller.unmount())
 
-const handleClick = (contract: Contract, c: unknown, i: number, ci: number, event: MouseEvent) => {
+const handleClick = (contract: Contract, event: MouseEvent) => {
   if (contract.contract_id) {
     routeManager.routeToContract(contract.contract_id, event)
   }
 }
-
-const contracts = props.controller.rows
-const loading = props.controller.loading
-const total = props.controller.totalRowCount
-const currentPage = props.controller.currentPage
-const onPageChange = props.controller.onPageChange
-const perPage = props.controller.pageSize
 
 </script>
 
