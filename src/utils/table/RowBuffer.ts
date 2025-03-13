@@ -51,10 +51,13 @@ export class RowBuffer<R, K> {
     })
 
     public readonly maxStartIndex: ComputedRef<number> = computed(() => {
+        return Math.max(0, (this.pageCount.value - 1) * this.tableController.pageSize.value)
+    })
+
+    public readonly pageCount: ComputedRef<number> = computed(() => {
         const bufferLength = this.rows.value?.length ?? 0
         const pageSize = this.tableController.pageSize.value
-        const pageCount = Math.floor((this.shadowRowCount.value + bufferLength) / pageSize) + 1
-        return Math.max(0, (pageCount - 1) * pageSize)
+        return Math.floor((this.shadowRowCount.value + bufferLength) / pageSize) + 1
     })
 
     public computePage(): number {
