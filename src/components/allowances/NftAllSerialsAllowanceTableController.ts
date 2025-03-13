@@ -3,11 +3,18 @@
 import {KeyOperator, SortOrder, TableController} from "@/utils/table/TableController";
 import {NftAllowance, NftAllowancesResponse} from "@/schemas/MirrorNodeSchemas";
 import {Ref} from "vue";
-import axios, {AxiosResponse} from "axios";
+import axios from "axios";
 import {Router} from "vue-router";
 import {AppStorage} from "@/AppStorage.ts";
+import {isValidAssociation} from "@/schemas/MirrorNodeUtils.ts";
 
-export class NftAllSerialsAllowanceTableController extends TableController<NftAllowance, string> {
+
+export interface DisplayedNftAllowance {
+    allowance: NftAllowance
+    isEditable: boolean
+}
+
+export class NftAllSerialsAllowanceTableController extends TableController<DisplayedNftAllowance, string> {
 
     //
     // Public
@@ -38,11 +45,11 @@ export class NftAllSerialsAllowanceTableController extends TableController<NftAl
         operator: KeyOperator,
         order: SortOrder,
         limit: number
-    ): Promise<NftAllowance[] | null> {
-        let result: Promise<NftAllowance[] | null>
+    ): Promise<DisplayedNftAllowance[] | null> {
+        let result: DisplayedNftAllowance[] | null
 
         if (this.accountId.value === null) {
-            result = Promise.resolve(null)
+            result = null
         } else {
             const params = {} as {
                 limit: number
@@ -64,19 +71,22 @@ export class NftAllSerialsAllowanceTableController extends TableController<NftAl
                     params["token.id"] = token ? KeyOperator.lt + ":" + token : undefined
                 }
             }
-            const cb = (r: AxiosResponse<NftAllowancesResponse>): Promise<NftAllowance[] | null> => {
-                return Promise.resolve(r.data.allowances ?? [])
-            }
-            result = axios.get<NftAllowancesResponse>(
+
+            const response = await axios.get<NftAllowancesResponse>(
                 "api/v1/accounts/" + this.accountId.value + "/allowances/nfts", {params: params})
-                .then(cb)
+
+            result = []
+            for (const a of response.data.allowances ?? []) {
+                const editable = await isValidAssociation(a.owner, a.token_id)
+                result.push({ allowance: a, isEditable: editable})
+            }
         }
 
-        return result
+        return Promise.resolve(result)
     }
 
-    public keyFor(row: NftAllowance): string {
-        return row.spender && row.token_id ? `${row.spender}-${row.token_id}` : ""
+    public keyFor(row: DisplayedNftAllowance): string {
+        return row.allowance.spender && row.allowance.token_id ? `${row.allowance.spender}-${row.allowance.token_id}` : ""
     }
 
     public keyFromString(s: string): string | null {
