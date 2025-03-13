@@ -14,7 +14,7 @@
 
     <template #tableHeaders>
 
-      <TableHeaderView>ID tagada</TableHeaderView>
+      <TableHeaderView>ID</TableHeaderView>
       <TableHeaderView>CREATED</TableHeaderView>
       <TableHeaderView>TOKENS</TableHeaderView>
       <TableHeaderView>MEMO</TableHeaderView>
