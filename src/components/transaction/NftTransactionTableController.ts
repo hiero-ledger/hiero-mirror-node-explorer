@@ -78,7 +78,11 @@ export class NftTransactionTableController extends TableController<
             `api/v1/tokens/${this.tokenId.value}/nfts/${this.serialNumber.value}/transactions`,
             {params: params},
         )
-        return r.data.transactions ?? []
+
+        const transactions = r.data.transactions ?? []
+        return transactions.filter(el =>
+            this.transactionType.value == "" || el.type === this.transactionType.value
+        )
     }
 
     public keyFor(row: NftTransactionTransfer): string {
