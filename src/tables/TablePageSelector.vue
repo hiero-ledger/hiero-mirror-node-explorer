@@ -63,7 +63,7 @@ const handleNextPage = () => {
 }
 
 const prevPageEnabled = computed(() => currentPage.value >= 2)
-const nextPageEnabled = computed(() => true) /* TBD */
+const nextPageEnabled = computed(() => currentPage.value < props.controller.pageCount.value)
 
 </script>
 
