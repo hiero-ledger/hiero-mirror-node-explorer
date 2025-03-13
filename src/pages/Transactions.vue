@@ -19,7 +19,7 @@
         <TransactionFilterSelect v-model:selected-filter="transactionType"/>
       </template>
       <template #content>
-        <TransactionTableV2 :controller="transactionTableController"/>
+        <TransactionTable :controller="transactionTableController"/>
       </template>
     </DashboardCardV2>
 
@@ -35,7 +35,7 @@
 
 import {onBeforeUnmount, onMounted, Ref, ref} from 'vue';
 
-import TransactionTableV2 from "@/components/transaction/TransactionTableV2.vue";
+import TransactionTable from "@/components/transaction/TransactionTable.vue";
 import TransactionFilterSelect from "@/components/transaction/TransactionFilterSelect.vue";
 import {useRouter} from "vue-router";
 import PageFrameV2 from "@/components/page/PageFrameV2.vue";
