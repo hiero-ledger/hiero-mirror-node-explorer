@@ -16,10 +16,11 @@
 
     <template #tableHeaders>
 
+      <TableHeaderView>IMAGE</TableHeaderView>
       <TableHeaderView>TOKEN ID</TableHeaderView>
-      <TableHeaderView>NAME</TableHeaderView>
+      <TableHeaderView :align-right="true">SERIAL #</TableHeaderView>
+      <TableHeaderView>COLLECTION NAME</TableHeaderView>
       <TableHeaderView>SYMBOL</TableHeaderView>
-      <TableHeaderView :align-right="true">AMOUNT</TableHeaderView>
       <TableHeaderView>SENDER</TableHeaderView>
       <TableHeaderView>AIRDROP TIME</TableHeaderView>
 
@@ -28,7 +29,20 @@
     <template #tableCells="airdrop">
 
       <TableDataView>
+        <NftCell
+            :token-id="airdrop.token_id"
+            :serial-number="airdrop.serial_number"
+            :property="NftCellItem.image"
+            :size="32"
+        />
+      </TableDataView>
+
+      <TableDataView>
         <TokenIOL class="token-id-label" :token-id="airdrop.token_id"/>
+      </TableDataView>
+
+      <TableDataView>
+        {{ airdrop.serial_number }}
       </TableDataView>
 
       <TableDataView>
@@ -37,14 +51,6 @@
 
       <TableDataView>
         <TokenCell class="is-inline-block" :token-id="airdrop.token_id" :property="TokenCellItem.tokenSymbol"/>
-      </TableDataView>
-
-      <TableDataView>
-        <TokenAmount
-            v-if="! airdrop.serial_number"
-            :amount="BigInt(airdrop.amount)"
-            :token-id="airdrop.token_id"
-        />
       </TableDataView>
 
       <TableDataView>
@@ -78,7 +84,7 @@ import TimestampValue from "@/components/values/TimestampValue.vue";
 import TableDataView from "@/tables/TableDataView.vue";
 import TableView from "@/tables/TableView.vue";
 import TableHeaderView from "@/tables/TableHeaderView.vue";
-import TokenAmount from "@/components/values/TokenAmount.vue";
+import NftCell, {NftCellItem} from "@/components/token/NftCell.vue";
 
 const props = defineProps({
   controller: {
