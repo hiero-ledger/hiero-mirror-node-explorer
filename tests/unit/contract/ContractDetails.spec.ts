@@ -342,7 +342,7 @@ describe("ContractDetails.vue", () => {
         const wrapper = mount(ContractDetails, {
             global: {
                 plugins: [router, Oruga],
-                provide: {"isMediumScreen": false}
+                provide: {"isMediumScreen": true}
             },
             props: {
                 contractId: SAMPLE_CONTRACT.contract_id
@@ -385,7 +385,7 @@ describe("ContractDetails.vue", () => {
         const resultTable = wrapper.findComponent(ContractResultTable)
         expect(resultTable.exists()).toBe(true)
 
-        expect(resultTable.find('thead').text()).toBe("TIME FROM MESSAGE TRANSFER AMOUNT")
+        expect(resultTable.find('thead').text()).toBe("TIMEFROMMESSAGETRANSFER AMOUNT")
         const rows = resultTable.find('tbody').findAll('tr')
 
         let cells = rows[0].findAll('td')

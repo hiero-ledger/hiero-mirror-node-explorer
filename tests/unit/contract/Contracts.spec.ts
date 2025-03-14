@@ -58,7 +58,7 @@ describe("Contracts.vue", () => {
 
         const table = card.findComponent(ContractTable)
         expect(table.exists()).toBe(true)
-        expect(table.get('thead').text()).toBe("ID CONTRACT NAME CREATED MEMO")
+        expect(table.get('thead').text()).toBe("IDCONTRACT NAMECREATEDMEMO")
         expect(table.get('tbody').text()).toBe(
             "0.0.749775" +
             " NOT VERIFIED " +
