@@ -58,7 +58,7 @@ describe("Tokens.vue", () => {
         expect(cards[0].text()).toMatch(RegExp("^Recent NFTs"))
         const table1 = cards[0].findComponent(TokenTable)
         expect(table1.exists()).toBe(true)
-        expect(table1.get('thead').text()).toBe("TOKEN NAME SYMBOL")
+        expect(table1.get('thead').text()).toBe("TOKENNAMESYMBOL")
         expect(table1.get('tbody').text()).toBe(
             SAMPLE_TOKENS.tokens[0].token_id +
             SAMPLE_TOKENS.tokens[0].name +
@@ -71,7 +71,7 @@ describe("Tokens.vue", () => {
         expect(cards[1].text()).toMatch(RegExp("^Recent Fungible Tokens"))
         const table2 = cards[1].findComponent(TokenTable)
         expect(table2.exists()).toBe(true)
-        expect(table2.get('thead').text()).toBe("TOKEN NAME SYMBOL")
+        expect(table2.get('thead').text()).toBe("TOKENNAMESYMBOL")
         expect(table2.get('tbody').text()).toBe(
             SAMPLE_TOKENS.tokens[0].token_id +
             SAMPLE_TOKENS.tokens[0].name +
