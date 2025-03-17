@@ -16,7 +16,7 @@
     <div class="table-view-loading" :style="{'min-height': loadingHeight + 'px'}">Loading…</div>
   </template>
 
-  <template v-else>
+  <template v-else-if="columnCount >= 1">
     <div class="table-view-content">
 
       <table :class="{'wide': isMediumScreen, 'narrow': !isMediumScreen, 'clickable': props.clickable}">
@@ -140,9 +140,11 @@ const noData = computed(
 
 const makeTableHeaderNodes = (): VNode[] => {
   const result: VNode[] = []
-  for (const c of slots.tableHeaders() ?? []) {
-    if (TableHeaderView == c.type) {
-      result.push(c)
+  if (slots.tableHeaders) {
+    for (const c of slots.tableHeaders() ?? []) {
+      if (TableHeaderView == c.type) {
+        result.push(c)
+      }
     }
   }
   return result
@@ -150,9 +152,11 @@ const makeTableHeaderNodes = (): VNode[] => {
 
 const makeTableCellNodes = (row: R): VNode[] => {
   const result: VNode[] = []
-  for (const c of slots.tableCells(row) ?? []) {
-    if (TableDataView == c.type) {
-      result.push(c)
+  if (slots.tableCells) {
+    for (const c of slots.tableCells(row) ?? []) {
+      if (TableDataView == c.type) {
+        result.push(c)
+      }
     }
   }
   return result
