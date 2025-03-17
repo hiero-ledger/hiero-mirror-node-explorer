@@ -14,7 +14,7 @@ import MockAdapter from "axios-mock-adapter";
 import Oruga from "@oruga-ui/oruga-next";
 import {HMSF} from "@/utils/HMSF";
 import {fetchGetURLs} from "../MockUtils";
-import TablePageSizeV2 from "@/tables/TablePageSizeV2.vue";
+import TablePageSizeV3 from "@/tables/TablePageSizeV3.vue";
 
 /*
     Bookmarks
@@ -132,7 +132,7 @@ describe("Transactions.vue", () => {
         expect(card.exists()).toBe(true)
         expect(card.text()).toMatch(RegExp("^Recent Transactions"))
 
-        const select = card.findComponent(TablePageSizeV2)
+        const select = card.findComponent(TablePageSizeV3)
         expect(select.exists()).toBe(false)
 
         mock.restore()
@@ -183,7 +183,7 @@ describe("Transactions.vue", () => {
         expect(card.exists()).toBe(true)
         expect(card.text()).toMatch(RegExp("^Recent Transactions"))
 
-        const select = card.findComponent(TablePageSizeV2)
+        const select = card.findComponent(TablePageSizeV3)
         expect(select.exists()).toBe(true)
 
         expect(select.text()).toBe(
