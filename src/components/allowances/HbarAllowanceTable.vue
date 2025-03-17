@@ -6,8 +6,8 @@
 
 <template>
 
-  <TableView
-      :controller="props.controller"
+  <TableViewV3
+      :data-source="dataSource"
   >
 
     <template #tableHeaders>
@@ -39,7 +39,7 @@
 
     </template>
 
-  </TableView>
+  </TableViewV3>
 
 </template>
 
@@ -57,7 +57,8 @@ import HbarAmount from "@/components/values/HbarAmount.vue";
 import {walletManager} from "@/router";
 import TableDataView from "@/tables/TableDataView.vue";
 import TableHeaderView from "@/tables/TableHeaderView.vue";
-import TableView from "@/tables/TableView.vue";
+import TableViewV3 from "@/tables/TableViewV3.vue";
+import {DynamicDataSource} from "@/tables/TableDataSource.ts";
 
 const emit = defineEmits(["editAllowance"])
 
@@ -67,6 +68,8 @@ const props = defineProps({
     required: true
   }
 })
+
+const dataSource = new DynamicDataSource(props.controller)
 
 const isWalletConnected = computed(
     () => walletManager.accountId.value === props.controller.accountId.value

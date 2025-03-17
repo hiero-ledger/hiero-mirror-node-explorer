@@ -6,8 +6,8 @@
 
 <template>
 
-  <TableView
-      :controller="props.controller"
+  <TableViewV3
+      :data-source="dataSource"
   >
 
     <template #tableHeaders>
@@ -46,7 +46,7 @@
 
     </template>
 
-  </TableView>
+  </TableViewV3>
 
 </template>
 
@@ -64,7 +64,8 @@ import {walletManager} from "@/router";
 import {NftAllowanceTableController} from "@/components/allowances/NftAllowanceTableController";
 import TableDataView from "@/tables/TableDataView.vue";
 import TableHeaderView from "@/tables/TableHeaderView.vue";
-import TableView from "@/tables/TableView.vue";
+import TableViewV3 from "@/tables/TableViewV3.vue";
+import {DynamicDataSource} from "@/tables/TableDataSource.ts";
 
 const emit = defineEmits(["deleteAllowance"])
 
@@ -74,6 +75,8 @@ const props = defineProps({
     required: true
   }
 })
+
+const dataSource = new DynamicDataSource(props.controller)
 
 const isWalletConnected = computed(() =>
     walletManager.isHieroWallet.value
