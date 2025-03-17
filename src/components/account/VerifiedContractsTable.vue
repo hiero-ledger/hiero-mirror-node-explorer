@@ -6,55 +6,41 @@
 
 <template>
 
-  <o-table
-      :data="contracts"
-      :hoverable="true"
-      :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
-      :narrowed="true"
-      :paginated="contracts.length > perPage"
-      pagination-order="centered"
-      :range-before="1"
-      :range-after="1"
 
-      :per-page="perPage"
-      :striped="true"
-      aria-current-label="Current page"
-
-      aria-next-label="Next page"
-      aria-page-label="Page"
-      aria-previous-label="Previous page"
-      customRowKey="contract_id"
+  <TableViewV3
+      :data-source="dataSource"
+      :clickable="true"
       @cell-click="handleClick"
   >
 
-    <o-table-column v-slot="props" field="contract_id" label="ID">
-      <ContractIOL class="entity-id" :contract-id="props.row.contract_id"/>
-    </o-table-column>
+    <template #tableHeaders>
 
-    <o-table-column v-slot="props" field="contract_name" label="CONTRACT NAME">
-      <ContractName :contract-id="props.row.contract_id"/>
-    </o-table-column>
+      <TableHeaderView>ID tagada</TableHeaderView>
+      <TableHeaderView>CONTRACT NAME</TableHeaderView>
+      <TableHeaderView>CREATED</TableHeaderView>
 
-    <o-table-column v-slot="props" field="created" label="CREATED">
-      <TimestampValue v-bind:timestamp="props.row.created_timestamp"/>
-    </o-table-column>
-
-    <template v-slot:bottom-left>
-      <TablePageSize
-          v-model:size="perPage"
-          :storage-key="storageKey"
-      />
     </template>
-  </o-table>
 
-  <TablePageSize
-      v-if="!paginated && showPageSizeSelector"
-      v-model:size="perPage"
-      :storage-key="storageKey"
-      style="width: 116px; margin-left: 4px"
-  />
+    <template #tableCells="contract">
 
-  <EmptyTable v-if="!contracts.length" :loading="!loaded" :no-data-message="noDataMessage"/>
+
+      <TableDataView>
+        <ContractIOL class="entity-id" :contract-id="contract.contract_id"/>
+      </TableDataView>
+
+      <TableDataView>
+        <ContractName :contract-id="contract.contract_id ?? '?'"/>
+      </TableDataView>
+
+      <TableDataView>
+        <TimestampValue v-bind:timestamp="contract.created_timestamp"/>
+      </TableDataView>
+
+    </template>
+
+    <template #noDataMessage>{{ noDataMessage }}</template>
+
+  </TableViewV3>
 
 </template>
 
@@ -68,12 +54,13 @@ import {computed, onBeforeUnmount, onMounted, PropType} from 'vue';
 import {Contract} from "@/schemas/MirrorNodeSchemas";
 import TimestampValue from "@/components/values/TimestampValue.vue";
 import {routeManager} from "@/router";
-import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
-import EmptyTable from "@/components/EmptyTable.vue";
 import ContractName from "@/components/values/ContractName.vue";
 import {VerifiedContractsController} from "@/components/contract/VerifiedContractsController";
-import TablePageSize from "@/components/transaction/TablePageSize.vue";
 import ContractIOL from "@/components/values/link/ContractIOL.vue";
+import {StaticDataSource} from "@/tables/TableDataSource.ts";
+import TableHeaderView from "@/tables/TableHeaderView.vue";
+import TableDataView from "@/tables/TableDataView.vue";
+import TableViewV3 from "@/tables/TableViewV3.vue";
 
 const props = defineProps({
   controller: {
@@ -83,6 +70,14 @@ const props = defineProps({
   loaded: Boolean,
   overflow: Boolean
 })
+
+const contracts = computed(() => props.controller.loaded.value ? props.controller.contracts.value : null)
+
+const dataSource = new StaticDataSource(
+    contracts,
+    props.controller.storageKey,
+    (contract: Contract) => contract.contract_id ?? "null")
+
 
 const noDataMessage = computed(() =>
     props.overflow
@@ -96,12 +91,6 @@ onBeforeUnmount(() => props.controller.unmount())
 const handleClick = (contract: Contract, c: unknown, i: number, ci: number, event: MouseEvent) => {
   routeManager.routeToContract(contract.contract_id!, event)
 }
-
-const contracts = props.controller.contracts
-const perPage = props.controller.pageSize
-const storageKey = props.controller.storageKey
-const paginated = props.controller.paginated
-const showPageSizeSelector = props.controller.showPageSizeSelector
 
 </script>
 

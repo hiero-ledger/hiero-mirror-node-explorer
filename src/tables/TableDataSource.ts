@@ -33,10 +33,10 @@ export class StaticDataSource<R> implements TableDataSource<R> {
     // Public
     //
 
-    constructor(private readonly rows: Ref<R[]>,
-                private readonly pageSizeStorageKey: string|null,
+    constructor(private readonly rows: Ref<R[]|null>,
+                pageSizeStorageKey: string|null,
                 public readonly vueKey: (row: R) => string,
-                private readonly initialPageSize: number = 15) {
+                initialPageSize: number = 15) {
         const savedPageSize = pageSizeStorageKey !== null ? AppStorage.getTablePageSize(pageSizeStorageKey) : null
         this.pageSize = ref(savedPageSize ?? initialPageSize)
         if (pageSizeStorageKey !== null) {
@@ -52,12 +52,12 @@ export class StaticDataSource<R> implements TableDataSource<R> {
 
     public readonly pageSize : Ref<number>
 
-    public readonly rowCount = computed(() => this.rows.value.length)
+    public readonly rowCount = computed(() => this.rows.value?.length ?? null)
 
     public readonly pageRows = computed(() => {
         let result: R[]
         const startIndex = this.pageIndex.value * this.pageSize.value
-        if (startIndex < this.rows.value.length) {
+        if (this.rows.value !== null && startIndex < this.rows.value.length) {
             result = this.rows.value.slice(startIndex, startIndex + this.pageSize.value)
         } else {
             result = []
