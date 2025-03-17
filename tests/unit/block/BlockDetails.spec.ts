@@ -51,7 +51,7 @@ describe("BlockDetails.vue", () => {
         const wrapper = mount(BlockDetails, {
             global: {
                 plugins: [router, Oruga],
-                provide: {"isMediumScreen": false}
+                provide: {"isMediumScreen": true}
             },
             props: {
                 blockHon: BLOCK_NUMBER
@@ -83,7 +83,7 @@ describe("BlockDetails.vue", () => {
         expect(wrapper.get("#blockTransactions").text()).toMatch(RegExp("^Block Transactions"))
         const table = wrapper.findComponent(BlockTransactionTable)
         expect(table.exists()).toBe(true)
-        expect(table.get('thead').text()).toBe("ID TYPE CONTENT TIME")
+        expect(table.get('thead').text()).toBe("IDTYPECONTENTTIME")
         expect(table.get('tbody').text()).toBe("0.0.29624024@1646025139.152901498CRYPTO TRANSFER0.0.29624024\n" + "\n" +
             "123423\n" + "\n" +
             "0.0.296939115:12:31.6676 AMFeb 28, 2022, UTC")
@@ -112,7 +112,7 @@ describe("BlockDetails.vue", () => {
         const wrapper = mount(BlockDetails, {
             global: {
                 plugins: [router, Oruga],
-                provide: {"isMediumScreen": false}
+                provide: {"isMediumScreen": true}
             },
             props: {
                 blockHon: BLOCK_HASH
@@ -144,7 +144,7 @@ describe("BlockDetails.vue", () => {
         expect(wrapper.get("#blockTransactions").text()).toMatch(RegExp("^Block Transactions"))
         const table = wrapper.findComponent(BlockTransactionTable)
         expect(table.exists()).toBe(true)
-        expect(table.get('thead').text()).toBe("ID TYPE CONTENT TIME")
+        expect(table.get('thead').text()).toBe("IDTYPECONTENTTIME")
         expect(table.get('tbody').text()).toBe("0.0.29624024@1646025139.152901498CRYPTO TRANSFER0.0.29624024\n" + "\n" +
             "123423\n" + "\n" +
             "0.0.296939115:12:31.6676 AMFeb 28, 2022, UTC")
@@ -174,7 +174,7 @@ describe("BlockDetails.vue", () => {
         const wrapper = mount(BlockDetails, {
             global: {
                 plugins: [router, Oruga],
-                provide: {"isMediumScreen": false}
+                provide: {"isMediumScreen": true}
             },
             props: {
                 blockHon: BLOCK_HASH
@@ -206,7 +206,7 @@ describe("BlockDetails.vue", () => {
         expect(wrapper.get("#blockTransactions").text()).toMatch(RegExp("^Block Transactions"))
         let table = wrapper.findComponent(BlockTransactionTable)
         expect(table.exists()).toBe(true)
-        expect(table.get('thead').text()).toBe("ID TYPE CONTENT TIME")
+        expect(table.get('thead').text()).toBe("IDTYPECONTENTTIME")
         expect(table.get('tbody').text()).toBe("0.0.29624024@1646025139.152901498CRYPTO TRANSFER0.0.29624024\n" + "\n" +
             "123423\n" + "\n" +
             "0.0.296939115:12:31.6676 AMFeb 28, 2022, UTC")
@@ -255,7 +255,7 @@ describe("BlockDetails.vue", () => {
         expect(wrapper.get("#blockTransactions").text()).toMatch(RegExp("^Block Transactions"))
         table = wrapper.findComponent(BlockTransactionTable)
         expect(table.exists()).toBe(true)
-        expect(table.get('thead').text()).toBe("ID TYPE CONTENT TIME")
+        expect(table.get('thead').text()).toBe("IDTYPECONTENTTIME")
         expect(table.get('tbody').text()).toBe(
             "0.0.950@1646665756.235554077" +
             "CONTRACT CALL" +
@@ -279,7 +279,7 @@ describe("BlockDetails.vue", () => {
         const wrapper = mount(BlockDetails, {
             global: {
                 plugins: [router, Oruga],
-                provide: {"isMediumScreen": false}
+                provide: {"isMediumScreen": true}
             },
             props: {
                 blockHon: INVALID_BLOCK_NUMBER
@@ -304,8 +304,8 @@ describe("BlockDetails.vue", () => {
         expect(wrapper.get("#blockTransactions").text()).toMatch(RegExp("^Block Transactions"))
         const table = wrapper.findComponent(BlockTransactionTable)
         expect(table.exists()).toBe(true)
-        expect(table.get('thead').text()).toBe("ID TYPE CONTENT TIME")
-        expect(table.get('tbody').text()).toBe("")
+        expect(table.find('thead').exists()).toBe(false)
+        expect(table.find('tbody').exists()).toBe(false)
 
         wrapper.unmount()
         await flushPromises()
@@ -319,7 +319,7 @@ describe("BlockDetails.vue", () => {
         const wrapper = mount(BlockDetails, {
             global: {
                 plugins: [router, Oruga],
-                provide: {"isMediumScreen": false}
+                provide: {"isMediumScreen": true}
             },
             props: {
                 blockHon: INVALID_BLOCK_HASH
@@ -344,8 +344,8 @@ describe("BlockDetails.vue", () => {
         expect(wrapper.get("#blockTransactions").text()).toMatch(RegExp("^Block Transactions"))
         const table = wrapper.findComponent(BlockTransactionTable)
         expect(table.exists()).toBe(true)
-        expect(table.get('thead').text()).toBe("ID TYPE CONTENT TIME")
-        expect(table.get('tbody').text()).toBe("")
+        expect(table.find('thead').exists()).toBe(false)
+        expect(table.find('tbody').exists()).toBe(false)
 
         wrapper.unmount()
         await flushPromises()
@@ -388,8 +388,8 @@ describe("BlockDetails.vue", () => {
         expect(wrapper.get("#blockTransactions").text()).toMatch(RegExp("^Block Transactions"))
         const table = wrapper.findComponent(BlockTransactionTable)
         expect(table.exists()).toBe(true)
-        expect(table.get('thead').text()).toBe("ID TYPE CONTENT TIME")
-        expect(table.get('tbody').text()).toBe("")
+        expect(table.find('thead').exists()).toBe(false)
+        expect(table.find('tbody').exists()).toBe(false)
 
         mock.restore()
         wrapper.unmount()
@@ -406,7 +406,7 @@ describe("BlockDetails.vue", () => {
         const wrapper = mount(BlockDetails, {
             global: {
                 plugins: [router, Oruga],
-                provide: {"isMediumScreen": false}
+                provide: {"isMediumScreen": true}
             },
             props: {
                 blockHon: BLOCK_HASH
@@ -433,8 +433,8 @@ describe("BlockDetails.vue", () => {
         expect(wrapper.get("#blockTransactions").text()).toMatch(RegExp("^Block Transactions"))
         const table = wrapper.findComponent(BlockTransactionTable)
         expect(table.exists()).toBe(true)
-        expect(table.get('thead').text()).toBe("ID TYPE CONTENT TIME")
-        expect(table.get('tbody').text()).toBe("")
+        expect(table.find('thead').exists()).toBe(false)
+        expect(table.find('tbody').exists()).toBe(false)
 
         mock.restore()
         wrapper.unmount()
