@@ -2,6 +2,7 @@
 
 import {computed, Ref, ref, watch} from "vue";
 import {AppStorage} from "@/AppStorage.ts";
+import {TableController} from "@/utils/table/TableController.ts";
 
 /*
  * TableDataSource
@@ -73,32 +74,32 @@ export class StaticDataSource<R> implements TableDataSource<R> {
  * DynamicDataSource
  */
 
-//
-// export class DynamicDataSource<R, K> implements TableDataSource<R> {
-//
-//     public constructor(private readonly tableController: TableController<R, K>) {
-//         watch(this.pageIndex, () => this.tableController.onPageChange())
-//     }
-//
-//     //
-//     // TableDataSource
-//     //
-//
-//     public readonly rowCount = computed(
-//         () => this.tableController.bare.value ? null : this.tableController.totalRowCount.value)
-//
-//     public readonly pageIndex = ref<number>(this.tableController.currentPage.value-1)
-//
-//     public readonly pageSize : Ref<number>
-//
-//     public readonly pageRows = computed(() => {
-//         let result: R[]
-//         const startIndex = this.pageIndex.value * this.pageSize.value
-//         if (startIndex < this.rows.value.length) {
-//             result = this.rows.value.slice(startIndex, startIndex + this.pageSize.value)
-//         } else {
-//             result = []
-//         }
-//         return result
-//     })
-// }
+
+export class DynamicDataSource<R, K> implements TableDataSource<R> {
+
+    public constructor(private readonly tableController: TableController<R, K>) {
+        this.pageIndex = ref(tableController.currentPage.value)
+        this.actualPageIndex = this.pageIndex
+        this.pageSize = tableController.pageSize
+        this.pageRows = tableController.rows
+        watch(tableController.currentPage, (newValue: number) => this.pageIndex.value = newValue)
+        watch(this.pageIndex, (newValue: number) => this.tableController.onPageChange(newValue))
+    }
+
+    //
+    // TableDataSource
+    //
+
+    public readonly rowCount = computed(
+        () => this.tableController.bare.value ? null : this.tableController.totalRowCount.value)
+
+    public readonly pageIndex: Ref<number>
+
+    public readonly actualPageIndex: Ref<number>
+
+    public readonly pageSize : Ref<number>
+
+    public readonly pageRows: Ref<R[]>
+
+    public readonly vueKey = (row: R) => this.tableController.stringFromKey(this.tableController.keyFor(row))
+}
