@@ -8,10 +8,9 @@
 
   <div id="nft-holder-table">
 
-    <TableView
-        :controller="props.controller"
+    <TableViewV3
+        :data-source="dataSource"
         :clickable="true"
-        :page-size-storage-key="AppStorage.BLOCK_TABLE_PAGE_SIZE_KEY"
         @cell-click="handleClick"
     >
 
@@ -68,7 +67,7 @@
       </template>
 
 
-    </TableView>
+    </TableViewV3>
 
   </div>
 
@@ -86,10 +85,10 @@ import {NftHolderTableController} from "@/components/token/NftHolderTableControl
 import {routeManager} from "@/router";
 import AccountIOL from "@/components/values/link/AccountIOL.vue";
 import NftCell, {NftCellItem} from "@/components/token/NftCell.vue";
-import {AppStorage} from "@/AppStorage";
-import TableView from "@/tables/TableView.vue";
+import TableViewV3 from "@/tables/TableViewV3.vue";
 import TableHeaderView from "@/tables/TableHeaderView.vue";
 import TableDataView from "@/tables/TableDataView.vue";
+import {DynamicDataSource} from "@/tables/TableDataSource.ts";
 
 const props = defineProps({
   controller: {
@@ -97,6 +96,8 @@ const props = defineProps({
     required: true
   },
 })
+
+const dataSource = new DynamicDataSource(props.controller)
 
 const handleClick = (n: Nft, event: MouseEvent,) => {
   if (n.token_id && n.serial_number) {
