@@ -8,8 +8,8 @@
 
   <div id="topic-message-table">
 
-    <TableView
-        :controller="props.controller"
+    <TableViewV3
+        :data-source="dataSource"
         :clickable="true"
         :row-height="90"
         @cell-click="handleClick"
@@ -46,7 +46,7 @@
 
       </template>
 
-    </TableView>
+    </TableViewV3>
 
   </div>
 
@@ -64,9 +64,10 @@ import TimestampValue from "@/components/values/TimestampValue.vue";
 import BlobValue from "@/components/values/BlobValue.vue";
 import {TopicMessage} from "@/schemas/MirrorNodeSchemas";
 import {routeManager} from "@/router";
-import TableView from "@/tables/TableView.vue";
+import TableViewV3 from "@/tables/TableViewV3.vue";
 import TableHeaderView from "@/tables/TableHeaderView.vue";
 import TableDataView from "@/tables/TableDataView.vue";
+import {DynamicDataSource} from "@/tables/TableDataSource.ts";
 
 const props = defineProps({
   controller: {
@@ -74,6 +75,8 @@ const props = defineProps({
     required: true
   }
 })
+
+const dataSource = new DynamicDataSource(props.controller)
 
 const formatChunk = (t: TopicMessage) => t.chunk_info ? `${t.chunk_info.number}/${t.chunk_info.total}` : ''
 
