@@ -8,10 +8,9 @@
 
   <div id="token-balance-table">
 
-    <TableView
-        :controller="props.controller"
+    <TableViewV3
+        :data-source="dataSource"
         :clickable="true"
-        :page-size-storage-key="AppStorage.TOKEN_BALANCE_TABLE_PAGE_SIZE_KEY"
         @cell-click="handleClick"
     >
 
@@ -35,7 +34,7 @@
       </template>
 
 
-    </TableView>
+    </TableViewV3>
 
   </div>
 </template>
@@ -52,10 +51,10 @@ import {routeManager} from "@/router";
 import TokenAmount from "@/components/values/TokenAmount.vue";
 import {TokenBalanceTableController} from "@/components/token/TokenBalanceTableController";
 import AccountIOL from "@/components/values/link/AccountIOL.vue";
-import {AppStorage} from "@/AppStorage";
-import TableView from "@/tables/TableView.vue";
+import TableViewV3 from "@/tables/TableViewV3.vue";
 import TableHeaderView from "@/tables/TableHeaderView.vue";
 import TableDataView from "@/tables/TableDataView.vue";
+import {DynamicDataSource} from "@/tables/TableDataSource.ts";
 
 const props = defineProps({
   controller: {
@@ -63,6 +62,8 @@ const props = defineProps({
     required: true
   },
 })
+
+const dataSource = new DynamicDataSource(props.controller)
 
 const handleClick = (t: TokenDistribution, c: unknown, i: number, ci: number, event: MouseEvent) => {
   if (t.account) {
