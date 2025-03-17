@@ -6,10 +6,9 @@
 
 <template>
 
-  <TableView
-      :controller="props.controller"
+  <TableViewV3
+      :data-source="dataSource"
       :clickable="true"
-      :page-size-storage-key="AppStorage.ACCOUNT_TOKENS_TABLE_PAGE_SIZE_KEY"
       :pagination-disabled="!props.fullPage"
       @cell-click="handleClick"
   >
@@ -57,7 +56,7 @@
 
     </template>
 
-  </TableView>
+  </TableViewV3>
 
 </template>
 
@@ -71,14 +70,14 @@ import {PropType, watch} from 'vue';
 import {TokenAirdrop} from "@/schemas/MirrorNodeSchemas";
 import {routeManager} from "@/router";
 import TokenCell, {TokenCellItem} from "@/components/token/TokenCell.vue";
-import {AppStorage} from "@/AppStorage";
 import {PendingAirdropTableController} from "@/components/account/PendingAirdropTableController";
 import TokenAmount from "@/components/values/TokenAmount.vue";
 import TokenIOL from "@/components/values/link/TokenIOL.vue";
 import TimestampValue from "@/components/values/TimestampValue.vue";
 import TableDataView from "@/tables/TableDataView.vue";
-import TableView from "@/tables/TableView.vue";
+import TableViewV3 from "@/tables/TableViewV3.vue";
 import TableHeaderView from "@/tables/TableHeaderView.vue";
+import {DynamicDataSource} from "@/tables/TableDataSource.ts";
 
 const props = defineProps({
   controller: {
@@ -94,6 +93,8 @@ const props = defineProps({
     default: false
   },
 })
+
+const dataSource = new DynamicDataSource(props.controller)
 
 const checkedRows = defineModel("checkedAirdrops", {
   type: Object as PropType<TokenAirdrop[]>,
