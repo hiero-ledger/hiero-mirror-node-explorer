@@ -7,64 +7,48 @@
 
 <template>
 
-  <o-table
-      v-model:current-page="currentPage"
-      :data="transactions"
-      :hoverable="true"
-      :narrowed="narrowed"
-      :paginated="paginated"
-      pagination-order="centered"
-      :range-before="1"
-      :range-after="1"
-      :per-page="perPage"
-      :striped="true"
-      :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
-      aria-current-label="Current page"
-      aria-next-label="Next page"
-      aria-page-label="Page"
-      aria-previous-label="Previous page"
-      customRowKey="consensus_timestamp"
+  <TableViewV3
+      :data-source="dataSource"
+      :clickable="true"
       @cell-click="handleClick"
   >
-    <o-table-column v-slot="props" field="transaction_id" label="ID">
-      <TransactionLabel
-          class="transaction-label"
-          :transaction-id="props.row.transaction_id"
-          :result="props.row.result"
-      />
-    </o-table-column>
 
-    <o-table-column v-slot="props" field="name" label="TYPE">
-      <div class="h-has-pill" style="display: inline-block">
-        {{ makeTypeLabel(props.row.name) }}
-      </div>
-    </o-table-column>
+    <template #tableHeaders>
 
-    <o-table-column v-slot="props" label="CONTENT">
-      <TransactionSummary v-bind:transaction="props.row"/>
-    </o-table-column>
+      <TableHeaderView>ID</TableHeaderView>
+      <TableHeaderView>TYPE</TableHeaderView>
+      <TableHeaderView>CONTENT</TableHeaderView>
+      <TableHeaderView>TIME</TableHeaderView>
 
-    <o-table-column v-slot="props" field="consensus_timestamp" label="TIME">
-      <TimestampValue v-bind:timestamp="props.row.consensus_timestamp"/>
-    </o-table-column>
-
-    <template v-slot:bottom-left>
-      <TablePageSize
-          v-model:size="perPage"
-          :storage-key="AppStorage.BLOCK_TRANSACTION_TABLE_PAGE_SIZE_KEY"
-      />
     </template>
 
-  </o-table>
+    <template #tableCells="transaction">
 
-  <TablePageSize
-      v-if="!paginated && showPageSizeSelector"
-      v-model:size="perPage"
-      :storage-key="AppStorage.BLOCK_TRANSACTION_TABLE_PAGE_SIZE_KEY"
-      style="width: 116px; margin-left: 4px"
-  />
+      <TableDataView>
+        <TransactionLabel
+            class="transaction-label"
+            :transaction-id="transaction.transaction_id"
+            :result="transaction.result"
+        />
+      </TableDataView>
 
-  <EmptyTable v-if="!transactions.length"/>
+      <TableDataView>
+        <div class="h-has-pill" style="display: inline-block">
+          {{ makeTypeLabel(transaction.name) }}
+        </div>
+      </TableDataView>
+
+      <TableDataView>
+        <TransactionSummary v-bind:transaction="transaction"/>
+      </TableDataView>
+
+      <TableDataView>
+        <TimestampValue v-bind:timestamp="transaction.consensus_timestamp"/>
+      </TableDataView>
+
+    </template>
+
+  </TableViewV3>
 
 </template>
 
@@ -74,39 +58,34 @@
 
 <script setup lang="ts">
 
-import {computed, PropType, ref} from 'vue';
+import {computed, PropType} from 'vue';
 import {Transaction} from '@/schemas/MirrorNodeSchemas.ts';
 import {makeTypeLabel} from "@/utils/TransactionTools";
 import {routeManager} from "@/router";
 import TimestampValue from "@/components/values/TimestampValue.vue";
 import TransactionLabel from "@/components/values/TransactionLabel.vue";
-import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
-import EmptyTable from "@/components/EmptyTable.vue";
 import TransactionSummary from "@/components/transaction/TransactionSummary.vue";
-import TablePageSize from "@/components/transaction/TablePageSize.vue";
 import {AppStorage} from "@/AppStorage";
+import TableHeaderView from "@/tables/TableHeaderView.vue";
+import TableDataView from "@/tables/TableDataView.vue";
+import {StaticDataSource} from "@/tables/TableDataSource.ts";
+import TableViewV3 from "@/tables/TableViewV3.vue";
 
 const props = defineProps({
-  narrowed: Boolean,
-  nbItems: Number,
   transactions: {
     type: Array as PropType<Array<Transaction>>,
     default: () => []
-  },
-  accountId: String
-},)
+  }
+})
 
-const DEFAULT_PAGE_SIZE = 15
-const perPage = ref(props.nbItems ?? DEFAULT_PAGE_SIZE)
+const dataSource = new StaticDataSource(
+    computed(() => props.transactions),
+    AppStorage.BLOCK_TRANSACTION_TABLE_PAGE_SIZE_KEY,
+    (t: Transaction) => t.consensus_timestamp)
 
-const handleClick = (t: Transaction, c: unknown, i: number, ci: number, event: MouseEvent) => {
+const handleClick = (t: Transaction, event: MouseEvent) => {
   routeManager.routeToTransaction(t, event)
 }
-
-const currentPage = ref(1)
-
-const paginated = computed(() => props.transactions.length > perPage.value)
-const showPageSizeSelector = computed(() => props.transactions.length > 5)
 
 </script>
 
