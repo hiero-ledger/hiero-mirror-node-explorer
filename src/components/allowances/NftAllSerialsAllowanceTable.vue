@@ -6,8 +6,8 @@
 
 <template>
 
-  <TableView
-      :controller="props.controller"
+  <TableViewV3
+      :data-source="dataSource"
   >
 
     <template #tableHeaders>
@@ -43,7 +43,7 @@
 
     </template>
 
-  </TableView>
+  </TableViewV3>
 
 </template>
 
@@ -63,7 +63,8 @@ import InfoTooltip from "@/components/InfoTooltip.vue";
 import {NftAllSerialsAllowanceTableController} from "@/components/allowances/NftAllSerialsAllowanceTableController";
 import TableDataView from "@/tables/TableDataView.vue";
 import TableHeaderView from "@/tables/TableHeaderView.vue";
-import TableView from "@/tables/TableView.vue";
+import TableViewV3 from "@/tables/TableViewV3.vue";
+import {DynamicDataSource} from "@/tables/TableDataSource.ts";
 
 interface DisplayedNftAllowance extends NftAllowance {
   isEditable: boolean
@@ -77,6 +78,8 @@ const props = defineProps({
     required: true
   }
 })
+
+const dataSource = new DynamicDataSource(props.controller)
 
 const isWalletConnected = computed(() =>
     walletManager.isHieroWallet.value
