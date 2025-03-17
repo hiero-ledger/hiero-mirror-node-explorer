@@ -11,6 +11,7 @@
       :label="props.text"
       :position="position ?? 'auto'"
       :delay="props.delay"
+      :teleport="true"
       multiline
       class="tooltip"
   >
