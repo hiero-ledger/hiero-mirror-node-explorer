@@ -18,7 +18,7 @@
         @action="handlePrevPage">
       <ChevronLeft :size="16"/>
     </ButtonView>
-    <div class="label">Page {{ pageIndex + 1 }}</div>
+    <div class="label">Page {{ pageIndex }}</div>
     <ButtonView
         :size="ButtonSize.small"
         :enabled="nextPageEnabled"
@@ -51,7 +51,7 @@ const pageIndex = props.dataSource.pageIndex
 const actualPageIndex = props.dataSource.actualPageIndex
 
 const handleFirstPage = () => {
-  pageIndex.value = 0
+  pageIndex.value = 1
 }
 
 const handlePrevPage = () => {
@@ -63,8 +63,8 @@ const handleNextPage = () => {
 }
 
 const pageUpdating = computed(() => pageIndex.value !== actualPageIndex.value)
-const prevPageEnabled = computed(() => pageIndex.value-1 >= 0 && !pageUpdating.value)
-const nextPageEnabled = computed(() => pageIndex.value+1 < (pageCount.value ?? 0) && !pageUpdating.value)
+const prevPageEnabled = computed(() => pageIndex.value-1 >= 1 && !pageUpdating.value)
+const nextPageEnabled = computed(() => pageIndex.value+1 <= (pageCount.value ?? 0) && !pageUpdating.value)
 
 const pageCount = computed(() => tableDataSourcePageCount(
     props.dataSource,

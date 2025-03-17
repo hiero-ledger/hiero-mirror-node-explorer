@@ -9,7 +9,7 @@ import {AppStorage} from "@/AppStorage.ts";
 
 export interface TableDataSource<R> {
 
-    readonly pageIndex: Ref<number>
+    readonly pageIndex: Ref<number>                 // 1 based
     readonly pageSize: Ref<number>
 
     readonly rowCount: Readonly<Ref<number|null>>   // null <=> data are loading
@@ -48,7 +48,7 @@ export class StaticDataSource<R> implements TableDataSource<R> {
     // TableDataSource
     //
 
-    public readonly pageIndex = ref<number>(0)
+    public readonly pageIndex = ref<number>(1)
 
     public readonly pageSize : Ref<number>
 
@@ -56,7 +56,7 @@ export class StaticDataSource<R> implements TableDataSource<R> {
 
     public readonly pageRows = computed(() => {
         let result: R[]
-        const startIndex = this.pageIndex.value * this.pageSize.value
+        const startIndex = (this.pageIndex.value - 1) * this.pageSize.value
         if (this.rows.value !== null && startIndex < this.rows.value.length) {
             result = this.rows.value.slice(startIndex, startIndex + this.pageSize.value)
         } else {
@@ -84,7 +84,8 @@ export class StaticDataSource<R> implements TableDataSource<R> {
 //     // TableDataSource
 //     //
 //
-//     public readonly rowCount = computed(() => this.tableController.totalRowCount.value)
+//     public readonly rowCount = computed(
+//         () => this.tableController.bare.value ? null : this.tableController.totalRowCount.value)
 //
 //     public readonly pageIndex = ref<number>(this.tableController.currentPage.value-1)
 //
