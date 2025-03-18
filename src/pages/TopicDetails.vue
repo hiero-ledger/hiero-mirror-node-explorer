@@ -166,7 +166,7 @@ const isMediumScreen = inject('isMediumScreen', true)
 const initialLoading = inject(initialLoadingKey, ref(false))
 
 const validEntityId = computed(() =>
-    props.topicId ? EntityID.parse(props.topicId, true) != null : false
+    props.topicId ? EntityID.parse(props.topicId) != null : false
 )
 const normalizedTopicId = computed(() =>
     props.topicId ? EntityID.normalize(props.topicId) : props.topicId

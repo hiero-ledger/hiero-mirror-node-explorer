@@ -36,7 +36,7 @@ export class EntityTextFieldController {
         let result: EntityTextFieldState
         const trimmedValue = this.baseTextFieldController.newText.value.trim()
         if (trimmedValue !== "") {
-            const entityID = EntityID.parse(stripChecksum(trimmedValue), true)
+            const entityID = EntityID.parse(stripChecksum(trimmedValue))
             if (entityID !== null) {
                 const checksum = extractChecksum(trimmedValue)
                 const network = routeManager.currentNetwork.value
@@ -58,7 +58,7 @@ export class EntityTextFieldController {
         let result: string | null
         const trimmedValue = this.baseTextFieldController.newText.value.trim()
         if (trimmedValue !== "") {
-            const entityID = EntityID.parse(stripChecksum(trimmedValue), true)
+            const entityID = EntityID.parse(stripChecksum(trimmedValue))
             result = entityID?.toString() ?? null
         } else {
             result = null

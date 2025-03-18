@@ -180,8 +180,8 @@ export class SearchController {
     private actualInputTextDidChange = (): void => {
 
         const searchedText = this.actualInputText.value
-        const entityID = EntityID.parseWithChecksum(searchedText, true)
-        const transactionID = TransactionID.parse(searchedText, true)
+        const entityID = EntityID.parseWithChecksum(searchedText)
+        const transactionID = TransactionID.parse(searchedText)
         const hexBytes = hexToByte(searchedText)
         const alias = AccountAlias.parse(searchedText) != null ? searchedText : null
         const timestamp = Timestamp.parse(searchedText)
