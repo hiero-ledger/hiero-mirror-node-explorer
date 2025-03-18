@@ -50,7 +50,7 @@ describe("TransactionByIdTable.vue", () => {
         await flushPromises()
         // console.log(wrapper.text())
 
-        expect(wrapper.find('thead').text()).toBe("Time Type Content Relationship Nonce".toUpperCase())
+        expect(wrapper.find('thead').text()).toBe("TimeTypeContentRelationshipNonce".toUpperCase())
         expect(wrapper.find('tbody').text()).toBe(
             "1:29:17.0144 PMSep 6, 2022, UTCCONTRACT CALLContract ID: 0.0.48193749Parent0" +
             "1:29:17.0144 PMSep 6, 2022, UTCTOKEN MINTMINT\n\n0.0.48193741RSSE\n\n0.0.48113503Child1" +
@@ -88,7 +88,7 @@ describe("TransactionByIdTable.vue", () => {
         await flushPromises()
         // console.log(wrapper.text())
 
-        expect(wrapper.find('thead').text()).toBe("Time Type Content Relationship".toUpperCase())
+        expect(wrapper.find('thead').text()).toBe("TimeTypeContentRelationship".toUpperCase())
         const rows = wrapper.find('tbody').findAll('tr')
 
         let cells = rows[0].findAll('td')
@@ -125,7 +125,7 @@ describe("TransactionByIdTable.vue", () => {
         await flushPromises()
         // console.log(wrapper.text())
 
-        expect(wrapper.find('thead').text()).toBe("Time Type Content Nonce".toUpperCase())
+        expect(wrapper.find('thead').text()).toBe("TimeTypeContentNonce".toUpperCase())
         const rows = wrapper.find('tbody').findAll('tr')
 
         let cells = rows[0].findAll('td')
