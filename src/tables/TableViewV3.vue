@@ -40,9 +40,9 @@
 
       </table>
 
-      <div v-if="!props.paginationDisabled">
-        <TablePageSizeV3 v-if="showPageSizeSelector" v-model:page-size="pageSize"/>
+      <div class="pagination" v-if="!props.paginationDisabled">
         <TablePageSelectorV3 v-if="showPagingSelector" :data-source="props.dataSource"/>
+        <TablePageSizeV3 v-if="showPageSizeSelector" v-model:page-size="pageSize"/>
       </div>
 
     </div>
@@ -80,6 +80,10 @@ const props = defineProps({
     type: Boolean,
     default: false
   },
+  pageSizeSelectorHidden: {
+    type: Boolean,
+    default: false,
+  },
   defaultPageSize: {
     type: Number,
     default: 15
@@ -99,7 +103,7 @@ const isMediumScreen = inject('isMediumScreen', computed(() => true))
 const pageSize = props.dataSource.pageSize
 
 const showPageSizeSelector = computed(
-    () => props.dataSource.rowCount.value !== null && props.dataSource.rowCount.value > 5)
+    () => props.dataSource.rowCount.value !== null && props.dataSource.rowCount.value > 5 && !props.pageSizeSelectorHidden)
 
 const showPagingSelector = computed(
     () =>  props.dataSource.rowCount.value !== null && props.dataSource.rowCount.value > props.dataSource.pageSize.value)
@@ -406,7 +410,7 @@ div.table-view-content > table.narrow > tbody > tr > td.last {
 
 div.table-view-content > div {
   display: flex;
-  flex-direction: row;
+  flex-direction: row-reverse;
   justify-content: space-between;
 }
 
