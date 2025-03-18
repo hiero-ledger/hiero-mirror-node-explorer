@@ -15,7 +15,7 @@
 
     <template #tableHeaders>
 
-      <TableHeaderView>ID tagada</TableHeaderView>
+      <TableHeaderView>ID</TableHeaderView>
       <TableHeaderView>CONTRACT NAME</TableHeaderView>
       <TableHeaderView>CREATED</TableHeaderView>
 
