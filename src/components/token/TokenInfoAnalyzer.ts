@@ -51,31 +51,39 @@ export class TokenInfoAnalyzer {
         () => this.tokenInfo.value != null ? this.tokenInfo.value.type == TokenType.NON_FUNGIBLE_UNIQUE : null)
 
     public readonly hasFixedFees = computed(
-        () => this.tokenInfo.value?.custom_fees?.fixed_fees && this.tokenInfo.value.custom_fees.fixed_fees.length > 0
+        () => this.fixedFees.value !== null
     )
 
     public readonly hasFractionalFees = computed(
-        () => this.tokenInfo.value?.custom_fees?.fractional_fees && this.tokenInfo.value.custom_fees.fractional_fees.length > 0
+        () => this.fractionalFees.value !== null
     )
 
     public readonly hasRoyaltyFees = computed(
-        () => this.tokenInfo.value?.custom_fees?.royalty_fees && this.tokenInfo.value.custom_fees.royalty_fees.length > 0
+        () => this.royaltyFees.value !== null
     )
 
     public readonly hasCustomFees = computed(
         () => this.hasFixedFees.value || this.hasFractionalFees.value || this.hasRoyaltyFees.value
     )
 
-    public readonly fixedFees = computed(
-        () => this.hasFixedFees ? this.tokenInfo.value?.custom_fees?.fixed_fees : null)
+    public readonly fixedFees = computed( () => {
+        const fixedFees = this.tokenInfo.value?.custom_fees?.fixed_fees
+        return fixedFees && fixedFees.length > 0 ? fixedFees : null
+    })
 
-    public readonly fractionalFees = computed(
-        () => this.hasFractionalFees ? this.tokenInfo.value?.custom_fees?.fractional_fees : null)
+    public readonly fractionalFees = computed(() => {
+        const fractionalFees = this.tokenInfo.value?.custom_fees?.fractional_fees
+        return fractionalFees && fractionalFees.length > 0 ? fractionalFees : null
+    })
 
-    public readonly royaltyFees = computed(
-        () => this.hasRoyaltyFees ? this.tokenInfo.value?.custom_fees?.royalty_fees : null)
+    public readonly royaltyFees = computed(() => {
+        const royaltyFees = this.tokenInfo.value?.custom_fees?.royalty_fees
+        return royaltyFees && royaltyFees.length > 0 ? royaltyFees : null
+    })
 
-    public readonly customFees = computed(() => this.tokenInfo.value?.custom_fees)
+    public readonly customFees = computed(
+        () => this.tokenInfo.value?.custom_fees ?? null
+    )
 
     public readonly treasuryAccount = computed(() => this.tokenInfo.value?.treasury_account_id ?? null)
 

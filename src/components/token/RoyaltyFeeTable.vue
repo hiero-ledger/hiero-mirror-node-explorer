@@ -6,35 +6,44 @@
 
 <template>
 
-  <o-table
-      :data="fees"
-      :hoverable="false"
-      :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
-      :narrowed="true"
-      :striped="false"
+  <TableViewV3
+      :data-source="dataSource"
   >
 
-    <o-table-column v-slot="props" field="amount" label="PERCENTAGE FEE">
-      <StringValue :string-value="makeAmount(props.row.amount)"/>
-    </o-table-column>
+    <template #tableHeaders>
 
-    <o-table-column v-slot="props" field="collector" label="COLLECTOR ACCOUNT">
-      <AccountLink :account-id="props.row.collector_account_id"/>
-    </o-table-column>
+      <TableHeaderView :align-right="true">PERCENTAGE FEE</TableHeaderView>
+      <TableHeaderView>COLLECTOR ACCOUNT</TableHeaderView>
+      <TableHeaderView>FALLBACK FEE</TableHeaderView>
+      <TableHeaderView>FEE CURRENCY</TableHeaderView>
 
-    <o-table-column v-slot="props" field="fallbackAmount" label="FALLBACK FEE">
-      <PlainAmount v-if="props.row.fallback_fee?.denominating_token_id"
-                   :amount="props.row.fallback_fee?.amount" none-label="None"/>
-      <HbarAmount v-else :amount="props.row.fallback_fee?.amount" :show-extra="true"/>
-    </o-table-column>
+    </template>
 
-    <o-table-column v-slot="props" field="fallbackToken" label="FEE CURRENCY">
-      <TokenLink v-if="props.row.fallback_fee?.denominating_token_id"
-                 :token-id="props.row.fallback_fee?.denominating_token_id" :show-extra="true"/>
-      <div v-else-if="props.row.fallback_fee?.amount">{{ cryptoName }}</div>
-    </o-table-column>
+    <template #tableCells="fee">
 
-  </o-table>
+      <TableDataView>
+        <StringValue :string-value="makeAmount(fee.amount)"/>
+      </TableDataView>
+
+      <TableDataView>
+        <AccountLink :account-id="fee.collector_account_id"/>
+      </TableDataView>
+
+      <TableDataView>
+        <PlainAmount v-if="fee.fallback_fee?.denominating_token_id"
+                     :amount="fee.fallback_fee?.amount" none-label="None"/>
+        <HbarAmount v-else :amount="fee.fallback_fee?.amount" :show-extra="true"/>
+      </TableDataView>
+
+      <TableDataView>
+        <TokenLink v-if="fee.fallback_fee?.denominating_token_id"
+                   :token-id="fee.fallback_fee?.denominating_token_id" :show-extra="true"/>
+        <div v-else-if="fee.fallback_fee?.amount">{{ cryptoName }}</div>
+      </TableDataView>
+
+    </template>
+
+  </TableViewV3>
 
 </template>
 
@@ -47,13 +56,16 @@
 import {PropType} from 'vue';
 import AccountLink from "@/components/values/link/AccountLink.vue";
 import PlainAmount from "@/components/values/PlainAmount.vue";
-import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
-import {FractionAmount} from "@/schemas/MirrorNodeSchemas";
+import {FractionAmount, RoyaltyFee} from "@/schemas/MirrorNodeSchemas";
 import StringValue from "@/components/values/StringValue.vue";
 import {TokenInfoAnalyzer} from "@/components/token/TokenInfoAnalyzer";
 import TokenLink from "@/components/values/link/TokenLink.vue";
 import HbarAmount from "@/components/values/HbarAmount.vue";
 import {CoreConfig} from "@/config/CoreConfig.ts";
+import TableViewV3 from "@/tables/TableViewV3.vue";
+import TableDataView from "@/tables/TableDataView.vue";
+import TableHeaderView from "@/tables/TableHeaderView.vue";
+import {StaticDataSource} from "@/tables/TableDataSource.ts";
 
 const props = defineProps({
   analyzer: {
@@ -63,6 +75,8 @@ const props = defineProps({
 })
 
 const cryptoName = CoreConfig.inject().cryptoName
+const vueKey = (fee: RoyaltyFee) => fee.collector_account_id ?? "null"
+const dataSource = new StaticDataSource(props.analyzer.royaltyFees, null, vueKey)
 
 const makeAmount = (fraction: FractionAmount): string => {
   let result: string
@@ -77,8 +91,6 @@ const makeAmount = (fraction: FractionAmount): string => {
   }
   return result
 }
-
-const fees = props.analyzer.royaltyFees
 
 </script>
 

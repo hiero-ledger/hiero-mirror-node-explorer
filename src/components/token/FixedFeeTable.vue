@@ -6,30 +6,38 @@
 
 <template>
 
-  <o-table
-      :data="fees"
-      :hoverable="false"
-      :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
-      :narrowed="true"
-      :striped="false"
+  <TableViewV3
+      :data-source="dataSource"
   >
 
-    <o-table-column v-slot="props" field="amount" label="FIXED FEE">
-      <PlainAmount v-if="props.row.denominating_token_id" :amount="props.row.amount"/>
-      <HbarAmount v-else :amount="props.row.amount" timestamp="0" :show-extra="true"/>
-    </o-table-column>
+    <template #tableHeaders>
 
-    <o-table-column v-slot="props" field="currency" label="FEE CURRENCY">
-      <TokenLink v-if="props.row.denominating_token_id"
-                 :show-extra="true" :token-id="props.row.denominating_token_id"/>
-      <div v-else>{{ cryptoName }}</div>
-    </o-table-column>
+      <TableHeaderView :align-right="true">FIXED FEE</TableHeaderView>
+      <TableHeaderView>FEE CURRENCY</TableHeaderView>
+      <TableHeaderView>COLLECTOR ACCOUNT</TableHeaderView>
 
-    <o-table-column v-slot="props" field="collector" label="COLLECTOR ACCOUNT">
-      <AccountLink :account-id="props.row.collector_account_id"/>
-    </o-table-column>
+    </template>
 
-  </o-table>
+    <template #tableCells="fee">
+
+      <TableDataView>
+        <PlainAmount v-if="fee.denominating_token_id" :amount="fee.amount"/>
+        <HbarAmount v-else :amount="fee.amount" timestamp="0" :show-extra="true"/>
+      </TableDataView>
+
+      <TableDataView>
+        <TokenLink v-if="fee.denominating_token_id"
+                   :show-extra="true" :token-id="fee.denominating_token_id"/>
+        <div v-else>{{ cryptoName }}</div>
+      </TableDataView>
+
+      <TableDataView>
+        <AccountLink :account-id="fee.collector_account_id"/>
+      </TableDataView>
+
+    </template>
+
+  </TableViewV3>
 
 </template>
 
@@ -42,11 +50,14 @@
 import {computed, PropType} from 'vue';
 import AccountLink from "@/components/values/link/AccountLink.vue";
 import TokenLink from "@/components/values/link/TokenLink.vue";
-import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
 import HbarAmount from "@/components/values/HbarAmount.vue";
 import PlainAmount from "@/components/values/PlainAmount.vue";
 import {CoreConfig} from "@/config/CoreConfig.ts";
 import {FixedCustomFee, FixedFee} from "@/schemas/MirrorNodeSchemas.ts";
+import TableViewV3 from "@/tables/TableViewV3.vue";
+import TableDataView from "@/tables/TableDataView.vue";
+import TableHeaderView from "@/tables/TableHeaderView.vue";
+import {StaticDataSource} from "@/tables/TableDataSource.ts";
 
 const props = defineProps({
   fees: {
@@ -55,8 +66,11 @@ const props = defineProps({
   }
 })
 
-const cryptoName = CoreConfig.inject().cryptoName
 const fees = computed(() => props.fees ?? [])
+const vueKey = (fee: FixedFee|FixedCustomFee) => fee.collector_account_id + "/" + fee.denominating_token_id
+const dataSource = new StaticDataSource(fees, null, vueKey)
+
+const cryptoName = CoreConfig.inject().cryptoName
 
 </script>
 
