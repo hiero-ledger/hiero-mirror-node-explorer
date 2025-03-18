@@ -176,11 +176,6 @@ const handleClick = (node: NetworkNode, event: MouseEvent) => {
   font-weight: 600;
 }
 
-#node-table table.o-table > tbody > tr > td {
-  padding-top: 0;
-  padding-bottom: 0;
-}
-
 .regular-node-column {
   padding-top: 8px;
   padding-bottom: 8px;
