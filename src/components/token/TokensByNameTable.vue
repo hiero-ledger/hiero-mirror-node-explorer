@@ -6,55 +6,41 @@
 
 <template>
 
-  <o-table
-      :data="tokens"
-      :loading="loading"
-      paginated
-      backend-pagination
-      pagination-order="centered"
-      :range-before="1"
-      :range-after="1"
-      :total="total"
-      v-model:current-page="currentPage"
-      :per-page="perPage"
+  <TableViewV3
+      :data-source="dataSource"
+      :clickable="true"
       @cell-click="handleClick"
-
-      :hoverable="true"
-      :narrowed="narrowed"
-      :striped="true"
-      :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
-
-      aria-current-label="Current page"
-      aria-next-label="Next page"
-      aria-page-label="Page"
-      aria-previous-label="Previous page"
-      customRowKey="token_id"
   >
-    <o-table-column v-slot="props" field="token_id" label="TOKEN">
-      <TokenIOL class="h-is-bold" :token-id="props.row.token_id"/>
-    </o-table-column>
 
-    <o-table-column v-slot="props" field="name" label="NAME">
-      <div class="w400">
-        {{ props.row.name }}
-      </div>
-    </o-table-column>
+    <template #tableHeaders>
 
-    <o-table-column v-slot="props" field="symbol" label="SYMBOL">
-      <div class="w400">
-        {{ props.row.symbol }}
-      </div>
-    </o-table-column>
+      <TableHeaderView>TOKEN</TableHeaderView>
+      <TableHeaderView>NAME</TableHeaderView>
+      <TableHeaderView>SYMBOL</TableHeaderView>
 
-    <template v-slot:bottom-left>
-      <TablePageSize
-          v-model:size="pageSize"
-          :storage-key="AppStorage.TOKEN_TABLE_PAGE_SIZE_KEY"
-      />
     </template>
-  </o-table>
 
-  <EmptyTable v-if="!tokens.length"/>
+    <template #tableCells="token">
+
+      <TableDataView>
+        <TokenIOL class="h-is-bold" :token-id="token.token_id"/>
+      </TableDataView>
+
+      <TableDataView>
+        <div class="w400">
+          {{ token.name }}
+        </div>
+      </TableDataView>
+
+      <TableDataView>
+        <div class="w400">
+          {{ token.symbol }}
+        </div>
+      </TableDataView>
+
+    </template>
+
+  </TableViewV3>
 
 </template>
 
@@ -67,12 +53,13 @@
 import {computed, inject, onBeforeUnmount, onMounted, PropType, ref} from 'vue';
 import {Token} from '@/schemas/MirrorNodeSchemas.ts';
 import {routeManager} from "@/router";
-import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
-import EmptyTable from "@/components/EmptyTable.vue";
-import TablePageSize from "@/components/transaction/TablePageSize.vue";
 import TokenIOL from "@/components/values/link/TokenIOL.vue";
-import {AppStorage} from "@/AppStorage";
 import {TokensByNameTableLoader} from "@/components/token/TokensByNameTableLoader";
+import TableViewV3 from "@/tables/TableViewV3.vue";
+import TableDataView from "@/tables/TableDataView.vue";
+import TableHeaderView from "@/tables/TableHeaderView.vue";
+import {StaticDataSource} from "@/tables/TableDataSource.ts";
+import {AppStorage} from "@/AppStorage.ts";
 
 const props = defineProps({
   narrowed: Boolean,
@@ -84,10 +71,10 @@ const props = defineProps({
 })
 
 const isMediumScreen = inject('isMediumScreen', true)
+const defaultPageSize = isMediumScreen ? 15 : 10
 
-const perPage = ref(isMediumScreen ? 15 : 10)
 const targetName = computed(() => props.name)
-const loader = new TokensByNameTableLoader(perPage, targetName)
+const loader = new TokensByNameTableLoader(ref(defaultPageSize), targetName)
 onMounted(() => {
   loader.mount()
 })
@@ -95,17 +82,17 @@ onBeforeUnmount(() => {
   loader.unmount()
 })
 
-const handleClick = (t: Token, c: unknown, i: number, ci: number, event: MouseEvent) => {
+const dataSource = new StaticDataSource(
+    loader.rows,
+    AppStorage.TOKEN_TABLE_PAGE_SIZE_KEY,
+    (token: Token) => token.token_id ?? "null",
+    defaultPageSize)
+
+const handleClick = (t: Token, event: MouseEvent) => {
   if (t.token_id !== null) {
     routeManager.routeToToken(t.token_id, event)
   }
 }
-
-const tokens = loader.rows
-const loading = loader.loading
-const total = loader.totalRowCount
-const currentPage = loader.currentPage
-const pageSize = loader.pageSize
 
 </script>
 
