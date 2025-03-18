@@ -9,7 +9,8 @@
     <template v-if="pageIndex >= 2">
       <ButtonView
           :size="ButtonSize.small"
-          @action="handleFirstPage">First
+          @action="handleFirstPage">
+        <div class="label">First</div>
       </ButtonView>
     </template>
     <ButtonView
@@ -63,8 +64,8 @@ const handleNextPage = () => {
 }
 
 const pageUpdating = computed(() => pageIndex.value !== actualPageIndex.value)
-const prevPageEnabled = computed(() => pageIndex.value-1 >= 1 && !pageUpdating.value)
-const nextPageEnabled = computed(() => pageIndex.value+1 <= (pageCount.value ?? 0) && !pageUpdating.value)
+const prevPageEnabled = computed(() => pageIndex.value - 1 >= 1 && !pageUpdating.value)
+const nextPageEnabled = computed(() => pageIndex.value + 1 <= (pageCount.value ?? 0) && !pageUpdating.value)
 
 const pageCount = computed(() => tableDataSourcePageCount(
     props.dataSource,
@@ -87,7 +88,10 @@ nav.table-page-selector {
 
 nav.table-page-selector div.label {
   text-align: center;
-  font-family: var(--font-family-monospace), monospace;
+  font-family: var(--font-family-proportional), monospace;
+  font-size: 14px;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
 }
 
 </style>
