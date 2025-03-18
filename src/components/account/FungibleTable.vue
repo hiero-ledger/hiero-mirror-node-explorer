@@ -8,6 +8,7 @@
 
   <TableViewV3
       :data-source="dataSource"
+      :pagination-disabled="!props.fullPage"
       :clickable="true"
       @cell-click="handleClick"
   >
