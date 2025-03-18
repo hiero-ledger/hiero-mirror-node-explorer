@@ -190,25 +190,4 @@ div.table-row {
   gap: 4px;
 }
 
-#file-table table.o-table {
-  margin: 0;
-}
-
-#file-table table.o-table > tbody > tr {
-  cursor: default;
-}
-
-#file-table table.o-table > thead > tr > th {
-  font-size: 15px;
-  line-height: 18px;
-  padding-top: 0;
-  padding-left: 0;
-  padding-bottom: 12px;
-  border-width: 0;
-}
-
-#file-table td.o-table__td {
-  border-width: 0;
-  padding: 0.25rem 0;
-}
 </style>
