@@ -7,75 +7,83 @@
 <!--suppress CssUnusedSymbol -->
 
 <template>
+
+
+
   <div v-if="displayedAuditItems.length> 0" id="file-table">
-    <div class="table-header">
-      <div class="h-is-bold">
-        {{ tableTitle }}
-      </div>
-      <div class="header-right">
-        <div v-if="nbUnusedAuditItems > 0"
-             style="cursor: pointer; color: var(--network-text-accent-color)"
-             @click="handleToggleFiltering"
-        >
-          {{ isListFiltered ? 'Show unused' : 'Hide unused' }}
-          {{ ' (' + nbUnusedAuditItems + ')' }}
-        </div>
-        <div
-            class=" ml-5"
-            style="cursor: pointer; color: var(--network-text-accent-color)"
-            @click="handleClearAllFiles"
-        >
-          Clear all
-        </div>
-      </div>
-    </div>
 
-    <o-table
-        :current-page="currentPage"
-        :data="displayedAuditItems"
-        :paginated="isPaginated"
-        pagination-order="centered"
-        :range-before="0"
-        :range-after="0"
-        :per-page="perPage"
-        aria-current-label="Current page"
-        aria-next-label="Next page"
-        aria-page-label="Page"
-        aria-previous-label="Previous page">
+    <TableViewV3
+        :data-source="dataSource"
+        :page-size-selector-hidden="true"
+        :row-height="32"
+    >
 
-      <o-table-column v-slot="props" field="type_and_name">
-        <div class="table-row ">
+      <template #tableHeaders>
 
-          <div v-if="isMetadata(props.row)">
-            <FileJson :size="20"/>
+        <TableHeaderView>
+          <div class="table-header">
+            <div class="h-is-bold">
+              {{ tableTitle }}
+            </div>
+            <div class="header-right">
+              <div v-if="nbUnusedAuditItems > 0"
+                   style="cursor: pointer; color: var(--network-text-accent-color)"
+                   @click="handleToggleFiltering"
+              >
+                {{ isListFiltered ? 'Show unused' : 'Hide unused' }}
+                {{ ' (' + nbUnusedAuditItems + ')' }}
+              </div>
+              <div
+                  class=" ml-5"
+                  style="cursor: pointer; color: var(--network-text-accent-color)"
+                  @click="handleClearAllFiles"
+              >
+                Clear all
+              </div>
+            </div>
           </div>
+        </TableHeaderView>
 
-          <img v-else-if="isUnused(props.row)"
-               alt="Solidity file"
-               style="width: 20px; height: 20px;"
-               src="../../assets/solidity-icon-grey.svg"
-          >
+      </template>
 
-          <img v-else
-               alt="Solidity file"
-               style="width: 20px; height: 20px;"
-               src="../../assets/solidity-icon.svg"
-          >
+      <template #tableCells="item">
 
-          <div :class="{'h-is-low-contrast':isUnused(props.row)}" class="ml-1 w300">
-            {{ props.row.path }}
+        <TableDataView>
+          <div class="table-row ">
+
+            <div v-if="isMetadata(item)">
+              <FileJson :size="20"/>
+            </div>
+
+            <img v-else-if="isUnused(item)"
+                 alt="Solidity file"
+                 style="width: 20px; height: 20px;"
+                 src="../../assets/solidity-icon-grey.svg"
+            >
+
+            <img v-else
+                 alt="Solidity file"
+                 style="width: 20px; height: 20px;"
+                 src="../../assets/solidity-icon.svg"
+            >
+
+            <div :class="{'h-is-low-contrast':isUnused(item)}" class="ml-1 w300">
+              {{ item.path }}
+            </div>
+
+            <div v-if="!isMetadata(item) && item.target"
+                 class="icon ml-1 h-is-low-contrast"
+                 style="font-size: 14px"
+            >
+              <i class="fa fa-arrow-left"></i>
+            </div>
           </div>
+        </TableDataView>
 
-          <div v-if="!isMetadata(props.row) && props.row.target"
-               class="icon ml-1 h-is-low-contrast"
-               style="font-size: 14px"
-          >
-            <i class="fa fa-arrow-left"></i>
-          </div>
-        </div>
-      </o-table-column>
+      </template>
 
-    </o-table>
+    </TableViewV3>
+
   </div>
 </template>
 
@@ -88,6 +96,10 @@
 import {computed, PropType, ref} from "vue";
 import {ContractSourceAnalyzerItem} from "@/utils/analyzer/ContractSourceAnalyzer.ts";
 import {FileJson} from 'lucide-vue-next';
+import TableViewV3 from "@/tables/TableViewV3.vue";
+import TableDataView from "@/tables/TableDataView.vue";
+import TableHeaderView from "@/tables/TableHeaderView.vue";
+import {StaticDataSource} from "@/tables/TableDataSource.ts";
 
 const props = defineProps({
   auditItems: {
@@ -98,10 +110,7 @@ const props = defineProps({
 
 const emit = defineEmits(['clearAllFiles'])
 
-const currentPage = ref(1);
-const perPage = ref(10);
 const isListFiltered = ref(false)
-const isPaginated = computed(() => props.auditItems.length > perPage.value)
 const tableTitle = computed(() => `Added (${props.auditItems.length})`)
 
 const filteredAuditItems = computed(() => {
@@ -127,6 +136,13 @@ const nbUnusedAuditItems = computed(() => {
   }
   return result
 })
+
+const dataSource = new StaticDataSource(
+    displayedAuditItems,
+    null,
+    (item: ContractSourceAnalyzerItem) => item.path,
+    5)
+
 
 const isMetadata = (item: ContractSourceAnalyzerItem) => {
   const parts = item.path.split('.')
