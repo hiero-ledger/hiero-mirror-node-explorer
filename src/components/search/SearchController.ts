@@ -91,6 +91,9 @@ export class SearchController {
     private readonly allAgents: SearchAgent<unknown, unknown>[] = []
     public readonly domainNameSearchAgents: DomainNameSearchAgent[] = []
 
+    private readonly baseRealm = 0
+    private readonly baseShard = 0
+
     //
     // Public
     //
@@ -180,13 +183,15 @@ export class SearchController {
     private actualInputTextDidChange = (): void => {
 
         const searchedText = this.actualInputText.value
-        const entityID = EntityID.parseWithChecksum(searchedText)
         const transactionID = TransactionID.parse(searchedText)
         const hexBytes = hexToByte(searchedText)
         const alias = AccountAlias.parse(searchedText) != null ? searchedText : null
         const timestamp = Timestamp.parse(searchedText)
         const domainName = /\.[a-zA-Z|ℏ]+$/.test(searchedText) ? searchedText : null
-        const blockNb = EntityID.parsePositiveInt(searchedText)
+        const positiveInt = EntityID.parsePositiveInt(searchedText)
+        const entityID = EntityID.parseWithChecksum(searchedText)
+            ?? (positiveInt != null ? new EntityID(this.baseShard, this.baseRealm, positiveInt, null) : null)
+        const blockNb = positiveInt
 
         // const isTokenName = searchedText.length >= 3 && isASCII(searchedText)
         const isTokenName = searchedText.length >= 3
