@@ -6,55 +6,42 @@
 
 <template>
 
-  <o-table
-      :data="ercs"
-      :loading="loading"
-      paginated
-      backend-pagination
-      pagination-order="centered"
-      :range-before="1"
-      :range-after="1"
-      :total="total"
-      v-model:current-page="currentPage"
-      :per-page="pageSize"
+  <TableViewV3
+      :data-source="dataSource"
+      :clickable="true"
       @cell-click="handleClick"
-
-      :hoverable="true"
-      :narrowed="props.narrowed"
-      :striped="true"
-      :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
-
-      aria-current-label="Current page"
-      aria-next-label="Next page"
-      aria-page-label="Page"
-      aria-previous-label="Previous page"
-      customRowKey="token_id"
   >
-    <o-table-column v-slot="props" field="contract_id" label="CONTRACT ID">
-      <ContractIOL class="h-is-bold" :contract-id="props.row.contractId"/>
-    </o-table-column>
 
-    <o-table-column v-slot="props" field="name" label="NAME">
-      <div class="w400">
-        {{ props.row.name }}
-      </div>
-    </o-table-column>
+    <template #tableHeaders>
 
-    <o-table-column v-slot="props" field="symbol" label="SYMBOL">
-      <div class="w400">
-        {{ props.row.symbol }}
-      </div>
-    </o-table-column>
+      <TableHeaderView>CONTRACT ID</TableHeaderView>
+      <TableHeaderView>NAME</TableHeaderView>
+      <TableHeaderView>SYMBOL</TableHeaderView>
 
-    <template v-slot:bottom-left>
-      <TablePageSize
-          v-model:size="perPage"
-          :storage-key="AppStorage.TOKEN_TABLE_PAGE_SIZE_KEY"
-      />
     </template>
-  </o-table>
 
-  <EmptyTable v-if="!ercs.length"/>
+    <template #tableCells="contract">
+
+
+      <TableDataView>
+        <ContractIOL class="h-is-bold" :contract-id="contract.contractId"/>
+      </TableDataView>
+
+      <TableDataView>
+        <div class="w400">
+          {{ contract.name }}
+        </div>
+      </TableDataView>
+
+      <TableDataView>
+        <div class="w400">
+          {{ contract.symbol }}
+        </div>
+      </TableDataView>
+
+    </template>
+
+  </TableViewV3>
 
 </template>
 
@@ -66,13 +53,15 @@
 
 import {computed, inject, onBeforeUnmount, onMounted, PropType, ref} from 'vue';
 import {routeManager} from "@/router";
-import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
-import EmptyTable from "@/components/EmptyTable.vue";
-import TablePageSize from "@/components/transaction/TablePageSize.vue";
 import {AppStorage} from "@/AppStorage";
 import {ERC20Info} from "@/utils/cache/ERC20InfoCache.ts";
 import ContractIOL from "@/components/values/link/ContractIOL.vue";
 import {ERC721ByNameTableLoader} from "@/components/contract/ERC721ByNameTableLoader.ts";
+import TableViewV3 from "@/tables/TableViewV3.vue";
+import TableDataView from "@/tables/TableDataView.vue";
+import TableHeaderView from "@/tables/TableHeaderView.vue";
+import {StaticDataSource} from "@/tables/TableDataSource.ts";
+import {ERC721Contract} from "@/utils/cache/ERC721Cache.ts";
 
 const props = defineProps({
   narrowed: Boolean,
@@ -83,24 +72,24 @@ const props = defineProps({
   }
 })
 const isMediumScreen = inject('isMediumScreen', true)
+const defaultPageSize = isMediumScreen ? 15 : 10
 
-const perPage = ref(isMediumScreen ? 15 : 10)
 const targetName = computed(() => props.name)
-const loader = new ERC721ByNameTableLoader(perPage, targetName)
+const loader = new ERC721ByNameTableLoader(ref(defaultPageSize), targetName)
 onMounted(() => loader.mount())
 onBeforeUnmount(() => loader.unmount())
 
-const handleClick = (t: ERC20Info, c: unknown, i: number, ci: number, event: MouseEvent) => {
+const dataSource = new StaticDataSource(
+    loader.rows,
+    AppStorage.TOKEN_TABLE_PAGE_SIZE_KEY,
+    (contract: ERC721Contract) => contract.contractId,
+    defaultPageSize)
+
+const handleClick = (t: ERC20Info, event: MouseEvent) => {
   if (t.contractId !== null) {
     routeManager.routeToContract(t.contractId, event)
   }
 }
-
-const ercs = loader.rows
-const loading = loader.loading
-const total = loader.totalRowCount
-const currentPage = loader.currentPage
-const pageSize = loader.pageSize
 
 </script>
 
