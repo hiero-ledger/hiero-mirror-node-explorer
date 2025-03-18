@@ -94,7 +94,4 @@ const handleClick = (t: TopicMessage, event: MouseEvent) => {
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <style>
-#topic-message-table table.o-table > tbody > tr {
-  cursor: default;
-}
 </style>
