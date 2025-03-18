@@ -90,35 +90,20 @@ describe("EntityID.ts", () => {
     test("98", () => {
         const str = "98"
         expect(EntityID.parse(str)).toBeNull()
-        const obj = EntityID.parse(str, true)
-        expect(obj?.shard).toBe(0)
-        expect(obj?.realm).toBe(0)
-        expect(obj?.num).toBe(98)
-        expect(obj?.checksum).toBeNull()
-        expect(obj?.toString()).toBe("0.0.98")
 
         const str2 = "98-abcde"
         expect(EntityID.parse(str2)).toBeNull()
-        expect(EntityID.parse(str2, true)).toBeNull()
         expect(EntityID.parseWithChecksum(str2)).toBeNull()
-        const obj2 = EntityID.parseWithChecksum(str2, true)
-        expect(obj2?.shard).toBe(0)
-        expect(obj2?.realm).toBe(0)
-        expect(obj2?.num).toBe(98)
-        expect(obj2?.checksum).toBe("abcde")
-        expect(obj2?.toString()).toBe("0.0.98")
     })
 
     test("Very big number", () => {
         const veryBigNum = Math.pow(2, 32) - 1
-        const obj = EntityID.parse(veryBigNum.toString())
-        expect(obj).toBeNull()
-        const obj2 = EntityID.parse(veryBigNum.toString(), true)
-        expect(obj2?.shard).toBe(0)
-        expect(obj2?.realm).toBe(0)
-        expect(obj2?.num).toBe(veryBigNum)
-        expect(obj2?.checksum).toBeNull()
-        expect(obj2?.toString()).toBe("0.0." + veryBigNum.toString())
+        const obj = EntityID.parse("0.0." + veryBigNum.toString())
+        expect(obj?.shard).toBe(0)
+        expect(obj?.realm).toBe(0)
+        expect(obj?.num).toBe(veryBigNum)
+        expect(obj?.checksum).toBeNull()
+        expect(obj?.toString()).toBe("0.0." + veryBigNum.toString())
     })
 
     test("1.2.3.4", () => {
@@ -167,16 +152,14 @@ describe("EntityID.ts", () => {
     })
 
     test("0x000000444", () => {
-        const obj = EntityID.parse("0x000000444", true)
+        const obj = EntityID.parse("0x000000444")
         expect(obj).toBeNull()
     })
 
     test("Too Big Number", () => {
         const tooBigNum = Math.pow(2, 32)
-        const obj = EntityID.parse(tooBigNum.toString())
+        const obj = EntityID.parse("0.0." + tooBigNum.toString())
         expect(obj).toBeNull()
-        const obj2 = EntityID.parse(tooBigNum.toString(), true)
-        expect(obj2).toBeNull()
     })
 
     //
