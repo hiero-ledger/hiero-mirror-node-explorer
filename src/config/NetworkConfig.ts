@@ -87,6 +87,8 @@ export class NetworkEntry {
         const displayName = fetchString(obj, "displayName")
         const url = fetchURL(obj, "url")
         const ledgerID = fetchString(obj, "ledgerID")
+        const baseRealm = fetchNumber(obj, "baseRealm") ?? 0
+        const baseShard = fetchNumber(obj, "baseShard") ?? 0
         const enableWallet = fetchBoolean(obj, "enableWallet") ?? false
         const enableStaking = fetchBoolean(obj, "enableStaking") ?? false
         const enableExpiry = fetchBoolean(obj, "enableExpiry") ?? false
@@ -119,6 +121,8 @@ export class NetworkEntry {
             tidyDisplayName,
             url,
             ledgerID,
+            baseRealm,
+            baseShard,
             enableWallet,
             enableStaking,
             enableExpiry,
@@ -139,6 +143,8 @@ export class NetworkEntry {
         public readonly displayName: string,
         public readonly mirrorNodeURL: string,
         public readonly ledgerID: string,
+        public readonly baseRealm: number,
+        public readonly baseShard: number,
         // When set to 'true', this variable will enable connecting a wallet
         public readonly enableWallet: boolean,
         // When set to 'true', this variable will enable staking feature
@@ -175,6 +181,8 @@ export class NetworkConfig {
             displayName: 'MAINNET',
             url: "https://mainnet-public.mirrornode.hedera.com/",
             ledgerID: '00',
+            baseRealm: 0,
+            baseShard: 0,
             enableWallet: true,
             enableStaking: true,
             enableExpiry: true,
@@ -193,6 +201,8 @@ export class NetworkConfig {
             displayName: 'TESTNET',
             url: "https://testnet.mirrornode.hedera.com/",
             ledgerID: '01',
+            baseRealm: 0,
+            baseShard: 0,
             enableWallet: true,
             enableStaking: true,
             enableExpiry: true,
@@ -211,6 +221,8 @@ export class NetworkConfig {
             displayName: 'PREVIEWNET',
             url: "https://previewnet.mirrornode.hedera.com/",
             ledgerID: '02',
+            baseRealm: 0,
+            baseShard: 0,
             enableWallet: false,
             enableStaking: true,
             enableExpiry: true,
