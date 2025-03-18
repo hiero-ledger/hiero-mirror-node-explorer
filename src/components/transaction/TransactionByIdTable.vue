@@ -6,53 +6,55 @@
 
 <template>
 
-  <o-table
-      v-model:current-page="currentPage"
-      :data="props.transactions"
-      :hoverable="true"
-      :narrowed="props.narrowed"
-      :paginated="!isTouchDevice && paginationNeeded"
-      pagination-order="centered"
-      :range-before="1"
-      :range-after="1"
-      :per-page="isMediumScreen ? pageSize : 5"
-      :striped="true"
-      :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
-      aria-current-label="Current page"
-      aria-next-label="Next page"
-      aria-page-label="Page"
-      aria-previous-label="Previous page"
-      customRowKey="consensus_timestamp"
+  <TableViewV3
+      :data-source="dataSource"
+      :clickable="true"
+      :pagination-disabled="isTouchDevice"
       @cell-click="handleClick"
   >
-    <o-table-column v-slot="props" field="consensus_timestamp" label="TIME">
-      <div style="display: flex; gap: 8px; line-height: 18px">
-        <TimestampValue class="h-is-bold" v-bind:timestamp="props.row.consensus_timestamp"/>
-        <TriangleAlert v-if="props.row.result !== 'SUCCESS'" :size="18" class="h-text-error"/>
-      </div>
-    </o-table-column>
 
-    <o-table-column v-slot="props" field="name" label="TYPE">
-      <div class="h-has-pill" style="display: inline-block">
-        {{ makeTypeLabel(props.row.name) }}
-      </div>
-    </o-table-column>
+    <template #tableHeaders>
 
-    <o-table-column v-slot="props" label="CONTENT">
-      <TransactionSummary v-bind:transaction="props.row"/>
-    </o-table-column>
+      <TableHeaderView>TIME</TableHeaderView>
+      <TableHeaderView>TYPE</TableHeaderView>
+      <TableHeaderView>CONTENT</TableHeaderView>
+      <TableHeaderView v-if="showRelationship">RELATIONSHIP</TableHeaderView>
+      <TableHeaderView v-if="showNonce" :align-right="true">NONCE</TableHeaderView>
 
-    <o-table-column v-if="showRelationship" v-slot="props" label="RELATIONSHIP">
-      {{ makeRelationshipLabel(props.row) }}
-    </o-table-column>
+    </template>
 
-    <o-table-column v-if="showNonce" v-slot="props" label="NONCE">
-      {{ props.row.nonce }}
-    </o-table-column>
+    <template #tableCells="transaction">
 
-  </o-table>
+      <TableDataView>
+        <div style="display: flex; gap: 8px; line-height: 18px">
+          <TimestampValue class="h-is-bold" v-bind:timestamp="transaction.consensus_timestamp"/>
+          <TriangleAlert v-if="transaction.result !== 'SUCCESS'" :size="18" class="h-text-error"/>
+        </div>
+      </TableDataView>
 
-  <EmptyTable v-if="!props.transactions.length"/>
+      <TableDataView>
+        <div class="h-has-pill" style="display: inline-block">
+          {{ makeTypeLabel(transaction.name) }}
+        </div>
+      </TableDataView>
+
+      <TableDataView>
+        <TransactionSummary v-bind:transaction="transaction"/>
+      </TableDataView>
+
+      <TableDataView v-if="showRelationship">
+        {{ makeRelationshipLabel(transaction) }}
+      </TableDataView>
+
+      <TableDataView v-if="showNonce">
+        <div class="w400">
+          {{ transaction.nonce }}
+        </div>
+      </TableDataView>
+
+    </template>
+
+  </TableViewV3>
 
 </template>
 
@@ -62,15 +64,17 @@
 
 <script setup lang="ts">
 
-import {computed, inject, PropType, ref} from 'vue';
+import {computed, inject, PropType} from 'vue';
 import {Transaction, TransactionType} from '@/schemas/MirrorNodeSchemas.ts';
 import {makeTypeLabel} from "@/utils/TransactionTools";
 import {routeManager} from "@/router";
 import TimestampValue from "@/components/values/TimestampValue.vue";
 import TransactionSummary from "@/components/transaction/TransactionSummary.vue";
-import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
-import EmptyTable from "@/components/EmptyTable.vue";
 import {TriangleAlert} from "lucide-vue-next";
+import TableViewV3 from "@/tables/TableViewV3.vue";
+import TableHeaderView from "@/tables/TableHeaderView.vue";
+import TableDataView from "@/tables/TableDataView.vue";
+import {StaticDataSource} from "@/tables/TableDataSource.ts";
 
 const props = defineProps({
   narrowed: Boolean,
@@ -84,20 +88,20 @@ const props = defineProps({
 const isTouchDevice = inject('isTouchDevice', false)
 const isMediumScreen = inject('isMediumScreen', true)
 
-const DEFAULT_PAGE_SIZE = 15
-const pageSize = props.nbItems ?? DEFAULT_PAGE_SIZE
-const paginationNeeded = computed(() => {
-      return props.transactions.length > 5
-    }
-)
+const DEFAULT_PAGE_SIZE = isMediumScreen ? 15 : 5
+
 const showRelationship = computed(() => props.transactions.length >= 1 && makeRelationshipLabel(props.transactions[0]))
 const showNonce = computed(() => props.transactions.length >= 2 && !props.transactions[1].scheduled)
 
-const handleClick = (t: Transaction, c: unknown, i: number, ci: number, event: MouseEvent) => {
+const dataSource = new StaticDataSource(
+    computed(() => props.transactions),
+    null,
+    (t: Transaction) => t.consensus_timestamp,
+    DEFAULT_PAGE_SIZE)
+
+const handleClick = (t: Transaction, event: MouseEvent) => {
   routeManager.routeToTransaction(t, event)
 }
-
-const currentPage = ref(1)
 
 const hasChild = computed(() => {
   let result = false
