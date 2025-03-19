@@ -40,6 +40,10 @@
     <div class="dashboard-separator"/>
 
     <div class="dashboard-content">
+      <ChartView :controller="tpsController" data-cy="chart-view"/>
+    </div>
+
+    <div class="dashboard-content">
       <ChartView :controller="accountGrowthController" data-cy="chart-view"/>
     </div>
 
@@ -75,6 +79,7 @@ import {TransactionCountController} from "@/charts/hgraph/TransactionCountContro
 import {AvgTimeToConsensusController} from "@/charts/hgraph/AvgTimeToConsensusController.ts";
 import {ThemeController} from "@/components/ThemeController.ts";
 import {routeManager} from "@/router.ts";
+import {TPSController} from "@/charts/hgraph/TPSController.ts";
 
 defineProps({
   network: String
@@ -93,6 +98,10 @@ onBeforeUnmount(() => networkFeeController.unmount())
 const activeAccountsController = new ActiveAccountController(themeController, routeManager)
 onMounted(() => activeAccountsController.mount())
 onBeforeUnmount(() => activeAccountsController.unmount())
+
+const tpsController = new TPSController(themeController, routeManager)
+onMounted(() => tpsController.mount())
+onBeforeUnmount(() => tpsController.unmount())
 
 const accountGrowthController = new AccountGrowthController(themeController, routeManager)
 onMounted(() => accountGrowthController.mount())
