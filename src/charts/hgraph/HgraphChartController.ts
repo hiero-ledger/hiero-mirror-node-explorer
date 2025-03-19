@@ -72,6 +72,57 @@ export abstract class HgraphChartController extends ChartController<EcosystemMet
         }
     }
 
+    protected makeLineChartConfig(metrics: EcosystemMetric[], range: ChartRange,
+                                  logarithmic: boolean, yLabel: string | null): ChartConfiguration {
+        const granularity = computeGranularityForRange(range)
+        const graphLabels = makeGraphLabels(metrics, granularity)
+        const graphDataSet = this.makeGraphDataSet(metrics) as any
+        const textPrimaryColor = this.themeController.getTextPrimaryColor()
+        const textSecondaryColor = this.themeController.getTextSecondaryColor()
+        const yScaleType = logarithmic ? "logarithmic" : "linear"
+
+        return {
+            type: 'line',
+            data: {
+                labels: graphLabels,
+                datasets: [graphDataSet],
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            color: textPrimaryColor
+                        },
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        type: yScaleType,
+                        ticks: {
+                            color: textPrimaryColor
+                        },
+                        grid: {
+                            display: false
+                        },
+                        beginAtZero: true,
+                        title: {
+                            display: yLabel !== null,
+                            text: yLabel ?? "",
+                            color: textSecondaryColor
+                        },
+                    }
+                },
+                maintainAspectRatio: false
+            }
+        }
+    }
+
     protected makeGraphDataSet(metrics: EcosystemMetric[]): object {
         const totals = metrics.map((m: EcosystemMetric) => m.total)
         const graphBarColor = this.themeController.getGraphBarColor()
@@ -79,6 +130,7 @@ export abstract class HgraphChartController extends ChartController<EcosystemMet
             label: this.chartTitle,
             data: totals,
             borderWidth: 1,
+            borderColor: graphBarColor,
             backgroundColor: graphBarColor
         }
     }
