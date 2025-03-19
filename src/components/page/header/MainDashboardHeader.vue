@@ -91,7 +91,6 @@ div.header {
   border-bottom-right-radius: 32px;
   display: flex;
   flex-direction: column;
-  margin-bottom: 16px;
   padding: 0 16px 24px 16px;
 }
 

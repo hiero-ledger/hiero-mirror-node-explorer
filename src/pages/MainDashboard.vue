@@ -6,35 +6,37 @@
 
 <template>
 
-  <MainDashboardHeader/>
+  <div class="h-page-frame">
+    <MainDashboardHeader/>
 
-  <div class="h-page-content">
-    <div class="dashboard-title">
-      Network
+    <div class="h-page-content">
+      <div class="dashboard-title">
+        Network
+      </div>
+
+      <div class="dashboard-separator"/>
+
+      <div class="dashboard-content">
+        <ChartView :controller="txOverTimeController" data-cy="chart-view"/>
+      </div>
+
+      <div class="dashboard-content">
+        <ChartView :controller="networkFeeController" data-cy="chart-view"/>
+      </div>
+
+      <div class="dashboard-title">
+        Accounts
+      </div>
+
+      <div class="dashboard-separator"/>
+
+      <div class="dashboard-content">
+        <ChartView :controller="activeAccountsController" data-cy="chart-view"/>
+      </div>
     </div>
 
-    <div class="dashboard-separator"/>
-
-    <div class="dashboard-content">
-      <ChartView :controller="txOverTimeController" data-cy="chart-view"/>
-    </div>
-
-    <div class="dashboard-content">
-      <ChartView :controller="networkFeeController" data-cy="chart-view"/>
-    </div>
-
-    <div class="dashboard-title">
-      Accounts
-    </div>
-
-    <div class="dashboard-separator"/>
-
-    <div class="dashboard-content">
-      <ChartView :controller="activeAccountsController" data-cy="chart-view"/>
-    </div>
+    <Footer/>
   </div>
-
-  <Footer/>
 
 </template>
 

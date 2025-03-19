@@ -266,6 +266,12 @@ ul {
     list-style: none
 }
 
+.h-page-frame {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
 .h-page-content {
     display: flex;
     flex-direction: column;

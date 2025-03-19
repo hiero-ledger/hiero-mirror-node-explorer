@@ -6,7 +6,7 @@
 
 <template>
 
-  <div class="page-frame">
+  <div class="h-page-frame">
     <PageHeader :page-title="props.pageTitle"/>
 
     <div v-if="slots.banner">
@@ -51,12 +51,4 @@ const slots = useSlots()
 <!--                                                       STYLE                                                     -->
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
-<style scoped>
-
-div.page-frame {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-</style>
+<style />
