@@ -50,7 +50,7 @@ export class TxOverTimeController extends HgraphChartController {
     //
 
     protected async transformMetrics(metrics: EcosystemMetric[], range: ChartRange): Promise<EcosystemMetric[]> {
-        // metrics contains all the since collection begun
+        // metrics contains all items since collection started
 
         // 1) we accumulate
         let accumulatedTotal = 0
