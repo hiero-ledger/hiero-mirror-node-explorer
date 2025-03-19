@@ -14,7 +14,7 @@ export class TPSController extends GenericMetricController {
     //
 
     public constructor(themeController: ThemeController, routeManager: RouteManager) {
-        super("TPS", "network_tps", themeController, routeManager)
+        super("TPS (NEW)", "network_tps", themeController, routeManager)
     }
 
     //

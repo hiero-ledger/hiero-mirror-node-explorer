@@ -14,7 +14,7 @@ export class TransactionCountController extends GenericMetricController {
     //
 
     public constructor(themeController: ThemeController, routeManager: RouteManager) {
-        super("Transactions Submitted over Time", "transactions", themeController, routeManager)
+        super("Transactions Submitted over Time (NEW)", "transactions", themeController, routeManager)
     }
 
     //

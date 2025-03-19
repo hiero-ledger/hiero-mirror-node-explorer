@@ -14,7 +14,7 @@ export class AccountGrowthController extends GenericMetricController {
     //
 
     public constructor(themeController: ThemeController, routeManager: RouteManager) {
-        super("Accounts Created Over Time", "account_growth", themeController, routeManager)
+        super("Accounts Created Over Time (NEW)", "account_growth", themeController, routeManager)
     }
 
     //
