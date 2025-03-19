@@ -3,6 +3,7 @@
 import {byteToHex, hexToByte} from "@/utils/B64Utils";
 import {EntityID} from "@/utils/EntityID";
 import {ethers} from "ethers";
+import {NetworkEntry} from "@/config/NetworkConfig.ts";
 
 export class EthereumAddress {
 
@@ -33,13 +34,15 @@ export class EthereumAddress {
             + "…" + byteToHex(this.bytes.slice(-digitKept / 2))
     }
 
-    public toEntityID(): EntityID | null {
+    public toEntityID(network: NetworkEntry | null = null): EntityID | null {
         let result: EntityID | null
         if (this.isLongZeroForm()) {
+            const baseRealm = network?.baseRealm ?? 0
+            const baseShard = network?.baseShard ?? 0
             const view = new DataView(this.bytes.buffer)
             const bigNum = view.getBigInt64(12)
             const num = 0 <= bigNum && bigNum < EntityID.MAX_INT ? Number(bigNum) : null
-            result = num != null ? new EntityID(0, 0, num, null) : null
+            result = num != null ? new EntityID(baseShard, baseRealm, num, null) : null
         } else {
             result = null
         }

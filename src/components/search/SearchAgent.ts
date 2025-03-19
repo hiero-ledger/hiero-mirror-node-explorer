@@ -274,7 +274,7 @@ export class TokenSearchAgent extends SearchAgent<EntityID | Uint8Array, TokenIn
         } else if (tokenParam.length <= 20) {
             // accountParam is an evm address (possibly partial)
             const evmAddress = byteToHex(paddedBytes(tokenParam, 20))
-            const entityID = EntityID.fromAddress(evmAddress)
+            const entityID = EntityID.fromAddress(evmAddress, routeManager.currentNetworkEntry.value)
             tokenLoc = entityID !== null ? entityID.toString() : null
         } else {
             tokenLoc = null

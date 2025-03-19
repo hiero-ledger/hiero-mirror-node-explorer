@@ -211,7 +211,7 @@
 
 import {computed, inject, onBeforeUnmount, onMounted} from 'vue';
 import {useRouter} from "vue-router";
-import {walletManager} from "@/router";
+import {routeManager, walletManager} from "@/router";
 import TimestampValue from "@/components/values/TimestampValue.vue";
 import TokenBalanceTable from "@/components/token/TokenBalanceTable.vue";
 import DurationValue from "@/components/values/DurationValue.vue";
@@ -257,7 +257,8 @@ const isMediumScreen = inject('isMediumScreen', true)
 const networkConfig = NetworkConfig.inject()
 
 const normalizedTokenId = computed(() => {
-  const result = EntityID.parse(props.tokenId) ?? EntityID.fromAddress(props.tokenId)
+  const network = routeManager.currentNetworkEntry.value
+  const result = EntityID.parse(props.tokenId) ?? EntityID.fromAddress(props.tokenId, network)
   return result !== null ? result.toString() : null
 })
 const validEntityId = computed(() => normalizedTokenId.value != null)

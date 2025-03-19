@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import {EntityID} from "@/utils/EntityID";
+import {routeManager} from "@/router.ts";
 
 export class SystemContractRegistry {
 
@@ -16,7 +17,7 @@ export class SystemContractRegistry {
     }
 
     public lookupByAddress(contractAddress: string): SystemContractEntry | null {
-        const entityID = EntityID.fromAddress(contractAddress)
+        const entityID = EntityID.fromAddress(contractAddress, routeManager.currentNetworkEntry.value)
         return entityID != null ? this.lookup(entityID.toString()) : null
     }
 

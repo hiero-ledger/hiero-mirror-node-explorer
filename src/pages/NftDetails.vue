@@ -199,7 +199,7 @@ const isMediumScreen = inject("isMediumScreen", true)
 const normalizedTokenId = computed(() => {
   const result =
       EntityID.parse(props.tokenId) ??
-      EntityID.fromAddress(props.tokenId)
+      EntityID.fromAddress(props.tokenId, routeManager.currentNetworkEntry.value)
   return result !== null ? result.toString() : null
 })
 const validEntityId = computed(() => normalizedTokenId.value != null)

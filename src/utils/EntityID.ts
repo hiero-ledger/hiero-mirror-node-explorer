@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import {byteToHex, hexToByte} from "./B64Utils";
+import {NetworkEntry} from "@/config/NetworkConfig.ts";
 
 export class EntityID {
 
@@ -85,16 +86,18 @@ export class EntityID {
         return byteToHex(buffer)
     }
 
-    public static fromAddress(address: string | undefined): EntityID | null {
+    public static fromAddress(address: string | undefined, network: NetworkEntry | null = null): EntityID | null {
         let result: EntityID | null
 
         if (address) {
             const buffer = hexToByte(address)
             if (buffer !== null && buffer.length == 20) {
+                const baseRealm = network?.baseRealm ?? 0
+                const baseShard = network?.baseShard ?? 0
                 const view = new DataView(buffer.buffer)
                 const bigNum = view.getBigInt64(12)
                 const num = 0 <= bigNum && bigNum < EntityID.MAX_INT ? Number(bigNum) : null
-                result = num != null ? new EntityID(0, 0, num, null) : null
+                result = num != null ? new EntityID(baseShard, baseRealm, num, null) : null
             } else {
                 result = null
             }
