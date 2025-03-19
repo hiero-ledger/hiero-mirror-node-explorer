@@ -121,9 +121,10 @@ const evmAddress = ref<string | null>(null)
 const entityId = ref<string | null>(null)
 const systemContract = ref<SystemContractEntry | null>(null)
 const ethereumAddress = computed(() => EthereumAddress.parse(evmAddress.value ?? ''))
-const derivedEntityId = computed(() =>
-    ethereumAddress.value?.toEntityID(routeManager.currentNetworkEntry.value)?.toString() ?? null
-)
+const derivedEntityId = computed(() => {
+  const network = routeManager.currentNetworkEntry.value
+  return ethereumAddress.value?.toEntityID(network.baseShard, network.baseShard)?.toString() ?? null
+})
 
 onMounted(() => updateIdAndAddress())
 watch([() => props.address, () => props.id, () => props.entityType], () => updateIdAndAddress())

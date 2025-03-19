@@ -65,4 +65,19 @@ describe("EthereumAddress", () => {
 
     })
 
+    test("Parsing with non-zero shard/realm", () => {
+
+        const longZeroAddress = "0x000000000000000000000000000000000010400e"
+        const compactAddress = "0x00…10400e"
+        const entityId = "1.2.1064974"
+        const baseShard = 1
+        const baseRealm = 2
+
+        const address = EthereumAddress.parse(longZeroAddress)
+
+        expect(address?.isLongZeroForm()).toBe(true)
+        expect(address?.toString()).toBe(longZeroAddress)
+        expect(address?.toCompactString()).toBe(compactAddress)
+        expect(address?.toEntityID(baseShard, baseRealm)?.toString()).toBe(entityId)
+    })
 })
