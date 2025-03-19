@@ -110,7 +110,7 @@ const isGreen = computed(() => {
 <style scoped>
 
 div.hbar-amount {
-  display: flex;
+  display: inline-flex;
   flex-wrap: wrap;
   justify-content: flex-end;
 }
