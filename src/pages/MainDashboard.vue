@@ -32,6 +32,25 @@
     <div class="dashboard-content">
       <ChartView :controller="activeAccountsController" data-cy="chart-view"/>
     </div>
+
+    <div class="dashboard-title">
+      Added Charts
+    </div>
+
+    <div class="dashboard-separator"/>
+
+    <div class="dashboard-content">
+      <ChartView :controller="accountGrowthController" data-cy="chart-view"/>
+    </div>
+
+    <div class="dashboard-content">
+      <ChartView :controller="transactionCountController" data-cy="chart-view"/>
+    </div>
+
+    <div class="dashboard-content">
+      <ChartView :controller="avgTimeToConsensusController" data-cy="chart-view"/>
+    </div>
+
   </div>
 
   <Footer/>
@@ -51,6 +70,9 @@ import {TxOverTimeController} from "@/charts/hgraph/TxOverTimeController.ts";
 import ChartView from "@/charts/core/ChartView.vue";
 import {NetworkFeeController} from "@/charts/hgraph/NetworkFeeController.ts";
 import {ActiveAccountController} from "@/charts/hgraph/ActiveAccountController.ts";
+import {AccountGrowthController} from "@/charts/hgraph/AccountGrowthController.ts";
+import {TransactionCountController} from "@/charts/hgraph/TransactionCountController.ts";
+import {AvgTimeToConsensusController} from "@/charts/hgraph/AvgTimeToConsensusController.ts";
 import {ThemeController} from "@/components/ThemeController.ts";
 import {routeManager} from "@/router.ts";
 
@@ -71,6 +93,18 @@ onBeforeUnmount(() => networkFeeController.unmount())
 const activeAccountsController = new ActiveAccountController(themeController, routeManager)
 onMounted(() => activeAccountsController.mount())
 onBeforeUnmount(() => activeAccountsController.unmount())
+
+const accountGrowthController = new AccountGrowthController(themeController, routeManager)
+onMounted(() => accountGrowthController.mount())
+onBeforeUnmount(() => accountGrowthController.unmount())
+
+const transactionCountController = new TransactionCountController(themeController, routeManager)
+onMounted(() => transactionCountController.mount())
+onBeforeUnmount(() => transactionCountController.unmount())
+
+const avgTimeToConsensusController = new AvgTimeToConsensusController(themeController, routeManager)
+onMounted(() => avgTimeToConsensusController.mount())
+onBeforeUnmount(() => avgTimeToConsensusController.unmount())
 
 </script>
 
