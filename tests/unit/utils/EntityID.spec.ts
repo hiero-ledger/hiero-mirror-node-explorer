@@ -4,7 +4,6 @@
 
 import {describe, expect, test} from 'vitest'
 import {EntityID} from "@/utils/EntityID";
-import {NetworkEntry} from "@/config/NetworkConfig.ts";
 
 describe("EntityID.ts", () => {
 
@@ -202,15 +201,9 @@ describe("EntityID.ts", () => {
 
     test("Non zero realm and shard", () => {
         const a = "0x00000000000000000000000000000000000000ff"
-        const network = NetworkEntry.parse({
-                "name": "mainnet",
-                "displayName": "MAINNET",
-                "url": "https://mainnet-public.mirrornode.hedera.com/",
-                "ledgerID": "00",
-                "baseRealm": 2,
-                "baseShard": 1
-            })
-        const obj = EntityID.fromAddress(a, network)
+        const baseShard = 1
+        const baseRealm = 2
+        const obj = EntityID.fromAddress(a, baseShard, baseRealm)
         expect(obj?.shard).toBe(1)
         expect(obj?.realm).toBe(2)
         expect(obj?.num).toBe(255)
@@ -287,15 +280,9 @@ describe("EntityID.ts", () => {
 
     test("Non zero realm and shard", () => {
         const evmAddress = "0x00000000000000000000000000000000000000ff"
-        const network = NetworkEntry.parse({
-            "name": "mainnet",
-            "displayName": "MAINNET",
-            "url": "https://mainnet-public.mirrornode.hedera.com/",
-            "ledgerID": "00",
-            "baseRealm": 2,
-            "baseShard": 1
-        })
-        const id = EntityID.fromAddress(evmAddress, network)
+        const baseShard = 1
+        const baseRealm = 2
+        const id = EntityID.fromAddress(evmAddress, baseShard, baseRealm)
         expect(id?.toString()).toBe("1.2.255")
     })
 })

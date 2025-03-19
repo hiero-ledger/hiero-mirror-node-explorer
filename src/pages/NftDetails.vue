@@ -197,9 +197,10 @@ const isSmallScreen = inject("isSmallScreen", true)
 const isMediumScreen = inject("isMediumScreen", true)
 
 const normalizedTokenId = computed(() => {
+  const network = routeManager.currentNetworkEntry.value
   const result =
       EntityID.parse(props.tokenId) ??
-      EntityID.fromAddress(props.tokenId, routeManager.currentNetworkEntry.value)
+      EntityID.fromAddress(props.tokenId, network.baseShard, network.baseRealm)
   return result !== null ? result.toString() : null
 })
 const validEntityId = computed(() => normalizedTokenId.value != null)

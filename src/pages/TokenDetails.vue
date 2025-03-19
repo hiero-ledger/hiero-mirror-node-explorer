@@ -258,7 +258,9 @@ const networkConfig = NetworkConfig.inject()
 
 const normalizedTokenId = computed(() => {
   const network = routeManager.currentNetworkEntry.value
-  const result = EntityID.parse(props.tokenId) ?? EntityID.fromAddress(props.tokenId, network)
+  const result =
+      EntityID.parse(props.tokenId)
+      ?? EntityID.fromAddress(props.tokenId, network.baseShard, network.baseRealm)
   return result !== null ? result.toString() : null
 })
 const validEntityId = computed(() => normalizedTokenId.value != null)

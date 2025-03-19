@@ -116,7 +116,8 @@ export class ContractResultAnalyzer {
     private readonly updateFromId = async () => {
         if (this.contractResult.value !== null) {
             if (this.contractResult.value.from !== null) {
-                const entityID = EntityID.fromAddress(this.contractResult.value.from, routeManager.currentNetworkEntry.value)
+                const network = routeManager.currentNetworkEntry.value
+                const entityID = EntityID.fromAddress(this.contractResult.value.from, network.baseShard, network.baseRealm)
                 this.fromId.value = entityID?.toString() ?? null
             } else {
                 this.fromId.value = null
