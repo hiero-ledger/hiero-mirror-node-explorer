@@ -16,7 +16,19 @@
     <div class="dashboard-separator"/>
 
     <div class="dashboard-content">
+      <ChartView :controller="tpsController" data-cy="chart-view"/>
+    </div>
+
+    <div class="dashboard-content">
+      <ChartView :controller="transactionCountController" data-cy="chart-view"/>
+    </div>
+
+    <div class="dashboard-content">
       <ChartView :controller="txOverTimeController" data-cy="chart-view"/>
+    </div>
+
+    <div class="dashboard-content">
+      <ChartView :controller="avgTimeToConsensusController" data-cy="chart-view"/>
     </div>
 
     <div class="dashboard-content">
@@ -33,27 +45,10 @@
       <ChartView :controller="activeAccountsController" data-cy="chart-view"/>
     </div>
 
-    <div class="dashboard-title">
-      Added Charts
-    </div>
-
-    <div class="dashboard-separator"/>
-
-    <div class="dashboard-content">
-      <ChartView :controller="tpsController" data-cy="chart-view"/>
-    </div>
-
     <div class="dashboard-content">
       <ChartView :controller="accountGrowthController" data-cy="chart-view"/>
     </div>
 
-    <div class="dashboard-content">
-      <ChartView :controller="transactionCountController" data-cy="chart-view"/>
-    </div>
-
-    <div class="dashboard-content">
-      <ChartView :controller="avgTimeToConsensusController" data-cy="chart-view"/>
-    </div>
 
   </div>
 

@@ -14,7 +14,7 @@ export class AvgTimeToConsensusController extends GenericMetricController {
     //
 
     public constructor(themeController: ThemeController, routeManager: RouteManager) {
-        super("Avg Time to Consensus", "avg_time_to_consensus", themeController, routeManager)
+        super("Avg Time to Consensus (NEW)", "avg_time_to_consensus", themeController, routeManager)
     }
 
     //
