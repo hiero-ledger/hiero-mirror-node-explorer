@@ -4,6 +4,7 @@
 
 import {describe, expect, test} from 'vitest'
 import {EntityID} from "@/utils/EntityID";
+import {NetworkEntry} from "@/config/NetworkConfig.ts";
 
 describe("EntityID.ts", () => {
 
@@ -199,6 +200,22 @@ describe("EntityID.ts", () => {
         expect(obj).toBeNull()
     })
 
+    test("Non zero realm and shard", () => {
+        const a = "0x00000000000000000000000000000000000000ff"
+        const network = NetworkEntry.parse({
+                "name": "mainnet",
+                "displayName": "MAINNET",
+                "url": "https://mainnet-public.mirrornode.hedera.com/",
+                "ledgerID": "00",
+                "baseRealm": 2,
+                "baseShard": 1
+            })
+        const obj = EntityID.fromAddress(a, network)
+        expect(obj?.shard).toBe(1)
+        expect(obj?.realm).toBe(2)
+        expect(obj?.num).toBe(255)
+        expect(obj?.toString()).toBe("1.2.255")
+    })
 
     //
     // EntityID.compareAccountID()
@@ -240,6 +257,18 @@ describe("EntityID.ts", () => {
         }
     })
 
+    test("1.2.100 < 1.2.101", () => {
+        const id1 = EntityID.parse("1.2.100")
+        const id2 = EntityID.parse("1.2.101")
+        expect(id1 !== null && id2 !== null).toBe(true)
+        if (id1 !== null && id2 !== null) {
+            expect(id1.compareAccountID(id2) < 0).toBe(true)
+            expect(id2.compareAccountID(id1) > 0).toBe(true)
+            expect(id1.compareAccountID(id1) == 0).toBe(true)
+            expect(id2.compareAccountID(id2) == 0).toBe(true)
+        }
+    })
+
     //
     // EntityID.fromAddress()
     //
@@ -254,5 +283,19 @@ describe("EntityID.ts", () => {
         const evmAddress = "0x6482571dbbE4E68CbcDC6207f82d701804b8664a"
         const id = EntityID.fromAddress(evmAddress)
         expect(id).toBeNull()
+    })
+
+    test("Non zero realm and shard", () => {
+        const evmAddress = "0x00000000000000000000000000000000000000ff"
+        const network = NetworkEntry.parse({
+            "name": "mainnet",
+            "displayName": "MAINNET",
+            "url": "https://mainnet-public.mirrornode.hedera.com/",
+            "ledgerID": "00",
+            "baseRealm": 2,
+            "baseShard": 1
+        })
+        const id = EntityID.fromAddress(evmAddress, network)
+        expect(id?.toString()).toBe("1.2.255")
     })
 })
