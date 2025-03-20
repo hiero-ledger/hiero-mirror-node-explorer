@@ -32,7 +32,7 @@
         </template>
       </Property>
       <Property v-if="rawMetadata" id="metadata-location" full-width>
-        <template #name>Content Location</template>
+        <template #name>Decoded Metadata</template>
         <template #value>
           <BlobValue
               class="is-inline-block"

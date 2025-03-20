@@ -52,7 +52,7 @@ describe("MetadataSection.vue", () => {
         expect(wrapper.get("#raw-metadata-propertyName").text()).toBe('Raw Metadata')
         expect(wrapper.get("#raw-metadata-propertyValue").text()).toBe(metadata.value)
 
-        expect(wrapper.get("#metadata-locationName").text()).toBe('Content Location')
+        expect(wrapper.get("#metadata-locationName").text()).toBe('Decoded Metadata')
         expect(wrapper.get("#metadata-locationValue").text()).toBe(decodedMetadata)
 
         expect(wrapper.get("#typeValue").text()).toBe(IPFS_METADATA_CONTENT.type)
