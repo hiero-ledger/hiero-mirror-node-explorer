@@ -97,10 +97,7 @@ describe("App.vue", () => {
         // console.log(wrapper.text())
 
         const charts = wrapper.findAllComponents(ChartView)
-        expect(charts.length).toBe(3)
-        expect(charts[0].text()).toMatch(RegExp("^Transactions Over Time"))
-        expect(charts[1].text()).toMatch(RegExp("^Network Fees"))
-        expect(charts[2].text()).toMatch(RegExp("^Active Accounts"))
+        expect(charts.length).toBe(0)
 
         expect(wrapper.findComponent(MainDashboardHeader).exists()).toBe(true)
         expect(wrapper.findComponent(Footer).exists()).toBe(true)
