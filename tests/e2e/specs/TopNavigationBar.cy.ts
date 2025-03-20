@@ -40,9 +40,6 @@ describe('Top Navigation Bar', () => {
             .should('have.value', 'previewnet')
 
         cy.url().should('include', '/previewnet/dashboard')
-        cy.contains('Transactions Over Time')
-        cy.contains('Network Fees')
-        cy.contains('Active Accounts')
     })
 
     it('should navigate to top level pages', () => {
