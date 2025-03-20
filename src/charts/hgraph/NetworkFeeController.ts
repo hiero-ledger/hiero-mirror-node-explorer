@@ -29,9 +29,11 @@ export class NetworkFeeController extends GenericMetricController {
         return Promise.resolve(result)
     }
 
-    protected makeChartConfig(metrics: EcosystemMetric[], range: ChartRange): ChartConfiguration {
+    protected makeChartConfig(metrics: EcosystemMetric[],
+                              range: ChartRange,
+                              context: CanvasRenderingContext2D): ChartConfiguration {
         const coreConfig = this.routeManager.coreConfig.value
         const cryptoSymbole = coreConfig.cryptoSymbol ?? coreConfig.cryptoName
-        return this.makeLineChartConfig(metrics, range, false, cryptoSymbole)
+        return this.makeLineChartConfig(metrics, range, false, cryptoSymbole, context)
     }
 }

@@ -69,8 +69,10 @@ export class TxOverTimeController extends HgraphChartController {
         return Promise.resolve(result)
     }
 
-    protected makeChartConfig(metrics: EcosystemMetric[], range: ChartRange): ChartConfiguration {
-        return this.makeBarChartConfig(metrics, range, false, "# of transactions")
+    protected makeChartConfig(metrics: EcosystemMetric[],
+                              range: ChartRange,
+                              context: CanvasRenderingContext2D): ChartConfiguration {
+        return this.makeBarChartConfig(metrics, range, false, "# of transactions", context)
     }
 
 }

@@ -47,6 +47,10 @@ export class ThemeController {
         return this.getCssVariable("--network-graph-bar-color")
     }
 
+    public getBackgroundTertiaryColor(): string {
+        return this.getCssVariable("--background-tertiary")
+    }
+
     public getCssVariable(name: string): string {
         return window.getComputedStyle(document.body).getPropertyValue(name)
     }

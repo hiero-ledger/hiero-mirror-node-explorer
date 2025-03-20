@@ -115,7 +115,7 @@ export abstract class ChartController<M> {
         return metrics
     }
 
-    protected abstract makeChartConfig(metrics: M[], range: ChartRange): ChartConfiguration
+    protected abstract makeChartConfig(metrics: M[], range: ChartRange, context: CanvasRenderingContext2D): ChartConfiguration
 
     //
     // Private
@@ -156,7 +156,9 @@ export abstract class ChartController<M> {
         }
         if (this.canvas.value !== null && this.metrics !== null) {
             try {
-                const chartConfig = this.makeChartConfig(this.metrics, this.range.value)
+                const context = this.canvas.value.getContext("2d")!
+                const chartConfig = this.makeChartConfig(
+                    this.metrics, this.range.value, context)
                 this.chart = new Chart(this.canvas.value, chartConfig)
             } catch (error) {
                 this.chart = null
