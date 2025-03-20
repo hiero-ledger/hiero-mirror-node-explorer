@@ -6,7 +6,7 @@
 
 <template>
 
-  <div class="header">
+  <div class="header" :class="{'full-page': props.fullPage}">
 
     <!--  First line of header-->
     <div class="header-top">
@@ -39,7 +39,9 @@
     </div>
 
     <!--  Central part of header-->
-    <div class="title">Explore Hedera Blockchain</div>
+    <div class="title" :class="{'full-page': props.fullPage}">
+      Explore Hedera Blockchain
+    </div>
     <SearchBar :size="90" class="search-bar"/>
 
     <!--  Market dashboard part of header-->
@@ -70,6 +72,13 @@ import WalletStatusButton from "@/components/page/header/wallet/WalletStatusButt
 import MobileMenuButton from "@/components/page/header/MobileMenuButton.vue";
 import MarketDashboard from "@/components/dashboard/MarketDashboard.vue";
 
+const props = defineProps({
+  fullPage: {
+    type: Boolean,
+    default: false
+  }
+})
+
 const enableMarketData = routeManager.enableMarket
 const isLargeScreen = inject('isLargeScreen', true)
 const enableWallet = routeManager.enableWallet
@@ -94,15 +103,23 @@ div.header {
   padding: 0 16px 24px 16px;
 }
 
-@media (min-width: 768px) {
+div.header.full-page {
+  background: url('@/assets/main-header-background-mobile.svg') top max(calc(100vh - 526px), 114px) left no-repeat, var(--background-secondary);
+  height: max(calc(100vh - 90px), 400px);
+}
+
+@media (min-width: 390px) {
   div.header {
     background: url('@/assets/main-header-background.svg') top 114px left no-repeat, var(--background-secondary);
+  }
+
+  div.header.full-page {
+    background: url('@/assets/main-header-background.svg') top max(calc(100vh - 526px), 114px) left no-repeat, var(--background-secondary);
   }
 }
 
 @media (min-width: 1080px) {
   div.header {
-    background: url('@/assets/main-header-background.svg') top 114px left no-repeat, var(--background-secondary);
     padding: 0 32px 32px 32px;
   }
 }
@@ -133,12 +150,20 @@ div.title {
   text-align: center;
 }
 
+div.title.full-page {
+  margin-top: max(calc(50vh - 240px), 80px);
+}
+
 @media (min-width: 1080px) {
   div.title {
     font-size: 56px;
     font-weight: 500;
     line-height: 74px;
     margin-top: 48px;
+  }
+
+  div.title.full-page {
+    margin-top: max(calc(50vh - 250px), 80px);
   }
 }
 

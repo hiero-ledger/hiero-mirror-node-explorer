@@ -6,37 +6,46 @@
 
 <template>
 
-  <div class="h-page-frame">
-    <MainDashboardHeader/>
+  <template v-if="showCharts">
+    <div class="h-page-frame">
+      <MainDashboardHeader/>
 
-    <div class="h-page-content">
-      <div class="dashboard-title">
-        Network
+      <div class="h-page-content">
+        <div class="dashboard-title">
+          Network
+        </div>
+
+        <div class="dashboard-separator"/>
+
+        <div class="dashboard-content">
+          <ChartView :controller="txOverTimeController" data-cy="chart-view"/>
+        </div>
+
+        <div class="dashboard-content">
+          <ChartView :controller="networkFeeController" data-cy="chart-view"/>
+        </div>
+
+        <div class="dashboard-title">
+          Accounts
+        </div>
+
+        <div class="dashboard-separator"/>
+
+        <div class="dashboard-content">
+          <ChartView :controller="activeAccountsController" data-cy="chart-view"/>
+        </div>
       </div>
 
-      <div class="dashboard-separator"/>
-
-      <div class="dashboard-content">
-        <ChartView :controller="txOverTimeController" data-cy="chart-view"/>
-      </div>
-
-      <div class="dashboard-content">
-        <ChartView :controller="networkFeeController" data-cy="chart-view"/>
-      </div>
-
-      <div class="dashboard-title">
-        Accounts
-      </div>
-
-      <div class="dashboard-separator"/>
-
-      <div class="dashboard-content">
-        <ChartView :controller="activeAccountsController" data-cy="chart-view"/>
-      </div>
+      <Footer/>
     </div>
+  </template>
 
-    <Footer/>
-  </div>
+  <template v-else>
+    <div class="h-page-frame">
+      <MainDashboardHeader full-page/>
+      <Footer/>
+    </div>
+  </template>
 
 </template>
 
@@ -46,7 +55,7 @@
 
 <script setup lang="ts">
 
-import {onBeforeUnmount, onMounted} from 'vue';
+import {computed, onBeforeUnmount, onMounted} from 'vue';
 import Footer from "@/components/page/Footer.vue";
 import MainDashboardHeader from "@/components/page/header/MainDashboardHeader.vue";
 import {TxOverTimeController} from "@/charts/hgraph/TxOverTimeController.ts";
@@ -61,6 +70,8 @@ defineProps({
 })
 
 const themeController = ThemeController.inject()
+
+const showCharts = computed(() => routeManager.hgraphURL.value !== null)
 
 const txOverTimeController = new TxOverTimeController(themeController, routeManager)
 onMounted(() => txOverTimeController.mount())
