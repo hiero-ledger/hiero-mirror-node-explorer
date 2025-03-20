@@ -88,7 +88,7 @@ export abstract class HgraphChartController extends ChartController<EcosystemMet
     //
 
     public isSupported(): boolean {
-        return this.getHgraphURL() !== null
+        return this.routeManager.hgraphURL.value !== null
     }
 
     public getMetricDate(metric: EcosystemMetric): Date | null {
@@ -103,7 +103,7 @@ export abstract class HgraphChartController extends ChartController<EcosystemMet
     protected async loadData(range: ChartRange): Promise<LoadedData<EcosystemMetric>> {
         let result: LoadedData<EcosystemMetric>
 
-        const url = this.getHgraphURL()
+        const url = this.routeManager.hgraphURL.value
         if (url !== null) {
 
             // Target metrics
@@ -126,28 +126,6 @@ export abstract class HgraphChartController extends ChartController<EcosystemMet
     //
     // Private
     //
-
-    private getHgraphURL(): string | null {
-        let result: string | null
-        const hgraphKey = this.routeManager.hgraphKey.value
-        switch (this.routeManager.currentNetworkEntry.value.mirrorNodeURL) {
-            case "https://mainnet-public.mirrornode.hedera.com/":
-            case "https://mainnet.mirrornode.hedera.com/":
-                result = hgraphKey !== null
-                    ? "https://mainnet.hedera.api.hgraph.io/v1/graphql"
-                    : "https://mainnet.hedera.api.hgraph.dev/v1/graphql"
-                break
-            case "https://testnet.mirrornode.hedera.com/":
-                result = hgraphKey !== null
-                    ? "https://testnet.hedera.api.hgraph.io/v1/graphql"
-                    : "https://testnet.hedera.api.hgraph.dev/v1/graphql"
-                break
-            default:
-                result = null
-                break
-        }
-        return result
-    }
 
     private makeConfig(): AxiosRequestConfig {
         let result: AxiosRequestConfig
