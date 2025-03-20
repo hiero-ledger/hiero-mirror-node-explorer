@@ -130,6 +130,28 @@ export class RouteManager {
         return this.coreConfig.value.hgraphKey
     })
 
+    public readonly hgraphURL = computed(() => {
+        let result: string | null
+        const hgraphKey = this.hgraphKey.value
+        switch (this.currentNetworkEntry.value.mirrorNodeURL) {
+            case "https://mainnet-public.mirrornode.hedera.com/":
+            case "https://mainnet.mirrornode.hedera.com/":
+                result = hgraphKey !== null
+                    ? "https://mainnet.hedera.api.hgraph.io/v1/graphql"
+                    : "https://mainnet.hedera.api.hgraph.dev/v1/graphql"
+                break
+            case "https://testnet.mirrornode.hedera.com/":
+                result = hgraphKey !== null
+                    ? "https://testnet.hedera.api.hgraph.io/v1/graphql"
+                    : "https://testnet.hedera.api.hgraph.dev/v1/graphql"
+                break
+            default:
+                result = null
+                break
+        }
+        return result
+    })
+
     public configure(coreConfig: CoreConfig, networkConfig: NetworkConfig) {
 
         this.coreConfig.value = coreConfig
