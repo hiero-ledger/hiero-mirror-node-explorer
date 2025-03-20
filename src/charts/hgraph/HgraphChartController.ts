@@ -90,6 +90,13 @@ export abstract class HgraphChartController extends ChartController<EcosystemMet
                 datasets: [graphDataSet],
             },
             options: {
+                elements: {
+                  line: {
+                      tension: 0.4,
+                      cubicInterpolationMode: "default",
+                      // cubicInterpolationMode: "monotone",
+                  }
+                },
                 plugins: {
                     legend: {
                         display: false
