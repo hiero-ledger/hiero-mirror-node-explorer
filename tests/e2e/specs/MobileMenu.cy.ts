@@ -47,9 +47,7 @@ describe('Mobile Menu', () => {
         cy.url().should('include', '/' + defaultNetwork + '/dashboard')
 
         for (const n of ['PREVIEWNET', 'TESTNET', 'MAINNET']) {
-            cy.get('select')
-                .select(n)
-                .should('have.value', n.toLowerCase())
+            cy.contains(n).click()
             cy.url().should('include', '/' + n.toLowerCase() + '/dashboard')
 
             cy.get('[data-cy="mobile-menu-icon"]').click()
