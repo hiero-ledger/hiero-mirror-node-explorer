@@ -141,17 +141,18 @@ export abstract class HgraphChartController extends ChartController<EcosystemMet
     protected makeLineGraphDataSet(metrics: EcosystemMetric[],
                                    context: CanvasRenderingContext2D): object {
         const totals = metrics.map((m: EcosystemMetric) => m.total)
-        const graphBarColor = this.themeController.getGraphBarColor()
+        const graphLineColor = this.themeController.getGraphLineColor()
         const gradient = context.createLinearGradient(0, 0, 0, 300)
-        const startColor = graphBarColor // Should use a lighter version of graphBarColor
-        const endColor = this.themeController.getBackgroundTertiaryColor()
+        const startColor = this.themeController.getGraphGradientStartColor()
+        const endColor = this.themeController.getGraphGradientEndColor()
         gradient.addColorStop(0, startColor)
         gradient.addColorStop(1, endColor)
         return {
             label: this.chartTitle,
             data: totals,
             borderWidth: 1,
-            borderColor: graphBarColor,
+            borderColor: graphLineColor,
+            pointBackgroundColor: graphLineColor,
             backgroundColor: gradient,
             fill: true,
         }

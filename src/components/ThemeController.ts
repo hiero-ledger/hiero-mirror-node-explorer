@@ -47,8 +47,16 @@ export class ThemeController {
         return this.getCssVariable("--network-graph-bar-color")
     }
 
-    public getBackgroundTertiaryColor(): string {
-        return this.getCssVariable("--background-tertiary")
+    public getGraphLineColor(): string {
+        return this.getCssVariable("--graph-line-color")
+    }
+
+    public getGraphGradientStartColor(): string {
+        return this.getCssVariable("--graph-gradient-start-color")
+    }
+
+    public getGraphGradientEndColor(): string {
+        return this.getCssVariable("--graph-gradient-end-color")
     }
 
     public getCssVariable(name: string): string {
@@ -107,11 +115,13 @@ export class ThemeController {
             document.documentElement.style.setProperty('--status-success-color', 'var(--dark-status-success-color)')
             document.documentElement.style.setProperty('--status-error-color', 'var(--dark-status-error-color)')
             document.documentElement.style.setProperty('--search-bar-default', 'var(--dark-search-bar-default)')
+            document.documentElement.style.setProperty('--graph-line-color', 'var(--dark-graph-line-color)')
             document.getElementById('product-logo')?.setAttribute('src', this.coreConfig.productLogoDarkURL ?? '')
             document.getElementById('product-mini-logo')?.setAttribute('src', this.coreConfig.productMiniLogoDarkURL ?? '')
             document.getElementById('sponsor-logo')?.setAttribute('src', this.coreConfig.sponsorLogoDarkURL ?? '')
             document.getElementById('built-on-logo')?.setAttribute('src', this.coreConfig.builtOnLogoDarkURL ?? '')
             document.getElementById('crypto-logo')?.setAttribute('src', this.coreConfig.cryptoLogoDarkURL ?? '')
+
         } else {
             AppStorage.setTheme('light')
             document.documentElement.style.setProperty('--network-button-text-color', 'var(--light-network-button-text-color)')
@@ -150,11 +160,13 @@ export class ThemeController {
             document.documentElement.style.setProperty('--status-success-color', 'var(--light-status-success-color)')
             document.documentElement.style.setProperty('--status-error-color', 'var(--light-status-error-color)')
             document.documentElement.style.setProperty('--search-bar-default', 'var(--light-search-bar-default)')
+            document.documentElement.style.setProperty('--graph-line-color', 'var(--light-graph-line-color)')
             document.getElementById('product-logo')?.setAttribute('src', this.coreConfig.productLogoLightURL ?? '')
             document.getElementById('product-mini-logo')?.setAttribute('src', this.coreConfig.productMiniLogoLightURL ?? '')
             document.getElementById('sponsor-logo')?.setAttribute('src', this.coreConfig.sponsorLogoLightURL ?? '')
             document.getElementById('built-on-logo')?.setAttribute('src', this.coreConfig.builtOnLogoLightURL ?? '')
             document.getElementById('crypto-logo')?.setAttribute('src', this.coreConfig.cryptoLogoLightURL ?? '')
         }
+
     }
 }
