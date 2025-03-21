@@ -77,9 +77,6 @@
     --light-search-bar-default: #FFFFFF;
     --light-graph-line-color: #5A4DFF;
 
-    /*
-    --light-graphbar-blue: #5A4DFF;
-    */
 
     /* DARK MODE */
 
@@ -118,9 +115,6 @@
     --dark-status-success-color: #00722D;
     --dark-status-error-color: #C40E3A;
     --dark-search-bar-default: #2C2C2C;
-    /*
-    --dark-graphbar-blue: #1300FF;
-    */
     --dark-graph-line-color: #1300FF;
 
     /* CURRENT MODE */
@@ -218,7 +212,6 @@
     --yellow-dark-border-accent-color: #FFDE00;
 
 
-    --graph-line-color: #FFDE00;
     --graph-gradient-start-color: hsl(from var(--graph-line-color) h s l / 16%);
     --graph-gradient-end-color: hsl(from #2962FF h s l / 5%);
 
