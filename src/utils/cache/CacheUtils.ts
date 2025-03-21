@@ -46,6 +46,7 @@ import {TransactionGroupByBlockCache} from "@/utils/cache/TransactionGroupByBloc
 import {TransactionGroupCache} from "@/utils/cache/TransactionGroupCache";
 import {VerifiedContractsByAccountIdCache} from "@/utils/cache/VerifiedContractsByAccountIdCache";
 import {VerifiedContractsCache} from "@/utils/cache/VerifiedContractsCache";
+import {ScheduleByIdCache} from "@/utils/cache/ScheduleByIdCache.ts";
 
 export class CacheUtils {
 
@@ -80,6 +81,7 @@ export class CacheUtils {
         NftBySerialCache.instance.clear()
         NftCollectionCache.instance.clear()
         PendingAirdropCache.instance.clear()
+        ScheduleByIdCache.instance.clear()
         SelectedTokensCache.instance.clear()
         // SignatureCache.instance => no clear: we preserve it because 4byte content is valid for all networks
         SourcifyCache.instance.clear()
