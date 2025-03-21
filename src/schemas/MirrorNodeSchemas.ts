@@ -319,6 +319,40 @@ export function compareTokenTransferByTokenId(t1: TokenTransfer, t2: TokenTransf
     return compareString(t1.token_id, t2.token_id)
 }
 
+// ---------------------------------------------------------------------------------------------------------------------
+//                                                      Schedule
+// ---------------------------------------------------------------------------------------------------------------------
+
+export interface Schedule {
+    admin_key: Key | null
+    consensus_timestamp: string
+    creator_account_id: string | null
+    deleted: boolean
+    executed_timestamp: string | null
+    expiration_time: string | null
+    memo: string
+    payer_account_id: string | null
+    schedule_id: string | null
+    signatures: ScheduleSignature[]
+    transaction_body: string
+    wait_for_expiry: boolean
+}
+
+export interface ScheduleSignature {
+    consensus_timestamp: string
+    public_key_prefix: string
+    signature: string
+    type: SignatureType
+}
+
+export enum SignatureType {
+    CONTRACT = "CONTRACT",
+    ED25519 = "ED25519",
+    RSA_3072 = "RSA_3072",
+    ECDSA_384 = "ECDSA_384",
+    ECDSA_SECP256K1 = "ECDSA_SECP256K1",
+    UNKNOWN = "UNKNOWN",
+}
 
 // ---------------------------------------------------------------------------------------------------------------------
 //                                                      Token
