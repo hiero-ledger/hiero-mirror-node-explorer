@@ -20,7 +20,7 @@ export abstract class ChartController<M> {
     public readonly range: Ref<ChartRange>
     public readonly latestMetric: Ref<M | null> = ref(null)
 
-    private metrics: M[] | null = null
+    private readonly metrics: Ref<M[] | null> = ref(null)
     private chart: Chart | null = null
     private readonly error: Ref<unknown> = ref(null)
     private readonly building: Ref<boolean> = ref(false)
@@ -41,12 +41,12 @@ export abstract class ChartController<M> {
     public mount(): void {
         this.watchHandles = [
             watch([this.range, this.routeManager.currentNetworkEntry], this.updateMetrics, {immediate: true}),
-            watch([this.canvas, this.themeController.darkSelected], this.updateChart, {immediate: true}),
+            watch([this.metrics, this.canvas, this.themeController.darkSelected], this.updateChart, {immediate: true}),
         ]
     }
 
     public unmount(): void {
-        this.metrics = null
+        this.metrics.value = null
         this.latestMetric.value = null
         if (this.chart !== null) {
             this.chart.destroy()
@@ -66,7 +66,7 @@ export abstract class ChartController<M> {
         } else if (this.error.value !== null) {
             result = ChartState.error
         } else {
-            const metricCount = this.metrics?.length ?? 0
+            const metricCount = this.metrics.value?.length ?? 0
             result = metricCount == 0 ? ChartState.empty : ChartState.ok
         }
         return result
@@ -127,23 +127,22 @@ export abstract class ChartController<M> {
             if (this.isSupported()) {
                 const loadedData = await this.loadData(this.range.value)
                 const rawMetrics = loadedData.metrics.length >= 1 ? loadedData.metrics : null
-                this.metrics = rawMetrics !== null
+                this.metrics.value = rawMetrics !== null
                     ? await this.transformMetrics(rawMetrics, this.range.value)
                     : null
                 this.latestMetric.value = loadedData.latestMetric
                 this.error.value = null
             } else {
-                this.metrics = null
+                this.metrics.value = null
                 this.latestMetric.value = null
                 this.error.value = null
             }
         } catch (error) {
-            this.metrics = null
+            this.metrics.value = null
             this.latestMetric.value = null
             this.error.value = error
         } finally {
             this.building.value = false
-            this.updateChart()
         }
     }
 
@@ -154,11 +153,11 @@ export abstract class ChartController<M> {
             // destroy() resets display to "none" => we restore
             this.canvas.value!.style.display = "block"
         }
-        if (this.canvas.value !== null && this.metrics !== null) {
+        if (this.canvas.value !== null && this.metrics.value !== null) {
             try {
                 const context = this.canvas.value.getContext("2d")!
                 const chartConfig = this.makeChartConfig(
-                    this.metrics, this.range.value, context)
+                    this.metrics.value, this.range.value, context)
                 this.chart = new Chart(this.canvas.value, chartConfig)
             } catch (error) {
                 this.chart = null
