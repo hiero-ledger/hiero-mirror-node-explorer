@@ -222,6 +222,17 @@
       </template>
     </DashboardCardV2>
 
+    <ScheduleSection v-if="transaction?.name === TransactionType.SCHEDULECREATE" :transaction="transaction"/>
+
+    <TopicMessage :message="topicMessage"/>
+
+    <ContractResult :timestamp="transaction?.consensus_timestamp"
+                    :is-parent="transaction?.parent_consensus_timestamp === null"
+                    :block-number="blockNumber ?? undefined"
+                    :transaction-hash="formattedHash ?? undefined"
+                    :transaction-type="transaction?.name ?? undefined"
+    />
+
     <DashboardCardV2 v-if="displayTransfers" collapsible-key="transfers">
       <template #title>
         <span>Transfers</span>
@@ -232,15 +243,6 @@
         </div>
       </template>
     </DashboardCardV2>
-
-    <TopicMessage :message="topicMessage"/>
-
-    <ContractResult :timestamp="transaction?.consensus_timestamp"
-                    :is-parent="transaction?.parent_consensus_timestamp === null"
-                    :block-number="blockNumber ?? undefined"
-                    :transaction-hash="formattedHash ?? undefined"
-                    :transaction-type="transaction?.name ?? undefined"
-    />
 
     <MirrorLink :network="props.network" entityUrl="transactions" :loc="transactionId!"/>
 
@@ -287,6 +289,7 @@ import SelectView from "@/elements/SelectView.vue";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import HexaValue from "@/components/values/HexaValue.vue";
 import ArrowLink from "@/components/ArrowLink.vue";
+import ScheduleSection from "@/components/transaction/ScheduleSection.vue";
 
 const MAX_INLINE_CHILDREN = 10
 
