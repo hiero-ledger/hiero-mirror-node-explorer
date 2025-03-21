@@ -46,12 +46,6 @@
           <template #name>Type</template>
           <template #value>
             <StringValue :string-value="transactionType ? makeTypeLabel(transactionType) : null"/>
-            <ArrowLink
-                v-if="scheduledTransaction"
-                id="scheduledLink"
-                :route="routeManager.makeRouteToTransactionObj(scheduledTransaction)"
-                text="Scheduled transaction"
-            />
           </template>
         </Property>
         <Property v-if="displayResult" id="result">
@@ -105,11 +99,11 @@
           <template #name>Contract ID</template>
           <template #value>{{ systemContract }}</template>
         </Property>
-        <Property v-else-if="transaction?.entity_id" id="entityId">
+        <Property v-else-if="displayEntityId" id="entityId">
           <template #name>{{ entity?.label }}</template>
           <template #value>
             <SmartLink v-if="entity?.routeName"
-                       :entity-id="transaction?.entity_id"
+                       :entity-id="transaction?.entity_id ?? undefined"
                        :route-name="routeName ?? undefined"
                        :show-extra="true"
             />
@@ -172,22 +166,17 @@
             {{ transaction?.nonce }}
           </template>
         </Property>
-        <Property id="scheduled">
+        <Property v-if="transaction?.scheduled===true" id="scheduled">
           <template #name>Scheduled</template>
-          <template v-if="transaction?.scheduled===true" #value>
-            True
+          <template #value>
+            <span>True</span>
             <ArrowLink
                 v-if="schedulingTransaction"
                 id="schedulingLink"
                 :route="routeManager.makeRouteToTransactionObj(schedulingTransaction)"
                 text="Schedule create transaction"
+                style="display: inline-block; margin-left: 8px"
             />
-          </template>
-          <template v-else-if="scheduledTransaction!==null" #value>
-            False
-          </template>
-          <template v-else #value>
-            <span class="h-is-low-contrast">False</span>
           </template>
         </Property>
         <Property v-if="parentTransaction" id="parentTransaction">
@@ -301,10 +290,14 @@ const props = defineProps({
 const cryptoName = CoreConfig.inject().cryptoName
 
 const displayAllTransactionsLink = computed(() => {
+  const hasSchedule = transactionGroupAnalyzer.schedulingTransaction.value !== null
   const txnCount = transactionGroupAnalyzer.transactions.value?.length ?? 0
-  return txnCount >= 2
+  return !hasSchedule && txnCount >= 2
 })
 
+const displayEntityId = computed(() =>
+    transaction.value?.entity_id && transaction.value?.name !== TransactionType.SCHEDULECREATE
+)
 const txIdForm = ref(TransactionID.useAtForm.value ? 'atForm' : 'dashForm')
 watch(txIdForm, () => TransactionID.setUseAtForm(txIdForm.value === 'atForm'))
 
