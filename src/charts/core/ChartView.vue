@@ -19,10 +19,14 @@
       </div>
     </div>
 
-    <div class="chart-view-container" :style="{height: props.height + 'px'}">
+    <div class="chart-view-container" ref="containerRef" :style="{height: props.height + 'px'}">
 
       <template v-if="state === ChartState.unsupported">
         <div class="unsupported">This chart is not supported for this network</div>
+      </template>
+
+      <template v-if="state === ChartState.unrevealed">
+        <div class="unsupported">This chart is unrevealed</div> <!-- for debug only : should normally not appear -->
       </template>
 
       <template v-if="state === ChartState.loading">
@@ -72,6 +76,7 @@ const props = defineProps({
 })
 
 const canvasRef = props.controller.canvas
+const containerRef = props.controller.container
 const canvasDisplay = computed(() => props.controller.state.value === ChartState.ok ? "block" : "none")
 const state = props.controller.state
 const errorExtra = props.controller.errorExtra

@@ -8,6 +8,7 @@ import {ChartRange} from "@/charts/core/ChartRange.ts";
 
 export enum ChartState {
     unsupported,
+    unrevealed,
     loading,
     error,
     empty,
@@ -17,6 +18,7 @@ export enum ChartState {
 export abstract class ChartController<M> {
 
     public readonly canvas: Ref<HTMLCanvasElement | null> = ref(null)
+    public readonly container: Ref<HTMLElement | null> = ref(null)
     public readonly range: Ref<ChartRange>
     public readonly latestMetric: Ref<M | null> = ref(null)
 
@@ -24,7 +26,9 @@ export abstract class ChartController<M> {
     private chart: Chart | null = null
     private readonly error: Ref<unknown> = ref(null)
     private readonly building: Ref<boolean> = ref(false)
+    private readonly revealed: Ref<boolean> = ref(false)
     private watchHandles: WatchStopHandle[] = []
+    private observer: IntersectionObserver | null = null
 
     //
     // Public
@@ -40,7 +44,8 @@ export abstract class ChartController<M> {
 
     public mount(): void {
         this.watchHandles = [
-            watch([this.range, this.routeManager.currentNetworkEntry], this.updateMetrics, {immediate: true}),
+            watch(this.container, this.updateObserver, {immediate: true}),
+            watch([this.revealed, this.range, this.routeManager.currentNetworkEntry], this.updateMetrics, {immediate: true}),
             watch([this.metrics, this.canvas, this.themeController.darkSelected], this.updateChart, {immediate: true}),
         ]
     }
@@ -55,12 +60,18 @@ export abstract class ChartController<M> {
         this.error.value = null
         this.watchHandles.forEach(w => w())
         this.watchHandles = []
+        if (this.observer !== null) {
+            this.observer.disconnect()
+            this.observer = null
+        }
     }
 
     public readonly state = computed<ChartState>(() => {
         let result: ChartState
         if (!this.isSupported()) {
             result = ChartState.unsupported
+        } else if (!this.revealed.value) {
+            result = ChartState.unrevealed
         } else if (this.building.value) {
             result = ChartState.loading
         } else if (this.error.value !== null) {
@@ -121,10 +132,26 @@ export abstract class ChartController<M> {
     // Private
     //
 
+    private readonly updateObserver = () => {
+        if (this.observer !== null) {
+            this.observer.disconnect()
+            this.observer = null
+        }
+        this.revealed.value = false
+        if (this.container.value !== null) {
+            this.observer = new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
+                if (entries.length >= 1 && entries[0].isIntersecting) {
+                    this.revealed.value = true
+                }
+            }, { root: null })
+            this.observer.observe(this.container.value)
+        }
+    }
+
     private readonly updateMetrics = async () => {
         this.building.value = true
         try {
-            if (this.isSupported()) {
+            if (this.isSupported() && this.revealed.value) {
                 const loadedData = await this.loadData(this.range.value)
                 const rawMetrics = loadedData.metrics.length >= 1 ? loadedData.metrics : null
                 this.metrics.value = rawMetrics !== null
