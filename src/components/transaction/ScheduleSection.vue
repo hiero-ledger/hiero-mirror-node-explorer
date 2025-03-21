@@ -102,13 +102,8 @@
           </template>
           <template #value>
             <BlobValue :show-none="true" :blob-value="s.signature"/>
+            <div class="h-is-extra-text">{{ s.type }}</div>
           </template>
-        </Property>
-        <Property id="type" :full-width="true">
-          <template #name>
-            <span style="padding-left: 16px;">Type</span>
-          </template>
-          <template #value>{{ s.type }}</template>
         </Property>
       </template>
     </template>
