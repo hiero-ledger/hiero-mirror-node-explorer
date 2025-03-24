@@ -9,6 +9,7 @@ export class TransactionID {
     public readonly entityID: EntityID
     public readonly seconds: number
     public readonly nanoSeconds: number
+    public readonly queryParam: string|null
 
 
     //
@@ -26,10 +27,18 @@ export class TransactionID {
         const useArobas = value.indexOf("@") >= 0
         const sep1 = useArobas ? "@" : "-"
         const sep2 = useArobas ? "." : "-"
+        const sep3 = "?"
         const i1 = value.indexOf(sep1)
         const i2 = i1 != -1 ? value.indexOf(sep2, i1 + 1) : -1
+        const i3 = i2 != -1 ? value.indexOf(sep3, i2 + 1) : -1
 
-        if (i1 != -1 && i2 != -1) { // 0.0.88-1640084590-665216882 or 0.0.88@1640084590.665216882 ?
+        const queryParam = i3 != -1 ? value.substring(i3+1) : null
+        value = i3 != -1 ? value.substring(0, i3) : value
+
+        if (queryParam !== null && queryParam !== "scheduled") {
+            result = null
+        }
+        else if (i1 != -1 && i2 != -1) { // 0.0.88-1640084590-665216882 or 0.0.88@1640084590.665216882 ?
             const s0 = value.substring(0, i1)
             const s1 = value.substring(i1 + 1, i2)
             const s2 = value.substring(i2 + 1)
@@ -39,7 +48,7 @@ export class TransactionID {
             if (v0 == null || v1 == null || v2 == null) {
                 result = null;
             } else {
-                result = new TransactionID(v0, v1, v2)
+                result = new TransactionID(v0, v1, v2, queryParam)
             }
         } else if (i1 != -1 && i2 == -1 && autoComplete) { // 0.0.88@1640084590 ?
             const s0 = value.substring(0, i1)
@@ -49,7 +58,7 @@ export class TransactionID {
             if (v0 == null || v1 == null) {
                 result = null;
             } else {
-                result = new TransactionID(v0, v1, 0)
+                result = new TransactionID(v0, v1, 0, queryParam)
             }
         } else if (i1 == -1 && i2 == -1) { // 00881640084590665216882 ?
             // 00881640084590665216882
@@ -67,7 +76,7 @@ export class TransactionID {
                     if (v0 == null || v1 == null || v2 == null) {
                         result = null;
                     } else {
-                        result = new TransactionID(v0, v1, v2)
+                        result = new TransactionID(v0, v1, v2, queryParam)
                     }
                 } else {
                     result = null
@@ -82,10 +91,14 @@ export class TransactionID {
         return result
     }
 
-    public toString(useAtForm = true): string {
+    public toString(useAtForm = true, addQueryParam = false): string {
         const sep1 = useAtForm ? "@" : "-"
         const sep2 = useAtForm ? "." : "-"
-        return this.entityID.toString() + sep1 + this.seconds + sep2 + this.nanoSeconds.toString().padStart(9, '0')
+        let result = this.entityID.toString() + sep1 + this.seconds + sep2 + this.nanoSeconds.toString().padStart(9, '0')
+        if (addQueryParam && this.queryParam !== null) {
+            result += "?" + this.queryParam
+        }
+        return result
     }
 
     public static normalizeForDisplay(transactionID: string): string {
@@ -115,10 +128,11 @@ export class TransactionID {
 
     private static useAtFormRef = ref(!AppStorage.getUseDashForm())
 
-    private constructor(entityID: EntityID, seconds: number, nanoSeconds: number) {
+    private constructor(entityID: EntityID, seconds: number, nanoSeconds: number, queryParam: string|null) {
         this.entityID = entityID
         this.seconds = seconds
         this.nanoSeconds = nanoSeconds
+        this.queryParam = queryParam
     }
 
 

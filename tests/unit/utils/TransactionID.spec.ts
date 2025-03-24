@@ -22,6 +22,7 @@ describe("TransactionID.ts", () => {
         expect(obj?.entityID.num).toBe(88)
         expect(obj?.seconds).toBe(1640084590)
         expect(obj?.nanoSeconds).toBe(665216882)
+        expect(obj?.queryParam).toBeNull()
         expect(obj?.toString(false)).toBe(str)
     })
 
@@ -33,6 +34,7 @@ describe("TransactionID.ts", () => {
         expect(obj?.entityID.num).toBe(88)
         expect(obj?.seconds).toBe(1640084590)
         expect(obj?.nanoSeconds).toBe(665216882)
+        expect(obj?.queryParam).toBeNull()
         expect(obj?.toString(true)).toBe(str)
     })
 
@@ -50,7 +52,20 @@ describe("TransactionID.ts", () => {
         expect(obj?.entityID.num).toBe(88)
         expect(obj?.seconds).toBe(1640084590)
         expect(obj?.nanoSeconds).toBe(0)
+        expect(obj?.queryParam).toBeNull()
         expect(obj?.toString(true)).toBe(str + ".000000000")
+    })
+
+    test("0.0.88@1640084590.665216882?scheduled", () => {
+        const str = "0.0.88@1640084590.665216882?scheduled"
+        const obj = TransactionID.parse(str)
+        expect(obj?.entityID.shard).toBe(0)
+        expect(obj?.entityID.realm).toBe(0)
+        expect(obj?.entityID.num).toBe(88)
+        expect(obj?.seconds).toBe(1640084590)
+        expect(obj?.nanoSeconds).toBe(665216882)
+        expect(obj?.queryParam).toBe("scheduled")
+        expect(obj?.toString(true, true)).toBe(str)
     })
 
     test("00881640084590665216882", () => {
@@ -60,6 +75,7 @@ describe("TransactionID.ts", () => {
         expect(obj?.entityID.num).toBe(88)
         expect(obj?.seconds).toBe(1640084590)
         expect(obj?.nanoSeconds).toBe(665216882)
+        expect(obj?.queryParam).toBeNull()
         expect(obj?.toString(true)).toBe("0.0.88@1640084590.665216882")
     })
 
@@ -71,6 +87,7 @@ describe("TransactionID.ts", () => {
         expect(TransactionID.parse("0.0.88@abc")).toBeNull()
         expect(TransactionID.parse("0.0.88@12.abc")).toBeNull()
         expect(TransactionID.parse("0.0.88@12.12.14")).toBeNull()
+        expect(TransactionID.parse("0.0.88@1640084590.665216882?dummy")).toBeNull()
         expect(TransactionID.parse("001640084590665216882")).toBeNull()
         expect(TransactionID.parse("11881640084590665216882")).toBeNull()
     })
