@@ -27,13 +27,23 @@
     <template #modalDialogTitle>Connect Wallet</template>
 
     <template #modalDialogContent>
-      <div style="display: flex; align-items: center; justify-content: center;">
-        <div class="wallet-chooser-container" :style="{ 'grid-template-columns': gridTemplateColumns }">
-          <template v-for="i in walletItems" :key="i.name">
-            <WalletChooserItem v-model:selection="chosenWallet" :wallet-item="i" @connect="handleConnect"/>
-          </template>
+      <template v-if="walletItems.length >= 1">
+        <div style="display: flex; align-items: center; justify-content: center;">
+          <div class="wallet-chooser-container" :style="{ 'grid-template-columns': gridTemplateColumns }">
+            <template v-for="i in walletItems" :key="i.name">
+              <WalletChooserItem v-model:selection="chosenWallet" :wallet-item="i" @connect="handleConnect"/>
+            </template>
+          </div>
         </div>
-      </div>
+      </template>
+      <template v-else>
+        <TaskPanel :mode="TaskPanelMode.error">
+          <template #taskPanelMessage>No wallet available</template>
+          <template #taskPanelExtra1>
+            <div>You must install a wallet extension in your browser</div>
+          </template>
+        </TaskPanel>
+      </template>
     </template>
 
     <template #modalDialogButtons>
@@ -66,6 +76,8 @@ import OptOutDialog from "@/dialogs/OptOutDialog.vue";
 import {EIP6963Agent} from "@/utils/wallet/EIP6963Agent.ts";
 import {AppStorage} from "@/AppStorage.ts";
 import WalletChooserItem from "@/dialogs/wallet_chooser/WalletChooserItem.vue";
+import {TaskPanelMode} from "@/dialogs/core/DialogUtils.ts";
+import TaskPanel from "@/dialogs/core/task/TaskPanel.vue";
 
 const showDialog = defineModel("showDialog", {
   type: Boolean,
