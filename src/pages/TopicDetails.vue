@@ -88,6 +88,7 @@
             <div class="exempt-list">
               <KeyValue
                   v-for="k in topic?.fee_exempt_key_list ?? []"
+                  :key="k.key"
                   :key-bytes="k.key"
                   :key-type="k._type"
                   :show-none="true"
