@@ -64,7 +64,7 @@
             <AccountLink :accountId="schedule?.payer_account_id" :show-extra="true"/>
           </template>
         </Property>
-        <Property v-if="!schedule?.executed_timestamp" id="expiration-date" :full-width="true">
+        <Property v-if="schedule?.expiration_time" id="expiration-date" :full-width="true">
           <template #name>Expiration Date</template>
           <template #value>
             <TimestampValue :show-none="true" :timestamp="schedule?.expiration_time"/>
