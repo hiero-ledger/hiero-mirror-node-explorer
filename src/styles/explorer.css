@@ -323,6 +323,7 @@ ul {
     font-family: var(--font-family-heading), sans-serif;
     font-size: 10px;
     font-weight: 400;
+    line-height: 15px;
     height: 20px;
     padding: 2px 8px;
     text-wrap: nowrap;
