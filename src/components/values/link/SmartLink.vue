@@ -17,29 +17,28 @@
   <div v-else-if="routeName === 'TopicDetails'">
     <TopicLink :topic-id="entityId"/>
   </div>
+  <div v-else-if="routeName === 'ScheduleDetails'">
+    <ScheduleLink :schedule-id="entityId"/>
+  </div>
 </template>
 
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 <!--                                                      SCRIPT                                                     -->
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
-<script lang="ts">
+<script setup lang="ts">
 
-import {defineComponent} from "vue";
 import AccountLink from "@/components/values/link/AccountLink.vue";
 import TokenLink from "@/components/values/link/TokenLink.vue";
 import TopicLink from "@/components/values/link/TopicLink.vue";
 import ContractLink from "@/components/values/link/ContractLink.vue";
+import ScheduleLink from "@/components/values/link/ScheduleLink.vue";
 
-export default defineComponent({
-  name: "EntityLink",
-  components: {TokenLink, AccountLink, ContractLink, TopicLink},
-  props: {
-    entityId: String,
-    routeName: String,
-    showExtra: Boolean,
-  },
-});
+defineProps({
+  entityId: String,
+  routeName: String,
+  showExtra: Boolean,
+})
 
 </script>
 
