@@ -9,7 +9,7 @@ import {networkToChainId, WalletClient_Ethereum} from "@/utils/wallet/client/Wal
 import {EIP1193Provider} from "@/utils/wallet/eip1193";
 import {CAAccountId, CAChainId} from "@/utils/wallet/caip";
 import {AccountByIdCache} from "@/utils/cache/AccountByIdCache";
-import SignClient from "@walletconnect/sign-client";
+import type SignClient from "@walletconnect/sign-client";
 import {ProposalTypes, SessionTypes, SignClientTypes} from "@walletconnect/types";
 import {routeManager} from "@/router";
 import type {WalletConnectModal} from "@walletconnect/modal"; // "type" to avoid unit test break
@@ -36,6 +36,7 @@ export class WalletConnectAgent {
                 url: window.location.origin,
                 icons: [],
             }
+            const { SignClient } = await import("@walletconnect/sign-client")
             const signClient = await SignClient.init({
                 logger: 'error',
                 projectId: projectId,
