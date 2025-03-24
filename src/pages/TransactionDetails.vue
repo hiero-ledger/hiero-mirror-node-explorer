@@ -46,18 +46,23 @@
           <template #name>Type</template>
           <template #value>
             <StringValue :string-value="transactionType ? makeTypeLabel(transactionType) : null"/>
-            <ArrowLink
-                v-if="scheduledTransaction"
-                id="scheduledLink"
-                :route="routeManager.makeRouteToTransactionObj(scheduledTransaction)"
-                text="Scheduled transaction"
-            />
           </template>
         </Property>
         <Property v-if="displayResult" id="result">
           <template #name>Result</template>
           <template #value>
             <StringValue :string-value="transaction?.result"/>
+          </template>
+        </Property>
+        <Property v-if="scheduledTransaction" id="scheduledTransaction">
+          <template #name>Scheduled Transaction</template>
+          <template #value>
+            <div class="multi-item-property-value">
+              <TransactionLink :transactionLoc="scheduledTransaction?.consensus_timestamp ?? undefined"/>
+              <div class="h-has-pill h-chip-default" style="line-height: 15px">
+                {{ schedule?.executed_timestamp ? 'EXECUTED' : 'NOT EXECUTED' }}
+              </div>
+            </div>
           </template>
         </Property>
         <Property id="consensusAt">
@@ -109,7 +114,7 @@
           <template #name>{{ entity?.label }}</template>
           <template #value>
             <SmartLink v-if="entity?.routeName"
-                       :entity-id="transaction?.entity_id"
+                       :entity-id="transaction?.entity_id ?? undefined"
                        :route-name="routeName ?? undefined"
                        :show-extra="true"
             />
@@ -172,22 +177,16 @@
             {{ transaction?.nonce }}
           </template>
         </Property>
-        <Property id="scheduled">
+        <Property v-if="transaction?.scheduled===true" id="scheduled">
           <template #name>Scheduled</template>
-          <template v-if="transaction?.scheduled===true" #value>
-            True
-            <ArrowLink
-                v-if="schedulingTransaction"
-                id="schedulingLink"
-                :route="routeManager.makeRouteToTransactionObj(schedulingTransaction)"
-                text="Schedule create transaction"
-            />
-          </template>
-          <template v-else-if="scheduledTransaction!==null" #value>
-            False
-          </template>
-          <template v-else #value>
-            <span class="h-is-low-contrast">False</span>
+          <template #value>True</template>
+        </Property>
+        <Property v-if="transaction?.scheduled===true" id="scheduled-transaction">
+          <template #name>Schedule Create Transaction</template>
+          <template #value>
+            <div class="multi-item-property-value">
+              <TransactionLink :transactionLoc="schedulingTransaction?.consensus_timestamp ?? undefined"/>
+            </div>
           </template>
         </Property>
         <Property v-if="parentTransaction" id="parentTransaction">
@@ -287,6 +286,8 @@ import SelectView from "@/elements/SelectView.vue";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import HexaValue from "@/components/values/HexaValue.vue";
 import ArrowLink from "@/components/ArrowLink.vue";
+import {ScheduleByIdCache} from "@/utils/cache/ScheduleByIdCache.ts";
+import TransactionLink from "@/components/values/TransactionLink.vue";
 
 const MAX_INLINE_CHILDREN = 10
 
@@ -298,8 +299,9 @@ const props = defineProps({
 const cryptoName = CoreConfig.inject().cryptoName
 
 const displayAllTransactionsLink = computed(() => {
+  const hasSchedule = transactionGroupAnalyzer.schedulingTransaction.value !== null
   const txnCount = transactionGroupAnalyzer.transactions.value?.length ?? 0
-  return txnCount >= 2
+  return !hasSchedule && txnCount >= 2
 })
 
 const txIdForm = ref(TransactionID.useAtForm.value ? 'atForm' : 'dashForm')
@@ -414,6 +416,24 @@ const schedulingTransaction = computed(() => {
   return result
 })
 
+const scheduleId = computed(() => transactionGroupAnalyzer.schedulingTransaction.value?.entity_id ?? null)
+const scheduleLookup = ScheduleByIdCache.instance.makeLookup(scheduleId)
+const schedule = scheduleLookup.entity
+onMounted(() => scheduleLookup.mount())
+onBeforeUnmount(() => scheduleLookup.unmount())
+
+const operatorAccount = computed(() => {
+  let result: string | null = null
+  if (transactionDetail.value?.scheduled) {
+    result = schedule.value?.payer_account_id ?? null
+  }
+  if (result === null) {
+    result = transactionAnalyzer.operatorAccount.value
+
+  }
+  return result
+})
+
 const transactionId = transactionLocParser.transactionId
 const transaction = transactionDetail
 const formattedTransactionId = transactionAnalyzer.formattedTransactionId
@@ -425,7 +445,6 @@ const formattedHash = transactionAnalyzer.formattedHash
 const transactionType = transactionAnalyzer.transactionType
 const transactionSucceeded = transactionAnalyzer.hasSucceeded
 const senderAccount = transactionAnalyzer.senderAccount
-const operatorAccount = transactionAnalyzer.operatorAccount
 const blockNumber = transactionAnalyzer.blockNumber
 const notification = transactionLocParser.errorNotification
 const topicMessage = topicMessageLookup.entity
@@ -439,5 +458,12 @@ const associatedTokens = transactionAnalyzer.tokens
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <style scoped>
+
+div.multi-item-property-value {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
 
 </style>
