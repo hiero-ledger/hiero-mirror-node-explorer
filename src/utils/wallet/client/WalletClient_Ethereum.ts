@@ -1,23 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
 
-import {
-    WalletClient,
-    WalletClientRejectError,
-    WalletClientSetupRequiredError
-} from "@/utils/wallet/client/WalletClient";
+import {WalletClient, WalletClientRejectError} from "@/utils/wallet/client/WalletClient";
 import {ContractResultDetails, Transaction} from "@/schemas/MirrorNodeSchemas";
 import {AccountByIdCache} from "@/utils/cache/AccountByIdCache";
 import {EntityID} from "@/utils/EntityID";
 import {ethers} from "ethers";
-import {
-    AddEthereumChainParameter,
-    eth_chainId,
-    eth_isUnrecognizedChainId,
-    eth_isUnsupportedMethod,
-    eth_isUserReject,
-    wallet_addEthereumChain,
-    wallet_switchEthereumChain
-} from "@/utils/wallet/eip1193";
+import {eth_isUserReject} from "@/utils/wallet/eip1193";
 import {TokenInfoCache} from "@/utils/cache/TokenInfoCache";
 import {makeTokenSymbol} from "@/schemas/MirrorNodeUtils";
 import {waitFor} from "@/utils/TimerUtils";
@@ -120,15 +108,7 @@ export class WalletClient_Ethereum extends WalletClient {
         const accountAddress = await AccountByIdCache.instance.findAccountAddress(this.accountId)
         const tokenAddress = EntityID.parse(targetId)?.toAddress() ?? null
         if (accountAddress !== null && tokenAddress !== null) {
-            // 1) Checks current chain and tries to setup if needed
-            try {
-                if (!await this.isChainOK()) {
-                    await this.trySetupChain()
-                }
-            } catch (error) {
-                // Let's go forward and try the remaining steps… :/
-            }
-            // 1.1) Estimate gas
+            // 1) Estimate gas
             try {
                 const gas = await this.estimateGas(accountAddress, "0x" + tokenAddress, callData)
                 console.log("gas = " + gas)
@@ -189,79 +169,6 @@ export class WalletClient_Ethereum extends WalletClient {
         return await this.provider.request(request) as string
     }
 
-    private async trySetupChain(): Promise<void> {
-
-        try {
-            await this.trySwitchingChain()
-            if (!await this.isChainOK()) {
-                await this.tryAddingChain()
-            }
-        } catch (reason) {
-            if (eth_isUserReject(reason)) {
-                throw new WalletClientRejectError()
-            } else if (eth_isUnsupportedMethod(reason)) {
-                throw new WalletClientSetupRequiredError()
-            } else {
-                throw reason
-            }
-        }
-        if (!await this.isChainOK()) {
-            throw new WalletClientSetupRequiredError()
-        }
-    }
-
-    private targetChainId(): string {
-        const result = networkToChainId(this.network)
-        if (result === null) {
-            throw "bug"
-        }
-        return result
-    }
-
-    private async isChainOK(): Promise<boolean> {
-        const currentChainId = await eth_chainId(this.provider)
-        return this.targetChainId() == currentChainId
-    }
-
-    private async trySwitchingChain(): Promise<void> {
-        try {
-            await wallet_switchEthereumChain(this.provider, this.targetChainId())
-        } catch (reason) {
-            if (!eth_isUnsupportedMethod(reason) && !eth_isUnrecognizedChainId(reason)) {
-                throw reason
-            }
-        }
-    }
-
-    private async tryAddingChain(): Promise<void> {
-        const chainParam = this.makeChainParam()
-        if (chainParam !== null) {
-            await wallet_addEthereumChain(this.provider, chainParam)
-        } else {
-            throw "bug"
-        }
-    }
-
-    private makeChainParam(): AddEthereumChainParameter | null {
-        let result: AddEthereumChainParameter | null
-
-        switch (this.network) {
-            case "mainnet":
-                result = CHAIN_PARAM_MAINNET
-                break
-            case "testnet":
-                result = CHAIN_PARAM_TESTNET
-                break
-            case "previewnet":
-                result = CHAIN_PARAM_PREVIEWNET
-                break
-            default:
-                result = null
-                break
-        }
-        return result
-    }
-
 
     private async waitForTransactionSurfacing(transactionHash: string): Promise<Transaction | string> {
         let result: Transaction | string
@@ -312,61 +219,10 @@ export function networkToChainId(network: string, hex: boolean = true): string |
 }
 
 
-const HEDERA_LOGO =
+export const HEDERA_LOGO =
     'data:image/svg+xml;utf8,<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40">' +
     '<path d="M20 0a20 20 0 1 0 20 20A20 20 0 0 0 20 0" fill="black"></path>' +
     '<path d="M28.13 28.65h-2.54v-5.4H14.41v5.4h-2.54V11.14h2.54v5.27h11.18v-5.27h2.54zm-13.6-7.42h11.18v-2.79H14.53z" fill="white"></path>' +
     '</svg>'
 
-
-const NATIVE_CURRENCY = {
-    name: 'HBAR',
-    decimals: 18,
-    symbol: 'HBAR'
-}
-
-const CHAIN_PARAM_MAINNET: AddEthereumChainParameter = {
-    chainId: "0x127",
-    blockExplorerUrls: [
-        "https://hashscan.io/mainnet/dashboard"
-    ],
-    chainName: "Hedera Mainnet",
-    iconUrls: [
-        HEDERA_LOGO
-    ],
-    nativeCurrency: NATIVE_CURRENCY,
-    rpcUrls: [
-        "https://mainnet.hashio.io/api"
-    ]
-}
-
-const CHAIN_PARAM_TESTNET: AddEthereumChainParameter = {
-    chainId: "0x128",
-    blockExplorerUrls: [
-        "https://hashscan.io/testnet/dashboard"
-    ],
-    chainName: "Hedera Testnet",
-    iconUrls: [
-        HEDERA_LOGO
-    ],
-    nativeCurrency: NATIVE_CURRENCY,
-    rpcUrls: [
-        "https://testnet.hashio.io/api"
-    ]
-}
-
-const CHAIN_PARAM_PREVIEWNET: AddEthereumChainParameter = {
-    chainId: "0x129",
-    blockExplorerUrls: [
-        "https://hashscan.io/previewnet/dashboard"
-    ],
-    chainName: "Hedera Previewnet",
-    iconUrls: [
-        HEDERA_LOGO
-    ],
-    nativeCurrency: NATIVE_CURRENCY,
-    rpcUrls: [
-        "https://previewnet.hashio.io/api"
-    ]
-}
 

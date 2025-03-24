@@ -6,15 +6,19 @@ import {shallowRef} from "vue";
 import {AccountByAddressCache} from "@/utils/cache/AccountByAddressCache";
 import {WalletSession} from "@/utils/wallet/WalletSession";
 import {WalletClient} from "@/utils/wallet/client/WalletClient";
-import {WalletClient_Ethereum} from "@/utils/wallet/client/WalletClient_Ethereum";
+import {HEDERA_LOGO, networkToChainId, WalletClient_Ethereum} from "@/utils/wallet/client/WalletClient_Ethereum";
 import {routeManager} from "@/router";
 import {EIP6963AnnounceProviderEvent, EIP6963ProviderDetail} from "@/utils/wallet/eip6963";
 import {
+    AddEthereumChainParameter,
     eth_accounts,
+    eth_chainId,
     eth_isUnsupportedMethod,
     eth_isUserReject,
     eth_requestAccounts,
-    wallet_revokePermissions
+    wallet_addEthereumChain,
+    wallet_revokePermissions,
+    wallet_switchEthereumChain
 } from "@/utils/wallet/eip1193";
 
 
@@ -35,6 +39,15 @@ export class EIP6963Agent {
 
         const d = this.findProviderDetails(providerUUID)
         if (d !== null) {
+            // 1) Checks current chain and tries to setup if needed
+            try {
+                if (!await this.isChainOK(d)) {
+                    await this.trySetupChain(d)
+                }
+            } catch (error) {
+                // Let's go forward and try the remaining steps… :/
+            }
+            // 2) Creates session
             try {
                 const accountAddresses = await eth_requestAccounts(d.provider)
                 const usableAccountIds: string[] = []
@@ -143,6 +156,55 @@ export class EIP6963Agent {
         }
         return result
     }
+
+    private async isChainOK(d: EIP6963ProviderDetail): Promise<boolean> {
+        const targetChainId = networkToChainId(routeManager.currentNetwork.value)
+        const currentChainId = await eth_chainId(d.provider)
+        return targetChainId == currentChainId
+    }
+
+    private async trySetupChain(d: EIP6963ProviderDetail): Promise<void> {
+
+        // Try to switch
+        const network = routeManager.currentNetwork.value
+        const chainId = networkToChainId(network)
+        if (chainId !== null) {
+            try {
+                await wallet_switchEthereumChain(d.provider, chainId)
+            } catch {
+                // Let's ignore and try to add chain
+            }
+        }
+
+        // Check again and try to add
+        if (!await this.isChainOK(d)) {
+            const chainParam = this.makeChainParam(network)
+            if (chainParam !== null) {
+                await wallet_addEthereumChain(d.provider, chainParam)
+            }
+        }
+    }
+
+    private makeChainParam(network: string): AddEthereumChainParameter | null {
+        let result: AddEthereumChainParameter | null
+
+        switch (network) {
+            case "mainnet":
+                result = CHAIN_PARAM_MAINNET
+                break
+            case "testnet":
+                result = CHAIN_PARAM_TESTNET
+                break
+            case "previewnet":
+                result = CHAIN_PARAM_PREVIEWNET
+                break
+            default:
+                result = null
+                break
+        }
+        return result
+    }
+
 }
 
 
@@ -177,4 +239,55 @@ class WalletSession_EIP6963 extends WalletSession {
     public getWalletUUID(): string | null {
         return this.providerDetails.info.uuid
     }
+}
+
+const NATIVE_CURRENCY = {
+    name: 'HBAR',
+    decimals: 18,
+    symbol: 'HBAR'
+}
+
+const CHAIN_PARAM_MAINNET: AddEthereumChainParameter = {
+    chainId: "0x127",
+    blockExplorerUrls: [
+        "https://hashscan.io/mainnet/dashboard"
+    ],
+    chainName: "Hedera Mainnet",
+    iconUrls: [
+        HEDERA_LOGO
+    ],
+    nativeCurrency: NATIVE_CURRENCY,
+    rpcUrls: [
+        "https://mainnet.hashio.io/api"
+    ]
+}
+
+const CHAIN_PARAM_TESTNET: AddEthereumChainParameter = {
+    chainId: "0x128",
+    blockExplorerUrls: [
+        "https://hashscan.io/testnet/dashboard"
+    ],
+    chainName: "Hedera Testnet",
+    iconUrls: [
+        HEDERA_LOGO
+    ],
+    nativeCurrency: NATIVE_CURRENCY,
+    rpcUrls: [
+        "https://testnet.hashio.io/api"
+    ]
+}
+
+const CHAIN_PARAM_PREVIEWNET: AddEthereumChainParameter = {
+    chainId: "0x129",
+    blockExplorerUrls: [
+        "https://hashscan.io/previewnet/dashboard"
+    ],
+    chainName: "Hedera Previewnet",
+    iconUrls: [
+        HEDERA_LOGO
+    ],
+    nativeCurrency: NATIVE_CURRENCY,
+    rpcUrls: [
+        "https://previewnet.hashio.io/api"
+    ]
 }
