@@ -16,6 +16,7 @@ import {
     SAMPLE_CONTRACT,
     SAMPLE_CONTRACT_AS_ACCOUNT,
     SAMPLE_CONTRACT_RESULT_DETAILS,
+    SAMPLE_SCHEDULING_SCHEDULED_TRANSACTIONS,
     SAMPLE_TOKEN,
     SAMPLE_TOKEN_DUDE,
     SAMPLE_TOPIC,
@@ -30,6 +31,8 @@ describe("SearchController.vue", () => {
 
     const mock = new MockAdapter(axios as any)
     const TRANSACTION_HASH = byteToHex(base64DecToArr(SAMPLE_TRANSACTION.transaction_hash))
+    const SAMPLE_SCHEDULING_TRANSACTION = SAMPLE_SCHEDULING_SCHEDULED_TRANSACTIONS.transactions![0]
+    const SAMPLE_SCHEDULED_TRANSACTION = SAMPLE_SCHEDULING_SCHEDULED_TRANSACTIONS.transactions![1]
 
     // We duplicate SAMPLE_ACCOUNT and patch its account id so that it conflicts with block number
     const SAMPLE_PATCHED_ACCOUNT = JSON.parse(JSON.stringify(SAMPLE_ACCOUNT))
@@ -118,6 +121,13 @@ describe("SearchController.vue", () => {
 
             const matcher3 = "api/v1/contracts/results/" + SAMPLE_CONTRACT_RESULT_DETAILS.hash.slice(2)
             mock.onGet(matcher3).reply(200, SAMPLE_CONTRACT_RESULT_DETAILS)
+
+            const matcher4 = "api/v1/transactions/" + SAMPLE_SCHEDULED_TRANSACTION.transaction_id
+            mock.onGet(matcher4).reply(200, SAMPLE_SCHEDULING_SCHEDULED_TRANSACTIONS)
+
+            const matcher5 = "api/v1/transactions/" + SAMPLE_SCHEDULED_TRANSACTION.transaction_id + "?scheduled=true"
+            const data = { transactions: [ SAMPLE_SCHEDULED_TRANSACTION ], links: {next: null}}
+            mock.onGet(matcher5).reply(200, data)
 
         }
 
@@ -1033,6 +1043,112 @@ describe("SearchController.vue", () => {
         expect(candidates[0].secondary).toBe(false)
         expect(candidates[0].entity).toStrictEqual(SAMPLE_TRANSACTION)
 
+    })
+
+    it("search scheduled transaction with id but without scheduled", async () => {
+
+        const inputText = ref<string>("")
+        const controller = new SearchController(inputText)
+        await flushPromises()
+        expect(vi.getTimerCount()).toBe(0)
+        expect(controller.visible.value).toBe(false)
+        expect(controller.actualInputText.value).toBe("")
+        expect(controller.loading.value).toBe(false)
+        expect(controller.candidateCount.value).toBe(0)
+        expect(controller.visibleAgents.value.length).toBe(0)
+        expect(controller.loadingDomainNameSearchAgents.value.length).toBe(0)
+
+        inputText.value = SAMPLE_SCHEDULED_TRANSACTION.transaction_id
+        await nextTick()
+        expect(vi.getTimerCount()).toBe(1)
+        expect(controller.visible.value).toBe(false)
+        expect(controller.actualInputText.value).toBe("")
+        expect(controller.loading.value).toBe(false)
+        expect(controller.candidateCount.value).toBe(0)
+        expect(controller.visibleAgents.value.length).toBe(0)
+        expect(controller.loadingDomainNameSearchAgents.value.length).toBe(0)
+
+        vi.advanceTimersToNextTimer()
+        expect(vi.getTimerCount()).toBe(0)
+        expect(controller.visible.value).toBe(true)
+        expect(controller.actualInputText.value).toBe(SAMPLE_SCHEDULED_TRANSACTION.transaction_id)
+        expect(controller.loading.value).toBe(false)
+        expect(controller.candidateCount.value).toBe(0)
+        expect(controller.visibleAgents.value.length).toBe(0)
+        expect(controller.loadingDomainNameSearchAgents.value.length).toBe(0)
+
+        await flushPromises()
+        expect(fetchGetURLs(mock)).toStrictEqual([
+            "api/v1/transactions/" + SAMPLE_SCHEDULED_TRANSACTION.transaction_id,
+        ])
+
+        expect(vi.getTimerCount()).toBe(0)
+        expect(controller.visible.value).toBe(true)
+        expect(controller.actualInputText.value).toBe(SAMPLE_SCHEDULED_TRANSACTION.transaction_id)
+        expect(controller.loading.value).toBe(false)
+        expect(controller.candidateCount.value).toBe(1)
+        expect(controller.visibleAgents.value.length).toBe(1)
+        expect(controller.loadingDomainNameSearchAgents.value.length).toBe(0)
+        const candidates = controller.visibleAgents.value[0].candidates.value
+        expect(candidates.length).toBe(1)
+        expect(candidates[0].description).toMatch("All transactions with ID")
+        expect(candidates[0].extra).toBeNull()
+        expect(candidates[0].secondary).toBe(false)
+        expect(candidates[0].entity).toStrictEqual(SAMPLE_SCHEDULING_TRANSACTION)
+
+
+    })
+
+    it("search transaction with id and scheduled", async () => {
+
+        const inputText = ref<string>("")
+        const controller = new SearchController(inputText)
+        await flushPromises()
+        expect(vi.getTimerCount()).toBe(0)
+        expect(controller.visible.value).toBe(false)
+        expect(controller.actualInputText.value).toBe("")
+        expect(controller.loading.value).toBe(false)
+        expect(controller.candidateCount.value).toBe(0)
+        expect(controller.visibleAgents.value.length).toBe(0)
+        expect(controller.loadingDomainNameSearchAgents.value.length).toBe(0)
+
+        inputText.value = SAMPLE_SCHEDULED_TRANSACTION.transaction_id + "?scheduled"
+        await nextTick()
+        expect(vi.getTimerCount()).toBe(1)
+        expect(controller.visible.value).toBe(false)
+        expect(controller.actualInputText.value).toBe("")
+        expect(controller.loading.value).toBe(false)
+        expect(controller.candidateCount.value).toBe(0)
+        expect(controller.visibleAgents.value.length).toBe(0)
+        expect(controller.loadingDomainNameSearchAgents.value.length).toBe(0)
+
+        vi.advanceTimersToNextTimer()
+        expect(vi.getTimerCount()).toBe(0)
+        expect(controller.visible.value).toBe(true)
+        expect(controller.actualInputText.value).toBe(SAMPLE_SCHEDULED_TRANSACTION.transaction_id + "?scheduled")
+        expect(controller.loading.value).toBe(false)
+        expect(controller.candidateCount.value).toBe(0)
+        expect(controller.visibleAgents.value.length).toBe(0)
+        expect(controller.loadingDomainNameSearchAgents.value.length).toBe(0)
+
+        await flushPromises()
+        expect(fetchGetURLs(mock)).toStrictEqual([
+            "api/v1/transactions/" + SAMPLE_SCHEDULED_TRANSACTION.transaction_id + "?scheduled=true",
+        ])
+
+        expect(vi.getTimerCount()).toBe(0)
+        expect(controller.visible.value).toBe(true)
+        expect(controller.actualInputText.value).toBe(SAMPLE_SCHEDULED_TRANSACTION.transaction_id + "?scheduled")
+        expect(controller.loading.value).toBe(false)
+        expect(controller.candidateCount.value).toBe(1)
+        expect(controller.visibleAgents.value.length).toBe(1)
+        expect(controller.loadingDomainNameSearchAgents.value.length).toBe(0)
+        const nextCandidates = controller.visibleAgents.value[0].candidates.value
+        expect(nextCandidates.length).toBe(1)
+        expect(nextCandidates[0].description).toMatch("0.0.503733@1666754898.238965661")
+        expect(nextCandidates[0].extra).toBeNull()
+        expect(nextCandidates[0].secondary).toBe(false)
+        expect(nextCandidates[0].entity).toStrictEqual(SAMPLE_SCHEDULED_TRANSACTION)
     })
 
     it("search transaction with timestamp", async () => {
