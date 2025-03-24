@@ -78,7 +78,7 @@ export class EntityDescriptor {
             case TransactionType.SCHEDULECREATE:
             case TransactionType.SCHEDULEDELETE:
             case TransactionType.SCHEDULESIGN:
-                result = new EntityDescriptor("Schedule ID", null);
+                result = new EntityDescriptor("Schedule ID", "ScheduleDetails");
                 break;
 
             case TransactionType.TOKENAIRDROP:
