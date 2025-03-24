@@ -18,6 +18,7 @@ import RoutingSpec from "@/pages/RoutingSpec.vue";
 import Transactions from "@/pages/Transactions.vue";
 import TransactionsById from "@/pages/TransactionsById.vue";
 import TransactionDetails from "@/pages/TransactionDetails.vue";
+import ScheduleDetails from "@/pages/ScheduleDetails.vue";
 import Accounts from "@/pages/Accounts.vue";
 import AccountsWithKey from "@/pages/AccountsWithKey.vue";
 import AccountDetails from "@/pages/AccountDetails.vue";
@@ -245,6 +246,17 @@ export class RouteManager {
 
     public makeRouteToTransactionsById(transactionId: string): RouteLocationRaw {
         return {name: 'TransactionsById', params: {transactionId: transactionId, network: this.currentNetwork.value}}
+    }
+
+    //
+    // Schedule
+    //
+
+    public makeRouteToSchedule(scheduleId: string): RouteLocationRaw {
+        return {
+            name: 'ScheduleDetails',
+            params: {scheduleId: scheduleId, network: this.currentNetwork.value}
+        }
     }
 
     //
@@ -565,6 +577,9 @@ export class RouteManager {
             case "TransactionDetails3091":
                 document.title = titlePrefix + "Transaction " + to.params.transactionLoc
                 break;
+            case "ScheduleDetails":
+                document.title = titlePrefix + "Schedule " + to.params.scheduleId
+                break;
             case "TokenDetails":
                 document.title = titlePrefix + "Token " + to.params.tokenId
                 break;
@@ -795,6 +810,15 @@ const routes: Array<RouteRecordRaw> = [
         path: '/:network/transaction/:transactionLoc',
         name: 'TransactionDetails',
         component: TransactionDetails,
+        props: true,
+        meta: {
+            tabId: TabId.Transactions
+        }
+    },
+    {
+        path: '/:network/schedule/:scheduleId',
+        name: 'ScheduleDetails',
+        component: ScheduleDetails,
         props: true,
         meta: {
             tabId: TabId.Transactions
