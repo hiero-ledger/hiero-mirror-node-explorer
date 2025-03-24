@@ -360,8 +360,9 @@ export class TransactionSearchAgent extends SearchAgent<TransactionID | Timestam
             let transactions: Transaction[]
             if (transactionParam instanceof TransactionID) {
                 const tid = transactionParam.toString(false)
+                const queryParams = transactionParam.queryParam === "scheduled" ? "?scheduled=true" : ""
                 // https://testnet.mirrornode.hedera.com/api/v1/docs/#/transactions/getTransactionById
-                const r = await axios.get<TransactionByIdResponse>("api/v1/transactions/" + tid)
+                const r = await axios.get<TransactionByIdResponse>("api/v1/transactions/" + tid + queryParams)
                 transactions = r.data.transactions ?? []
             } else if (transactionParam instanceof Timestamp) {
                 // https://testnet.mirrornode.hedera.com/api/v1/docs/#/transactions/listTransactions
