@@ -4,7 +4,7 @@
 
 
 import {computed, ref, watch} from "vue";
-import {WalletClient} from "@/utils/wallet/client/WalletClient";
+import {WalletClient, WalletClientError} from "@/utils/wallet/client/WalletClient";
 import {WalletClient_Hiero} from "@/utils/wallet/client/WalletClient_Hiero";
 import {WalletClient_Ethereum} from "@/utils/wallet/client/WalletClient_Ethereum";
 import {WalletConnectAgent} from "@/utils/wallet/WalletConnectAgent";
@@ -113,8 +113,10 @@ export class WalletManagerV4 {
                     this.traceError(error, "WalletManagerV4.connect()")
                     this.walletSession.value = null
                 }
-            } else { // Bug
+            } else {
+                // WalletConnectAgent.makeInstance() did fail => browser setup does not allow WalletConnect to work
                 this.walletSession.value = null
+                throw new WalletConnectDisableByBrowserError()
             }
         } else {
             // Connection through browser extension
@@ -126,6 +128,7 @@ export class WalletManagerV4 {
             } catch (error) {
                 this.traceError(error, "WalletManagerV4.connect()")
                 this.walletSession.value = null
+                throw error
             }
         }
 
@@ -381,6 +384,13 @@ export class WalletManagerV4 {
 
     private traceError(reason: unknown, caller: string): void {
         console.trace(caller + " caught error: " + JSON.stringify(reason))
+    }
+}
+
+export class WalletConnectDisableByBrowserError extends WalletClientError {
+
+    public constructor() {
+        super("Browser setup does not allow to use WalletConnect right now", "Check that cookies are enabled")
     }
 }
 
