@@ -85,7 +85,7 @@
         <Property id="transaction-body" :full-width="true">
           <template #name>Transaction Body</template>
           <template #value>
-            <BlobValue :blob-value="schedule?.transaction_body" :base64="false" :show-none="true"/>
+            <BlobValue :blob-value="formattedBody" pretty show-none/>
           </template>
         </Property>
 
@@ -105,7 +105,7 @@
               <span style="padding-left: 16px;">Key Prefix</span>
             </template>
             <template #value>
-              <BlobValue :show-none="true" :blob-value="s.public_key_prefix"/>
+              <HexaValue :byteString="hexaFormat(s.public_key_prefix)" :show-none="true"/>
             </template>
           </Property>
           <Property id="signature" :full-width="true">
@@ -113,7 +113,7 @@
               <span style="padding-left: 16px;">Signature</span>
             </template>
             <template #value>
-              <BlobValue :show-none="true" :blob-value="s.signature"/>
+              <HexaValue :byteString="hexaFormat(s.signature)" :show-none="true"/>
               <div class="h-is-extra-text">{{ s.type }}</div>
             </template>
           </Property>
@@ -149,6 +149,9 @@ import {ScheduleByIdCache} from "@/utils/cache/ScheduleByIdCache.ts";
 import {TransactionByTsCache} from "@/utils/cache/TransactionByTsCache.ts";
 import KeyValue from "@/components/values/KeyValue.vue";
 import TransactionLink from "@/components/values/TransactionLink.vue";
+import {base64DecToArr, byteToHex} from "@/utils/B64Utils.ts";
+import HexaValue from "@/components/values/HexaValue.vue";
+import {proto} from "@hashgraph/proto";
 
 const props = defineProps({
   scheduleId: String,
@@ -156,6 +159,22 @@ const props = defineProps({
 })
 
 const notification = ref(null);
+
+const formattedBody = computed(() => {
+  let result: string | null
+  const body = schedule.value?.transaction_body
+  if (body) {
+    const bodyBytes = base64DecToArr(body)
+    result = JSON.stringify(proto.SchedulableTransactionBody.decode(bodyBytes))
+  } else {
+    result = null;
+  }
+  return result;
+})
+
+const hexaFormat = (b64encoding: string) => {
+  return b64encoding ? byteToHex(base64DecToArr(b64encoding)) : null
+}
 
 const scheduleId = computed(() => props.scheduleId ?? null);
 const scheduleLookup = ScheduleByIdCache.instance.makeLookup(scheduleId)
