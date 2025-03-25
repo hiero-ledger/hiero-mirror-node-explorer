@@ -29,20 +29,4 @@ export class TopicMessageCache extends EntityCache<string, TopicMessage | null> 
         }
         return result
     }
-
-    public makeTopicMessageLookup(
-        tokenId: Ref<string | null>,
-        seqNumber: Ref<number | null>,
-    ): EntityLookup<string, TopicMessage | null> {
-        const key = computed(() => {
-            let result: string | null
-            if (tokenId.value !== null && seqNumber.value !== null) {
-                result = tokenId.value + "---" + seqNumber.value.toString()
-            } else {
-                result = null
-            }
-            return result
-        })
-        return this.makeLookup(key)
-    }
 }

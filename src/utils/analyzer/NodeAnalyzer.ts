@@ -78,7 +78,6 @@ export class NodeAnalyzer {
     public readonly stake = computed(() => this.node.value?.stake ?? 0)
     public readonly minStake = computed(() => this.node.value?.min_stake ?? 0)
     public readonly maxStake = computed(() => this.node.value?.max_stake ?? 0)
-    public readonly unclampedStake = computed(() => this.node.value ? makeUnclampedStake(this.node.value) : 0)
     public readonly stakeRewarded = computed(() => this.node.value?.stake_rewarded ?? 0)
     public readonly stakeUnrewarded = computed(() => this.node.value?.stake_not_rewarded ?? 0)
     public readonly rewardRate = computed(() => makeRewardRate(this.node.value?.reward_rate_start ?? 0))

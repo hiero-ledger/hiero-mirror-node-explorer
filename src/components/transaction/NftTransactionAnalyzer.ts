@@ -2,14 +2,10 @@
 
 import {computed, ref, Ref, watch, WatchStopHandle} from "vue"
 import {NftTransactionTransfer, TokenRelationship, TransactionType,} from "@/schemas/MirrorNodeSchemas"
-import {EntityDescriptor} from "@/utils/EntityDescriptor"
 import {TokenRelationshipCache} from "@/utils/cache/TokenRelationshipCache"
 
 export class NftTransactionAnalyzer {
     public readonly transaction: Ref<NftTransactionTransfer | null>
-    public readonly entityDescriptor = ref(
-        EntityDescriptor.DEFAULT_ENTITY_DESCRIPTOR,
-    )
     public readonly tokenRelationships: Ref<TokenRelationship[]> = ref([])
     private readonly watchHandles: WatchStopHandle[] = []
 

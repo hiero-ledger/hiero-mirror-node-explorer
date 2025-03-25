@@ -24,10 +24,6 @@ export class TransactionHash {
         return byteToHex(this.bytes)
     }
 
-    public toBase64(): string {
-        return base64EncArr(this.bytes)
-    }
-
     //
     // Private
     //

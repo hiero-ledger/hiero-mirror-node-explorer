@@ -29,15 +29,15 @@ export class ERCUtils {
         const result = results !== null ? results[0] as string : null
         return Promise.resolve(result)
     }
-
-    public static async loadBalance(contractAddress: string, accountAddress: string): Promise<bigint | null> {
-        // https://eips.ethereum.org/EIPS/eip-20
-        // https://eips.ethereum.org/EIPS/eip-721
-        const abi = "function balanceOf(address owner) view returns (uint256)"
-        const results = await this.call(contractAddress, abi, [accountAddress])
-        const result = results !== null ? results[0] as bigint : null
-        return Promise.resolve(result)
-    }
+    //
+    // public static async loadBalance(contractAddress: string, accountAddress: string): Promise<bigint | null> {
+    //     // https://eips.ethereum.org/EIPS/eip-20
+    //     // https://eips.ethereum.org/EIPS/eip-721
+    //     const abi = "function balanceOf(address owner) view returns (uint256)"
+    //     const results = await this.call(contractAddress, abi, [accountAddress])
+    //     const result = results !== null ? results[0] as bigint : null
+    //     return Promise.resolve(result)
+    // }
 
     //
     // Public (ERC165)

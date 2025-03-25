@@ -80,24 +80,6 @@ export class PathParam { // Block Hash or Number
         return result
     }
 
-    public static parseTransactionIdOrHash(s: string | undefined): string | null {
-        let result: string | null
-
-        if (s) {
-            const id = TransactionID.parse(s)
-            if (id !== null) {
-                result = id.toString()
-            } else {
-                const hash = hexToByte(s)
-                result = hash !== null && hash.length == 48 ? "0x" + byteToHex(hash) : null
-            }
-        } else {
-            result = null
-        }
-
-        return result
-    }
-
     public static parseTransactionLoc(s: string): Timestamp | TransactionHash | EthereumHash | null {
         return Timestamp.parse(s) ?? TransactionHash.parse(s) ?? EthereumHash.parse(s)
     }

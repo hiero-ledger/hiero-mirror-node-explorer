@@ -80,9 +80,9 @@ export class WalletManagerV4 {
 
     public readonly isHieroWallet
         = computed(() => this.client.value instanceof WalletClient_Hiero)
-
-    public readonly isEthereumWallet
-        = computed(() => this.client.value instanceof WalletClient_Ethereum)
+    //
+    // public readonly isEthereumWallet
+    //     = computed(() => this.client.value instanceof WalletClient_Ethereum)
 
     public readonly isMetamaskWallet = computed(() => {
         const walletName = this.walletName.value

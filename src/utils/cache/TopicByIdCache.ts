@@ -9,17 +9,6 @@ export class TopicByIdCache extends EntityCache<string, Topic | null> {
     public static readonly instance = new TopicByIdCache()
 
     //
-    // Public
-    //
-
-    public updateWithTopic(topic: Topic): void {
-        if (topic.topic_id) {
-            this.forget(topic.topic_id)
-            this.mutate(topic.topic_id, Promise.resolve(topic))
-        }
-    }
-
-    //
     // Cache
     //
 

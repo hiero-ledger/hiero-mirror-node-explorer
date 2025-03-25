@@ -105,20 +105,6 @@ export class EntityID {
         return result
     }
 
-    public isEthereumPrecompiledContract(): boolean {
-        return this.shard == 0 && this.realm == 0 && 1 <= this.num && this.num < 256
-    }
-
-    public cloneWithoutChecksum(): EntityID {
-        let result: EntityID
-        if (this.checksum !== null) {
-            result = new EntityID(this.shard, this.realm, this.num, null)
-        } else {
-            result = this
-        }
-        return result
-    }
-
     /*
      * Compare two account ID.
      * Accounts are sorted in ascending but account ids < 100 are put at the end.

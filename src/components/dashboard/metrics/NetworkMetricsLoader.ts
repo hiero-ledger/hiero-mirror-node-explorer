@@ -21,18 +21,9 @@ export class NetworkMetricsLoader extends EntityLoader<NetworksMetrics> {
         return v !== null ? "$" + v.toFixed(4) : ""
     })
 
-    public readonly hbarPriceVariationText = computed(() =>
-        this.makeVariationText(this.hbarPriceVariation.value)
-    )
-
     public readonly hbarReleasedText = computed(() => {
         const v = this.hbarReleased.value
         return v !== null ? Number(v).toLocaleString('en-US') : ""
-    })
-
-    public readonly hbarReleasedPercentageText = computed(() => {
-        const p = this.hbarReleasedPercentage.value
-        return p !== null ? p.toFixed(2) : ""
     })
 
     public readonly hbarTotalText = computed(() => {
@@ -44,10 +35,6 @@ export class NetworkMetricsLoader extends EntityLoader<NetworksMetrics> {
         const v = this.hbarMarketCap.value
         return v !== null ? "$" + Number(v).toLocaleString("en-US") : ""
     })
-
-    public readonly hbarMarketCapVariationText = computed(() =>
-        this.makeVariationText(this.hbarMarketCapVariation.value)
-    )
 
     //
     // EntityCache
@@ -82,35 +69,9 @@ export class NetworkMetricsLoader extends EntityLoader<NetworksMetrics> {
         return rate ? (Math.round(rate.cent_equivalent / rate.hbar_equivalent * 100) / 10000) : null
     })
 
-    private readonly hbarPrice24 = computed(() => {
-        const rate = this.entity.value?.lastExchangeRate24.current_rate
-        return rate ? (Math.round(rate.cent_equivalent / rate.hbar_equivalent * 100) / 10000) : null
-    })
-
-    private readonly hbarPriceVariation = computed(() => {
-        const currentPrice = this.hbarPrice.value
-        const price24h = this.hbarPrice24.value
-        return (currentPrice && price24h)
-            ? (Math.round((currentPrice - price24h) / price24h * 10000) / 100)
-            : null
-    })
-
     private readonly hbarReleased = computed(() => {
         const released = Number(this.entity.value?.lastSupply.released_supply)
         return released ? released / 100000000 : null
-    })
-
-    private readonly hbarReleased24 = computed(() => {
-        const released = Number(this.entity.value?.lastSupply24.released_supply)
-        return released ? released / 100000000 : null
-    })
-
-    private readonly hbarReleasedPercentage = computed(() => {
-        const released = this.hbarReleased.value
-        const total = this.hbarTotal.value
-        return (released && total)
-            ? (Math.round((released) / total * 10000) / 100)
-            : null
     })
 
     private readonly hbarTotal = computed(() => {
@@ -125,32 +86,6 @@ export class NetworkMetricsLoader extends EntityLoader<NetworksMetrics> {
             ? Math.round(released * price)
             : null
     })
-
-    private readonly hbarMarketCapVariation = computed(() => {
-        let result: number | null
-        const released = this.hbarReleased.value
-        const price = this.hbarPrice.value
-        const released24h = this.hbarReleased24.value
-        const price24h = this.hbarPrice24.value
-        if (released && price && released24h && price24h) {
-            const variation = (released * price - released24h * price24h) / (released24h * price24h)
-            result = (Math.round(variation * 10000) / 100)
-        } else {
-            result = null
-        }
-        return result
-    })
-
-    private makeVariationText(variation: number | null): string {
-        let result: string
-        if (variation !== null) {
-            result = variation > 0 ? "+" : ""
-            result += variation.toFixed(2)
-        } else {
-            result = ""
-        }
-        return result
-    }
 }
 
 export class NetworksMetrics {

@@ -170,10 +170,6 @@ export class NetworkEntry {
 
 export class NetworkConfig {
 
-    public static readonly MAIN_NETWORK = 'mainnet'
-    public static readonly TEST_NETWORK = 'testnet'
-    public static readonly PREVIEW_NETWORK = 'previewnet'
-
     public static FALLBACK = NetworkConfig.parse([
         {
             activate: true,
@@ -270,11 +266,6 @@ export class NetworkConfig {
 
     public isValidChecksum(id: string, checksum: string, network: string): boolean {
         return this.computeChecksum(id, network) == checksum
-    }
-
-    public makeAddressWithChecksum(address: string, network: string): string | null {
-        const entity = EntityID.normalize(address)
-        return entity ? (entity + '-' + this.computeChecksum(entity, network)) : null
     }
 
     public computeChecksum(id: string, network: string): string {

@@ -62,14 +62,6 @@ export class ComplexKeyLine {
         return "" + this.level + " " + this.key.key
     }
 
-    public static dump(lines: ComplexKeyLine[]): string {
-        let result = ""
-        for (const l of lines) {
-            result += l.toString() + "\n"
-        }
-        return result
-    }
-
     //
     // Private
     //

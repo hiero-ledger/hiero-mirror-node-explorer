@@ -120,20 +120,6 @@ function makeTransferLabel(row: Transaction, netAmount: number): string {
     return result
 }
 
-export function showPositiveNetAmount(row: Transaction): boolean {
-    let result: boolean
-
-    const netAmount = computeNetAmount(row.transfers, row.charged_tx_fee)
-    switch (row.name) {
-        case TransactionType.CRYPTOTRANSFER:
-            result = true
-            break
-        default:
-            result = netAmount > 0
-    }
-    return result
-}
-
 export function makeTypeLabel(type: TransactionType | undefined): string {
     let result: string
     switch (type) {

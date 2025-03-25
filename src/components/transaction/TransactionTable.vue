@@ -120,7 +120,6 @@ const total = props.controller.totalRowCount
 const currentPage = props.controller.currentPage
 const onPageChange = props.controller.onPageChange
 const perPage = props.controller.pageSize
-const storageKey = props.controller.storageKey
 const paginated = props.controller.paginated
 const showPageSizeSelector = props.controller.showPageSizeSelector
 

@@ -36,8 +36,6 @@ export class NetworkAnalyzer {
 
     public readonly nodes = computed(() => this.networkLookup.entity.value ?? [])
 
-    public readonly nodeCount = computed(() => this.nodes.value?.length ?? 0)
-
     public readonly node0 = computed(() => this.nodes.value.length >= 1 ? this.nodes.value[0] : null)
 
     public readonly totalStakeForConsensus: ComputedRef<number> = computed(() => {
@@ -52,14 +50,6 @@ export class NetworkAnalyzer {
         let result = 0
         for (const n of this.nodes.value) {
             result += (n.reward_rate_start ?? 0) * (n.stake_rewarded ?? 0) / 100000000
-        }
-        return result
-    })
-
-    public readonly unclampedStakeTotal: ComputedRef<number> = computed(() => {
-        let result = 0
-        for (const n of this.nodes.value) {
-            result += (n.stake_rewarded ?? 0) + (n.stake_not_rewarded ?? 0)
         }
         return result
     })

@@ -83,8 +83,6 @@ export class RouteManager {
         this.configure(CoreConfig.FALLBACK, NetworkConfig.FALLBACK)
     }
 
-    public readonly currentRoute = computed(() => this.router.currentRoute.value?.name)
-
     public readonly currentNetwork = computed(() => this.currentNetworkEntry.value.name)
 
     public readonly currentTabId = computed(() => {
@@ -239,10 +237,6 @@ export class RouteManager {
     // TransactionsById
     //
 
-    public routeToTransactionsById(transactionId: string): Promise<NavigationFailure | void | undefined> {
-        return this.router.push(this.makeRouteToTransactionsById(transactionId))
-    }
-
     public makeRouteToTransactionsById(transactionId: string): RouteLocationRaw {
         return {name: 'TransactionsById', params: {transactionId: transactionId, network: this.currentNetwork.value}}
     }
@@ -278,10 +272,6 @@ export class RouteManager {
         return {
             name: 'AccountsWithKey', params: {pubKey: pubKey, network: this.currentNetwork.value}
         }
-    }
-
-    public routeToAccountsWithKey(pubKey: string): Promise<NavigationFailure | void | undefined> {
-        return this.router.push(this.makeRouteToAccountsWithKey(pubKey))
     }
 
     //

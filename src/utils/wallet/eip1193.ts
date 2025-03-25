@@ -112,11 +112,11 @@ export function eth_isUnsupportedMethod(reason: unknown): boolean {
     const code = eth_getErrorCode(reason)
     return code == -32601 || code == -32004
 }
-
-export function eth_isUnrecognizedChainId(reason: unknown): boolean {
-    // https://eips.ethereum.org/EIPS/eip-3326
-    return eth_getErrorCode(reason) == 4902
-}
+//
+// export function eth_isUnrecognizedChainId(reason: unknown): boolean {
+//     // https://eips.ethereum.org/EIPS/eip-3326
+//     return eth_getErrorCode(reason) == 4902
+// }
 
 
 export interface AddEthereumChainParameter {
