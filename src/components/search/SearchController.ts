@@ -15,6 +15,7 @@ import {
     ERC721SearchAgent,
     FullTokenNameSearchAgent,
     NarrowTokenNameSearchAgent,
+    ScheduleSearchAgent,
     SearchAgent,
     TokenSearchAgent,
     TopicSearchAgent,
@@ -34,13 +35,14 @@ export class SearchController {
                                          |                  | api/v1/contracts/{shard.realm.num}
                                          |                  | api/v1/tokens/{shard.realm.num}
                                          |                  | api/v1/topics/{shard.realm.num}
-                                         |                  | api/v1/topics/{shard.realm.num}/messages
+                                         |                  | api/v1/schedules/{shard.realm.num}
     -------------------------------------+------------------+------------------------------------------------------
     integer[-checksum]                   | Incomplete       | api/v1/accounts/0.0.{integer}
                                          | Entity ID        | api/v1/contracts/0.0.{integer}
                                          |                  | api/v1/tokens/0.0.{integer}
                                          |                  | api/v1/topics/0.0.{integer}
-                                         |                  | api/v1/topics/0.0.{integer}/messages
+                                         |                  | api/v1/schedules/0.0.{integer}
+                                         |                  | api/v1/blocks/{integer}
     -------------------------------------+------------------+------------------------------------------------------
     shard.realm.num@seconds.nanoseconds  | Transaction ID   | api/v1/transactions/normalize({inputText})
     -------------------------------------+------------------+------------------------------------------------------
@@ -82,6 +84,7 @@ export class SearchController {
     private readonly contractSearchAgent = new ContractSearchAgent()
     private readonly tokenSearchAgent = new TokenSearchAgent()
     private readonly topicSearchAgent = new TopicSearchAgent()
+    private readonly scheduleSearchAgent = new ScheduleSearchAgent()
     private readonly transactionSearchAgent = new TransactionSearchAgent()
     private readonly blockSearchAgent = new BlockSearchAgent()
     private readonly narrowTokenNameSearchAgent = new NarrowTokenNameSearchAgent()
@@ -105,6 +108,7 @@ export class SearchController {
             this.accountSearchAgent,
             this.tokenSearchAgent,
             this.topicSearchAgent,
+            this.scheduleSearchAgent,
             this.transactionSearchAgent,
             this.blockSearchAgent,
             this.erc20SearchAgent,
@@ -206,6 +210,7 @@ export class SearchController {
         this.contractSearchAgent.loc.value = entityID ?? hexBytes
         this.tokenSearchAgent.loc.value = entityID ?? hexBytes
         this.topicSearchAgent.loc.value = entityID
+        this.scheduleSearchAgent.loc.value = entityID
         this.transactionSearchAgent.loc.value = transactionID ?? timestamp ?? hexBytes
         this.blockSearchAgent.loc.value = blockNb ?? hexBytes
         this.narrowTokenNameSearchAgent.loc.value = tokenName

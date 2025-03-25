@@ -9,6 +9,7 @@ import {
     Block,
     ContractResponse,
     ContractResultDetails,
+    Schedule,
     TokenInfo,
     TokensResponse,
     Topic,
@@ -692,6 +693,39 @@ export interface TokenLike {
     token_id: string | null
     name: string
 }
+
+
+export class ScheduleSearchAgent extends SearchAgent<EntityID, Schedule> {
+
+    //
+    // Public
+    //
+
+    public constructor() {
+        super("Schedule");
+    }
+
+    //
+    // SearchAgent
+    //
+
+    protected async load(schedID: EntityID): Promise<SearchCandidate<Schedule>[]> {
+        let result: SearchCandidate<Schedule>[]
+        try {
+            const sid = schedID.toString()
+            const scheduleInfo = (await axios.get<Schedule>("api/v1/schedules/" + sid)).data
+            const description = sid
+            const route = routeManager.makeRouteToSchedule(sid)
+            const candidate = new SearchCandidate(description, null, route, scheduleInfo, this)
+            result = [candidate]
+        } catch {
+            result = []
+        }
+
+        return Promise.resolve(result)
+    }
+}
+
 
 export class ERC20SearchAgent extends TokenNameSearchAgent {
 

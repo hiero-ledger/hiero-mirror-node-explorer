@@ -17,6 +17,7 @@ import {
     SAMPLE_CONTRACT_AS_ACCOUNT,
     SAMPLE_CONTRACT_RESULT_DETAILS,
     SAMPLE_SCHEDULING_SCHEDULED_TRANSACTIONS,
+    SAMPLE_SCHEDULE,
     SAMPLE_TOKEN,
     SAMPLE_TOKEN_DUDE,
     SAMPLE_TOPIC,
@@ -105,6 +106,12 @@ describe("SearchController.vue", () => {
             // Topic search
             const matcher0 = "api/v1/topics/" + SAMPLE_TOPIC.topic_id
             mock.onGet(matcher0).reply(200, SAMPLE_TOPIC)
+        }
+
+        {
+            // Schedule search
+            const matcher0 = "api/v1/schedules/" + SAMPLE_SCHEDULE.schedule_id
+            mock.onGet(matcher0).reply(200, SAMPLE_SCHEDULE)
         }
 
         {
@@ -206,6 +213,7 @@ describe("SearchController.vue", () => {
             "api/v1/contracts/0.0.730631",
             "api/v1/tokens/0.0.730631",
             "api/v1/topics/0.0.730631",
+            "api/v1/schedules/0.0.730631",
         ])
 
         expect(controller.visible.value).toBe(true)
@@ -265,6 +273,7 @@ describe("SearchController.vue", () => {
             "api/v1/contracts/0.0.730631",
             "api/v1/tokens/0.0.730631",
             "api/v1/topics/0.0.730631",
+            "api/v1/schedules/0.0.730631",
         ])
 
         expect(vi.getTimerCount()).toBe(0)
@@ -545,6 +554,7 @@ describe("SearchController.vue", () => {
             "api/v1/contracts/0.0.749775",
             "api/v1/tokens/0.0.749775",
             "api/v1/topics/0.0.749775",
+            "api/v1/schedules/0.0.749775",
         ])
 
         expect(vi.getTimerCount()).toBe(0)
@@ -735,6 +745,7 @@ describe("SearchController.vue", () => {
             "api/v1/contracts/0.0.29662956",
             "api/v1/tokens/0.0.29662956",
             "api/v1/topics/0.0.29662956",
+            "api/v1/schedules/0.0.29662956",
         ])
 
         expect(vi.getTimerCount()).toBe(0)
@@ -970,6 +981,7 @@ describe("SearchController.vue", () => {
             "api/v1/contracts/0.0.31407",
             "api/v1/tokens/0.0.31407",
             "api/v1/topics/0.0.31407",
+            "api/v1/schedules/0.0.31407",
         ])
 
         expect(vi.getTimerCount()).toBe(0)
@@ -985,6 +997,68 @@ describe("SearchController.vue", () => {
         expect(candidates[0].extra).toBeNull()
         expect(candidates[0].secondary).toBe(false)
         expect(candidates[0].entity).toStrictEqual(SAMPLE_TOPIC)
+
+    })
+
+
+    //
+    // Schedule
+    //
+
+    it("search schedule with id", async () => {
+
+        const inputText = ref<string>("")
+        const controller = new SearchController(inputText)
+        await flushPromises()
+        expect(vi.getTimerCount()).toBe(0)
+        expect(controller.visible.value).toBe(false)
+        expect(controller.actualInputText.value).toBe("")
+        expect(controller.loading.value).toBe(false)
+        expect(controller.candidateCount.value).toBe(0)
+        expect(controller.visibleAgents.value.length).toBe(0)
+        expect(controller.loadingDomainNameSearchAgents.value.length).toBe(0)
+
+        inputText.value = SAMPLE_SCHEDULE.schedule_id!
+        await nextTick()
+        expect(vi.getTimerCount()).toBe(1)
+        expect(controller.visible.value).toBe(false)
+        expect(controller.actualInputText.value).toBe("")
+        expect(controller.loading.value).toBe(false)
+        expect(controller.candidateCount.value).toBe(0)
+        expect(controller.visibleAgents.value.length).toBe(0)
+        expect(controller.loadingDomainNameSearchAgents.value.length).toBe(0)
+
+        vi.advanceTimersToNextTimer()
+        expect(vi.getTimerCount()).toBe(0)
+        expect(controller.visible.value).toBe(true)
+        expect(controller.actualInputText.value).toBe(SAMPLE_SCHEDULE.schedule_id)
+        expect(controller.loading.value).toBe(false)
+        expect(controller.candidateCount.value).toBe(0)
+        expect(controller.visibleAgents.value.length).toBe(0)
+        expect(controller.loadingDomainNameSearchAgents.value.length).toBe(0)
+
+        await flushPromises()
+        expect(fetchGetURLs(mock)).toStrictEqual([
+            "api/v1/accounts/0.0.1382775",
+            "api/v1/contracts/0.0.1382775",
+            "api/v1/tokens/0.0.1382775",
+            "api/v1/topics/0.0.1382775",
+            "api/v1/schedules/0.0.1382775",
+        ])
+
+        expect(vi.getTimerCount()).toBe(0)
+        expect(controller.visible.value).toBe(true)
+        expect(controller.actualInputText.value).toBe(SAMPLE_SCHEDULE.schedule_id)
+        expect(controller.loading.value).toBe(false)
+        expect(controller.candidateCount.value).toBe(1)
+        expect(controller.visibleAgents.value.length).toBe(1)
+        expect(controller.loadingDomainNameSearchAgents.value.length).toBe(0)
+        const candidates = controller.visibleAgents.value[0].candidates.value
+        expect(candidates.length).toBe(1)
+        expect(candidates[0].description).toBe(SAMPLE_SCHEDULE.schedule_id)
+        expect(candidates[0].extra).toBeNull()
+        expect(candidates[0].secondary).toBe(false)
+        expect(candidates[0].entity).toStrictEqual(SAMPLE_SCHEDULE)
 
     })
 
@@ -1045,7 +1119,7 @@ describe("SearchController.vue", () => {
 
     })
 
-    it("search scheduled transaction with id but without scheduled", async () => {
+    it("search transaction with id but without scheduled", async () => {
 
         const inputText = ref<string>("")
         const controller = new SearchController(inputText)
@@ -1359,6 +1433,7 @@ describe("SearchController.vue", () => {
             "api/v1/contracts/0.0.25175998",
             "api/v1/tokens/0.0.25175998",
             "api/v1/topics/0.0.25175998",
+            "api/v1/schedules/0.0.25175998",
             "api/v1/blocks/25175998",
         ])
 
