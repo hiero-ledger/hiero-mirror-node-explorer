@@ -12,6 +12,7 @@
         :hoverable="true"
         :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
         :paginated="false"
+        :per-page="props.nodes.length"
         :striped="true"
         default-sort="node_id"
         @cell-click="handleClick"
@@ -130,7 +131,10 @@ import {NetworkAnalyzer} from "@/utils/analyzer/NetworkAnalyzer";
 import Tooltip from "@/components/Tooltip.vue";
 
 const props = defineProps({
-  nodes: Object as PropType<Array<NetworkNode> | undefined>,
+  nodes: {
+    type: Object as PropType<Array<NetworkNode>>,
+    required: true
+  },
   stakeTotal: Number
 })
 
