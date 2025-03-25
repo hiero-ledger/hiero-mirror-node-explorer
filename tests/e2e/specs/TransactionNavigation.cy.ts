@@ -81,29 +81,37 @@ describe('Transaction Navigation', () => {
     it('should follow schedule relationship links', () => {
         const schedulingConsensusTimestamp = "1674825796.070463898"
         const scheduledConsensusTimestamp = "1674825835.244778007"
+        const scheduleId = "0.0.1754091"
 
         const targetURL = 'mainnet/transaction/' + schedulingConsensusTimestamp
         cy.visit(targetURL)
         cy.url().should('include', targetURL)
 
-        cy.get('#transactionTypeValue')
+        cy.get('#scheduledTransactionValue')
             .find('a')
             .click()
             .then(() => {
-                // cy.log('Selected operator Id: ' + $id.text())
                 cy.url().should('include', '/mainnet/transaction/')
                 cy.url().should('include', scheduledConsensusTimestamp)
                 cy.get('title').contains('Transaction ' + scheduledConsensusTimestamp)
             })
 
-        cy.get('#scheduledValue')
+        cy.get('#scheduleCreateTransaction')
             .find('a')
             .click()
             .then(() => {
-                // cy.log('Selected operator Id: ' + $id.text())
                 cy.url().should('include', '/mainnet/transaction/')
                 cy.url().should('include', schedulingConsensusTimestamp)
                 cy.get('title').contains('Transaction ' + schedulingConsensusTimestamp)
+            })
+
+        cy.get('#entityIdValue')
+            .find('a')
+            .click()
+            .then(() => {
+                cy.url().should('include', '/mainnet/schedule/')
+                cy.url().should('include', scheduleId)
+                cy.get('title').contains('Schedule ' + scheduleId)
             })
     })
 
