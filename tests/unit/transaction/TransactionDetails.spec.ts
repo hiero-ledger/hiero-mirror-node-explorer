@@ -31,6 +31,7 @@ import {
     SAMPLE_NONFUNGIBLE,
     SAMPLE_PARENT_CHILD_TRANSACTIONS,
     SAMPLE_SAME_ID_NOT_PARENT_TRANSACTIONS,
+    SAMPLE_SCHEDULE,
     SAMPLE_SCHEDULING_SCHEDULED_TRANSACTIONS,
     SAMPLE_SYSTEM_CONTRACT_CALL_TRANSACTIONS,
     SAMPLE_TOKEN,
@@ -678,12 +679,16 @@ describe("TransactionDetails.vue", () => {
         mock.onGet(matcher1).reply(((config: AxiosRequestConfig) => {
             if (config.params.timestamp == SCHEDULING.consensus_timestamp) {
                 return [200, {transactions: [SCHEDULING]}]
+            } else if (config.params.timestamp == SCHEDULED.consensus_timestamp) {
+                return [200, {transactions: [SCHEDULED]}]
             } else {
                 return [404]
             }
         }) as any);
         const matcher11 = "/api/v1/transactions/" + SCHEDULING.transaction_id
         mock.onGet(matcher11).reply(200, SAMPLE_SCHEDULING_SCHEDULED_TRANSACTIONS);
+        const matcher2 = "/api/v1/schedules/" + SCHEDULING.entity_id
+        mock.onGet(matcher2).reply(200, SAMPLE_SCHEDULE);
         const matcher5 = "/api/v1/tokens/" + TOKEN_ID
         mock.onGet(matcher5).reply(200, SAMPLE_TOKEN)
 
@@ -707,9 +712,11 @@ describe("TransactionDetails.vue", () => {
             "api/v1/topics/messages/",
             "api/v1/transactions/" + SCHEDULING.transaction_id,
             "api/v1/blocks",
+            "api/v1/schedules/0.0.1382775",
             "api/v1/contracts/" + SCHEDULING.node,
             "api/v1/contracts/results",
             "api/v1/network/fees",
+            "api/v1/transactions",
             "api/v1/network/exchangerate",
             "api/v1/contracts/" + SCHEDULING.transfers[2].account,
             "api/v1/contracts/" + SCHEDULING.transfers[1].account,
@@ -717,8 +724,9 @@ describe("TransactionDetails.vue", () => {
 
         expect(wrapper.text()).toMatch(RegExp("Transaction " + TransactionID.normalizeForDisplay(SCHEDULING.transaction_id)))
 
-        const link = wrapper.get("#scheduledLink")
-        expect(link.text()).toBe("Scheduled transaction")
+        const scheduled = wrapper.get("#scheduledTransactionValue")
+        expect(scheduled.text()).toBe("0.0.503733@1666754898.238965661" + "EXECUTED")
+        const link = scheduled.get('a')
         expect(link.attributes("href")).toBe(
             "/mainnet/transaction/" + SCHEDULED.consensus_timestamp
         )
@@ -739,7 +747,9 @@ describe("TransactionDetails.vue", () => {
         const mock = new MockAdapter(axios as any)
         const matcher1 = "/api/v1/transactions"
         mock.onGet(matcher1).reply(((config: AxiosRequestConfig) => {
-            if (config.params.timestamp == SCHEDULED.consensus_timestamp) {
+            if (config.params.timestamp == SCHEDULING.consensus_timestamp) {
+                return [200, {transactions: [SCHEDULING]}]
+            } else if (config.params.timestamp == SCHEDULED.consensus_timestamp) {
                 return [200, {transactions: [SCHEDULED]}]
             } else {
                 return [404]
@@ -747,6 +757,8 @@ describe("TransactionDetails.vue", () => {
         }) as any);
         const matcher11 = "/api/v1/transactions/" + SCHEDULED.transaction_id
         mock.onGet(matcher11).reply(200, SAMPLE_SCHEDULING_SCHEDULED_TRANSACTIONS);
+        const matcher12 = "/api/v1/schedules/" + SCHEDULING.entity_id
+        mock.onGet(matcher12).reply(200, SAMPLE_SCHEDULE);
         const matcher2 = "/api/v1/tokens/" + TOKEN_ID
         mock.onGet(matcher2).reply(200, SAMPLE_TOKEN);
 
@@ -770,10 +782,12 @@ describe("TransactionDetails.vue", () => {
             "api/v1/topics/messages/",
             "api/v1/transactions/" + SCHEDULING.transaction_id,
             "api/v1/blocks",
+            "api/v1/schedules/0.0.1382775",
             "api/v1/contracts/results",
             "api/v1/network/fees",
-            "api/v1/network/exchangerate",
             "api/v1/contracts/" + SCHEDULING.transfers[2].account,
+            "api/v1/network/exchangerate",
+            "api/v1/transactions",
             "api/v1/tokens/" + SCHEDULED.entity_id,
             "api/v1/contracts/" + SCHEDULED.transfers[1].account,
             "api/v1/contracts/" + SCHEDULING.transfers[1].account,
@@ -782,8 +796,9 @@ describe("TransactionDetails.vue", () => {
 
         expect(wrapper.text()).toMatch(RegExp("Transaction " + TransactionID.normalizeForDisplay(SCHEDULED.transaction_id)))
 
-        const link = wrapper.get("#schedulingLink")
-        expect(link.text()).toBe("Schedule create transaction")
+        const scheduling = wrapper.get("#scheduleCreateTransactionValue")
+        expect(scheduling.text()).toBe(TransactionID.normalizeForDisplay(SCHEDULING.transaction_id))
+        const link = scheduling.get('a')
         expect(link.attributes("href")).toBe(
             "/mainnet/transaction/" + SCHEDULING.consensus_timestamp
         )

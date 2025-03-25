@@ -5,7 +5,14 @@
 // Fungible token inspired from https://testnet.mirrornode.hedera.com/api/v1/tokens/0.0.29662956
 //
 
-import {ContractStateResponse, KeyType, TransactionResponse, TransactionType} from "@/schemas/MirrorNodeSchemas.ts";
+import {
+    ContractStateResponse,
+    KeyType,
+    Schedule,
+    SignatureType,
+    TransactionResponse,
+    TransactionType
+} from "@/schemas/MirrorNodeSchemas.ts";
 
 export const SAMPLE_TOKEN = {
     "admin_key": null,
@@ -2098,6 +2105,106 @@ export const SAMPLE_SCHEDULING_SCHEDULED_TRANSACTIONS: TransactionResponse = {
     }],
     "links": {
         "next": null
+    }
+}
+
+export const SAMPLE_SCHEDULE: Schedule = {
+    "admin_key": null,
+    "deleted": false,
+    "consensus_timestamp": "1666754908.576858590",
+    "creator_account_id": "0.0.503733",
+    "executed_timestamp": "1666754925.508764007",
+    "expiration_time": null,
+    "memo": "",
+    "payer_account_id": "0.0.540286",
+    "schedule_id": "0.0.1382775",
+    "signatures": [{
+        "consensus_timestamp": "1666754925.508764000",
+        "public_key_prefix": "AsevvtoymvMCmYe9+MTyyAmv0GhXiIeLcmjnsHAz2TL6",
+        "signature": "CtdYldUBNrDUv14pAX5N4XDYOiboEkDAPVelVrNa9IRSH+z72wkCk1q06GTgzDYZ8RlpBDjFIYlK\naHYs2Rsl9w==",
+        "type": SignatureType.ECDSA_SECP256K1
+    }, {
+        "consensus_timestamp": "1666754925.508764002",
+        "public_key_prefix": "AtGoyN6a6njsqjz61ZOI+H2MxHT+ttSaCPH8TpdPXRxi",
+        "signature": "Eib7p24XNyULTvlygVY5iQMcA5KHQy/0WqID1yGG0YheImuWg28XwB7sQ0QLLPK7WISaxdqXI85r\nDGpaCgDZ5w==",
+        "type": SignatureType.ECDSA_SECP256K1
+    }],
+    "transaction_body": "CIDC1y8SJDE5MmEyMzBiLTQzYTAtNDkwYS1iMDcwLWEzMjdlMjI3NjNkZUo8CjoKHQoWIhQQBSQ38M0RvDemJfugI1pv6epzjhCA0coICgsKBRjdvY0CEICJegoMCgUY9YjfAhD/2cQJ",
+    "wait_for_expiry": false
+}
+
+export const SCHEDULE_TRANSACTION_BODY = {
+    "transactionFee": {
+        "low": 100000000,
+        "high": 0,
+        "unsigned": true
+    },
+    "memo": "192a230b-43a0-490a-b070-a327e22763de",
+    "cryptoTransfer": {
+        "tokenTransfers": [],
+        "transfers": {
+            "accountAmounts": [
+                {
+                    "accountID": {
+                        "alias": {
+                            "0": 16,
+                            "1": 5,
+                            "2": 36,
+                            "3": 55,
+                            "4": 240,
+                            "5": 205,
+                            "6": 17,
+                            "7": 188,
+                            "8": 55,
+                            "9": 166,
+                            "10": 37,
+                            "11": 251,
+                            "12": 160,
+                            "13": 35,
+                            "14": 90,
+                            "15": 111,
+                            "16": 233,
+                            "17": 234,
+                            "18": 115,
+                            "19": 142
+                        }
+                    },
+                    "amount": {
+                        "low": 9000000,
+                        "high": 0,
+                        "unsigned": false
+                    }
+                },
+                {
+                    "accountID": {
+                        "accountNum": {
+                            "low": 4415197,
+                            "high": 0,
+                            "unsigned": false
+                        }
+                    },
+                    "amount": {
+                        "low": 1000000,
+                        "high": 0,
+                        "unsigned": false
+                    }
+                },
+                {
+                    "accountID": {
+                        "accountNum": {
+                            "low": 5751925,
+                            "high": 0,
+                            "unsigned": false
+                        }
+                    },
+                    "amount": {
+                        "low": -10000000,
+                        "high": -1,
+                        "unsigned": false
+                    }
+                }
+            ]
+        }
     }
 }
 

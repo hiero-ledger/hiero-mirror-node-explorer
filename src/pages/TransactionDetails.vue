@@ -181,7 +181,7 @@
           <template #name>Scheduled</template>
           <template #value>True</template>
         </Property>
-        <Property v-if="transaction?.scheduled===true" id="scheduled-transaction">
+        <Property v-if="transaction?.scheduled===true && schedulingTransaction" id="scheduleCreateTransaction">
           <template #name>Schedule Create Transaction</template>
           <template #value>
             <div class="multi-item-property-value">
