@@ -3,6 +3,7 @@
 
 export enum ChartRange {            // Matching granularity
     day = "day",                    // => hour
+    month = "month",                // => day
     year = "year",                  // => month
     all = "all"                     // => year
 }
@@ -28,6 +29,10 @@ export function computeStartDateForRange(period: ChartRange): Date {
             result = new Date(y - 1, m)
             break
         }
+        case ChartRange.month: {
+            result = new Date(now.getTime() - 30 * 24 * 3600 * 1000)
+            break
+        }
         case ChartRange.day: {
             result = new Date(now.getTime() - 24 * 3600 * 1000)
             break
@@ -46,6 +51,9 @@ export function computeGranularityForRange(period: ChartRange): ChartGranularity
             break
         case ChartRange.year:
             result = ChartGranularity.month
+            break
+        case ChartRange.month:
+            result = ChartGranularity.day
             break
         case ChartRange.day:
             result = ChartGranularity.hour

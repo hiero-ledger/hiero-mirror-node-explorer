@@ -32,13 +32,19 @@ const props = defineProps({
   }
 })
 
-const ids = [ChartRange.day, ChartRange.year, ChartRange.all]
-const labels = ['24h', '1Y', 'All']
-const active = computed(() => [dayRangeSupported.value, yearRangeSupported.value, allRangeSupported.value])
+const ids = [ChartRange.day, ChartRange.month, ChartRange.year, ChartRange.all]
+const labels = ['24h', '30d', '1Y', 'All']
+const active = computed(() => [
+  dayRangeSupported.value,
+  monthRangeSupported.value,
+  yearRangeSupported.value,
+  allRangeSupported.value
+])
 
 const loading = computed(() => props.controller.state.value === ChartState.loading)
 const selectedRange = props.controller.range
 const dayRangeSupported = computed(() => props.controller.isRangeSupported(ChartRange.day))
+const monthRangeSupported = computed(() => props.controller.isRangeSupported(ChartRange.month))
 const yearRangeSupported = computed(() => props.controller.isRangeSupported(ChartRange.year))
 const allRangeSupported = computed(() => props.controller.isRangeSupported(ChartRange.all))
 
