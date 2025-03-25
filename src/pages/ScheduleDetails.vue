@@ -15,7 +15,7 @@
 
       <template #title>
         Schedule {{ scheduleId }}
-        <div
+        <div v-if="schedule"
             class="h-has-pill h-chip-default"
             :class="{'h-chip-success':schedule?.executed_timestamp, 'h-chip-default':!schedule?.executed_timestamp}"
             style="margin-top: 2px">
@@ -134,7 +134,7 @@
 
 <script setup lang="ts">
 
-import {computed, onBeforeUnmount, onMounted, ref} from 'vue';
+import {computed, inject, onBeforeUnmount, onMounted, ref} from 'vue';
 import {makeTypeLabel} from "@/utils/TransactionTools";
 import AccountLink from "@/components/values/link/AccountLink.vue";
 import TimestampValue from "@/components/values/TimestampValue.vue";
@@ -152,13 +152,24 @@ import TransactionLink from "@/components/values/TransactionLink.vue";
 import {base64DecToArr, byteToHex} from "@/utils/B64Utils.ts";
 import HexaValue from "@/components/values/HexaValue.vue";
 import {proto} from "@hashgraph/proto";
+import {loadingKey} from "@/AppKeys.ts";
 
 const props = defineProps({
   scheduleId: String,
   network: String
 })
 
-const notification = ref(null);
+const loading = inject(loadingKey, ref(false))
+
+const notification = computed(() => {
+  let result: string | null
+  if (!loading.value && schedule.value === null) {
+    result = "Schedule with ID " + props.scheduleId + " was not found"
+  } else {
+    result = null
+  }
+  return result
+})
 
 const formattedBody = computed(() => {
   let result: string | null

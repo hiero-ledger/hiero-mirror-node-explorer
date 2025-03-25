@@ -119,4 +119,40 @@ describe("TransactionDetails.vue", () => {
         mock.restore()
     });
 
+    it("Should display a banner for invalid schedule ID", async () => {
+
+        await router.push("/") // To avoid "missing required param 'network'" error
+
+        const INVALID_SCHEDULE_ID = "0.0.98"
+
+        const mock = new MockAdapter(axios as any)
+        const matcher2 = "/api/v1/schedules/" + INVALID_SCHEDULE_ID
+        mock.onGet(matcher2).reply(404);
+
+        const wrapper = mount(ScheduleDetails, {
+            global: {
+                plugins: [router, Oruga],
+                provide: {"isMediumScreen": false}
+            },
+            props: {
+                scheduleId: INVALID_SCHEDULE_ID!
+            },
+        });
+
+        await flushPromises()
+        // console.log(wrapper.html())
+        console.log(wrapper.text())
+
+        expect(fetchGetURLs(mock)).toStrictEqual([
+            "api/v1/network/nodes",
+            "api/v1/schedules/" + INVALID_SCHEDULE_ID,
+        ])
+
+        expect(wrapper.text()).toMatch(RegExp("Schedule with ID " + INVALID_SCHEDULE_ID + " was not found"))
+
+        wrapper.unmount()
+        await flushPromises()
+        mock.restore()
+    });
+
 });
