@@ -11,26 +11,26 @@
 # NOTE: Must be placed last to ensure enforcement over all other rules
 
 # Protection Rules for Github Configuration Files and Actions Workflows
-/.github/                                       @hiero-ledger/github-maintainers @hiero-ledger/github-committers
-/.github/workflows/                             @hiero-ledger/github-maintainers @hiero-ledger/github-committers
+/.github/                                       @hiero-ledger/github-maintainers
+/.github/workflows/                             @hiero-ledger/github-maintainers
 
 # Self-protection for root CODEOWNERS files (this file should not exist and should definitely require approval)
 /CODEOWNERS                                     @hiero-ledger/github-maintainers
 
 # Protect the repository root files
-/README.md                                      @hiero-ledger/github-committers @hiero-ledger/github-maintainers @hiero-ledger/hiero-mirror-node-explorer-maintainers
-**/LICENSE                                      @hiero-ledger/github-committers @hiero-ledger/github-maintainers @hiero-ledger/hiero-mirror-node-explorer-maintainers
+/README.md                                      @hiero-ledger/github-maintainers @hiero-ledger/hiero-mirror-node-explorer-maintainers
+**/LICENSE                                      @hiero-ledger/github-maintainers @hiero-ledger/hiero-mirror-node-explorer-maintainers
 
 # Git Ignore definitions
-**/.gitignore                                   @hiero-ledger/github-committers @hiero-ledger/github-maintainers @hiero-ledger/hiero-mirror-node-explorer-maintainers
-**/.gitignore.*                                 @hiero-ledger/github-committers @hiero-ledger/github-maintainers @hiero-ledger/hiero-mirror-node-explorer-maintainers
+**/.gitignore                                   @hiero-ledger/github-maintainers @hiero-ledger/hiero-mirror-node-explorer-maintainers
+**/.gitignore.*                                 @hiero-ledger/github-maintainers @hiero-ledger/hiero-mirror-node-explorer-maintainers
 
 # Docker
-/chart/                                         @hiero-ledger/github-maintainers @hiero-ledger/github-committers @hiero-ledger/hiero-mirror-node-explorer-maintainers
-/sourcify-setup/                                @hiero-ledger/github-maintainers @hiero-ledger/github-committers @hiero-ledger/hiero-mirror-node-explorer-maintainers
-**/.env.docker                                  @hiero-ledger/github-maintainers @hiero-ledger/github-committers @hiero-ledger/hiero-mirror-node-explorer-maintainers
-**/.dockerignore                                @hiero-ledger/github-maintainers @hiero-ledger/github-committers @hiero-ledger/hiero-mirror-node-explorer-maintainers
-**/nginx-docker.conf                            @hiero-ledger/github-maintainers @hiero-ledger/github-committers @hiero-ledger/hiero-mirror-node-explorer-maintainers
-**/docker-compose.yml                           @hiero-ledger/github-maintainers @hiero-ledger/github-committers @hiero-ledger/hiero-mirror-node-explorer-maintainers
-**/package.json                                 @hiero-ledger/github-maintainers @hiero-ledger/github-committers @hiero-ledger/hiero-mirror-node-explorer-maintainers
-**/sonar-project.properties                     @hiero-ledger/github-maintainers @hiero-ledger/github-committers @hiero-ledger/hiero-mirror-node-explorer-maintainers
+/chart/                                         @hiero-ledger/github-maintainers @hiero-ledger/hiero-mirror-node-explorer-maintainers
+/sourcify-setup/                                @hiero-ledger/github-maintainers @hiero-ledger/hiero-mirror-node-explorer-maintainers
+**/.env.docker                                  @hiero-ledger/github-maintainers @hiero-ledger/hiero-mirror-node-explorer-maintainers
+**/.dockerignore                                @hiero-ledger/github-maintainers @hiero-ledger/hiero-mirror-node-explorer-maintainers
+**/nginx-docker.conf                            @hiero-ledger/github-maintainers @hiero-ledger/hiero-mirror-node-explorer-maintainers
+**/docker-compose.yml                           @hiero-ledger/github-maintainers @hiero-ledger/hiero-mirror-node-explorer-maintainers
+**/package.json                                 @hiero-ledger/github-maintainers @hiero-ledger/hiero-mirror-node-explorer-maintainers
+**/sonar-project.properties                     @hiero-ledger/github-maintainers @hiero-ledger/hiero-mirror-node-explorer-maintainers
