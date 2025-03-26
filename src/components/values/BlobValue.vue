@@ -67,6 +67,7 @@ import {blob2URL} from "@/utils/URLUtils.ts";
 import {HCSURI} from "@/utils/HCSURI.ts";
 import {routeManager} from "@/router.ts";
 import EntityLink from "@/components/values/link/EntityLink.vue";
+import {base64Decode, utf8Encode} from "@/utils/B64Utils.ts";
 
 const props = defineProps({
   blobValue: {
@@ -135,7 +136,7 @@ const b64DecodedValue = computed(() => {
   const base64regex = /^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/;
   if (props.blobValue && props.base64 && base64regex.test(props.blobValue)) {
     try {
-      result = Buffer.from(props.blobValue, 'base64').toString()
+      result = utf8Encode(base64Decode(props.blobValue))
     } catch {
       result = null
     }
