@@ -161,7 +161,7 @@
 
 <script setup lang="ts">
 
-import {computed, onBeforeUnmount, onMounted, ref} from 'vue';
+import {computed, inject, onBeforeUnmount, onMounted, ref} from 'vue';
 import KeyValue from "@/components/values/KeyValue.vue";
 import AccountLink from "@/components/values/link/AccountLink.vue";
 import TimestampValue from "@/components/values/TimestampValue.vue";
@@ -183,6 +183,7 @@ import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import NetworkDashboardItemV2 from "@/components/node/NetworkDashboardItemV2.vue";
 import MirrorLink from "@/components/MirrorLink.vue";
 import HexaValue from "@/components/values/HexaValue.vue";
+import {loadingKey} from "@/AppKeys.ts";
 
 const props = defineProps({
   nodeId: {
@@ -193,6 +194,7 @@ const props = defineProps({
 })
 
 const cryptoName = CoreConfig.inject().cryptoName
+const loading = inject(loadingKey, ref(false))
 
 const nodeIdNb = computed(() => PathParam.parseNodeId(props.nodeId))
 const nodeAnalyzer = new NodeAnalyzer(nodeIdNb)
@@ -221,11 +223,9 @@ const stakeUnrewardedPercentage = computed(() =>
     networkAnalyzer.stakeUnrewardedTotal.value != 0 ? Math.round(nodeAnalyzer.stakeUnrewarded.value / networkAnalyzer.stakeUnrewardedTotal.value * 10000) / 100 : 0
 )
 
-const unknownNodeId = ref(false)
-
 const notification = computed(() => {
-  let result
-  if (unknownNodeId.value) {
+  let result: string | null
+  if (!loading.value && node.value === null) {
     result = "Node with ID " + props.nodeId + " was not found"
   } else {
     result = null
