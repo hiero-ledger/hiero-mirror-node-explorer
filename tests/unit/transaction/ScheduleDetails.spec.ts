@@ -141,7 +141,7 @@ describe("TransactionDetails.vue", () => {
 
         await flushPromises()
         // console.log(wrapper.html())
-        console.log(wrapper.text())
+        // console.log(wrapper.text())
 
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/network/nodes",
