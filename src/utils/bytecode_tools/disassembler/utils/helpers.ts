@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import {EVM_OPCODES, EvmOpcode} from './evm_opcodes';
+import {hexToByte, utf8Encode} from "@/utils/B64Utils.ts";
 
 export class Helpers {
     /**
@@ -139,13 +140,12 @@ export class Helpers {
         // trace back to the begining of the encoded metadata, decode the first 6 bytes and check if they include the expected headers. If yes => remove, keep as-is otherwise.
         const potentialMetadataStartIndex =
             bytecode.length - potentialMetadataLength * 2;
-        const metadataHeader = Buffer.from(
+        const metadataHeader = utf8Encode(hexToByte(
             bytecode.substring(
                 potentialMetadataStartIndex,
-                potentialMetadataStartIndex + 6 * 2 + 1 // 6 bytes * 2 chars + 1 (included)
-            ),
-            'hex'
-        ).toString('ascii');
+                potentialMetadataStartIndex + 6 * 2 // 6 bytes * 2 chars
+            )
+        )!)
 
         if (
             metadataHeader.includes(EXPECTED_IPFS_HEADER) ||
