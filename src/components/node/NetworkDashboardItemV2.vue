@@ -74,9 +74,12 @@ div.item-root {
 }
 
 div.item-l1 {
+  align-items: center;
   color: var(--text-secondary);
+  display: flex;
   font-size: 12px;
   font-weight: 500;
+  gap: 8px;
   height: 16px;
 }
 
