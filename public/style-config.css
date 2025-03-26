@@ -1,2 +1,112 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
+/*  ============================================================================
+    Fonts
+*/
+@import "@/fonts/styreneA/1802-UFGULA.css";
+
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url('@/fonts/Inter/Inter-VariableFont_opsz,wght.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Geist Mono';
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url('@/fonts/Geist_Mono/GeistMono-VariableFont_wght.ttf') format('truetype');
+}
+
+:root {
+    --font-family-heading: 'Styrene A Web';
+    --font-family-proportional: 'Inter';
+    --font-family-monospace: 'Geist Mono';
+}
+
+/*  ============================================================================
+    Color Themes / Modes
+*/
+:root {
+
+    /* LIGHT MODE */
+
+    /* the following are defaults for network theme colors
+       the actual values will be provided by configuration parameters in networks-config.json
+    */
+    --light-network-button-text-color: #FFFFFF; /* NetworkEntry.lightButtonTextColor */
+    --light-network-button-color: #7A1B80; /* NetworkEntry.lightButtonColor */
+    --light-network-chip-text-color: #FFFFFF; /* NetworkEntry.lightChipTextColor */
+    --light-network-chip-color: #A7449D; /* NetworkEntry.lightChipColor */
+    --light-network-text-accent-color: #E0007B; /* NetworkEntry.lightTextAccentColor */
+    --light-network-border-accent-color: #B664AE; /* NetworkEntry.lightBorderAccentColor */
+    --light-network-graph-bar-color: #E183E7; /* NetworkEntry.lightGraphBarColor */
+
+    --light-text-primary: #050505;
+    --light-text-secondary: #888888;
+    --light-text-accent2: #255CF4;
+    --light-text-success: #00722D;
+    --light-text-error: #EA1548;
+    --light-text-disabled: #BDBDBD;
+    --light-background-primary: #F6F6F6;
+    --light-background-primary-transparent: rgba(255, 255, 255, 0.5);
+    --light-background-secondary: #EFEFEF;
+    --light-background-tertiary: #FFFFFF;
+    --light-border-primary: #EFEFEF;
+    --light-border-secondary: #D7D7D7;
+    --light-table-border: #EFEFEF;
+    --light-chip-text-primary: white;
+    --light-chip-secondary-default: #EFEFEF;
+    --light-button-text-secondary: var(--text-primary);
+    --light-button-background-secondary: #EFEFEF;
+    --light-copy-button-text: #FFFFFF;
+    --light-copy-button-background: #2C2C2C;
+    --light-tab-background: rgba(5, 5, 5, 0.05);
+    --light-icon-default-color: #A2A2A2;
+    --light-status-success-color: #00722D;
+    --light-status-error-color: #C40E3A;
+    --light-search-bar-default: #FFFFFF;
+    --light-graph-line-color: #5A4DFF;
+
+
+    /* DARK MODE */
+
+    /* the following are defaults for network theme colors
+       the actual values will be provided by configuration parameters in networks-config.json
+    */
+    --dark-network-button-text-color: #FFFFFF; /* NetworkEntry.darkButtonTextColor */
+    --dark-network-button-color: #7A1B80; /* NetworkEntry.darkButtonColor */
+    --dark-network-chip-text-color: #FFFFFF; /* NetworkEntry.darkChipTextColor */
+    --dark-network-chip-color: #A7449D; /* NetworkEntry.darkChipColor */
+    --dark-network-text-accent-color: #F258AC; /* NetworkEntry.darkTextAccentColor */
+    --dark-network-border-accent-color: #7A1B80; /* NetworkEntry.darkBorderAccentColor */
+    --dark-network-graph-bar-color: #D245DB; /* NetworkEntry.darkGraphBarColor */
+
+    --dark-text-primary: #FFFFFF;
+    --dark-text-secondary: #A2A2A2;
+    --dark-text-accent2: #255CF4;
+    --dark-text-success: #29BC63;
+    --dark-text-error: #EA1548;
+    --dark-text-disabled: #A2A2A2;
+    --dark-background-primary: #131313;
+    --dark-background-primary-transparent: rgba(19, 19, 19, 0.7);
+    --dark-background-secondary: #050505;
+    --dark-background-tertiary: #171717;
+    --dark-border-primary: #171717;
+    --dark-border-secondary: #2C2C2C;
+    --dark-table-border: #1F1F1F;
+    --dark-chip-text-primary: white;
+    --dark-chip-secondary-default: #545454;
+    --dark-button-text-secondary: var(--text-primary);
+    --dark-button-background-secondary: #2C2C2C;
+    --dark-copy-button-text: #050505;
+    --dark-copy-button-background: #EFEFEF;
+    --dark-tab-background: rgba(255, 255, 255, 0.05);
+    --dark-icon-default-color: #A2A2A2;
+    --dark-status-success-color: #00722D;
+    --dark-status-error-color: #C40E3A;
+    --dark-search-bar-default: #2C2C2C;
+    --dark-graph-line-color: #1300FF;
