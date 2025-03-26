@@ -278,7 +278,7 @@ export class TokenMetadataAnalyzer {
             const content = await HCSAssetCache.instance.lookup(id)
             this.loadSuccessRef.value = true
             if (content?.content) {
-                result = JSON.parse(Buffer.from(content.content).toString())
+                result = JSON.parse(utf8Encode(new Uint8Array(content.content)))
             } else {
                 result = null
             }
@@ -298,7 +298,7 @@ export class TokenMetadataAnalyzer {
             const topicMessage = await TopicMessageByTimestampCache.instance.lookup(timestamp)
             this.loadSuccessRef.value = true
             if (topicMessage) {
-                result = JSON.parse(Buffer.from(topicMessage.message, 'base64').toString())
+                result = JSON.parse(utf8Encode(base64Decode(topicMessage.message)))
             } else {
                 result = null
             }

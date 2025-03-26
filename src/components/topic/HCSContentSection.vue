@@ -83,6 +83,7 @@ import MediaContent from "@/components/MediaContent.vue";
 import {HCSAsset} from "@/utils/cache/HCSAsset.ts";
 import InfoTooltip from "@/components/InfoTooltip.vue";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
+import {utf8Encode} from "@/utils/B64Utils.ts";
 
 const props = defineProps({
   topicMemo: {
@@ -125,7 +126,7 @@ const jsonContent = computed(() => {
       && hcs1DataType.value !== null
       && (hcs1DataType.value.startsWith('application/json'))
   ) {
-    result = Buffer.from(props.hcs1Asset.content).toString()
+    result = utf8Encode(new Uint8Array(props.hcs1Asset.content))
   } else {
     result = null
   }
