@@ -94,7 +94,7 @@
               title="Stake for Consensus"
               :value="makeFloorHbarAmount(stake)"
               :unit=cryptoName
-              :info-label="stakeLabel"
+              :info-label="node ? stakeLabel : null"
               :extra="stake > 0 ? `${stakePercentage} of total` : undefined"
           />
           <NetworkDashboardItemV2
