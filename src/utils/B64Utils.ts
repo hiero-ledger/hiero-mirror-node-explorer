@@ -41,6 +41,9 @@ export function base64Encode(aBytes: Uint8Array): string {
     // return ethers.encodeBase64(aBytes)
 }
 
+export function utf8Encode(aBytes: Uint8Array): string {
+    return ethers.toUtf8String(aBytes, ethers.Utf8ErrorFuncs.replace)
+}
 
 //
 // Hexa conversion

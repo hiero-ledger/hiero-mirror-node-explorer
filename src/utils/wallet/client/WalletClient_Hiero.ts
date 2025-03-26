@@ -21,7 +21,7 @@ import {
 } from "@hashgraph/sdk";
 import {ContractResultDetails, TokenAirdrop, Transaction} from "@/schemas/MirrorNodeSchemas";
 import {WalletClient, WalletClientError, WalletClientRejectError} from "@/utils/wallet/client/WalletClient";
-import {hexToByte} from "@/utils/B64Utils";
+import {base64Encode, hexToByte} from "@/utils/B64Utils";
 import {waitFor} from "@/utils/TimerUtils";
 import {TransactionByIdCache} from "@/utils/cache/TransactionByIdCache";
 import {ContractResultByTransactionIdCache} from "@/utils/cache/ContractResultByTransactionIdCache";
@@ -227,7 +227,7 @@ export class WalletClient_Hiero extends WalletClient {
             transaction.setTransactionId(TransactionId.generate(AccountId.fromString(this.accountId)))
             transaction.freeze()
             const transactionBytes = transaction.toBytes()
-            const transactionBase64 = Buffer.from(transactionBytes).toString('base64')
+            const transactionBase64 = base64Encode(transactionBytes)
             const request = {
                 method: "hedera_signAndExecuteTransaction",
                 params: {

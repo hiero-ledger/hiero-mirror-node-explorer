@@ -2,7 +2,7 @@
 
 import {TopicMessage} from "@/schemas/MirrorNodeSchemas";
 import {decompress, init} from "@bokuweb/zstd-wasm";
-import {base64Decode} from "@/utils/B64Utils.ts";
+import {base64Decode, base64Encode, byteToHex} from "@/utils/B64Utils.ts";
 import {HCSAssetFragment} from "@/utils/HCSAssetFragment.ts";
 import {getDataURLType} from "@/utils/URLUtils.ts";
 
@@ -18,7 +18,7 @@ export class HCSAsset {
         let result: string | null
         if (this.type !== null && this.content !== null) {
             const dataPrefix = `data:${this.type};base64,`
-            const urlContent = Buffer.from(this.content).toString("base64")
+            const urlContent = base64Encode(new Uint8Array<ArrayBufferLike>(this.content))
             result = dataPrefix + urlContent
         } else {
             result = null
@@ -55,9 +55,9 @@ export class HCSAsset {
                         await init()
                         this.isInitialized = true
                     }
-                    const assetContent = decompress(Buffer.from(compressedContent))
+                    const assetContent = decompress(compressedContent)
                     const assetHash = await window.crypto.subtle.digest("SHA-256", assetContent);
-                    result = new HCSAsset(assetType, assetContent, Buffer.from(assetHash).toString('hex'))
+                    result = new HCSAsset(assetType, assetContent, byteToHex(new Uint8Array(assetHash)))
                 } else { // asset is incomplete
                     result = new HCSAsset(assetType, null, null)
                 }

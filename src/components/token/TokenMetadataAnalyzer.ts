@@ -8,6 +8,7 @@ import {AssetCache} from "@/utils/cache/AssetCache.ts";
 import {blob2URL} from "@/utils/URLUtils.ts";
 import {HCSAssetCache} from "@/utils/cache/HCSAssetCache.ts";
 import {HCSURI} from "@/utils/HCSURI.ts";
+import {base64Decode, utf8Encode} from "@/utils/B64Utils.ts";
 
 export interface NftAttribute {
     trait_type: string
@@ -208,7 +209,7 @@ export class TokenMetadataAnalyzer {
         this.loadErrorRef.value = false
 
         try {
-            metadata.value = Buffer.from(value ?? '', 'base64').toString()
+            metadata.value = utf8Encode(base64Decode(value ?? ''))
         } catch {
             metadata.value = value ?? ''
         }
