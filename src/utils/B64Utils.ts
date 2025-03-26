@@ -9,7 +9,7 @@ import {ethers} from "ethers";
 // https://developer.mozilla.org/en-US/docs/Glossary/Base64
 //
 
-export function base64DecToArr(sBase64: string): Uint8Array {
+export function base64Decode(sBase64: string): Uint8Array {
     // We should simply use
     //  return ethers.decodeBase64(sBase64)
     // but in vitest environment this breaks
@@ -25,7 +25,7 @@ export function base64DecToArr(sBase64: string): Uint8Array {
 }
 
 
-export function base64EncArr(aBytes: Uint8Array): string {
+export function base64Encode(aBytes: Uint8Array): string {
     // We should simply use
     //  return ethers.encodeBase64(sBase64)
     // but in vitest environment this breaks

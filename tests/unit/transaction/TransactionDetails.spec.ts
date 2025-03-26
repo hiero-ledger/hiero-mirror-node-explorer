@@ -46,7 +46,7 @@ import {HMSF} from "@/utils/HMSF";
 import {TransactionID} from "@/utils/TransactionID";
 import Oruga from "@oruga-ui/oruga-next";
 import ContractResult from "@/components/contract/ContractResult.vue";
-import {base64DecToArr, byteToHex} from "@/utils/B64Utils";
+import {base64Decode, byteToHex} from "@/utils/B64Utils";
 import {fetchGetURLs} from "../MockUtils";
 
 /*
@@ -294,7 +294,7 @@ describe("TransactionDetails.vue", () => {
         const SAMPLE_TRANSACTION = SAMPLE_CONTRACTCALL_TRANSACTIONS.transactions[0]
         const transactionId = SAMPLE_TRANSACTION.transaction_id
         const transactionHashBase64 = SAMPLE_TRANSACTION.transaction_hash
-        const transactionHash = byteToHex(base64DecToArr(transactionHashBase64))
+        const transactionHash = byteToHex(base64Decode(transactionHashBase64))
         const contractId = SAMPLE_TRANSACTION.entity_id
         const timestamp = SAMPLE_TRANSACTION.consensus_timestamp
 

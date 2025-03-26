@@ -149,7 +149,7 @@ import {ScheduleByIdCache} from "@/utils/cache/ScheduleByIdCache.ts";
 import {TransactionByTsCache} from "@/utils/cache/TransactionByTsCache.ts";
 import KeyValue from "@/components/values/KeyValue.vue";
 import TransactionLink from "@/components/values/TransactionLink.vue";
-import {base64DecToArr, byteToHex} from "@/utils/B64Utils.ts";
+import {base64Decode, byteToHex} from "@/utils/B64Utils.ts";
 import HexaValue from "@/components/values/HexaValue.vue";
 import {proto} from "@hashgraph/proto";
 import {loadingKey} from "@/AppKeys.ts";
@@ -175,7 +175,7 @@ const formattedBody = computed(() => {
   let result: string | null
   const body = schedule.value?.transaction_body
   if (body) {
-    const bodyBytes = base64DecToArr(body)
+    const bodyBytes = base64Decode(body)
     result = JSON.stringify(proto.SchedulableTransactionBody.decode(bodyBytes))
   } else {
     result = null;
@@ -184,7 +184,7 @@ const formattedBody = computed(() => {
 })
 
 const hexaFormat = (b64encoding: string) => {
-  return b64encoding ? byteToHex(base64DecToArr(b64encoding)) : null
+  return b64encoding ? byteToHex(base64Decode(b64encoding)) : null
 }
 
 const scheduleId = computed(() => props.scheduleId ?? null);

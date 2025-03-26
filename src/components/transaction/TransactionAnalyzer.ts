@@ -4,7 +4,7 @@ import {computed, ComputedRef, ref, Ref, watch, WatchStopHandle} from "vue";
 import {TokenRelationship, Transaction, TransactionType} from "@/schemas/MirrorNodeSchemas";
 import {EntityDescriptor} from "@/utils/EntityDescriptor";
 import {computeNetAmount, isSuccessfulResult, makeOperatorAccountLabel} from "@/utils/TransactionTools";
-import {base64DecToArr, byteToHex} from "@/utils/B64Utils";
+import {base64Decode, byteToHex} from "@/utils/B64Utils";
 import {systemContractRegistry} from "@/schemas/SystemContractRegistry";
 import {TransactionID} from "@/utils/TransactionID";
 import {ContractByIdCache} from "@/utils/cache/ContractByIdCache";
@@ -78,7 +78,7 @@ export class TransactionAnalyzer {
 
     public readonly formattedHash: ComputedRef<string | null> = computed(() => {
         const hash = this.transaction.value?.transaction_hash
-        return hash ? byteToHex(base64DecToArr(hash)) : null
+        return hash ? byteToHex(base64Decode(hash)) : null
     })
 
     public readonly systemContract: ComputedRef<string | null> = computed(() => {

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
-import {base64DecToArr, base64EncArr, byteToHex, hexToByte} from "@/utils/B64Utils";
+import {base64Decode, base64Encode, byteToHex, hexToByte} from "@/utils/B64Utils";
 
 export class TransactionHash {
 
@@ -16,7 +16,7 @@ export class TransactionHash {
     }
 
     public static parseBase64(base64: string): TransactionHash | null {
-        const bytes = base64DecToArr(base64)
+        const bytes = base64Decode(base64)
         return bytes !== null && bytes.length == 48 ? new TransactionHash(bytes) : null
     }
 

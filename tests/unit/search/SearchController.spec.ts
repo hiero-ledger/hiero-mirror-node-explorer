@@ -25,13 +25,13 @@ import {
     SAMPLE_TRANSACTIONS
 } from "../Mocks";
 import {fetchGetURLs} from "../MockUtils";
-import {base64DecToArr, byteToHex} from "@/utils/B64Utils.ts";
+import {base64Decode, byteToHex} from "@/utils/B64Utils.ts";
 import {SelectedTokensCache} from "@/utils/cache/SelectedTokensCache.ts";
 
 describe("SearchController.vue", () => {
 
     const mock = new MockAdapter(axios as any)
-    const TRANSACTION_HASH = byteToHex(base64DecToArr(SAMPLE_TRANSACTION.transaction_hash))
+    const TRANSACTION_HASH = byteToHex(base64Decode(SAMPLE_TRANSACTION.transaction_hash))
     const SAMPLE_SCHEDULING_TRANSACTION = SAMPLE_SCHEDULING_SCHEDULED_TRANSACTIONS.transactions![0]
     const SAMPLE_SCHEDULED_TRANSACTION = SAMPLE_SCHEDULING_SCHEDULED_TRANSACTIONS.transactions![1]
 

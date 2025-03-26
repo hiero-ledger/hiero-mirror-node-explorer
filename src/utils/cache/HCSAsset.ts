@@ -2,7 +2,7 @@
 
 import {TopicMessage} from "@/schemas/MirrorNodeSchemas";
 import {decompress, init} from "@bokuweb/zstd-wasm";
-import {base64DecToArr} from "@/utils/B64Utils.ts";
+import {base64Decode} from "@/utils/B64Utils.ts";
 import {HCSAssetFragment} from "@/utils/HCSAssetFragment.ts";
 import {getDataURLType} from "@/utils/URLUtils.ts";
 
@@ -49,7 +49,7 @@ export class HCSAsset {
                     // Skip the data prefix
                     assembledContent = assembledContent.substring(assembledContent.indexOf(',') + 1)
                     // Decode from Base64
-                    const compressedContent = base64DecToArr(assembledContent)
+                    const compressedContent = base64Decode(assembledContent)
                     // Decompress (zstd)
                     if (!this.isInitialized) {
                         await init()
