@@ -7,11 +7,11 @@
 <template>
 
   <div>
-    <Tooltip :text="props.tooltipLabel">
+    <Tooltip :text="tooltip">
       <div class="item-root">
         <div class="item-l1">
           {{ title }}
-          <InfoTooltip v-if="props.infoLabel" :label="props.infoLabel"/>
+          <InfoTooltip v-if="props.value && props.infoLabel" :label="props.infoLabel"/>
         </div>
 
         <div v-if="props.value !== null" class="item-l2">
@@ -20,7 +20,7 @@
         </div>
         <div v-else class="none-value">None</div>
 
-        <div v-if="props.extra" class=" item-l3">
+        <div v-if="props.value && props.extra" class=" item-l3">
           {{ props.extra }}
         </div>
       </div>
@@ -41,7 +41,10 @@ import Tooltip from "@/components/Tooltip.vue";
 
 const props = defineProps({
   title: String,
-  value: String as PropType<string | null>,
+  value: {
+    type: String as PropType<string | null>,
+    default: null
+  },
   unit: String,
   tooltipLabel: {
     type: String as PropType<string | null>,
@@ -58,6 +61,7 @@ const props = defineProps({
 })
 
 const title = computed(() => props.title?.toUpperCase())
+const tooltip = computed(() => props.value ? props.tooltipLabel : null)
 
 </script>
 
