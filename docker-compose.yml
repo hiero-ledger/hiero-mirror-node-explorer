@@ -3,7 +3,6 @@ services:
   explorer:
     container_name:  hiero-explorer
     image: "ghcr.io/hiero-ledger/hiero-mirror-node-explorer/hiero-explorer:latest"
-    env_file: ./.env.docker
     restart: "always"
     ports:
       - "8080:8080"

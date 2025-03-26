@@ -17,8 +17,6 @@ ARG SOURCE_DATE_EPOCH
 
 COPY /dist/ /app
 COPY nginx-docker.conf /etc/nginx/nginx.conf
-COPY explorer-entrypoint.sh /docker-entrypoint.d/
-RUN chmod +x /docker-entrypoint.d/explorer-entrypoint.sh
 
 ########################################
 ####    Deterministic Build Hack    ####
@@ -28,10 +26,9 @@ RUN chmod +x /docker-entrypoint.d/explorer-entrypoint.sh
 # NOTE: PR #4057 has been merged but will not be available until the v0.13.x series of releases.
 # Limit the timestamp upper bound to SOURCE_DATE_EPOCH.
 # Workaround for https://github.com/moby/buildkit/issues/3180
-RUN find $( ls / | grep -E -v "^(dev|mnt|proc|sys)$" ) \
-  -newermt "@${SOURCE_DATE_EPOCH}" -writable -xdev \
-  | xargs touch --date="@${SOURCE_DATE_EPOCH}" --no-dereference
-
+#RUN find $( ls / | grep -E -v "^(dev|mnt|proc|sys)$" ) \
+#  -newermt "@${SOURCE_DATE_EPOCH}" -writable -xdev \
+#  | xargs touch --date="@${SOURCE_DATE_EPOCH}" --no-dereference
 
 ########################################################################################################################
 #
