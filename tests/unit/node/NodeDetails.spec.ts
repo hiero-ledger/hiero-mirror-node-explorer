@@ -228,7 +228,23 @@ describe("NodeDetails.vue", () => {
         ])
 
         expect(wrapper.text()).toMatch(RegExp("Node with ID " + UNKNOWN_ID + " was not found"))
+        expect(wrapper.get("#adminKeyValue").text()).toBe("None")
         expect(wrapper.get("#nodeAccountValue").text()).toBe("None")
+        expect(wrapper.get("#descriptionValue").text()).toBe("None")
+        expect(wrapper.get("#publicKeyValue").text()).toBe("None")
+        expect(wrapper.get("#fileValue").text()).toBe("None")
+        expect(wrapper.get("#rangeFromValue").text()).toBe("None")
+        expect(wrapper.get("#rangeToValue").text()).toBe("None")
+        expect(wrapper.get("#nodeCertHashValue").text()).toBe("None")
+        expect(wrapper.get("#serviceEndpointsValue").text()).toBe("None")
+
+        expect(wrapper.get("#yearlyRate").text()).toBe("LAST PERIOD REWARD RATE None")
+        expect(wrapper.get("#consensusStake").text()).toBe("STAKE FOR CONSENSUS None")
+        expect(wrapper.get("#minStake").text()).toBe("MIN STAKE None")
+        expect(wrapper.get("#maxStake").text()).toBe("MAX STAKE None")
+        expect(wrapper.get("#rewarded").text()).toBe("STAKED FOR REWARD None")
+        expect(wrapper.get("#notRewarded").text()).toBe("STAKED FOR NO REWARD None")
+        expect(wrapper.get("#stakingPeriod").text()).toBe("CURRENT STAKING PERIOD None")
 
         mock.restore()
         wrapper.unmount()
