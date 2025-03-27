@@ -22,6 +22,7 @@ export abstract class EntityDownloader<E, R> {
     private runPromise: Promise<void> | null = null
     private abortRequested = false
     private readonly dateFormat = EntityDownloader.makeDateFormat()
+    private readonly dateTimeFormat = EntityDownloader.makeDateTimeFormat()
     private readonly now = new Date()
 
     //
@@ -133,7 +134,7 @@ export abstract class EntityDownloader<E, R> {
     public csvBlob: ComputedRef<Blob | null> = computed(() => {
         let result: Blob | null
         if (this.state.value == DownloaderState.Completed && this.entitiesRef.value.length >= 1) {
-            const encoder = this.makeCSVEncoder(this.dateFormat)
+            const encoder = this.makeCSVEncoder(this.dateTimeFormat)
             result = new Blob([encoder.encode()], {type: "text/csv"})
         } else {
             result = null
@@ -223,6 +224,19 @@ export abstract class EntityDownloader<E, R> {
     private static makeDateFormat(): Intl.DateTimeFormat {
         const locale = "en-US"
         const dateOptions: Intl.DateTimeFormatOptions = {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+        }
+        return new Intl.DateTimeFormat(locale, dateOptions)
+    }
+
+    private static makeDateTimeFormat(): Intl.DateTimeFormat {
+        const locale = "en-US"
+        const dateOptions: Intl.DateTimeFormatOptions = {
+            second: "2-digit",
+            minute: "2-digit",
+            hour: "2-digit",
             day: "2-digit",
             month: "2-digit",
             year: "numeric",
