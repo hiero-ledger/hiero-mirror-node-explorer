@@ -61,7 +61,6 @@
     "@tsconfig/node18": "^18.2.4",
     "@types/file-saver": "^2.0.7",
     "@types/jsdom": "^21.1.7",
-    "@types/node": "^22.13.13",
     "@types/prismjs": "^1.26.5",
     "@vitejs/plugin-basic-ssl": "^2.0.0",
     "@vitejs/plugin-vue": "^5.2.3",
