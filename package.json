@@ -48,7 +48,7 @@
     "file-saver": "^2.0.5",
     "globals": "^16.0.0",
     "jszip": "^3.10.1",
-    "lucide-vue-next": "^0.484.0",
+    "lucide-vue-next": "^0.485.0",
     "multiformats": "^13.3.2",
     "prismjs": "^1.30.0",
     "vue": "^3.5.11",
