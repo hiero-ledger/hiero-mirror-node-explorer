@@ -5,7 +5,6 @@ import {fetchBoolean, fetchNumber, fetchObject, fetchString, fetchURL} from "@/c
 import {inject} from "vue";
 import {networkConfigKey} from "@/AppKeys";
 import {hip15checksum} from "@/schemas/MirrorNodeUtils.ts";
-import {EntityID} from "@/utils/EntityID";
 import {EthereumAddress} from "@/utils/EthereumAddress";
 import {ColorMap, NetworkColorMaps} from "@/config/NetworkColorMaps.ts";
 
@@ -96,6 +95,7 @@ export class NetworkEntry {
         const popularTokenIndexURL = fetchURL(obj, "popularTokenIndexURL")
         const erc20IndexURL = fetchURL(obj, "erc20IndexURL")
         const erc721IndexURL = fetchURL(obj, "erc721IndexURL")
+        const publicLabelsURL = fetchURL(obj, "publicLabelsURL")
 
         const sourcifySetupObj = fetchObject(obj, "sourcifySetup")
 
@@ -130,6 +130,7 @@ export class NetworkEntry {
             popularTokenIndexURL,
             erc20IndexURL,
             erc721IndexURL,
+            publicLabelsURL,
             sourcifySetup
         )
     }
@@ -159,6 +160,8 @@ export class NetworkEntry {
         public readonly erc20IndexURL: string | null,
         // The URL of the ERC721 contract index
         public readonly erc721IndexURL: string | null,
+        // The URL of the public labels index
+        public readonly publicLabelsURL: string | null,
         public readonly sourcifySetup: SourcifySetup | null
     ) {
     }
