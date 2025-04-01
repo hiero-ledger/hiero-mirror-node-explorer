@@ -14,45 +14,27 @@
 <!--                                                      SCRIPT                                                     -->
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
-<script lang="ts">
+<script setup lang="ts">
 
-import {computed, defineComponent, onBeforeUnmount, onMounted, PropType} from "vue";
+import {computed, onBeforeUnmount, onMounted, PropType} from "vue";
 import EntityIOL from "@/components/values/link/EntityIOL.vue";
 import {NameQuery} from "@/utils/name_service/NameQuery";
-import {NetworkCache} from "@/utils/cache/NetworkCache";
 
-export default defineComponent({
-  name: "AccountIOL",
-  components: {EntityIOL},
-  props: {
-    accountId: {
-      type: String as PropType<string | null>,
-      default: null
-    },
-    nullLabel: {
-      type: String,
-      default: null
-    }
+const props = defineProps({
+  accountId: {
+    type: String as PropType<string | null>,
+    default: null
   },
-  setup(props) {
-
-    const nameQuery = new NameQuery(computed(() => props.accountId))
-    onMounted(() => nameQuery.mount())
-    onBeforeUnmount(() => nameQuery.unmount())
-
-    const networkLookup = NetworkCache.instance.makeLookup()
-    onMounted(
-        () => networkLookup.mount()
-    )
-    onBeforeUnmount(
-        () => networkLookup.unmount()
-    )
-
-    return {
-      label: nameQuery.name,
-    }
+  nullLabel: {
+    type: String,
+    default: null
   }
 })
+
+const nameQuery = new NameQuery(computed(() => props.accountId))
+onMounted(() => nameQuery.mount())
+onBeforeUnmount(() => nameQuery.unmount())
+const label = nameQuery.name
 
 </script>
 
