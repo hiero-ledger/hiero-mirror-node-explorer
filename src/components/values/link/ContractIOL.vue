@@ -14,32 +14,23 @@
 <!--                                                      SCRIPT                                                     -->
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
-<script lang="ts">
+<script setup lang="ts">
 
-import {computed, defineComponent, onBeforeUnmount, onMounted, PropType} from "vue";
+import {computed, onBeforeUnmount, onMounted, PropType} from "vue";
 import {NameQuery} from "@/utils/name_service/NameQuery";
 import EntityIOL from "@/components/values/link/EntityIOL.vue";
 
-export default defineComponent({
-  name: "ContractIOL",
-  components: {EntityIOL},
-  props: {
-    contractId: {
-      type: String as PropType<string | null>,
-      default: null
-    },
+const props = defineProps({
+  contractId: {
+    type: String as PropType<string | null>,
+    default: null
   },
-  setup(props) {
-
-    const nameQuery = new NameQuery(computed(() => props.contractId))
-    onMounted(() => nameQuery.mount())
-    onBeforeUnmount(() => nameQuery.unmount())
-
-    return {
-      label: nameQuery.name
-    }
-  }
 })
+
+const nameQuery = new NameQuery(computed(() => props.contractId))
+onMounted(() => nameQuery.mount())
+onBeforeUnmount(() => nameQuery.unmount())
+const label = nameQuery.name
 
 </script>
 
