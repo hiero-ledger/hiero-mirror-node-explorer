@@ -101,17 +101,19 @@ export class ERCUtils {
     // Private
     //
 
+    private static privateAxios = axios.create()
+
     private static async call(targetAddress: string, abi: string, values: unknown[]): Promise<unknown[] | null> {
         let result: unknown[] | null
         const itf = new ethers.Interface([abi])
         const functionData = itf.encodeFunctionData(abi, values)
-        const url = "api/v1/contracts/call"
+        const url = axios.defaults.baseURL + "api/v1/contracts/call"
         const body: ContractCallRequest = {
             data: functionData,
             to: targetAddress,
         }
         try {
-            const response = await axios.post<ContractCallResponse>(url, body)
+            const response = await ERCUtils.privateAxios.post<ContractCallResponse>(url, body)
             result = itf.decodeFunctionResult(abi, response.data.result)
         } catch (error) {
             if (axios.isAxiosError(error) && error.status === 400) {
