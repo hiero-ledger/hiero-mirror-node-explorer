@@ -1,0 +1,22 @@
+[
+  {
+    "entityId": "0.0.1584",
+    "name": "Eric's primary account",
+    "type": "Crypto"
+  },
+  {
+    "entityId": "0.0.1299",
+    "name": "Eric's secondary account",
+    "type": "Crypto"
+  },
+  {
+    "entityId": "0.0.1437",
+    "name": "Simon's primary account",
+    "type": "Crypto"
+  },
+  {
+    "entityId": "0.0.1306",
+    "name": "Simon's secondary account",
+    "type": "Crypto"
+  }
+]
