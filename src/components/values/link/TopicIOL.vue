@@ -14,34 +14,23 @@
 <!--                                                      SCRIPT                                                     -->
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
-<script lang="ts">
+<script setup lang="ts">
 
-import {computed, defineComponent, onBeforeUnmount, onMounted, PropType} from "vue";
+import {computed, onBeforeUnmount, onMounted, PropType} from "vue";
 import EntityIOL from "@/components/values/link/EntityIOL.vue";
 import {LabelByIdCache} from "@/utils/cache/LabelByIdCache";
 
-export default defineComponent({
-  name: "TopicIOL",
-  components: {EntityIOL},
-  props: {
-    topicId: {
-      type: String as PropType<string | null>,
-      default: null
-    },
+const props = defineProps({
+  topicId: {
+    type: String as PropType<string | null>,
+    default: null
   },
-  setup(props) {
-    const labelLookup = LabelByIdCache.instance.makeLookup(computed(() => props.topicId))
-    onMounted(
-        () => labelLookup.mount()
-    )
-    onBeforeUnmount(
-        () => labelLookup.unmount()
-    )
-    return {
-      label: labelLookup.entity
-    }
-  }
 })
+
+const labelLookup = LabelByIdCache.instance.makeLookup(computed(() => props.topicId))
+onMounted(() => labelLookup.mount())
+onBeforeUnmount(() => labelLookup.unmount())
+const label = labelLookup.entity
 
 </script>
 
