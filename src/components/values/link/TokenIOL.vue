@@ -30,7 +30,7 @@ const props = defineProps({
 const labelLookup = LabelByIdCache.instance.makeLookup(computed(() => props.tokenId))
 onMounted(() => labelLookup.mount())
 onBeforeUnmount(() => labelLookup.unmount())
-const label = labelLookup.entity
+const label = computed(() => labelLookup.entity.value?.name ?? null)
 
 </script>
 
