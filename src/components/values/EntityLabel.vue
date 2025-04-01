@@ -49,7 +49,7 @@ onBeforeUnmount(() => labelLookup.unmount())
 
 const slice = computed(() => props.compact ? 12 : props.slice)
 const label = computed(() => {
-  let result = labelLookup.entity.value
+  let result = labelLookup.entity.value?.name ?? null
   if (result != null
       && slice.value != null
       && slice.value > 0
