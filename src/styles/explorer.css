@@ -3,6 +3,32 @@
 @import "../../node_modules/@oruga-ui/theme-oruga/dist/oruga.css";
 @import "oruga-customization.css";
 
+/*  ============================================================================
+    Fonts
+*/
+@import "@/fonts/styreneA/1802-UFGULA.css";
+
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url('@/fonts/Inter/Inter-VariableFont_opsz,wght.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Geist Mono';
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url('@/fonts/Geist_Mono/GeistMono-VariableFont_wght.ttf') format('truetype');
+}
+
+:root {
+    --font-family-heading: 'Styrene A Web';
+    --font-family-proportional: 'Inter';
+    --font-family-monospace: 'Geist Mono';
+}
 
 /*  ============================================================================
     Color Themes / Modes
@@ -34,7 +60,7 @@
     --status-success-color: var(--light-status-success-color);
     --status-error-color: var(--light-status-error-color);
     --search-bar-default: var(--light-search-bar-default);
-    --graph-line-color:  var(--light-graph-line-color);
+    --graph-line-color: var(--light-graph-line-color);
 
     --network-button-text-color: var(--light-network-button-text-color);
     --network-button-color: var(--light-network-button-color);

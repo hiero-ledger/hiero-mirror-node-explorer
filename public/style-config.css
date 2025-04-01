@@ -1,33 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /*  ============================================================================
-    Fonts
-*/
-@import "@/fonts/styreneA/1802-UFGULA.css";
-
-@font-face {
-    font-family: 'Inter';
-    font-style: normal;
-    font-weight: 100 900;
-    font-display: swap;
-    src: url('@/fonts/Inter/Inter-VariableFont_opsz,wght.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'Geist Mono';
-    font-style: normal;
-    font-weight: 100 900;
-    font-display: swap;
-    src: url('@/fonts/Geist_Mono/GeistMono-VariableFont_wght.ttf') format('truetype');
-}
-
-:root {
-    --font-family-heading: 'Styrene A Web';
-    --font-family-proportional: 'Inter';
-    --font-family-monospace: 'Geist Mono';
-}
-
-/*  ============================================================================
     Color Themes / Modes
 */
 :root {
@@ -110,3 +83,4 @@
     --dark-status-error-color: #C40E3A;
     --dark-search-bar-default: #2C2C2C;
     --dark-graph-line-color: #1300FF;
+}
