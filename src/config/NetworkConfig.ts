@@ -96,6 +96,7 @@ export class NetworkEntry {
         const erc20IndexURL = fetchURL(obj, "erc20IndexURL")
         const erc721IndexURL = fetchURL(obj, "erc721IndexURL")
         const erc1155IndexURL = fetchURL(obj, "erc1155IndexURL")
+        const publicLabelsURL = fetchURL(obj, "publicLabelsURL")
 
         const sourcifySetupObj = fetchObject(obj, "sourcifySetup")
 
@@ -131,6 +132,7 @@ export class NetworkEntry {
             erc20IndexURL,
             erc721IndexURL,
             erc1155IndexURL,
+            publicLabelsURL,
             sourcifySetup
         )
     }
@@ -162,6 +164,8 @@ export class NetworkEntry {
         public readonly erc721IndexURL: string | null,
         // The URL of the ERC1155 contract index
         public readonly erc1155IndexURL: string | null,
+        // The URL of the public labels index
+        public readonly publicLabelsURL: string | null,
         public readonly sourcifySetup: SourcifySetup | null
     ) {
     }
