@@ -48,6 +48,7 @@ import {VerifiedContractsByAccountIdCache} from "@/utils/cache/VerifiedContracts
 import {VerifiedContractsCache} from "@/utils/cache/VerifiedContractsCache";
 import {ScheduleByIdCache} from "@/utils/cache/ScheduleByIdCache.ts";
 import {ERC1155Cache} from "@/utils/cache/ERC1155Cache.ts";
+import {LabelDefinitionsCache} from "@/utils/cache/LabelDefinitionsCache.ts";
 
 export class CacheUtils {
 
@@ -75,6 +76,7 @@ export class CacheUtils {
         HCSAssetCache.instance.clear()
         HbarPriceCache.instance.clear()
         LabelByIdCache.instance.clear()
+        LabelDefinitionsCache.instance.clear()
         LastTopicMessageByIdCache.instance.clear()
         LogicContractCache.instance.clear()
         // IPFSCache.instance => no clear: we preserve it because IPFS content is valid for all networks
