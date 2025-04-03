@@ -6,7 +6,7 @@
 
 <template>
 
-  <EntityIOL :entityId="accountId" :label="label" :null-label="nullLabel"/>
+  <EntityIOL :entityId="accountId" :domain-name="name" :provider-name="providerName" :null-label="nullLabel"/>
 
 </template>
 
@@ -19,7 +19,6 @@
 import {computed, onBeforeUnmount, onMounted, PropType} from "vue";
 import EntityIOL from "@/components/values/link/EntityIOL.vue";
 import {NameQuery} from "@/utils/name_service/NameQuery";
-import {LabelByIdCache} from "@/utils/cache/LabelByIdCache.ts";
 
 const props = defineProps({
   accountId: {
@@ -37,12 +36,8 @@ const accountId = computed(() => props.accountId)
 const nameQuery = new NameQuery(accountId)
 onMounted(() => nameQuery.mount())
 onBeforeUnmount(() => nameQuery.unmount())
-
-const labelLookup = LabelByIdCache.instance.makeLookup(accountId)
-onMounted(() => labelLookup.mount())
-onBeforeUnmount(() => labelLookup.unmount())
-
-const label = computed(() => labelLookup.entity.value?.name ?? nameQuery.name.value)
+const name = nameQuery.name
+const providerName = nameQuery.providerName
 
 </script>
 
