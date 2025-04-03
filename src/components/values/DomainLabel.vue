@@ -5,9 +5,9 @@
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <template>
-  <EntityLabel :label="props.domainName">
+  <EntityLabel :label="props.domainName" :compact="props.compact">
     <template #icon>
-      <NotebookTabs :size="12"/>
+      <NotebookTabs :size="12" :class="{'low-contrast':props.compact}"/>
     </template>
 
     <template #tooltip>
@@ -36,6 +36,10 @@ const props = defineProps({
     type: String as PropType<string | null>,
     default: null
   },
+  compact: {
+    type: Boolean,
+    default: false
+  },
 })
 
 </script>
@@ -44,4 +48,10 @@ const props = defineProps({
 <!--                                                       STYLE                                                     -->
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
-<style/>
+<style scoped>
+
+.low-contrast {
+  color: var(--text-secondary);
+}
+
+</style>
