@@ -9,13 +9,15 @@
   <div class="is-inline-block">
 
     <template v-if="actualLabel !== null">
-      <span :class="{'h-is-label':!compact, 'h-is-compact-label':compact}" class="is-inline-block">
-        {{ actualLabel }}
-      </span>
+      <Tooltip :text="tooltip">
+        <span :class="{'h-is-label':!compact, 'h-is-compact-label':compact}" class="entity-id-or-label">
+          {{ actualLabel }}
+        </span>
+      </Tooltip>
     </template>
 
     <template v-else-if="entityId !== null">
-      <span class="h-is-numeric">
+      <span class="h-is-numeric entity-id-or-label">
         {{ entityId ?? "" }}
       </span>
     </template>
@@ -41,6 +43,7 @@
 <script setup lang="ts">
 import {computed, inject, PropType, ref} from "vue";
 import {initialLoadingKey} from "@/AppKeys";
+import Tooltip from "@/components/Tooltip.vue";
 
 const DEFAULT_LABEL_SIZE = 35
 
@@ -80,10 +83,19 @@ const actualLabel = computed(() => {
   return result
 })
 
+const tooltip = computed(() => props.entityId ? "ID " + props.entityId : null)
+
 </script>
 
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 <!--                                                       STYLE                                                     -->
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
-<style/>
+<style scoped>
+
+.entity-id-or-label {
+  display: inline-block;
+  cursor: pointer;
+}
+
+</style>
