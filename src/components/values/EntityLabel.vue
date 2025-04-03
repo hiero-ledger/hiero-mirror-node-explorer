@@ -7,7 +7,11 @@
 <template>
   <div class="hover-container">
     <Tooltip>
-      <div v-if="label" class="h-is-label entity-label">
+      <div
+          v-if="label"
+          class="entity-label"
+          :class="{'h-is-label':!compact, 'h-is-compact-label':compact}"
+      >
         <slot name="icon"/>
         <span>{{ label }}</span>
       </div>
@@ -16,7 +20,7 @@
       </template>
     </Tooltip>
     <SquareArrowOutUpRight
-        v-if="props.url"
+        v-if="props.url && !compact"
         :size="14"
         class="shy-icon"
         @click="navigate(props.url)"
@@ -44,6 +48,10 @@ const props = defineProps({
   url: {
     type: String as PropType<string | null>,
     default: null
+  },
+  compact: {
+    type: Boolean,
+    default: false
   },
 })
 
