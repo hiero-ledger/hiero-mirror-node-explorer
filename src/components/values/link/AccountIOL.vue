@@ -19,6 +19,7 @@
 import {computed, onBeforeUnmount, onMounted, PropType} from "vue";
 import EntityIOL from "@/components/values/link/EntityIOL.vue";
 import {NameQuery} from "@/utils/name_service/NameQuery";
+import {LabelByIdCache} from "@/utils/cache/LabelByIdCache.ts";
 
 const props = defineProps({
   accountId: {
@@ -31,10 +32,17 @@ const props = defineProps({
   }
 })
 
-const nameQuery = new NameQuery(computed(() => props.accountId))
+const accountId = computed(() => props.accountId)
+
+const nameQuery = new NameQuery(accountId)
 onMounted(() => nameQuery.mount())
 onBeforeUnmount(() => nameQuery.unmount())
-const label = nameQuery.name
+
+const labelLookup = LabelByIdCache.instance.makeLookup(accountId)
+onMounted(() => labelLookup.mount())
+onBeforeUnmount(() => labelLookup.unmount())
+
+const label = computed(() => labelLookup.entity.value?.name ?? nameQuery.name.value)
 
 </script>
 
