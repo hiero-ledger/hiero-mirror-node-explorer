@@ -5,20 +5,16 @@
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <template>
-  <Tooltip>
-    <div
-        v-if="label"
-        class="h-is-label entity-label"
-        :class="{'h-hoverable':props.url !== null}"
-        @click="navigate(props.url)"
-    >
-      <slot name="icon"/>
-      <span>{{ label }}</span>
-    </div>
-    <template v-if="slots.tooltip" #content>
-      <slot name="tooltip"/>
+  <EntityLabel :label="props.domainName">
+    <template #icon>
+      <NotebookTabs :size="12"/>
     </template>
-  </Tooltip>
+
+    <template #tooltip>
+      <p>Domain name</p>
+      <p>provided by {{ props.providerName }}</p>
+    </template>
+  </EntityLabel>
 </template>
 
 <!-- --------------------------------------------------------------------------------------------------------------- -->
@@ -27,35 +23,20 @@
 
 <script setup lang="ts">
 
-import {computed, PropType, useSlots} from "vue";
-import Tooltip from "@/components/Tooltip.vue";
-
-const MAX_LABEL_SIZE = 35
+import {PropType} from "vue";
+import EntityLabel from "@/components/values/EntityLabel.vue";
+import {NotebookTabs} from 'lucide-vue-next';
 
 const props = defineProps({
-  label: {
+  domainName: {
     type: String as PropType<string | null>,
     default: null
   },
-  url: {
+  providerName: {
     type: String as PropType<string | null>,
     default: null
   },
 })
-
-const slots = useSlots()
-
-const label = computed(() =>
-    (props.label && props.label.length > MAX_LABEL_SIZE)
-        ? props.label.slice(0, MAX_LABEL_SIZE) + '…'
-        : props.label
-)
-
-const navigate = (url: string | null) => {
-  if (url) {
-    window.location.href = url;
-  }
-};
 
 </script>
 
@@ -63,16 +44,4 @@ const navigate = (url: string | null) => {
 <!--                                                       STYLE                                                     -->
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
-<style scoped>
-
-.h-hoverable {
-  cursor: pointer;
-}
-
-.entity-label {
-  display: flex;
-  align-items: center;
-  gap: 4px
-}
-
-</style>
+<style/>
