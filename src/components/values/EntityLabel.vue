@@ -5,14 +5,20 @@
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <template>
-  <div v-if="label"
-       :class="{'h-is-label':!compact, 'h-is-compact-label':compact}"
-       class="is-inline-block">
-    <slot/>
-    <span>
-      {{ label }}
-    </span>
-  </div>
+  <Tooltip>
+    <div
+        v-if="label"
+        class="h-is-label is-inline-block"
+        :class="{'h-hoverable':props.url !== null}"
+        @click="navigate(props.url)"
+    >
+      <slot name="icon"/>
+      <span>{{ label }}</span>
+    </div>
+    <template v-if="slots.tooltip" #content>
+      <slot name="tooltip"/>
+    </template>
+  </Tooltip>
 </template>
 
 <!-- --------------------------------------------------------------------------------------------------------------- -->
@@ -21,43 +27,35 @@
 
 <script setup lang="ts">
 
-import {computed, onBeforeUnmount, onMounted, PropType} from "vue";
-import {LabelByIdCache} from "@/utils/cache/LabelByIdCache";
+import {computed, PropType, useSlots} from "vue";
+import Tooltip from "@/components/Tooltip.vue";
 
 const MAX_LABEL_SIZE = 35
 
 const props = defineProps({
-  id: {
+  label: {
     type: String as PropType<string | null>,
     default: null
   },
-  slice: {
-    type: Number as PropType<number | null>,
-    default: MAX_LABEL_SIZE
-  },
-  compact: {
-    type: Boolean,
-    default: false
+  url: {
+    type: String as PropType<string | null>,
+    default: null
   },
 })
 
-const id = computed(() => props.id)
+const slots = useSlots()
 
-const labelLookup = LabelByIdCache.instance.makeLookup(id)
-onMounted(() => labelLookup.mount())
-onBeforeUnmount(() => labelLookup.unmount())
+const label = computed(() =>
+    (props.label && props.label.length > MAX_LABEL_SIZE)
+        ? props.label.slice(0, MAX_LABEL_SIZE) + '…'
+        : props.label
+)
 
-const slice = computed(() => props.compact ? 12 : props.slice)
-const label = computed(() => {
-  let result = labelLookup.entity.value?.name ?? null
-  if (result != null
-      && slice.value != null
-      && slice.value > 0
-      && slice.value < result.length) {
-    result = result.slice(0, slice.value) + '…'
+const navigate = (url: string | null) => {
+  if (url) {
+    window.location.href = url;
   }
-  return result
-})
+};
 
 </script>
 
@@ -65,4 +63,10 @@ const label = computed(() => {
 <!--                                                       STYLE                                                     -->
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
-<style/>
+<style scoped>
+
+.h-hoverable {
+  cursor: pointer;
+}
+
+</style>
