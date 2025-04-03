@@ -14,6 +14,7 @@
     >
       <slot name="icon"/>
       <span>{{ label }}</span>
+      <SquareArrowOutUpRight v-if="props.url" :size="12" style="color:var(--text-secondary);"/>
     </div>
     <template v-if="slots.tooltip" #content>
       <slot name="tooltip"/>
@@ -29,6 +30,7 @@
 
 import {computed, PropType, useSlots} from "vue";
 import Tooltip from "@/components/Tooltip.vue";
+import {SquareArrowOutUpRight} from 'lucide-vue-next';
 
 const MAX_LABEL_SIZE = 35
 
