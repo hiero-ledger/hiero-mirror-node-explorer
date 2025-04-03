@@ -5,9 +5,9 @@
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <template>
-  <EntityLabel :label="name" :url="website">
+  <EntityLabel :label="name" :url="website" :compact="props.compact">
     <template #icon>
-      <Tag :size="12" class="public-tag"/>
+      <Tag :size="12" :class="{'low-contrast':props.compact}"/>
     </template>
 
     <template #tooltip>
@@ -33,7 +33,11 @@ const props = defineProps({
   labelDefinition: {
     type: Object as PropType<LabelDefinition | null>,
     default: null
-  }
+  },
+  compact: {
+    type: Boolean,
+    default: false
+  },
 })
 
 const name = computed(() => props.labelDefinition?.name ?? null)
@@ -49,10 +53,8 @@ const description = computed(() => props.labelDefinition?.description ?? null)
 
 <style scoped>
 
-/*
-.public-tag {
-  fill: var(--network-text-accent-color);
+.low-contrast {
+  color: var(--text-secondary);
 }
-*/
 
 </style>
