@@ -21,6 +21,16 @@
       </template>
 
       <template #content>
+        <Property v-if="label" id="labels" full-width>
+          <template #name>
+            Label
+          </template>
+          <template #value>
+            <div style="display: flex; align-items: center; gap: 4px">
+              <PublicLabel :label-definition="label"/>
+            </div>
+          </template>
+        </Property>
         <Property id="memo" full-width>
           <template #name>Memo</template>
           <template #value>
@@ -154,6 +164,8 @@ import HCSContentSection from "@/components/topic/HCSContentSection.vue";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import PlayPauseButton from "@/components/PlayPauseButton.vue";
 import TopicFeesSection from "@/components/topic/TopicFeesSection.vue";
+import PublicLabel from "@/components/values/PublicLabel.vue";
+import {LabelByIdCache} from "@/utils/cache/LabelByIdCache.ts";
 
 const props = defineProps({
   topicId: {
@@ -231,6 +243,14 @@ const hcs1Asset = assetLookup.entity
 //
 const customFees = computed(() => topic.value?.custom_fees ?? null)
 const hasExemptList = computed(() => topic.value?.fee_exempt_key_list && topic.value.fee_exempt_key_list.length > 0)
+
+//
+// Label
+//
+const labelLookup = LabelByIdCache.instance.makeLookup(normalizedTopicId)
+onMounted(() => labelLookup.mount())
+onBeforeUnmount(() => labelLookup.unmount())
+const label = labelLookup.entity
 
 </script>
 
