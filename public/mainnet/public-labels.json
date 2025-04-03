@@ -14,6 +14,11 @@
     "website": "https://www.fireblocks.com"
   },
   {
+    "entityId": "0.0.1273453",
+    "name": "Hashgraph.hh domain",
+    "type": "Crypto"
+  },
+  {
     "entityId": "0.0.2310596",
     "name": "4orum topic",
     "type": "HCS Topic",
