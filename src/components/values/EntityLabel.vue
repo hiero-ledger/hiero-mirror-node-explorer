@@ -5,21 +5,23 @@
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <template>
-  <Tooltip>
-    <div
-        v-if="label"
-        class="h-is-label entity-label"
-        :class="{'h-hoverable':props.url !== null}"
+  <div class="hover-container">
+    <Tooltip>
+      <div v-if="label" class="h-is-label entity-label">
+        <slot name="icon"/>
+        <span>{{ label }}</span>
+      </div>
+      <template v-if="slots.tooltip" #content>
+        <slot name="tooltip"/>
+      </template>
+    </Tooltip>
+    <SquareArrowOutUpRight
+        v-if="props.url"
+        :size="14"
+        class="shy-icon"
         @click="navigate(props.url)"
-    >
-      <slot name="icon"/>
-      <span>{{ label }}</span>
-      <SquareArrowOutUpRight v-if="props.url" :size="12" style="color:var(--text-secondary);"/>
-    </div>
-    <template v-if="slots.tooltip" #content>
-      <slot name="tooltip"/>
-    </template>
-  </Tooltip>
+    />
+  </div>
 </template>
 
 <!-- --------------------------------------------------------------------------------------------------------------- -->
@@ -67,14 +69,24 @@ const navigate = (url: string | null) => {
 
 <style scoped>
 
-.h-hoverable {
-  cursor: pointer;
+.hover-container,
+.entity-label {
+  align-items: center;
+  display: flex;
+  gap: 4px
 }
 
-.entity-label {
-  display: flex;
-  align-items: center;
-  gap: 4px
+.shy-icon {
+  color: var(--text-secondary);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  visibility: hidden;
+}
+
+.hover-container:hover .shy-icon {
+  opacity: 1;
+  visibility: visible;
 }
 
 </style>
