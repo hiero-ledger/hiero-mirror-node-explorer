@@ -42,7 +42,7 @@
 import {computed, inject, PropType, ref} from "vue";
 import {initialLoadingKey} from "@/AppKeys";
 
-const DEFAULT_LABEL_SIZE = 18
+const DEFAULT_LABEL_SIZE = 35
 
 const props = defineProps({
   entityId: {
