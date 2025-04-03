@@ -55,7 +55,7 @@ const label = computed(() =>
 
 const navigate = (url: string | null) => {
   if (url) {
-    window.location.href = url;
+    window.open(url, '_blank');
   }
 };
 
