@@ -86,8 +86,17 @@
           </template>
           <template #value>
             <div style="display: flex; align-items: center; gap: 4px">
-              <EntityIOL :label="domainName" :compact="false"/>
-              <InfoTooltip v-if="domainProviderName" :label="domainProviderName"/>
+              <DomainLabel :domain-name="domainName" :provider-name="domainProviderName"/>
+            </div>
+          </template>
+        </Property>
+        <Property v-if="label" id="labels" full-width>
+          <template #name>
+            Label
+          </template>
+          <template #value>
+            <div style="display: flex; align-items: center; gap: 4px">
+              <PublicLabel :label-definition="label"/>
             </div>
           </template>
         </Property>
@@ -275,9 +284,11 @@
               :tabLabels="tabLabels"
               @update:selected-tab="handleTabUpdate($event)"
           />
-          <div v-if="selectedTab === 'transactions'" style="display: flex; align-items: baseline; justify-content: flex-end; gap: 8px;">
+          <div v-if="selectedTab === 'transactions'"
+               style="display: flex; align-items: baseline; justify-content: flex-end; gap: 8px;">
             <div>Hide transfers below</div>
-            <SelectView v-model="minTinyBar" small :style="{'font-size':minTinyBar!=0?'12px':'10px'}" style="min-width: 70px">
+            <SelectView v-model="minTinyBar" small :style="{'font-size':minTinyBar!=0?'12px':'10px'}"
+                        style="min-width: 70px">
               <option value=500000000>
                 <HbarAmount :amount="500000000" :decimals="0"/>
               </option>
@@ -382,8 +393,6 @@ import {VerifiedContractsController} from "@/components/contract/VerifiedContrac
 import DateTimePicker from "@/components/DateTimePicker.vue";
 import TransactionDownloadDialog from "@/dialogs/download/TransactionDownloadDialog.vue";
 import {NameQuery} from "@/utils/name_service/NameQuery";
-import EntityIOL from "@/components/values/link/EntityIOL.vue";
-import InfoTooltip from "@/components/InfoTooltip.vue";
 import {labelForAutomaticTokenAssociation} from "@/schemas/MirrorNodeUtils.ts";
 import TokensSection from "@/components/token/TokensSection.vue";
 import EditableProperty from "@/components/EditableProperty.vue";
@@ -398,6 +407,9 @@ import ArrowLink from "@/components/ArrowLink.vue";
 import {ButtonSize} from "@/dialogs/core/DialogUtils.ts";
 import EntityIDView from "@/components/values/EntityIDView.vue";
 import {Download} from 'lucide-vue-next';
+import {LabelByIdCache} from "@/utils/cache/LabelByIdCache.ts";
+import DomainLabel from "@/components/values/DomainLabel.vue";
+import PublicLabel from "@/components/values/PublicLabel.vue";
 
 const props = defineProps({
   accountId: String,
@@ -540,9 +552,20 @@ const transactionDownloadDialogVisible = ref(false)
 // Naming
 //
 
-const nameQuery = new NameQuery(computed(() => props.accountId ?? null))
+const nameQuery = new NameQuery(accountLocParser.accountId)
 onMounted(() => nameQuery.mount())
 onBeforeUnmount(() => nameQuery.unmount())
+const domainName = nameQuery.name
+const domainProviderName = nameQuery.providerName
+
+//
+// Label
+//
+
+const labelLookup = LabelByIdCache.instance.makeLookup(accountLocParser.accountId)
+onMounted(() => labelLookup.mount())
+onBeforeUnmount(() => labelLookup.unmount())
+const label = labelLookup.entity
 
 //
 // Account Update
@@ -575,8 +598,6 @@ const ethereumAddress = accountLocParser.ethereumAddress
 const stakePeriodStart = accountLocParser.stakePeriodStart
 const stakedAccountId = accountLocParser.stakedAccountId
 const stakedNodeDescription = stakedNodeAnalyzer.nodeDescription
-const domainName = nameQuery.name
-const domainProviderName = nameQuery.providerName
 
 </script>
 
