@@ -8,12 +8,12 @@
 
   <div class="is-inline-block">
 
-    <template v-if="actualLabel !== null">
-      <Tooltip :text="tooltip">
-        <span :class="{'h-is-label':!compact, 'h-is-compact-label':compact}" class="entity-id-or-label">
-          {{ actualLabel }}
-        </span>
-      </Tooltip>
+    <template v-if="label">
+      <PublicLabel :label-definition="label" compact/>
+    </template>
+
+    <template v-else-if="domainName">
+      <DomainLabel :domain-name="domainName" :provider-name="providerName" compact/>
     </template>
 
     <template v-else-if="entityId !== null">
@@ -41,28 +41,26 @@
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <script setup lang="ts">
-import {computed, inject, PropType, ref} from "vue";
+import {computed, inject, onBeforeUnmount, onMounted, PropType, ref} from "vue";
 import {initialLoadingKey} from "@/AppKeys";
-import Tooltip from "@/components/Tooltip.vue";
+import {LabelByIdCache} from "@/utils/cache/LabelByIdCache.ts";
+import PublicLabel from "@/components/values/PublicLabel.vue";
+import DomainLabel from "@/components/values/DomainLabel.vue";
 
-const DEFAULT_LABEL_SIZE = 35
+const DEFAULT_LABEL_SIZE = 30
 
 const props = defineProps({
   entityId: {
     type: String as PropType<string | null>,
     default: null
   },
-  label: {
+  domainName: {
     type: String as PropType<string | null>,
     default: null
   },
-  slice: {
-    type: Number as PropType<number | null>,
-    default: DEFAULT_LABEL_SIZE
-  },
-  compact: {
-    type: Boolean,
-    default: true
+  providerName: {
+    type: String as PropType<string | null>,
+    default: null
   },
   nullLabel: {
     type: String,
@@ -72,18 +70,22 @@ const props = defineProps({
 
 const initialLoading = inject(initialLoadingKey, ref(false))
 
-const actualLabel = computed(() => {
-  let result = props.label
-  if (result != null
-      && props.slice != null
-      && props.slice > 0
-      && props.slice < result.length) {
-    result = result.slice(0, props.slice) + '…'
+const entityId = computed(() => props.entityId)
+
+const domainName = computed(() => slice(props.domainName))
+
+const labelLookup = LabelByIdCache.instance.makeLookup(entityId)
+onMounted(() => labelLookup.mount())
+onBeforeUnmount(() => labelLookup.unmount())
+const label = labelLookup.entity
+
+const slice = (label: string | null) => {
+  let result = label
+  if (result && result.length > DEFAULT_LABEL_SIZE) {
+    result = result.slice(0, DEFAULT_LABEL_SIZE) + '…'
   }
   return result
-})
-
-const tooltip = computed(() => props.entityId ? "ID " + props.entityId : null)
+}
 
 </script>
 
