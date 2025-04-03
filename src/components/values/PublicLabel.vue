@@ -13,6 +13,7 @@
     <template #tooltip>
       <p>Public label for ID {{ entityId }}</p>
       <p>{{ description }}</p>
+      <p>{{ website }}</p>
     </template>
   </EntityLabel>
 </template>
