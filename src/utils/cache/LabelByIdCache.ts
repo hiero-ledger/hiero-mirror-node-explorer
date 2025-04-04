@@ -6,7 +6,8 @@ import axios from "axios";
 
 export class LabelByIdCache extends EntityCache<string, LabelDefinition | null> {
 
-    private labels: LabelDefinition[] | null = null;
+    private labels: LabelDefinition[] = [];
+    private loaded = false;
 
     //
     // Public
@@ -16,8 +17,9 @@ export class LabelByIdCache extends EntityCache<string, LabelDefinition | null> 
     public async search(name: string): Promise<LabelDefinition[]> {
         const result: LabelDefinition[] = []
 
-        if (this.labels === null) {
-            this.labels = await this.loadLabelDefinitions()
+        if (!this.loaded) {
+            this.loaded = true
+            await this.loadLabelDefinitions()
         }
         name = name.toLowerCase()
         for (const label of this.labels) {
@@ -28,14 +30,20 @@ export class LabelByIdCache extends EntityCache<string, LabelDefinition | null> 
         return Promise.resolve(result)
     }
 
+    public override clear(): void {
+        super.clear()
+        this.loaded = false
+    }
+
     //
     // EntityCache
     //
     protected async load(key: string): Promise<LabelDefinition | null> {
         let result: LabelDefinition | null = null
 
-        if (this.labels === null) {
-            this.labels = await this.loadLabelDefinitions()
+        if (!this.loaded) {
+            await this.loadLabelDefinitions()
+            this.loaded = true
         }
         for (const label of this.labels) {
             if (label.entityId === key) {
@@ -48,16 +56,16 @@ export class LabelByIdCache extends EntityCache<string, LabelDefinition | null> 
     //
     // Private
     //
-    private async loadLabelDefinitions(): Promise<LabelDefinition[]> {
-        let result: LabelDefinition[]
-
+    private async loadLabelDefinitions(): Promise<void> {
         const url = routeManager.currentNetworkEntry.value.publicLabelsURL
+        console.log(`Reading labels from url: ${url}`)
+
         if (url !== null) {
-            result = (await axios.get<LabelDefinition[]>(url)).data
+            this.labels = (await axios.get<LabelDefinition[]>(url)).data
+            console.log(`Read ${this.labels.length} labels from url: ${url}`)
         } else {
-            result = []
+            this.labels = []
         }
-        return Promise.resolve(result)
     }
 }
 
