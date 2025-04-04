@@ -52,7 +52,7 @@ describe("TransactionByIdTable.vue", () => {
 
         expect(wrapper.find('thead').text()).toBe("Time Type Content Relationship Nonce".toUpperCase())
         expect(wrapper.find('tbody').text()).toBe(
-            "1:29:17.0144 PMSep 6, 2022, UTCCONTRACT CALLContract ID: 0.0.48193749Parent0" +
+            "1:29:17.0144 PMSep 6, 2022, UTCCONTRACT CALLContract:0.0.48193749Parent0" +
             "1:29:17.0144 PMSep 6, 2022, UTCTOKEN MINTMINT\n\n0.0.48193741RSSE\n\n0.0.48113503Child1" +
             "1:29:17.0144 PMSep 6, 2022, UTCCRYPTO TRANSFER0.0.48113503\n\n0.0.48193741RSSE\n\n0.0.48193739Child2"
         )

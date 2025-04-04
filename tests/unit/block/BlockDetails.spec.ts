@@ -259,11 +259,11 @@ describe("BlockDetails.vue", () => {
         expect(table.get('tbody').text()).toBe(
             "0.0.950@1646665756.235554077" +
             "CONTRACT CALL" +
-            "Contract ID: 0.0.749774" +
+            "Contract:0.0.749774" +
             "3:09:26.5747 PMMar 7, 2022, UTC" +
             "0.0.950@1646664143.028737238" +
             "CONTRACT CALL" +
-            "Contract ID: 0.0.749723" +
+            "Contract:0.0.749723" +
             "2:42:34.8669 PMMar 7, 2022, UTC")
 
         mock.restore()
