@@ -17,7 +17,7 @@
     </template>
 
     <template v-else-if="entityId !== null">
-      <span class="h-is-numeric entity-id-or-label">
+      <span class="h-is-numeric">
         {{ entityId ?? "" }}
       </span>
     </template>
@@ -93,11 +93,5 @@ const slice = (label: string | null) => {
 <!--                                                       STYLE                                                     -->
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
-<style scoped>
+<style/>
 
-.entity-id-or-label {
-  display: inline-block;
-  cursor: pointer;
-}
-
-</style>
