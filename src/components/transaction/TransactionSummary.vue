@@ -6,11 +6,15 @@
 
 <template>
   <template v-if="transaction">
-    <TransferGraphSection v-if="shouldGraph"
-                          v-bind:analyzer="transactionAnalyzer"
-                          v-bind:compact="true"/>
-    <div v-else-if="isTokenAssociation">
-      {{ transaction?.entity_id }}
+
+    <TransferGraphSection
+        v-if="shouldGraph"
+        :analyzer="transactionAnalyzer"
+        :compact="true"
+    />
+
+    <div v-else-if="isTokenAssociation" class="h-should-wrap">
+      <EntityIOL :entity-id="entityId"/>
       <span v-if="tokens.length">
         <i class="fas fa-link mr-1 h-is-low-contrast"></i>
         <TokenExtra :token-id="tokens[0]"/>
@@ -19,12 +23,16 @@
         </span>
       </span>
     </div>
-    <div v-else-if="isEthereumTransaction">
-      {{ ethereumSummary }}
+
+    <div v-else-if="displayMemo" class="h-should-wrap">
+      {{ displayMemo }}
     </div>
-    <div v-else class="h-should-wrap">
-      {{ makeSummaryLabel(transaction) }}
+
+    <div v-else-if="entityType && entityId" class="h-should-wrap tx-summary">
+      <span>{{ entityType + ':' }}</span>
+      <EntityIOL :entity-id="entityId"/>
     </div>
+
   </template>
   <div v-else/>
 </template>
@@ -36,11 +44,12 @@
 <script setup lang="ts">
 
 import {computed, onBeforeUnmount, onMounted, PropType} from "vue";
-import {Transaction, TransactionType} from "@/schemas/MirrorNodeSchemas";
-import {makeSummaryLabel} from "@/utils/TransactionTools";
+import {Transaction, TransactionDetail, TransactionType} from "@/schemas/MirrorNodeSchemas";
+import {formatMemo, makeEntityType} from "@/utils/TransactionTools";
 import TransferGraphSection from "@/components/transfer_graphs/TransferGraphSection.vue";
 import {TransactionAnalyzer} from "@/components/transaction/TransactionAnalyzer";
 import TokenExtra from "@/components/values/link/TokenExtra.vue";
+import EntityIOL from "@/components/values/link/EntityIOL.vue";
 
 const GRAPH_TRANSACTION_TYPES = [
   TransactionType.CRYPTOTRANSFER,
@@ -51,9 +60,17 @@ const GRAPH_TRANSACTION_TYPES = [
   TransactionType.TOKENCLAIMAIRDROP
 ]
 
+const MEMO_TRANSACTION_TYPES = [
+  TransactionType.CONSENSUSSUBMITMESSAGE,
+  TransactionType.CRYPTOAPPROVEALLOWANCE,
+  TransactionType.CRYPTODELETEALLOWANCE
+]
+
 const props = defineProps({
   transaction: Object as PropType<Transaction | undefined>
 })
+
+const transactionDetail = computed(() => props.transaction as TransactionDetail ?? null)
 
 const shouldGraph = computed(() => {
   let result: boolean
@@ -68,25 +85,36 @@ const shouldGraph = computed(() => {
   return result
 })
 
-const transactionAnalyzer = new TransactionAnalyzer(computed(() => props.transaction ?? null))
-onMounted(() => transactionAnalyzer.mount())
-onBeforeUnmount(() => transactionAnalyzer.unmount())
-
-const additionalTokensNumber = computed(
-    () => Math.max(0, transactionAnalyzer.tokens.value.length - 1))
-
-const ethereumSummary = computed(() => {
-  let result
-  if (transactionAnalyzer.entityId.value !== null) {
-    result = transactionAnalyzer.contractId.value !== null
-        ? 'Contract ID: ' + transactionAnalyzer.entityId.value
-        : 'Account ID: ' + transactionAnalyzer.entityId.value
+const displayMemo = computed(() => {
+  let result: string | null
+  if (transactionDetail.value?.name && MEMO_TRANSACTION_TYPES.indexOf(transactionDetail.value.name) != -1) {
+    result = formatMemo(transactionDetail.value?.memo_base64 ?? "")
   } else {
-    result = ""
+    result = null
   }
   return result
 })
 
+const transactionAnalyzer = new TransactionAnalyzer(transactionDetail)
+onMounted(() => transactionAnalyzer.mount())
+onBeforeUnmount(() => transactionAnalyzer.unmount())
+
+const additionalTokensNumber = computed(() =>
+    Math.max(0, transactionAnalyzer.tokens.value.length - 1)
+)
+
+const entityType = computed(() => {
+  let result: string | null
+  if (isEthereumTransaction.value) {
+    result = contractId.value ? 'Contract' : entityId.value ? 'Account' : ""
+  } else {
+    result = makeEntityType(transactionDetail.value)
+  }
+  return result
+})
+
+const entityId = transactionAnalyzer.entityId
+const contractId = transactionAnalyzer.contractId
 const netAmount = transactionAnalyzer.netAmount
 const hasTokenTransfers = transactionAnalyzer.hasTokenTransfers
 const hasNftTransfers = transactionAnalyzer.hasNftTransfers
@@ -100,4 +128,12 @@ const tokens = transactionAnalyzer.tokens
 <!--                                                      STYLE                                                      -->
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
-<style/>
+<style scoped>
+
+.tx-summary {
+  align-items: center;
+  display: flex;
+  gap: 4px
+}
+
+</style>
