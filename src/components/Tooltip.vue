@@ -12,7 +12,6 @@
       :position="position ?? 'auto'"
       :delay="props.delay"
       multiline
-      class="tooltip"
   >
     <slot/>
     <template #content>
@@ -55,10 +54,4 @@ const slots = useSlots()
 <!--                                                       STYLE                                                     -->
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
-<style scoped>
-
-.tooltip {
-  cursor: default;
-}
-
-</style>
+<style/>
