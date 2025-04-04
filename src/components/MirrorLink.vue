@@ -6,7 +6,7 @@
 
 <template>
   <a v-if="isMediumScreen"
-     :href="`${networkUrl}${endpointURL}`" target="_blank">
+     :href="`${endpointURL}`" target="_blank">
     <div class="mirror-link">
       <span class="link-text">Raw data</span>
       <ArrowRight :size="16"/>
@@ -21,6 +21,7 @@
 <script setup lang="ts">
 import {ArrowRight} from "lucide-vue-next";
 import {computed, inject, PropType} from "vue";
+import {routeManager} from "@/router.ts";
 
 const props = defineProps({
   network: String,
@@ -37,24 +38,9 @@ const props = defineProps({
 
 const isMediumScreen = inject("isMediumScreen")
 
-const networkUrl = computed(() => {
-  let result: string
-  switch (props.network) {
-    case "previewnet":
-      result = "https://previewnet.mirrornode.hedera.com/"
-      break
-    case "testnet":
-      result = "https://testnet.mirrornode.hedera.com/"
-      break
-    case "mainnet":
-    default:
-      result = "https://mainnet-public.mirrornode.hedera.com/"
-  }
-  return result
-})
-
 const endpointURL = computed(() => {
-  let result = `api/v1/${props.entityUrl}`
+  let result = routeManager.currentNetworkEntry.value.mirrorNodeURL
+  result += `api/v1/${props.entityUrl}`
   if (props.loc !== null) {
     result += `/${props.loc}`
   }
