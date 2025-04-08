@@ -14,6 +14,7 @@ import {
     ERC20SearchAgent,
     ERC721SearchAgent,
     FullTokenNameSearchAgent,
+    LabelSearchAgent,
     NarrowTokenNameSearchAgent,
     ScheduleSearchAgent,
     SearchAgent,
@@ -91,6 +92,7 @@ export class SearchController {
     public readonly fullTokenNameSearchAgent = new FullTokenNameSearchAgent()
     public readonly erc20SearchAgent = new ERC20SearchAgent()
     public readonly erc721SearchAgent = new ERC721SearchAgent()
+    public readonly labelSearchAgent = new LabelSearchAgent()
 
     private readonly allAgents: SearchAgent<unknown, unknown>[] = []
     public readonly domainNameSearchAgents: DomainNameSearchAgent[] = []
@@ -113,6 +115,7 @@ export class SearchController {
             this.blockSearchAgent,
             this.erc20SearchAgent,
             this.erc721SearchAgent,
+            this.labelSearchAgent
         )
         for (const p of nameServiceProviders) {
             const a = new DomainNameSearchAgent(p)
@@ -206,6 +209,8 @@ export class SearchController {
             && timestamp === null
         const tokenName = isTokenName ? searchedText : null
 
+        const labelName = isASCII(searchedText) ? searchedText : null
+
         this.accountSearchAgent.loc.value = entityID ?? hexBytes ?? alias
         this.contractSearchAgent.loc.value = entityID ?? hexBytes
         this.tokenSearchAgent.loc.value = entityID ?? hexBytes
@@ -217,6 +222,7 @@ export class SearchController {
         this.fullTokenNameSearchAgent.loc.value = tokenName
         this.erc20SearchAgent.loc.value = tokenName
         this.erc721SearchAgent.loc.value = tokenName
+        this.labelSearchAgent.loc.value = labelName
 
         for (const a of this.domainNameSearchAgents) {
             a.loc.value = domainName
