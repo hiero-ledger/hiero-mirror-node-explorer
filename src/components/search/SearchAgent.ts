@@ -31,6 +31,7 @@ import {AppStorage} from "@/AppStorage";
 import {SelectedTokensCache} from "@/utils/cache/SelectedTokensCache";
 import {ERC20Cache} from "@/utils/cache/ERC20Cache.ts";
 import {ERC721Cache} from "@/utils/cache/ERC721Cache.ts";
+import {LabelByIdCache} from "@/utils/cache/LabelByIdCache.ts";
 
 export abstract class SearchAgent<L, E> {
 
@@ -104,7 +105,6 @@ export class SearchCandidate<E> {
                 readonly secondary: boolean = false) {
     }
 }
-
 
 export class AccountSearchAgent extends SearchAgent<EntityID | Uint8Array | string, AccountInfo> {
 
@@ -201,7 +201,6 @@ export class AccountSearchAgent extends SearchAgent<EntityID | Uint8Array | stri
         return Promise.resolve(result)
     }
 }
-
 
 export class ContractSearchAgent extends SearchAgent<EntityID | Uint8Array, ContractResponse> {
 
@@ -588,6 +587,43 @@ export abstract class TokenNameSearchAgent extends SearchAgent<string, TokenLike
         return Promise.resolve(result)
     }
 
+    /*
+        This comparison function ensures the following ordering:
+            1) first tokens whose name matches target
+            2) next tokens whose name starts with target
+            3) then other tokens
+     */
+
+    protected static compareToken(t1: TokenLike, t2: TokenLike, target: string): number {
+        let result: number
+        const n1 = t1.name.toLocaleLowerCase()
+        const n2 = t2.name.toLocaleLowerCase()
+        const t = target.toLocaleLowerCase()
+        if (n1 == t) {
+            if (n2 == t) {
+                result = t1.name.localeCompare(t2.name)
+            } else {
+                result = -1                     // n1 before n2
+            }
+        } else if (n1.startsWith(t)) {
+            if (n2 == t) {
+                result = +1                     // n1 after n2
+            } else if (n2.startsWith(t)) {
+                result = t1.name.localeCompare(t2.name)
+            } else {
+                result = -1                     // n1 before n2
+            }
+        } else {
+            if (n2 == t) {
+                result = +1                     // n1 after n2
+            } else if (n2.startsWith(t)) {
+                result = +1                     // n1 after n2
+            } else {
+                result = t1.name.localeCompare(t2.name)
+            }
+        }
+        return result
+    }
 }
 
 export class NarrowTokenNameSearchAgent extends TokenNameSearchAgent {
@@ -638,54 +674,12 @@ export class FullTokenNameSearchAgent extends TokenNameSearchAgent {
         // https://previewnet.mirrornode.hedera.com/api/v1/docs/#/tokens/getToken
         const r = await axios.get<TokensResponse>("api/v1/tokens/?name=" + tokenName + "&limit=100")
         const result = r.data.tokens ?? []
-        result.sort((t1: TokenLike, t2: TokenLike) => FullTokenNameSearchAgent.compareToken(t1, t2, tokenName))
+        result.sort((t1: TokenLike, t2: TokenLike) => TokenNameSearchAgent.compareToken(t1, t2, tokenName))
         return Promise.resolve(result)
     }
 
     protected makeRoute(tokenName: string): RouteLocationRaw {
         return routeManager.makeRouteToTokensByName(tokenName)
-    }
-
-    //
-    // Private
-    //
-
-    /*
-        This comparison function ensures the following ordering:
-            1) first tokens whose name matches target
-            2) next tokens whose name starts with target
-            3) then other tokens
-     */
-
-    private static compareToken(t1: TokenLike, t2: TokenLike, target: string): number {
-        let result: number
-        const n1 = t1.name.toLocaleLowerCase()
-        const n2 = t2.name.toLocaleLowerCase()
-        const t = target.toLocaleLowerCase()
-        if (n1 == t) {
-            if (n2 == t) {
-                result = t1.name.localeCompare(t2.name)
-            } else {
-                result = -1                     // n1 before n2
-            }
-        } else if (n1.startsWith(t)) {
-            if (n2 == t) {
-                result = +1                     // n1 after n2
-            } else if (n2.startsWith(t)) {
-                result = t1.name.localeCompare(t2.name)
-            } else {
-                result = -1                     // n1 before n2
-            }
-        } else {
-            if (n2 == t) {
-                result = +1                     // n1 after n2
-            } else if (n2.startsWith(t)) {
-                result = +1                     // n1 after n2
-            } else {
-                result = t1.name.localeCompare(t2.name)
-            }
-        }
-        return result
     }
 }
 
@@ -693,7 +687,6 @@ export interface TokenLike {
     token_id: string | null
     name: string
 }
-
 
 export class ScheduleSearchAgent extends SearchAgent<EntityID, Schedule> {
 
@@ -725,7 +718,6 @@ export class ScheduleSearchAgent extends SearchAgent<EntityID, Schedule> {
         return Promise.resolve(result)
     }
 }
-
 
 export class ERC20SearchAgent extends TokenNameSearchAgent {
 
@@ -796,5 +788,42 @@ export class ERC721SearchAgent extends TokenNameSearchAgent {
 
     protected makeRoute(tokenName: string): RouteLocationRaw {
         return routeManager.makeRouteToERC721ByName(tokenName)
+    }
+}
+
+export class LabelSearchAgent extends TokenNameSearchAgent {
+
+    //
+    // Public
+    //
+
+    public constructor() {
+        super("Labels")
+    }
+
+    //
+    // TokenNameSearchAgent
+    //
+
+    protected async loadTokens(label: string): Promise<TokenLike[]> {
+        const result: TokenLike[] = []
+
+        const labels = await LabelByIdCache.instance.search(label)
+        for (const l of labels) {
+            result.push({
+                token_id: l.entityId,
+                name: l.name!,
+            })
+        }
+        result.sort((t1: TokenLike, t2: TokenLike) => TokenNameSearchAgent.compareToken(t1, t2, label))
+        return Promise.resolve(result)
+    }
+
+    protected makeRouteToDetails(entityId: string): RouteLocationRaw {
+        return routeManager.makeRouteToAccount(entityId);
+    }
+
+    protected makeRoute(label: string): RouteLocationRaw {
+        return routeManager.makeRouteToERC721ByName(label)
     }
 }
