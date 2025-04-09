@@ -35,7 +35,9 @@
 */
 :root {
 
-    /* CURRENT MODE */
+    /* the following are place-holders for colors which depends on the mode selected (light/dark)
+       the actual values will bet set by the ThemeController upon selection
+    */
     --text-primary: var(--light-text-primary);
     --text-secondary: var(--light-text-secondary);
     --text-accent2: var(--light-text-accent2);
@@ -70,8 +72,8 @@
     --network-border-accent-color: var(--light-network-border-accent-color);
     --network-graph-bar-color: var(--light-network-graph-bar-color);
 
-    /* the following are place-holders for network colors
-       the actual values will come from the Color Map when the network is selected
+    /* the following are place-holders for colors which depends on the network selected
+       the actual values will bet set by the RouteManager upon selection, based on the Color Maps
     */
     --light-network-button-text-color: #FFFFFF; /* NetworkEntry.lightButtonTextColor */
     --light-network-button-color: #7A1B80; /* NetworkEntry.lightButtonColor */
@@ -98,58 +100,6 @@
     --h-theme-highlight-color: var(--network-text-accent-color);
     --h-theme-page-background-color: var(--background-primary);
     --h-theme-box-background-color: var(--background-tertiary);
-}
-
-/*  ============================================================================
-    Network Color Maps
- */
-
-:root {
-    --purple-light-button-text-color: #FFFFFF;
-    --purple-light-button-color: #7A1B80;
-    --purple-light-chip-text-color: #FFFFFF;
-    --purple-light-chip-color: #A7449D;
-    --purple-light-text-accent-color: #E0007B;
-    --purple-light-border-accent-color: #B664AE;
-    --purple-light-graph-bar-color: #E183E7;
-    --purple-dark-button-text-color: #FFFFFF;
-    --purple-dark-button-color: #7A1B80;
-    --purple-dark-chip-text-color: #FFFFFF;
-    --purple-dark-chip-color: #A7449D;
-    --purple-dark-text-accent-color: #F258AC;
-    --purple-dark-border-accent-color: #7A1B80;
-    --purple-dark-graph-bar-color: #D245DB;
-
-    --orange-light-button-text-color: #FFFFFF;
-    --orange-light-button-color: #FF4D00;
-    --orange-light-chip-text-color: #000000;
-    --orange-light-chip-color: #FF6B2BE5;
-    --orange-light-text-accent-color: #C73C00;
-    --orange-light-border-accent-color: #C2C2C2;
-    --orange-light-graph-bar-color: #FF4D0099;
-    --orange-dark-button-text-color: #FFFFFF;
-    --orange-dark-button-color: #FF4D00;
-    --orange-dark-chip-text-color: #000000;
-    --orange-dark-chip-color: #EB6931;
-    --orange-dark-text-accent-color: #FF4D00;
-    --orange-dark-border-accent-color: #FF4D00;
-    --orange-dark-graph-bar-color: #FF4D00E5;
-
-    --yellow-light-button-text-color: #050505;
-    --yellow-light-button-color: #FFDE00;
-    --yellow-light-chip-text-color: #000000;
-    --yellow-light-chip-color: #FFDE00BD;
-    --yellow-light-text-accent-color: #B87700;
-    --yellow-light-border-accent-color: #C2C2C2;
-    --yellow-dark-button-text-color: #050505;
-    --yellow-dark-button-color: #FFDE00;
-    --yellow-dark-chip-text-color: #000000;
-    --yellow-dark-chip-color: #FFE221D4;
-    --yellow-dark-text-accent-color: #FFDE00;
-    --yellow-dark-border-accent-color: #FFDE00;
-
-    --graph-gradient-start-color: hsl(from var(--graph-line-color) h s l / 16%);
-    --graph-gradient-end-color: hsl(from #2962FF h s l / 5%);
 }
 
 
