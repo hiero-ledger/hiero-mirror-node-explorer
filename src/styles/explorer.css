@@ -90,6 +90,54 @@
     --dark-network-text-accent-color: #F258AC; /* NetworkEntry.darkTextAccentColor */
     --dark-network-border-accent-color: #7A1B80; /* NetworkEntry.darkBorderAccentColor */
     --dark-network-graph-bar-color: #D245DB; /* NetworkEntry.darkGraphBarColor */
+
+    /* NETWORK COLOR MAPS */
+
+    --purple-light-button-text-color: #FFFFFF;
+    --purple-light-button-color: #7A1B80;
+    --purple-light-chip-text-color: #FFFFFF;
+    --purple-light-chip-color: #A7449D;
+    --purple-light-text-accent-color: #E0007B;
+    --purple-light-border-accent-color: #B664AE;
+    --purple-light-graph-bar-color: #E183E7;
+    --purple-dark-button-text-color: #FFFFFF;
+    --purple-dark-button-color: #7A1B80;
+    --purple-dark-chip-text-color: #FFFFFF;
+    --purple-dark-chip-color: #A7449D;
+    --purple-dark-text-accent-color: #F258AC;
+    --purple-dark-border-accent-color: #7A1B80;
+    --purple-dark-graph-bar-color: #D245DB;
+
+    --orange-light-button-text-color: #FFFFFF;
+    --orange-light-button-color: #FF4D00;
+    --orange-light-chip-text-color: #000000;
+    --orange-light-chip-color: #FF6B2BE5;
+    --orange-light-text-accent-color: #C73C00;
+    --orange-light-border-accent-color: #C2C2C2;
+    --orange-light-graph-bar-color: #FF4D0099;
+    --orange-dark-button-text-color: #FFFFFF;
+    --orange-dark-button-color: #FF4D00;
+    --orange-dark-chip-text-color: #000000;
+    --orange-dark-chip-color: #EB6931;
+    --orange-dark-text-accent-color: #FF4D00;
+    --orange-dark-border-accent-color: #FF4D00;
+    --orange-dark-graph-bar-color: #FF4D00E5;
+
+    --yellow-light-button-text-color: #050505;
+    --yellow-light-button-color: #FFDE00;
+    --yellow-light-chip-text-color: #000000;
+    --yellow-light-chip-color: #FFDE00BD;
+    --yellow-light-text-accent-color: #B87700;
+    --yellow-light-border-accent-color: #C2C2C2;
+    --yellow-dark-button-text-color: #050505;
+    --yellow-dark-button-color: #FFDE00;
+    --yellow-dark-chip-text-color: #000000;
+    --yellow-dark-chip-color: #FFE221D4;
+    --yellow-dark-text-accent-color: #FFDE00;
+    --yellow-dark-border-accent-color: #FFDE00;
+
+    --graph-gradient-start-color: hsl(from var(--graph-line-color) h s l / 16%);
+    --graph-gradient-end-color: hsl(from #2962FF h s l / 5%);
 }
 
 /*

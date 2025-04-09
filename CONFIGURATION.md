@@ -312,26 +312,11 @@ This provides the integer ID of the chain as a hexadecimal string, as per [EIP-1
 
 ## style-config.css
 
-This file contains a set of CSS variables defining colors. There are 2 main categories of variables:
+This file contains a set of CSS variables defining colors:
 
 ### variables defining the colors depending on the MODE (light / dark) selected
 These are named as follows:
 * `--light-<variable-name>` : defines the value which will be assigned to the variable `--<variable-name>` (used in the code) when light mode is selected
 * `--dark-<variable-name>` : defines the value which will be assigned to the variable `--<variable-name>` (used in the code) when dark mode is selected
-
-### variables defining the colors depending on the NETWORK selected
-These are named as follows:
-* `--<color-theme>-<property-name>` : defines the value of the property `ColorMap.<propertyName>` in an entry of the NetworkColorMaps.
-
-`<color-theme>` is currently one of: { _purple_, _orange_, _yellow_ } 
-
-Given the set of networks defined in the networks-config.json file, each network is assigned a color theme as follows:
-* 1st network: purple
-* 2nd network: orange
-* 3rd network: yellow
-* 4th network: purple
-* 5th network: orange
-* 6th network: yellow
-* and so on…
 
 
