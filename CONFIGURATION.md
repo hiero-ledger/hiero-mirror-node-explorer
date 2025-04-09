@@ -1,8 +1,9 @@
 # Mirror Node Explorer Configuration
 
-Mirror Node Explorer can be configured using two files:
-- [core-config.json](https://github.com/hashgraph/hedera-mirror-node-explorer/blob/main/public/core-config.json) enables to set global configuration parameters
-- [networks-config.json](https://github.com/hashgraph/hedera-mirror-node-explorer/blob/main/public/networks-config.json) specifies the networks (ie mainnet, testnet…) that can be explored as well as network-specific configuration parameters.
+Mirror Node Explorer can be configured using the following files:
+- [core-config.json](https://github.com/hashgraph/hedera-mirror-node-explorer/blob/main/public/core-config.json) enables to set global configuration parameters. These encompass in particular all visual and textual elements which constitute the branding of the explorer.
+- [networks-config.json](https://github.com/hashgraph/hedera-mirror-node-explorer/blob/main/public/networks-config.json) provides the definition of the networks (e.g. mainnet, testnet…) that can be explored as well as network-specific configuration parameters.
+- [style-config.css](https://github.com/hashgraph/hedera-mirror-node-explorer/blob/main/public/style-config.css) specifies the CSS colors used depending upon the mode (light/dark) and network chosen.
 
 #### About optional parameters
 Unless specified, parameter values can be absent or `null`. In that case, Explorer applies a default behavior specified in the sections below.
@@ -308,5 +309,29 @@ the verification result along with the source files of a contract.
 
 ### `chainID`
 This provides the integer ID of the chain as a hexadecimal string, as per [EIP-155](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-155.md).
+
+## style-config.css
+
+This file contains a set of CSS variables defining colors. There are 2 main categories of variables:
+
+### variables defining the colors depending on the MODE (light / dark) selected
+These are named as follows:
+* `--light-<variable-name>` : defines the value which will be assigned to the variable `--<variable-name>` (used in the code) when light mode is selected
+* `--dark-<variable-name>` : defines the value which will be assigned to the variable `--<variable-name>` (used in the code) when dark mode is selected
+
+### variables defining the colors depending on the NETWORK selected
+These are named as follows:
+* `--<color-theme>-<property-name>` : defines the value of the property `ColorMap.<propertyName>` in an entry of the NetworkColorMaps.
+
+`<color-theme>` is currently one of: { _purple_, _orange_, _yellow_ } 
+
+Given the set of networks defined in the networks-config.json file, each network is assigned a color theme as follows:
+* 1st network: purple
+* 2nd network: orange
+* 3rd network: yellow
+* 4th network: purple
+* 5th network: orange
+* 6th network: yellow
+* and so on…
 
 
