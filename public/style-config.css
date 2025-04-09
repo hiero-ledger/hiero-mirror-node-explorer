@@ -7,17 +7,6 @@
 
     /* LIGHT MODE */
 
-    /* the following are defaults for network theme colors
-       the actual values will be provided by configuration parameters in networks-config.json
-    */
-    --light-network-button-text-color: #FFFFFF; /* NetworkEntry.lightButtonTextColor */
-    --light-network-button-color: #7A1B80; /* NetworkEntry.lightButtonColor */
-    --light-network-chip-text-color: #FFFFFF; /* NetworkEntry.lightChipTextColor */
-    --light-network-chip-color: #A7449D; /* NetworkEntry.lightChipColor */
-    --light-network-text-accent-color: #E0007B; /* NetworkEntry.lightTextAccentColor */
-    --light-network-border-accent-color: #B664AE; /* NetworkEntry.lightBorderAccentColor */
-    --light-network-graph-bar-color: #E183E7; /* NetworkEntry.lightGraphBarColor */
-
     --light-text-primary: #050505;
     --light-text-secondary: #888888;
     --light-text-accent2: #255CF4;
@@ -44,19 +33,7 @@
     --light-search-bar-default: #FFFFFF;
     --light-graph-line-color: #5A4DFF;
 
-
     /* DARK MODE */
-
-    /* the following are defaults for network theme colors
-       the actual values will be provided by configuration parameters in networks-config.json
-    */
-    --dark-network-button-text-color: #FFFFFF; /* NetworkEntry.darkButtonTextColor */
-    --dark-network-button-color: #7A1B80; /* NetworkEntry.darkButtonColor */
-    --dark-network-chip-text-color: #FFFFFF; /* NetworkEntry.darkChipTextColor */
-    --dark-network-chip-color: #A7449D; /* NetworkEntry.darkChipColor */
-    --dark-network-text-accent-color: #F258AC; /* NetworkEntry.darkTextAccentColor */
-    --dark-network-border-accent-color: #7A1B80; /* NetworkEntry.darkBorderAccentColor */
-    --dark-network-graph-bar-color: #D245DB; /* NetworkEntry.darkGraphBarColor */
 
     --dark-text-primary: #FFFFFF;
     --dark-text-secondary: #A2A2A2;

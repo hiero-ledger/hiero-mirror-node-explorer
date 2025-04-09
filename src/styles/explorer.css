@@ -69,6 +69,25 @@
     --network-text-accent-color: var(--light-network-text-accent-color);
     --network-border-accent-color: var(--light-network-border-accent-color);
     --network-graph-bar-color: var(--light-network-graph-bar-color);
+
+    /* the following are place-holders for network colors
+       the actual values will come from the Color Map when the network is selected
+    */
+    --light-network-button-text-color: #FFFFFF; /* NetworkEntry.lightButtonTextColor */
+    --light-network-button-color: #7A1B80; /* NetworkEntry.lightButtonColor */
+    --light-network-chip-text-color: #FFFFFF; /* NetworkEntry.lightChipTextColor */
+    --light-network-chip-color: #A7449D; /* NetworkEntry.lightChipColor */
+    --light-network-text-accent-color: #E0007B; /* NetworkEntry.lightTextAccentColor */
+    --light-network-border-accent-color: #B664AE; /* NetworkEntry.lightBorderAccentColor */
+    --light-network-graph-bar-color: #E183E7; /* NetworkEntry.lightGraphBarColor */
+
+    --dark-network-button-text-color: #FFFFFF; /* NetworkEntry.darkButtonTextColor */
+    --dark-network-button-color: #7A1B80; /* NetworkEntry.darkButtonColor */
+    --dark-network-chip-text-color: #FFFFFF; /* NetworkEntry.darkChipTextColor */
+    --dark-network-chip-color: #A7449D; /* NetworkEntry.darkChipColor */
+    --dark-network-text-accent-color: #F258AC; /* NetworkEntry.darkTextAccentColor */
+    --dark-network-border-accent-color: #7A1B80; /* NetworkEntry.darkBorderAccentColor */
+    --dark-network-graph-bar-color: #D245DB; /* NetworkEntry.darkGraphBarColor */
 }
 
 /*
@@ -76,7 +95,7 @@
  */
 :root {
     --network-theme-color: var(--network-button-color);
-    --h-theme-highlight-color: var(--light-network-text-accent-color);
+    --h-theme-highlight-color: var(--network-text-accent-color);
     --h-theme-page-background-color: var(--background-primary);
     --h-theme-box-background-color: var(--background-tertiary);
 }
@@ -129,10 +148,8 @@
     --yellow-dark-text-accent-color: #FFDE00;
     --yellow-dark-border-accent-color: #FFDE00;
 
-
     --graph-gradient-start-color: hsl(from var(--graph-line-color) h s l / 16%);
     --graph-gradient-end-color: hsl(from #2962FF h s l / 5%);
-
 }
 
 
