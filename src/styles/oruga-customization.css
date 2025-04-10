@@ -125,6 +125,12 @@ div.o-table__pagination {
     .o-table__wrapper--mobile tr:not(.o-table--detailed):not(.o-table--empty):not(.o-table__footer) td:last-child:hover {
         background-color: var(--background-primary);
     }
+
+    .o-table__wrapper--mobile tr:not(.o-table--detailed):not(.o-table--empty):not(.o-table__footer) td:before {
+        color: var(--text-secondary);
+        font-size: 12px;
+        font-weight: 500;
+    }
 }
 
 /*
