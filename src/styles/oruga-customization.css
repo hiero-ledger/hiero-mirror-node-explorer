@@ -68,6 +68,13 @@ table.o-table > tbody > tr > td {
     vertical-align: middle;
 }
 
+@media (max-width: 1079px) {
+    table.o-table > tbody > tr > td {
+        padding-top: 4px;
+        padding-bottom: 4px;
+    }
+}
+
 table.o-table > tbody > tr {
     cursor: pointer;
 }
@@ -110,12 +117,19 @@ div.o-table__pagination {
         border-top: 0;
         border-bottom: 1px solid var(--border-secondary);
         background-color: var(--background-tertiary);
+        padding-bottom: 1rem;
     }
 
     .o-table__wrapper--mobile tr:not(.o-table--detailed):not(.o-table--empty):not(.o-table__footer) td:first-child:hover,
     .o-table__wrapper--mobile tr:not(.o-table--detailed):not(.o-table--empty):not(.o-table__footer) td:not(:first-child):not(:last-child):hover,
     .o-table__wrapper--mobile tr:not(.o-table--detailed):not(.o-table--empty):not(.o-table__footer) td:last-child:hover {
         background-color: var(--background-primary);
+    }
+
+    .o-table__wrapper--mobile tr:not(.o-table--detailed):not(.o-table--empty):not(.o-table__footer) td:before {
+        color: var(--text-secondary);
+        font-size: 12px;
+        font-weight: 500;
     }
 }
 
