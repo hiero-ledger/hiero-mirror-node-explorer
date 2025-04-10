@@ -6,7 +6,7 @@
 
 <template>
 
-  <DashboardCardV2 v-if="hasFixedFees" collapsible-key="customFees">
+  <DashboardCardV2 collapsible-key="customFees">
 
     <template #title>
       Custom Fees
@@ -23,7 +23,8 @@
       <Property id="fixedFee" full-width>
         <template #name>Fixed Fees</template>
         <template #value>
-          <FixedFeeTable :fees="props.fees.fixed_fees ?? []"/>
+          <FixedFeeTable v-if="fixedFees.length" :fees="fixedFees"/>
+          <div v-else class="h-is-low-contrast">None</div>
         </template>
       </Property>
 
@@ -53,7 +54,7 @@ const props = defineProps({
   }
 })
 
-const hasFixedFees = computed(() => props.fees.fixed_fees.length > 0)
+const fixedFees = computed(() => props.fees.fixed_fees)
 
 </script>
 
