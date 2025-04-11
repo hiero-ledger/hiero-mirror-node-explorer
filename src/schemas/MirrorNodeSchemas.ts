@@ -756,6 +756,7 @@ export interface NetworkNodesResponse {
 
 export interface NetworkNode {
     admin_key: Key | null
+    decline_reward: boolean | null  //Whether the node wants to receive staking rewards or not
     description: string | null
     file_id: string | null          // Network entity ID in the format of shard.realm.num
     memo: string
