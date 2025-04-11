@@ -78,6 +78,7 @@ describe("NodeDetails.vue", () => {
         expect(wrapper.get("#adminKeyValue").text()).toBe("0xc67e3c4172e3eea8e4f45714240e453ab8702e7fc13d7ea58e523e6caeb8a38e" + "Copy" + "ED25519")
         expect(wrapper.get("#nodeAccountValue").text()).toBe("0.0.3")
         expect(wrapper.get("#descriptionValue").text()).toBe("Hosted by Hedera | East Coast, USA")
+        expect(wrapper.get("#declineRewardValue").text()).toBe("false")
         expect(wrapper.get("#publicKeyValue").text()).toBe("0x308201a2300d0609CopyRSA")
         expect(wrapper.get("#fileValue").text()).toBe("0.0.102")
         expect(wrapper.get("#rangeFromValue").text()).toBe("4:10:06.0411 PMJun 6, 2022, UTC")
@@ -133,6 +134,7 @@ describe("NodeDetails.vue", () => {
         expect(wrapper.text()).toMatch(RegExp("Node " + node))
         expect(wrapper.get("#nodeAccountValue").text()).toBe("0.0.3")
         expect(wrapper.get("#descriptionValue").text()).toBe("Hosted by Hedera | East Coast, USA")
+        expect(wrapper.get("#declineRewardValue").text()).toBe("false")
         expect(wrapper.get("#nodeCertHashValue").text()).toBe("0xd316b5ef57b76daf37e3bebbe3b69e6f67b669ce1dd1ed75e5c69a69bf75f36d376f475f7b571d79a6f8e37e37f1f736f3d69b73c6daf1ae9a7dff3775be5fd5bdf7e34e3a75af3c73Copy")
 
         mock.resetHistory()
@@ -151,6 +153,7 @@ describe("NodeDetails.vue", () => {
         expect(wrapper.text()).toMatch(RegExp("Node " + node))
         expect(wrapper.get("#nodeAccountValue").text()).toBe("0.0.4")
         expect(wrapper.get("#descriptionValue").text()).toBe("Hosted by Hedera | East Coast, USA")
+        expect(wrapper.get("#declineRewardValue").text()).toBe("true")
         expect(wrapper.get("#nodeCertHashValue").text()).toBe("0xd31ef8d3d75e7367b8f786fadbb79ee3d73af5bdbde1b7b571e69e6dc6b77dd71a7f7ebbf3d7bcf1f73b7796f479e7f9e7ad5fe766fcd9ddf9d7dd5adfd7367db79deb4dbbdbaef5ebCopy")
 
         mock.restore()
@@ -190,6 +193,8 @@ describe("NodeDetails.vue", () => {
         expect(wrapper.text()).toMatch(RegExp("Node " + node))
 
         expect(wrapper.get("#adminKeyValue").text()).toBe("Complex Key (6 levels) See details")
+
+        expect(wrapper.get("#declineRewardValue").text()).toBe("false")
 
         mock.restore()
         wrapper.unmount()
