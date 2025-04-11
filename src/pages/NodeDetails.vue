@@ -30,6 +30,12 @@
             <BlobValue :base64="false" :blob-value="nodeDescription" :show-none="true"/>
           </template>
         </Property>
+        <Property id="declineReward">
+          <template #name>Decline Reward</template>
+          <template #value>
+            <StringValue :string-value="declineReward.toString()"/>
+          </template>
+        </Property>
         <Property id="file">
           <template #name>Address Book File</template>
           <template #value>
@@ -239,6 +245,7 @@ const makeFloorHbarAmount = (tinyBarAmount: number) => {
 
 const enableStaking = routeManager.enableStaking
 const node = nodeAnalyzer.node
+const declineReward = nodeAnalyzer.declineReward
 const totalStakeForConsensus = networkAnalyzer.totalStakeForConsensus
 const annualizedRate = nodeAnalyzer.annualizedRate
 const stake = nodeAnalyzer.stake
