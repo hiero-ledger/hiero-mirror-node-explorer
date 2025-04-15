@@ -30,7 +30,7 @@
             <BlobValue :base64="false" :blob-value="nodeDescription" :show-none="true"/>
           </template>
         </Property>
-        <Property id="declineReward">
+        <Property v-if="declineReward !== null" id="declineReward">
           <template #name>Decline Reward</template>
           <template #value>
             <StringValue :string-value="declineReward.toString()"/>
