@@ -144,7 +144,7 @@ export interface TransactionByIdResponse {
 }
 
 export interface Transaction {
-
+    batch_key?: Key | null
     bytes: string | null
     charged_tx_fee: number
     consensus_timestamp: string
@@ -233,6 +233,7 @@ export interface CustomFee {
 }
 
 export enum TransactionType {
+    ATOMICBATCH = "ATOMICBATCH",
     CONSENSUSCREATETOPIC = "CONSENSUSCREATETOPIC",
     CONSENSUSDELETETOPIC = "CONSENSUSDELETETOPIC",
     CONSENSUSSUBMITMESSAGE = "CONSENSUSSUBMITMESSAGE",

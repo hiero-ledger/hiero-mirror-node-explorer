@@ -68,6 +68,7 @@ export function makeSummaryLabel(row: Transaction): string {
             break
         case TransactionType.CRYPTOAPPROVEALLOWANCE:
         case TransactionType.CRYPTODELETEALLOWANCE:
+        case TransactionType.ATOMICBATCH:
             result = formatMemo(row.memo_base64 ?? "")
             break
         default:
@@ -124,6 +125,9 @@ export function makeTypeLabel(type: TransactionType | undefined): string {
     let result: string
     switch (type) {
 
+        case TransactionType.ATOMICBATCH:
+            result = "Atomic Batch";
+            break;
         case TransactionType.CONSENSUSCREATETOPIC:
             result = "Create Topic";
             break;
