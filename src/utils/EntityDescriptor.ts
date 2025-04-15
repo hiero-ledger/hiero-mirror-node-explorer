@@ -97,6 +97,7 @@ export class EntityDescriptor {
                 result = new EntityDescriptor("Token ID", "TokenDetails");
                 break;
 
+            case TransactionType.ATOMICBATCH:
             case TransactionType.SYSTEMDELETE:
             case TransactionType.SYSTEMUNDELETE:
             case TransactionType.UNCHECKEDSUBMIT:
