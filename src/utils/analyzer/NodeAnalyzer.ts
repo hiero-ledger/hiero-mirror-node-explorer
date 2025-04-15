@@ -62,6 +62,16 @@ export class NodeAnalyzer {
     public readonly shortNodeDescription: ComputedRef<string | null> = computed(
         () => this.nodeDescription.value ? makeShortNodeDescription(this.nodeDescription.value) : null)
 
+    public readonly declineReward: ComputedRef<boolean | null> = computed(() => {
+        let result: boolean | null
+        if (this.node.value?.decline_reward !== undefined) {
+            result = this.node.value.decline_reward ?? false
+        } else {
+            result = null
+        }
+        return result
+    })
+
     public adminKey: ComputedRef<Key | null> = computed(() => this.node.value?.admin_key ?? null)
 
     public nodeId: ComputedRef<number | null> = computed(() => this.node.value?.node_id ?? null)
