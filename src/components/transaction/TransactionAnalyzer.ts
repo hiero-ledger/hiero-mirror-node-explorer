@@ -91,9 +91,17 @@ export class TransactionAnalyzer {
         return result
     })
 
+    public readonly isBatchTransaction = computed(
+        () => this.transactionType.value === TransactionType.ATOMICBATCH)
+
+    public readonly isInnerTransaction = computed(
+        () => this.transaction.value !== null && this.transaction.value.batch_key !== null)
+
+    public readonly parentTimestamp = computed(
+        () => this.transaction.value?.parent_consensus_timestamp ?? null)
 
     public readonly isEthereumTransaction = computed(
-        () => this.transactionType.value == TransactionType.ETHEREUMTRANSACTION)
+        () => this.transactionType.value === TransactionType.ETHEREUMTRANSACTION)
 
     public readonly isTokenAssociation = computed(
         () => this.transactionType.value === TransactionType.TOKENASSOCIATE)
