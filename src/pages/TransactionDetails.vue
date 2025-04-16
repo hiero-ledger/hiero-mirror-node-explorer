@@ -65,6 +65,26 @@
             </div>
           </template>
         </Property>
+        <Property v-if="isBatchTransaction && innerTransactions.length" id="innerTransactions">
+          <template #name>Inner Transactions</template>
+          <template #value>
+            <div v-for="(tx) in innerTransactions.slice(0, MAX_INLINE_CHILDREN)" :key="tx.transaction_id">
+              <router-link :to="routeManager.makeRouteToTransactionObj(tx)">
+                {{ makeTypeLabel(tx.name) }}
+              </router-link>
+              <span v-for="id in getTargetedTokens(tx, 5)" :key="id" class="ml-2">
+                <TokenExtra :token-id="id" :use-anchor="true"/>
+              </span>
+            </div>
+            <ArrowLink
+                style="text-align: left"
+                v-if="displayAllInnerLink"
+                id="allInnerTxLink"
+                :route="''"
+                :text="'All ' + innerTransactions.length + ' inner transactions'"
+            />
+          </template>
+        </Property>
         <Property id="consensusAt">
           <template #name>Consensus at</template>
           <template #value>
@@ -189,6 +209,22 @@
             </div>
           </template>
         </Property>
+        <template v-if="batchKey">
+          <Property v-if="parentTimestamp" id="batchTransaction">
+            <template #name>Batch Transaction</template>
+            <template #value>
+              <router-link :to="routeManager.makeRouteToTransaction(parentTimestamp ?? undefined)">
+                {{ makeTypeLabel(TransactionType.ATOMICBATCH) }}
+              </router-link>
+            </template>
+          </Property>
+          <Property id="batchKey">
+            <template #name>Batch Key</template>
+            <template #value>
+              <KeyValue :key-bytes="batchKey?.key" :key-type="batchKey?._type" :show-none="true"/>
+            </template>
+          </Property>
+        </template>
         <Property v-if="parentTransaction" id="parentTransaction">
           <template #name>Parent Transaction</template>
           <template #value>
@@ -288,6 +324,7 @@ import HexaValue from "@/components/values/HexaValue.vue";
 import ArrowLink from "@/components/ArrowLink.vue";
 import {ScheduleByIdCache} from "@/utils/cache/ScheduleByIdCache.ts";
 import TransactionLink from "@/components/values/TransactionLink.vue";
+import KeyValue from "@/components/values/KeyValue.vue";
 
 const MAX_INLINE_CHILDREN = 10
 
@@ -301,7 +338,7 @@ const cryptoName = CoreConfig.inject().cryptoName
 const displayAllTransactionsLink = computed(() => {
   const hasSchedule = transactionGroupAnalyzer.schedulingTransaction.value !== null
   const txnCount = transactionGroupAnalyzer.transactions.value?.length ?? 0
-  return !hasSchedule && txnCount >= 2
+  return !hasSchedule && !isBatchTransaction && txnCount >= 2
 })
 
 const txIdForm = ref(TransactionID.useAtForm.value ? 'atForm' : 'dashForm')
@@ -316,7 +353,7 @@ const transactionAnalyzer = new TransactionAnalyzer(transactionLocParser.transac
 onMounted(() => transactionAnalyzer.mount())
 onBeforeUnmount(() => transactionAnalyzer.unmount())
 
-const transactionGroupLookup = TransactionGroupCache.instance.makeLookup(transactionLocParser.transactionId)
+const transactionGroupLookup = TransactionGroupCache.instance.makeLookup(transactionLocParser.transactionId, true)
 onMounted(() => transactionGroupLookup.mount())
 onBeforeUnmount(() => transactionGroupLookup.unmount())
 
@@ -324,6 +361,10 @@ const transactionGroupAnalyzer = new TransactionGroupAnalyzer(transactionGroupLo
 
 const displayAllChildrenLink = computed(() => {
   return transactionGroupAnalyzer.childTransactions.value.length > MAX_INLINE_CHILDREN
+})
+
+const displayAllInnerLink = computed(() => {
+  return transactionGroupAnalyzer.innerTransactions.value.length > MAX_INLINE_CHILDREN
 })
 
 const displayTransfers = computed(() =>
@@ -450,6 +491,10 @@ const notification = transactionLocParser.errorNotification
 const topicMessage = topicMessageLookup.entity
 const isTokenAssociation = transactionAnalyzer.isTokenAssociation
 const associatedTokens = transactionAnalyzer.tokens
+const isBatchTransaction = transactionAnalyzer.isBatchTransaction
+const batchKey = transactionAnalyzer.batchKey
+const parentTimestamp = transactionAnalyzer.parentTimestamp
+const innerTransactions = transactionGroupAnalyzer.innerTransactions
 
 </script>
 

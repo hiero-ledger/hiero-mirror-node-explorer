@@ -94,8 +94,8 @@ export class TransactionAnalyzer {
     public readonly isBatchTransaction = computed(
         () => this.transactionType.value === TransactionType.ATOMICBATCH)
 
-    public readonly isInnerTransaction = computed(
-        () => this.transaction.value !== null && this.transaction.value.batch_key !== null)
+    public readonly batchKey = computed(
+        () => this.transaction.value?.batch_key ?? null)
 
     public readonly parentTimestamp = computed(
         () => this.transaction.value?.parent_consensus_timestamp ?? null)
