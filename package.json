@@ -43,7 +43,7 @@
     "axios": "^1.8.4",
     "base32-decode": "^1.0.0",
     "base32-encode": "^2.0.0",
-    "chart.js": "^4.4.8",
+    "chart.js": "^4.4.9",
     "ethers": "^6.13.5",
     "file-saver": "^2.0.5",
     "globals": "^16.0.0",
