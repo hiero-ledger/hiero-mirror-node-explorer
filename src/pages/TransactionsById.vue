@@ -10,7 +10,7 @@
 
     <DashboardCardV2>
       <template #title>
-        {{ `Transactions with ID ${normalizedTransactionId}` }}
+        {{ (isBatch ? 'Batch for Transaction ID ' : 'Transactions with ID ') + normalizedTransactionId }}
       </template>
       <template #content>
         <TransactionByIdTable :transactions="transactions"/>
@@ -33,6 +33,7 @@ import {TransactionID} from "@/utils/TransactionID";
 import PageFrameV2 from "@/components/page/PageFrameV2.vue";
 import {TransactionGroupCache} from "@/utils/cache/TransactionGroupCache";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
+import {TransactionType} from "@/schemas/MirrorNodeSchemas.ts";
 
 const props = defineProps({
   network: String,
@@ -52,6 +53,17 @@ onMounted(() => groupLookup.mount())
 onBeforeUnmount(() => groupLookup.unmount())
 
 const transactions = computed(() => groupLookup.entity.value ?? [])
+
+const isBatch = computed(() => {
+  let result = false
+  for (const t of transactions.value) {
+    if (t.name === TransactionType.ATOMICBATCH) {
+      result = true
+      break
+    }
+  }
+  return result
+})
 
 </script>
 
