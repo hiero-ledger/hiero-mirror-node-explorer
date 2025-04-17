@@ -30,13 +30,13 @@
             text="Transactions with same ID"
         />
         <ArrowLink
-            v-if="transactionId && displayAllInnerLink"
+            v-else-if="transactionId && isBatchTransaction"
             id="allInnerLink"
             :route="routeManager.makeRouteToTransactionsById(transactionId)"
             text="Transactions of this batch"
         />
         <ArrowLink
-            v-if="transactionId && outerTransaction"
+            v-else-if="transactionId && outerTransaction"
             id="sameBatchLink"
             :route="routeManager.makeRouteToTransactionsById(outerTransaction.transaction_id)"
             text="Transactions of the same batch"
@@ -54,6 +54,7 @@
       </template>
 
       <template #left-content>
+        {{'length :' + innerTransactions.length}}
         <Property id="transactionType">
           <template #name>Type</template>
           <template #value>
@@ -376,7 +377,7 @@ const displayAllChildrenLink = computed(() => {
 })
 
 const displayAllInnerLink = computed(() => {
-  return transactionGroupAnalyzer.innerTransactions.value.length > MAX_INLINE_CHILDREN
+  return innerTransactions.value.length > MAX_INLINE_CHILDREN
 })
 
 const displayTransfers = computed(() =>
