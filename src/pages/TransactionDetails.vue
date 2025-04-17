@@ -29,6 +29,18 @@
             :route="routeManager.makeRouteToTransactionsById(transactionId)"
             text="Transactions with same ID"
         />
+        <ArrowLink
+            v-if="transactionId && displayAllInnerLink"
+            id="allInnerLink"
+            :route="routeManager.makeRouteToTransactionsById(transactionId)"
+            text="Transactions of this batch"
+        />
+        <ArrowLink
+            v-if="transactionId && outerTransaction"
+            id="sameBatchLink"
+            :route="routeManager.makeRouteToTransactionsById(outerTransaction.transaction_id)"
+            text="Transactions of the same batch"
+        />
       </template>
       <template #right-control>
         <SelectView
@@ -80,7 +92,7 @@
                 style="text-align: left"
                 v-if="displayAllInnerLink"
                 id="allInnerTxLink"
-                :route="''"
+                :route="routeManager.makeRouteToTransactionsById(transactionId ?? '')"
                 :text="'All ' + innerTransactions.length + ' inner transactions'"
             />
           </template>
@@ -211,7 +223,7 @@
         </Property>
         <template v-if="batchKey">
           <Property v-if="parentTimestamp" id="batchTransaction">
-            <template #name>Batch Transaction</template>
+            <template #name>Outer Transaction</template>
             <template #value>
               <router-link :to="routeManager.makeRouteToTransaction(parentTimestamp ?? undefined)">
                 {{ makeTypeLabel(TransactionType.ATOMICBATCH) }}
@@ -494,6 +506,7 @@ const associatedTokens = transactionAnalyzer.tokens
 const isBatchTransaction = transactionAnalyzer.isBatchTransaction
 const batchKey = transactionAnalyzer.batchKey
 const parentTimestamp = transactionAnalyzer.parentTimestamp
+const outerTransaction = transactionAnalyzer.outerTransaction
 const innerTransactions = transactionGroupAnalyzer.innerTransactions
 
 </script>

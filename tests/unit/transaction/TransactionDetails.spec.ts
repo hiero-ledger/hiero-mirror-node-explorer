@@ -706,6 +706,7 @@ describe("TransactionDetails.vue", () => {
             "api/v1/topics/messages/",
             "api/v1/transactions/" + INNER.transaction_id,
             "api/v1/blocks",
+            "api/v1/transactions",
         ])
 
         expect(wrapper.text()).toMatch(RegExp("Transaction " + TransactionID.normalizeForDisplay(INNER.transaction_id)))
