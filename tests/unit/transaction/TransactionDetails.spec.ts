@@ -15,6 +15,7 @@ import {
     SAMPLE_ACCOUNT,
     SAMPLE_ASSOCIATED_TOKEN,
     SAMPLE_ASSOCIATED_TOKEN_2,
+    SAMPLE_BATCH_TRANSACTION,
     SAMPLE_BLOCK_ZERO,
     SAMPLE_BLOCKSRESPONSE,
     SAMPLE_CONTRACT,
@@ -666,6 +667,157 @@ describe("TransactionDetails.vue", () => {
         mock.restore()
     });
 
+    it("Should display a link to the batch transaction", async () => {
+
+        await router.push("/") // To avoid "missing required param 'network'" error
+
+        const OUTER = SAMPLE_BATCH_TRANSACTION.transactions![0]
+        const INNER = SAMPLE_BATCH_TRANSACTION.transactions![1]
+
+        const mock = new MockAdapter(axios as any)
+        const matcher1 = "/api/v1/transactions"
+        mock.onGet(matcher1).reply(((config: AxiosRequestConfig) => {
+            if (config.params.timestamp == INNER.consensus_timestamp) {
+                return [200, {transactions: [INNER]}]
+            } else {
+                return [404]
+            }
+        }) as any);
+        const matcher11 = "/api/v1/transactions/" + OUTER.transaction_id
+        mock.onGet(matcher11).reply(200, {transactions: [OUTER]});
+
+        const wrapper = mount(TransactionDetails, {
+            global: {
+                plugins: [router, Oruga],
+                provide: {"isMediumScreen": false}
+            },
+            props: {
+                transactionLoc: INNER.consensus_timestamp,
+            },
+        });
+
+        await flushPromises()
+        // console.log(wrapper.html())
+        // console.log(wrapper.text())
+
+        expect(fetchGetURLs(mock)).toStrictEqual([
+            "api/v1/network/nodes",
+            "api/v1/transactions",
+            "api/v1/topics/messages/",
+            "api/v1/transactions/" + INNER.transaction_id,
+            "api/v1/blocks",
+        ])
+
+        expect(wrapper.text()).toMatch(RegExp("Transaction " + TransactionID.normalizeForDisplay(INNER.transaction_id)))
+        expect(wrapper.get("#transactionTypeValue").text()).toBe("TOKEN MINT")
+
+        const link = wrapper.get("#batchTransactionValue")
+        expect(link.text()).toBe("ATOMIC BATCH")
+        expect(link.get('a').attributes("href")).toBe("/mainnet/transaction/" + OUTER.consensus_timestamp)
+
+        expect(wrapper.get("#batchKeyValue").text()).toBe(
+            "0x027936af0fe67d21e15f53abb4c15d7d0a45edd5409b8136d7ae183a116ec4a7ad" + "Copy" + "ECDSA_SECP256K1"
+        )
+
+        expect(wrapper.find("#innerTransactions").exists()).toBe(false)
+        expect(wrapper.find("#scheduledTransaction").exists()).toBe(false)
+        expect(wrapper.find("#scheduleCreateTransaction").exists()).toBe(false)
+        expect(wrapper.find("#parentTransaction").exists()).toBe(false)
+        expect(wrapper.find("#childTransactions").exists()).toBe(false)
+
+        wrapper.unmount()
+        await flushPromises()
+        mock.restore()
+    });
+
+    it("Should display links to the inner transaction", async () => {
+
+        await router.push("/") // To avoid "missing required param 'network'" error
+
+        const OUTER = SAMPLE_BATCH_TRANSACTION.transactions![0]
+        const INNER1 = SAMPLE_BATCH_TRANSACTION.transactions![1]
+        const INNER2 = SAMPLE_BATCH_TRANSACTION.transactions![2]
+        const TOKENID = INNER1.entity_id
+
+        const mock = new MockAdapter(axios as any)
+        const matcher1 = "/api/v1/transactions"
+        mock.onGet(matcher1).reply(((config: AxiosRequestConfig) => {
+            let result
+            switch (config.params.timestamp) {
+                case OUTER.consensus_timestamp:
+                    result = [200, {transactions: [OUTER]}]
+                    break
+                case INNER1.consensus_timestamp:
+                    result = [200, {transactions: [INNER1]}]
+                    break
+                case INNER2.consensus_timestamp:
+                    result = [200, {transactions: [INNER2]}]
+                    break
+                default:
+                    result = [404]
+            }
+            return result;
+        }) as any);
+        const matcher2 = "/api/v1/transactions/" + OUTER.transaction_id
+        mock.onGet(matcher2).reply(200, SAMPLE_BATCH_TRANSACTION);
+        const matcher3 = "/api/v1/tokens/" + TOKENID
+        mock.onGet(matcher3).reply(200, SAMPLE_TOKEN)
+
+        const wrapper = mount(TransactionDetails, {
+            global: {
+                plugins: [router, Oruga],
+                provide: {"isMediumScreen": false}
+            },
+            props: {
+                transactionLoc: OUTER.consensus_timestamp,
+            },
+        });
+
+        await flushPromises()
+        // console.log(wrapper.html())
+        // console.log(wrapper.text())
+
+        expect(fetchGetURLs(mock)).toStrictEqual([
+            "api/v1/network/nodes",
+            "api/v1/transactions",
+            "api/v1/topics/messages/",
+            "api/v1/blocks",
+            "api/v1/transactions/" + OUTER.transaction_id,
+            "api/v1/contracts/0.0.5",
+            "api/v1/contracts/results",
+            "api/v1/network/fees",
+            "api/v1/tokens/0.0.4458222",
+            "api/v1/contracts/0.0.48113503",
+            "api/v1/network/exchangerate",
+            "api/v1/contracts/0.0.98",
+        ])
+
+        expect(wrapper.text()).toMatch(RegExp("Transaction " + TransactionID.normalizeForDisplay(OUTER.transaction_id)))
+        expect(wrapper.get("#transactionTypeValue").text()).toBe("ATOMIC BATCH")
+
+        const inner = wrapper.get("#innerTransactionsValue")
+        expect(inner.text()).toBe("TOKEN MINT" + "23423" + "CRYPTO TRANSFER" + "23423")
+        const links = inner.findAll('a')
+
+        expect(links.length).toBe(4)
+        expect(links[0].attributes("href")).toBe("/mainnet/transaction/" + INNER1.consensus_timestamp)
+        expect(links[1].attributes("href")).toBe("/mainnet/token/" + TOKENID)
+        expect(links[2].attributes("href")).toBe("/mainnet/transaction/" + INNER2.consensus_timestamp)
+        expect(links[3].attributes("href")).toBe("/mainnet/token/" + TOKENID)
+
+        expect(wrapper.find("#batchKey").exists()).toBe(false)
+
+        expect(wrapper.find("#batchTransaction").exists()).toBe(false)
+        expect(wrapper.find("#scheduledTransaction").exists()).toBe(false)
+        expect(wrapper.find("#scheduleCreateTransaction").exists()).toBe(false)
+        expect(wrapper.find("#parentTransaction").exists()).toBe(false)
+        expect(wrapper.find("#childTransactions").exists()).toBe(false)
+
+        wrapper.unmount()
+        await flushPromises()
+        mock.restore()
+    });
+
     it("Should display a link to the scheduled transaction", async () => {
 
         await router.push("/") // To avoid "missing required param 'network'" error
@@ -730,6 +882,12 @@ describe("TransactionDetails.vue", () => {
         expect(link.attributes("href")).toBe(
             "/mainnet/transaction/" + SCHEDULED.consensus_timestamp
         )
+
+        expect(wrapper.find("#batchTransaction").exists()).toBe(false)
+        expect(wrapper.find("#innerTransactions").exists()).toBe(false)
+        expect(wrapper.find("#scheduleCreateTransaction").exists()).toBe(false)
+        expect(wrapper.find("#parentTransaction").exists()).toBe(false)
+        expect(wrapper.find("#childTransactions").exists()).toBe(false)
 
         wrapper.unmount()
         await flushPromises()
@@ -803,75 +961,86 @@ describe("TransactionDetails.vue", () => {
             "/mainnet/transaction/" + SCHEDULING.consensus_timestamp
         )
 
+        expect(wrapper.find("#batchTransaction").exists()).toBe(false)
+        expect(wrapper.find("#innerTransactions").exists()).toBe(false)
+        expect(wrapper.find("#scheduledTransaction").exists()).toBe(false)
+        expect(wrapper.find("#parentTransaction").exists()).toBe(false)
+        expect(wrapper.find("#childTransactions").exists()).toBe(false)
+
         wrapper.unmount()
         await flushPromises()
         mock.restore()
     });
 
-    it("Should display a link to the parent transaction",
-        async () => {
+    it("Should display a link to the parent transaction", async () => {
 
-            await router.push("/") // To avoid "missing required param 'network'" error
+        await router.push("/") // To avoid "missing required param 'network'" error
 
-            const PARENT = SAMPLE_PARENT_CHILD_TRANSACTIONS.transactions![0]
-            const CHILD = SAMPLE_PARENT_CHILD_TRANSACTIONS.transactions![1]
-            const TOKEN_ID = CHILD.nft_transfers ? CHILD.nft_transfers[0].token_id : "0.0.48193741"
+        const PARENT = SAMPLE_PARENT_CHILD_TRANSACTIONS.transactions![0]
+        const CHILD = SAMPLE_PARENT_CHILD_TRANSACTIONS.transactions![1]
+        const TOKEN_ID = CHILD.nft_transfers ? CHILD.nft_transfers[0].token_id : "0.0.48193741"
 
-            const mock = new MockAdapter(axios as any)
-            const matcher1 = "/api/v1/transactions"
-            mock.onGet(matcher1).reply(((config: AxiosRequestConfig) => {
-                if (config.params.timestamp == CHILD.consensus_timestamp) {
-                    return [200, {transactions: [CHILD]}]
-                } else {
-                    return [404]
-                }
-            }) as any);
-            const matcher11 = "/api/v1/transactions/" + CHILD.transaction_id
-            mock.onGet(matcher11).reply(200, SAMPLE_PARENT_CHILD_TRANSACTIONS);
-            const matcher2 = "/api/v1/tokens/" + TOKEN_ID
-            mock.onGet(matcher2).reply(200, SAMPLE_TOKEN);
+        const mock = new MockAdapter(axios as any)
+        const matcher1 = "/api/v1/transactions"
+        mock.onGet(matcher1).reply(((config: AxiosRequestConfig) => {
+            if (config.params.timestamp == CHILD.consensus_timestamp) {
+                return [200, {transactions: [CHILD]}]
+            } else {
+                return [404]
+            }
+        }) as any);
+        const matcher11 = "/api/v1/transactions/" + CHILD.transaction_id
+        mock.onGet(matcher11).reply(200, SAMPLE_PARENT_CHILD_TRANSACTIONS);
+        const matcher2 = "/api/v1/tokens/" + TOKEN_ID
+        mock.onGet(matcher2).reply(200, SAMPLE_TOKEN);
 
-            const wrapper = mount(TransactionDetails, {
-                global: {
-                    plugins: [router, Oruga],
-                    provide: {"isMediumScreen": false}
-                },
-                props: {
-                    transactionLoc: CHILD.consensus_timestamp,
-                },
-            });
-
-            await flushPromises()
-            // console.log(wrapper.html())
-            // console.log(wrapper.text())
-
-            expect(fetchGetURLs(mock)).toStrictEqual([
-                "api/v1/network/nodes",
-                "api/v1/transactions",
-                "api/v1/topics/messages/",
-                "api/v1/transactions/" + PARENT.transaction_id,
-                "api/v1/blocks",
-                "api/v1/contracts/results",
-                "api/v1/network/fees",
-                "api/v1/contracts/" + SAMPLE_PARENT_CHILD_TRANSACTIONS.transactions![0].transfers[1].account,
-                "api/v1/network/exchangerate",
-                "api/v1/tokens/" + CHILD.entity_id,
-            ])
-
-            expect(wrapper.text()).toMatch(RegExp("Transaction " + TransactionID.normalizeForDisplay(CHILD.transaction_id)))
-
-            const link = wrapper.get("#parentTransactionValue")
-            expect(link.text()).toBe("CONTRACT CALL")
-            expect(link.get('a').attributes("href")).toBe(
-                "/mainnet/transaction/" + PARENT.consensus_timestamp
-            )
-
-            wrapper.unmount()
-            await flushPromises()
-            mock.restore()
+        const wrapper = mount(TransactionDetails, {
+            global: {
+                plugins: [router, Oruga],
+                provide: {"isMediumScreen": false}
+            },
+            props: {
+                transactionLoc: CHILD.consensus_timestamp,
+            },
         });
 
-    it("Should display link to the child transactions", async () => {
+        await flushPromises()
+        // console.log(wrapper.html())
+        // console.log(wrapper.text())
+
+        expect(fetchGetURLs(mock)).toStrictEqual([
+            "api/v1/network/nodes",
+            "api/v1/transactions",
+            "api/v1/topics/messages/",
+            "api/v1/transactions/" + PARENT.transaction_id,
+            "api/v1/blocks",
+            "api/v1/contracts/results",
+            "api/v1/network/fees",
+            "api/v1/contracts/" + SAMPLE_PARENT_CHILD_TRANSACTIONS.transactions![0].transfers[1].account,
+            "api/v1/network/exchangerate",
+            "api/v1/tokens/" + CHILD.entity_id,
+        ])
+
+        expect(wrapper.text()).toMatch(RegExp("Transaction " + TransactionID.normalizeForDisplay(CHILD.transaction_id)))
+
+        const link = wrapper.get("#parentTransactionValue")
+        expect(link.text()).toBe("CONTRACT CALL")
+        expect(link.get('a').attributes("href")).toBe(
+            "/mainnet/transaction/" + PARENT.consensus_timestamp
+        )
+
+        expect(wrapper.find("#batchTransaction").exists()).toBe(false)
+        expect(wrapper.find("#innerTransactions").exists()).toBe(false)
+        expect(wrapper.find("#scheduledTransaction").exists()).toBe(false)
+        expect(wrapper.find("#scheduleCreateTransaction").exists()).toBe(false)
+        expect(wrapper.find("#childTransactions").exists()).toBe(false)
+
+        wrapper.unmount()
+        await flushPromises()
+        mock.restore()
+    });
+
+    it("Should display links to the child transactions", async () => {
 
         await router.push("/") // To avoid "missing required param 'network'" error
 
@@ -948,6 +1117,12 @@ describe("TransactionDetails.vue", () => {
             "/mainnet/token/" + TARGETED_TOKEN
         )
 
+        expect(wrapper.find("#batchTransaction").exists()).toBe(false)
+        expect(wrapper.find("#innerTransactions").exists()).toBe(false)
+        expect(wrapper.find("#scheduledTransaction").exists()).toBe(false)
+        expect(wrapper.find("#scheduleCreateTransaction").exists()).toBe(false)
+        expect(wrapper.find("#parentTransaction").exists()).toBe(false)
+
         wrapper.unmount()
         await flushPromises()
         mock.restore()
@@ -997,7 +1172,13 @@ describe("TransactionDetails.vue", () => {
         ])
 
         expect(wrapper.text()).toMatch(RegExp("Transaction " + TransactionID.normalizeForDisplay(NONCE_1.transaction_id)))
+
+        expect(wrapper.find("#batchTransaction").exists()).toBe(false)
+        expect(wrapper.find("#innerTransactions").exists()).toBe(false)
+        expect(wrapper.find("#scheduledTransaction").exists()).toBe(false)
+        expect(wrapper.find("#scheduleCreateTransaction").exists()).toBe(false)
         expect(wrapper.find("#parentTransaction").exists()).toBe(false)
+        expect(wrapper.find("#childTransactions").exists()).toBe(false)
 
         wrapper.unmount()
         await flushPromises()
