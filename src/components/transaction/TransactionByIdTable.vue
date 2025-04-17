@@ -25,7 +25,15 @@
       customRowKey="consensus_timestamp"
       @cell-click="handleClick"
   >
-    <o-table-column v-slot="props" field="consensus_timestamp" label="TIME">
+    <o-table-column v-if="isBatch" v-slot="props" field="transaction_id" label="ID">
+      <TransactionLabel
+          class="h-is-bold"
+          :transaction-id="props.row.transaction_id"
+          :result="props.row.result"
+      />
+    </o-table-column>
+
+    <o-table-column v-if="!isBatch" v-slot="props" field="timestamp" label="TIME">
       <div style="display: flex; gap: 8px; line-height: 18px">
         <TimestampValue class="h-is-bold" v-bind:timestamp="props.row.consensus_timestamp"/>
         <TriangleAlert v-if="props.row.result !== 'SUCCESS'" :size="18" class="h-text-error"/>
@@ -40,6 +48,13 @@
 
     <o-table-column v-slot="props" label="CONTENT">
       <TransactionSummary v-bind:transaction="props.row"/>
+    </o-table-column>
+
+    <o-table-column v-if="isBatch" v-slot="props" field="consensus_timestamp" label="TIME">
+      <div style="display: flex; gap: 8px; line-height: 18px">
+        <TimestampValue class="h-is-bold" v-bind:timestamp="props.row.consensus_timestamp"/>
+        <TriangleAlert v-if="props.row.result !== 'SUCCESS'" :size="18" class="h-text-error"/>
+      </div>
     </o-table-column>
 
     <o-table-column v-if="showRelationship" v-slot="props" label="RELATIONSHIP">
@@ -71,6 +86,7 @@ import TransactionSummary from "@/components/transaction/TransactionSummary.vue"
 import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
 import EmptyTable from "@/components/EmptyTable.vue";
 import {TriangleAlert} from "lucide-vue-next";
+import TransactionLabel from "@/components/values/TransactionLabel.vue";
 
 const props = defineProps({
   narrowed: Boolean,
@@ -90,14 +106,27 @@ const paginationNeeded = computed(() => {
       return props.transactions.length > 5
     }
 )
-const showRelationship = computed(() => props.transactions.length >= 1 && makeRelationshipLabel(props.transactions[0]))
-const showNonce = computed(() => props.transactions.length >= 2 && !props.transactions[1].scheduled)
+const showRelationship = computed(() => props.transactions.length > 1 && makeRelationshipLabel(props.transactions[0]))
+const showNonce = computed(() =>
+    !isBatch.value && props.transactions.length >= 2 && !props.transactions[1].scheduled
+)
 
 const handleClick = (t: Transaction, c: unknown, i: number, ci: number, event: MouseEvent) => {
   routeManager.routeToTransaction(t, event)
 }
 
 const currentPage = ref(1)
+
+const isBatch = computed(() => {
+  let result = false
+  for (const tx of props.transactions) {
+    if (tx.name === TransactionType.ATOMICBATCH) {
+      result = true
+      break
+    }
+  }
+  return result
+})
 
 const hasChild = computed(() => {
   let result = false
@@ -112,7 +141,11 @@ const hasChild = computed(() => {
 
 const makeRelationshipLabel = (row: Transaction): string => {
   let result: string
-  if (row.name === TransactionType.SCHEDULECREATE) {
+  if (row.name === TransactionType.ATOMICBATCH) {
+    result = "Batch (outer)"
+  } else if (row.batch_key) {
+    result = "Inner"
+  } else if (row.name === TransactionType.SCHEDULECREATE) {
     result = "Schedule Create"
   } else if (row.scheduled) {
     result = "Scheduled"
