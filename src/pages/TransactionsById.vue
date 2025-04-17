@@ -6,14 +6,15 @@
 
 <template>
 
-  <PageFrameV2 page-title="Transactions by ID">
+  <PageFrameV2 page-title="Transactions by Batch">
 
     <DashboardCardV2>
       <template #title>
         {{ (isBatch ? 'Batch for Transaction ID ' : 'Transactions with ID ') + normalizedTransactionId }}
       </template>
       <template #content>
-        <TransactionByIdTable :transactions="transactions"/>
+        <TransactionBatchTable v-if="isBatch" :transactions="transactions"/>
+        <TransactionByIdTable v-else :transactions="transactions"/>
       </template>
     </DashboardCardV2>
 
@@ -34,6 +35,7 @@ import PageFrameV2 from "@/components/page/PageFrameV2.vue";
 import {TransactionGroupCache} from "@/utils/cache/TransactionGroupCache";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import {TransactionType} from "@/schemas/MirrorNodeSchemas.ts";
+import TransactionBatchTable from "@/components/transaction/TransactionBatchTable.vue";
 
 const props = defineProps({
   network: String,
