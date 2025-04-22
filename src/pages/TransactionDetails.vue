@@ -350,7 +350,7 @@ const cryptoName = CoreConfig.inject().cryptoName
 const displayAllTransactionsLink = computed(() => {
   const hasSchedule = transactionGroupAnalyzer.schedulingTransaction.value !== null
   const txnCount = transactionGroupAnalyzer.transactions.value?.length ?? 0
-  return !hasSchedule && !isBatchTransaction && txnCount >= 2
+  return !hasSchedule && !isBatchTransaction.value && txnCount >= 2
 })
 
 const txIdForm = ref(TransactionID.useAtForm.value ? 'atForm' : 'dashForm')
