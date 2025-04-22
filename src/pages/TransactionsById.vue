@@ -6,7 +6,7 @@
 
 <template>
 
-  <PageFrameV2 page-title="Transactions by Batch">
+  <PageFrameV2 :page-title="'Transactions by ' + (isBatch ? 'Batch' : 'ID')">
 
     <DashboardCardV2>
       <template #title>
