@@ -54,7 +54,6 @@
       </template>
 
       <template #left-content>
-        {{'length :' + innerTransactions.length}}
         <Property id="transactionType">
           <template #name>Type</template>
           <template #value>
