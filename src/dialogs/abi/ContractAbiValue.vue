@@ -102,15 +102,7 @@ import "prismjs/components/prism-solidity.js";
 import SolidityCode from "@/components/SolidityCode.vue";
 import {ContractCallBuilder} from "@/dialogs/abi/ContractCallBuilder.ts";
 import {ABIController} from "@/components/contract/ABIController.ts";
-
-export enum FragmentCollection {
-  ALL = "all",
-  READONLY = "read-only",
-  READWRITE = "read-write",
-  EVENTS = "events",
-  ERRORS = "errors",
-  OTHER = "other",
-}
+import {FragmentCollection} from "@/dialogs/abi/FragmentCollection.ts";
 
 export default defineComponent({
   components: {
