@@ -365,7 +365,7 @@ const transactionAnalyzer = new TransactionAnalyzer(transactionLocParser.transac
 onMounted(() => transactionAnalyzer.mount())
 onBeforeUnmount(() => transactionAnalyzer.unmount())
 
-const transactionGroupLookup = TransactionGroupCache.instance.makeLookup(transactionLocParser.transactionId, true)
+const transactionGroupLookup = TransactionGroupCache.instance.makeLookup(transactionLocParser.transactionId)
 onMounted(() => transactionGroupLookup.mount())
 onBeforeUnmount(() => transactionGroupLookup.unmount())
 
