@@ -277,14 +277,14 @@ export class AppStorage {
     // selected fragment type in ABI tab
     //
 
-    private static readonly FRAGMENT_TYPE_KEY = 'fragmentType'
+    private static readonly FRAGMENT_COLLECTION_KEY = 'fragmentCollection'
 
-    public static getFragmentType(): string | null {
-        return this.getLocalStorageItem(this.FRAGMENT_TYPE_KEY)
+    public static getFragmentCollection(): string | null {
+        return this.getLocalStorageItem(this.FRAGMENT_COLLECTION_KEY)
     }
 
-    public static setFragmentType(newValue: string | null): void {
-        this.setLocalStorageItem(this.FRAGMENT_TYPE_KEY, newValue)
+    public static setFragmentCollection(newValue: string | null): void {
+        this.setLocalStorageItem(this.FRAGMENT_COLLECTION_KEY, newValue)
     }
 
     //

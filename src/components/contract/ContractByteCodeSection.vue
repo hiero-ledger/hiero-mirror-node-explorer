@@ -113,13 +113,13 @@
               <SwitchView v-model="showLogicABI"/>
             </template>
             <DownloadButton @click="handleDownloadABI"/>
-            <SelectView v-model="selectedType" :small="true">
-              <option :value="FragmentType.ALL">All definitions</option>
-              <option :value="FragmentType.READONLY">Read-only functions</option>
-              <option :value="FragmentType.READWRITE">Read-write functions</option>
-              <option :value="FragmentType.EVENTS">Events</option>
-              <option :value="FragmentType.ERRORS">Errors</option>
-              <option :value="FragmentType.OTHER">Other definitions</option>
+            <SelectView v-model="selectedCollection" :small="true">
+              <option :value="FragmentCollection.ALL">All definitions</option>
+              <option :value="FragmentCollection.READONLY">Read-only functions</option>
+              <option :value="FragmentCollection.READWRITE">Read-write functions</option>
+              <option :value="FragmentCollection.EVENTS">Events</option>
+              <option :value="FragmentCollection.ERRORS">Errors</option>
+              <option :value="FragmentCollection.OTHER">Other definitions</option>
             </SelectView>
           </div>
         </div>
@@ -133,7 +133,7 @@
         </template>
 
         <template v-else>
-          <ContractAbiValue :abiController="abiController" :fragment-type="selectedType as FragmentType"/>
+          <ContractAbiValue :abiController="abiController" :fragment-collection="selectedCollection as FragmentCollection"/>
         </template>
       </template>
       <template v-else>
@@ -164,7 +164,8 @@ import InfoTooltip from "@/components/InfoTooltip.vue";
 import ContractVerificationDialog from "@/dialogs/verification/ContractVerificationDialog.vue";
 import {AppStorage} from "@/AppStorage";
 import ContractSourceValue from "@/components/values/ContractSourceValue.vue";
-import ContractAbiValue, {FragmentType} from "@/dialogs/abi/ContractAbiValue.vue";
+import ContractAbiValue from "@/dialogs/abi/ContractAbiValue.vue";
+import {FragmentCollection} from "@/dialogs/abi/FragmentCollection.ts";
 import {SourcifyResponseItem} from "@/utils/cache/SourcifyCache";
 import DownloadButton from "@/components/DownloadButton.vue";
 import JSZip from "jszip";
@@ -263,17 +264,17 @@ const handleDownload = async () => {
   }
 }
 
-const selectedType = ref<string>(FragmentType.ALL)
+const selectedCollection = ref<string>(FragmentCollection.ALL)
 onMounted(() => {
-  const preferredType = AppStorage.getFragmentType()
-  if (preferredType && Object.values(FragmentType).includes(preferredType as FragmentType)) {
-    selectedType.value = preferredType
+  const preferredCollection = AppStorage.getFragmentCollection()
+  if (preferredCollection && Object.values(FragmentCollection).includes(preferredCollection as FragmentCollection)) {
+    selectedCollection.value = preferredCollection
   } else {
-    AppStorage.setFragmentType(null)
-    selectedType.value = FragmentType.ALL
+    AppStorage.setFragmentCollection(null)
+    selectedCollection.value = FragmentCollection.ALL
   }
 })
-watch(selectedType, () => AppStorage.setFragmentType(selectedType.value))
+watch(selectedCollection, () => AppStorage.setFragmentCollection(selectedCollection.value))
 
 const abiBlob = computed(() => {
   let result: Blob | null
