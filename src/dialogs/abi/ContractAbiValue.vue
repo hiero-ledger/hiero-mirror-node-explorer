@@ -103,7 +103,7 @@ import SolidityCode from "@/components/SolidityCode.vue";
 import {ContractCallBuilder} from "@/dialogs/abi/ContractCallBuilder.ts";
 import {ABIController} from "@/components/contract/ABIController.ts";
 
-export enum FragmentType {
+export enum FragmentCollection {
   ALL = "all",
   READONLY = "read-only",
   READWRITE = "read-write",
@@ -123,20 +123,20 @@ export default defineComponent({
       type: Object as PropType<ABIController>,
       required: true
     },
-    fragmentType: {
-      type: String as PropType<FragmentType>,
-      default: FragmentType.ALL
+    fragmentCollection: {
+      type: String as PropType<FragmentCollection>,
+      default: FragmentCollection.ALL
     }
   },
 
   setup: function (props) {
 
-    const showAll = computed(() => props.fragmentType === FragmentType.ALL)
-    const showReadOnly = computed(() => showAll.value || props.fragmentType === FragmentType.READONLY)
-    const showReadWrite = computed(() => showAll.value || props.fragmentType === FragmentType.READWRITE)
-    const showEvents = computed(() => showAll.value || props.fragmentType === FragmentType.EVENTS)
-    const showErrors = computed(() => showAll.value || props.fragmentType === FragmentType.ERRORS)
-    const showOther = computed(() => showAll.value || props.fragmentType === FragmentType.OTHER)
+    const showAll = computed(() => props.fragmentCollection === FragmentCollection.ALL)
+    const showReadOnly = computed(() => showAll.value || props.fragmentCollection === FragmentCollection.READONLY)
+    const showReadWrite = computed(() => showAll.value || props.fragmentCollection === FragmentCollection.READWRITE)
+    const showEvents = computed(() => showAll.value || props.fragmentCollection === FragmentCollection.EVENTS)
+    const showErrors = computed(() => showAll.value || props.fragmentCollection === FragmentCollection.ERRORS)
+    const showOther = computed(() => showAll.value || props.fragmentCollection === FragmentCollection.OTHER)
 
     const functionFragments = computed(() => {
       const result: ethers.FunctionFragment[] = []
