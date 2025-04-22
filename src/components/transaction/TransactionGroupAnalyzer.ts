@@ -15,21 +15,46 @@ export class TransactionGroupAnalyzer {
         this.transactions = transactions
     }
 
-    public readonly parentTransaction = computed(() => {
+    private readonly outerTransaction = computed(() => {
         let result: TransactionDetail | null = null
         for (const t of this.transactions.value ?? []) {
-            if (t.nonce === 0) {
+            if (t.name === TransactionType.ATOMICBATCH) {
                 result = t
                 break
             }
         }
-        return this.childTransactions.value.length ? result : null
+        return result
+    })
+
+    public readonly innerTransactions = computed(() => {
+        const result = new Array<TransactionDetail>()
+        if (this.outerTransaction.value !== null) {
+            for (const t of this.transactions.value ?? []) {
+                if (t.batch_key) {
+                    result.push(t)
+                }
+            }
+        }
+        return result
+    })
+
+    public readonly parentTransaction = computed(() => {
+        let result: TransactionDetail | null = null
+        if (this.childTransactions.value.length > 0) {
+            for (const t of this.transactions.value ?? []) {
+                if (t.nonce === 0) {
+                    result = t
+                    break
+                }
+            }
+        }
+        return result
     })
 
     public readonly childTransactions = computed(() => {
         const result = new Array<TransactionDetail>()
         for (const t of this.transactions.value ?? []) {
-            if (t.parent_consensus_timestamp) {
+            if (t.parent_consensus_timestamp && !t.batch_key) {
                 result.push(t)
             }
         }

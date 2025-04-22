@@ -12,6 +12,7 @@ import {BlockByTsCache} from "@/utils/cache/BlockByTsCache";
 import {TokenRelationshipCache} from "@/utils/cache/TokenRelationshipCache";
 import {ContractResultByTransactionIdCache} from "@/utils/cache/ContractResultByTransactionIdCache";
 import {AccountByAddressCache} from "@/utils/cache/AccountByAddressCache";
+import {TransactionByTsCache} from "@/utils/cache/TransactionByTsCache.ts";
 
 export class TransactionAnalyzer {
 
@@ -21,6 +22,7 @@ export class TransactionAnalyzer {
     public readonly blockNumber: Ref<number | null> = ref(null)
     public readonly entityDescriptor = ref(EntityDescriptor.DEFAULT_ENTITY_DESCRIPTOR)
     public readonly tokenRelationships: Ref<TokenRelationship[]> = ref([])
+    public readonly outerTransaction: Ref<Transaction | null> = ref(null)
     private readonly watchHandles: WatchStopHandle[] = []
 
     //
@@ -91,9 +93,17 @@ export class TransactionAnalyzer {
         return result
     })
 
+    public readonly isBatchTransaction = computed(
+        () => this.transactionType.value === TransactionType.ATOMICBATCH)
+
+    public readonly batchKey = computed(
+        () => this.transaction.value?.batch_key ?? null)
+
+    public readonly parentTimestamp = computed(
+        () => this.transaction.value?.parent_consensus_timestamp ?? null)
 
     public readonly isEthereumTransaction = computed(
-        () => this.transactionType.value == TransactionType.ETHEREUMTRANSACTION)
+        () => this.transactionType.value === TransactionType.ETHEREUMTRANSACTION)
 
     public readonly isTokenAssociation = computed(
         () => this.transactionType.value === TransactionType.TOKENASSOCIATE)
@@ -154,6 +164,9 @@ export class TransactionAnalyzer {
                 this.tokenRelationships.value = this.filterTokenRelationships(r ?? [], this.consensusTimestamp.value)
             } else {
                 this.tokenRelationships.value = []
+            }
+            if (this.batchKey.value && this.parentTimestamp.value) {
+                this.outerTransaction.value = await TransactionByTsCache.instance.lookup(this.parentTimestamp.value)
             }
         } else {
             this.contractId.value = null

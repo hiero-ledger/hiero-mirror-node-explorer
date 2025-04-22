@@ -6,14 +6,15 @@
 
 <template>
 
-  <PageFrameV2 page-title="Transactions by ID">
+  <PageFrameV2 :page-title="'Transactions by ' + (isBatch ? 'Batch' : 'ID')">
 
     <DashboardCardV2>
       <template #title>
-        {{ `Transactions with ID ${normalizedTransactionId}` }}
+        {{ (isBatch ? 'Batch for Transaction ID ' : 'Transactions with ID ') + normalizedTransactionId }}
       </template>
       <template #content>
-        <TransactionByIdTable :transactions="transactions"/>
+        <TransactionBatchTable v-if="isBatch" :transactions="transactions"/>
+        <TransactionByIdTable v-else :transactions="transactions"/>
       </template>
     </DashboardCardV2>
 
@@ -33,6 +34,8 @@ import {TransactionID} from "@/utils/TransactionID";
 import PageFrameV2 from "@/components/page/PageFrameV2.vue";
 import {TransactionGroupCache} from "@/utils/cache/TransactionGroupCache";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
+import {TransactionType} from "@/schemas/MirrorNodeSchemas.ts";
+import TransactionBatchTable from "@/components/transaction/TransactionBatchTable.vue";
 
 const props = defineProps({
   network: String,
@@ -52,6 +55,17 @@ onMounted(() => groupLookup.mount())
 onBeforeUnmount(() => groupLookup.unmount())
 
 const transactions = computed(() => groupLookup.entity.value ?? [])
+
+const isBatch = computed(() => {
+  let result = false
+  for (const t of transactions.value) {
+    if (t.name === TransactionType.ATOMICBATCH) {
+      result = true
+      break
+    }
+  }
+  return result
+})
 
 </script>
 

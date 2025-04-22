@@ -1903,6 +1903,114 @@ export const SAMPLE_REWARDS_TRANSACTIONS = {
     ]
 }
 
+export const SAMPLE_BATCH_TRANSACTION: TransactionResponse = {
+    "transactions": [
+        {
+            "batch_key": null,
+            "bytes": null,
+            "charged_tx_fee": 160800000,
+            "consensus_timestamp": "1662470957.014478705",
+            "entity_id": null,
+            "max_fee": "200000000",
+            "memo_base64": "",
+            "name": TransactionType.ATOMICBATCH,
+            "nft_transfers": [],
+            "node": "0.0.5",
+            "nonce": 0,
+            "parent_consensus_timestamp": null,
+            "result": "SUCCESS",
+            "scheduled": false,
+            "staking_reward_transfers": [],
+            "token_transfers": [],
+            "transaction_hash": "jthcv17LsslWUAzQkuIzeVMFpwJ3Uf5g6sSp1aZ8qqSWTz52XhPaMGAzt/5UgYob",
+            "transaction_id": "0.0.48113503-1662470948-432078184",
+            "transfers": [
+                {"account": "0.0.98", "amount": 160800000, "is_approval": false},
+                {"account": "0.0.48113503", "amount": -160800000, "is_approval": false}
+            ],
+            "valid_duration_seconds": "120",
+            "valid_start_timestamp": "1662470948.432078184"
+        },
+        {
+            "batch_key": {
+                "_type": KeyType.ECDSA_SECP256K1,
+                "key": "027936af0fe67d21e15f53abb4c15d7d0a45edd5409b8136d7ae183a116ec4a7ad"
+            },
+            "bytes": null,
+            "charged_tx_fee": 24556548,
+            "consensus_timestamp": "1718907067.177742003",
+            "entity_id": "0.0.4458222",
+            "max_fee": "2000000000",
+            "memo_base64": "",
+            "name": TransactionType.TOKENMINT,
+            "nft_transfers": [{
+                "is_approval": false,
+                "receiver_account_id": "0.0.1437",
+                "sender_account_id": null,
+                "serial_number": 1,
+                "token_id": "0.0.4458222"
+            }],
+            "node": "0.0.0",
+            "nonce": 0,
+            "parent_consensus_timestamp": "1662470957.014478705",
+            "result": "SUCCESS",
+            "scheduled": false,
+            "staking_reward_transfers": [],
+            "token_transfers": [],
+            "transaction_hash": "J4vHqnAceboelxiJmAUxntr3e8KNokOqYboOHKufGHBDYIHgX4AnLmC3fHsGnC4I",
+            "transaction_id": "0.0.1437-1718907056-011698194",
+            "transfers": [
+                {"account": "0.0.3", "amount": 4911309, "is_approval": false},
+                {"account": "0.0.98", "amount": 17680716, "is_approval": false},
+                {"account": "0.0.800", "amount": 1964523, "is_approval": false},
+                {"account": "0.0.1437", "amount": -24556548, "is_approval": false}
+            ],
+            "valid_duration_seconds": "120",
+            "valid_start_timestamp": "1718907056.011698194"
+        },
+        {
+            "batch_key": {
+                "_type": KeyType.ECDSA_SECP256K1,
+                "key": "027936af0fe67d21e15f53abb4c15d7d0a45edd5409b8136d7ae183a116ec4a7ad"
+            },
+            "bytes": null,
+            "charged_tx_fee": 1881313,
+            "consensus_timestamp": "1727874215.568931000",
+            "entity_id": null,
+            "max_fee": "2000000000",
+            "memo_base64": "",
+            "name": TransactionType.CRYPTOTRANSFER,
+            "nft_transfers": [{
+                "is_approval": false,
+                "receiver_account_id": "0.0.1306",
+                "sender_account_id": "0.0.1437",
+                "serial_number": 1,
+                "token_id": "0.0.4458222"
+            }],
+            "node": "0.0.0",
+            "nonce": 0,
+            "parent_consensus_timestamp": "1662470957.014478705",
+            "result": "SUCCESS",
+            "scheduled": false,
+            "staking_reward_transfers": [],
+            "token_transfers": [],
+            "transaction_hash": "dygFHwd7cPHd+qn1PEQsiMYLxTmrS568zh8rgzqjAbmEvcfJT7w0BDV1f3xZfndV",
+            "transaction_id": "0.0.1437-1727874204-966393239",
+            "transfers": [
+                {"account": "0.0.9", "amount": 85528, "is_approval": false},
+                {"account": "0.0.98", "amount": 1616207, "is_approval": false},
+                {"account": "0.0.800", "amount": 179578, "is_approval": false},
+                {"account": "0.0.1437", "amount": -1881313, "is_approval": false}
+            ],
+            "valid_duration_seconds": "120",
+            "valid_start_timestamp": "1727874204.966393239"
+        }
+    ],
+    "links": {
+        next: null
+    }
+}
+
 //
 // https://mainnet-public.mirrornode.hedera.com/api/v1/transactions/0.0.48113503-1662470948-432078184
 //
