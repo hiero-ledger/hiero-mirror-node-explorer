@@ -139,7 +139,7 @@ export class ContractCallBuilder {
 
 
     private static async executeWithWallet(contractId: string, functionData: string): Promise<string | null> {
-        const callResult = await walletManager.callContract(contractId, functionData)
+        const callResult = await walletManager.callContract(contractId, functionData, null)
         return typeof callResult == "string" ? null : callResult.call_result
     }
 
