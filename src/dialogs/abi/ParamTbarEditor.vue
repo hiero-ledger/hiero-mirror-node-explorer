@@ -5,7 +5,7 @@
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <template>
-  <input class="input is-small has-text-white" type="number" v-model="currentText"/>
+  <input class="input is-small has-text-white" type="number" min="0" v-model="currentText"/>
 </template>
 
 <!-- --------------------------------------------------------------------------------------------------------------- -->
