@@ -84,7 +84,7 @@
     "vite-plugin-node-polyfills": "^0.23.0",
     "vite-plugin-require-transform": "^1.0.21",
     "vitest": "^3.0.8",
-    "vue-tsc": "^2.2.8"
+    "vue-tsc": "^2.2.10"
   },
   "overrides": {
     "elliptic": "^6.6.1"
