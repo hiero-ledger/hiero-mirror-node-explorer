@@ -150,8 +150,7 @@ export class WalletClient_Ethereum extends WalletClient {
             gasPrice: "0x1D1A94A2000", // 2_000_000_000_000
         }
         if (value !== null) {
-            // ethParams["value"] = value
-            ethParams["value"] = "0x02"
+            ethParams["value"] = value
         }
         const request = {
             method: "eth_sendTransaction",
