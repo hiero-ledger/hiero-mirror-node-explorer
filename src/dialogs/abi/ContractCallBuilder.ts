@@ -14,6 +14,7 @@ export class ContractCallBuilder {
     public readonly fragment: ethers.FunctionFragment
     public readonly abiController: ABIController
     public readonly paramBuilders: ContractParamBuilder[]
+    public readonly payableValueBuilder: ContractParamBuilder|null
 
     public readonly lastValue = ref<ethers.Result | null>(null)
     public readonly lastError = ref<unknown | null>(null)
@@ -28,6 +29,21 @@ export class ContractCallBuilder {
         this.paramBuilders = []
         for (const i of this.fragment.inputs) {
             this.paramBuilders.push(new ContractParamBuilder(i, this))
+        }
+        if (this.fragment.payable) {
+            // We add an extra build for "value" parameter
+            const payableParamType = ethers.ParamType.from({
+                name: "value",
+                type: "uint",
+                baseType: "uint",
+                indexed: null,
+                components: null,
+                arrayLength: null,
+                arrayChildren: null
+            })
+            this.payableValueBuilder = new ContractParamBuilder(payableParamType, this)
+        } else {
+            this.payableValueBuilder = null
         }
     }
 
@@ -89,17 +105,34 @@ export class ContractCallBuilder {
         return result
     })
 
+    public readonly payableValue = computed(() => {
+        let result: string|null
+        if (this.payableValueBuilder !== null && this.payableValueBuilder.paramData.value !== null) {
+            try {
+                result = ethers.AbiCoder.defaultAbiCoder().encode(
+                    [this.payableValueBuilder.paramType],
+                    [this.payableValueBuilder.paramData.value])
+            } catch {
+                result = null
+            }
+        } else {
+            result = null
+        }
+        return result
+    })
+
     public async execute(): Promise<void> {
         const contractId = this.abiController.abiAnalyzer.contractAnalyzer.contractId.value
         const itf = this.abiController.targetInterface.value
         const functionData = this.functionData.value
+        const payableValue = this.payableValue.value
         if (contractId !== null && itf !== null && functionData !== null) {
             try {
                 let response: string | null
                 if (this.isReadOnly()) {
-                    response = await ContractCallBuilder.executeWithMirrorNode(contractId, functionData)
+                    response = await ContractCallBuilder.executeWithMirrorNode(contractId, functionData, payableValue)
                 } else {
-                    response = await ContractCallBuilder.executeWithWallet(contractId, functionData)
+                    response = await ContractCallBuilder.executeWithWallet(contractId, functionData, payableValue)
                 }
                 this.lastValue.value = response !== null ? itf.decodeFunctionResult(this.fragment, response) : null
                 this.lastError.value = null
@@ -120,26 +153,35 @@ export class ContractCallBuilder {
                 AppStorage.setInputParam(b.paramData.value, this.fragment.selector, b.paramType.name)
             }
         }
+        if (this.payableValueBuilder !== null) {
+            AppStorage.setInputParam(
+                this.payableValueBuilder.paramData.value,
+                this.fragment.selector,
+                this.payableValueBuilder.paramType.name)
+        }
     }
 
     //
     // Private
     //
 
-    private static async executeWithMirrorNode(contractId: string, functionData: string): Promise<string> {
+    private static async executeWithMirrorNode(contractId: string, functionData: string, value: string|null): Promise<string> {
         const url = "api/v1/contracts/call"
         const contractAddress = await ContractByIdCache.instance.findContractAddress(contractId) ?? contractId
         const body: ContractCallRequest = {
             data: functionData,
             to: contractAddress,
         }
+        if (value !== null) {
+            body.value = ethers.getNumber(value)
+        }
         const response = await axios.post<ContractCallResponse>(url, body)
         return response.data.result
     }
 
 
-    private static async executeWithWallet(contractId: string, functionData: string): Promise<string | null> {
-        const callResult = await walletManager.callContract(contractId, functionData, null)
+    private static async executeWithWallet(contractId: string, functionData: string, value: string|null): Promise<string | null> {
+        const callResult = await walletManager.callContract(contractId, functionData, value)
         return typeof callResult == "string" ? null : callResult.call_result
     }
 

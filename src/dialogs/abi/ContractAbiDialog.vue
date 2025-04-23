@@ -17,6 +17,12 @@
             <div/>
             <div>{{ b.paramType.format() }}</div>
           </template>
+          <template v-if="payableValueBuilder">
+            <div style="align-self: center">{{ payableValueBuilder.paramType.name }}</div>
+            <ParamTypeEditor :param-builder="payableValueBuilder" style="width: 100%"/>
+            <div/>
+            <div>{{ payableValueBuilder.paramType.format() }}</div>
+          </template>
         </div>
       </template>
     </template>
@@ -90,6 +96,7 @@ const controller = new ContractAbiController(showDialog, props.contractCallBuild
 
 const dialogTitle = computed(() => props.contractCallBuilder.fragment.name + "()")
 const paramBuilders = computed(() => props.contractCallBuilder.paramBuilders)
+const payableValueBuilder = computed(() => props.contractCallBuilder?.payableValueBuilder)
 const hasResult = computed(() => props.contractCallBuilder.hasResult())
 const callOutput = computed(() => props.contractCallBuilder.callOutput)
 const errorMessage = controller.errorMessage
