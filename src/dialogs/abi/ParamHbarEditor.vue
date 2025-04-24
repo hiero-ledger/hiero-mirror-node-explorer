@@ -58,7 +58,7 @@ const textToParamData = (text: string): string|null => {
   // 1 hBAR <=> 10^18 weiBAR
   // https://hips.hedera.com/hip/hip-410#value-of-gas-price-and-value-fields
   try {
-    const tBAR = parseFloat(text) * 100_000_000
+    const tBAR = Math.round(parseFloat(text) * 100_000_000)
     const weiBAR = ethers.getBigInt(tBAR) * 10n**10n
     result = ethers.toBeHex(weiBAR, 32)
   } catch {
