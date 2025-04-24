@@ -12,18 +12,16 @@
       <template v-else>
         <div class="dialog-grid" style="align-self: stretch">
           <template v-for="b of paramBuilders" :key="b.paramType.name">
-            <div style="align-self: flex-start">{{ b.paramType.name }}</div>
-            <div>
-              <ParamTypeEditor :param-builder="b" style="width: 100%"/>
-              <div style="font-size: 12px; color: var(--text-secondary)">{{ b.paramType.format() }}</div>
-            </div>
+            <div style="align-self: center">{{ b.paramType.name }}</div>
+            <ParamTypeEditor :param-builder="b" style="width: 100%"/>
+            <div/>
+            <div style="font-size: 12px; color: var(--text-secondary)" class="mb-2">{{ b.paramType.format() }}</div>
           </template>
           <template v-if="payableValueBuilder">
-            <div style="align-self: flex-start">{{ payableValueBuilder.paramType.name }}</div>
-            <div>
-              <ParamHbarEditor :param-builder="payableValueBuilder" style="width: 100%"/>
-              <div style="font-size: 12px; color: var(--text-secondary)">HBAR</div>
-            </div>
+            <div style="align-self: center">{{ payableValueBuilder.paramType.name }}</div>
+            <ParamHbarEditor :param-builder="payableValueBuilder" style="width: 100%"/>
+            <div/>
+            <div style="font-size: 12px; color: var(--text-secondary)" class="mb-2">HBAR</div>
           </template>
         </div>
       </template>
@@ -125,7 +123,6 @@ const taskDialogDidSucceed = () => {
   display: grid;
   grid-template-columns: 2fr 5fr;
   grid-column-gap: 1rem;
-  row-gap: 10px;
 }
 
 </style>

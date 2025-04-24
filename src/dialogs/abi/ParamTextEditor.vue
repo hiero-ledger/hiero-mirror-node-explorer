@@ -5,7 +5,7 @@
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <template>
-  <input class="input is-small has-text-white" type="text" v-model="currentText"/>
+  <TextFieldView v-model="currentText"/>
 </template>
 
 <!-- --------------------------------------------------------------------------------------------------------------- -->
@@ -17,6 +17,7 @@
 import {computed, onBeforeUnmount, onMounted, PropType, ref, watch, WatchStopHandle} from "vue";
 import {ContractParamBuilder} from "@/dialogs/abi/ContractCallBuilder.ts";
 import {AppStorage} from "@/AppStorage.ts";
+import TextFieldView from "@/elements/TextFieldView.vue";
 
 const props = defineProps({
   paramBuilder: {
