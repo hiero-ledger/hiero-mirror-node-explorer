@@ -21,8 +21,8 @@
           <template v-if="payableValueBuilder">
             <div style="align-self: flex-start">{{ payableValueBuilder.paramType.name }}</div>
             <div>
-              <ParamTbarEditor :param-builder="payableValueBuilder" style="width: 100%"/>
-              <div style="font-size: 12px; color: var(--text-secondary)">tBAR</div>
+              <ParamHbarEditor :param-builder="payableValueBuilder" style="width: 100%"/>
+              <div style="font-size: 12px; color: var(--text-secondary)">HBAR</div>
             </div>
           </template>
         </div>
@@ -77,7 +77,7 @@ import {ContractAbiController} from "@/dialogs/abi/ContractAbiController.ts";
 import ParamTypeEditor from "@/dialogs/abi/ParamTypeEditor.vue";
 import {TaskPanelMode} from "@/dialogs/core/DialogUtils.ts";
 import TaskPanel from "@/dialogs/core/task/TaskPanel.vue";
-import ParamTbarEditor from "@/dialogs/abi/ParamTbarEditor.vue";
+import ParamHbarEditor from "@/dialogs/abi/ParamHbarEditor.vue";
 
 const showDialog = defineModel("showDialog", {
   type: Boolean,

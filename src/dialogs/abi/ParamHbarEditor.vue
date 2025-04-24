@@ -5,7 +5,7 @@
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <template>
-  <input class="input is-small has-text-white" type="number" min="0" v-model="currentText"/>
+  <TextFieldView v-model="currentText"/>
 </template>
 
 <!-- --------------------------------------------------------------------------------------------------------------- -->
@@ -18,6 +18,7 @@ import {computed, onBeforeUnmount, onMounted, PropType, ref, watch, WatchStopHan
 import {ContractParamBuilder} from "@/dialogs/abi/ContractCallBuilder.ts";
 import {AppStorage} from "@/AppStorage.ts";
 import {ethers} from "ethers";
+import TextFieldView from "@/elements/TextFieldView.vue";
 
 const props = defineProps({
   paramBuilder: {
@@ -53,11 +54,12 @@ onBeforeUnmount(() => {
 const textToParamData = (text: string): string|null => {
   let result: string|null
 
-  // text is an amount in tBAR
-  // 1 tBAR <=> 10_000_000_000 weiBAR
+  // text is an amount in HBAR
+  // 1 hBAR <=> 10^18 weiBAR
   // https://hips.hedera.com/hip/hip-410#value-of-gas-price-and-value-fields
   try {
-    const weiBAR = ethers.getBigInt(text) * 10_000_000_000n
+    const tBAR = parseFloat(text) * 100_000_000
+    const weiBAR = ethers.getBigInt(tBAR) * 10n**10n
     result = ethers.toBeHex(weiBAR, 32)
   } catch {
     result = null
@@ -69,12 +71,13 @@ const paramDataToText = (paramData: unknown): string|null => {
   let result: string|null
   if (typeof paramData == "string") {
     // paramData is hex encoding of a weiBAR amount
-    // 1 weiBAR <=> 1 / 10_000_000_000 tBAR
+    // 1 weiBAR <=> 10^-18 hBAR
     // https://hips.hedera.com/hip/hip-410#value-of-gas-price-and-value-fields
     try {
       const weiBAR = ethers.getBigInt(paramData)
-      const tBAR = weiBAR / 10_000_000_000n
-      result = tBAR.toString()
+      const tBAR = weiBAR / 10n**10n
+      const hBAR = ethers.toNumber(tBAR) / 100_000_000
+      result = hBAR.toString()
     } catch {
       result = null
     }
