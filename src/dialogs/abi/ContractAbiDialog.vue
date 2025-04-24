@@ -15,7 +15,13 @@
             <div style="align-self: center">{{ b.paramType.name }}</div>
             <ParamTypeEditor :param-builder="b" style="width: 100%"/>
             <div/>
-            <div>{{ b.paramType.format() }}</div>
+            <div style="font-size: 12px; color: var(--text-secondary)" class="mb-2">{{ b.paramType.format() }}</div>
+          </template>
+          <template v-if="payableValueBuilder">
+            <div style="align-self: center">{{ payableValueBuilder.paramType.name }}</div>
+            <ParamHbarEditor :param-builder="payableValueBuilder" style="width: 100%"/>
+            <div/>
+            <div style="font-size: 12px; color: var(--text-secondary)" class="mb-2">HBAR</div>
           </template>
         </div>
       </template>
@@ -69,6 +75,7 @@ import {ContractAbiController} from "@/dialogs/abi/ContractAbiController.ts";
 import ParamTypeEditor from "@/dialogs/abi/ParamTypeEditor.vue";
 import {TaskPanelMode} from "@/dialogs/core/DialogUtils.ts";
 import TaskPanel from "@/dialogs/core/task/TaskPanel.vue";
+import ParamHbarEditor from "@/dialogs/abi/ParamHbarEditor.vue";
 
 const showDialog = defineModel("showDialog", {
   type: Boolean,
@@ -90,6 +97,7 @@ const controller = new ContractAbiController(showDialog, props.contractCallBuild
 
 const dialogTitle = computed(() => props.contractCallBuilder.fragment.name + "()")
 const paramBuilders = computed(() => props.contractCallBuilder.paramBuilders)
+const payableValueBuilder = computed(() => props.contractCallBuilder?.payableValueBuilder)
 const hasResult = computed(() => props.contractCallBuilder.hasResult())
 const callOutput = computed(() => props.contractCallBuilder.callOutput)
 const errorMessage = controller.errorMessage

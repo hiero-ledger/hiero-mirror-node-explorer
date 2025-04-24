@@ -26,7 +26,7 @@ export abstract class WalletClient {
     }
 
 
-    public async callContract(contractId: string, functionData: string): Promise<ContractResultDetails | string> {
+    public async callContract(contractId: string, functionData: string, value: string|null): Promise<ContractResultDetails | string> {
         throw "to be implemented"
     }
 

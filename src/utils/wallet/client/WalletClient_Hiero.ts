@@ -189,7 +189,7 @@ export class WalletClient_Hiero extends WalletClient {
         return Promise.resolve(result)
     }
 
-    public async callContract(contractId: string, functionData: string): Promise<ContractResultDetails | string> {
+    public async callContract(contractId: string, functionData: string, value: string|null): Promise<ContractResultDetails | string> {
         let result: string | ContractResultDetails
 
         const fp = hexToByte(functionData)

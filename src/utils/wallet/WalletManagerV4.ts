@@ -206,9 +206,9 @@ export class WalletManagerV4 {
         }
     }
 
-    public async callContract(contractId: string, functionData: string): Promise<ContractResultDetails | string> {
+    public async callContract(contractId: string, functionData: string, value: string|null): Promise<ContractResultDetails | string> {
         if (this.client.value !== null) {
-            return await this.client.value.callContract(contractId, functionData)
+            return await this.client.value.callContract(contractId, functionData, value)
         } else {
             throw "bug"
         }

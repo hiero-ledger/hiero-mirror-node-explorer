@@ -94,15 +94,15 @@ export class WalletClient_Ethereum extends WalletClient {
     }
 
 
-    public async callContract(contractId: string, functionData: string): Promise<ContractResultDetails | string> {
-        return this.executeCall(contractId, functionData)
+    public async callContract(contractId: string, functionData: string, value: string|null): Promise<ContractResultDetails | string> {
+        return this.executeCall(contractId, functionData, value)
     }
 
     //
     // Private
     //
 
-    private async executeCall(targetId: string, callData: string): Promise<string> {
+    private async executeCall(targetId: string, callData: string, value: string|null = null): Promise<string> {
         let result: string
 
         const accountAddress = await AccountByIdCache.instance.findAccountAddress(this.accountId)
@@ -118,7 +118,7 @@ export class WalletClient_Ethereum extends WalletClient {
             // 2) Sends transaction
             let ethHash: string
             try {
-                ethHash = await this.sendTransaction(accountAddress, "0x" + tokenAddress, callData)
+                ethHash = await this.sendTransaction(accountAddress, "0x" + tokenAddress, callData, value)
             } catch (reason) {
                 if (eth_isUserReject(reason)) {
                     throw new WalletClientRejectError()
@@ -141,13 +141,16 @@ export class WalletClient_Ethereum extends WalletClient {
         return result
     }
 
-    private async sendTransaction(fromAddress: string, toAddress: string, callData: string): Promise<string> {
-        const ethParams = {
+    private async sendTransaction(fromAddress: string, toAddress: string, callData: string, value: string|null): Promise<string> {
+        const ethParams: Record<string, any> = {
             from: fromAddress,
             to: toAddress,
             data: callData,
             gas: "0x1E8480", // 2_000_000
-            gasPrice: "0x1D1A94A2000" // 2_000_000_000_000
+            gasPrice: "0x1D1A94A2000", // 2_000_000_000_000
+        }
+        if (value !== null) {
+            ethParams["value"] = value
         }
         const request = {
             method: "eth_sendTransaction",

@@ -33,7 +33,10 @@ export class ContractAbiController extends TaskController {
     //
 
     public canBeExecuted(): boolean {
-        return this.contractCallBuilder.functionData.value !== null
+        const functionDataOK = this.contractCallBuilder.functionData.value !== null
+        const payableValueOK = this.contractCallBuilder.payableValueBuilder === null
+                                || this.contractCallBuilder.payableValue.value !== null
+        return functionDataOK && payableValueOK
     }
 
     public async execute(): Promise<void> {
