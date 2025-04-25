@@ -167,6 +167,8 @@ describe("ContractActionAnalyzer.spec.ts", () => {
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/accounts/0x0000000000000000000000000000000000017725",
             "https://www.4byte.directory/api/v1/signatures/?format=json&hex_signature=0x70a08231",
+            "api/v1/contracts/0.0.96037",
+            "api/v1/tokens/0.0.96037",
         ])
         expect(analyzer.action.value).toStrictEqual(SAMPLE_ACTION)
         expect(analyzer.fromId.value).toBe("0.0.96039")
@@ -180,6 +182,8 @@ describe("ContractActionAnalyzer.spec.ts", () => {
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/accounts/0x0000000000000000000000000000000000017725",
             "https://www.4byte.directory/api/v1/signatures/?format=json&hex_signature=0x70a08231",
+            "api/v1/contracts/0.0.96037",
+            "api/v1/tokens/0.0.96037",
         ])
 
         AccountByAddressCache.instance.clear()
@@ -221,6 +225,7 @@ describe("ContractActionAnalyzer.spec.ts", () => {
         await flushPromises()
         expect(fetchGetURLs(mock)).toStrictEqual([
             "https://www.4byte.directory/api/v1/signatures/?format=json&hex_signature=0x70a08231",
+            "http://localhost:3000/abi/IHederaTokenService.json",
         ])
         expect(analyzer.action.value).toStrictEqual(SAMPLE_ACTION)
         expect(analyzer.fromId.value).toBe("0.0.96039")
@@ -233,6 +238,7 @@ describe("ContractActionAnalyzer.spec.ts", () => {
         expect(analyzer.toId.value).toBeNull()
         expect(fetchGetURLs(mock)).toStrictEqual([
             "https://www.4byte.directory/api/v1/signatures/?format=json&hex_signature=0x70a08231",
+            "http://localhost:3000/abi/IHederaTokenService.json",
         ])
 
         SignatureCache.instance.clear()

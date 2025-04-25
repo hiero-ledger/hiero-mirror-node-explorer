@@ -320,8 +320,8 @@ const mode: ComputedRef<ABIMode> = computed(() => {
 })
 const abiController = new ABIController(abiAnalyzer, mode)
 
-const byteCode = props.contractAnalyzer.byteCodeAnalyzer.byteCode
-const solcVersion = props.contractAnalyzer.byteCodeAnalyzer.solcVersion
+const byteCode = props.contractAnalyzer.byteCode
+const solcVersion = props.contractAnalyzer.solcVersion
 const contractId = props.contractAnalyzer.contractId
 const solidityFiles = props.contractAnalyzer.solidityFiles
 const sourceFileName = props.contractAnalyzer.sourceFileName

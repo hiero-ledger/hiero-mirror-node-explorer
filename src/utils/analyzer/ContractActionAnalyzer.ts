@@ -20,7 +20,7 @@ export class ContractActionAnalyzer {
 
     public constructor(action: Ref<ContractAction | null>) {
         this.action = action
-        this.functionCallAnalyzer = new FunctionCallAnalyzer(this.input, this.output, this.error, this.contractId)
+        this.functionCallAnalyzer = new FunctionCallAnalyzer(this.input, this.output, this.error, this.toId)
     }
 
     public mount(): void {
@@ -82,8 +82,6 @@ export class ContractActionAnalyzer {
         }
 
     }
-
-    private readonly contractId = computed(() => this.action.value?.recipient ?? null)
 
     private readonly input = computed(() => this.action.value?.input ?? null)
 

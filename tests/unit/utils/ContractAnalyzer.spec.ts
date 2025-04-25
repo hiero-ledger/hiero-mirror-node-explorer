@@ -31,6 +31,8 @@ describe("ContractAnalyzer.spec.ts", () => {
         expect(contractAnalyzer.fullMatch.value).toBeNull()
         expect(contractAnalyzer.sourcifyURL.value).toBeNull()
         expect(contractAnalyzer.evmVersion.value).toBeNull()
+        expect(contractAnalyzer.isSystemContract.value).toBe(false)
+        expect(contractAnalyzer.solcVersion.value).toBeNull()
 
         // 2) mount
         contractAnalyzer.mount()
@@ -43,6 +45,8 @@ describe("ContractAnalyzer.spec.ts", () => {
         expect(contractAnalyzer.fullMatch.value).toBeNull()
         expect(contractAnalyzer.sourcifyURL.value).toBeNull()
         expect(contractAnalyzer.evmVersion.value).toBeNull()
+        expect(contractAnalyzer.isSystemContract.value).toBe(false)
+        expect(contractAnalyzer.solcVersion.value).toBeNull()
 
         // 3) setup
         contractId.value = SAMPLE_CONTRACT.contract_id
@@ -55,6 +59,8 @@ describe("ContractAnalyzer.spec.ts", () => {
         expect(contractAnalyzer.fullMatch.value).toBeNull()
         expect(contractAnalyzer.sourcifyURL.value).toBeNull()
         expect(contractAnalyzer.evmVersion.value).toBeNull()
+        expect(contractAnalyzer.isSystemContract.value).toBe(false)
+        expect(contractAnalyzer.solcVersion.value).toBe("0.8.4")
 
         // 4) unmount
         contractAnalyzer.unmount()
@@ -67,6 +73,8 @@ describe("ContractAnalyzer.spec.ts", () => {
         expect(contractAnalyzer.fullMatch.value).toBeNull()
         expect(contractAnalyzer.sourcifyURL.value).toBeNull()
         expect(contractAnalyzer.evmVersion.value).toBeNull()
+        expect(contractAnalyzer.isSystemContract.value).toBe(false)
+        expect(contractAnalyzer.solcVersion.value).toBeNull()
 
     })
 
@@ -93,6 +101,8 @@ describe("ContractAnalyzer.spec.ts", () => {
         expect(contractAnalyzer.fullMatch.value).toBeNull()
         expect(contractAnalyzer.sourcifyURL.value).toBeNull()
         expect(contractAnalyzer.evmVersion.value).toBeNull()
+        expect(contractAnalyzer.isSystemContract.value).toBe(false)
+        expect(contractAnalyzer.solcVersion.value).toBeNull()
 
         // 2) mount
         contractAnalyzer.mount()
@@ -105,6 +115,8 @@ describe("ContractAnalyzer.spec.ts", () => {
         expect(contractAnalyzer.fullMatch.value).toBeNull()
         expect(contractAnalyzer.sourcifyURL.value).toBeNull()
         expect(contractAnalyzer.evmVersion.value).toBeNull()
+        expect(contractAnalyzer.isSystemContract.value).toBe(false)
+        expect(contractAnalyzer.solcVersion.value).toBeNull()
 
         // 3) setup
         contractId.value = SAMPLE_CONTRACT.contract_id
@@ -117,6 +129,8 @@ describe("ContractAnalyzer.spec.ts", () => {
         expect(contractAnalyzer.fullMatch.value).toBeTruthy()
         expect(contractAnalyzer.sourcifyURL.value).toBe(contractURL)
         expect(contractAnalyzer.evmVersion.value).toBe("london")
+        expect(contractAnalyzer.isSystemContract.value).toBe(false)
+        expect(contractAnalyzer.solcVersion.value).toBe("0.8.4")
 
         // 4) unmount
         contractAnalyzer.unmount()
@@ -129,6 +143,8 @@ describe("ContractAnalyzer.spec.ts", () => {
         expect(contractAnalyzer.fullMatch.value).toBeNull()
         expect(contractAnalyzer.sourcifyURL.value).toBeNull()
         expect(contractAnalyzer.evmVersion.value).toBeNull()
+        expect(contractAnalyzer.isSystemContract.value).toBe(false)
+        expect(contractAnalyzer.solcVersion.value).toBeNull()
 
     })
 
@@ -154,6 +170,8 @@ describe("ContractAnalyzer.spec.ts", () => {
         expect(contractAnalyzer.fullMatch.value).toBeNull()
         expect(contractAnalyzer.sourcifyURL.value).toBeNull()
         expect(contractAnalyzer.evmVersion.value).toBeNull()
+        expect(contractAnalyzer.isSystemContract.value).toBe(false)
+        expect(contractAnalyzer.solcVersion.value).toBeNull()
 
         // 2) mount
         contractAnalyzer.mount()
@@ -166,6 +184,8 @@ describe("ContractAnalyzer.spec.ts", () => {
         expect(contractAnalyzer.fullMatch.value).toBeNull()
         expect(contractAnalyzer.sourcifyURL.value).toBeNull()
         expect(contractAnalyzer.evmVersion.value).toBeNull()
+        expect(contractAnalyzer.isSystemContract.value).toBe(false)
+        expect(contractAnalyzer.solcVersion.value).toBeNull()
 
         // 3) setup
         contractId.value = SAMPLE_TOKEN.token_id
@@ -178,6 +198,8 @@ describe("ContractAnalyzer.spec.ts", () => {
         expect(contractAnalyzer.fullMatch.value).toBeNull()
         expect(contractAnalyzer.sourcifyURL.value).toBeNull()
         expect(contractAnalyzer.evmVersion.value).toBeNull()
+        expect(contractAnalyzer.isSystemContract.value).toBe(true)
+        expect(contractAnalyzer.solcVersion.value).toBeNull()
 
         // 4) unmount
         contractAnalyzer.unmount()
@@ -190,6 +212,8 @@ describe("ContractAnalyzer.spec.ts", () => {
         expect(contractAnalyzer.fullMatch.value).toBeNull()
         expect(contractAnalyzer.sourcifyURL.value).toBeNull()
         expect(contractAnalyzer.evmVersion.value).toBeNull()
+        expect(contractAnalyzer.isSystemContract.value).toBe(false)
+        expect(contractAnalyzer.solcVersion.value).toBeNull()
 
 
     })
@@ -216,6 +240,8 @@ describe("ContractAnalyzer.spec.ts", () => {
         expect(contractAnalyzer.fullMatch.value).toBeNull()
         expect(contractAnalyzer.sourcifyURL.value).toBeNull()
         expect(contractAnalyzer.evmVersion.value).toBeNull()
+        expect(contractAnalyzer.isSystemContract.value).toBe(false)
+        expect(contractAnalyzer.solcVersion.value).toBeNull()
 
         // 2) mount
         contractAnalyzer.mount()
@@ -228,6 +254,8 @@ describe("ContractAnalyzer.spec.ts", () => {
         expect(contractAnalyzer.fullMatch.value).toBeNull()
         expect(contractAnalyzer.sourcifyURL.value).toBeNull()
         expect(contractAnalyzer.evmVersion.value).toBeNull()
+        expect(contractAnalyzer.isSystemContract.value).toBe(false)
+        expect(contractAnalyzer.solcVersion.value).toBeNull()
 
         // 3) setup
         contractId.value = SAMPLE_TOKEN_WITH_KEYS.token_id
@@ -240,6 +268,8 @@ describe("ContractAnalyzer.spec.ts", () => {
         expect(contractAnalyzer.fullMatch.value).toBeNull()
         expect(contractAnalyzer.sourcifyURL.value).toBeNull()
         expect(contractAnalyzer.evmVersion.value).toBeNull()
+        expect(contractAnalyzer.isSystemContract.value).toBe(true)
+        expect(contractAnalyzer.solcVersion.value).toBeNull()
 
         // 4) unmount
         contractAnalyzer.unmount()
@@ -252,6 +282,8 @@ describe("ContractAnalyzer.spec.ts", () => {
         expect(contractAnalyzer.fullMatch.value).toBeNull()
         expect(contractAnalyzer.sourcifyURL.value).toBeNull()
         expect(contractAnalyzer.evmVersion.value).toBeNull()
+        expect(contractAnalyzer.isSystemContract.value).toBe(false)
+        expect(contractAnalyzer.solcVersion.value).toBeNull()
 
 
     })
