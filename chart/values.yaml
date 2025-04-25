@@ -25,7 +25,6 @@ autoscaling:
 
 # Environment variables to add to the container. The value can either be a string or an EnvVarSource. Evaluated as a template.
 env: {}
-  # DOCKER_LOCAL_MIRROR_NODE_URL: "http://localhost:5551"
   # BAR:
   #   valueFrom:
   #     secretKeyRef:
@@ -173,38 +172,75 @@ volumes:
 #   /api: "http://{{ .Release.Name }}-rest"
 proxyPass: {}
 
+# Network configuration of the Explorer. One array element per exposed network.
+# See configuration details at https://github.com/hiero-ledger/hiero-mirror-node-explorer/blob/main/CONFIGURATION.md
 config: |
   [
     {
       "name": "mainnet",
       "displayName": "MAINNET",
       "url": "https://mainnet-public.mirrornode.hedera.com/",
-      "ledgerID": "00"
+      "ledgerID": "00",
+      "baseRealm": 0,
+      "baseShard": 0,
+      "enableWallet": false,
+      "enableStaking": false,
+      "enableExpiry": false,
+      "enableMarket": false,
+      "erc20IndexURL": null,
+      "erc721IndexURL": null,
+      "sourcifySetup": null
     },
     {
       "name": "testnet",
       "displayName": "TESTNET",
       "url": "https://testnet.mirrornode.hedera.com/",
-      "ledgerID": "01"
+      "ledgerID": "01",
+      "baseRealm": 0,
+      "baseShard": 0,
+      "enableWallet": false,
+      "enableStaking": false,
+      "enableExpiry": false,
+      "enableMarket": false,
+      "erc20IndexURL": null,
+      "erc721IndexURL": null,
+      "sourcifySetup": null
     },
     {
       "name": "previewnet",
       "displayName": "PREVIEWNET",
       "url": "https://previewnet.mirrornode.hedera.com/",
-      "ledgerID": "02"
+      "ledgerID": "02",
+      "baseRealm": 0,
+      "baseShard": 0,
+      "enableWallet": false,
+      "enableStaking": false,
+      "enableExpiry": false,
+      "enableMarket": false,
+      "erc20IndexURL": null,
+      "erc721IndexURL": null,
+      "sourcifySetup": null
     }
   ]
+
+# Core configuration of the Explorer. A null value means the default configuration will be used.
+# See configuration details at https://github.com/hiero-ledger/hiero-mirror-node-explorer/blob/main/CONFIGURATION.md
 core-config: |
   {
     "productName": null,
-    "productLogoURL": null,
+    "productLogoLightURL": null",
+    "productLogoDarkURL": null,
+    "productMiniLogoLightURL": null,
+    "productMiniLogoDarkURL": null,
     "documentTitlePrefix": null,
     "productDescription": null,
     "metaDescription": null,
     "metaURL": null,
-    "builtOnLogoURL": null,
+    "builtOnLogoLightURL": null,
+    "builtOnLogoDarkURL": null,
     "builtOnURL": null,
-    "sponsorLogoURL": null,
+    "sponsorLogoLightURL": null,
+    "sponsorLogoDarkURL": null,
     "sponsorURL": null,
     "termsOfUseURL": null,
     "estimatorNotice": null,
@@ -214,5 +250,9 @@ core-config: |
     "ipfsGatewayURL": null,
     "arweaveServerURL": null,
     "cryptoName": null,
-    "cryptoSymbol": null
+    "cryptoSymbol": null,
+    "cryptoLogoLightURL": null,
+    "cryptoLogoDarkURL": null,
+    "walletConnectID": null,
+    "hgraphKey": null
   }

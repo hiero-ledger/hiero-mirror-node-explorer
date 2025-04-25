@@ -116,11 +116,11 @@ export class ThemeController {
             document.documentElement.style.setProperty('--status-error-color', 'var(--dark-status-error-color)')
             document.documentElement.style.setProperty('--search-bar-default', 'var(--dark-search-bar-default)')
             document.documentElement.style.setProperty('--graph-line-color', 'var(--dark-graph-line-color)')
-            document.getElementById('product-logo')?.setAttribute('src', this.coreConfig.productLogoDarkURL ?? '')
+            document.getElementById('product-logo')?.setAttribute('src', this.coreConfig.productLogoDarkURL)
             document.getElementById('product-mini-logo')?.setAttribute('src', this.coreConfig.productMiniLogoDarkURL ?? '')
-            document.getElementById('sponsor-logo')?.setAttribute('src', this.coreConfig.sponsorLogoDarkURL ?? '')
-            document.getElementById('built-on-logo')?.setAttribute('src', this.coreConfig.builtOnLogoDarkURL ?? '')
-            document.getElementById('crypto-logo')?.setAttribute('src', this.coreConfig.cryptoLogoDarkURL ?? '')
+            document.getElementById('sponsor-logo')?.setAttribute('src', this.coreConfig.sponsorLogoDarkURL)
+            document.getElementById('built-on-logo')?.setAttribute('src', this.coreConfig.builtOnLogoDarkURL)
+            document.getElementById('crypto-logo')?.setAttribute('src', this.coreConfig.cryptoLogoDarkURL)
 
         } else {
             AppStorage.setTheme('light')
@@ -161,11 +161,11 @@ export class ThemeController {
             document.documentElement.style.setProperty('--status-error-color', 'var(--light-status-error-color)')
             document.documentElement.style.setProperty('--search-bar-default', 'var(--light-search-bar-default)')
             document.documentElement.style.setProperty('--graph-line-color', 'var(--light-graph-line-color)')
-            document.getElementById('product-logo')?.setAttribute('src', this.coreConfig.productLogoLightURL ?? '')
+            document.getElementById('product-logo')?.setAttribute('src', this.coreConfig.productLogoLightURL)
             document.getElementById('product-mini-logo')?.setAttribute('src', this.coreConfig.productMiniLogoLightURL ?? '')
-            document.getElementById('sponsor-logo')?.setAttribute('src', this.coreConfig.sponsorLogoLightURL ?? '')
-            document.getElementById('built-on-logo')?.setAttribute('src', this.coreConfig.builtOnLogoLightURL ?? '')
-            document.getElementById('crypto-logo')?.setAttribute('src', this.coreConfig.cryptoLogoLightURL ?? '')
+            document.getElementById('sponsor-logo')?.setAttribute('src', this.coreConfig.sponsorLogoLightURL)
+            document.getElementById('built-on-logo')?.setAttribute('src', this.coreConfig.builtOnLogoLightURL)
+            document.getElementById('crypto-logo')?.setAttribute('src', this.coreConfig.cryptoLogoLightURL)
         }
 
     }

@@ -56,8 +56,7 @@ export function fetchURL(obj: any, key: string): string | null {
     const s = fetchString(obj, key)
     if (s !== null) {
         try {
-            const url = new URL(s, window.location.origin)
-            result = url.toString()
+            result = localPathToURL(s)
         } catch {
             throw new TypeError('Expected ' + key + ' to be URL, got ' + obj)
         }
@@ -82,4 +81,8 @@ export function fetchObject(obj: any, key: string): object | null {
         result = null
     }
     return result
+}
+
+export function localPathToURL(path: string): string {
+    return new URL(path, window.location.origin).toString()
 }

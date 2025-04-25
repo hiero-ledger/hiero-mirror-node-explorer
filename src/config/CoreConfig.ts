@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import axios from "axios";
-import {fetchString, fetchURL} from "@/config/ConfigUtils";
+import {fetchString, fetchURL, localPathToURL} from "@/config/ConfigUtils";
 import {inject} from "vue";
 import {coreConfigKey} from "@/AppKeys";
 
@@ -41,9 +41,9 @@ export class CoreConfig {
         // The name of the product as shown in the short form of the footer tagline
         public readonly productName: string,
         // The URL of the product logo (light theme) located at the left of the top navigation bar
-        public readonly productLogoLightURL: string | null,
+        public readonly productLogoLightURL: string,
         // The URL of the product logo (dark theme) located at the left of the top navigation bar
-        public readonly productLogoDarkURL: string | null,
+        public readonly productLogoDarkURL: string,
         // The URL of the reduced product logo (light theme) located at the left of the top navigation bar
         public readonly productMiniLogoLightURL: string | null,
         // The URL of the reduced product logo (dark theme) located at the left of the top navigation bar
@@ -51,21 +51,21 @@ export class CoreConfig {
         // The prefix used in the document title
         public readonly documentTitlePrefix: string,
         // The description of the product as shown in the long form of the footer tagline
-        public readonly productDescription: string | null,
+        public readonly productDescription: string,
         // The content of meta tag: name="description"
         public readonly metaDescription: string | null,
         // The content of meta tag: property="og:url"
         public readonly metaURL: string | null,
         // The URL of the 'BUILT ON' logo (light theme) located at the left of the footer
-        public readonly builtOnLogoLightURL: string | null,
+        public readonly builtOnLogoLightURL: string,
         // The URL of the 'BUILT ON' logo (dark theme) located at the left of the footer
-        public readonly builtOnLogoDarkURL: string | null,
+        public readonly builtOnLogoDarkURL: string,
         // The URL to which a click on the bottom-left 'BUILT ON' logo will navigate
         public readonly builtOnURL: string | null,
         // The URL of the sponsor logo (light theme) located at the right of the footer
-        public readonly sponsorLogoLightURL: string | null,
+        public readonly sponsorLogoLightURL: string,
         // The URL of the sponsor logo (dark theme) located at the right of the footer
-        public readonly sponsorLogoDarkURL: string | null,
+        public readonly sponsorLogoDarkURL: string,
         // The URL to which a click on the bottom-right sponsor logo will navigate
         public readonly sponsorURL: string | null,
         // The URL of the 'Terms of Use' page
@@ -88,9 +88,9 @@ export class CoreConfig {
         // The HTML content used as crypto unit symbol
         public readonly cryptoSymbol: string | null,
         // The URL of the crypto logo (light theme)
-        public readonly cryptoLogoLightURL: string | null,
+        public readonly cryptoLogoLightURL: string,
         // The URL of the crypto logo (dark theme)
-        public readonly cryptoLogoDarkURL: string | null,
+        public readonly cryptoLogoDarkURL: string,
         // The Wallect Connect Identifier
         public readonly walletConnectID: string | null,
         // The key for accessing Hgraph data
@@ -98,23 +98,22 @@ export class CoreConfig {
     ) {
     }
 
-
     private static parse(obj: object): CoreConfig {
         return new CoreConfig(
-            fetchString(obj, "productName") ?? "Hiero Mirror Node Explorer",
-            fetchURL(obj, "productLogoLightURL"),
-            fetchURL(obj, "productLogoDarkURL"),
+            fetchString(obj, "productName") ?? "Hiero Explorer",
+            fetchURL(obj, "productLogoLightURL") ?? localPathToURL("product-logo-light.png") ,
+            fetchURL(obj, "productLogoDarkURL") ?? localPathToURL("product-logo-dark.png"),
             fetchURL(obj, "productMiniLogoLightURL"),
             fetchURL(obj, "productMiniLogoDarkURL"),
             fetchString(obj, "documentTitlePrefix") ?? "Hiero",
-            fetchString(obj, "productDescription") ?? "Hiero Mirror Node Explorer",
+            fetchString(obj, "productDescription") ?? "Hiero Explorer is a ledger explorer for the Hiero network.",
             fetchString(obj, "metaDescription"),
             fetchURL(obj, "metaURL"),
-            fetchURL(obj, "builtOnLogoLightURL"),
-            fetchURL(obj, "builtOnLogoDarkURL"),
+            fetchURL(obj, "builtOnLogoLightURL") ?? localPathToURL("technology-logo-light.svg"),
+            fetchURL(obj, "builtOnLogoDarkURL") ?? localPathToURL("technology-logo-dark.svg") ,
             fetchURL(obj, "builtOnURL"),
-            fetchURL(obj, "sponsorLogoLightURL"),
-            fetchURL(obj, "sponsorLogoDarkURL"),
+            fetchURL(obj, "sponsorLogoLightURL") ?? localPathToURL("sponsor-logo-light.png"),
+            fetchURL(obj, "sponsorLogoDarkURL") ?? localPathToURL("sponsor-logo-dark.png"),
             fetchURL(obj, "sponsorURL"),
             fetchURL(obj, "termsOfUseURL"),
             fetchString(obj, "estimatorNotice"),
@@ -125,8 +124,8 @@ export class CoreConfig {
             fetchURL(obj, "arweaveServerURL") ?? "https://arweave.net/",
             fetchString(obj, "cryptoName") ?? "HBAR",
             fetchString(obj, "cryptoSymbol"),
-            fetchURL(obj, "cryptoLogoLightURL"),
-            fetchURL(obj, "cryptoLogoDarkURL"),
+            fetchURL(obj, "cryptoLogoLightURL") ?? localPathToURL("crypto-logo-light.svg"),
+            fetchURL(obj, "cryptoLogoDarkURL") ?? localPathToURL("crypto-logo-dark.svg"),
             fetchString(obj, "walletConnectID"),
             fetchString(obj, "hgraphKey")
         )
