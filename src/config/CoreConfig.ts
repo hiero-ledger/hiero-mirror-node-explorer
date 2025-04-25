@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import axios from "axios";
-import {fetchString, fetchURL} from "@/config/ConfigUtils";
+import {fetchString, fetchURL, localPathToURL} from "@/config/ConfigUtils";
 import {inject} from "vue";
 import {coreConfigKey} from "@/AppKeys";
 
@@ -98,23 +98,22 @@ export class CoreConfig {
     ) {
     }
 
-
     private static parse(obj: object): CoreConfig {
         return new CoreConfig(
-            fetchString(obj, "productName") ?? "Hiero Mirror Node Explorer",
-            fetchURL(obj, "productLogoLightURL"),
-            fetchURL(obj, "productLogoDarkURL"),
+            fetchString(obj, "productName") ?? "Hiero Explorer",
+            fetchURL(obj, "productLogoLightURL") ?? localPathToURL("product-logo-light.png") ,
+            fetchURL(obj, "productLogoDarkURL") ?? localPathToURL("product-logo-dark.png"),
             fetchURL(obj, "productMiniLogoLightURL"),
             fetchURL(obj, "productMiniLogoDarkURL"),
             fetchString(obj, "documentTitlePrefix") ?? "Hiero",
-            fetchString(obj, "productDescription") ?? "Hiero Mirror Node Explorer",
+            fetchString(obj, "productDescription") ?? "Hiero Explorer is a ledger explorer for the Hiero network.",
             fetchString(obj, "metaDescription"),
             fetchURL(obj, "metaURL"),
-            fetchURL(obj, "builtOnLogoLightURL"),
-            fetchURL(obj, "builtOnLogoDarkURL"),
+            fetchURL(obj, "builtOnLogoLightURL") ?? localPathToURL("technology-logo-light.svg"),
+            fetchURL(obj, "builtOnLogoDarkURL") ?? localPathToURL("technology-logo-dark.svg") ,
             fetchURL(obj, "builtOnURL"),
-            fetchURL(obj, "sponsorLogoLightURL"),
-            fetchURL(obj, "sponsorLogoDarkURL"),
+            fetchURL(obj, "sponsorLogoLightURL") ?? localPathToURL("sponsor-logo-light.png"),
+            fetchURL(obj, "sponsorLogoDarkURL") ?? localPathToURL("sponsor-logo-dark.png"),
             fetchURL(obj, "sponsorURL"),
             fetchURL(obj, "termsOfUseURL"),
             fetchString(obj, "estimatorNotice"),
@@ -125,8 +124,8 @@ export class CoreConfig {
             fetchURL(obj, "arweaveServerURL") ?? "https://arweave.net/",
             fetchString(obj, "cryptoName") ?? "HBAR",
             fetchString(obj, "cryptoSymbol"),
-            fetchURL(obj, "cryptoLogoLightURL"),
-            fetchURL(obj, "cryptoLogoDarkURL"),
+            fetchURL(obj, "cryptoLogoLightURL") ?? localPathToURL("crypto-logo-light.svg"),
+            fetchURL(obj, "cryptoLogoDarkURL") ?? localPathToURL("crypto-logo-dark.svg"),
             fetchString(obj, "walletConnectID"),
             fetchString(obj, "hgraphKey")
         )
