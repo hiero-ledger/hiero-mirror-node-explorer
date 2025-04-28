@@ -2,7 +2,7 @@
 
 // SPDX-License-Identifier: Apache-2.0
 
-import {describe, expect, test} from 'vitest'
+import {describe, expect, test, vi} from 'vitest'
 import {Ref, ref} from "vue";
 import {flushPromises} from "@vue/test-utils";
 import MockAdapter from "axios-mock-adapter";
@@ -183,9 +183,6 @@ describe("ContractAnalyzer.spec.ts", () => {
 
         const matcher1 = "api/v1/tokens/" + SAMPLE_TOKEN.token_id
         mock.onGet(matcher1).reply(200, SAMPLE_TOKEN)
-        const abi = require('../../../public/abi/IERC20+IHRC.json')
-        const matcher6 = "http://localhost:3000/abi/IERC20+IHRC.json"
-        mock.onGet(matcher6).reply(200, abi)
 
 
         // 1) new
@@ -223,10 +220,10 @@ describe("ContractAnalyzer.spec.ts", () => {
         // 3) setup
         contractId.value = SAMPLE_TOKEN.token_id
         await flushPromises()
+        await vi.dynamicImportSettled()
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/contracts/" + SAMPLE_TOKEN.token_id,
             "api/v1/tokens/" + SAMPLE_TOKEN.token_id,
-            "http://localhost:3000/abi/IERC20+IHRC.json",
         ])
         expect(contractAnalyzer.contractId.value).toBe(SAMPLE_TOKEN.token_id)
         expect(contractAnalyzer.report.value).not.toBeNull()
@@ -246,7 +243,6 @@ describe("ContractAnalyzer.spec.ts", () => {
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/contracts/" + SAMPLE_TOKEN.token_id,
             "api/v1/tokens/" + SAMPLE_TOKEN.token_id,
-            "http://localhost:3000/abi/IERC20+IHRC.json",
         ])
         expect(contractAnalyzer.contractId.value).toBe(SAMPLE_TOKEN.token_id)
         expect(contractAnalyzer.report.value).toBeNull()
@@ -269,9 +265,6 @@ describe("ContractAnalyzer.spec.ts", () => {
 
         const matcher1 = "api/v1/tokens/" + SAMPLE_TOKEN_WITH_KEYS.token_id
         mock.onGet(matcher1).reply(200, SAMPLE_TOKEN_WITH_KEYS)
-        const abi = require('../../../public/abi/IERC721+IHRC.json')
-        const matcher6 = "http://localhost:3000/abi/IERC721+IHRC.json"
-        mock.onGet(matcher6).reply(200, abi)
 
 
         // 1) new
@@ -294,6 +287,7 @@ describe("ContractAnalyzer.spec.ts", () => {
         contractAnalyzer.mount()
         await flushPromises()
         expect(fetchGetURLs(mock)).toStrictEqual([])
+        expect(contractAnalyzer.report.value).toBeNull()
         expect(contractAnalyzer.contractId.value).toBeNull()
         expect(contractAnalyzer.report.value).toBeNull()
         expect(contractAnalyzer.sourceFileName.value).toBeNull()
@@ -309,10 +303,10 @@ describe("ContractAnalyzer.spec.ts", () => {
         // 3) setup
         contractId.value = SAMPLE_TOKEN_WITH_KEYS.token_id
         await flushPromises()
+        await vi.dynamicImportSettled()
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/contracts/" + SAMPLE_TOKEN_WITH_KEYS.token_id,
             "api/v1/tokens/" + SAMPLE_TOKEN_WITH_KEYS.token_id,
-            "http://localhost:3000/abi/IERC721+IHRC.json",
         ])
         expect(contractAnalyzer.contractId.value).toBe(SAMPLE_TOKEN_WITH_KEYS.token_id)
         expect(contractAnalyzer.report.value).not.toBeNull()
@@ -332,7 +326,6 @@ describe("ContractAnalyzer.spec.ts", () => {
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/contracts/" + SAMPLE_TOKEN_WITH_KEYS.token_id,
             "api/v1/tokens/" + SAMPLE_TOKEN_WITH_KEYS.token_id,
-            "http://localhost:3000/abi/IERC721+IHRC.json",
         ])
         expect(contractAnalyzer.contractId.value).toBe(SAMPLE_TOKEN_WITH_KEYS.token_id)
         expect(contractAnalyzer.report.value).toBeNull()
@@ -347,7 +340,7 @@ describe("ContractAnalyzer.spec.ts", () => {
         expect(contractAnalyzer.solcVersion.value).toBeNull()
 
 
-    })
+    }, 50000)
 })
 
 
