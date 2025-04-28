@@ -3,7 +3,6 @@
 import {computed, ComputedRef, Ref, shallowRef, ShallowRef, watch, WatchStopHandle} from "vue";
 import {SystemContractEntry, systemContractRegistry} from "@/schemas/SystemContractRegistry";
 import {ethers} from "ethers";
-import {AssetCache} from "@/utils/cache/AssetCache";
 import {SourcifyCache, SourcifyRecord, SourcifyResponseItem} from "@/utils/cache/SourcifyCache";
 import {SolcMetadata} from "@/utils/solc/SolcMetadata";
 import {ContractResponse, TokenInfo, TokenType} from "@/schemas/MirrorNodeSchemas";
@@ -275,13 +274,13 @@ export class ContractAnalyzer {
     }
 
     private static async analyzeSystemContract(e: SystemContractEntry): Promise<ContractAnalyzerReport> {
-        const asset = await AssetCache.instance.lookup(e.abiURL) as { abi: ethers.Fragment[] }
+        const abi = await e.loadABI()
         return {
             systemContractEntry: e,
             contractInfo: null,
             sourcifyRecord: null,
             tokenInfo: null,
-            abi: asset.abi,
+            abi: abi,
             reportError: null
         }
     }
@@ -318,8 +317,8 @@ export class ContractAnalyzer {
         }
         let abi: ethers.Fragment[] | null
         if (abiName !== null) {
-            const abiURL = window.location.origin + "/abi/" + abiName + ".json"
-            abi = await AssetCache.instance.lookup(abiURL) as ethers.Fragment[]
+            const m = await import(`@/assets/abi/${abiName}.json`)
+            abi = m.default
         } else {
             abi = null
         }

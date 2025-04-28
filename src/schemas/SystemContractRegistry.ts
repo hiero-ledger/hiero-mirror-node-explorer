@@ -2,14 +2,15 @@
 
 import {EntityID} from "@/utils/EntityID";
 import {routeManager} from "@/router.ts";
+import {ethers} from "ethers";
 
 export class SystemContractRegistry {
 
     private readonly entries = new Map<string, SystemContractEntry>()
 
     constructor() {
-        this.addEntry("0.0.359", "Hedera Token Service System Contract", "IHederaTokenService.json")
-        this.addEntry("0.0.360", "Hedera Exchange Rate System Contract", "IExchangeRate.json")
+        this.addEntry("0.0.359", "Hedera Token Service System Contract", "IHederaTokenService")
+        this.addEntry("0.0.360", "Hedera Exchange Rate System Contract", "IExchangeRate")
     }
 
     public lookup(contractId: string): SystemContractEntry | null {
@@ -34,13 +35,16 @@ export class SystemContractEntry {
     public readonly contractId: string
     public readonly description: string
     public readonly abiFileName: string
-    public readonly abiURL: string
 
     constructor(contractId: string, description: string, abiFileName: string) {
         this.contractId = contractId
         this.description = description
         this.abiFileName = abiFileName
-        this.abiURL = window.location.origin + "/abi/" + abiFileName
+    }
+
+    async loadABI(): Promise<ethers.Fragment[] | null> {
+        const m = await import(`@/assets/abi/${this.abiFileName}.json`)
+        return m.default.abi
     }
 }
 

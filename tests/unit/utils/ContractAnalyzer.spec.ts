@@ -2,7 +2,7 @@
 
 // SPDX-License-Identifier: Apache-2.0
 
-import {describe, expect, test} from 'vitest'
+import {describe, expect, test, vi} from 'vitest'
 import {Ref, ref} from "vue";
 import {flushPromises} from "@vue/test-utils";
 import MockAdapter from "axios-mock-adapter";
@@ -11,6 +11,7 @@ import {ContractAnalyzer} from "@/utils/analyzer/ContractAnalyzer";
 import {SAMPLE_CONTRACT, SAMPLE_TOKEN, SAMPLE_TOKEN_WITH_KEYS} from "../Mocks";
 import {SourcifyResponse} from "@/utils/cache/SourcifyCache";
 import {routeManager} from "@/router";
+import {fetchGetURLs} from "../MockUtils.ts";
 
 describe("ContractAnalyzer.spec.ts", () => {
 
@@ -23,7 +24,9 @@ describe("ContractAnalyzer.spec.ts", () => {
         // 1) new
         const contractId: Ref<string | null> = ref(null)
         const contractAnalyzer = new ContractAnalyzer(contractId)
+        expect(fetchGetURLs(mock)).toStrictEqual([])
         expect(contractAnalyzer.contractId.value).toBeNull()
+        expect(contractAnalyzer.report.value).toBeNull()
         expect(contractAnalyzer.sourceFileName.value).toBeNull()
         expect(contractAnalyzer.contractName.value).toBeNull()
         expect(contractAnalyzer.interface.value).toBeNull()
@@ -37,7 +40,9 @@ describe("ContractAnalyzer.spec.ts", () => {
         // 2) mount
         contractAnalyzer.mount()
         await flushPromises()
+        expect(fetchGetURLs(mock)).toStrictEqual([])
         expect(contractAnalyzer.contractId.value).toBeNull()
+        expect(contractAnalyzer.report.value).toBeNull()
         expect(contractAnalyzer.sourceFileName.value).toBeNull()
         expect(contractAnalyzer.contractName.value).toBeNull()
         expect(contractAnalyzer.interface.value).toBeNull()
@@ -51,7 +56,12 @@ describe("ContractAnalyzer.spec.ts", () => {
         // 3) setup
         contractId.value = SAMPLE_CONTRACT.contract_id
         await flushPromises()
+        expect(fetchGetURLs(mock)).toStrictEqual([
+            "api/v1/contracts/" + SAMPLE_CONTRACT.contract_id,
+            "http://localhost:3000/files/any/295/0x00000000000000000000000000000000000b70cf",
+        ])
         expect(contractAnalyzer.contractId.value).toBe(SAMPLE_CONTRACT.contract_id)
+        expect(contractAnalyzer.report.value).not.toBeNull()
         expect(contractAnalyzer.sourceFileName.value).toBeNull()
         expect(contractAnalyzer.contractName.value).toBeNull()
         expect(contractAnalyzer.interface.value).toBeNull()
@@ -65,7 +75,12 @@ describe("ContractAnalyzer.spec.ts", () => {
         // 4) unmount
         contractAnalyzer.unmount()
         await flushPromises()
+        expect(fetchGetURLs(mock)).toStrictEqual([
+            "api/v1/contracts/" + SAMPLE_CONTRACT.contract_id,
+            "http://localhost:3000/files/any/295/0x00000000000000000000000000000000000b70cf",
+        ])
         expect(contractAnalyzer.contractId.value).toBe(SAMPLE_CONTRACT.contract_id)
+        expect(contractAnalyzer.report.value).toBeNull()
         expect(contractAnalyzer.sourceFileName.value).toBeNull()
         expect(contractAnalyzer.contractName.value).toBeNull()
         expect(contractAnalyzer.interface.value).toBeNull()
@@ -93,7 +108,9 @@ describe("ContractAnalyzer.spec.ts", () => {
         // 1) new
         const contractId: Ref<string | null> = ref(null)
         const contractAnalyzer = new ContractAnalyzer(contractId)
+        expect(fetchGetURLs(mock)).toStrictEqual([])
         expect(contractAnalyzer.contractId.value).toBeNull()
+        expect(contractAnalyzer.report.value).toBeNull()
         expect(contractAnalyzer.sourceFileName.value).toBeNull()
         expect(contractAnalyzer.contractName.value).toBeNull()
         expect(contractAnalyzer.interface.value).toBeNull()
@@ -107,7 +124,9 @@ describe("ContractAnalyzer.spec.ts", () => {
         // 2) mount
         contractAnalyzer.mount()
         await flushPromises()
+        expect(fetchGetURLs(mock)).toStrictEqual([])
         expect(contractAnalyzer.contractId.value).toBeNull()
+        expect(contractAnalyzer.report.value).toBeNull()
         expect(contractAnalyzer.sourceFileName.value).toBeNull()
         expect(contractAnalyzer.contractName.value).toBeNull()
         expect(contractAnalyzer.interface.value).toBeNull()
@@ -121,7 +140,12 @@ describe("ContractAnalyzer.spec.ts", () => {
         // 3) setup
         contractId.value = SAMPLE_CONTRACT.contract_id
         await flushPromises()
+        expect(fetchGetURLs(mock)).toStrictEqual([
+            "api/v1/contracts/" + SAMPLE_CONTRACT.contract_id,
+            "http://localhost:3000/files/any/295/0x00000000000000000000000000000000000b70cf",
+        ])
         expect(contractAnalyzer.contractId.value).toBe(SAMPLE_CONTRACT.contract_id)
+        expect(contractAnalyzer.report.value).not.toBeNull()
         expect(contractAnalyzer.sourceFileName.value).toBe("HTSv2.sol")
         expect(contractAnalyzer.contractName.value).toBe("HTS")
         expect(contractAnalyzer.interface.value).not.toBeNull()
@@ -135,7 +159,12 @@ describe("ContractAnalyzer.spec.ts", () => {
         // 4) unmount
         contractAnalyzer.unmount()
         await flushPromises()
+        expect(fetchGetURLs(mock)).toStrictEqual([
+            "api/v1/contracts/" + SAMPLE_CONTRACT.contract_id,
+            "http://localhost:3000/files/any/295/0x00000000000000000000000000000000000b70cf",
+        ])
         expect(contractAnalyzer.contractId.value).toBe(SAMPLE_CONTRACT.contract_id)
+        expect(contractAnalyzer.report.value).toBeNull()
         expect(contractAnalyzer.sourceFileName.value).toBeNull()
         expect(contractAnalyzer.contractName.value).toBeNull()
         expect(contractAnalyzer.interface.value).toBeNull()
@@ -154,15 +183,14 @@ describe("ContractAnalyzer.spec.ts", () => {
 
         const matcher1 = "api/v1/tokens/" + SAMPLE_TOKEN.token_id
         mock.onGet(matcher1).reply(200, SAMPLE_TOKEN)
-        const abi = require('../../../public/abi/IERC20+IHRC.json')
-        const matcher6 = "http://localhost:3000/abi/IERC20+IHRC.json"
-        mock.onGet(matcher6).reply(200, abi)
 
 
         // 1) new
         const contractId: Ref<string | null> = ref(null)
         const contractAnalyzer = new ContractAnalyzer(contractId)
+        expect(fetchGetURLs(mock)).toStrictEqual([])
         expect(contractAnalyzer.contractId.value).toBeNull()
+        expect(contractAnalyzer.report.value).toBeNull()
         expect(contractAnalyzer.sourceFileName.value).toBeNull()
         expect(contractAnalyzer.contractName.value).toBeNull()
         expect(contractAnalyzer.interface.value).toBeNull()
@@ -176,7 +204,9 @@ describe("ContractAnalyzer.spec.ts", () => {
         // 2) mount
         contractAnalyzer.mount()
         await flushPromises()
+        expect(fetchGetURLs(mock)).toStrictEqual([])
         expect(contractAnalyzer.contractId.value).toBeNull()
+        expect(contractAnalyzer.report.value).toBeNull()
         expect(contractAnalyzer.sourceFileName.value).toBeNull()
         expect(contractAnalyzer.contractName.value).toBeNull()
         expect(contractAnalyzer.interface.value).toBeNull()
@@ -190,7 +220,13 @@ describe("ContractAnalyzer.spec.ts", () => {
         // 3) setup
         contractId.value = SAMPLE_TOKEN.token_id
         await flushPromises()
+        await vi.dynamicImportSettled()
+        expect(fetchGetURLs(mock)).toStrictEqual([
+            "api/v1/contracts/" + SAMPLE_TOKEN.token_id,
+            "api/v1/tokens/" + SAMPLE_TOKEN.token_id,
+        ])
         expect(contractAnalyzer.contractId.value).toBe(SAMPLE_TOKEN.token_id)
+        expect(contractAnalyzer.report.value).not.toBeNull()
         expect(contractAnalyzer.sourceFileName.value).toBeNull()
         expect(contractAnalyzer.contractName.value).toBeNull()
         expect(contractAnalyzer.interface.value).not.toBeNull()
@@ -204,7 +240,12 @@ describe("ContractAnalyzer.spec.ts", () => {
         // 4) unmount
         contractAnalyzer.unmount()
         await flushPromises()
+        expect(fetchGetURLs(mock)).toStrictEqual([
+            "api/v1/contracts/" + SAMPLE_TOKEN.token_id,
+            "api/v1/tokens/" + SAMPLE_TOKEN.token_id,
+        ])
         expect(contractAnalyzer.contractId.value).toBe(SAMPLE_TOKEN.token_id)
+        expect(contractAnalyzer.report.value).toBeNull()
         expect(contractAnalyzer.sourceFileName.value).toBeNull()
         expect(contractAnalyzer.contractName.value).toBeNull()
         expect(contractAnalyzer.interface.value).toBeNull()
@@ -224,15 +265,14 @@ describe("ContractAnalyzer.spec.ts", () => {
 
         const matcher1 = "api/v1/tokens/" + SAMPLE_TOKEN_WITH_KEYS.token_id
         mock.onGet(matcher1).reply(200, SAMPLE_TOKEN_WITH_KEYS)
-        const abi = require('../../../public/abi/IERC721+IHRC.json')
-        const matcher6 = "http://localhost:3000/abi/IERC721+IHRC.json"
-        mock.onGet(matcher6).reply(200, abi)
 
 
         // 1) new
         const contractId: Ref<string | null> = ref(null)
         const contractAnalyzer = new ContractAnalyzer(contractId)
+        expect(fetchGetURLs(mock)).toStrictEqual([])
         expect(contractAnalyzer.contractId.value).toBeNull()
+        expect(contractAnalyzer.report.value).toBeNull()
         expect(contractAnalyzer.sourceFileName.value).toBeNull()
         expect(contractAnalyzer.contractName.value).toBeNull()
         expect(contractAnalyzer.interface.value).toBeNull()
@@ -246,7 +286,10 @@ describe("ContractAnalyzer.spec.ts", () => {
         // 2) mount
         contractAnalyzer.mount()
         await flushPromises()
+        expect(fetchGetURLs(mock)).toStrictEqual([])
+        expect(contractAnalyzer.report.value).toBeNull()
         expect(contractAnalyzer.contractId.value).toBeNull()
+        expect(contractAnalyzer.report.value).toBeNull()
         expect(contractAnalyzer.sourceFileName.value).toBeNull()
         expect(contractAnalyzer.contractName.value).toBeNull()
         expect(contractAnalyzer.interface.value).toBeNull()
@@ -260,7 +303,13 @@ describe("ContractAnalyzer.spec.ts", () => {
         // 3) setup
         contractId.value = SAMPLE_TOKEN_WITH_KEYS.token_id
         await flushPromises()
+        await vi.dynamicImportSettled()
+        expect(fetchGetURLs(mock)).toStrictEqual([
+            "api/v1/contracts/" + SAMPLE_TOKEN_WITH_KEYS.token_id,
+            "api/v1/tokens/" + SAMPLE_TOKEN_WITH_KEYS.token_id,
+        ])
         expect(contractAnalyzer.contractId.value).toBe(SAMPLE_TOKEN_WITH_KEYS.token_id)
+        expect(contractAnalyzer.report.value).not.toBeNull()
         expect(contractAnalyzer.sourceFileName.value).toBeNull()
         expect(contractAnalyzer.contractName.value).toBeNull()
         expect(contractAnalyzer.interface.value).not.toBeNull()
@@ -274,7 +323,12 @@ describe("ContractAnalyzer.spec.ts", () => {
         // 4) unmount
         contractAnalyzer.unmount()
         await flushPromises()
+        expect(fetchGetURLs(mock)).toStrictEqual([
+            "api/v1/contracts/" + SAMPLE_TOKEN_WITH_KEYS.token_id,
+            "api/v1/tokens/" + SAMPLE_TOKEN_WITH_KEYS.token_id,
+        ])
         expect(contractAnalyzer.contractId.value).toBe(SAMPLE_TOKEN_WITH_KEYS.token_id)
+        expect(contractAnalyzer.report.value).toBeNull()
         expect(contractAnalyzer.sourceFileName.value).toBeNull()
         expect(contractAnalyzer.contractName.value).toBeNull()
         expect(contractAnalyzer.interface.value).toBeNull()
@@ -286,7 +340,7 @@ describe("ContractAnalyzer.spec.ts", () => {
         expect(contractAnalyzer.solcVersion.value).toBeNull()
 
 
-    })
+    }, 50000)
 })
 
 

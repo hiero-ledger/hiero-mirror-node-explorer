@@ -59,9 +59,6 @@ describe("TokenDetails.vue", () => {
         mock.onGet(matcher3).reply(200, []);
         const matcher4 = "/api/v1/transactions"
         mock.onGet(matcher4).reply(200, SAMPLE_TRANSACTIONS);
-        const abi = require('../../../public/abi/IERC20+IHRC.json')
-        const matcher6 = "http://localhost:3000/abi/IERC20+IHRC.json"
-        mock.onGet(matcher6).reply(200, abi)
 
         const wrapper = mount(TokenDetails, {
             global: {
@@ -88,7 +85,6 @@ describe("TokenDetails.vue", () => {
             "api/v1/contracts/" + SAMPLE_TOKEN.custom_fees.fixed_fees[2].collector_account_id,
             "api/v1/network/exchangerate",
             "api/v1/contracts/0x0000000000000000000000000000000001c49eec",
-            "http://localhost:3000/abi/IERC20+IHRC.json",
             "api/v1/accounts/0x0000000000000000000000000000000001c49eec",
             "api/v1/tokens/" + SAMPLE_TOKEN.token_id + "/balances",
         ])
@@ -148,9 +144,6 @@ describe("TokenDetails.vue", () => {
         mock.onGet(matcher2).reply(200, SAMPLE_NFTS);
         const matcher3 = "/api/v1/contracts/" + testTokenId + "/results"
         mock.onGet(matcher3).reply(200, []);
-        const abi = require('../../../public/abi/IERC721+IHRC.json')
-        const matcher6 = "http://localhost:3000/abi/IERC721+IHRC.json"
-        mock.onGet(matcher6).reply(200, abi)
 
         const wrapper = mount(TokenDetails, {
             global: {
@@ -173,7 +166,6 @@ describe("TokenDetails.vue", () => {
             "api/v1/contracts/" + SAMPLE_NONFUNGIBLE_DUDE.token_id,
             "api/v1/contracts/" + SAMPLE_NONFUNGIBLE_DUDE.custom_fees.royalty_fees[0].collector_account_id,
             "api/v1/contracts/0x00000000000000000000000000000000000b6b60",
-            "http://localhost:3000/abi/IERC721+IHRC.json",
             "api/v1/accounts/0x00000000000000000000000000000000000b6b60",
             "api/v1/tokens/" + SAMPLE_NONFUNGIBLE_DUDE.token_id + "/nfts",
             "api/v1/tokens/" + SAMPLE_NFTS.nfts[0].token_id + "/nfts/2",
@@ -230,9 +222,6 @@ describe("TokenDetails.vue", () => {
         mock.onGet(matcher2).reply(200, SAMPLE_NFTS);
         let matcher3 = "/api/v1/contracts/" + testTokenId + "/results"
         mock.onGet(matcher3).reply(200, []);
-        const abi = require('../../../public/abi/IERC721+IHRC.json')
-        const matcher61 = "http://localhost:3000/abi/IERC721+IHRC.json"
-        mock.onGet(matcher61).reply(200, abi)
 
         const wrapper = mount(TokenDetails, {
             global: {
@@ -255,7 +244,6 @@ describe("TokenDetails.vue", () => {
             "api/v1/contracts/" + SAMPLE_NONFUNGIBLE_DUDE.token_id,
             "api/v1/contracts/" + SAMPLE_NONFUNGIBLE_DUDE.custom_fees.royalty_fees[0].collector_account_id,
             "api/v1/contracts/0x00000000000000000000000000000000000b6b60",
-            "http://localhost:3000/abi/IERC721+IHRC.json",
             "api/v1/accounts/0x00000000000000000000000000000000000b6b60",
             "api/v1/tokens/" + SAMPLE_NONFUNGIBLE_DUDE.token_id + "/nfts",
             "api/v1/tokens/" + SAMPLE_NFTS.nfts[0].token_id + "/nfts/2",
@@ -284,9 +272,6 @@ describe("TokenDetails.vue", () => {
         mock.onGet(matcher3).reply(200, []);
         const matcher4 = "/api/v1/tokens/" + testTokenId + "/nfts"
         mock.onGet(matcher4).reply(200, SAMPLE_NFTS);
-        const abi2 = require('../../../public/abi/IERC20+IHRC.json')
-        const matcher62 = "http://localhost:3000/abi/IERC20+IHRC.json"
-        mock.onGet(matcher62).reply(200, abi2)
 
         mock.resetHistory()
 
@@ -306,7 +291,6 @@ describe("TokenDetails.vue", () => {
             "api/v1/contracts/0.0.617890", // ?
             "api/v1/network/exchangerate",
             "api/v1/contracts/0x0000000000000000000000000000000001c49eec",
-            "http://localhost:3000/abi/IERC20+IHRC.json",
             "api/v1/accounts/0x0000000000000000000000000000000001c49eec",
             "api/v1/tokens/" + SAMPLE_TOKEN.token_id + "/balances",
             "api/v1/contracts/" + SAMPLE_TOKEN.token_id + "/results",
@@ -372,9 +356,6 @@ describe("TokenDetails.vue", () => {
         mock.onGet(matcher2).reply(200, SAMPLE_NFTS);
         const matcher3 = "/api/v1/contracts/" + testTokenId + "/results"
         mock.onGet(matcher3).reply(200, []);
-        const abi = require('../../../public/abi/IERC721+IHRC.json')
-        const matcher61 = "http://localhost:3000/abi/IERC721+IHRC.json"
-        mock.onGet(matcher61).reply(200, abi)
 
         const wrapper = mount(TokenDetails, {
             global: {
@@ -397,7 +378,6 @@ describe("TokenDetails.vue", () => {
             "api/v1/contracts/" + SAMPLE_TOKEN_WITH_KEYS.treasury_account_id,
             "api/v1/contracts/" + SAMPLE_TOKEN_WITH_KEYS.token_id,
             "api/v1/contracts/0x0000000000000000000000000000000000016739",
-            "http://localhost:3000/abi/IERC721+IHRC.json",
             "api/v1/accounts/0x0000000000000000000000000000000000016739",
             "api/v1/tokens/" + SAMPLE_TOKEN_WITH_KEYS.token_id + "/nfts",
             "api/v1/tokens/" + SAMPLE_NFTS.nfts[0].token_id + "/nfts/2",
@@ -443,9 +423,6 @@ describe("TokenDetails.vue", () => {
         mock.onGet(matcher2).reply(200, SAMPLE_NFTS);
         const matcher3 = "/api/v1/contracts/" + testTokenId + "/results"
         mock.onGet(matcher3).reply(200, []);
-        const abi = require('../../../public/abi/IERC721+IHRC.json')
-        const matcher61 = "http://localhost:3000/abi/IERC721+IHRC.json"
-        mock.onGet(matcher61).reply(200, abi)
 
         const wrapper = mount(TokenDetails, {
             global: {
@@ -468,7 +445,6 @@ describe("TokenDetails.vue", () => {
             "api/v1/contracts/" + SAMPLE_TOKEN_WITHOUT_KEYS.treasury_account_id,
             "api/v1/contracts/" + SAMPLE_TOKEN_WITHOUT_KEYS.token_id,
             "api/v1/contracts/0x0000000000000000000000000000000000016739",
-            "http://localhost:3000/abi/IERC721+IHRC.json",
             "api/v1/accounts/0x0000000000000000000000000000000000016739",
             "api/v1/tokens/" + SAMPLE_TOKEN_WITHOUT_KEYS.token_id + "/nfts",
             "api/v1/tokens/" + SAMPLE_NFTS.nfts[0].token_id + "/nfts/2",
@@ -516,9 +492,6 @@ describe("TokenDetails.vue", () => {
         mock.onGet(matcher2).reply(200, SAMPLE_NFTS);
         const matcher3 = "/api/v1/contracts/" + testTokenId + "/results"
         mock.onGet(matcher3).reply(200, []);
-        const abi = require('../../../public/abi/IERC721+IHRC.json')
-        const matcher61 = "http://localhost:3000/abi/IERC721+IHRC.json"
-        mock.onGet(matcher61).reply(200, abi)
 
         const wrapper = mount(TokenDetails, {
             global: {
@@ -541,7 +514,6 @@ describe("TokenDetails.vue", () => {
             "api/v1/contracts/" + SAMPLE_TOKEN_WITHOUT_KEYS.treasury_account_id,
             "api/v1/contracts/" + SAMPLE_TOKEN_WITHOUT_KEYS.token_id,
             "api/v1/contracts/0x0000000000000000000000000000000000016739",
-            "http://localhost:3000/abi/IERC721+IHRC.json",
             "api/v1/accounts/0x0000000000000000000000000000000000016739",
             "api/v1/tokens/" + SAMPLE_TOKEN_WITHOUT_KEYS.token_id + "/nfts",
             "api/v1/tokens/" + SAMPLE_NFTS.nfts[0].token_id + "/nfts/2",
@@ -577,9 +549,6 @@ describe("TokenDetails.vue", () => {
         mock.onGet(matcher3).reply(200, []);
         const matcher4 = "/api/v1/network/exchangerate"
         mock.onGet(matcher4).reply(200, SAMPLE_NETWORK_EXCHANGERATE);
-        const abi = require('../../../public/abi/IERC20+IHRC.json')
-        const matcher61 = "http://localhost:3000/abi/IERC20+IHRC.json"
-        mock.onGet(matcher61).reply(200, abi)
 
         const wrapper = mount(TokenDetails, {
             global: {
@@ -606,7 +575,6 @@ describe("TokenDetails.vue", () => {
             "api/v1/contracts/" + SAMPLE_TOKEN.custom_fees.fixed_fees[2].collector_account_id,
             "api/v1/network/exchangerate",
             "api/v1/contracts/0x0000000000000000000000000000000001c49eec",
-            "http://localhost:3000/abi/IERC20+IHRC.json",
             "api/v1/accounts/0x0000000000000000000000000000000001c49eec",
             "api/v1/tokens/" + SAMPLE_TOKEN.token_id + "/balances",
         ])
@@ -657,9 +625,6 @@ describe("TokenDetails.vue", () => {
         mock.onGet(matcher3).reply(200, []);
         const matcher4 = "/api/v1/network/exchangerate"
         mock.onGet(matcher4).reply(200, SAMPLE_NETWORK_EXCHANGERATE);
-        const abi = require('../../../public/abi/IERC721+IHRC.json')
-        const matcher61 = "http://localhost:3000/abi/IERC721+IHRC.json"
-        mock.onGet(matcher61).reply(200, abi)
 
         const wrapper = mount(TokenDetails, {
             global: {
@@ -686,7 +651,6 @@ describe("TokenDetails.vue", () => {
             "api/v1/contracts/" + SAMPLE_NONFUNGIBLE.custom_fees.fixed_fees[2].collector_account_id,
             "api/v1/network/exchangerate",
             "api/v1/contracts/0x00000000000000000000000000000000000b6b5f",
-            "http://localhost:3000/abi/IERC721+IHRC.json",
             "api/v1/accounts/0x00000000000000000000000000000000000b6b5f",
             "api/v1/tokens/" + SAMPLE_NONFUNGIBLE.token_id + "/nfts",
             "api/v1/tokens/" + SAMPLE_NFTS.nfts[0].token_id + "/nfts/2",
@@ -738,9 +702,6 @@ describe("TokenDetails.vue", () => {
         mock.onGet(matcher2).reply(200, SAMPLE_NFTS);
         const matcher3 = "/api/v1/contracts/" + testTokenId + "/results"
         mock.onGet(matcher3).reply(200, []);
-        const abi = require('../../../public/abi/IERC721+IHRC.json')
-        const matcher61 = "http://localhost:3000/abi/IERC721+IHRC.json"
-        mock.onGet(matcher61).reply(200, abi)
 
         const wrapper = mount(TokenDetails, {
             global: {
@@ -763,7 +724,6 @@ describe("TokenDetails.vue", () => {
             "api/v1/contracts/" + SAMPLE_TOKEN_WITHOUT_KEYS.treasury_account_id,
             "api/v1/contracts/" + SAMPLE_TOKEN_WITHOUT_KEYS.token_id,
             "api/v1/contracts/0x0000000000000000000000000000000000016739",
-            "http://localhost:3000/abi/IERC721+IHRC.json",
             "api/v1/accounts/0x0000000000000000000000000000000000016739",
             "api/v1/tokens/" + SAMPLE_TOKEN_WITHOUT_KEYS.token_id + "/nfts",
             "api/v1/tokens/" + SAMPLE_NFTS.nfts[0].token_id + "/nfts/2",

@@ -2,7 +2,7 @@
 
 // SPDX-License-Identifier: Apache-2.0
 
-import {describe, expect, test} from "vitest";
+import {describe, expect, test, vi} from "vitest";
 import {ref} from "vue";
 import {ContractResultAnalyzer} from "@/utils/analyzer/ContractResultAnalyzer";
 import {flushPromises} from "@vue/test-utils";
@@ -222,10 +222,6 @@ describe("ContractResultAnalyzer.spec.ts", () => {
         const matcher2 = "/api/v1/contracts/results/" + CONTRACT_RESULT_HTS.hash
         mock.onGet(matcher2).reply(200, CONTRACT_RESULT_DETAILS_HTS);
 
-        const abi = require('../../../../public/abi/IHederaTokenService.json')
-        const matcher3 = "http://localhost:3000/abi/IHederaTokenService.json"
-        mock.onGet(matcher3).reply(200, abi)
-
         // We also setup valid 4byte matcher to be sure it is ignored by ContractResultAnalyzer.
         const functionHash = "0x49146bde"
         const matcher4 = "https://www.4byte.directory/api/v1/signatures/?format=json&hex_signature=" + functionHash
@@ -266,6 +262,7 @@ describe("ContractResultAnalyzer.spec.ts", () => {
         // 3) mount
         analyzer.mount()
         await flushPromises()
+        await vi.dynamicImportSettled()
         expect(analyzer.timestamp.value).toBe(CONTRACT_RESULT_HTS.timestamp)
         expect(analyzer.fromId.value).toBe("0.0.1584")
         expect(analyzer.toId.value).toBe("0.0.359")
@@ -299,7 +296,6 @@ describe("ContractResultAnalyzer.spec.ts", () => {
             "api/v1/contracts/results",
             "api/v1/contracts/results/0x4f0887dcc3c3f23ce2e80a2e3c3bfa246d488698d5e0cc17c76ef13262580d73",
             "https://www.4byte.directory/api/v1/signatures/?format=json&hex_signature=0x49146bde",
-            "http://localhost:3000/abi/IHederaTokenService.json"
         ])
 
         mock.restore()

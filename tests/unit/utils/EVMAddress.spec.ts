@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
-import {describe, expect, test} from 'vitest'
+import {describe, expect, test, vi} from 'vitest'
 import {flushPromises, mount} from "@vue/test-utils";
 import EVMAddress from "@/components/values/EVMAddress.vue";
 import router from "@/router";
@@ -135,11 +135,6 @@ describe("EVMAddress", () => {
 
     test("Constructing with System Contract address", async () => {
 
-        const abi = require('../../../public/abi/IHederaTokenService.json')
-        const mock = new MockAdapter(axios as any);
-        const matcher1 = "http://localhost:3000/abi/IHederaTokenService.json"
-        mock.onGet(matcher1).reply(200, abi)
-
         await router.push("/") // To avoid "missing required param 'network'" error
         const wrapper = mount(EVMAddress, {
             global: {
@@ -150,12 +145,12 @@ describe("EVMAddress", () => {
             },
         });
         await flushPromises()
+        await vi.dynamicImportSettled()
 
         expect(wrapper.text()).toBe(`${systemContractAddress}Copy(${systemContractLabel})`)
 
         wrapper.unmount()
         await flushPromises()
-        mock.restore()
     })
 
 })

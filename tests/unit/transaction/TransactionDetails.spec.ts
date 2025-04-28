@@ -1557,10 +1557,6 @@ describe("TransactionDetails.vue", () => {
             actions: [action], "links": {"next": null}
         })
 
-        const abi = require('../../../public/abi/IERC20+IHRC.json')
-        const matcher6 = "http://localhost:3000/abi/IERC20+IHRC.json"
-        mock.onGet(matcher6).reply(200, abi)
-
         const wrapper = mount(TransactionDetails, {
             global: {
                 plugins: [router, Oruga],

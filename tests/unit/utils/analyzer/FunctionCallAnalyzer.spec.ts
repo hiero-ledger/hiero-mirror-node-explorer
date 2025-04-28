@@ -2,7 +2,7 @@
 
 // SPDX-License-Identifier: Apache-2.0
 
-import {describe, expect, test} from 'vitest'
+import {describe, expect, test, vi} from 'vitest'
 import {FunctionCallAnalyzer, NameTypeValue} from "@/utils/analyzer/FunctionCallAnalyzer";
 import {Ref, ref} from "vue";
 import {flushPromises} from "@vue/test-utils";
@@ -14,11 +14,6 @@ import {routeManager} from "@/router";
 describe("FunctionCallAnalyzer.spec.ts", () => {
 
     test("Call to system contract", async () => {
-
-        const abi = require('../../../../public/abi/IHederaTokenService.json')
-        const mock = new MockAdapter(axios as any);
-        const matcher1 = "http://localhost:3000/abi/IHederaTokenService.json"
-        mock.onGet(matcher1).reply(200, abi)
 
         // 1) new
         const input: Ref<string | null> = ref(null)
@@ -60,6 +55,7 @@ describe("FunctionCallAnalyzer.spec.ts", () => {
         output.value = "0x0000000000000000000000000000000000000000000000000000000005a995c0"
         contractId.value = "0.0.359"
         await flushPromises()
+        await vi.dynamicImportSettled()
         expect(functionCallAnalyzer.functionHash.value).toBe("0x49146bde")
         expect(functionCallAnalyzer.signature.value).toBe("associateToken(address,address)")
         expect(functionCallAnalyzer.inputs.value).toStrictEqual([
@@ -158,7 +154,6 @@ describe("FunctionCallAnalyzer.spec.ts", () => {
         expect(functionCallAnalyzer.inputArgsOnly.value).toBe("0x000000000000000000000000845b706151aed537b1fd81c1ea4ea03920097abd0000000000000000000000000000000000000000000000000000000002e6ae09")
         expect(functionCallAnalyzer.is4byteSignature.value).toBe(false)
 
-        mock.restore()
     })
 
     test("Call to verified contract: new + mount + setup + unmount", async () => {
