@@ -1,3 +1,5 @@
+// noinspection DuplicatedCode
+
 // SPDX-License-Identifier: Apache-2.0
 
 import {describe, expect, it} from 'vitest'
@@ -65,7 +67,6 @@ describe("ContractResult.vue", () => {
             "api/v1/contracts/results",
             "api/v1/network/fees",
             "api/v1/contracts/" + SAMPLE_CONTRACT_RESULT_DETAILS.contract_id + "/results/1646025151.667604000",
-            "https://www.4byte.directory/api/v1/signatures/?format=json&hex_signature=0x18cbafe5",
             "api/v1/contracts/0.0.846260",
             "api/v1/contracts/" + SAMPLE_CONTRACT_RESULT_DETAILS.contract_id,
             "api/v1/transactions",
@@ -79,6 +80,7 @@ describe("ContractResult.vue", () => {
             "api/v1/accounts/" + SAMPLE_CONTRACT_RESULT_DETAILS.logs[2].address,
             "api/v1/tokens/" + SAMPLE_CONTRACT_RESULT_DETAILS.contract_id,
             "api/v1/tokens/" + SAMPLE_CONTRACT_RESULT_DETAILS.logs[1].contract_id,
+            "https://www.4byte.directory/api/v1/signatures/?format=json&hex_signature=0x18cbafe5",
         ])
 
         expect(wrapper.text()).toMatch(RegExp("^Contract Result for " + contractId + " at " + timestamp))
@@ -136,7 +138,6 @@ describe("ContractResult.vue", () => {
             "api/v1/contracts/results",
             "api/v1/network/fees",
             "api/v1/contracts/" + SAMPLE_REVERT_CONTRACT_RESULT_DETAILS.contract_id + "/results/1677085141.263832358",
-            "https://www.4byte.directory/api/v1/signatures/?format=json&hex_signature=0x49257b42",
             "api/v1/contracts/0.0.1466",
             "api/v1/contracts/" + SAMPLE_REVERT_CONTRACT_RESULT_DETAILS.contract_id,
             "api/v1/transactions",
@@ -146,6 +147,7 @@ describe("ContractResult.vue", () => {
             "api/v1/accounts/" + SAMPLE_REVERT_CONTRACT_RESULT_DETAILS.from,
             "api/v1/accounts/" + SAMPLE_REVERT_CONTRACT_RESULT_DETAILS.to,
             "api/v1/tokens/" + SAMPLE_REVERT_CONTRACT_RESULT_DETAILS.contract_id,
+            "https://www.4byte.directory/api/v1/signatures/?format=json&hex_signature=0x49257b42",
         ])
 
         expect(wrapper.text()).toMatch(RegExp("^Contract Result for " + contractId + " at " + timestamp))
@@ -198,7 +200,6 @@ describe("ContractResult.vue", () => {
             "api/v1/contracts/results",
             "api/v1/network/fees",
             "api/v1/contracts/" + SAMPLE_REVERT_CONTRACT_RESULT_DETAILS_WITH_TRACES.contract_id + "/results/1677504382.107973330",
-            "https://www.4byte.directory/api/v1/signatures/?format=json&hex_signature=0x7d1ee005",
             "api/v1/contracts/0.0.8942",
             "api/v1/contracts/results/" + SAMPLE_REVERT_CONTRACT_RESULT_DETAILS_WITH_TRACES.hash + "/actions?limit=100",
             "api/v1/transactions",
@@ -223,6 +224,7 @@ describe("ContractResult.vue", () => {
             "api/v1/tokens/0.0.10410",
             "api/v1/tokens/0.0.33481",
             "api/v1/tokens/" + SAMPLE_REVERT_CONTRACT_RESULT_DETAILS_WITH_TRACES.contract_id,
+            "https://www.4byte.directory/api/v1/signatures/?format=json&hex_signature=0x7d1ee005",
             "api/v1/tokens/0.0.33483",
         ])
 

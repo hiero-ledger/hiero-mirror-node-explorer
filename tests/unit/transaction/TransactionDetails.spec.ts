@@ -241,7 +241,6 @@ describe("TransactionDetails.vue", () => {
             "api/v1/contracts/" + SAMPLE_CONTRACTCALL_TRANSACTIONS.transactions[0].transfers[1].account,
             "api/v1/contracts/" + SAMPLE_CONTRACT_RESULT_DETAILS.contract_id + "/results/1646665766.574738471",
             "api/v1/accounts/",
-            "https://www.4byte.directory/api/v1/signatures/?format=json&hex_signature=0x18cbafe5",
             "api/v1/contracts/0.0.846260", // SAMPLE_CONTRACT_RESULT_DETAILS.from as entity id
             "api/v1/contracts/" + SAMPLE_CONTRACT_RESULT_DETAILS.contract_id,
             "api/v1/contracts/results/" + SAMPLE_CONTRACT_RESULT_DETAILS.hash + "/actions?limit=100",
@@ -255,6 +254,7 @@ describe("TransactionDetails.vue", () => {
             "api/v1/accounts/0x0000000000000000000000000000000000108a83",
             "api/v1/tokens/" + SAMPLE_CONTRACT_RESULT_DETAILS.contract_id,
             "api/v1/tokens/" + SAMPLE_CONTRACT_RESULT_DETAILS.logs[1].contract_id,
+            "https://www.4byte.directory/api/v1/signatures/?format=json&hex_signature=0x18cbafe5",
         ])
 
         expect(wrapper.text()).toMatch(RegExp("Transaction " + TransactionID.normalizeForDisplay(transactionId)))
