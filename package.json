@@ -52,7 +52,7 @@
     "multiformats": "^13.3.2",
     "prismjs": "^1.30.0",
     "vue": "^3.5.11",
-    "vue-router": "^4.5.0"
+    "vue-router": "^4.5.1"
   },
   "devDependencies": {
     "@cypress/code-coverage": "^3.14.0",
