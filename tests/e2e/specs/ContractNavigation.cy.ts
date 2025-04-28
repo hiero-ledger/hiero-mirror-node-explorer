@@ -30,7 +30,7 @@ describe('Contract Navigation', () => {
         cy.url().should('include', '/mainnet/contract/' + contractId)
         cy.contains('Contract ID ' + contractId)
 
-        cy.get('table').contains('td', '0x')
+        cy.get('#contract-results-table').contains('td', '0x')
             .click()
         cy.url().should('include', '/mainnet/transaction/')
         cy.contains('Transaction')
@@ -39,6 +39,15 @@ describe('Contract Navigation', () => {
 
         cy.go('back')
         cy.url().should('include', '/mainnet/contract/' + contractId)
+
+        cy.get('#blockNumber')
+            .find('a')
+            .click()
+            .then(($number) => {
+                cy.log('Selected block number: ' + $number.text())
+                cy.url().should('include', '/mainnet/block/' + $number.text())
+                cy.contains('Block ' + $number.text())
+            })
     })
 
     it('should display contract details using contract ID', () => {
