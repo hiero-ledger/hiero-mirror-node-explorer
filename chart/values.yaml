@@ -228,7 +228,7 @@ config: |
 core-config: |
   {
     "productName": null,
-    "productLogoLightURL": null",
+    "productLogoLightURL": null,
     "productLogoDarkURL": null,
     "productMiniLogoLightURL": null,
     "productMiniLogoDarkURL": null,
