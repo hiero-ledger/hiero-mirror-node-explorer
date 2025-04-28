@@ -44,7 +44,7 @@
     "base32-decode": "^1.0.0",
     "base32-encode": "^2.0.0",
     "chart.js": "^4.4.9",
-    "ethers": "^6.13.5",
+    "ethers": "^6.13.7",
     "file-saver": "^2.0.5",
     "globals": "^16.0.0",
     "jszip": "^3.10.1",
@@ -52,7 +52,7 @@
     "multiformats": "^13.3.2",
     "prismjs": "^1.30.0",
     "vue": "^3.5.11",
-    "vue-router": "^4.5.0"
+    "vue-router": "^4.5.1"
   },
   "devDependencies": {
     "@cypress/code-coverage": "^3.14.0",
