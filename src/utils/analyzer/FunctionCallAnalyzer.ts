@@ -42,7 +42,7 @@ export class FunctionCallAnalyzer {
 
     public mount(): void {
         this.watchHandle.value = [
-            watch([this.functionHash], this.updateSignatureResponse, {immediate: true}),
+            watch([this.functionHash, this.contractAnalyzer.report], this.updateSignatureResponse, {immediate: true}),
             watch([this.functionHash, this.contractAnalyzer.interface, this.signatureResponse, this.input], this.updateFunctionFragment, {immediate: true}),
             watch([this.input, this.functionFragment], this.updateInputResult, {immediate: true}),
             watch([this.output, this.functionFragment], this.updateOutputResult, {immediate: true}),
@@ -209,7 +209,9 @@ export class FunctionCallAnalyzer {
     }
 
     private readonly updateSignatureResponse = async () => {
-        if (this.functionHash.value !== null) {
+        if (this.functionHash.value !== null
+            && this.contractAnalyzer.report.value !== null
+            && this.contractAnalyzer.report.value.abi === null) {
             try {
                 this.signatureResponse.value = await SignatureCache.instance.lookup(this.functionHash.value)
             } catch {

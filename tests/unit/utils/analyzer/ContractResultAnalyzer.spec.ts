@@ -102,7 +102,6 @@ describe("ContractResultAnalyzer.spec.ts", () => {
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/contracts/results",
             "api/v1/contracts/0.0.6810663/results/1704186823.658538003",
-            "https://www.4byte.directory/api/v1/signatures/?format=json&hex_signature=0x5d123e3f",
             "api/v1/contracts/0.0.6810663",
             sourcifyURL + "files/any/295/0x06a50d1f642cA50284EFb59988AF9b60683FAD3F",
         ])
@@ -200,7 +199,6 @@ describe("ContractResultAnalyzer.spec.ts", () => {
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/contracts/results",
             "api/v1/contracts/0.0.6810663/results/1704186823.658538003",
-            // "https://www.4byte.directory/api/v1/signatures/?format=json&hex_signature=0x5d123e3f", WHY ?
             "api/v1/contracts/0.0.6810663",
             sourcifyURL + "files/any/295/0x06a50d1f642cA50284EFb59988AF9b60683FAD3F",
         ])
@@ -295,7 +293,6 @@ describe("ContractResultAnalyzer.spec.ts", () => {
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/contracts/results",
             "api/v1/contracts/results/0x4f0887dcc3c3f23ce2e80a2e3c3bfa246d488698d5e0cc17c76ef13262580d73",
-            "https://www.4byte.directory/api/v1/signatures/?format=json&hex_signature=0x49146bde",
         ])
 
         mock.restore()
