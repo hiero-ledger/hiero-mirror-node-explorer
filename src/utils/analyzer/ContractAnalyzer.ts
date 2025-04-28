@@ -275,13 +275,13 @@ export class ContractAnalyzer {
     }
 
     private static async analyzeSystemContract(e: SystemContractEntry): Promise<ContractAnalyzerReport> {
-        const asset = await AssetCache.instance.lookup(e.abiURL) as { abi: ethers.Fragment[] }
+        const abi = await e.loadABI()
         return {
             systemContractEntry: e,
             contractInfo: null,
             sourcifyRecord: null,
             tokenInfo: null,
-            abi: asset.abi,
+            abi: abi,
             reportError: null
         }
     }
