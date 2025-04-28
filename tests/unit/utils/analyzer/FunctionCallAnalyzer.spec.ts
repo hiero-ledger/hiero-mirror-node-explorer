@@ -10,10 +10,15 @@ import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
 import {SignatureCache} from "@/utils/cache/SignatureCache";
 import {routeManager} from "@/router";
+import {fetchGetURLs} from "../../MockUtils.ts";
 
 describe("FunctionCallAnalyzer.spec.ts", () => {
 
     test("Call to system contract", async () => {
+
+        SignatureCache.instance.clear()
+
+        const mock = new MockAdapter(axios as any);
 
         // 1) new
         const input: Ref<string | null> = ref(null)
@@ -21,6 +26,8 @@ describe("FunctionCallAnalyzer.spec.ts", () => {
         const error: Ref<string | null> = ref(null)
         const contractId: Ref<string | null> = ref(null)
         const functionCallAnalyzer = new FunctionCallAnalyzer(input, output, error, contractId)
+        await flushPromises()
+        expect(fetchGetURLs(mock)).toStrictEqual([])
         expect(functionCallAnalyzer.functionHash.value).toBeNull()
         expect(functionCallAnalyzer.signature.value).toBeNull()
         expect(functionCallAnalyzer.inputs.value).toStrictEqual([])
@@ -37,6 +44,7 @@ describe("FunctionCallAnalyzer.spec.ts", () => {
         // 2) mount
         functionCallAnalyzer.mount()
         await flushPromises()
+        expect(fetchGetURLs(mock)).toStrictEqual([])
         expect(functionCallAnalyzer.functionHash.value).toBeNull()
         expect(functionCallAnalyzer.signature.value).toBeNull()
         expect(functionCallAnalyzer.inputs.value).toStrictEqual([])
@@ -56,6 +64,9 @@ describe("FunctionCallAnalyzer.spec.ts", () => {
         contractId.value = "0.0.359"
         await flushPromises()
         await vi.dynamicImportSettled()
+        expect(fetchGetURLs(mock)).toStrictEqual([
+            "https://www.4byte.directory/api/v1/signatures/?format=json&hex_signature=0x49146bde",
+        ])
         expect(functionCallAnalyzer.functionHash.value).toBe("0x49146bde")
         expect(functionCallAnalyzer.signature.value).toBe("associateToken(address,address)")
         expect(functionCallAnalyzer.inputs.value).toStrictEqual([
@@ -79,6 +90,10 @@ describe("FunctionCallAnalyzer.spec.ts", () => {
         output.value = "0x00000000000000000000000000000000000000000000000000003dc604b33217"
         contractId.value = "0.0.359"
         await flushPromises()
+        expect(fetchGetURLs(mock)).toStrictEqual([
+            "https://www.4byte.directory/api/v1/signatures/?format=json&hex_signature=0x49146bde",
+            "https://www.4byte.directory/api/v1/signatures/?format=json&hex_signature=0x618dc65e",
+        ])
         expect(functionCallAnalyzer.functionHash.value).toBe("0x618dc65e")
         expect(functionCallAnalyzer.signature.value).toBe("redirectForToken(address,bytes)")
         expect(functionCallAnalyzer.inputs.value).toEqual([
@@ -121,6 +136,10 @@ describe("FunctionCallAnalyzer.spec.ts", () => {
         error.value = "0x"
         contractId.value = "0.0.359"
         await flushPromises()
+        expect(fetchGetURLs(mock)).toStrictEqual([
+            "https://www.4byte.directory/api/v1/signatures/?format=json&hex_signature=0x49146bde",
+            "https://www.4byte.directory/api/v1/signatures/?format=json&hex_signature=0x618dc65e",
+        ])
         expect(functionCallAnalyzer.functionHash.value).toBe("0x49146bde")
         expect(functionCallAnalyzer.signature.value).toBe("associateToken(address,address)")
         expect(functionCallAnalyzer.inputs.value).toStrictEqual([
@@ -141,6 +160,10 @@ describe("FunctionCallAnalyzer.spec.ts", () => {
         // 6) unmount
         functionCallAnalyzer.unmount()
         await flushPromises()
+        expect(fetchGetURLs(mock)).toStrictEqual([
+            "https://www.4byte.directory/api/v1/signatures/?format=json&hex_signature=0x49146bde",
+            "https://www.4byte.directory/api/v1/signatures/?format=json&hex_signature=0x618dc65e",
+        ])
         expect(functionCallAnalyzer.functionHash.value).toBe("0x49146bde")
         expect(functionCallAnalyzer.signature.value).toBeNull()
         expect(functionCallAnalyzer.inputs.value).toStrictEqual([])
@@ -154,9 +177,12 @@ describe("FunctionCallAnalyzer.spec.ts", () => {
         expect(functionCallAnalyzer.inputArgsOnly.value).toBe("0x000000000000000000000000845b706151aed537b1fd81c1ea4ea03920097abd0000000000000000000000000000000000000000000000000000000002e6ae09")
         expect(functionCallAnalyzer.is4byteSignature.value).toBe(false)
 
+        mock.restore()
     })
 
     test("Call to verified contract: new + mount + setup + unmount", async () => {
+
+        SignatureCache.instance.clear()
 
         const sourcifyURL = routeManager.currentNetworkEntry.value.sourcifySetup?.repoURL
 
@@ -172,6 +198,8 @@ describe("FunctionCallAnalyzer.spec.ts", () => {
         const error: Ref<string | null> = ref(null)
         const contractId: Ref<string | null> = ref(null)
         const functionCallAnalyzer = new FunctionCallAnalyzer(input, output, error, contractId)
+        await flushPromises()
+        expect(fetchGetURLs(mock)).toStrictEqual([])
         expect(functionCallAnalyzer.functionHash.value).toBeNull()
         expect(functionCallAnalyzer.signature.value).toBeNull()
         expect(functionCallAnalyzer.inputs.value).toStrictEqual([])
@@ -188,6 +216,7 @@ describe("FunctionCallAnalyzer.spec.ts", () => {
         // 2) mount
         functionCallAnalyzer.mount()
         await flushPromises()
+        expect(fetchGetURLs(mock)).toStrictEqual([])
         expect(functionCallAnalyzer.functionHash.value).toBeNull()
         expect(functionCallAnalyzer.signature.value).toBeNull()
         expect(functionCallAnalyzer.inputs.value).toStrictEqual([])
@@ -207,6 +236,11 @@ describe("FunctionCallAnalyzer.spec.ts", () => {
         error.value = "0x08c379a000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000026556e69737761705632526f757465723a20494e53554646494349454e545f425f414d4f554e540000000000000000000000000000000000000000000000000000"
         contractId.value = "0.0.3045981"
         await flushPromises()
+        expect(fetchGetURLs(mock)).toStrictEqual([
+            "https://www.4byte.directory/api/v1/signatures/?format=json&hex_signature=0xf305d719",
+            "api/v1/contracts/" + CONTRACT_DETAILS.contract_id,
+            "http://localhost:3000/files/any/295/0x00000000000000000000000000000000002E7A5D",
+        ])
         expect(functionCallAnalyzer.functionHash.value).toBe("0xf305d719")
         expect(functionCallAnalyzer.signature.value).toBe("addLiquidityETH(address,uint256,uint256,uint256,address,uint256)")
         expect(functionCallAnalyzer.inputs.value).toStrictEqual([
@@ -233,6 +267,11 @@ describe("FunctionCallAnalyzer.spec.ts", () => {
         // 4) unmount
         functionCallAnalyzer.unmount()
         await flushPromises()
+        expect(fetchGetURLs(mock)).toStrictEqual([
+            "https://www.4byte.directory/api/v1/signatures/?format=json&hex_signature=0xf305d719",
+            "api/v1/contracts/" + CONTRACT_DETAILS.contract_id,
+            "http://localhost:3000/files/any/295/0x00000000000000000000000000000000002E7A5D",
+        ])
         expect(functionCallAnalyzer.functionHash.value).toBe("0xf305d719")
         expect(functionCallAnalyzer.signature.value).toBeNull()
         expect(functionCallAnalyzer.inputs.value).toStrictEqual([])
@@ -246,11 +285,14 @@ describe("FunctionCallAnalyzer.spec.ts", () => {
         expect(functionCallAnalyzer.inputArgsOnly.value).toBe("0x000000000000000000000000000000000000000000000000000000000022d6de0000000000000000000000000000000000000000000000000000015076ac13000000000000000000000000000000000000000000000000000000014ec7ffb1a00000000000000000000000000000000000000000000000000000000f558e95eb00000000000000000000000000000000000000000000000000000000000f45b30000000000000000000000000000000000000000000000000000018cd5a698af")
         expect(functionCallAnalyzer.is4byteSignature.value).toBe(false)
 
+        SignatureCache.instance.clear()
         mock.restore()
 
     })
 
     test("Call to verified contract: new + setup + mount + unmount", async () => {
+
+        SignatureCache.instance.clear()
 
         const sourcifyURL = routeManager.currentNetworkEntry.value.sourcifySetup?.repoURL
 
@@ -266,6 +308,8 @@ describe("FunctionCallAnalyzer.spec.ts", () => {
         const error: Ref<string | null> = ref(null)
         const contractId: Ref<string | null> = ref(null)
         const functionCallAnalyzer = new FunctionCallAnalyzer(input, output, error, contractId)
+        await flushPromises()
+        expect(fetchGetURLs(mock)).toStrictEqual([])
         expect(functionCallAnalyzer.functionHash.value).toBeNull()
         expect(functionCallAnalyzer.signature.value).toBeNull()
         expect(functionCallAnalyzer.inputs.value).toStrictEqual([])
@@ -285,6 +329,7 @@ describe("FunctionCallAnalyzer.spec.ts", () => {
         error.value = "0x08c379a000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000026556e69737761705632526f757465723a20494e53554646494349454e545f425f414d4f554e540000000000000000000000000000000000000000000000000000"
         contractId.value = "0.0.3045981"
         await flushPromises()
+        expect(fetchGetURLs(mock)).toStrictEqual([])
         expect(functionCallAnalyzer.functionHash.value).toBe("0xf305d719")
         expect(functionCallAnalyzer.signature.value).toBeNull()
         expect(functionCallAnalyzer.inputs.value).toStrictEqual([])
@@ -301,6 +346,11 @@ describe("FunctionCallAnalyzer.spec.ts", () => {
         // 3) mount
         functionCallAnalyzer.mount()
         await flushPromises()
+        expect(fetchGetURLs(mock)).toStrictEqual([
+            "https://www.4byte.directory/api/v1/signatures/?format=json&hex_signature=0xf305d719",
+            "api/v1/contracts/" + CONTRACT_DETAILS.contract_id,
+            "http://localhost:3000/files/any/295/0x00000000000000000000000000000000002E7A5D",
+        ])
         expect(functionCallAnalyzer.functionHash.value).toBe("0xf305d719")
         expect(functionCallAnalyzer.signature.value).toBe("addLiquidityETH(address,uint256,uint256,uint256,address,uint256)")
         expect(functionCallAnalyzer.inputs.value).toStrictEqual([
@@ -327,6 +377,11 @@ describe("FunctionCallAnalyzer.spec.ts", () => {
         // 4) unmount
         functionCallAnalyzer.unmount()
         await flushPromises()
+        expect(fetchGetURLs(mock)).toStrictEqual([
+            "https://www.4byte.directory/api/v1/signatures/?format=json&hex_signature=0xf305d719",
+            "api/v1/contracts/" + CONTRACT_DETAILS.contract_id,
+            "http://localhost:3000/files/any/295/0x00000000000000000000000000000000002E7A5D",
+        ])
         expect(functionCallAnalyzer.functionHash.value).toBe("0xf305d719")
         expect(functionCallAnalyzer.signature.value).toBeNull()
         expect(functionCallAnalyzer.inputs.value).toStrictEqual([])
@@ -359,6 +414,8 @@ describe("FunctionCallAnalyzer.spec.ts", () => {
         const error: Ref<string | null> = ref(null)
         const contractId: Ref<string | null> = ref(null)
         const functionCallAnalyzer = new FunctionCallAnalyzer(input, output, error, contractId)
+        await flushPromises()
+        expect(fetchGetURLs(mock)).toStrictEqual([])
         expect(functionCallAnalyzer.functionHash.value).toBeNull()
         expect(functionCallAnalyzer.signature.value).toBeNull()
         expect(functionCallAnalyzer.inputs.value).toStrictEqual([])
@@ -375,6 +432,7 @@ describe("FunctionCallAnalyzer.spec.ts", () => {
         // 2) mount
         functionCallAnalyzer.mount()
         await flushPromises()
+        expect(fetchGetURLs(mock)).toStrictEqual([])
         expect(functionCallAnalyzer.functionHash.value).toBeNull()
         expect(functionCallAnalyzer.signature.value).toBeNull()
         expect(functionCallAnalyzer.inputs.value).toStrictEqual([])
@@ -394,6 +452,11 @@ describe("FunctionCallAnalyzer.spec.ts", () => {
         error.value = "0x08c379a000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000026556e69737761705632526f757465723a20494e53554646494349454e545f425f414d4f554e540000000000000000000000000000000000000000000000000000"
         contractId.value = "0.0.3045981"
         await flushPromises()
+        expect(fetchGetURLs(mock)).toStrictEqual([
+            "https://www.4byte.directory/api/v1/signatures/?format=json&hex_signature=0xf305d719",
+            "api/v1/contracts/0.0.3045981",
+            "api/v1/tokens/0.0.3045981",
+        ])
         expect(functionCallAnalyzer.functionHash.value).toBe("0xf305d719")
         expect(functionCallAnalyzer.signature.value).toBe("addLiquidityETH(address,uint256,uint256,uint256,address,uint256)")
         expect(functionCallAnalyzer.inputs.value).toStrictEqual([
@@ -419,6 +482,11 @@ describe("FunctionCallAnalyzer.spec.ts", () => {
         // 4) unmount
         functionCallAnalyzer.unmount()
         await flushPromises()
+        expect(fetchGetURLs(mock)).toStrictEqual([
+            "https://www.4byte.directory/api/v1/signatures/?format=json&hex_signature=0xf305d719",
+            "api/v1/contracts/0.0.3045981",
+            "api/v1/tokens/0.0.3045981",
+        ])
         expect(functionCallAnalyzer.functionHash.value).toBe("0xf305d719")
         expect(functionCallAnalyzer.signature.value).toBeNull()
         expect(functionCallAnalyzer.inputs.value).toStrictEqual([])
