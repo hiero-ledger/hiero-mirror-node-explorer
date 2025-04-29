@@ -4,6 +4,7 @@ import axios from "axios";
 import {computed} from "vue";
 import {NetworkExchangeRateSetResponse, NetworkSupplyResponse} from "@/schemas/MirrorNodeSchemas";
 import {EntityLoader} from "@/utils/loader/EntityLoader.ts";
+import {cryptoRateToPrice} from "@/schemas/MirrorNodeUtils.ts";
 
 export class NetworkMetricsLoader extends EntityLoader<NetworksMetrics> {
 
@@ -65,8 +66,8 @@ export class NetworkMetricsLoader extends EntityLoader<NetworksMetrics> {
 
 
     private readonly hbarPrice = computed(() => {
-        const rate = this.entity.value?.lastExchangeRate?.current_rate
-        return rate ? (Math.round(rate.cent_equivalent / rate.hbar_equivalent * 100) / 10000) : null
+        const rate = this.entity.value?.lastExchangeRate?.current_rate ?? null
+        return rate !== null ? cryptoRateToPrice(rate) : null
     })
 
     private readonly hbarReleased = computed(() => {
