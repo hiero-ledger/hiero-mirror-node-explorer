@@ -8,6 +8,7 @@ import {
     ContractResult,
     ContractResultsLogResponse,
     ContractResultsResponse,
+    ExchangeRate,
     HTS_PRECOMPILE_CONTRACT_ID,
     KeyType,
     NetworkFeesResponse,
@@ -614,3 +615,6 @@ export function countTransactions(blocks: Block[]): number {
     return result
 }
 
+export function cryptoRateToPrice(rate: ExchangeRate): number {
+    return Math.round(rate.cent_equivalent / rate.hbar_equivalent * 100) / 10000
+}

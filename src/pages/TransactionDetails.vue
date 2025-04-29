@@ -197,6 +197,12 @@
                         :timestamp="transaction?.consensus_timestamp"/>
           </template>
         </Property>
+        <Property v-if="cryptoPrice" id="cryptoPrice">
+          <template #name>{{ cryptoName + " Price" }}</template>
+          <template #value>
+            <div>{{ cryptoPrice }}</div>
+          </template>
+        </Property>
         <Property id="duration">
           <template #name>Valid Duration</template>
           <template #value>
@@ -337,6 +343,8 @@ import ArrowLink from "@/components/ArrowLink.vue";
 import {ScheduleByIdCache} from "@/utils/cache/ScheduleByIdCache.ts";
 import TransactionLink from "@/components/values/TransactionLink.vue";
 import KeyValue from "@/components/values/KeyValue.vue";
+import {HbarPriceCache} from "@/utils/cache/HbarPriceCache.ts";
+import {cryptoRateToPrice} from "@/schemas/MirrorNodeUtils.ts";
 
 const MAX_INLINE_CHILDREN = 10
 
@@ -485,6 +493,16 @@ const operatorAccount = computed(() => {
 
   }
   return result
+})
+
+const rateLookup = HbarPriceCache.instance.makeLookup(transactionAnalyzer.consensusTimestamp)
+onMounted(() => rateLookup.mount())
+onBeforeUnmount(() => rateLookup.unmount())
+
+const cryptoPrice = computed(() => {
+  const rate = rateLookup.entity.value?.current_rate ?? null
+  const price = rate !== null ? cryptoRateToPrice(rate) : null
+  return price !== null ? "$" + price.toFixed(4) : null
 })
 
 const transactionId = transactionLocParser.transactionId
