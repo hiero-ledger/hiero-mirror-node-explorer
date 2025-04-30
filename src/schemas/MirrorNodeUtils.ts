@@ -162,37 +162,43 @@ export function isFeeTransfer(t: Transfer, nodes: NetworkNode[]): boolean {
         && makeOperatorDescription(t.account, nodes) !== null
 }
 
-const errorStringSelector = '0x08c379a0'
-const panicUint256Selector = '0x4e487b71'
+const emptyITF = new ethers.Interface([]) // To decode errors
 
-export function decodeSolidityErrorMessage(message: string | null): string | null {
-    let result: string | null
+export function decodeSolidityErrorMessage(message: string|null): string | null {
+    let result: string|null
 
-    // https://blog.soliditylang.org/2020/12/16/solidity-v0.8.0-release-announcement/
-    // Section "Revert on assertion failures and similar conditions instead of using the invalid opcode"
-
-    try {
-        if (message === null) {
-            result = null
-        } else if (message.startsWith(errorStringSelector)) {
-            const reason = ethers.AbiCoder.defaultAbiCoder().decode(
-                ['string'],
-                ethers.dataSlice(message ?? "", 4)
-            )
-            result = reason.toString() ?? null
-        } else if (message.startsWith(panicUint256Selector)) {
-            const code = ethers.AbiCoder.defaultAbiCoder().decode(
-                ['uint256'],
-                ethers.dataSlice(message ?? "", 4)
-            )
-            result = 'Panic(0x' + parseInt(code.toString()).toString(16) + ')'
-        } else if (!message.startsWith("0x")) {
-            result = message
-        } else {
-            result = null;
-        }
-    } catch (reason) {
+    if (message === null || message === "0x" || message === "") {
         result = null
+    } else if (ethers.isHexString(message)) {
+
+        //
+        // It can be:
+        // - encoding of Error(string)
+        // - encoding of Panic(uint256)
+        // - UTF8 bytes of a string
+        // - some unknown binary data
+        //
+        // https://blog.soliditylang.org/2020/12/16/solidity-v0.8.0-release-announcement/
+        // Section "Revert on assertion failures and similar conditions instead of using the invalid opcode"
+        //
+
+        try {
+            const errorDescription = emptyITF.parseError(message)
+            if (errorDescription !== null) {
+                if (errorDescription.name == "Panic") {
+                    result = "Panic(" + ethers.toBeHex(errorDescription.args[0]) + ")"
+                } else {
+                    result = errorDescription.name + "(\"" + errorDescription.args[0] + "\")"
+                }
+            } else {
+                result = ethers.toUtf8String(message)
+            }
+        } catch {
+            result = message
+        }
+
+    } else {
+        result = message
     }
 
     return result
