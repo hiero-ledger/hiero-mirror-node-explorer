@@ -7,7 +7,7 @@
 <template>
   <template v-if="transaction">
     <TransferGraphSection v-if="shouldGraph"
-                          v-bind:transaction="transactionDetail"
+                          v-bind:analyzer="transactionAnalyzer"
                           v-bind:compact="true"/>
     <div v-else-if="isTokenAssociation">
       {{ transaction?.entity_id }}
@@ -56,7 +56,16 @@ const props = defineProps({
 })
 
 const shouldGraph = computed(() => {
-  return props.transaction?.name && GRAPH_TRANSACTION_TYPES.indexOf(props.transaction.name) != -1
+  let result: boolean
+  if (props.transaction?.name) {
+    const alwaysGraph = GRAPH_TRANSACTION_TYPES.indexOf(props.transaction.name) != -1
+    const contractCallWithTransfer = props.transaction.name === TransactionType.CONTRACTCALL
+        && (netAmount.value > 0 || hasTokenTransfers.value || hasNftTransfers.value)
+    result = alwaysGraph || contractCallWithTransfer
+  } else {
+    result = false
+  }
+  return result
 })
 
 const transactionAnalyzer = new TransactionAnalyzer(computed(() => props.transaction ?? null))
@@ -82,6 +91,9 @@ const transactionDetail = computed(() => {
   return props.transaction as TransactionDetail | undefined
 })
 
+const netAmount = transactionAnalyzer.netAmount
+const hasTokenTransfers = transactionAnalyzer.hasTokenTransfers
+const hasNftTransfers = transactionAnalyzer.hasNftTransfers
 const isTokenAssociation = transactionAnalyzer.isTokenAssociation
 const isEthereumTransaction = transactionAnalyzer.isEthereumTransaction
 const tokens = transactionAnalyzer.tokens

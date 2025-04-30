@@ -61,6 +61,16 @@ export class TransactionAnalyzer {
             ? computeNetAmount(this.transaction.value?.transfers, this.transaction.value?.charged_tx_fee)
             : 0)
 
+    public readonly hasRewardTransfers: ComputedRef<boolean> = computed(() =>
+        this.transaction.value ? this.transaction.value.staking_reward_transfers.length >= 1 : false
+    )
+    public readonly hasNftTransfers: ComputedRef<boolean> = computed(() =>
+        this.transaction.value ? this.transaction.value.nft_transfers.length >= 1 : false
+    )
+    public readonly hasTokenTransfers: ComputedRef<boolean> = computed(() =>
+        this.transaction.value ? this.transaction.value.token_transfers.length >= 1 : false
+    )
+
     public readonly operatorAccount: ComputedRef<string | null> = computed(() =>
         this.transaction.value ? makeOperatorAccountLabel(this.transaction.value) : null
     )

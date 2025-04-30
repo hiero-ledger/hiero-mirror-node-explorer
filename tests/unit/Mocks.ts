@@ -2011,10 +2011,6 @@ export const SAMPLE_BATCH_TRANSACTION: TransactionResponse = {
     }
 }
 
-//
-// https://mainnet-public.mirrornode.hedera.com/api/v1/transactions/0.0.48113503-1662470948-432078184
-//
-
 export const SAMPLE_PARENT_CHILD_TRANSACTIONS: TransactionResponse = {
     "transactions":
         [{
@@ -2035,11 +2031,11 @@ export const SAMPLE_PARENT_CHILD_TRANSACTIONS: TransactionResponse = {
             "token_transfers": [],
             "transaction_hash": "jthcv17LsslWUAzQkuIzeVMFpwJ3Uf5g6sSp1aZ8qqSWTz52XhPaMGAzt/5UgYob",
             "transaction_id": "0.0.48113503-1662470948-432078184",
-            "transfers": [{"account": "0.0.98", "amount": 160800000, "is_approval": false}, {
-                "account": "0.0.48113503",
-                "amount": -5160800000,
-                "is_approval": false
-            }, {"account": "0.0.48193749", "amount": 5000000000, "is_approval": false}],
+            "transfers": [
+                {"account": "0.0.98", "amount": 160800000, "is_approval": false},
+                {"account": "0.0.48113503", "amount": -5160800000, "is_approval": false},
+                {"account": "0.0.48193749", "amount": 5000000000, "is_approval": false}
+            ],
             "valid_duration_seconds": "120",
             "valid_start_timestamp": "1662470948.432078184"
         }, {
