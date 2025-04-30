@@ -152,7 +152,7 @@ describe("ContractResult.vue", () => {
 
         expect(wrapper.text()).toMatch(RegExp("^Contract Result for " + contractId + " at " + timestamp))
         expect(wrapper.get("#resultValue").text()).toBe("CONTRACT_REVERT_EXECUTED")
-        expect(wrapper.get("#errorMessageValue").text()).toBe("Insufficient token balance for wiped")
+        expect(wrapper.get("#errorMessageValue").text()).toBe("Error(\"Insufficient token balance for wiped\")")
         expect(wrapper.get("#ethereumNonceValue").text()).toBe("None")
 
         expect(wrapper.findAll("#transactionHash").length).toBe(0)
@@ -230,7 +230,7 @@ describe("ContractResult.vue", () => {
 
         expect(wrapper.text()).toMatch(RegExp("^Contract Result"))
         expect(wrapper.get("#resultValue").text()).toBe("CONTRACT_REVERT_EXECUTED")
-        expect(wrapper.get("#errorMessageValue").text()).toBe("payWithCardNFT - failed to call accept contract method")
+        expect(wrapper.get("#errorMessageValue").text()).toBe("Error(\"payWithCardNFT - failed to call accept contract method\")")
 
         const stackTrace = wrapper.findComponent(ContractResultTrace)
         expect(stackTrace.exists()).toBe(true)
