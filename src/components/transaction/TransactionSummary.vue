@@ -56,7 +56,16 @@ const props = defineProps({
 })
 
 const shouldGraph = computed(() => {
-  return props.transaction?.name && GRAPH_TRANSACTION_TYPES.indexOf(props.transaction.name) != -1
+  let result: boolean
+  if (props.transaction?.name) {
+    const alwaysGraph = GRAPH_TRANSACTION_TYPES.indexOf(props.transaction.name) != -1
+    const contractCallWithTransfer = props.transaction.name === TransactionType.CONTRACTCALL
+        && (netAmount.value > 0 || hasTokenTransfers.value || hasNftTransfers.value)
+    result = alwaysGraph || contractCallWithTransfer
+  } else {
+    result = false
+  }
+  return result
 })
 
 const transactionAnalyzer = new TransactionAnalyzer(computed(() => props.transaction ?? null))
