@@ -281,7 +281,7 @@
       </template>
       <template #content>
         <div>
-          <TransferGraphSection :transaction="transaction ?? undefined"/>
+          <TransferGraphSection :analyzer="transactionAnalyzer ?? undefined"/>
         </div>
       </template>
     </DashboardCardV2>
