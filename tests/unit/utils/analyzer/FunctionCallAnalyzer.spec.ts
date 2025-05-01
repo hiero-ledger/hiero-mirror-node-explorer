@@ -489,6 +489,95 @@ describe("FunctionCallAnalyzer.spec.ts", () => {
 
 
     })
+
+    test("Call with redirectForToken()", async () => {
+
+        const mock = new MockAdapter(axios as any)
+
+        // 1) new
+        const input: Ref<string | null> = ref(null)
+        const output: Ref<string | null> = ref(null)
+        const error: Ref<string | null> = ref(null)
+        const contractId: Ref<string | null> = ref(null)
+        const functionCallAnalyzer = new FunctionCallAnalyzer(input, output, error, contractId)
+        await flushPromises()
+        expect(fetchGetURLs(mock)).toStrictEqual([])
+        expect(functionCallAnalyzer.functionHash.value).toBeNull()
+        expect(functionCallAnalyzer.signature.value).toBeNull()
+        expect(functionCallAnalyzer.inputs.value).toStrictEqual([])
+        expect(functionCallAnalyzer.outputs.value).toStrictEqual([])
+        expect(functionCallAnalyzer.errorHash.value).toBeNull()
+        expect(functionCallAnalyzer.errorSignature.value).toBeNull()
+        expect(functionCallAnalyzer.errorInputs.value).toStrictEqual([])
+        expect(functionCallAnalyzer.inputDecodingStatus.value).toBeNull()
+        expect(functionCallAnalyzer.outputDecodingStatus.value).toBeNull()
+        expect(functionCallAnalyzer.errorDecodingStatus.value).toBeNull()
+        expect(functionCallAnalyzer.inputArgsOnly.value).toBeNull()
+        expect(functionCallAnalyzer.is4byteSignature.value).toBe(false)
+
+        // 2) mount
+        functionCallAnalyzer.mount()
+        await flushPromises()
+        expect(fetchGetURLs(mock)).toStrictEqual([])
+        expect(functionCallAnalyzer.functionHash.value).toBeNull()
+        expect(functionCallAnalyzer.signature.value).toBeNull()
+        expect(functionCallAnalyzer.inputs.value).toStrictEqual([])
+        expect(functionCallAnalyzer.outputs.value).toStrictEqual([])
+        expect(functionCallAnalyzer.errorHash.value).toBeNull()
+        expect(functionCallAnalyzer.errorSignature.value).toBeNull()
+        expect(functionCallAnalyzer.errorInputs.value).toStrictEqual([])
+        expect(functionCallAnalyzer.inputDecodingStatus.value).toBeNull()
+        expect(functionCallAnalyzer.outputDecodingStatus.value).toBeNull()
+        expect(functionCallAnalyzer.errorDecodingStatus.value).toBeNull()
+        expect(functionCallAnalyzer.inputArgsOnly.value).toBeNull()
+        expect(functionCallAnalyzer.is4byteSignature.value).toBe(false)
+
+        // 3) setup
+        // Inspired from https://hashscan.io/mainnet/transaction/1745842640.274210000
+        input.value = "0x618dc65e0000000000000000000000000000000000163b5a095ea7b300000000000000000000000000000000000000000000000000000000003c437a0000000000000000000000000000000000000000000000008ac7230489e80000"
+        output.value = null
+        error.value = "0x494e56414c49445f4f5045524154494f4e"
+        contractId.value = "0.0.359"
+        await flushPromises()
+        await vi.dynamicImportSettled()
+        expect(fetchGetURLs(mock)).toStrictEqual([])
+        expect(functionCallAnalyzer.functionHash.value).toBe("0x618dc65e")
+        expect(functionCallAnalyzer.signature.value).toBe("redirectForToken(address,bytes)")
+        expect(functionCallAnalyzer.inputs.value).toStrictEqual([
+            new NameTypeValue("token", "address", "0x0000000000000000000000000000000000163b5a", null, null),
+            new NameTypeValue("encodedFunctionSelector", "bytes", "0x095ea7b300000000000000000000000000000000000000000000000000000000003c437a0000000000000000000000000000000000000000000000008ac7230489e80000", null, null)
+        ])
+        expect(functionCallAnalyzer.outputs.value).toStrictEqual([])
+        expect(functionCallAnalyzer.errorHash.value).toBeNull()
+        expect(functionCallAnalyzer.errorSignature.value).toBeNull()
+        expect(functionCallAnalyzer.errorInputs.value).toStrictEqual([])
+        expect(functionCallAnalyzer.inputDecodingStatus.value).toBeNull()
+        expect(functionCallAnalyzer.outputDecodingStatus.value).toBeNull()
+        expect(functionCallAnalyzer.errorDecodingStatus.value).toBeNull()
+        expect(functionCallAnalyzer.inputArgsOnly.value).toBe("0x0000000000000000000000000000000000163b5a095ea7b300000000000000000000000000000000000000000000000000000000003c437a0000000000000000000000000000000000000000000000008ac7230489e80000")
+        expect(functionCallAnalyzer.is4byteSignature.value).toBe(false)
+
+
+        // 4) unmount
+        functionCallAnalyzer.unmount()
+        await flushPromises()
+        expect(fetchGetURLs(mock)).toStrictEqual([])
+        expect(functionCallAnalyzer.functionHash.value).toBe("0x618dc65e")
+        expect(functionCallAnalyzer.signature.value).toBeNull()
+        expect(functionCallAnalyzer.inputs.value).toStrictEqual([])
+        expect(functionCallAnalyzer.outputs.value).toStrictEqual([])
+        expect(functionCallAnalyzer.errorHash.value).toBeNull()
+        expect(functionCallAnalyzer.errorSignature.value).toBeNull()
+        expect(functionCallAnalyzer.errorInputs.value).toStrictEqual([])
+        expect(functionCallAnalyzer.inputDecodingStatus.value).toBeNull()
+        expect(functionCallAnalyzer.outputDecodingStatus.value).toBeNull()
+        expect(functionCallAnalyzer.errorDecodingStatus.value).toBeNull()
+        expect(functionCallAnalyzer.inputArgsOnly.value).toBe("0x0000000000000000000000000000000000163b5a095ea7b300000000000000000000000000000000000000000000000000000000003c437a0000000000000000000000000000000000000000000000008ac7230489e80000")
+        expect(functionCallAnalyzer.is4byteSignature.value).toBe(false)
+
+        mock.restore()
+
+    })
 })
 
 
