@@ -119,7 +119,7 @@ describe("FunctionCallAnalyzer.spec.ts", () => {
         expect(functionCallAnalyzer.errorHash.value).toBeNull()
         expect(functionCallAnalyzer.errorSignature.value).toBeNull()
         expect(functionCallAnalyzer.errorInputs.value).toStrictEqual([])
-        expect(functionCallAnalyzer.inputDecodingStatus.value).toBeNull
+        expect(functionCallAnalyzer.inputDecodingStatus.value).toBeNull()
         expect(functionCallAnalyzer.outputDecodingStatus.value).toBe(null)
         expect(functionCallAnalyzer.errorDecodingStatus.value).toBeNull()
         expect(functionCallAnalyzer.inputArgsOnly.value).toBe("0x0000000000000000000000000000000000163b5a70a082310000000000000000000000005fe56763c7633efefe8c2272f19732521a48e300")

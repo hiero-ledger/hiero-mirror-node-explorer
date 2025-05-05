@@ -171,7 +171,7 @@ const selectApprovedForAll = ref(false)
 onMounted(() => selectApprovedForAll.value = AppStorage.getSelectApprovedForAll())
 watch(selectApprovedForAll, (value) => {
   AppStorage.setSelectApprovedForAll(value)
-  value ? nftAllSerialsAllowanceTableController.refresh() : nftAllowanceTableController.refresh()
+  return value ? nftAllSerialsAllowanceTableController.refresh() : nftAllowanceTableController.refresh()
 })
 
 const defaultPageSize = isMediumScreen ? 10 : 5

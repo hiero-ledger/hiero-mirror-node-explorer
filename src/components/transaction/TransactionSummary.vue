@@ -36,7 +36,7 @@
 <script setup lang="ts">
 
 import {computed, onBeforeUnmount, onMounted, PropType} from "vue";
-import {Transaction, TransactionDetail, TransactionType} from "@/schemas/MirrorNodeSchemas";
+import {Transaction, TransactionType} from "@/schemas/MirrorNodeSchemas";
 import {makeSummaryLabel} from "@/utils/TransactionTools";
 import TransferGraphSection from "@/components/transfer_graphs/TransferGraphSection.vue";
 import {TransactionAnalyzer} from "@/components/transaction/TransactionAnalyzer";
@@ -85,10 +85,6 @@ const ethereumSummary = computed(() => {
     result = ""
   }
   return result
-})
-
-const transactionDetail = computed(() => {
-  return props.transaction as TransactionDetail | undefined
 })
 
 const netAmount = transactionAnalyzer.netAmount
