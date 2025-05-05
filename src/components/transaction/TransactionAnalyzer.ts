@@ -161,6 +161,7 @@ export class TransactionAnalyzer {
 
             } else {
                 this.contractId.value = null
+                this.entityDescriptor.value = EntityDescriptor.DEFAULT_ENTITY_DESCRIPTOR
             }
             const consensusTimestamp = this.transaction.value?.consensus_timestamp ?? null
             if (consensusTimestamp !== null) {

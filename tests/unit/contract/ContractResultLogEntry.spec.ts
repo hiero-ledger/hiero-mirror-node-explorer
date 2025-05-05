@@ -56,7 +56,7 @@ describe("ContractResultLogEntry.vue", () => {
         ])
 
         expect(wrapper.get("#transactionHash").text()).toBe("Transaction Hashc7b2 ecff defd ec56 b809 f93b ef6c 8528 dad2 2e58 a02a 33c2 0d27 5f2e f279 36d5 6b1e d64b 53f9 20fb ac85 d9ca da4a 4e78Copy")
-        expect(wrapper.get("#blockNumber").find("a").exists()).toBeTruthy
+        expect(wrapper.get("#blockNumber").find("a").exists()).toBeTruthy()
         expect(wrapper.get("#blockNumber").get("a").text()).toBe('9')
         expect(wrapper.get("#blockNumber").text()).toBe("Block9")
         expect(wrapper.get("#address").text()).toBe("Address0x00…0b70cfCopy(TestEvent)")

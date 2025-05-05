@@ -21,7 +21,7 @@ describe('EVM Bytecode Disassembler Tests', () => {
         test('Should return null if bytecode has odd length', () => {
             const BYTECODE = '0x40F';
 
-            expect(Helpers.prepBytecode(BYTECODE)).to.be.null;
+            expect(Helpers.prepBytecode(BYTECODE)).toBeNull()
         });
 
         test('Should get operands for opcodes in PUSH family', () => {
@@ -135,7 +135,7 @@ describe('EVM Bytecode Disassembler Tests', () => {
         test('Should return null if bytecode is not valid', () => {
             const INVALID_BYTECODE = '0x30f';
             const disassembly = Disassembler.disassemble(INVALID_BYTECODE);
-            expect(disassembly).to.be.null;
+            expect(disassembly).toBeNull()
         });
     });
 });
