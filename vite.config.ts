@@ -15,7 +15,7 @@ function resolveVersion() {
   try {
     const shortHash = child.execSync("git rev-parse --short HEAD").toString().trim()
     const packageJson = JSON.parse(readFileSync('./package.json', 'utf8'))
-    return `v${packageJson.version}+${shortHash}` || child.execSync("git describe --always --tags").toString()
+    return `v${packageJson.version}+${shortHash}`
   } catch (e) {
     console.error('Could not read package.json')
     return child.execSync("git describe --always --tags").toString()
