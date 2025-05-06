@@ -40,6 +40,7 @@ import NodeDetails from "@/pages/NodeDetails.vue";
 import Staking from "@/pages/Staking.vue";
 import Blocks from "@/pages/Blocks.vue";
 import BlockDetails from "@/pages/BlockDetails.vue";
+import Profile from "@/pages/Profile.vue";
 import SearchHelp from "@/pages/SearchHelp.vue";
 import axios from "axios";
 import {Transaction, TransactionType} from "@/schemas/MirrorNodeSchemas";
@@ -521,6 +522,10 @@ export class RouteManager {
         return {name: 'Blocks', params: {network: this.currentNetwork.value}}
     }
 
+    public makeRouteToProfile(): RouteLocationRaw {
+        return {name: 'Profile', params: {network: this.currentNetwork.value}}
+    }
+
     public makeRouteToPageNotFound(): RouteLocationRaw {
         return {name: 'PageNotFound', params: {network: this.currentNetwork.value}}
     }
@@ -732,6 +737,7 @@ export enum TabId {
     Nodes = "Nodes",
     Staking = "Staking",
     Blocks = "Blocks",
+    Profile = "Profile"
 }
 
 //
@@ -1020,6 +1026,15 @@ const routes: Array<RouteRecordRaw> = [
         props: true,
         meta: {
             tabId: TabId.Blocks
+        }
+    },
+    {
+        path: '/:network/profile',
+        name: 'Profile',
+        component: Profile,
+        props: true,
+        meta: {
+            tabId: TabId.Profile
         }
     },
     {
