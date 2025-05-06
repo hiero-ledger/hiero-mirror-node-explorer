@@ -94,7 +94,10 @@ export class CoreConfig {
         // The Wallect Connect Identifier
         public readonly walletConnectID: string | null,
         // The key for accessing Hgraph data
-        public readonly hgraphKey: string | null
+        public readonly hgraphKey: string | null,
+
+        // URL of Hedera Portal service
+        public readonly portalURL: string | null
     ) {
     }
 
@@ -127,7 +130,8 @@ export class CoreConfig {
             fetchURL(obj, "cryptoLogoLightURL") ?? localPathToURL("crypto-logo-light.svg"),
             fetchURL(obj, "cryptoLogoDarkURL") ?? localPathToURL("crypto-logo-dark.svg"),
             fetchString(obj, "walletConnectID"),
-            fetchString(obj, "hgraphKey")
+            fetchString(obj, "hgraphKey"),
+            fetchURL(obj, "portalURL")
         )
     }
 }
