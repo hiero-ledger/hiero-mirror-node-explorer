@@ -47,6 +47,7 @@ import {TransactionGroupCache} from "@/utils/cache/TransactionGroupCache";
 import {VerifiedContractsByAccountIdCache} from "@/utils/cache/VerifiedContractsByAccountIdCache";
 import {VerifiedContractsCache} from "@/utils/cache/VerifiedContractsCache";
 import {ScheduleByIdCache} from "@/utils/cache/ScheduleByIdCache.ts";
+import {ERC1155Cache} from "@/utils/cache/ERC1155Cache.ts";
 
 export class CacheUtils {
 
@@ -70,6 +71,7 @@ export class CacheUtils {
         ERC20InfoCache.instance.clear()
         ERC721Cache.instance.clear()
         ERC721InfoCache.instance.clear()
+        ERC1155Cache.instance.clear()
         HCSAssetCache.instance.clear()
         HbarPriceCache.instance.clear()
         LabelByIdCache.instance.clear()
