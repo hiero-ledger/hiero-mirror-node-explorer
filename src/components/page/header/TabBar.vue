@@ -26,6 +26,7 @@
              :target-route="routeManager.makeRouteToStaking()"/>
     <TabItem :tabId="TabId.Blocks"
              :target-route="routeManager.makeRouteToBlocks()"/>
+    <ProfileTabItem/>
   </div>
 </template>
 
@@ -38,6 +39,7 @@
 import {TabId} from "@/router.ts";
 import {routeManager} from "@/utils/RouteManager.ts"
 import TabItem from "@/components/page/header/TabItem.vue";
+import ProfileTabItem from "@/components/page/header/ProfileTabItem.vue";
 
 const props = defineProps({
   vertical: {

@@ -491,6 +491,10 @@ export class RouteManager {
         return {name: 'Blocks', params: {network: this.currentNetwork.value}}
     }
 
+    public makeRouteToProfile(): RouteLocationRaw {
+        return {name: 'Profile', params: {network: this.currentNetwork.value}}
+    }
+
     public makeRouteToPageNotFound(): RouteLocationRaw {
         return {name: 'PageNotFound', params: {network: this.currentNetwork.value}}
     }

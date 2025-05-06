@@ -22,7 +22,8 @@ import {
   loadingKey,
   networkConfigKey,
   suggestionKey,
-  themeControllerKey
+  themeControllerKey,
+  profileControllerKey
 } from "@/AppKeys"
 import {AxiosMonitor} from "@/utils/AxiosMonitor"
 import CookiesDialog from "@/dialogs/CookiesDialog.vue";
@@ -32,6 +33,7 @@ import {CoreConfig} from "@/config/CoreConfig";
 import {NetworkConfig} from "@/config/NetworkConfig";
 import {ThemeController} from "@/components/ThemeController.ts";
 import {walletManager} from "@/utils/RouteManager.ts";
+import {ProfileController} from "@/utils/profile/ProfileController.ts";
 
 const props = defineProps({
   "coreConfig": {
@@ -89,6 +91,9 @@ provide(networkConfigKey, props.networkConfig)
 const themeController = new ThemeController(props.coreConfig)
 provide(themeControllerKey, themeController)
 onMounted(() => themeController.mount())
+
+const profileController = new ProfileController(props.coreConfig)
+provide(profileControllerKey, profileController)
 
 const showCookiesDialog = ref(false)
 
