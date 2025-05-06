@@ -2,9 +2,9 @@
 
 // SPDX-License-Identifier: Apache-2.0
 
-import {describe, expect, it} from 'vitest'
+import {beforeEach, describe, expect, it} from 'vitest'
 import {flushPromises, mount} from "@vue/test-utils"
-import router from "@/router";
+import router, {routeManager} from "@/router";
 import axios from "axios";
 import {
     SAMPLE_ACCOUNT_BALANCES,
@@ -28,6 +28,7 @@ import {TransactionID} from "@/utils/TransactionID";
 import ContractResultTable from "@/components/contract/ContractResultTable.vue";
 import {ContractStateResponse} from "@/schemas/MirrorNodeSchemas.ts";
 import {fetchGetURLs} from "../MockUtils";
+import {ERC1155Cache} from "@/utils/cache/ERC1155Cache.ts";
 
 /*
     Bookmarks
@@ -39,6 +40,10 @@ import {fetchGetURLs} from "../MockUtils";
 HMSF.forceUTC = true
 
 describe("ContractDetails.vue", () => {
+
+    beforeEach(() => {
+        ERC1155Cache.instance.clear()
+    })
 
     it("Should display contract details (using contract id)", async () => {
 
@@ -97,6 +102,9 @@ describe("ContractDetails.vue", () => {
             "api/v1/network/nodes",
             "api/v1/contracts/" + SAMPLE_CONTRACT.contract_id,
             "api/v1/accounts/" + SAMPLE_CONTRACT.contract_id,
+            "http://localhost:3000/mainnet/erc-20.json",
+            "http://localhost:3000/mainnet/erc-721.json",
+            "http://localhost:3000/mainnet/erc-1155.json",
             "api/v1/contracts/" + SAMPLE_CONTRACT.contract_id + "/results/logs",
             "api/v1/balances",
             "api/v1/transactions",
@@ -228,6 +236,9 @@ describe("ContractDetails.vue", () => {
             "api/v1/network/nodes",
             "api/v1/contracts/" + SAMPLE_CONTRACT.evm_address,
             "api/v1/accounts/" + SAMPLE_CONTRACT.contract_id,
+            "http://localhost:3000/mainnet/erc-20.json",
+            "http://localhost:3000/mainnet/erc-721.json",
+            "http://localhost:3000/mainnet/erc-1155.json",
             "api/v1/contracts/" + SAMPLE_CONTRACT.contract_id + "/results/logs",
             "api/v1/balances",
             "api/v1/transactions",
@@ -356,6 +367,9 @@ describe("ContractDetails.vue", () => {
             "api/v1/network/nodes",
             "api/v1/contracts/" + SAMPLE_CONTRACT.contract_id,
             "api/v1/accounts/" + SAMPLE_CONTRACT.contract_id,
+            "http://localhost:3000/mainnet/erc-20.json",
+            "http://localhost:3000/mainnet/erc-721.json",
+            "http://localhost:3000/mainnet/erc-1155.json",
             "api/v1/contracts/" + SAMPLE_CONTRACT.contract_id + "/results/logs",
             "api/v1/balances",
             "api/v1/transactions",
@@ -456,6 +470,9 @@ describe("ContractDetails.vue", () => {
             "api/v1/network/nodes",
             "api/v1/contracts/" + SAMPLE_CONTRACT.contract_id,
             "api/v1/accounts/" + SAMPLE_CONTRACT.contract_id,
+            "http://localhost:3000/mainnet/erc-20.json",
+            "http://localhost:3000/mainnet/erc-721.json",
+            "http://localhost:3000/mainnet/erc-1155.json",
             "api/v1/contracts/" + SAMPLE_CONTRACT.contract_id + "/results/logs",
             "api/v1/balances",
             "api/v1/transactions",
@@ -681,6 +698,9 @@ describe("ContractDetails.vue", () => {
             "api/v1/network/nodes",
             "api/v1/contracts/" + SAMPLE_CONTRACT_DELETED.contract_id,
             "api/v1/accounts/" + SAMPLE_CONTRACT_DELETED.contract_id,
+            "http://localhost:3000/mainnet/erc-20.json",
+            "http://localhost:3000/mainnet/erc-721.json",
+            "http://localhost:3000/mainnet/erc-1155.json",
             "api/v1/contracts/" + SAMPLE_CONTRACT_DELETED.contract_id + "/results/logs",
             "api/v1/balances",
             "api/v1/transactions",
@@ -763,6 +783,9 @@ describe("ContractDetails.vue", () => {
             "api/v1/network/nodes",
             "api/v1/contracts/" + SAMPLE_CONTRACT_DELETED.contract_id,
             "api/v1/accounts/" + SAMPLE_CONTRACT_DELETED.contract_id,
+            "http://localhost:3000/mainnet/erc-20.json",
+            "http://localhost:3000/mainnet/erc-721.json",
+            "http://localhost:3000/mainnet/erc-1155.json",
             "api/v1/contracts/" + SAMPLE_CONTRACT_DELETED.contract_id + "/results/logs",
             "api/v1/balances",
             "api/v1/transactions",
@@ -821,6 +844,114 @@ describe("ContractDetails.vue", () => {
 
         expect(wrapper.get("#notificationBanner").text()).toBe("Invalid contract ID or address: " + invalidContractId)
 
+        wrapper.unmount()
+        await flushPromises()
+    });
+
+    it("Should display ERC-1155 chip", async () => {
+
+        await router.push("/") // To avoid "missing required param 'network'" error
+
+        const mock = new MockAdapter(axios as any);
+
+        const SAMPLE_ERC1155 = [
+            {
+                contractId: SAMPLE_CONTRACT.contract_id,
+                address: SAMPLE_CONTRACT.evm_address,
+            }
+        ]
+
+        const matcherAirdrop = "api/v1/accounts/" + SAMPLE_CONTRACT.contract_id + "/airdrops/pending"
+        mock.onGet(matcherAirdrop).reply(200, {"airdrops": []})
+
+        const matcher1 = "/api/v1/contracts/" + SAMPLE_CONTRACT.contract_id
+        mock.onGet(matcher1).reply(200, SAMPLE_CONTRACT);
+
+        const matcher2 = "/api/v1/accounts/" + SAMPLE_CONTRACT.contract_id
+        mock.onGet(matcher2).reply(200, SAMPLE_CONTRACT_AS_ACCOUNT);
+
+        const matcher3 = "/api/v1/transactions"
+        mock.onGet(matcher3).reply(200, SAMPLE_TRANSACTIONS);
+
+        const matcher4 = "/api/v1/network/exchangerate"
+        mock.onGet(matcher4).reply(200, SAMPLE_NETWORK_EXCHANGERATE);
+
+        const matcher5 = "/api/v1/contracts/" + SAMPLE_CONTRACT.contract_id + "/results"
+        mock.onGet(matcher5).reply(200, SAMPLE_CONTRACT_RESULTS);
+
+        const matcher6 = "/api/v1/balances"
+        mock.onGet(matcher6).reply(200, SAMPLE_ACCOUNT_BALANCES);
+
+        const matcher7 = "api/v1/contracts/" + SAMPLE_CONTRACT.contract_id + "/state?slot=0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc"
+        mock.onGet(matcher7).reply<ContractStateResponse>(200, {state: [], links: undefined})
+
+        const matcher8 = "api/v1/contracts/" + SAMPLE_CONTRACT.contract_id + "/state?slot=0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103"
+        mock.onGet(matcher8).reply<ContractStateResponse>(200, {state: [], links: undefined})
+
+        const matcher10 = "api/v1/tokens"
+        mock.onGet(matcher10).reply(200, {tokens: []});
+
+        const matcher11 = "api/v1/accounts/" + SAMPLE_CONTRACT.contract_id + "/nfts"
+        mock.onGet(matcher11).reply(200, {nfts: []});
+
+        const matcher12 = routeManager.currentNetworkEntry.value.erc1155IndexURL
+        if (matcher12) {
+            mock.onGet(matcher12).reply(200, SAMPLE_ERC1155);
+        }
+        const wrapper = mount(ContractDetails, {
+            global: {
+                plugins: [router, Oruga],
+                provide: {"isMediumScreen": false}
+            },
+            props: {
+                contractId: SAMPLE_CONTRACT.contract_id
+            },
+        });
+
+        await flushPromises()
+        // console.log(wrapper.html())
+
+        expect(fetchGetURLs(mock)).toStrictEqual([
+            "api/v1/network/nodes",
+            "api/v1/contracts/" + SAMPLE_CONTRACT.contract_id,
+            "api/v1/accounts/" + SAMPLE_CONTRACT.contract_id,
+            "http://localhost:3000/mainnet/erc-20.json",
+            "http://localhost:3000/mainnet/erc-721.json",
+            "http://localhost:3000/mainnet/erc-1155.json",
+            "api/v1/contracts/" + SAMPLE_CONTRACT.contract_id + "/results/logs",
+            "api/v1/balances",
+            "api/v1/transactions",
+            "api/v1/contracts/" + SAMPLE_CONTRACT.auto_renew_account,
+            "api/v1/contracts/" + SAMPLE_CONTRACT.contract_id + "/state?slot=0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+            "http://localhost:3000/files/any/295/0x00000000000000000000000000000000000b70cf",
+            "api/v1/network/exchangerate",
+            "api/v1/contracts/" + SAMPLE_CONTRACT.contract_id + "/state?slot=0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103",
+            "api/v1/accounts/" + SAMPLE_CONTRACT.contract_id + "/nfts",
+            "api/v1/tokens",
+            "api/v1/accounts/" + SAMPLE_CONTRACT.contract_id + "/airdrops/pending",
+            "api/v1/accounts/" + SAMPLE_CONTRACT.contract_id + "/airdrops/pending",
+            "api/v1/contracts/0xffffffffffffffffffffffffffffffffffffffff",
+            "api/v1/accounts/0xffffffffffffffffffffffffffffffffffffffff",
+            "api/v1/accounts/" + SAMPLE_CONTRACT.contract_id + "/nfts",
+            "api/v1/tokens",
+            "api/v1/accounts/" + SAMPLE_CONTRACT.contract_id + "/airdrops/pending",
+            "api/v1/accounts/" + SAMPLE_CONTRACT.contract_id + "/airdrops/pending",
+            "api/v1/contracts/" + SAMPLE_CONTRACT.contract_id + "/results",
+            "api/v1/contracts/0.0.1260",
+            "api/v1/contracts/0x00000000000000000000000000000000000004ec",
+            "api/v1/tokens/0.0.1260",
+            "api/v1/accounts/0x00000000000000000000000000000000000004ec",
+        ])
+
+        expect(wrapper.text()).toMatch(RegExp(
+            "Contract   " +
+            "ERC 1155" +
+            " Associated account " +
+            "Contract ID " +
+            SAMPLE_CONTRACT.contract_id
+        ))
+
+        mock.restore()
         wrapper.unmount()
         await flushPromises()
     });
