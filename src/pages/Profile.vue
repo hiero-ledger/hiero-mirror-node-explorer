@@ -11,7 +11,12 @@
     <div class="profile">
       <template v-if="connectionStatus == ProfileConnectionStatus.Disconnected">
         <p>Disconnected</p>
-        <ButtonView @action="profileController.connect('')">Connect</ButtonView>
+        <p>
+          <TextFieldView v-model="passwordText" placeholder="Password"/>
+        </p>
+        <p>
+          <ButtonView @action="handleConnect" :enabled="connectEnabled">Connect</ButtonView>
+        </p>
       </template>
       <template v-else-if="connectionStatus == ProfileConnectionStatus.Connecting">
         <p>Connecting…</p>
@@ -32,12 +37,22 @@
 
 <script setup lang="ts">
 
+import {computed, ref} from "vue";
 import PageFrameV2 from "@/components/page/PageFrameV2.vue";
 import {ProfileConnectionStatus, ProfileController} from "@/utils/profile/ProfileController.ts";
 import ButtonView from "@/elements/ButtonView.vue";
+import TextFieldView from "@/elements/TextFieldView.vue";
 
 const profileController = ProfileController.inject()
 const connectionStatus = profileController.connectionStatus
+
+const passwordText = ref<string>("")
+
+const connectEnabled = computed(() => passwordText.value !== "")
+
+const handleConnect = async () => {
+  await profileController.connect(passwordText.value)
+}
 
 </script>
 
