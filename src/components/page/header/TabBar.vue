@@ -26,7 +26,7 @@
              :target-route="routeManager.makeRouteToStaking()"/>
     <TabItem :tabId="TabId.Blocks"
              :target-route="routeManager.makeRouteToBlocks()"/>
-    <ProfileTabItem/>
+    <ProfileTabItem v-if="profileVisible"/>
   </div>
 </template>
 
@@ -36,10 +36,12 @@
 
 <script setup lang="ts">
 
+import {computed} from "vue";
 import {TabId} from "@/router.ts";
 import {routeManager} from "@/utils/RouteManager.ts"
 import TabItem from "@/components/page/header/TabItem.vue";
 import ProfileTabItem from "@/components/page/header/ProfileTabItem.vue";
+import {ProfileController} from "@/utils/profile/ProfileController.ts";
 
 const props = defineProps({
   vertical: {
@@ -48,7 +50,10 @@ const props = defineProps({
   }
 })
 
+const profileController = ProfileController.inject()
+
 const enableStaking = routeManager.enableStaking
+const profileVisible = computed(() => profileController.coreConfig.portalURL !== null)
 
 </script>
 
