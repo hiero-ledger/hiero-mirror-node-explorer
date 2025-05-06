@@ -11,7 +11,7 @@
     <div class="profile">
       <template v-if="connectionStatus == ProfileConnectionStatus.Disconnected">
         <p>Disconnected</p>
-        <ButtonView @action="profileController.connect()">Connect</ButtonView>
+        <ButtonView @action="profileController.connect('')">Connect</ButtonView>
       </template>
       <template v-else-if="connectionStatus == ProfileConnectionStatus.Connecting">
         <p>Connecting…</p>
