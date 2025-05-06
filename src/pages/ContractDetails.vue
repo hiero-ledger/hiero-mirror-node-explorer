@@ -24,6 +24,9 @@
         <div v-if="isErc721" class="h-has-pill" style="margin-top: 2px">
           ERC 721
         </div>
+        <div v-if="isErc1155" class="h-has-pill" style="margin-top: 2px">
+          ERC 1155
+        </div>
       </template>
 
       <template #right-control>
@@ -200,11 +203,7 @@
 
     <TokensSection :account-id="normalizedContractId"/>
 
-    <ContractERCSection
-        :contract-id="normalizedContractId"
-        v-model:is-erc20="isErc20"
-        v-model:is-erc721="isErc721"
-    />
+    <ContractERCSection :erc-analyzer="ercAnalyzer"/>
 
     <ContractResultsSection :contract-id="normalizedContractId ?? undefined"/>
 
@@ -224,7 +223,7 @@
 
 <script setup lang="ts">
 
-import {computed, onBeforeUnmount, onMounted, ref} from 'vue';
+import {computed, onBeforeUnmount, onMounted} from 'vue';
 import KeyValue from "@/components/values/KeyValue.vue";
 import AccountLink from "@/components/values/link/AccountLink.vue";
 import TimestampValue from "@/components/values/TimestampValue.vue";
@@ -257,6 +256,7 @@ import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import ArrowLink from "@/components/ArrowLink.vue";
 import EntityIDView from "@/components/values/EntityIDView.vue";
 import HbarAmount from "@/components/values/HbarAmount.vue";
+import {ERCAnalyzer} from "@/utils/analyzer/ERCAnalyzer.ts";
 
 const props = defineProps({
   contractId: String,
@@ -329,10 +329,11 @@ onMounted(() => contractAnalyzer.mount())
 onBeforeUnmount(() => contractAnalyzer.unmount())
 
 //
-// ERC
+// ERCAnalyzer
 //
-const isErc20 = ref(false)
-const isErc721 = ref(false)
+const ercAnalyzer = new ERCAnalyzer(normalizedContractId)
+onMounted(() => ercAnalyzer.mount())
+onBeforeUnmount(() => ercAnalyzer.unmount())
 
 //
 // contract results logs - event logs at contract level
@@ -358,6 +359,9 @@ const contractName = contractAnalyzer.contractName
 const logs = contractResultsLogsAnalyzer.logs
 const domainName = nameQuery.name
 const domainProviderName = nameQuery.providerName
+const isErc20 = ercAnalyzer.isErc20
+const isErc721 = ercAnalyzer.isErc721
+const isErc1155 = ercAnalyzer.isErc1155
 
 </script>
 

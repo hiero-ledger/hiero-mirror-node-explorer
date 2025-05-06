@@ -16,8 +16,8 @@ import {
     SAMPLE_CONTRACT,
     SAMPLE_CONTRACT_AS_ACCOUNT,
     SAMPLE_CONTRACT_RESULT_DETAILS,
-    SAMPLE_SCHEDULING_SCHEDULED_TRANSACTIONS,
     SAMPLE_SCHEDULE,
+    SAMPLE_SCHEDULING_SCHEDULED_TRANSACTIONS,
     SAMPLE_TOKEN,
     SAMPLE_TOKEN_DUDE,
     SAMPLE_TOPIC,
@@ -439,6 +439,8 @@ describe("SearchController.vue", () => {
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/accounts/CIQAAAH4AY2OFK2FL37TSPYEQGPPUJRP4XTKWHD62HKPQX543DTOFFQ",
             "api/v1/tokens/?name=CIQAAAH4AY2OFK2FL37TSPYEQGPPUJRP4XTKWHD62HKPQX543DTOFFQ&limit=100",
+            "http://localhost:3000/mainnet/erc-20.json",
+            "http://localhost:3000/mainnet/erc-721.json",
         ])
 
         expect(vi.getTimerCount()).toBe(0)
@@ -916,6 +918,8 @@ describe("SearchController.vue", () => {
         await flushPromises()
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/tokens/?name=" + SAMPLE_TOKEN_NAME + "&limit=100",
+            "http://localhost:3000/mainnet/erc-20.json",
+            "http://localhost:3000/mainnet/erc-721.json",
         ])
 
         expect(vi.getTimerCount()).toBe(0)

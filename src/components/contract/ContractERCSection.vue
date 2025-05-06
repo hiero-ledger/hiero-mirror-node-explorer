@@ -60,35 +60,24 @@
 
 <script setup lang="ts">
 
-import {computed, onBeforeUnmount, onMounted, PropType, watch, WatchHandle} from 'vue';
+import {computed, PropType} from 'vue';
 import StringValue from "@/components/values/StringValue.vue";
 import Property from "@/components/Property.vue";
 import PlainAmount from "@/components/values/PlainAmount.vue";
-import {ERC20InfoCache} from "@/utils/cache/ERC20InfoCache.ts";
 import {formatUnits} from "ethers";
-import {ERC721InfoCache} from "@/utils/cache/ERC721InfoCache.ts";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
+import {ERCAnalyzer} from "@/utils/analyzer/ERCAnalyzer.ts";
 
 const props = defineProps({
-  contractId: {
-    type: String as PropType<string | null>,
+  ercAnalyzer: {
+    type: Object as PropType<ERCAnalyzer | null>,
     default: null
   },
 })
-const isErc20 = defineModel(
-    "isErc20", {
-      type: Boolean,
-      required: true
-    }
-)
-const isErc721 = defineModel(
-    "isErc721", {
-      type: Boolean,
-      required: true
-    }
-)
 
-const contractId = computed(() => props.contractId ?? null)
+const erc20 = computed(() => props.ercAnalyzer?.erc20.value ?? null)
+const erc721 = computed(() => props.ercAnalyzer?.erc721.value ?? null)
+
 const ercName = computed(() => erc20.value?.name ?? erc721.value?.name)
 const ercSymbol = computed(() => erc20.value?.symbol ?? erc721.value?.symbol)
 const erc20TotalSupply = computed(() =>
@@ -96,37 +85,6 @@ const erc20TotalSupply = computed(() =>
         ? formatUnits(erc20.value.totalSupply, erc20.value.decimals)
         : null
 )
-
-//
-// ERC20
-//
-
-const erc20Lookup = ERC20InfoCache.instance.makeLookup(contractId)
-const erc20 = erc20Lookup.entity
-let watch20Handle: WatchHandle
-onMounted(() => {
-  erc20Lookup.mount()
-  watch20Handle = watch(erc20, (value) => isErc20.value = value !== null)
-})
-onBeforeUnmount(() => {
-  erc20Lookup.unmount()
-  watch20Handle()
-})
-
-//
-// ERC721
-//
-const erc721Lookup = ERC721InfoCache.instance.makeLookup(contractId)
-const erc721 = erc721Lookup.entity
-let watch721Handle: WatchHandle
-onMounted(() => {
-  erc721Lookup.mount()
-  watch721Handle = watch(erc721, (value) => isErc721.value = value !== null)
-})
-onBeforeUnmount(() => {
-  erc721Lookup.unmount()
-  watch721Handle()
-})
 
 </script>
 
