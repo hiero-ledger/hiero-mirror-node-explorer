@@ -26,5 +26,6 @@
   "cryptoLogoLightURL": null,
   "cryptoLogoDarkURL": null,
   "walletConnectID": null,
-  "hgraphKey": null
+  "hgraphKey": null,
+  "portalURL": null
 }
