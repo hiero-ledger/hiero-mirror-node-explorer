@@ -13,6 +13,7 @@
     "popularTokenIndexURL": "popular-tokens.json",
     "erc20IndexURL": "mainnet/erc-20.json",
     "erc721IndexURL": "mainnet/erc-721.json",
+    "erc1155IndexURL": "mainnet/erc-1155.json",
     "sourcifySetup": {
       "activate": true,
       "repoURL": "https://repository.local/contracts/",
@@ -33,6 +34,7 @@
     "enableMarket": false,
     "erc20IndexURL": "testnet/erc-20.json",
     "erc721IndexURL": "testnet/erc-721.json",
+    "erc1155IndexURL": "testnet/erc-1155.json",
     "sourcifySetup": {
       "activate": true,
       "repoURL": "https://repository.local/contracts/",
@@ -53,6 +55,7 @@
     "enableMarket": false,
     "erc20IndexURL": null,
     "erc721IndexURL": "previewnet/erc-721.json",
+    "erc1155IndexURL": null,
     "sourcifySetup": {
       "activate": true,
       "repoURL": "https://repository.local/contracts/",
