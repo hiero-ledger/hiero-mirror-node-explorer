@@ -17,6 +17,13 @@
         <p>
           <ButtonView @action="handleConnect" :enabled="connectEnabled">Connect</ButtonView>
         </p>
+        <p>
+          <ReCaptcha v-if="recaptchaKey !== null"
+              style="display: inline-block"
+              action="connect"
+              :site-key="recaptchaKey"
+              @on-captcha-change="onCaptchaChange"/>
+        </p>
       </template>
       <template v-else-if="connectionStatus == ProfileConnectionStatus.Connecting">
         <p>Connecting…</p>
@@ -42,13 +49,24 @@ import PageFrameV2 from "@/components/page/PageFrameV2.vue";
 import {ProfileConnectionStatus, ProfileController} from "@/utils/profile/ProfileController.ts";
 import ButtonView from "@/elements/ButtonView.vue";
 import TextFieldView from "@/elements/TextFieldView.vue";
+import ReCaptcha from "@/components/recaptcha/ReCaptcha.vue";
 
 const profileController = ProfileController.inject()
 const connectionStatus = profileController.connectionStatus
 
 const passwordText = ref<string>("")
 
-const connectEnabled = computed(() => passwordText.value !== "")
+const recaptchaKey = computed(() => profileController.coreConfig.recaptchaKey)
+const recaptchaToken = ref<string|null>(null)
+const onCaptchaChange = (newToken: string) => {
+  recaptchaToken.value = newToken
+}
+
+const connectEnabled = computed(() =>
+    passwordText.value !== ""
+    && (recaptchaKey.value === null || recaptchaToken.value !== null)
+)
+
 
 const handleConnect = async () => {
   await profileController.connect(passwordText.value)
