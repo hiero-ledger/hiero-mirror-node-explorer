@@ -12,7 +12,9 @@
       <template v-if="connectionStatus == ProfileConnectionStatus.Disconnected">
         <p>Disconnected</p>
         <p>
-          <TextFieldView v-model="passwordText" placeholder="Password"/>
+          <TextFieldView v-model="emailText" placeholder="e-Mail"/>
+          <br/>
+          <TextFieldView v-model="passwordText" placeholder="Password" type="password"/>
         </p>
         <p>
           <ButtonView @action="handleConnect" :enabled="connectEnabled">Connect</ButtonView>
@@ -54,6 +56,7 @@ import ReCaptcha from "@/components/recaptcha/ReCaptcha.vue";
 const profileController = ProfileController.inject()
 const connectionStatus = profileController.connectionStatus
 
+const emailText = ref<string>("")
 const passwordText = ref<string>("")
 
 const recaptchaKey = computed(() => profileController.coreConfig.recaptchaKey)
@@ -63,13 +66,14 @@ const onCaptchaChange = (newToken: string) => {
 }
 
 const connectEnabled = computed(() =>
-    passwordText.value !== ""
+    emailText.value !== ""
+    && passwordText.value !== ""
     && (recaptchaKey.value === null || recaptchaToken.value !== null)
 )
 
 
 const handleConnect = async () => {
-  await profileController.connect(passwordText.value)
+  await profileController.connect(emailText.value, passwordText.value, recaptchaToken.value!)
 }
 
 </script>
