@@ -96,8 +96,10 @@ export class CoreConfig {
         // The key for accessing Hgraph data
         public readonly hgraphKey: string | null,
 
-        // URL of Hedera Portal service
-        public readonly portalURL: string | null
+        // The URL of Hedera Portal service
+        public readonly portalURL: string | null,
+        // The key for ReCAPTCHA
+        public readonly recaptchaKey: string | null
     ) {
     }
 
@@ -131,7 +133,8 @@ export class CoreConfig {
             fetchURL(obj, "cryptoLogoDarkURL") ?? localPathToURL("crypto-logo-dark.svg"),
             fetchString(obj, "walletConnectID"),
             fetchString(obj, "hgraphKey"),
-            fetchURL(obj, "portalURL")
+            fetchURL(obj, "portalURL"),
+            fetchString(obj, "recaptchaKey"),
         )
     }
 }
