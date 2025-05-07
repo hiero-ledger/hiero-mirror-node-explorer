@@ -27,5 +27,6 @@
   "cryptoLogoDarkURL": null,
   "walletConnectID": null,
   "hgraphKey": null,
-  "portalURL": null
+  "portalURL": null,
+  "recaptchaKey": null
 }
