@@ -43,18 +43,23 @@ export namespace Portal {
 
     export class Client {
 
+        private readonly privateAxios = axios.create({withCredentials: true})
+
+
         public constructor(private readonly portalURL: string) {}
 
 
         public async fetchCurrentSession() : Promise<Session> {
-            const r = await privateAxios.get<Session>(this.portalURL + "api/session/current");
+            const r = await this.privateAxios.get<Session>(
+                this.portalURL + "api/session/current",
+            {withCredentials: true});
             return r.data;
         }
 
         public async createSession(email: string, password: string, recaptchaToken: string): Promise<NewSession> {
             let result: NewSession
             try {
-                const r = await privateAxios.post<NewSession>(
+                const r = await this.privateAxios.post<NewSession>(
                     this.portalURL + "api/session",
                     { email, password, token: recaptchaToken }
                 )
@@ -71,16 +76,10 @@ export namespace Portal {
         }
 
         public async destroyCurrentSession(): Promise<void> {
-            await privateAxios.delete<Session>(this.portalURL + "api/session/current")
+            await this.privateAxios.delete<Session>(this.portalURL + "api/session/current")
         }
 
     }
-
-    //
-    // Private
-    //
-
-    const privateAxios = axios.create()
 
 }
 
