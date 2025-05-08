@@ -11,7 +11,7 @@
     </template>
 
     <template #tooltip>
-      <p>Public label for ID {{ entityId }}</p>
+      <p>Public label for ID {{ entityId }} [{{ type }}]</p>
       <p>{{ description }}</p>
       <p>{{ website }}</p>
     </template>
@@ -44,6 +44,7 @@ const name = computed(() => props.labelDefinition?.name ?? null)
 const entityId = computed(() => props.labelDefinition?.entityId ?? null)
 const website = computed(() => props.labelDefinition?.website ?? null)
 const description = computed(() => props.labelDefinition?.description ?? null)
+const type = computed(() => props.labelDefinition?.type ?? null)
 
 </script>
 
