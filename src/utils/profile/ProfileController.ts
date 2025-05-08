@@ -38,6 +38,19 @@ export class ProfileController {
     public readonly session
         = ref<Portal.Session|null>(null)
 
+    public async restoreSession(): Promise<void> {
+        if (this.portalClient !== null) {
+            this.connecting.value = true
+            try {
+                this.session.value = await this.portalClient.fetchCurrentSession()
+            } catch(reason) {
+                this.session.value = null
+            } finally {
+                this.connecting.value = false
+            }
+        }
+    }
+
     public async connect(email: string, password: string, recaptchaToken: string): Promise<void> {
         if (this.portalClient !== null) {
             this.connecting.value = true
@@ -66,7 +79,6 @@ export class ProfileController {
         const defaultFactory = () => new ProfileController(CoreConfig.FALLBACK)
         return inject<ProfileController>(profileControllerKey, defaultFactory, true)
     }
-
 }
 
 export enum ProfileConnectionStatus {
