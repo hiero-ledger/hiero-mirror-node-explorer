@@ -200,17 +200,10 @@ export class SearchController {
         const isSymbol = searchedText.length >= 3
             && isASCII(searchedText)
             && entityID === null
-            && hexBytes === null
             && transactionID === null
             && timestamp === null
         const tokenName = isSymbol ? searchedText : null
         const label = isSymbol ? searchedText : null
-
-        // console.log(`searchedText: ${searchedText}`)
-        // console.log(`isSymbol: ${isSymbol}`)
-        // console.log(`hexBytes: ${hexBytes}`)
-        // console.log(`tokenName: ${tokenName}`)
-        // console.log(`label: ${label}`)
 
         const resolvedIds = []
         if (label) {
