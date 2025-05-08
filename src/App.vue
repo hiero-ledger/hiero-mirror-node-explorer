@@ -94,6 +94,7 @@ onMounted(() => themeController.mount())
 
 const profileController = new ProfileController(props.coreConfig)
 provide(profileControllerKey, profileController)
+onMounted(() => profileController.restoreSession())
 
 const showCookiesDialog = ref(false)
 
