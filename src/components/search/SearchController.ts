@@ -14,7 +14,6 @@ import {
     ERC20SearchAgent,
     ERC721SearchAgent,
     FullTokenNameSearchAgent,
-    LabelSearchAgent,
     NarrowTokenNameSearchAgent,
     ScheduleSearchAgent,
     SearchAgent,
@@ -25,6 +24,7 @@ import {
 import {nameServiceProviders} from "@/utils/name_service/provider/AllProviders";
 import {InputChangeController} from "@/components/utils/InputChangeController.ts";
 import {routeManager} from "@/router.ts";
+import {LabelByIdCache} from "@/utils/cache/LabelByIdCache.ts";
 
 export class SearchController {
 
@@ -92,10 +92,9 @@ export class SearchController {
     public readonly fullTokenNameSearchAgent = new FullTokenNameSearchAgent()
     public readonly erc20SearchAgent = new ERC20SearchAgent()
     public readonly erc721SearchAgent = new ERC721SearchAgent()
-    public readonly labelSearchAgent = new LabelSearchAgent()
+    public readonly domainNameSearchAgents: DomainNameSearchAgent[] = []
 
     private readonly allAgents: SearchAgent<unknown, unknown>[] = []
-    public readonly domainNameSearchAgents: DomainNameSearchAgent[] = []
 
     //
     // Public
@@ -115,7 +114,6 @@ export class SearchController {
             this.blockSearchAgent,
             this.erc20SearchAgent,
             this.erc721SearchAgent,
-            this.labelSearchAgent
         )
         for (const p of nameServiceProviders) {
             const a = new DomainNameSearchAgent(p)
@@ -185,7 +183,7 @@ export class SearchController {
     // Private
     //
 
-    private actualInputTextDidChange = (): void => {
+    private actualInputTextDidChange = async (): Promise<void> => {
 
         const baseRealm = routeManager.currentNetworkEntry.value.baseRealm
         const baseShard = routeManager.currentNetworkEntry.value.baseShard
@@ -199,33 +197,54 @@ export class SearchController {
         const entityID = EntityID.parseWithChecksum(searchedText)
             ?? (positiveInt != null ? new EntityID(baseShard, baseRealm, positiveInt, null) : null)
         const blockNb = positiveInt
-
-        // const isTokenName = searchedText.length >= 3 && isASCII(searchedText)
-        const isTokenName = searchedText.length >= 3
+        const isSymbol = searchedText.length >= 3
             && isASCII(searchedText)
             && entityID === null
-            && transactionID === null
             && hexBytes === null
+            && transactionID === null
             && timestamp === null
-        const tokenName = isTokenName ? searchedText : null
+        const tokenName = isSymbol ? searchedText : null
+        const label = isSymbol ? searchedText : null
 
-        const labelName = isASCII(searchedText) ? searchedText : null
+        // console.log(`searchedText: ${searchedText}`)
+        // console.log(`isSymbol: ${isSymbol}`)
+        // console.log(`hexBytes: ${hexBytes}`)
+        // console.log(`tokenName: ${tokenName}`)
+        // console.log(`label: ${label}`)
 
-        this.accountSearchAgent.loc.value = entityID ?? hexBytes ?? alias
-        this.contractSearchAgent.loc.value = entityID ?? hexBytes
-        this.tokenSearchAgent.loc.value = entityID ?? hexBytes
-        this.topicSearchAgent.loc.value = entityID
-        this.scheduleSearchAgent.loc.value = entityID
-        this.transactionSearchAgent.loc.value = transactionID ?? timestamp ?? hexBytes
-        this.blockSearchAgent.loc.value = blockNb ?? hexBytes
-        this.narrowTokenNameSearchAgent.loc.value = tokenName
-        this.fullTokenNameSearchAgent.loc.value = tokenName
-        this.erc20SearchAgent.loc.value = tokenName
-        this.erc721SearchAgent.loc.value = tokenName
-        this.labelSearchAgent.loc.value = labelName
+        const resolvedIds = []
+        if (label) {
+            const labels = await LabelByIdCache.instance.search(label)
+            for (const l of labels) {
+                const entityId = EntityID.parse(l.entityId)
+                console.log(`found label: ${l.name} - ${entityId}`)
+                if (entityId) {
+                    resolvedIds.push(entityId)
+                }
+            }
+            resolvedIds.sort()
+        }
+
+        const accounts = entityID ? [entityID] : hexBytes ? [hexBytes] : alias ? [alias] : []
+        this.accountSearchAgent.loc.value = accounts.concat(resolvedIds)
+        const contracts = entityID ? [entityID] : hexBytes ? [hexBytes] : []
+        this.contractSearchAgent.loc.value = contracts.concat(resolvedIds)
+        const tokens = entityID ? [entityID] : hexBytes ? [hexBytes] : []
+        this.tokenSearchAgent.loc.value = tokens.concat(resolvedIds)
+        const topics = entityID ? [entityID] : []
+        this.topicSearchAgent.loc.value = topics.concat(resolvedIds)
+
+        this.scheduleSearchAgent.loc.value = entityID ? [entityID] : []
+        this.transactionSearchAgent.loc.value = transactionID ? [transactionID] : timestamp ? [timestamp] : hexBytes ? [hexBytes] : []
+        this.blockSearchAgent.loc.value = blockNb ? [blockNb] : hexBytes ? [hexBytes] : []
+
+        this.narrowTokenNameSearchAgent.loc.value = tokenName ? [tokenName] : []
+        this.fullTokenNameSearchAgent.loc.value = tokenName ? [tokenName] : []
+        this.erc20SearchAgent.loc.value = tokenName ? [tokenName] : []
+        this.erc721SearchAgent.loc.value = tokenName ? [tokenName] : []
 
         for (const a of this.domainNameSearchAgents) {
-            a.loc.value = domainName
+            a.loc.value = domainName ? [domainName] : []
         }
     }
 }

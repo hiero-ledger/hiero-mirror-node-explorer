@@ -36,7 +36,7 @@ import {LabelByIdCache} from "@/utils/cache/LabelByIdCache.ts";
 export abstract class SearchAgent<L, E> {
 
     public readonly loading = ref<boolean>(false)
-    public readonly loc: Ref<L | null> = ref(null)
+    public readonly loc: Ref<L[]> = ref([])
     public readonly candidates: Ref<SearchCandidate<E>[]> = ref([])
     private readonly abortController = new AbortController()
 
@@ -64,26 +64,22 @@ export abstract class SearchAgent<L, E> {
     }
 
     protected readonly entityLocDidChange = async () => {
-
-        if (this.loading.value) {
-            this.abortController.abort()
-        }
-
-        this.loading.value = true
-        try {
-            if (this.loc.value !== null) {
-                this.candidates.value = await this.load(this.loc.value, this.abortController)
-            } else {
-                this.candidates.value = []
+        this.candidates.value = []
+        for (const loc of this.loc.value) {
+            if (this.loading.value) {
+                this.abortController.abort()
             }
-            this.loading.value = false
-        } catch (reason) {
-            this.candidates.value = []
-            if (!this.isAbortError(reason)) {
+            this.loading.value = true
+            try {
+                this.candidates.value = this.candidates.value.concat(await this.load(loc, this.abortController))
                 this.loading.value = false
+            } catch (reason) {
+                this.candidates.value = []
+                if (!this.isAbortError(reason)) {
+                    this.loading.value = false
+                }
             }
         }
-
     }
 
     //
@@ -170,7 +166,8 @@ export class AccountSearchAgent extends SearchAgent<EntityID | Uint8Array | stri
             if (accountInfo.account) {
                 const description = accountInfo.account
                 const route = routeManager.makeRouteToAccount(accountInfo.account)
-                const candidate = new SearchCandidate<AccountInfo>(description, null, route, accountInfo, this)
+                const extra = (await LabelByIdCache.instance.lookup(accountInfo.account))?.name ?? null
+                const candidate = new SearchCandidate<AccountInfo>(description, extra, route, accountInfo, this)
                 result = [candidate]
             } else {
                 result = []
@@ -241,7 +238,8 @@ export class ContractSearchAgent extends SearchAgent<EntityID | Uint8Array, Cont
         if (contractInfo !== null && contractInfo.contract_id) {
             const description = contractInfo.contract_id
             const route = routeManager.makeRouteToContract(contractInfo.contract_id)
-            const candidate = new SearchCandidate<ContractResponse>(description, null, route, contractInfo, this)
+            const extra = (await LabelByIdCache.instance.lookup(contractInfo.contract_id))?.name ?? null
+            const candidate = new SearchCandidate<ContractResponse>(description, extra, route, contractInfo, this)
             result = [candidate]
         } else {
             result = []
@@ -298,7 +296,8 @@ export class TokenSearchAgent extends SearchAgent<EntityID | Uint8Array, TokenIn
         if (tokenInfo !== null && tokenInfo.token_id !== null) {
             const description = tokenInfo.token_id
             const route = routeManager.makeRouteToToken(tokenInfo.token_id)
-            const candidate = new SearchCandidate(description, null, route, tokenInfo, this)
+            const extra = (await LabelByIdCache.instance.lookup(tokenInfo.token_id))?.name ?? null
+            const candidate = new SearchCandidate(description, extra, route, tokenInfo, this)
             result = [candidate]
         } else {
             result = []
@@ -330,7 +329,8 @@ export class TopicSearchAgent extends SearchAgent<EntityID, Topic> {
             const topicInfo = (await axios.get<Topic>("api/v1/topics/" + tid)).data
             const description = tid
             const route = routeManager.makeRouteToTopic(tid)
-            const candidate = new SearchCandidate(description, null, route, topicInfo, this)
+            const extra = (await LabelByIdCache.instance.lookup(tid))?.name ?? null
+            const candidate = new SearchCandidate(description, extra, route, topicInfo, this)
             result = [candidate]
         } catch {
             result = []
@@ -788,42 +788,5 @@ export class ERC721SearchAgent extends TokenNameSearchAgent {
 
     protected makeRoute(tokenName: string): RouteLocationRaw {
         return routeManager.makeRouteToERC721ByName(tokenName)
-    }
-}
-
-export class LabelSearchAgent extends TokenNameSearchAgent {
-
-    //
-    // Public
-    //
-
-    public constructor() {
-        super("Labels")
-    }
-
-    //
-    // TokenNameSearchAgent
-    //
-
-    protected async loadTokens(label: string): Promise<TokenLike[]> {
-        const result: TokenLike[] = []
-
-        const labels = await LabelByIdCache.instance.search(label)
-        for (const l of labels) {
-            result.push({
-                token_id: l.entityId,
-                name: l.name!,
-            })
-        }
-        result.sort((t1: TokenLike, t2: TokenLike) => TokenNameSearchAgent.compareToken(t1, t2, label))
-        return Promise.resolve(result)
-    }
-
-    protected makeRouteToDetails(entityId: string): RouteLocationRaw {
-        return routeManager.makeRouteToAccount(entityId);
-    }
-
-    protected makeRoute(label: string): RouteLocationRaw {
-        return routeManager.makeRouteToERC721ByName(label)
     }
 }
