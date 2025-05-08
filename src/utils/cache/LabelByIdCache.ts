@@ -30,6 +30,21 @@ export class LabelByIdCache extends EntityCache<string, LabelDefinition | null> 
         return Promise.resolve(result)
     }
 
+    public async lookup(entityId: string): Promise<LabelDefinition | null> {
+        let result: LabelDefinition | null = null
+
+        if (!this.loaded) {
+            this.loaded = true
+            await this.loadLabelDefinitions()
+        }
+        for (const label of this.labels) {
+            if (label.entityId === entityId) {
+                result = label
+            }
+        }
+        return Promise.resolve(result)
+    }
+
     public override clear(): void {
         super.clear()
         this.loaded = false
@@ -58,11 +73,10 @@ export class LabelByIdCache extends EntityCache<string, LabelDefinition | null> 
     //
     private async loadLabelDefinitions(): Promise<void> {
         const url = routeManager.currentNetworkEntry.value.publicLabelsURL
-        console.log(`Reading labels from url: ${url}`)
 
         if (url !== null) {
             this.labels = (await axios.get<LabelDefinition[]>(url)).data
-            console.log(`Read ${this.labels.length} labels from url: ${url}`)
+            // console.log(`Read ${this.labels.length} labels from url: ${url}`)
         } else {
             this.labels = []
         }
