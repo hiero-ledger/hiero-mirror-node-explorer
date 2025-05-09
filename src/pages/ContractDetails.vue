@@ -57,16 +57,6 @@
                 :address="ethereumAddress"/>
           </template>
         </Property>
-        <Property v-if="domainName" id="names" full-width>
-          <template #name>
-            Domain
-          </template>
-          <template #value>
-            <div style="display: flex; align-items: center; gap: 4px">
-              <DomainLabel :domain-name="domainName" :provider-name="domainProviderName"/>
-            </div>
-          </template>
-        </Property>
         <Property v-if="label" id="labels" full-width>
           <template #name>
             Label
@@ -74,6 +64,16 @@
           <template #value>
             <div style="display: flex; align-items: center; gap: 4px">
               <PublicLabel :label-definition="label"/>
+            </div>
+          </template>
+        </Property>
+        <Property v-if="domainName" id="names" full-width>
+          <template #name>
+            Domain
+          </template>
+          <template #value>
+            <div style="display: flex; align-items: center; gap: 4px">
+              <DomainLabel :domain-name="domainName" :provider-name="domainProviderName"/>
             </div>
           </template>
         </Property>
