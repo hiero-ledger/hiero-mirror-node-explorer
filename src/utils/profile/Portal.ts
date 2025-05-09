@@ -34,6 +34,19 @@ export namespace Portal {
         token: string;
     }
 
+    export interface EntityLabel {
+        labelId: string;
+        entityId: string;
+        name: string;
+        type: string | null;
+        description: string | null;
+        website: string | null;
+        networkEpoch: string | null;
+        createdAt: string;
+        updatedAt: string;
+    }
+
+
     export class IncorrectEmailOrPasswordError extends Error {}
 
 
@@ -48,6 +61,10 @@ export namespace Portal {
 
         public constructor(private readonly portalURL: string) {}
 
+
+        //
+        // Session
+        //
 
         public async fetchCurrentSession() : Promise<Session> {
             const r = await this.privateAxios.get<Session>(
@@ -79,6 +96,16 @@ export namespace Portal {
             await this.privateAxios.delete<Session>(this.portalURL + "api/session/current")
         }
 
+        //
+        // Label
+        //
+
+        public async listEntityLabels(network: string): Promise<EntityLabel[]> {
+            const r = await this.privateAxios.get<EntityLabel[]>(
+                this.portalURL + "api/label/" + network,
+                {withCredentials: true});
+            return r.data;
+        }
     }
 
 }
