@@ -71,7 +71,8 @@ export abstract class SearchAgent<L, E> {
             }
             this.loading.value = true
             try {
-                this.candidates.value = this.candidates.value.concat(await this.load(loc, this.abortController))
+                const newCandidates = await this.load(loc, this.abortController)
+                this.candidates.value = this.candidates.value.concat(newCandidates)
                 this.loading.value = false
             } catch (reason) {
                 this.candidates.value = []
@@ -472,7 +473,6 @@ export class DomainNameSearchAgent extends SearchAgent<string, DomainNameResolut
         }
         return result !== null ? [result] : []
     }
-
 }
 
 export class DomainNameResolution {
@@ -556,6 +556,7 @@ export abstract class TokenNameSearchAgent extends SearchAgent<string, TokenLike
         let tokens: TokenLike[]
         try {
             tokens = await this.loadTokens(tokenName)
+            tokens.sort((t1: TokenLike, t2: TokenLike) => TokenNameSearchAgent.compareToken(t1, t2, tokenName))
         } catch {
             tokens = []
         }
@@ -674,7 +675,6 @@ export class FullTokenNameSearchAgent extends TokenNameSearchAgent {
         // https://previewnet.mirrornode.hedera.com/api/v1/docs/#/tokens/getToken
         const r = await axios.get<TokensResponse>("api/v1/tokens/?name=" + tokenName + "&limit=100")
         const result = r.data.tokens ?? []
-        result.sort((t1: TokenLike, t2: TokenLike) => TokenNameSearchAgent.compareToken(t1, t2, tokenName))
         return Promise.resolve(result)
     }
 

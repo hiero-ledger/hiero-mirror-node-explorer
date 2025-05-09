@@ -210,22 +210,23 @@ export class SearchController {
             const labels = await LabelByIdCache.instance.search(label)
             for (const l of labels) {
                 const entityId = EntityID.parse(l.entityId)
-                console.log(`found label: ${l.name} - ${entityId}`)
                 if (entityId) {
                     resolvedIds.push(entityId)
                 }
             }
-            resolvedIds.sort()
+            resolvedIds.sort((i1, i2) => i1.compareAccountID(i2))
         }
 
         const accounts = entityID ? [entityID] : hexBytes ? [hexBytes] : alias ? [alias] : []
-        this.accountSearchAgent.loc.value = accounts.concat(resolvedIds)
+        this.accountSearchAgent.loc.value = (resolvedIds as Array<EntityID | Uint8Array | string>).concat(accounts)
+
         const contracts = entityID ? [entityID] : hexBytes ? [hexBytes] : []
-        this.contractSearchAgent.loc.value = contracts.concat(resolvedIds)
+        this.contractSearchAgent.loc.value = (resolvedIds as Array<EntityID | Uint8Array>).concat(contracts)
+
         const tokens = entityID ? [entityID] : hexBytes ? [hexBytes] : []
-        this.tokenSearchAgent.loc.value = tokens.concat(resolvedIds)
-        const topics = entityID ? [entityID] : []
-        this.topicSearchAgent.loc.value = topics.concat(resolvedIds)
+        this.tokenSearchAgent.loc.value = (resolvedIds as Array<EntityID | Uint8Array>).concat(tokens)
+
+        this.topicSearchAgent.loc.value = entityID ? [entityID] : resolvedIds
 
         this.scheduleSearchAgent.loc.value = entityID ? [entityID] : []
         this.transactionSearchAgent.loc.value = transactionID ? [transactionID] : timestamp ? [timestamp] : hexBytes ? [hexBytes] : []
