@@ -6,7 +6,7 @@
 
 <template>
 
-  <EntityIOL :entityId="accountId" :label="label" :null-label="nullLabel"/>
+  <EntityIOL :entityId="accountId" :domain-name="name" :provider-name="providerName" :null-label="nullLabel"/>
 
 </template>
 
@@ -31,10 +31,13 @@ const props = defineProps({
   }
 })
 
-const nameQuery = new NameQuery(computed(() => props.accountId))
+const accountId = computed(() => props.accountId)
+
+const nameQuery = new NameQuery(accountId)
 onMounted(() => nameQuery.mount())
 onBeforeUnmount(() => nameQuery.unmount())
-const label = nameQuery.name
+const name = nameQuery.name
+const providerName = nameQuery.providerName
 
 </script>
 
