@@ -38,60 +38,48 @@
 <!--                                                      SCRIPT                                                     -->
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
-<script lang="ts">
-import {computed, defineComponent, inject, PropType, ref} from "vue";
+<script setup lang="ts">
+import {computed, inject, PropType, ref} from "vue";
 import {initialLoadingKey} from "@/AppKeys";
 
-export const DEFAULT_LABEL_SIZE = 18
+const DEFAULT_LABEL_SIZE = 18
 
-export default defineComponent({
-
-  name: "EntityIOL",
-
-  props: {
-    entityId: {
-      type: String as PropType<string | null>,
-      default: null
-    },
-    label: {
-      type: String as PropType<string | null>,
-      default: null
-    },
-    slice: {
-      type: Number as PropType<number | null>,
-      default: DEFAULT_LABEL_SIZE
-    },
-    compact: {
-      type: Boolean,
-      default: true
-    },
-    nullLabel: {
-      type: String,
-      default: null
-    },
+const props = defineProps({
+  entityId: {
+    type: String as PropType<string | null>,
+    default: null
   },
-
-  setup(props) {
-    const initialLoading = inject(initialLoadingKey, ref(false))
-
-    const actualLabel = computed(() => {
-      let result = props.label
-      if (result != null
-          && props.slice != null
-          && props.slice > 0
-          && props.slice < result.length) {
-        result = result.slice(0, props.slice) + '…'
-      }
-      return result
-    })
-
-    return {
-      initialLoading,
-      actualLabel,
-    }
-  }
-
+  label: {
+    type: String as PropType<string | null>,
+    default: null
+  },
+  slice: {
+    type: Number as PropType<number | null>,
+    default: DEFAULT_LABEL_SIZE
+  },
+  compact: {
+    type: Boolean,
+    default: true
+  },
+  nullLabel: {
+    type: String,
+    default: null
+  },
 })
+
+const initialLoading = inject(initialLoadingKey, ref(false))
+
+const actualLabel = computed(() => {
+  let result = props.label
+  if (result != null
+      && props.slice != null
+      && props.slice > 0
+      && props.slice < result.length) {
+    result = result.slice(0, props.slice) + '…'
+  }
+  return result
+})
+
 </script>
 
 <!-- --------------------------------------------------------------------------------------------------------------- -->
