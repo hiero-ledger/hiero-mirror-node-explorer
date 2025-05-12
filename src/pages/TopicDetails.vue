@@ -30,6 +30,16 @@
       </template>
 
       <template #content>
+        <Property v-if="label" id="labels" full-width>
+          <template #name>
+            Label
+          </template>
+          <template #value>
+            <div style="display: flex; align-items: center; gap: 4px">
+              <PublicLabel :label-definition="label"/>
+            </div>
+          </template>
+        </Property>
         <Property id="memo" full-width>
           <template #name>Memo</template>
           <template #value>
