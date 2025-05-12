@@ -59,7 +59,7 @@
           id="stake-range-column" v-slot="props" field="stake-range" label="STAKE RANGE" position="right"
           style="padding-bottom: 2px; padding-top: 12px;"
       >
-        <o-tooltip :delay="tooltipDelay" class="h-tooltip">
+        <Tooltip>
           <StakeRange
               :node="props.row"
               :network-analyzer="networkAnalyzer"
@@ -89,7 +89,7 @@
               </div>
             </div>
           </template>
-        </o-tooltip>
+        </Tooltip>
       </o-table-column>
 
       <o-table-column v-if="enableStaking" v-slot="props" field="last_reward_rate" label="REWARD RATE" position="right">

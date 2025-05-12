@@ -7,14 +7,16 @@
 <template>
 
   <o-tooltip
-      v-if="props.text"
+      v-if="props.text || slots.content"
       :label="props.text"
       :position="position ?? 'auto'"
       :delay="props.delay"
       multiline
-      class="tooltip"
   >
     <slot/>
+    <template #content>
+      <slot name="content"/>
+    </template>
   </o-tooltip>
 
   <slot v-else/>
@@ -27,7 +29,7 @@
 
 <script setup lang="ts">
 
-import {PropType} from 'vue';
+import {PropType, useSlots} from 'vue';
 
 const props = defineProps({
   text: {
@@ -44,16 +46,12 @@ const props = defineProps({
   }
 })
 
+const slots = useSlots()
+
 </script>
 
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 <!--                                                       STYLE                                                     -->
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
-<style scoped>
-
-.tooltip {
-  cursor: default;
-}
-
-</style>
+<style/>
