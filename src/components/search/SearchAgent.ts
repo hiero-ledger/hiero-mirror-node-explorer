@@ -31,11 +31,12 @@ import {AppStorage} from "@/AppStorage";
 import {SelectedTokensCache} from "@/utils/cache/SelectedTokensCache";
 import {ERC20Cache} from "@/utils/cache/ERC20Cache.ts";
 import {ERC721Cache} from "@/utils/cache/ERC721Cache.ts";
+import {PublicLabelsCache} from "@/utils/cache/PublicLabelsCache.ts";
 
 export abstract class SearchAgent<L, E> {
 
     public readonly loading = ref<boolean>(false)
-    public readonly loc: Ref<L | null> = ref(null)
+    public readonly loc: Ref<L[]> = ref([])
     public readonly candidates: Ref<SearchCandidate<E>[]> = ref([])
     private readonly abortController = new AbortController()
 
@@ -63,26 +64,23 @@ export abstract class SearchAgent<L, E> {
     }
 
     protected readonly entityLocDidChange = async () => {
-
-        if (this.loading.value) {
-            this.abortController.abort()
-        }
-
-        this.loading.value = true
-        try {
-            if (this.loc.value !== null) {
-                this.candidates.value = await this.load(this.loc.value, this.abortController)
-            } else {
-                this.candidates.value = []
+        this.candidates.value = []
+        for (const loc of this.loc.value) {
+            if (this.loading.value) {
+                this.abortController.abort()
             }
-            this.loading.value = false
-        } catch (reason) {
-            this.candidates.value = []
-            if (!this.isAbortError(reason)) {
+            this.loading.value = true
+            try {
+                const newCandidates = await this.load(loc, this.abortController)
+                this.candidates.value = this.candidates.value.concat(newCandidates)
                 this.loading.value = false
+            } catch (reason) {
+                this.candidates.value = []
+                if (!this.isAbortError(reason)) {
+                    this.loading.value = false
+                }
             }
         }
-
     }
 
     //
@@ -104,7 +102,6 @@ export class SearchCandidate<E> {
                 readonly secondary: boolean = false) {
     }
 }
-
 
 export class AccountSearchAgent extends SearchAgent<EntityID | Uint8Array | string, AccountInfo> {
 
@@ -170,7 +167,8 @@ export class AccountSearchAgent extends SearchAgent<EntityID | Uint8Array | stri
             if (accountInfo.account) {
                 const description = accountInfo.account
                 const route = routeManager.makeRouteToAccount(accountInfo.account)
-                const candidate = new SearchCandidate<AccountInfo>(description, null, route, accountInfo, this)
+                const extra = (await PublicLabelsCache.instance.lookup()).lookup(accountInfo.account)?.name ?? null
+                const candidate = new SearchCandidate<AccountInfo>(description, extra, route, accountInfo, this)
                 result = [candidate]
             } else {
                 result = []
@@ -201,7 +199,6 @@ export class AccountSearchAgent extends SearchAgent<EntityID | Uint8Array | stri
         return Promise.resolve(result)
     }
 }
-
 
 export class ContractSearchAgent extends SearchAgent<EntityID | Uint8Array, ContractResponse> {
 
@@ -242,7 +239,8 @@ export class ContractSearchAgent extends SearchAgent<EntityID | Uint8Array, Cont
         if (contractInfo !== null && contractInfo.contract_id) {
             const description = contractInfo.contract_id
             const route = routeManager.makeRouteToContract(contractInfo.contract_id)
-            const candidate = new SearchCandidate<ContractResponse>(description, null, route, contractInfo, this)
+            const extra = (await PublicLabelsCache.instance.lookup()).lookup(contractInfo.contract_id)?.name ?? null
+            const candidate = new SearchCandidate<ContractResponse>(description, extra, route, contractInfo, this)
             result = [candidate]
         } else {
             result = []
@@ -299,7 +297,8 @@ export class TokenSearchAgent extends SearchAgent<EntityID | Uint8Array, TokenIn
         if (tokenInfo !== null && tokenInfo.token_id !== null) {
             const description = tokenInfo.token_id
             const route = routeManager.makeRouteToToken(tokenInfo.token_id)
-            const candidate = new SearchCandidate(description, null, route, tokenInfo, this)
+            const extra = (await PublicLabelsCache.instance.lookup()).lookup(tokenInfo.token_id)?.name ?? null
+            const candidate = new SearchCandidate(description, extra, route, tokenInfo, this)
             result = [candidate]
         } else {
             result = []
@@ -331,7 +330,8 @@ export class TopicSearchAgent extends SearchAgent<EntityID, Topic> {
             const topicInfo = (await axios.get<Topic>("api/v1/topics/" + tid)).data
             const description = tid
             const route = routeManager.makeRouteToTopic(tid)
-            const candidate = new SearchCandidate(description, null, route, topicInfo, this)
+            const extra = (await PublicLabelsCache.instance.lookup()).lookup(tid)?.name ?? null
+            const candidate = new SearchCandidate(description, extra, route, topicInfo, this)
             result = [candidate]
         } catch {
             result = []
@@ -473,7 +473,6 @@ export class DomainNameSearchAgent extends SearchAgent<string, DomainNameResolut
         }
         return result !== null ? [result] : []
     }
-
 }
 
 export class DomainNameResolution {
@@ -557,6 +556,7 @@ export abstract class TokenNameSearchAgent extends SearchAgent<string, TokenLike
         let tokens: TokenLike[]
         try {
             tokens = await this.loadTokens(tokenName)
+            tokens.sort((t1: TokenLike, t2: TokenLike) => TokenNameSearchAgent.compareToken(t1, t2, tokenName))
         } catch {
             tokens = []
         }
@@ -588,6 +588,43 @@ export abstract class TokenNameSearchAgent extends SearchAgent<string, TokenLike
         return Promise.resolve(result)
     }
 
+    /*
+        This comparison function ensures the following ordering:
+            1) first tokens whose name matches target
+            2) next tokens whose name starts with target
+            3) then other tokens
+     */
+
+    protected static compareToken(t1: TokenLike, t2: TokenLike, target: string): number {
+        let result: number
+        const n1 = t1.name.toLocaleLowerCase()
+        const n2 = t2.name.toLocaleLowerCase()
+        const t = target.toLocaleLowerCase()
+        if (n1 == t) {
+            if (n2 == t) {
+                result = t1.name.localeCompare(t2.name)
+            } else {
+                result = -1                     // n1 before n2
+            }
+        } else if (n1.startsWith(t)) {
+            if (n2 == t) {
+                result = +1                     // n1 after n2
+            } else if (n2.startsWith(t)) {
+                result = t1.name.localeCompare(t2.name)
+            } else {
+                result = -1                     // n1 before n2
+            }
+        } else {
+            if (n2 == t) {
+                result = +1                     // n1 after n2
+            } else if (n2.startsWith(t)) {
+                result = +1                     // n1 after n2
+            } else {
+                result = t1.name.localeCompare(t2.name)
+            }
+        }
+        return result
+    }
 }
 
 export class NarrowTokenNameSearchAgent extends TokenNameSearchAgent {
@@ -638,54 +675,11 @@ export class FullTokenNameSearchAgent extends TokenNameSearchAgent {
         // https://previewnet.mirrornode.hedera.com/api/v1/docs/#/tokens/getToken
         const r = await axios.get<TokensResponse>("api/v1/tokens/?name=" + tokenName + "&limit=100")
         const result = r.data.tokens ?? []
-        result.sort((t1: TokenLike, t2: TokenLike) => FullTokenNameSearchAgent.compareToken(t1, t2, tokenName))
         return Promise.resolve(result)
     }
 
     protected makeRoute(tokenName: string): RouteLocationRaw {
         return routeManager.makeRouteToTokensByName(tokenName)
-    }
-
-    //
-    // Private
-    //
-
-    /*
-        This comparison function ensures the following ordering:
-            1) first tokens whose name matches target
-            2) next tokens whose name starts with target
-            3) then other tokens
-     */
-
-    private static compareToken(t1: TokenLike, t2: TokenLike, target: string): number {
-        let result: number
-        const n1 = t1.name.toLocaleLowerCase()
-        const n2 = t2.name.toLocaleLowerCase()
-        const t = target.toLocaleLowerCase()
-        if (n1 == t) {
-            if (n2 == t) {
-                result = t1.name.localeCompare(t2.name)
-            } else {
-                result = -1                     // n1 before n2
-            }
-        } else if (n1.startsWith(t)) {
-            if (n2 == t) {
-                result = +1                     // n1 after n2
-            } else if (n2.startsWith(t)) {
-                result = t1.name.localeCompare(t2.name)
-            } else {
-                result = -1                     // n1 before n2
-            }
-        } else {
-            if (n2 == t) {
-                result = +1                     // n1 after n2
-            } else if (n2.startsWith(t)) {
-                result = +1                     // n1 after n2
-            } else {
-                result = t1.name.localeCompare(t2.name)
-            }
-        }
-        return result
     }
 }
 
@@ -693,7 +687,6 @@ export interface TokenLike {
     token_id: string | null
     name: string
 }
-
 
 export class ScheduleSearchAgent extends SearchAgent<EntityID, Schedule> {
 
@@ -725,7 +718,6 @@ export class ScheduleSearchAgent extends SearchAgent<EntityID, Schedule> {
         return Promise.resolve(result)
     }
 }
-
 
 export class ERC20SearchAgent extends TokenNameSearchAgent {
 
