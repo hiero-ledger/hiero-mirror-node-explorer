@@ -3,22 +3,15 @@
 import {StakingRewardTransfer, Transaction, TransactionType, Transfer} from "@/schemas/MirrorNodeSchemas";
 import {TransactionID} from "@/utils/TransactionID";
 
-export function makeSummaryLabel(row: Transaction): string {
-    let result: string
-    let netAmount: number
+export function makeEntityType(row: Transaction): string | null {
+    let result: string | null
 
     switch (row.name) {
-        case TransactionType.CRYPTOTRANSFER:
-            netAmount = computeNetAmount(row.transfers, row.charged_tx_fee);
-            result = makeTransferLabel(row, netAmount)
-            break
         case TransactionType.CONSENSUSCREATETOPIC:
         case TransactionType.CONSENSUSDELETETOPIC:
         case TransactionType.CONSENSUSUPDATETOPIC:
-            result = row.entity_id ? "Topic ID: " + row.entity_id : ""
-            break
         case TransactionType.CONSENSUSSUBMITMESSAGE:
-            result = formatMemo(row.memo_base64 ?? "")
+            result = "Topic"
             break
         case TransactionType.CRYPTOCREATEACCOUNT:
         case TransactionType.CRYPTODELETE:
@@ -32,7 +25,7 @@ export function makeSummaryLabel(row: Transaction): string {
         case TransactionType.TOKENREJECT:
         case TransactionType.CRYPTOADDLIVEHASH:
         case TransactionType.CRYPTODELETELIVEHASH:
-            result = row.entity_id ? "Account ID: " + row.entity_id : ""
+            result = "Account"
             break
         case TransactionType.TOKENBURN:
         case TransactionType.TOKENMINT:
@@ -47,77 +40,28 @@ export function makeSummaryLabel(row: Transaction): string {
         case TransactionType.TOKENAIRDROP:
         case TransactionType.TOKENCANCELAIRDROP:
         case TransactionType.TOKENCLAIMAIRDROP:
-            result = row.entity_id ? "Token ID: " + row.entity_id : ""
+            result = "Token"
             break
         case TransactionType.CONTRACTCREATEINSTANCE:
         case TransactionType.CONTRACTDELETEINSTANCE:
         case TransactionType.CONTRACTUPDATEINSTANCE:
         case TransactionType.CONTRACTCALL:
-            result = row.entity_id ? "Contract ID: " + row.entity_id : ""
+            result = "Contract"
             break
         case TransactionType.FILECREATE:
         case TransactionType.FILEUPDATE:
         case TransactionType.FILEDELETE:
         case TransactionType.FILEAPPEND:
-            result = row.entity_id ? "File ID: " + row.entity_id : ""
+            result = "File"
             break
         case TransactionType.SCHEDULECREATE:
         case TransactionType.SCHEDULEDELETE:
         case TransactionType.SCHEDULESIGN:
-            result = row.entity_id ? "Schedule ID: " + row.entity_id : ""
-            break
-        case TransactionType.CRYPTOAPPROVEALLOWANCE:
-        case TransactionType.CRYPTODELETEALLOWANCE:
-        case TransactionType.ATOMICBATCH:
-            result = formatMemo(row.memo_base64 ?? "")
+            result = "Schedule"
             break
         default:
-            result = ""
-            break
+            result = null
     }
-    return result
-}
-
-function makeTransferLabel(row: Transaction, netAmount: number): string {
-    const TREASURY = "0.0.98"
-    let result: string
-    let fromAccount = null
-    let toAccount = null
-    let foundTreasury = false
-    let nbFrom = 0
-
-    if (netAmount > 0 && row.transfers !== undefined) {
-        for (const t of row.transfers) {
-            if (t.amount < 0) {
-                fromAccount = t.account
-                nbFrom++
-                if (Math.abs(t.amount) == netAmount) {
-                    break
-                }
-            }
-        }
-        for (const t of row.transfers) {
-            if (t.amount > 0) {
-                if (t.amount == netAmount) {
-                    toAccount = t.account
-                    break
-                } else if (t.account == TREASURY) {
-                    foundTreasury = true
-                }
-            }
-        }
-
-        if (fromAccount && toAccount) {
-            result = fromAccount + " \u2192 " + toAccount
-        } else if (nbFrom == 1 && foundTreasury) {
-            result = fromAccount + " \u2192 " + TREASURY
-        } else {
-            result = ""
-        }
-    } else {
-        result = ""
-    }
-
     return result
 }
 
@@ -324,7 +268,7 @@ export function isSuccessfulResult(transactionResult: string): boolean {
         || transactionResult === "SUCCESS_BUT_MISSING_EXPECTED_OPERATION"
 }
 
-function formatMemo(memo64: string): string {
+export function formatMemo(memo64: string): string {
     let result: string
     try {
         result = atob(memo64)
