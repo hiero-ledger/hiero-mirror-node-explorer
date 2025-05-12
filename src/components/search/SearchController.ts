@@ -24,6 +24,7 @@ import {
 import {nameServiceProviders} from "@/utils/name_service/provider/AllProviders";
 import {InputChangeController} from "@/components/utils/InputChangeController.ts";
 import {routeManager} from "@/router.ts";
+import {PublicLabelsCache} from "@/utils/cache/PublicLabelsCache.ts";
 
 export class SearchController {
 
@@ -91,9 +92,9 @@ export class SearchController {
     public readonly fullTokenNameSearchAgent = new FullTokenNameSearchAgent()
     public readonly erc20SearchAgent = new ERC20SearchAgent()
     public readonly erc721SearchAgent = new ERC721SearchAgent()
+    public readonly domainNameSearchAgents: DomainNameSearchAgent[] = []
 
     private readonly allAgents: SearchAgent<unknown, unknown>[] = []
-    public readonly domainNameSearchAgents: DomainNameSearchAgent[] = []
 
     //
     // Public
@@ -182,7 +183,7 @@ export class SearchController {
     // Private
     //
 
-    private actualInputTextDidChange = (): void => {
+    private actualInputTextDidChange = async (): Promise<void> => {
 
         const baseRealm = routeManager.currentNetworkEntry.value.baseRealm
         const baseShard = routeManager.currentNetworkEntry.value.baseShard
@@ -196,30 +197,49 @@ export class SearchController {
         const entityID = EntityID.parseWithChecksum(searchedText)
             ?? (positiveInt != null ? new EntityID(baseShard, baseRealm, positiveInt, null) : null)
         const blockNb = positiveInt
-
-        // const isTokenName = searchedText.length >= 3 && isASCII(searchedText)
-        const isTokenName = searchedText.length >= 3
+        const isSymbol = searchedText.length >= 3
             && isASCII(searchedText)
             && entityID === null
             && transactionID === null
-            && hexBytes === null
             && timestamp === null
-        const tokenName = isTokenName ? searchedText : null
+        const tokenName = isSymbol ? searchedText : null
+        const label = isSymbol ? searchedText : null
 
-        this.accountSearchAgent.loc.value = entityID ?? hexBytes ?? alias
-        this.contractSearchAgent.loc.value = entityID ?? hexBytes
-        this.tokenSearchAgent.loc.value = entityID ?? hexBytes
-        this.topicSearchAgent.loc.value = entityID
-        this.scheduleSearchAgent.loc.value = entityID
-        this.transactionSearchAgent.loc.value = transactionID ?? timestamp ?? hexBytes
-        this.blockSearchAgent.loc.value = blockNb ?? hexBytes
-        this.narrowTokenNameSearchAgent.loc.value = tokenName
-        this.fullTokenNameSearchAgent.loc.value = tokenName
-        this.erc20SearchAgent.loc.value = tokenName
-        this.erc721SearchAgent.loc.value = tokenName
+        const resolvedIds = []
+        if (label) {
+            const index = await PublicLabelsCache.instance.lookup()
+            const labels = index.search(label)
+            for (const l of labels) {
+                const entityId = EntityID.parse(l.entityId)
+                if (entityId) {
+                    resolvedIds.push(entityId)
+                }
+            }
+            resolvedIds.sort((i1, i2) => i1.compareAccountID(i2))
+        }
+
+        const accounts = entityID ? [entityID] : hexBytes ? [hexBytes] : alias ? [alias] : []
+        this.accountSearchAgent.loc.value = (resolvedIds as Array<EntityID | Uint8Array | string>).concat(accounts)
+
+        const contracts = entityID ? [entityID] : hexBytes ? [hexBytes] : []
+        this.contractSearchAgent.loc.value = (resolvedIds as Array<EntityID | Uint8Array>).concat(contracts)
+
+        const tokens = entityID ? [entityID] : hexBytes ? [hexBytes] : []
+        this.tokenSearchAgent.loc.value = (resolvedIds as Array<EntityID | Uint8Array>).concat(tokens)
+
+        this.topicSearchAgent.loc.value = entityID ? [entityID] : resolvedIds
+
+        this.scheduleSearchAgent.loc.value = entityID ? [entityID] : []
+        this.transactionSearchAgent.loc.value = transactionID ? [transactionID] : timestamp ? [timestamp] : hexBytes ? [hexBytes] : []
+        this.blockSearchAgent.loc.value = blockNb ? [blockNb] : hexBytes ? [hexBytes] : []
+
+        this.narrowTokenNameSearchAgent.loc.value = tokenName ? [tokenName] : []
+        this.fullTokenNameSearchAgent.loc.value = tokenName ? [tokenName] : []
+        this.erc20SearchAgent.loc.value = tokenName ? [tokenName] : []
+        this.erc721SearchAgent.loc.value = tokenName ? [tokenName] : []
 
         for (const a of this.domainNameSearchAgents) {
-            a.loc.value = domainName
+            a.loc.value = domainName ? [domainName] : []
         }
     }
 }
