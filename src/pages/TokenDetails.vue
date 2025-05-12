@@ -42,6 +42,16 @@
             <EVMAddress :show-id="false" :address="ethereumAddress"/>
           </template>
         </Property>
+        <Property v-if="label" id="labels" full-width>
+          <template #name>
+            Label
+          </template>
+          <template #value>
+            <div style="display: flex; align-items: center; gap: 4px">
+              <PublicLabel :label-definition="label"/>
+            </div>
+          </template>
+        </Property>
       </template>
 
       <template #left-content>
@@ -244,6 +254,8 @@ import TokenKeysSection from "@/components/token/TokenKeysSection.vue";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import PlayPauseButton from "@/components/PlayPauseButton.vue";
 import EntityIDView from "@/components/values/EntityIDView.vue";
+import PublicLabel from "@/components/values/PublicLabel.vue";
+import {PublicLabelsCache} from "@/utils/cache/PublicLabelsCache.ts";
 
 const props = defineProps({
   tokenId: {
@@ -330,6 +342,15 @@ const onActionCompleted = () => {
     tokenBalanceTableController.refresh()
   }
 }
+
+//
+// Label
+//
+const indexLookup = PublicLabelsCache.instance.makeLookup()
+onMounted(() => indexLookup.mount())
+onBeforeUnmount(() => indexLookup.unmount())
+const index = indexLookup.entity
+const label = computed(() => normalizedTokenId.value ? index.value?.lookup(normalizedTokenId.value) ?? null : null)
 
 const analyzer = tokenAnalyzer
 const tokenInfo = tokenLookup.entity

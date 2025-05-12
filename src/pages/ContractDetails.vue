@@ -57,13 +57,24 @@
                 :address="ethereumAddress"/>
           </template>
         </Property>
+        <Property v-if="label" id="labels" full-width>
+          <template #name>
+            Label
+          </template>
+          <template #value>
+            <div style="display: flex; align-items: center; gap: 4px">
+              <PublicLabel :label-definition="label"/>
+            </div>
+          </template>
+        </Property>
         <Property v-if="domainName" id="names" full-width>
           <template #name>
             Domain
           </template>
           <template #value>
-            <EntityIOL :label="domainName"/>
-            <InfoTooltip v-if="domainProviderName" :label="domainProviderName"/>
+            <div style="display: flex; align-items: center; gap: 4px">
+              <DomainLabel :domain-name="domainName" :provider-name="domainProviderName"/>
+            </div>
           </template>
         </Property>
       </template>
@@ -247,8 +258,6 @@ import {ContractResultsLogsAnalyzer} from "@/utils/analyzer/ContractResultsLogsA
 import {BalanceAnalyzer} from "@/utils/analyzer/BalanceAnalyzer";
 import MirrorLink from "@/components/MirrorLink.vue";
 import {NameQuery} from "@/utils/name_service/NameQuery";
-import EntityIOL from "@/components/values/link/EntityIOL.vue";
-import InfoTooltip from "@/components/InfoTooltip.vue";
 import {labelForAutomaticTokenAssociation} from "@/schemas/MirrorNodeUtils.ts";
 import TokensSection from "@/components/token/TokensSection.vue";
 import ContractERCSection from "@/components/contract/ContractERCSection.vue";
@@ -257,6 +266,9 @@ import ArrowLink from "@/components/ArrowLink.vue";
 import EntityIDView from "@/components/values/EntityIDView.vue";
 import HbarAmount from "@/components/values/HbarAmount.vue";
 import {ERCAnalyzer} from "@/utils/analyzer/ERCAnalyzer.ts";
+import DomainLabel from "@/components/values/DomainLabel.vue";
+import PublicLabel from "@/components/values/PublicLabel.vue";
+import {PublicLabelsCache} from "@/utils/cache/PublicLabelsCache.ts";
 
 const props = defineProps({
   contractId: String,
@@ -345,9 +357,20 @@ onBeforeUnmount(() => contractResultsLogsAnalyzer.unmount())
 //
 // Naming
 //
-const nameQuery = new NameQuery(computed(() => props.contractId ?? null))
+const nameQuery = new NameQuery(normalizedContractId)
 onMounted(() => nameQuery.mount())
 onBeforeUnmount(() => nameQuery.unmount())
+const domainName = nameQuery.name
+const domainProviderName = nameQuery.providerName
+
+//
+// Label
+//
+const indexLookup = PublicLabelsCache.instance.makeLookup()
+onMounted(() => indexLookup.mount())
+onBeforeUnmount(() => indexLookup.unmount())
+const index = indexLookup.entity
+const label = computed(() => normalizedContractId.value ? index.value?.lookup(normalizedContractId.value) ?? null : null)
 
 const enableExpiry = routeManager.enableExpiry
 const contract = contractLocParser.entity
@@ -357,8 +380,6 @@ const hbarBalance = balanceAnalyzer.hbarBalance
 const isVerified = contractAnalyzer.isVerified
 const contractName = contractAnalyzer.contractName
 const logs = contractResultsLogsAnalyzer.logs
-const domainName = nameQuery.name
-const domainProviderName = nameQuery.providerName
 const isErc20 = ercAnalyzer.isErc20
 const isErc721 = ercAnalyzer.isErc721
 const isErc1155 = ercAnalyzer.isErc1155
