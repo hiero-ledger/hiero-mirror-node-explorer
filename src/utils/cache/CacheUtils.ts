@@ -83,6 +83,7 @@ export class CacheUtils {
         NftBySerialCache.instance.clear()
         NftCollectionCache.instance.clear()
         PendingAirdropCache.instance.clear()
+        PublicLabelsCache.instance.clear()
         ScheduleByIdCache.instance.clear()
         SelectedTokensCache.instance.clear()
         // SignatureCache.instance => no clear: we preserve it because 4byte content is valid for all networks
