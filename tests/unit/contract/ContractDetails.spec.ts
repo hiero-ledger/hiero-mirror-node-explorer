@@ -2,7 +2,7 @@
 
 // SPDX-License-Identifier: Apache-2.0
 
-import {beforeEach, describe, expect, it} from 'vitest'
+import {describe, expect, it} from 'vitest'
 import {flushPromises, mount} from "@vue/test-utils"
 import router, {routeManager} from "@/router";
 import axios from "axios";
@@ -28,7 +28,6 @@ import {TransactionID} from "@/utils/TransactionID";
 import ContractResultTable from "@/components/contract/ContractResultTable.vue";
 import {ContractStateResponse} from "@/schemas/MirrorNodeSchemas.ts";
 import {fetchGetURLs} from "../MockUtils";
-import {ERC1155Cache} from "@/utils/cache/ERC1155Cache.ts";
 
 /*
     Bookmarks
@@ -40,10 +39,6 @@ import {ERC1155Cache} from "@/utils/cache/ERC1155Cache.ts";
 HMSF.forceUTC = true
 
 describe("ContractDetails.vue", () => {
-
-    beforeEach(() => {
-        ERC1155Cache.instance.clear()
-    })
 
     it("Should display contract details (using contract id)", async () => {
 
@@ -100,11 +95,11 @@ describe("ContractDetails.vue", () => {
 
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/network/nodes",
+            "http://localhost:3000/mainnet/erc-1155.json",
             "api/v1/contracts/" + SAMPLE_CONTRACT.contract_id,
             "api/v1/accounts/" + SAMPLE_CONTRACT.contract_id,
             "http://localhost:3000/mainnet/erc-20.json",
             "http://localhost:3000/mainnet/erc-721.json",
-            "http://localhost:3000/mainnet/erc-1155.json",
             "api/v1/contracts/" + SAMPLE_CONTRACT.contract_id + "/results/logs",
             "api/v1/balances",
             "api/v1/transactions",
@@ -234,11 +229,11 @@ describe("ContractDetails.vue", () => {
 
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/network/nodes",
+            "http://localhost:3000/mainnet/erc-1155.json",
             "api/v1/contracts/" + SAMPLE_CONTRACT.evm_address,
             "api/v1/accounts/" + SAMPLE_CONTRACT.contract_id,
             "http://localhost:3000/mainnet/erc-20.json",
             "http://localhost:3000/mainnet/erc-721.json",
-            "http://localhost:3000/mainnet/erc-1155.json",
             "api/v1/contracts/" + SAMPLE_CONTRACT.contract_id + "/results/logs",
             "api/v1/balances",
             "api/v1/transactions",
@@ -365,11 +360,11 @@ describe("ContractDetails.vue", () => {
 
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/network/nodes",
+            "http://localhost:3000/mainnet/erc-1155.json",
             "api/v1/contracts/" + SAMPLE_CONTRACT.contract_id,
             "api/v1/accounts/" + SAMPLE_CONTRACT.contract_id,
             "http://localhost:3000/mainnet/erc-20.json",
             "http://localhost:3000/mainnet/erc-721.json",
-            "http://localhost:3000/mainnet/erc-1155.json",
             "api/v1/contracts/" + SAMPLE_CONTRACT.contract_id + "/results/logs",
             "api/v1/balances",
             "api/v1/transactions",
@@ -468,11 +463,11 @@ describe("ContractDetails.vue", () => {
 
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/network/nodes",
+            "http://localhost:3000/mainnet/erc-1155.json",
             "api/v1/contracts/" + SAMPLE_CONTRACT.contract_id,
             "api/v1/accounts/" + SAMPLE_CONTRACT.contract_id,
             "http://localhost:3000/mainnet/erc-20.json",
             "http://localhost:3000/mainnet/erc-721.json",
-            "http://localhost:3000/mainnet/erc-1155.json",
             "api/v1/contracts/" + SAMPLE_CONTRACT.contract_id + "/results/logs",
             "api/v1/balances",
             "api/v1/transactions",
@@ -696,11 +691,11 @@ describe("ContractDetails.vue", () => {
 
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/network/nodes",
+            "http://localhost:3000/mainnet/erc-1155.json",
             "api/v1/contracts/" + SAMPLE_CONTRACT_DELETED.contract_id,
             "api/v1/accounts/" + SAMPLE_CONTRACT_DELETED.contract_id,
             "http://localhost:3000/mainnet/erc-20.json",
             "http://localhost:3000/mainnet/erc-721.json",
-            "http://localhost:3000/mainnet/erc-1155.json",
             "api/v1/contracts/" + SAMPLE_CONTRACT_DELETED.contract_id + "/results/logs",
             "api/v1/balances",
             "api/v1/transactions",
@@ -781,11 +776,11 @@ describe("ContractDetails.vue", () => {
 
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/network/nodes",
+            "http://localhost:3000/mainnet/erc-1155.json",
             "api/v1/contracts/" + SAMPLE_CONTRACT_DELETED.contract_id,
             "api/v1/accounts/" + SAMPLE_CONTRACT_DELETED.contract_id,
             "http://localhost:3000/mainnet/erc-20.json",
             "http://localhost:3000/mainnet/erc-721.json",
-            "http://localhost:3000/mainnet/erc-1155.json",
             "api/v1/contracts/" + SAMPLE_CONTRACT_DELETED.contract_id + "/results/logs",
             "api/v1/balances",
             "api/v1/transactions",
@@ -840,6 +835,7 @@ describe("ContractDetails.vue", () => {
 
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/network/nodes",
+            "http://localhost:3000/mainnet/erc-1155.json",
         ])
 
         expect(wrapper.get("#notificationBanner").text()).toBe("Invalid contract ID or address: " + invalidContractId)
@@ -913,11 +909,11 @@ describe("ContractDetails.vue", () => {
 
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/network/nodes",
+            "http://localhost:3000/mainnet/erc-1155.json",
             "api/v1/contracts/" + SAMPLE_CONTRACT.contract_id,
             "api/v1/accounts/" + SAMPLE_CONTRACT.contract_id,
             "http://localhost:3000/mainnet/erc-20.json",
             "http://localhost:3000/mainnet/erc-721.json",
-            "http://localhost:3000/mainnet/erc-1155.json",
             "api/v1/contracts/" + SAMPLE_CONTRACT.contract_id + "/results/logs",
             "api/v1/balances",
             "api/v1/transactions",
