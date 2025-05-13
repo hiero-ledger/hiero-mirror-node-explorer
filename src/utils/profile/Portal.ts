@@ -81,9 +81,9 @@ export namespace Portal {
         public async createSession(email: string, password: string, recaptchaToken: string): Promise<NewSession> {
             let result: NewSession
             try {
-                const r = await this.privateAxios.post<NewSession>(
+                const r = await this.privateAxios.post(
                     this.portalURL + "api/session",
-                    { email, password, token: recaptchaToken }
+                    { email, password, recaptchaToken }
                 )
                 result = r.data
             } catch (error) {

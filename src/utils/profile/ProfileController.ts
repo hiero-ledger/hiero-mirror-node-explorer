@@ -8,7 +8,7 @@ import {profileControllerKey} from "@/AppKeys.ts";
 export class ProfileController {
 
     public readonly coreConfig: CoreConfig
-    private readonly portalClient: Portal.Client|null
+    public readonly portalClient: Portal.Client|null
     private readonly connecting = ref<boolean>(false)
     private readonly disconnecting = ref<boolean>(false)
 
@@ -27,6 +27,8 @@ export class ProfileController {
             result = ProfileConnectionStatus.Disabled
         } else if (this.connecting.value) {
             result = ProfileConnectionStatus.Connecting
+        } else if (this.disconnecting.value) {
+            result = ProfileConnectionStatus.Disconnecting
         } else if (this.session.value !== null) {
             result = ProfileConnectionStatus.Connected
         } else {
@@ -43,6 +45,8 @@ export class ProfileController {
             this.connecting.value = true
             try {
                 this.session.value = await this.portalClient.fetchCurrentSession()
+                const bookmarks = await this.portalClient.listEntityBookmarks("testnet")
+                console.log(JSON.stringify(bookmarks, null, "  "))
             } catch(reason) {
                 this.session.value = null
             } finally {
@@ -70,6 +74,7 @@ export class ProfileController {
             try {
                 await this.portalClient.destroyCurrentSession()
             } finally {
+                this.session.value = null
                 this.disconnecting.value = false
             }
         }
