@@ -153,7 +153,7 @@ export class ContractAnalyzer {
             files?.forEach((f) => {
                 const parts = f.name.split('.')
                 const suffix = parts[parts.length - 1].toLowerCase()
-                if (suffix === "sol") {
+                if (suffix !== "json") {
                     result.push(f)
                 }
             })
