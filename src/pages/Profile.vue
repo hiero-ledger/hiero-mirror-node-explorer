@@ -32,7 +32,13 @@
       </template>
       <template v-else>
         <p>Connected</p>
-        <ButtonView @action="profileController.disconnect()">Disconnect</ButtonView>
+        <p>
+          <ButtonView @action="handleAdd">Add Bookmark to 0.0.1584</ButtonView>
+          <br/>
+          <ButtonView @action="handleRemove">Remove Bookmark from 0.0.1584</ButtonView>
+          <br/>
+          <ButtonView @action="profileController.disconnect()">Disconnect</ButtonView>
+        </p>
       </template>
     </div>
 
@@ -52,6 +58,7 @@ import {ProfileConnectionStatus, ProfileController} from "@/utils/profile/Profil
 import ButtonView from "@/elements/ButtonView.vue";
 import TextFieldView from "@/elements/TextFieldView.vue";
 import ReCaptcha from "@/components/recaptcha/ReCaptcha.vue";
+import {Portal} from "@/utils/profile/Portal.ts";
 
 const profileController = ProfileController.inject()
 const connectionStatus = profileController.connectionStatus
@@ -74,6 +81,32 @@ const connectEnabled = computed(() =>
 
 const handleConnect = async () => {
   await profileController.connect(emailText.value, passwordText.value, recaptchaToken.value!)
+}
+
+const handleAdd = async () => {
+  const newBookmark: Portal.NewEntityBookmark = {
+    name: "Testnet ECDSA",
+    type: null,
+    description: "My testnet account with ECDSA key",
+    website: null,
+    networkEpoch: "1746726609.785794442",
+    entityType: "account",
+    publicKey: "0x302d300706052b8104000a03220003d236ba45caea9dd8053b6b0db1953564a4d06c9fb7dbf93bec499e6362b5b45f"
+  }
+  try {
+    const bookmark = await profileController.portalClient?.writeBookmark("testnet", "0.0.1584", newBookmark)
+    console.log("bookmark = " + JSON.stringify(bookmark, null, "  "))
+  } catch(error) {
+    console.log("error=" + error)
+  }
+}
+
+const handleRemove = async () => {
+  try {
+    await profileController.portalClient?.clearBookmark("testnet", "0.0.1584")
+  } catch(error) {
+    console.log("error=" + error)
+  }
 }
 
 </script>
