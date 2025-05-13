@@ -161,6 +161,9 @@ export class ContractAnalyzer {
         return result
     })
 
+    public readonly sourceFiles = computed(
+        () => this.report.value?.sourcifyRecord?.response.files ?? [])
+
     //
     // public readonly sourceFileNames: ComputedRef<string[]> = computed(() => {
     //     let result: string[]
