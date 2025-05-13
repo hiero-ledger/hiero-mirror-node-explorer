@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
-import axios from "axios";
+import axios, {AxiosResponse} from "axios";
 
 export namespace Portal {
 
@@ -34,14 +34,19 @@ export namespace Portal {
         token: string;
     }
 
-    export interface EntityLabel {
-        labelId: string;
-        entityId: string;
+    export interface NewEntityBookmark {
         name: string;
         type: string | null;
         description: string | null;
         website: string | null;
+
         networkEpoch: string | null;
+        entityType: string;
+        publicKey: string | null;
+    }
+
+    export interface EntityBookmark extends NewEntityBookmark {
+        entityId: string;
         createdAt: string;
         updatedAt: string;
     }
@@ -97,14 +102,26 @@ export namespace Portal {
         }
 
         //
-        // Label
+        // Bookmarks
         //
 
-        public async listEntityLabels(network: string): Promise<EntityLabel[]> {
-            const r = await this.privateAxios.get<EntityLabel[]>(
-                this.portalURL + "api/label/" + network,
-                {withCredentials: true});
+        public async listEntityBookmarks(network: string): Promise<EntityBookmark[]> {
+            const r = await this.privateAxios.get<EntityBookmark[]>(
+                this.portalURL + "api/bookmark/" + network,
+                {withCredentials: true})
             return r.data;
+        }
+
+        public async writeBookmark(network: string, entityId: string, newBookmark: NewEntityBookmark): Promise<EntityBookmark> {
+            const r = await this.privateAxios.put<NewEntityBookmark, AxiosResponse<EntityBookmark>>(
+                this.portalURL + "api/bookmark/" + network + "/" + entityId,
+                newBookmark,
+                {withCredentials: true})
+            return Promise.resolve(r.data)
+        }
+
+        public async clearBookmark(network: string, entityId: string): Promise<void> {
+            await this.privateAxios.delete(this.portalURL + "api/bookmark/" + network + "/" + entityId)
         }
     }
 
