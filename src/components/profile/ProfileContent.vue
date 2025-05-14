@@ -177,7 +177,7 @@ const handleAddBookmark = async () => {
     publicKey: "0x302d300706052b8104000a03220003d236ba45caea9dd8053b6b0db1953564a4d06c9fb7dbf93bec499e6362b5b45f"
   }
   try {
-    const bookmark = await profileController.portalClient?.writeBookmark("testnet", "0.0.1584", newBookmark)
+    const bookmark = await profileController.writeBookmark("testnet", "0.0.1584", newBookmark)
     console.log("bookmark = " + JSON.stringify(bookmark, null, "  "))
   } catch(error) {
     console.log("error=" + error)
@@ -186,7 +186,7 @@ const handleAddBookmark = async () => {
 
 const handleRemoveBookmark = async () => {
   try {
-    await profileController.portalClient?.clearBookmark("testnet", "0.0.1584")
+    await profileController.clearBookmark("testnet", "0.0.1584")
   } catch(error) {
     console.log("error=" + error)
   }
