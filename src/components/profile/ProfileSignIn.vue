@@ -5,23 +5,21 @@
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <template>
-  <div class="profile">
-    <p>Disconnected</p>
-    <p>
-      <TextFieldView v-model="emailText" placeholder="e-Mail" style="margin-bottom: 10px"/>
-      <br/>
+  <div class="sign-in-root">
+    <div class="sign-in-line1">Connection to Hedera Portal</div>
+    <div class="sign-in-line2">If you have an account on Hedera Portal, connect with it and benefit form extra features like entity bookmarks.</div>
+    <div class="sign-in-form">
+      <TextFieldView v-model="emailText" placeholder="e-Mail"/>
       <TextFieldView v-model="passwordText" placeholder="Password" type="password"/>
-    </p>
-    <p>
-      <ButtonView @action="handleConnect" :enabled="connectEnabled">Connect</ButtonView>
-    </p>
-    <p>
       <ReCaptcha v-if="recaptchaKey !== null"
                  style="display: inline-block"
                  action="connect"
                  :site-key="recaptchaKey"
                  @on-captcha-change="onCaptchaChange"/>
-    </p>
+    </div>
+    <div class="sign-in-bottom-line">
+      <ButtonView @action="handleConnect" :enabled="connectEnabled" :is-default="true">CONNECT</ButtonView>
+    </div>
   </div>
 </template>
 
@@ -66,17 +64,40 @@ const handleConnect = async () => {
 
 <style scoped>
 
-div.profile {
-  color: var(--text-secondary);
-  min-height: 450px;
-  text-align: center;
-  padding-top: 100px;
-  font-family: var(--font-family-proportional), sans-serif;
-  font-weight: 300;
+div.sign-in-root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 30px;
 }
 
-div p {
-  margin-bottom: 20px
+div.sign-in-line1 {
+  color: var(--text-primary);
+  font-family: var(--font-family-heading), sans-serif;
+  font-size: 32px;
+  font-weight: 400;
+  margin-top:60px;
+}
+
+div.sign-in-line2 {
+  color: var(--text-secondary);
+  font-family: var(--font-family-proportional), sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  max-width: 450px;
+  text-align: center;
+}
+
+div.sign-in-form {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  row-gap: 20px;
+}
+
+div.sign-in-bottom-line {
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
 </style>
