@@ -17,13 +17,13 @@ export namespace Portal {
     export interface UserProfile {
         firstName: string;
         lastName: string;
-        role: UserRole;
+        role: UserRole|null;
     }
 
     export interface User {
         userId: string;
         email: string;
-        profile?: UserProfile;
+        profile: UserProfile|null;
     }
 
     export interface Session {

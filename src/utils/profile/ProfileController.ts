@@ -40,6 +40,9 @@ export class ProfileController {
     public readonly session
         = ref<Portal.Session|null>(null)
 
+    public readonly user
+        = computed(() => this.session.value?.user ?? null)
+
     public async restoreSession(): Promise<void> {
         if (this.portalClient !== null) {
             this.connecting.value = true
