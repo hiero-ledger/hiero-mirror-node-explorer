@@ -51,16 +51,6 @@
             <EVMAddress :show-id="false" :address="ethereumAddress"/>
           </template>
         </Property>
-        <Property v-if="label" id="labels" full-width>
-          <template #name>
-            Label
-          </template>
-          <template #value>
-            <div style="display: flex; align-items: center; gap: 4px">
-              <PublicLabel :label-definition="label"/>
-            </div>
-          </template>
-        </Property>
       </template>
 
       <template #left-content>
