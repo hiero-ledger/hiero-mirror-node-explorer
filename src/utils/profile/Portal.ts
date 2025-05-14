@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import axios, {AxiosResponse} from "axios";
+import type { Hbar } from "@hashgraph/sdk";
 
 export namespace Portal {
 
@@ -32,6 +33,48 @@ export namespace Portal {
 
     export interface NewSession extends Session {
         token: string;
+    }
+
+    export enum AccountNetwork {
+        Testnet = "testnet",
+        Previewnet = "previewnet",
+    }
+
+    export enum AccountKeyType {
+        Ed25519 = "ed25519",
+        Ecdsa = "ecdsa",
+    }
+
+    export interface Account {
+        realm: string;
+        shard: string;
+        accountNum?: string;
+
+        keyType: AccountKeyType;
+        privateKey: string;
+        publicKey: string;
+
+        network: AccountNetwork;
+
+        /**
+         * Timestamp (UNIX nano) of the last time
+         * this account was disbursed HBAR.
+         * NULL until initial disbursement.
+         */
+        lastDisbursementAt?: string;
+
+        /** Whether this account is scheduled to be disbursed. */
+        scheduledForDisbursement?: boolean;
+        autoScheduledForDisbursement?: true;
+
+        balanceLimit: string;
+        balance?: Hbar;
+    }
+
+    export interface ListAccountResponse {
+        accounts: Account[];
+        // NOTE: no next link because users may only have a maximum
+        //  of 4 accounts at this time
     }
 
     export interface NewEntityBookmark {
@@ -99,6 +142,17 @@ export namespace Portal {
 
         public async destroyCurrentSession(): Promise<void> {
             await this.privateAxios.delete<Session>(this.portalURL + "api/session/current")
+        }
+
+        //
+        // Accounts
+        //
+
+        public async listAccounts(): Promise<Account[]> {
+            const r = await this.privateAxios.get<ListAccountResponse>(
+                this.portalURL + "api/account",
+                {withCredentials: true})
+            return r.data.accounts
         }
 
         //
