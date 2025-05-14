@@ -121,7 +121,7 @@ export class ProfileController {
     //
 
     private readonly updateAccounts = async (): Promise<void> => {
-        if (this.portalClient !== null && this.portalNetwork.value !== null) {
+        if (this.portalClient !== null && this.portalNetwork.value !== null && this.session.value !== null) {
             const all = await this.portalClient.listAccounts() ?? []
             this.accounts.value = all.filter((a) => a.network === this.portalNetwork.value)
         } else {
@@ -130,7 +130,7 @@ export class ProfileController {
     }
 
     private readonly updateBookmarks = async(): Promise<void> => {
-        if (this.portalClient !== null) {
+        if (this.portalClient !== null && this.session.value !== null) {
             const network = routeManager.currentNetwork.value
             this.bookmarks.value = await this.portalClient.listEntityBookmarks(network) ?? []
         } else {
