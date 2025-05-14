@@ -2,7 +2,6 @@
 
 import {computed, inject, ref, watch} from "vue";
 import {CoreConfig} from "@/config/CoreConfig.ts";
-import {EntityID} from "@/utils/EntityID";
 import {Portal} from "@/utils/profile/Portal.ts";
 import {profileControllerKey} from "@/AppKeys.ts";
 import {routeManager} from '@/router.ts'
@@ -10,7 +9,7 @@ import {routeManager} from '@/router.ts'
 export class ProfileController {
 
     public readonly coreConfig: CoreConfig
-    public readonly portalClient: Portal.Client|null
+    private readonly portalClient: Portal.Client|null
     private readonly connecting = ref<boolean>(false)
     private readonly disconnecting = ref<boolean>(false)
 
@@ -105,8 +104,28 @@ export class ProfileController {
             try {
                 await this.portalClient.destroyCurrentSession()
             } finally {
-                this.session.value = null
+                this.session.value = null // => clears this.accounts and this.bookmarks
                 this.disconnecting.value = false
+            }
+        }
+    }
+
+    public async writeBookmark(network: string, entityId: string, newBookmark: Portal.NewEntityBookmark): Promise<void> {
+        if (this.portalClient !== null) {
+            try {
+                await this.portalClient.writeBookmark(network, entityId, newBookmark)
+            } finally {
+                await this.updateBookmarks()
+            }
+        }
+    }
+
+    public async clearBookmark(network: string, entityId: string): Promise<void> {
+        if (this.portalClient !== null) {
+            try {
+                await this.portalClient.clearBookmark(network, entityId)
+            } finally {
+                await this.updateBookmarks()
             }
         }
     }
