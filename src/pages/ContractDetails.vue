@@ -14,19 +14,22 @@
 
     <DashboardCardV2 collapsible-key="contractDetails">
       <template #title>
-        {{ `Contract ${contractName ?? ''}` }}
-        <div v-if="isVerified" class="h-has-pill h-chip-success" style="margin-top: 2px">
-          VERIFIED
-        </div>
-        <div v-if="isErc20" class="h-has-pill" style="margin-top: 2px">
-          ERC 20
-        </div>
-        <div v-if="isErc721" class="h-has-pill" style="margin-top: 2px">
-          ERC 721
-        </div>
-        <div v-if="isErc1155" class="h-has-pill" style="margin-top: 2px">
-          ERC 1155
-        </div>
+          {{ `Contract ${contractName ?? ''}` }}
+        <span class="mr-1"/>
+        <div v-if="isVerified" class="h-has-pill h-chip-success">
+            VERIFIED
+          </div>
+          <div v-if="isErc20" class="h-has-pill">
+            ERC 20
+          </div>
+          <div v-if="isErc721" class="h-has-pill">
+            ERC 721
+          </div>
+          <div v-if="isErc1155" class="h-has-pill">
+            ERC 1155
+          </div>
+          <PublicLabel v-if="label" :label-definition="label"/>
+          <DomainLabel  v-if="domainName" :domain-name="domainName" :provider-name="domainProviderName"/>
       </template>
 
       <template #right-control>
@@ -55,26 +58,6 @@
             <EVMAddress
                 :show-id="false"
                 :address="ethereumAddress"/>
-          </template>
-        </Property>
-        <Property v-if="label" id="labels" full-width>
-          <template #name>
-            Label
-          </template>
-          <template #value>
-            <div style="display: flex; align-items: center; gap: 4px">
-              <PublicLabel :label-definition="label"/>
-            </div>
-          </template>
-        </Property>
-        <Property v-if="domainName" id="names" full-width>
-          <template #name>
-            Domain
-          </template>
-          <template #value>
-            <div style="display: flex; align-items: center; gap: 4px">
-              <DomainLabel :domain-name="domainName" :provider-name="domainProviderName"/>
-            </div>
           </template>
         </Property>
       </template>
