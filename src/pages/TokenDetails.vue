@@ -14,12 +14,14 @@
 
     <DashboardCardV2 collapsible-key="tokenDetails">
       <template #title>
-          <span v-if="tokenInfo">
-            {{ tokenInfo.type === 'NON_FUNGIBLE_UNIQUE' ? 'NFT Collection' : 'Fungible Token' }}
-          </span>
+        <span v-if="tokenInfo">
+          {{ tokenInfo.type === 'NON_FUNGIBLE_UNIQUE' ? 'NFT Collection' : 'Fungible Token' }}
+        </span>
         <div class="title-extra">
           {{ `${displayName} (${displaySymbol})` }}
         </div>
+        <span class="mr-1"/>
+        <PublicLabel v-if="label" :label-definition="label"/>
       </template>
 
       <template v-if="isWalletConnected" #right-control>
@@ -40,16 +42,6 @@
           <template #name>EVM Address</template>
           <template #value>
             <EVMAddress :show-id="false" :address="ethereumAddress"/>
-          </template>
-        </Property>
-        <Property v-if="label" id="labels" full-width>
-          <template #name>
-            Label
-          </template>
-          <template #value>
-            <div style="display: flex; align-items: center; gap: 4px">
-              <PublicLabel :label-definition="label"/>
-            </div>
           </template>
         </Property>
       </template>

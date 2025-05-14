@@ -15,15 +15,18 @@
     <DashboardCardV2 collapsible-key="accountDetails">
       <template #title>
           <span v-if="isInactiveEvmAddress">
-            Inactive EVM Address
-          </span>
-        <span v-else-if="isMyAccount" class="my-account">
-            <img :src="walletIconURL ?? undefined" alt="wallet logo">
-            <span>My Account</span>
-          </span>
-        <span v-else>
-            Account
-          </span>
+          Inactive EVM Address
+        </span>
+          <span v-else-if="isMyAccount" class="my-account">
+          <img :src="walletIconURL ?? undefined" alt="wallet logo">
+          <span>My Account</span>
+        </span>
+          <span v-else>
+          Account
+        </span>
+          <span class="mr-1"/>
+          <PublicLabel v-if="label" :label-definition="label"/>
+          <DomainLabel v-if="domainName" :domain-name="domainName" :provider-name="domainProviderName"/>
       </template>
 
       <template #right-control>
@@ -78,26 +81,6 @@
             <EVMAddress
                 :show-id="false"
                 :address="isInactiveEvmAddress ? accountIdRef : ethereumAddress"/>
-          </template>
-        </Property>
-        <Property v-if="label" id="labels" full-width>
-          <template #name>
-            Label
-          </template>
-          <template #value>
-            <div style="display: flex; align-items: center; gap: 4px">
-              <PublicLabel :label-definition="label"/>
-            </div>
-          </template>
-        </Property>
-        <Property v-if="domainName" id="names" full-width>
-          <template #name>
-            Domain
-          </template>
-          <template #value>
-            <div style="display: flex; align-items: center; gap: 4px">
-              <DomainLabel :domain-name="domainName" :provider-name="domainProviderName"/>
-            </div>
           </template>
         </Property>
       </template>

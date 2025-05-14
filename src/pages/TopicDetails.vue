@@ -18,19 +18,11 @@
         <div v-if="isHcs1Topic" class="h-has-pill" style="margin-top: 2px">
           HCS-1
         </div>
+        <span class="mr-1"/>
+        <PublicLabel v-if="label" :label-definition="label"/>
       </template>
 
       <template #content>
-        <Property v-if="label" id="labels" full-width>
-          <template #name>
-            Label
-          </template>
-          <template #value>
-            <div style="display: flex; align-items: center; gap: 4px">
-              <PublicLabel :label-definition="label"/>
-            </div>
-          </template>
-        </Property>
         <Property id="memo" full-width>
           <template #name>Memo</template>
           <template #value>
