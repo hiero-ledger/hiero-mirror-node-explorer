@@ -6,9 +6,9 @@
 
 <template>
   <router-link :to="targetRoute" custom v-slot="{href, navigate}">
-    <a :href="href" @click="navigate">
-      <UserRoundCheck v-if="isConnected" :size="16" class="profile-icon" :class="{ 'is-rimmed': isRimmed }"/>
-      <UserRound v-else :size="16" class="profile-icon" :class="{ 'is-rimmed': isRimmed }"/>
+    <a :href="href" @click="navigate" :class="{ 'is-rimmed': isRimmed }">
+      Profile
+      <Zap v-if="isConnected" :size="12" />
     </a>
   </router-link>
 </template>
@@ -22,7 +22,7 @@
 import {computed} from "vue";
 import {routeManager} from "@/router.ts";
 import {TabId} from "@/utils/RouteManager.ts";
-import {UserRound, UserRoundCheck} from "lucide-vue-next";
+import {Zap} from "lucide-vue-next";
 import {ProfileConnectionStatus, ProfileController} from "@/utils/profile/ProfileController.ts";
 
 const targetRoute = routeManager.makeRouteToProfile()
@@ -39,12 +39,15 @@ const isConnected = computed(() => profileController.connectionStatus.value == P
 
 <style scoped>
 
-.profile-icon {
+a {
+  align-items: center;
   color: var(--text-secondary);
+  column-gap: 2px;
+  display: flex;
   vertical-align: text-top;
 }
 
-.profile-icon.is-rimmed {
+a.is-rimmed {
   color: var(--text-primary);
 }
 
