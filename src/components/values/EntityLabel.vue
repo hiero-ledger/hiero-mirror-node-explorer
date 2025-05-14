@@ -81,6 +81,7 @@ const navigate = (url: string | null) => {
 .entity-label {
   align-items: center;
   display: flex;
+  font-family: var(--font-family-proportional), sans-serif;
   gap: 4px
 }
 
