@@ -52,7 +52,7 @@
           </ButtonView>
         </template>
 
-        <template #content>
+        <template #left-content>
 
           <Property id="firstName" full-width>
             <template #name>e-Mail</template>
@@ -75,6 +75,24 @@
             </template>
           </Property>
 
+
+        </template>
+
+        <template #right-content>
+
+          <Property id="ecdsa-account-id" full-width>
+            <template #name>ECDSA Account ID</template>
+            <template v-slot:value>
+              <AccountLink :account-id="ecdsaAccountId"/>
+            </template>
+          </Property>
+
+          <Property id="firstName" full-width>
+            <template #name>ED25519 Account ID</template>
+            <template v-slot:value>
+              <AccountLink :account-id="ed25519AccountId"/>
+            </template>
+          </Property>
 
         </template>
 
@@ -157,7 +175,7 @@
 
 <script setup lang="ts">
 
-import {computed, onMounted, ref, watch} from "vue";
+import {computed, ref} from "vue";
 import PageFrameV2 from "@/components/page/PageFrameV2.vue";
 import {ProfileConnectionStatus, ProfileController} from "@/utils/profile/ProfileController.ts";
 import ButtonView from "@/elements/ButtonView.vue";
@@ -169,7 +187,7 @@ import {ButtonSize} from "@/dialogs/core/DialogUtils.ts";
 import Property from "@/components/Property.vue";
 import StringValue from "@/components/values/StringValue.vue";
 import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints.ts";
-import {routeManager} from "@/router.ts";
+import AccountLink from "@/components/values/link/AccountLink.vue";
 
 const profileController = ProfileController.inject()
 const connectionStatus = profileController.connectionStatus
@@ -196,14 +214,9 @@ const lastName = computed(() => profileController.user.value?.profile?.lastName 
 const DEFAULT_PAGE_SIZE = 15
 const perPage = ref(DEFAULT_PAGE_SIZE)
 
-const bookmarks = ref<Portal.EntityBookmark[]>([])
-const updateBookmark = async () => {
-  const network = routeManager.currentNetwork.value
-  bookmarks.value = await profileController.portalClient?.listEntityBookmarks(network) ?? []
-}
-onMounted(() => {
-  watch([routeManager.currentNetwork, profileController.session], updateBookmark, { immediate: true})
-})
+const bookmarks = profileController.bookmarks
+const ed25519AccountId = profileController.ed25519AccountId
+const ecdsaAccountId = profileController.ecdsaAccountId
 
 const handleConnect = async () => {
   await profileController.connect(emailText.value, passwordText.value, recaptchaToken.value!)
