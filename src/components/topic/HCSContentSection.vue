@@ -16,15 +16,19 @@
       <Property id="hash" full-width>
         <template #name>Hash</template>
         <template #value>
-          {{ props.topicMemo?.hash }}
-          <div v-if="hashMatch" class="icon is-small ml-1" id="check-mark">
-            <i class="fas fa-check has-text-success"/>
+          <div style="display: flex; gap:8px">
+            <HexaValue :byte-string="props.topicMemo?.hash"/>
+            <Check
+                v-if="hashMatch"
+                :size="18"
+                class="h-text-success"
+                id="check-mark"
+            />
+            <InfoTooltip
+                v-else
+                :label="isAssetIncomplete ? INCOMPLETE_ASSET_TOOLTIP : HASH_MISMATCH_TOOLTIP"
+            />
           </div>
-          <InfoTooltip
-              v-else
-              class="ml-1"
-              :label="isAssetIncomplete ? INCOMPLETE_ASSET_TOOLTIP : HASH_MISMATCH_TOOLTIP"
-          />
         </template>
       </Property>
       <Property id="compression" full-width>
@@ -84,6 +88,8 @@ import {HCSAsset} from "@/utils/cache/HCSAsset.ts";
 import InfoTooltip from "@/components/InfoTooltip.vue";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import {utf8Encode} from "@/utils/B64Utils.ts";
+import HexaValue from "@/components/values/HexaValue.vue";
+import {Check} from "lucide-vue-next";
 
 const props = defineProps({
   topicMemo: {
