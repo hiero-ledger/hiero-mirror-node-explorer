@@ -130,6 +130,10 @@ export class ProfileController {
         }
     }
 
+    public findBookmark(entityId: string): Portal.EntityBookmark|null {
+        return this.bookmarks.value.find((b) => b.entityId == entityId) ?? null
+    }
+
     public static inject(): ProfileController {
         const defaultFactory = () => new ProfileController(CoreConfig.FALLBACK)
         return inject<ProfileController>(profileControllerKey, defaultFactory, true)
