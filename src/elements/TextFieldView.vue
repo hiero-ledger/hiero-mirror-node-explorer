@@ -6,6 +6,7 @@
 
 <template>
   <input type="text" v-model="text"
+         :disabled="!props.enabled"
          :placeholder="props.placeholder"
          :class="{ 'small': props.small }"/>
 </template>
@@ -19,6 +20,10 @@
 const text = defineModel()
 
 const props = defineProps({
+  enabled: {
+    type: Boolean,
+    default: true
+  },
   placeholder: {
     type: String,
     default: ""
@@ -48,6 +53,10 @@ input {
   height: 40px;
   padding-left: 8px;
   padding-right: 8px;
+}
+
+input:disabled {
+  color: var(--text-secondary);
 }
 
 input::placeholder {
