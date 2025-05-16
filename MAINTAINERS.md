@@ -14,11 +14,11 @@ Maintainers are assigned the following scopes in this repository:
 
 <!-- Please keep this sorted alphabetically by github -->
 
-| Name | GitHub ID    | Scope      | LFID | Discord ID | Email | Company Affiliation |
-|----- | ------------ | ---------- | ---- | ---------- | ----- | ------------------- |
-|      | svienot      | Maintainer |      |            |       |                     |
-|      | ericleponner | Maintainer |      |            |       |                     |
-|      | SimiHunjan   | Maintainer |      |            |       |                     |
+| Name           | GitHub ID    | Scope      | LFID | Discord ID | Email | Company Affiliation |
+|--------------- | ------------ | ---------- | ---- | ---------- | ----- | ------------------- |
+| Simon Viénot   | svienot      | Maintainer |      |            |       | Hashgraph           |
+| Eric Le Ponner | ericleponner | Maintainer |      |            |       | Hashgraph           |
+| Simi Hunjan    | SimiHunjan   | Maintainer |      |            |       | Hashgraph           |
 
 
 ## Emeritus Maintainers
