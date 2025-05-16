@@ -11,7 +11,7 @@
     </template>
 
     <template #tooltip>
-      <p>Public label for ID {{ entityId }} [{{ type }}]</p>
+      <p>{{ `Public Label for ID ${entityId}` + (type ? ` [${type}]` : '') }}</p>
       <p>{{ description }}</p>
       <p>{{ website }}</p>
     </template>
