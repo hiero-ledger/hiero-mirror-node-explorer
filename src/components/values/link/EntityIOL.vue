@@ -12,7 +12,7 @@
       <BookmarkLabel :entity-bookmark="bookmark" compact/>
     </template>
 
-    <template v-if="label">
+    <template v-else-if="label">
       <PublicLabel :label-definition="label" compact/>
     </template>
 
