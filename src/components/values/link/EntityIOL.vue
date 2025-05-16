@@ -8,6 +8,10 @@
 
   <div class="is-inline-block">
 
+    <template v-if="bookmark">
+      <BookmarkLabel :entity-bookmark="bookmark" compact/>
+    </template>
+
     <template v-if="label">
       <PublicLabel :label-definition="label" compact/>
     </template>
@@ -46,6 +50,8 @@ import {initialLoadingKey} from "@/AppKeys";
 import PublicLabel from "@/components/values/PublicLabel.vue";
 import DomainLabel from "@/components/values/DomainLabel.vue";
 import {PublicLabelsCache} from "@/utils/cache/PublicLabelsCache.ts";
+import {ProfileController} from "@/utils/profile/ProfileController.ts";
+import BookmarkLabel from "@/components/values/BookmarkLabel.vue";
 
 const DEFAULT_LABEL_SIZE = 30
 
@@ -69,6 +75,7 @@ const props = defineProps({
 })
 
 const initialLoading = inject(initialLoadingKey, ref(false))
+const profileController = ProfileController.inject()
 
 const domainName = computed(() => slice(props.domainName))
 
@@ -77,6 +84,7 @@ onMounted(() => indexLookup.mount())
 onBeforeUnmount(() => indexLookup.unmount())
 const index = indexLookup.entity
 const label = computed(() => props.entityId ? index.value?.lookup(props.entityId) ?? null : null)
+const bookmark = computed(() => props.entityId ? profileController.findBookmark(props.entityId) : null)
 
 const slice = (label: string | null) => {
   let result = label
