@@ -109,7 +109,7 @@ const showDialog = defineModel("showDialog", {
 const props = defineProps({
   entityId: {
     type: String as PropType<string|null>,
-    required: true
+    default: null
   }
 })
 
