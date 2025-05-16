@@ -16,21 +16,31 @@
       <Property id="hash" full-width>
         <template #name>Hash</template>
         <template #value>
-          {{ props.topicMemo?.hash }}
-          <div v-if="hashMatch" class="icon is-small ml-1" id="check-mark">
-            <i class="fas fa-check has-text-success"/>
+          <div style="display: flex; gap:8px">
+            <HexaValue :byte-string="props.topicMemo?.hash"/>
+            <Check
+                v-if="hashMatch"
+                :size="18"
+                class="h-text-success"
+                id="check-mark"
+            />
+            <InfoTooltip
+                v-else-if="isCompressionAlgoSupported"
+                :label="isAssetIncomplete ? INCOMPLETE_ASSET_TOOLTIP : HASH_MISMATCH_TOOLTIP"
+            />
           </div>
-          <InfoTooltip
-              v-else
-              class="ml-1"
-              :label="isAssetIncomplete ? INCOMPLETE_ASSET_TOOLTIP : HASH_MISMATCH_TOOLTIP"
-          />
         </template>
       </Property>
       <Property id="compression" full-width>
         <template #name>Compression</template>
         <template #value>
-          {{ props.topicMemo?.algo }}
+          <div style="display: flex; gap:8px">
+            <StringValue :string-value="props.topicMemo?.algo"/>
+            <InfoTooltip
+                v-if="!isCompressionAlgoSupported"
+                :label="UNSUPPORTED_COMPRESSION_TOOLTIP"
+            />
+          </div>
         </template>
       </Property>
       <Property id="encoding" full-width>
@@ -84,6 +94,9 @@ import {HCSAsset} from "@/utils/cache/HCSAsset.ts";
 import InfoTooltip from "@/components/InfoTooltip.vue";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import {utf8Encode} from "@/utils/B64Utils.ts";
+import HexaValue from "@/components/values/HexaValue.vue";
+import {Check} from "lucide-vue-next";
+import StringValue from "@/components/values/StringValue.vue";
 
 const props = defineProps({
   topicMemo: {
@@ -104,9 +117,17 @@ const HASH_MISMATCH_TOOLTIP =
     'The HCS-1 content was fully retrieved but its hash does not match the hash from the topic memo. ' +
     'The preview of the content is hence not available.'
 
+const UNSUPPORTED_COMPRESSION_TOOLTIP =
+    'This compression algorithm is not supported.'
+
 const isAssetIncomplete = computed(() =>
     props.hcs1Asset === null
     || props.hcs1Asset.content === null
+)
+
+const isCompressionAlgoSupported = computed(() =>
+    props.topicMemo !== null
+    && HCSAsset.isCompressionAlgoSupported(props.topicMemo.algo)
 )
 
 const hashMatch = computed(() =>

@@ -293,6 +293,10 @@ ul {
     color: var(--text-secondary);
 }
 
+.h-text-success {
+    color: var(--text-success);
+}
+
 .h-text-error {
     color: var(--text-error);
 }
