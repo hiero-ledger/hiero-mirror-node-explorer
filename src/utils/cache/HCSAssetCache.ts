@@ -21,7 +21,7 @@ export class HCSAssetCache extends EntityCache<string, HCSAsset | null> {
 
         const topic = await TopicByIdCache.instance.lookup(topicId)
         const memo = topic ? HCSTopicMemo.parse(topic.memo) : null
-        if (memo?.isAlgoSupported()) {
+        if (memo && HCSAsset.isCompressionAlgoSupported(memo.algo)) {
             const url: string | null = `api/v1/topics/${topicId}/messages?limit=${HCSAssetCache.MESSAGE_LIMIT_PER_ASSET}&order=asc`
             const response: AxiosResponse<TopicMessagesResponse> = await axios.get<TopicMessagesResponse>(url)
             const assetComplete = response.data.links.next === null

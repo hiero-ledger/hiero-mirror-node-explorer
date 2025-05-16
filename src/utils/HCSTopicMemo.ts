@@ -8,10 +8,6 @@ export class HCSTopicMemo {
     ) {
     }
 
-    public isAlgoSupported(): boolean {
-        return this.algo === 'zstd'
-    }
-
     public static parse(memo: string): HCSTopicMemo | null {
         const SHA256_REGEX = /^[A-Fa-f0-9]{64}$/;
 
