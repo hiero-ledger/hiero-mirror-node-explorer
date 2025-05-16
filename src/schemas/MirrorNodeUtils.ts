@@ -29,6 +29,7 @@ import {
 import {ethers} from "ethers";
 import {EntityID} from "@/utils/EntityID";
 import * as hashgraph from "@hashgraph/proto";
+import { PublicKey } from "@hashgraph/sdk"
 import axios from "axios";
 import {waitFor} from "@/utils/TimerUtils";
 import {TransactionID} from "@/utils/TransactionID.ts";
@@ -630,4 +631,24 @@ export function countTransactions(blocks: Block[]): number {
 
 export function cryptoRateToPrice(rate: ExchangeRate): number {
     return Math.round(rate.cent_equivalent / rate.hbar_equivalent * 100) / 10000
+}
+
+export function makePublicKeyDER(accountInfo: AccountInfo): string|null {
+    let result: string|null
+    let pk: PublicKey|null
+    if (accountInfo.key !== null) {
+        switch(accountInfo.key._type) {
+            case KeyType.ED25519:
+                pk = PublicKey.fromStringED25519(accountInfo.key.key)
+                break
+            case KeyType.ECDSA_SECP256K1:
+                pk = PublicKey.fromStringECDSA(accountInfo.key.key)
+                break
+            default:
+                pk = null
+        }
+    } else {
+        pk = null
+    }
+    return pk?.toStringDer() ?? null
 }
