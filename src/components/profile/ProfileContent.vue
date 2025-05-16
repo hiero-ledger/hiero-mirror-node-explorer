@@ -80,7 +80,7 @@
           id="add-bookmark-button"
           :enabled="connectionStatus == ProfileConnectionStatus.Connected"
           :size="ButtonSize.small"
-          @action="handleAddBookmark"
+          @action="handleEditBookmark(null)"
       >
         <span>NEW BOOKMARK</span>
       </ButtonView>
@@ -90,7 +90,6 @@
 
       <o-table
           :data="bookmarks"
-          :hoverable="true"
           :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
           :narrowed="true"
           :paginated="bookmarks.length > perPage"
@@ -128,6 +127,10 @@
           <StringValue :string-value="props.row.website"/>
         </o-table-column>
 
+        <o-table-column v-slot="props" position="right">
+          <i class="fa fa-pen" @click="handleEditBookmark(props.row)"/>
+        </o-table-column>
+
       </o-table>
 
     </template>
@@ -136,7 +139,7 @@
 
   <EditBookmarkDialog
       v-model:show-dialog="showEditBookmarkDialog"
-      :entity-id="null"
+      :entity-id="bookmarkTargetEntityId"
   />
 
 </template>
@@ -173,8 +176,10 @@ const bookmarks = profileController.bookmarks
 const perPage = ref(15)
 
 const showEditBookmarkDialog = ref(false)
+const bookmarkTargetEntityId = ref<string|null>(null)
 
-const handleAddBookmark = async () => {
+const handleEditBookmark = (bookmark: Portal.EntityBookmark|null) => {
+  bookmarkTargetEntityId.value = bookmark?.entityId ?? null
   showEditBookmarkDialog.value = true
 }
 
