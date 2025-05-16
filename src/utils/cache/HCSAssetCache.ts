@@ -27,7 +27,7 @@ export class HCSAssetCache extends EntityCache<string, HCSAsset | null> {
             const assetComplete = response.data.links.next === null
 
             if (response.data.messages.length >= 1) {
-                const asset = await HCSAsset.reassemble(response.data.messages, assetComplete)
+                const asset = await HCSAsset.reassemble(response.data.messages, assetComplete, memo.algo)
                 if (asset != null) {
                     result = asset
                 } else {

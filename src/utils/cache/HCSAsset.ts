@@ -2,6 +2,7 @@
 
 import {TopicMessage} from "@/schemas/MirrorNodeSchemas";
 import {decompress, init} from "@bokuweb/zstd-wasm";
+import {decompress as brotliDecompress} from "brotli-compress"
 import {base64Decode, base64Encode, byteToHex} from "@/utils/B64Utils.ts";
 import {HCSAssetFragment} from "@/utils/HCSAssetFragment.ts";
 import {getDataURLType} from "@/utils/URLUtils.ts";
@@ -27,10 +28,10 @@ export class HCSAsset {
     }
 
     public static isCompressionAlgoSupported(algo: string): boolean {
-        return algo === 'zstd'
+        return algo === 'zstd' || algo == 'brotli'
     }
 
-    public static async reassemble(messages: TopicMessage[], assetComplete: boolean): Promise<HCSAsset | null> {
+    public static async reassemble(messages: TopicMessage[], assetComplete: boolean, algo: string = 'zstd'): Promise<HCSAsset | null> {
         let result: HCSAsset | null
 
         const fragments: HCSAssetFragment[] = []
@@ -40,7 +41,7 @@ export class HCSAsset {
                 fragments.push(fragment)
             }
         }
-        if (fragments.length >= 1) {
+        if (fragments.length >= 1 && this.isCompressionAlgoSupported(algo)) {
             fragments.sort((a, b) => a.index - b.index)
             let assembledContent = ""
             for (const f of fragments) {
@@ -54,12 +55,21 @@ export class HCSAsset {
                     assembledContent = assembledContent.substring(assembledContent.indexOf(',') + 1)
                     // Decode from Base64
                     const compressedContent = base64Decode(assembledContent)
-                    // Decompress (zstd)
-                    if (!this.isInitialized) {
-                        await init()
-                        this.isInitialized = true
+                    let assetContent: Uint8Array
+
+                    switch (algo) {
+                        case 'brotli':
+                            assetContent = await brotliDecompress(compressedContent);
+                            break;
+                        case 'zstd':
+                        default:
+                            if (!this.isInitialized) {
+                                await init()
+                                this.isInitialized = true
+                            }
+                            assetContent = decompress(compressedContent)
                     }
-                    const assetContent = decompress(compressedContent)
+
                     const assetHash = await window.crypto.subtle.digest("SHA-256", assetContent);
                     result = new HCSAsset(assetType, assetContent, byteToHex(new Uint8Array(assetHash)))
                 } else { // asset is incomplete
