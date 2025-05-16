@@ -165,4 +165,38 @@ describe("HCSContentSection.vue", () => {
         await flushPromises()
     });
 
+    it("Should display HCS-1 Content section without preview for unsupported compression algorithm", async () => {
+
+        await router.push("/") // To avoid "missing required param 'network'" error
+
+        const topicMemo = "3a43f42084de067e470a0ae677a601eaad58a8808b59a935dda4bdb8ae34e21b:brotli:base64"
+        const hcs1TopicMemo = HCSTopicMemo.parse(topicMemo)
+
+        const wrapper = mount(HCSContentSection, {
+            global: {
+                plugins: [router, Oruga]
+            },
+            props: {
+                topicMemo: hcs1TopicMemo,
+                hcs1Asset: null
+            },
+        });
+        await flushPromises()
+        // console.log(wrapper.html())
+
+        const card = wrapper.findComponent(HCSContentSection)
+        expect(card.exists()).toBe(true)
+
+        expect(card.text()).toMatch(RegExp("^HCS-1 Content"))
+        expect(card.get('#hash').text()).toMatch('Hash' + '0x' + hcs1TopicMemo?.hash)
+        expect(card.get('#compression').text()).toMatch('Compression' + 'brotli' + 'This compression algorithm is not supported.')
+        expect(card.findComponent(InfoTooltip).exists()).toBe(true)
+        expect(card.get('#encoding').text()).toMatch('Encoding' + 'base64')
+        expect(card.find('#mime-type').exists()).toBe(false)
+        expect(card.find('#preview').exists()).toBe(false)
+        expect(card.find('#check-mark').exists()).toBe(false)
+
+        wrapper.unmount()
+        await flushPromises()
+    });
 });
