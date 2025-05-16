@@ -127,7 +127,7 @@ const isAssetIncomplete = computed(() =>
 
 const isCompressionAlgoSupported = computed(() =>
     props.topicMemo !== null
-    && props.topicMemo.isAlgoSupported()
+    && HCSAsset.isCompressionAlgoSupported(props.topicMemo.algo)
 )
 
 const hashMatch = computed(() =>

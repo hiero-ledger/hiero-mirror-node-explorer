@@ -26,6 +26,10 @@ export class HCSAsset {
         return result
     }
 
+    public static isCompressionAlgoSupported(algo: string): boolean {
+        return algo === 'zstd'
+    }
+
     public static async reassemble(messages: TopicMessage[], assetComplete: boolean): Promise<HCSAsset | null> {
         let result: HCSAsset | null
 
