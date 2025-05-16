@@ -134,6 +134,11 @@
 
   </DashboardCardV2>
 
+  <EditBookmarkDialog
+      v-model:show-dialog="showEditBookmarkDialog"
+      :entity-id="null"
+  />
+
 </template>
 
 <!-- --------------------------------------------------------------------------------------------------------------- -->
@@ -152,6 +157,7 @@ import AccountLink from "@/components/values/link/AccountLink.vue";
 import StringValue from "@/components/values/StringValue.vue";
 import {computed, ref} from "vue";
 import {Portal} from "@/utils/profile/Portal.ts";
+import EditBookmarkDialog from "@/dialogs/profile/EditBookmarkDialog.vue";
 
 const profileController = ProfileController.inject()
 const connectionStatus = profileController.connectionStatus
@@ -166,22 +172,10 @@ const ecdsaAccountId = profileController.ecdsaAccountId
 const bookmarks = profileController.bookmarks
 const perPage = ref(15)
 
+const showEditBookmarkDialog = ref(false)
+
 const handleAddBookmark = async () => {
-  const newBookmark: Portal.NewEntityBookmark = {
-    name: "Testnet ECDSA",
-    type: null,
-    description: "My testnet account with ECDSA key",
-    website: null,
-    networkEpoch: "1746726609.785794442",
-    entityType: "account",
-    publicKey: "0x302d300706052b8104000a03220003d236ba45caea9dd8053b6b0db1953564a4d06c9fb7dbf93bec499e6362b5b45f"
-  }
-  try {
-    const bookmark = await profileController.writeBookmark("testnet", "0.0.1584", newBookmark)
-    console.log("bookmark = " + JSON.stringify(bookmark, null, "  "))
-  } catch(error) {
-    console.log("error=" + error)
-  }
+  showEditBookmarkDialog.value = true
 }
 
 const handleRemoveBookmark = async () => {

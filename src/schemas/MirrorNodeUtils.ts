@@ -634,7 +634,6 @@ export function cryptoRateToPrice(rate: ExchangeRate): number {
 }
 
 export function makePublicKeyDER(accountInfo: AccountInfo): string|null {
-    let result: string|null
     let pk: PublicKey|null
     if (accountInfo.key !== null) {
         switch(accountInfo.key._type) {
