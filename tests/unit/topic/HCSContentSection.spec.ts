@@ -169,7 +169,7 @@ describe("HCSContentSection.vue", () => {
 
         await router.push("/") // To avoid "missing required param 'network'" error
 
-        const topicMemo = "3a43f42084de067e470a0ae677a601eaad58a8808b59a935dda4bdb8ae34e21b:brotli:base64"
+        const topicMemo = "3a43f42084de067e470a0ae677a601eaad58a8808b59a935dda4bdb8ae34e21b:unknown:base64"
         const hcs1TopicMemo = HCSTopicMemo.parse(topicMemo)
 
         const wrapper = mount(HCSContentSection, {
@@ -189,7 +189,7 @@ describe("HCSContentSection.vue", () => {
 
         expect(card.text()).toMatch(RegExp("^HCS-1 Content"))
         expect(card.get('#hash').text()).toMatch('Hash' + '0x' + hcs1TopicMemo?.hash)
-        expect(card.get('#compression').text()).toMatch('Compression' + 'brotli' + 'This compression algorithm is not supported.')
+        expect(card.get('#compression').text()).toMatch('Compression' + 'unknown' + 'This compression algorithm is not supported.')
         expect(card.findComponent(InfoTooltip).exists()).toBe(true)
         expect(card.get('#encoding').text()).toMatch('Encoding' + 'base64')
         expect(card.find('#mime-type').exists()).toBe(false)
