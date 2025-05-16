@@ -127,8 +127,11 @@
           <StringValue :string-value="props.row.website"/>
         </o-table-column>
 
-        <o-table-column v-slot="props" position="right">
-          <i class="fa fa-pen" @click="handleEditBookmark(props.row)"/>
+        <o-table-column v-slot="props" position="right" label="">
+          <div style="display: inline-flex; flex-direction: row-reverse; column-gap: 10px">
+            <Trash2 :size="16" style="color: var(--text-secondary)" @click="handleDeleteBookmark(props.row)"/>
+            <Pencil :size="16" style="color: var(--text-secondary)" @click="handleEditBookmark(props.row)"/>
+          </div>
         </o-table-column>
 
       </o-table>
@@ -141,6 +144,9 @@
       v-model:show-dialog="showEditBookmarkDialog"
       :entity-id="bookmarkTargetEntityId"
   />
+  <DeleteBookmarkDialog
+    v-model:show-dialog="showDeleteBookmarkDialog"
+  :entity-id="bookmarkTargetEntityId"/>
 
 </template>
 
@@ -160,7 +166,9 @@ import AccountLink from "@/components/values/link/AccountLink.vue";
 import StringValue from "@/components/values/StringValue.vue";
 import {computed, ref} from "vue";
 import {Portal} from "@/utils/profile/Portal.ts";
+import {Pencil, Trash2} from 'lucide-vue-next';
 import EditBookmarkDialog from "@/dialogs/profile/EditBookmarkDialog.vue";
+import DeleteBookmarkDialog from "@/dialogs/profile/DeleteBookmarkDialog.vue";
 
 const profileController = ProfileController.inject()
 const connectionStatus = profileController.connectionStatus
@@ -176,6 +184,7 @@ const bookmarks = profileController.bookmarks
 const perPage = ref(15)
 
 const showEditBookmarkDialog = ref(false)
+const showDeleteBookmarkDialog = ref(false)
 const bookmarkTargetEntityId = ref<string|null>(null)
 
 const handleEditBookmark = (bookmark: Portal.EntityBookmark|null) => {
@@ -183,12 +192,9 @@ const handleEditBookmark = (bookmark: Portal.EntityBookmark|null) => {
   showEditBookmarkDialog.value = true
 }
 
-const handleRemoveBookmark = async () => {
-  try {
-    await profileController.clearBookmark("testnet", "0.0.1584")
-  } catch(error) {
-    console.log("error=" + error)
-  }
+const handleDeleteBookmark = async (bookmark: Portal.EntityBookmark) => {
+  bookmarkTargetEntityId.value = bookmark?.entityId ?? null
+  showDeleteBookmarkDialog.value = true
 }
 
 </script>
