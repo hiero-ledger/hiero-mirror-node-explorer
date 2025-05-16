@@ -83,7 +83,7 @@ export namespace Portal {
         description: string | null;
         website: string | null;
 
-        networkEpoch: string | null;
+        networkEpoch: string;
         entityType: string;
         publicKey: string | null;
     }
