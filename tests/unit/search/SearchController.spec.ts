@@ -328,6 +328,9 @@ describe("SearchController.vue", () => {
             "api/v1/accounts/00000000000000000000000000000000000b2607",
             "api/v1/contracts/00000000000000000000000000000000000b2607",
             "api/v1/tokens/0.0.730631",
+            "api/v1/tokens/?name=0x00000000000000000000000000000000000b2607&limit=100",
+            "http://localhost:3000/mainnet/erc-20.json",
+            "http://localhost:3000/mainnet/erc-721.json",
         ])
 
         expect(vi.getTimerCount()).toBe(0)
@@ -385,6 +388,9 @@ describe("SearchController.vue", () => {
             "api/v1/accounts/00000000000000000000000000000000000b2607",
             "api/v1/contracts/00000000000000000000000000000000000b2607",
             "api/v1/tokens/0.0.730631",
+            "api/v1/tokens/?name=0x0b2607&limit=100",
+            "http://localhost:3000/mainnet/erc-20.json",
+            "http://localhost:3000/mainnet/erc-721.json",
         ])
 
         expect(vi.getTimerCount()).toBe(0)
@@ -495,6 +501,9 @@ describe("SearchController.vue", () => {
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/accounts/?account.publickey=aa2f7b3e759f4531ec2e7941afa449e6a6e610efb52adae89e9cd8e9d40ddcbf&limit=10",
             "api/v1/contracts/results/aa2f7b3e759f4531ec2e7941afa449e6a6e610efb52adae89e9cd8e9d40ddcbf",
+            "api/v1/tokens/?name=aa2f7b3e759f4531ec2e7941afa449e6a6e610efb52adae89e9cd8e9d40ddcbf&limit=100",
+            "http://localhost:3000/mainnet/erc-20.json",
+            "http://localhost:3000/mainnet/erc-721.json",
         ])
 
         expect(vi.getTimerCount()).toBe(0)
@@ -618,6 +627,9 @@ describe("SearchController.vue", () => {
             "api/v1/accounts/00000000000000000000000000000000000b70cf",
             "api/v1/contracts/00000000000000000000000000000000000b70cf",
             "api/v1/tokens/0.0.749775",
+            "api/v1/tokens/?name=0x00000000000000000000000000000000000b70cf&limit=100",
+            "http://localhost:3000/mainnet/erc-20.json",
+            "http://localhost:3000/mainnet/erc-721.json",
         ])
 
         expect(vi.getTimerCount()).toBe(0)
@@ -680,6 +692,9 @@ describe("SearchController.vue", () => {
             "api/v1/accounts/00000000000000000000000000000000000b70cf",
             "api/v1/contracts/00000000000000000000000000000000000b70cf",
             "api/v1/tokens/0.0.749775",
+            "api/v1/tokens/?name=0x0b70cf&limit=100",
+            "http://localhost:3000/mainnet/erc-20.json",
+            "http://localhost:3000/mainnet/erc-721.json",
         ])
 
         expect(vi.getTimerCount()).toBe(0)
@@ -804,6 +819,9 @@ describe("SearchController.vue", () => {
             "api/v1/accounts/0000000000000000000000000000000001c49eec",
             "api/v1/contracts/0000000000000000000000000000000001c49eec",
             "api/v1/tokens/0.0.29662956",
+            "api/v1/tokens/?name=0000000000000000000000000000000001c49eec&limit=100",
+            "http://localhost:3000/mainnet/erc-20.json",
+            "http://localhost:3000/mainnet/erc-721.json",
         ])
 
         expect(vi.getTimerCount()).toBe(0)
@@ -860,6 +878,9 @@ describe("SearchController.vue", () => {
             "api/v1/accounts/0000000000000000000000000000000001c49eec",
             "api/v1/contracts/0000000000000000000000000000000001c49eec",
             "api/v1/tokens/0.0.29662956",
+            "api/v1/tokens/?name=0x01c49eec&limit=100",
+            "http://localhost:3000/mainnet/erc-20.json",
+            "http://localhost:3000/mainnet/erc-721.json",
         ])
 
         expect(vi.getTimerCount()).toBe(0)
@@ -1376,6 +1397,9 @@ describe("SearchController.vue", () => {
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/accounts/?account.publickey=c43db9eacf72c91629ac03088535dd9ae41059a2c1eefce3a528e04e7e908d2d&limit=10",
             "api/v1/contracts/results/c43db9eacf72c91629ac03088535dd9ae41059a2c1eefce3a528e04e7e908d2d",
+            "api/v1/tokens/?name=0xc43db9eacf72c91629ac03088535dd9ae41059a2c1eefce3a528e04e7e908d2d&limit=100",
+            "http://localhost:3000/mainnet/erc-20.json",
+            "http://localhost:3000/mainnet/erc-721.json",
             "api/v1/transactions?timestamp=1646025151.667604000",
         ])
 
@@ -1500,6 +1524,9 @@ describe("SearchController.vue", () => {
             "api/v1/accounts/5FRQ27MMZBWQ4DJ54UYWTFN336PSUWCFETHRRWRDHK6476BN7F62BIHMHDDLIBDBAEUURFX7RCUGW",
             "api/v1/transactions/e9630d7d8cc86d0e0d3de5316995bbdf9f2a584524cf18da233abdcff82df97da0a0ec38c6b4046101294896ff88a86b",
             "api/v1/blocks/e9630d7d8cc86d0e0d3de5316995bbdf9f2a584524cf18da233abdcff82df97da0a0ec38c6b4046101294896ff88a86b",
+            "api/v1/tokens/?name=0xe9630d7d8cc86d0e0d3de5316995bbdf9f2a584524cf18da233abdcff82df97da0a0ec38c6b4046101294896ff88a86b&limit=100",
+            "http://localhost:3000/mainnet/erc-20.json",
+            "http://localhost:3000/mainnet/erc-721.json",
         ])
 
         expect(vi.getTimerCount()).toBe(0)

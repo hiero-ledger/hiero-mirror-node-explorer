@@ -14,19 +14,22 @@
 
     <DashboardCardV2 collapsible-key="contractDetails">
       <template #title>
-        {{ `Contract ${contractName ?? ''}` }}
-        <div v-if="isVerified" class="h-has-pill h-chip-success" style="margin-top: 2px">
-          VERIFIED
-        </div>
-        <div v-if="isErc20" class="h-has-pill" style="margin-top: 2px">
-          ERC 20
-        </div>
-        <div v-if="isErc721" class="h-has-pill" style="margin-top: 2px">
-          ERC 721
-        </div>
-        <div v-if="isErc1155" class="h-has-pill" style="margin-top: 2px">
-          ERC 1155
-        </div>
+          {{ `Contract ${contractName ?? ''}` }}
+        <span class="mr-1"/>
+        <div v-if="isVerified" class="h-has-pill h-chip-success">
+            VERIFIED
+          </div>
+          <div v-if="isErc20" class="h-has-pill">
+            ERC 20
+          </div>
+          <div v-if="isErc721" class="h-has-pill">
+            ERC 721
+          </div>
+          <div v-if="isErc1155" class="h-has-pill">
+            ERC 1155
+          </div>
+          <PublicLabel v-if="label" :label-definition="label"/>
+          <DomainLabel  v-if="domainName" :domain-name="domainName" :provider-name="domainProviderName"/>
       </template>
 
       <template #right-control>
@@ -55,15 +58,6 @@
             <EVMAddress
                 :show-id="false"
                 :address="ethereumAddress"/>
-          </template>
-        </Property>
-        <Property v-if="domainName" id="names" full-width>
-          <template #name>
-            Domain
-          </template>
-          <template #value>
-            <EntityIOL :label="domainName"/>
-            <InfoTooltip v-if="domainProviderName" :label="domainProviderName"/>
           </template>
         </Property>
       </template>
@@ -247,8 +241,6 @@ import {ContractResultsLogsAnalyzer} from "@/utils/analyzer/ContractResultsLogsA
 import {BalanceAnalyzer} from "@/utils/analyzer/BalanceAnalyzer";
 import MirrorLink from "@/components/MirrorLink.vue";
 import {NameQuery} from "@/utils/name_service/NameQuery";
-import EntityIOL from "@/components/values/link/EntityIOL.vue";
-import InfoTooltip from "@/components/InfoTooltip.vue";
 import {labelForAutomaticTokenAssociation} from "@/schemas/MirrorNodeUtils.ts";
 import TokensSection from "@/components/token/TokensSection.vue";
 import ContractERCSection from "@/components/contract/ContractERCSection.vue";
@@ -257,6 +249,9 @@ import ArrowLink from "@/components/ArrowLink.vue";
 import EntityIDView from "@/components/values/EntityIDView.vue";
 import HbarAmount from "@/components/values/HbarAmount.vue";
 import {ERCAnalyzer} from "@/utils/analyzer/ERCAnalyzer.ts";
+import DomainLabel from "@/components/values/DomainLabel.vue";
+import PublicLabel from "@/components/values/PublicLabel.vue";
+import {PublicLabelsCache} from "@/utils/cache/PublicLabelsCache.ts";
 
 const props = defineProps({
   contractId: String,
@@ -345,9 +340,20 @@ onBeforeUnmount(() => contractResultsLogsAnalyzer.unmount())
 //
 // Naming
 //
-const nameQuery = new NameQuery(computed(() => props.contractId ?? null))
+const nameQuery = new NameQuery(normalizedContractId)
 onMounted(() => nameQuery.mount())
 onBeforeUnmount(() => nameQuery.unmount())
+const domainName = nameQuery.name
+const domainProviderName = nameQuery.providerName
+
+//
+// Label
+//
+const indexLookup = PublicLabelsCache.instance.makeLookup()
+onMounted(() => indexLookup.mount())
+onBeforeUnmount(() => indexLookup.unmount())
+const index = indexLookup.entity
+const label = computed(() => normalizedContractId.value ? index.value?.lookup(normalizedContractId.value) ?? null : null)
 
 const enableExpiry = routeManager.enableExpiry
 const contract = contractLocParser.entity
@@ -357,8 +363,6 @@ const hbarBalance = balanceAnalyzer.hbarBalance
 const isVerified = contractAnalyzer.isVerified
 const contractName = contractAnalyzer.contractName
 const logs = contractResultsLogsAnalyzer.logs
-const domainName = nameQuery.name
-const domainProviderName = nameQuery.providerName
 const isErc20 = ercAnalyzer.isErc20
 const isErc721 = ercAnalyzer.isErc721
 const isErc1155 = ercAnalyzer.isErc1155

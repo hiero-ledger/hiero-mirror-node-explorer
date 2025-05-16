@@ -22,7 +22,6 @@ import {ERC721Cache} from "@/utils/cache/ERC721Cache.ts";
 import {ERC721InfoCache} from "@/utils/cache/ERC721InfoCache.ts";
 import {HCSAssetCache} from "@/utils/cache/HCSAssetCache.ts";
 import {HbarPriceCache} from "@/utils/cache/HbarPriceCache";
-import {LabelByIdCache} from "@/utils/cache/LabelByIdCache.ts";
 import {LastTopicMessageByIdCache} from "@/utils/cache/LastTopicMessageByIdCache.ts";
 import {LogicContractCache} from "@/utils/cache/LogicContractCache";
 import {NetworkCache} from "@/utils/cache/NetworkCache";
@@ -48,6 +47,7 @@ import {VerifiedContractsByAccountIdCache} from "@/utils/cache/VerifiedContracts
 import {VerifiedContractsCache} from "@/utils/cache/VerifiedContractsCache";
 import {ScheduleByIdCache} from "@/utils/cache/ScheduleByIdCache.ts";
 import {ERC1155Cache} from "@/utils/cache/ERC1155Cache.ts";
+import {PublicLabelsCache} from "@/utils/cache/PublicLabelsCache.ts";
 
 export class CacheUtils {
 
@@ -74,7 +74,6 @@ export class CacheUtils {
         ERC1155Cache.instance.clear()
         HCSAssetCache.instance.clear()
         HbarPriceCache.instance.clear()
-        LabelByIdCache.instance.clear()
         LastTopicMessageByIdCache.instance.clear()
         LogicContractCache.instance.clear()
         // IPFSCache.instance => no clear: we preserve it because IPFS content is valid for all networks
@@ -83,6 +82,7 @@ export class CacheUtils {
         NftBySerialCache.instance.clear()
         NftCollectionCache.instance.clear()
         PendingAirdropCache.instance.clear()
+        PublicLabelsCache.instance.clear()
         ScheduleByIdCache.instance.clear()
         SelectedTokensCache.instance.clear()
         // SignatureCache.instance => no clear: we preserve it because 4byte content is valid for all networks

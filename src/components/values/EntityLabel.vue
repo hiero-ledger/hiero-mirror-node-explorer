@@ -5,13 +5,26 @@
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <template>
-  <div v-if="label"
-       :class="{'h-is-label':!compact, 'h-is-compact-label':compact}"
-       class="is-inline-block">
-    <slot/>
-    <span>
-      {{ label }}
-    </span>
+  <div class="hover-container">
+    <Tooltip>
+      <div
+          v-if="label"
+          class="entity-label"
+          :class="{'h-is-label':!compact, 'h-is-compact-label':compact}"
+      >
+        <slot name="icon"/>
+        <span>{{ label }}</span>
+      </div>
+      <template v-if="slots.tooltip" #content>
+        <slot name="tooltip"/>
+      </template>
+    </Tooltip>
+    <SquareArrowOutUpRight
+        v-if="props.url && !compact"
+        :size="14"
+        class="shy-icon"
+        @click="navigate(props.url)"
+    />
   </div>
 </template>
 
@@ -21,19 +34,20 @@
 
 <script setup lang="ts">
 
-import {computed, onBeforeUnmount, onMounted, PropType} from "vue";
-import {LabelByIdCache} from "@/utils/cache/LabelByIdCache";
+import {computed, PropType, useSlots} from "vue";
+import Tooltip from "@/components/Tooltip.vue";
+import {SquareArrowOutUpRight} from 'lucide-vue-next';
 
 const MAX_LABEL_SIZE = 35
 
 const props = defineProps({
-  id: {
+  label: {
     type: String as PropType<string | null>,
     default: null
   },
-  slice: {
-    type: Number as PropType<number | null>,
-    default: MAX_LABEL_SIZE
+  url: {
+    type: String as PropType<string | null>,
+    default: null
   },
   compact: {
     type: Boolean,
@@ -41,23 +55,19 @@ const props = defineProps({
   },
 })
 
-const id = computed(() => props.id)
+const slots = useSlots()
 
-const labelLookup = LabelByIdCache.instance.makeLookup(id)
-onMounted(() => labelLookup.mount())
-onBeforeUnmount(() => labelLookup.unmount())
+const label = computed(() =>
+    (props.label && props.label.length > MAX_LABEL_SIZE)
+        ? props.label.slice(0, MAX_LABEL_SIZE) + '…'
+        : props.label
+)
 
-const slice = computed(() => props.compact ? 12 : props.slice)
-const label = computed(() => {
-  let result = labelLookup.entity.value
-  if (result != null
-      && slice.value != null
-      && slice.value > 0
-      && slice.value < result.length) {
-    result = result.slice(0, slice.value) + '…'
+const navigate = (url: string | null) => {
+  if (url) {
+    window.open(url, '_blank');
   }
-  return result
-})
+};
 
 </script>
 
@@ -65,4 +75,27 @@ const label = computed(() => {
 <!--                                                       STYLE                                                     -->
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
-<style/>
+<style scoped>
+
+.hover-container,
+.entity-label {
+  align-items: center;
+  display: flex;
+  font-family: var(--font-family-proportional), sans-serif;
+  gap: 4px
+}
+
+.shy-icon {
+  color: var(--text-secondary);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  visibility: hidden;
+}
+
+.hover-container:hover .shy-icon {
+  opacity: 1;
+  visibility: visible;
+}
+
+</style>

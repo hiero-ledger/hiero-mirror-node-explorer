@@ -5,9 +5,16 @@
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <template>
+  <EntityLabel :label="props.domainName" :compact="props.compact">
+    <template #icon>
+      <NotebookTabs :size="12" :class="{'low-contrast':props.compact}"/>
+    </template>
 
-  <EntityIOL :entityId="props.tokenId"/>
-
+    <template #tooltip>
+      <p>Domain name</p>
+      <p>provided by {{ props.providerName }}</p>
+    </template>
+  </EntityLabel>
 </template>
 
 <!-- --------------------------------------------------------------------------------------------------------------- -->
@@ -17,12 +24,21 @@
 <script setup lang="ts">
 
 import {PropType} from "vue";
-import EntityIOL from "@/components/values/link/EntityIOL.vue";
+import EntityLabel from "@/components/values/EntityLabel.vue";
+import {NotebookTabs} from 'lucide-vue-next';
 
 const props = defineProps({
-  tokenId: {
+  domainName: {
     type: String as PropType<string | null>,
     default: null
+  },
+  providerName: {
+    type: String as PropType<string | null>,
+    default: null
+  },
+  compact: {
+    type: Boolean,
+    default: false
   },
 })
 
@@ -32,4 +48,10 @@ const props = defineProps({
 <!--                                                       STYLE                                                     -->
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
-<style/>
+<style scoped>
+
+.low-contrast {
+  color: var(--text-secondary);
+}
+
+</style>

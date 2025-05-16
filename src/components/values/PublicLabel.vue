@@ -5,9 +5,17 @@
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <template>
+  <EntityLabel :label="name" :url="website" :compact="props.compact">
+    <template #icon>
+      <Tag :size="12" :class="{'low-contrast':props.compact}"/>
+    </template>
 
-  <EntityIOL :entityId="props.tokenId"/>
-
+    <template #tooltip>
+      <p>{{ `Public Label for ID ${entityId}` + (type ? ` [${type}]` : '') }}</p>
+      <p>{{ description }}</p>
+      <p>{{ website }}</p>
+    </template>
+  </EntityLabel>
 </template>
 
 <!-- --------------------------------------------------------------------------------------------------------------- -->
@@ -16,15 +24,27 @@
 
 <script setup lang="ts">
 
-import {PropType} from "vue";
-import EntityIOL from "@/components/values/link/EntityIOL.vue";
+import {computed, PropType} from "vue";
+import EntityLabel from "@/components/values/EntityLabel.vue";
+import {Tag} from 'lucide-vue-next';
+import {LabelDefinition} from "@/utils/cache/PublicLabelsCache.ts";
 
 const props = defineProps({
-  tokenId: {
-    type: String as PropType<string | null>,
+  labelDefinition: {
+    type: Object as PropType<LabelDefinition | null>,
     default: null
   },
+  compact: {
+    type: Boolean,
+    default: false
+  },
 })
+
+const name = computed(() => props.labelDefinition?.name ?? null)
+const entityId = computed(() => props.labelDefinition?.entityId ?? null)
+const website = computed(() => props.labelDefinition?.website ?? null)
+const description = computed(() => props.labelDefinition?.description ?? null)
+const type = computed(() => props.labelDefinition?.type ?? null)
 
 </script>
 
@@ -32,4 +52,10 @@ const props = defineProps({
 <!--                                                       STYLE                                                     -->
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
-<style/>
+<style scoped>
+
+.low-contrast {
+  color: var(--text-secondary);
+}
+
+</style>
