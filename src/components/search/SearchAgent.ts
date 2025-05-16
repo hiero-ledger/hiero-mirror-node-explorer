@@ -65,22 +65,22 @@ export abstract class SearchAgent<L, E> {
 
     protected readonly entityLocDidChange = async () => {
         this.candidates.value = []
-        for (const loc of this.loc.value) {
-            if (this.loading.value) {
-                this.abortController.abort()
-            }
-            this.loading.value = true
-            try {
+        if (this.loading.value) {
+            this.abortController.abort()
+        }
+        this.loading.value = true
+        try {
+            for (const loc of this.loc.value) {
                 const newCandidates = await this.load(loc, this.abortController)
                 this.candidates.value = this.candidates.value.concat(newCandidates)
+            }
+        } catch (reason) {
+            this.candidates.value = []
+            if (!this.isAbortError(reason)) {
                 this.loading.value = false
-            } catch (reason) {
-                this.candidates.value = []
-                if (!this.isAbortError(reason)) {
-                    this.loading.value = false
-                }
             }
         }
+        this.loading.value = false
     }
 
     //
