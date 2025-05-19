@@ -29,8 +29,6 @@ describe("OpcodeValue.vue", () => {
 
     it("should show the opcode with and without hexa opcode value", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         const opcode: DisassembledOpcodeOutput = {
             index16: '0x0dc2',
             hex: '63',
@@ -49,9 +47,6 @@ describe("OpcodeValue.vue", () => {
             "0x4e487b71"
 
         const wrapper = mount(OpcodeValue, {
-            global: {
-                plugins: [router]
-            },
             props: {
                 opcode: opcode,
                 showHexaOpcode: true
@@ -73,8 +68,6 @@ describe("OpcodeValue.vue", () => {
     });
 
     it("should show the opcode with a link to the contract address", async () => {
-
-        await router.push("/") // To avoid "missing required param 'network'" error
 
         const matcher1 = "/api/v1/contracts/" + SAMPLE_CONTRACT.evm_address
         mock.onGet(matcher1).reply(200, SAMPLE_CONTRACT);
@@ -136,8 +129,6 @@ describe("OpcodeValue.vue", () => {
     });
 
     it("should show the opcode with a link to the account address", async () => {
-
-        await router.push("/") // To avoid "missing required param 'network'" error
 
         const matcher1 = "/api/v1/contracts/" + SAMPLE_CONTRACT.evm_address
         mock.onGet(matcher1).reply(404);

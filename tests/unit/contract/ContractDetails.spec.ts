@@ -567,8 +567,6 @@ describe("ContractDetails.vue", () => {
     // TODO: re-enable after activation of Contract Expiry
     it.skip("Should display notification of grace period", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         const mock = new MockAdapter(axios as any);
 
         const contract = SAMPLE_CONTRACT_DUDE
@@ -595,7 +593,7 @@ describe("ContractDetails.vue", () => {
 
         const wrapper = mount(ContractDetails, {
             global: {
-                plugins: [router, Oruga]
+                plugins: [Oruga]
             },
             props: {
                 contractId: contract.contract_id

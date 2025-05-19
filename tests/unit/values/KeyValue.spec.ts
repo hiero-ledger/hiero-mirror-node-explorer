@@ -2,20 +2,14 @@
 
 import {describe, expect, it} from 'vitest'
 import {mount} from "@vue/test-utils"
-import router from "@/router";
 import KeyValue from "@/components/values/KeyValue.vue";
 
 describe("KeyValue.vue", () => {
 
     it("props.keyBytes set", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         const testBytes = "000102030405060708090A0B0C0D0E0F"
         const wrapper = mount(KeyValue, {
-            global: {
-                plugins: [router]
-            },
             props: {
                 keyBytes: testBytes
             },
@@ -28,14 +22,7 @@ describe("KeyValue.vue", () => {
 
     it("props.keyBytes unset, showNone=false", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
-        const wrapper = mount(KeyValue, {
-            global: {
-                plugins: [router]
-            },
-            props: {},
-        });
+        const wrapper = mount(KeyValue);
 
         expect(wrapper.text()).toBe("")
 
@@ -44,12 +31,7 @@ describe("KeyValue.vue", () => {
 
     it("props.keyBytes unset, showNone=true", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         const wrapper = mount(KeyValue, {
-            global: {
-                plugins: [router]
-            },
             props: {
                 showNone: true
             },
@@ -62,12 +44,7 @@ describe("KeyValue.vue", () => {
 
     it("should display 'None' with a mention on the line below", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         const wrapper = mount(KeyValue, {
-            global: {
-                plugins: [router]
-            },
             props: {
                 showNone: true,
                 noneExtra: "This should be displayed below None"

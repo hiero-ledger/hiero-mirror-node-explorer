@@ -3,7 +3,6 @@
 import {describe, expect, test} from 'vitest'
 import {flushPromises, mount} from "@vue/test-utils";
 import NftFile from "@/components/token/NftFile.vue";
-import router from "@/router";
 import Oruga from "@oruga-ui/oruga-next";
 
 describe("NftFile.vue", () => {
@@ -12,11 +11,9 @@ describe("NftFile.vue", () => {
 
     test("No URL and default values", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         const wrapper = mount(NftFile, {
             global: {
-                plugins: [router, Oruga]
+                plugins: [Oruga]
             },
             props: {},
         })
@@ -38,11 +35,9 @@ describe("NftFile.vue", () => {
 
     test("With URL and default values", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         const wrapper = mount(NftFile, {
             global: {
-                plugins: [router, Oruga]
+                plugins: [Oruga]
             },
             props: {
                 url: contentUrl
@@ -69,11 +64,9 @@ describe("NftFile.vue", () => {
 
     test("With URL and custom size", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         const wrapper = mount(NftFile, {
             global: {
-                plugins: [router, Oruga]
+                plugins: [Oruga]
             },
             props: {
                 url: contentUrl,
@@ -103,11 +96,9 @@ describe("NftFile.vue", () => {
 
     test("With URL and image type", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         const wrapper = mount(NftFile, {
             global: {
-                plugins: [router, Oruga]
+                plugins: [Oruga]
             },
             props: {
                 url: contentUrl,
@@ -135,11 +126,9 @@ describe("NftFile.vue", () => {
 
     test("With URL and video type", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         const wrapper = mount(NftFile, {
             global: {
-                plugins: [router, Oruga]
+                plugins: [Oruga]
             },
             props: {
                 url: contentUrl,
@@ -169,11 +158,9 @@ describe("NftFile.vue", () => {
 
     test("With URL and unsupported type", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         const wrapper = mount(NftFile, {
             global: {
-                plugins: [router, Oruga]
+                plugins: [Oruga]
             },
             props: {
                 url: contentUrl,

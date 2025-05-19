@@ -32,8 +32,6 @@ describe("Nodes.vue", () => {
 
     it("should display the nodes pages containing the node table", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         const mock = new MockAdapter(axios as any);
 
         // const config = [

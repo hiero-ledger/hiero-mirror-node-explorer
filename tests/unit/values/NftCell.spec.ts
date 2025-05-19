@@ -19,18 +19,12 @@ import {
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
 import NftCell, {NftCellItem} from "@/components/token/NftCell.vue";
-import router from "@/router";
 
 describe("NftCell.vue", () => {
 
     test("no props", async () => {
 
-        const wrapper = mount(NftCell, {
-            global: {
-                plugins: [router]
-            },
-            props: {},
-        });
+        const wrapper = mount(NftCell);
         await flushPromises()
 
         expect(wrapper.text()).toBe("")
@@ -53,9 +47,6 @@ describe("NftCell.vue", () => {
         mock.onGet(IPFS_METADATA_CONTENT_URL).reply(200, IPFS_METADATA_CONTENT)
 
         const wrapper = mount(NftCell, {
-            global: {
-                plugins: [router]
-            },
             props: {
                 tokenId: nftId
             },
@@ -89,9 +80,6 @@ describe("NftCell.vue", () => {
         mock.onGet(IPFS_METADATA_CONTENT_URL).reply(200, IPFS_METADATA_CONTENT)
 
         const wrapper = mount(NftCell, {
-            global: {
-                plugins: [router]
-            },
             props: {
                 tokenId: nft.token_id,
                 serialNumber: serial
@@ -126,9 +114,6 @@ describe("NftCell.vue", () => {
         mock.onGet(IPFS_METADATA_CONTENT_URL).reply(200, IPFS_METADATA_CONTENT)
 
         const wrapper = mount(NftCell, {
-            global: {
-                plugins: [router]
-            },
             props: {
                 tokenId: nft.token_id,
                 serialNumber: serial,

@@ -36,8 +36,6 @@ describe("TokenAmount.vue", () => {
 
     it("no amount; tokenId", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         const expectedAmount = 0
 
         const wrapper = mount(TokenAmount, {
@@ -68,8 +66,6 @@ describe("TokenAmount.vue", () => {
 
     it("amount; no tokenId", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         const testAmount = 42
 
         const wrapper = mount(TokenAmount, {
@@ -90,8 +86,6 @@ describe("TokenAmount.vue", () => {
     });
 
     it("amount; tokenId", async () => {
-
-        await router.push("/") // To avoid "missing required param 'network'" error
 
         const testAmount = 42
 
@@ -135,8 +129,6 @@ describe("TokenAmount.vue", () => {
     });
 
     it("should detect too large decimal count", async () => {
-
-        await router.push("/") // To avoid "missing required param 'network'" error
 
         const testAmount = 42
 

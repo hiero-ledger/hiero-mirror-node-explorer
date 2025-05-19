@@ -29,8 +29,6 @@ describe("Transactions.vue", () => {
 
     test("no props", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         const mock = new MockAdapter(axios as any)
 
         const matcher1 = "/api/v1/transactions"
@@ -92,8 +90,6 @@ describe("Transactions.vue", () => {
 
     test("without page size selector", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         const mock = new MockAdapter(axios as any)
 
         const matcher1 = "/api/v1/transactions"
@@ -141,8 +137,6 @@ describe("Transactions.vue", () => {
     });
 
     test("page size selector", async () => {
-
-        await router.push("/") // To avoid "missing required param 'network'" error
 
         const mock = new MockAdapter(axios as any)
 

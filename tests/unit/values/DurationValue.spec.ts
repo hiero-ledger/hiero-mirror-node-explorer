@@ -2,7 +2,6 @@
 
 import {describe, expect, test} from 'vitest'
 import {flushPromises, mount, VueWrapper} from "@vue/test-utils"
-import router from "@/router";
 import DurationValue from "@/components/values/DurationValue.vue";
 
 describe("DurationValue.vue", () => {
@@ -13,12 +12,7 @@ describe("DurationValue.vue", () => {
 
     test("numberValue / stringValue undefined", async () => {
 
-        const wrapper = mount(DurationValue, {
-            global: {
-                plugins: [router]
-            },
-            props: {}
-        });
+        const wrapper = mount(DurationValue);
 
         await flushPromises()
 
@@ -36,12 +30,7 @@ describe("DurationValue.vue", () => {
 
     test("various cases of numberValue defined", async () => {
 
-        const wrapper = mount(DurationValue, {
-            global: {
-                plugins: [router]
-            },
-            props: {}
-        });
+        const wrapper = mount(DurationValue);
 
         const year = 31536000
         const day = 86400
@@ -78,9 +67,6 @@ describe("DurationValue.vue", () => {
         const D1 = 3600 * 5 + 60 + 42
         const S1 = "5h 1min 42s"
         const wrapper = mount(DurationValue, {
-            global: {
-                plugins: [router]
-            },
             props: {
                 numberValue: undefined,
                 stringValue: D1.toString(),
@@ -104,9 +90,6 @@ describe("DurationValue.vue", () => {
 
         const S1 = "dummy"
         const wrapper = mount(DurationValue, {
-            global: {
-                plugins: [router]
-            },
             props: {
                 stringValue: S1,
             }

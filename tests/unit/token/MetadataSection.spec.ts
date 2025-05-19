@@ -7,7 +7,6 @@ import {IPFS_GATEWAY_PREFIX, IPFS_METADATA, IPFS_METADATA_CONTENT, IPFS_METADATA
 import MockAdapter from "axios-mock-adapter";
 import Oruga from "@oruga-ui/oruga-next";
 import {HMSF} from "@/utils/HMSF.ts";
-import router from "@/router";
 import MetadataSection from "@/components/token/MetadataSection.vue";
 import {ref} from "vue";
 import {TokenMetadataAnalyzer} from "@/components/token/TokenMetadataAnalyzer.ts";
@@ -25,8 +24,6 @@ describe("MetadataSection.vue", () => {
 
     it("Should display metadata attributes", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         // Mock axios
         const mock = new MockAdapter(axios as any)
         mock.onGet(IPFS_METADATA_CONTENT_URL).reply(200, IPFS_METADATA_CONTENT)
@@ -38,7 +35,7 @@ describe("MetadataSection.vue", () => {
 
         const wrapper = mount(MetadataSection, {
             global: {
-                plugins: [router, Oruga]
+                plugins: [Oruga]
             },
             props: {
                 metadataAnalyzer: analyzer,
@@ -75,8 +72,6 @@ describe("MetadataSection.vue", () => {
 
     it("Should display raw metadata property when metadata unusable", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         const UNUSABLE_METADATA = '==AA'
         const metadata = ref(UNUSABLE_METADATA)
         const analyzer = new TokenMetadataAnalyzer(metadata, IPFS_GATEWAY_PREFIX)
@@ -84,7 +79,7 @@ describe("MetadataSection.vue", () => {
 
         const wrapper = mount(MetadataSection, {
             global: {
-                plugins: [router, Oruga]
+                plugins: [Oruga]
             },
             props: {
                 metadataAnalyzer: analyzer,

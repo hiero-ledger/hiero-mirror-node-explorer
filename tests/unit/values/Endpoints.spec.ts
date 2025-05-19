@@ -2,7 +2,6 @@
 
 import {describe, expect, it} from 'vitest'
 import {flushPromises, mount} from "@vue/test-utils"
-import router from "@/router";
 import Endpoints from "@/components/values/Endpoints.vue";
 import {SAMPLE_NETWORK_NODES} from "../Mocks";
 import {ServiceEndPoint} from "@/schemas/MirrorNodeSchemas";
@@ -10,12 +9,7 @@ import {ServiceEndPoint} from "@/schemas/MirrorNodeSchemas";
 describe("Endpoint.vue", () => {
 
     it("should output 'None' when the props is undefined", async () => {
-        const wrapper = mount(Endpoints, {
-            global: {
-                plugins: [router]
-            },
-            props: {}
-        });
+        const wrapper = mount(Endpoints);
         await flushPromises()
         expect(wrapper.text()).toBe("None")
 
@@ -25,9 +19,6 @@ describe("Endpoint.vue", () => {
 
     it("should output 'None' when the array of endpoints is empty", async () => {
         const wrapper = mount(Endpoints, {
-            global: {
-                plugins: [router]
-            },
             props: {
                 endpoints: []
             }
@@ -41,9 +32,6 @@ describe("Endpoint.vue", () => {
 
     it("should not output an endpoint where the address is undefined", async () => {
         const wrapper = mount(Endpoints, {
-            global: {
-                plugins: [router]
-            },
             props: {
                 endpoints: SAMPLE_NETWORK_NODES.nodes[1].service_endpoints as Array<ServiceEndPoint>
             }
@@ -57,9 +45,6 @@ describe("Endpoint.vue", () => {
 
     it("should output an endpoint address alone when port is undefined", async () => {
         const wrapper = mount(Endpoints, {
-            global: {
-                plugins: [router]
-            },
             props: {
                 endpoints: SAMPLE_NETWORK_NODES.nodes[2].service_endpoints as Array<ServiceEndPoint>
             }
@@ -75,9 +60,6 @@ describe("Endpoint.vue", () => {
 
     it("should ouput <address>:<port> for all 5 endpoints", async () => {
         const wrapper = mount(Endpoints, {
-            global: {
-                plugins: [router]
-            },
             props: {
                 endpoints: SAMPLE_NETWORK_NODES.nodes[0].service_endpoints as Array<ServiceEndPoint>
             }

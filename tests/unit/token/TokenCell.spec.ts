@@ -14,13 +14,11 @@ describe("TokenCell.vue", () => {
 
     test("default props", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         const mock = new MockAdapter(axios as any);
 
         const wrapper = mount(TokenCell, {
             global: {
-                plugins: [router, Oruga]
+                plugins: [Oruga]
             },
             props: {},
         })
@@ -38,8 +36,6 @@ describe("TokenCell.vue", () => {
 
     test("tokenId and default property", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         // Mock axios
         const mock = new MockAdapter(axios as any)
 
@@ -51,7 +47,7 @@ describe("TokenCell.vue", () => {
 
         const wrapper = mount(TokenCell, {
             global: {
-                plugins: [router, Oruga]
+                plugins: [Oruga]
             },
             props: {
                 tokenId: tokenId
@@ -73,8 +69,6 @@ describe("TokenCell.vue", () => {
 
     test("tokenId and property for NFT", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         // Mock axios
         const mock = new MockAdapter(axios as any)
 
@@ -86,7 +80,7 @@ describe("TokenCell.vue", () => {
 
         const wrapper = mount(TokenCell, {
             global: {
-                plugins: [router, Oruga]
+                plugins: [Oruga]
             },
             props: {
                 tokenId: tokenId,
@@ -134,8 +128,6 @@ describe("TokenCell.vue", () => {
     })
 
     test("tokenId and property for Fungible", async () => {
-
-        await router.push("/") // To avoid "missing required param 'network'" error
 
         // Mock axios
         const mock = new MockAdapter(axios as any)

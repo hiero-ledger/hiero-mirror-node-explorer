@@ -3,7 +3,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import {describe, expect, test} from 'vitest'
-import router from "@/router";
 import {flushPromises, mount} from "@vue/test-utils";
 import Tabs from "@/components/Tabs.vue";
 
@@ -11,16 +10,12 @@ describe("Tabs.vue", () => {
 
     test("nominal case with 3 IDs and 3 labels", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         const tabIds = ['tab1', 'tab2', 'tab3']
         const tabLabels = ['label1', 'label2', 'label3']
         const selectedTab = 2
 
         const wrapper = mount(Tabs, {
-            global: {
-                plugins: [router]
-            }, props: {
+            props: {
                 selectedTab: tabIds[selectedTab],
                 tabIds: tabIds,
                 tabLabels: tabLabels,
@@ -44,15 +39,11 @@ describe("Tabs.vue", () => {
 
     test("case where selected tab is not one of the IDs", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         const tabIds = ['tab1', 'tab2', 'tab3']
         const tabLabels = ['label1', 'label2', 'label3']
 
         const wrapper = mount(Tabs, {
-            global: {
-                plugins: [router]
-            }, props: {
+            props: {
                 selectedTab: 'unknown',
                 tabIds: tabIds,
                 tabLabels: tabLabels,
@@ -77,16 +68,12 @@ describe("Tabs.vue", () => {
 
     test("test with 3 IDs and only 2 labels", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         const tabIds = ['tab1', 'tab2', 'tab3']
         const tabLabels = ['label1', 'label2']
         const selectedTab = 2
 
         const wrapper = mount(Tabs, {
-            global: {
-                plugins: [router]
-            }, props: {
+            props: {
                 selectedTab: tabIds[selectedTab],
                 tabIds: tabIds,
                 tabLabels: tabLabels,
@@ -117,16 +104,12 @@ describe("Tabs.vue", () => {
 
     test("test with 3 IDs and no labels", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         const tabIds = ['tab1', 'tab2', 'tab3']
         const tabLabels = ['label1', 'label2']
         const selectedTab = 2
 
         const wrapper = mount(Tabs, {
-            global: {
-                plugins: [router]
-            }, props: {
+            props: {
                 selectedTab: tabIds[selectedTab],
                 tabIds: tabIds,
                 tabLabels: tabLabels,
@@ -157,8 +140,6 @@ describe("Tabs.vue", () => {
 
     test("test with mutating IDs and labels", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         //
         // Stars with no tabs
         //
@@ -167,9 +148,7 @@ describe("Tabs.vue", () => {
         const tabLabels: string[] = []
 
         const wrapper = mount(Tabs, {
-            global: {
-                plugins: [router]
-            }, props: {
+            props: {
                 tabIds: tabIds,
                 tabLabels: tabLabels,
             },
@@ -250,8 +229,6 @@ describe("Tabs.vue", () => {
 
     test("test with interactive", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         //
         // Starts with ['tab1', 'tab2', 'tab3'] => default selection is tab1
         //
@@ -260,9 +237,7 @@ describe("Tabs.vue", () => {
         const tabLabels = ['label1', 'label2', 'label3']
 
         const wrapper = mount(Tabs, {
-            global: {
-                plugins: [router]
-            }, props: {
+            props: {
                 tabIds: tabIds,
                 tabLabels: tabLabels,
             },

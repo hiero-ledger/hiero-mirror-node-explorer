@@ -2,7 +2,6 @@
 
 import {describe, expect, it} from 'vitest'
 import {flushPromises, mount} from "@vue/test-utils"
-import router from "@/router";
 import Oruga from "@oruga-ui/oruga-next";
 import {HMSF} from "@/utils/HMSF";
 import MockAdapter from "axios-mock-adapter";
@@ -24,8 +23,6 @@ describe("RewardsCalculator.vue", () => {
 
     it("should display an empty Rewards Estimator", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         // Mocks axios
         const mock = new MockAdapter(axios as any);
         const matcher2 = "/api/v1/network/nodes"
@@ -38,7 +35,7 @@ describe("RewardsCalculator.vue", () => {
 
         const wrapper = mount(RewardsCalculator, {
             global: {
-                plugins: [router, Oruga]
+                plugins: [Oruga]
             },
             props: {},
         });
@@ -75,8 +72,6 @@ describe("RewardsCalculator.vue", () => {
 
     it("should display a Rewards Estimator preset with 10000Hbar and Node1", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         // Mocks axios
         const mock = new MockAdapter(axios as any);
         const matcher2 = "/api/v1/network/nodes"
@@ -89,7 +84,7 @@ describe("RewardsCalculator.vue", () => {
 
         const wrapper = mount(RewardsCalculator, {
             global: {
-                plugins: [router, Oruga]
+                plugins: [Oruga]
             },
             props: {
                 amountInHbar: 10000,
@@ -129,8 +124,6 @@ describe("RewardsCalculator.vue", () => {
 
     it("should input different values for Hbar amount and selected Node", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         const TEST_ACCOUNT = SAMPLE_ACCOUNT_STAKING_ACCOUNT
 
         // Mocks axios
@@ -147,7 +140,7 @@ describe("RewardsCalculator.vue", () => {
 
         const wrapper = mount(RewardsCalculator, {
             global: {
-                plugins: [router, Oruga]
+                plugins: [Oruga]
             },
             props: {},
         });

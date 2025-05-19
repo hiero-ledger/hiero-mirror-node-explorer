@@ -9,8 +9,6 @@ describe("ContractLink.vue", () => {
 
     test("topicId set", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         const testContractId = "0.0.42"
         const wrapper = mount(ContractLink, {
             global: {
@@ -30,8 +28,6 @@ describe("ContractLink.vue", () => {
     });
 
     test("topicId unset", async () => {
-
-        await router.push("/") // To avoid "missing required param 'network'" error
 
         const wrapper = mount(ContractLink, {
             global: {
