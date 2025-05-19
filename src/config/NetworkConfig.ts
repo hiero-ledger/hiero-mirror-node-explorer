@@ -144,7 +144,7 @@ export class NetworkEntry {
     private constructor(
         public readonly name: string,
         public readonly displayName: string,
-        public readonly mirrorNodeURL: string,
+        public readonly url: string,
         public readonly ledgerID: string,
         public readonly baseRealm: number,
         public readonly baseShard: number,
