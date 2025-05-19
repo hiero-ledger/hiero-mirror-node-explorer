@@ -4,7 +4,6 @@ import {describe, expect, it} from 'vitest'
 import {flushPromises, mount} from "@vue/test-utils"
 import BlobValue from '@/components/values/BlobValue.vue';
 import {IPFS_GATEWAY_PREFIX} from "../Mocks";
-import router from "@/router";
 import {CoreConfig} from "@/config/CoreConfig";
 import {coreConfigKey} from "@/AppKeys";
 import {fetchGetURLs} from "../MockUtils.ts";
@@ -19,12 +18,7 @@ describe("BlobValue.vue", () => {
 
     it("blobValue undefined, showNone == false", async () => {
 
-        const wrapper = mount(BlobValue, {
-            global: {
-                plugins: [router]
-            },
-            props: {},
-        });
+        const wrapper = mount(BlobValue, {});
 
         await flushPromises()
 
@@ -37,9 +31,6 @@ describe("BlobValue.vue", () => {
     it("blobValue undefined, showNone == true", async () => {
 
         const wrapper = mount(BlobValue, {
-            global: {
-                plugins: [router]
-            },
             props: {
                 showNone: true
             },
@@ -62,9 +53,6 @@ describe("BlobValue.vue", () => {
     it("blobValue plain text", async () => {
 
         const wrapper = mount(BlobValue, {
-            global: {
-                plugins: [router]
-            },
             props: {
                 blobValue: BLOB_PLAIN_TEXT
             },
@@ -81,9 +69,6 @@ describe("BlobValue.vue", () => {
     it("blobValue plain text, base64 == true", async () => {
 
         const wrapper = mount(BlobValue, {
-            global: {
-                plugins: [router]
-            },
             props: {
                 blobValue: BLOB_PLAIN_TEXT
             },
@@ -106,9 +91,6 @@ describe("BlobValue.vue", () => {
     it("blobValue base64", async () => {
 
         const wrapper = mount(BlobValue, {
-            global: {
-                plugins: [router]
-            },
             props: {
                 blobValue: BLOB_BASE64,
                 base64: true
@@ -130,9 +112,6 @@ describe("BlobValue.vue", () => {
     it("should display raw value and base64-decoded value as extra", async () => {
 
         const wrapper = mount(BlobValue, {
-            global: {
-                plugins: [router]
-            },
             props: {
                 blobValue: BLOB_BASE64,
                 base64: true,
@@ -156,9 +135,6 @@ describe("BlobValue.vue", () => {
     it("should display the (unencoded) blob value and ignore the showBase64AsExtra prop", async () => {
 
         const wrapper = mount(BlobValue, {
-            global: {
-                plugins: [router]
-            },
             props: {
                 blobValue: BLOB_PLAIN_TEXT,
                 base64: true,
@@ -182,9 +158,6 @@ describe("BlobValue.vue", () => {
         const invalidBase64 = BLOB_BASE64.substring(1)
 
         const wrapper = mount(BlobValue, {
-            global: {
-                plugins: [router]
-            },
             props: {
                 blobValue: invalidBase64,
                 base64: true
@@ -208,9 +181,6 @@ describe("BlobValue.vue", () => {
     it("blobValue url", async () => {
 
         const wrapper = mount(BlobValue, {
-            global: {
-                plugins: [router]
-            },
             props: {
                 blobValue: BLOB_URL
             },
@@ -252,7 +222,6 @@ describe("BlobValue.vue", () => {
 
         const wrapper = mount(BlobValue, {
             global: {
-                plugins: [router],
                 provide: {[coreConfigKey]: CoreConfig.FALLBACK}
             },
             props: {
@@ -283,7 +252,6 @@ describe("BlobValue.vue", () => {
 
         const wrapper = mount(BlobValue, {
             global: {
-                plugins: [router],
                 provide: {[coreConfigKey]: coreConfig}
             },
             props: {
