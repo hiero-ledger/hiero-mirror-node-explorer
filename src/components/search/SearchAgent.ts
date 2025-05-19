@@ -74,13 +74,13 @@ export abstract class SearchAgent<L, E> {
                 const newCandidates = await this.load(loc, this.abortController)
                 this.candidates.value = this.candidates.value.concat(newCandidates)
             }
+            this.loading.value = false
         } catch (reason) {
-            this.candidates.value = []
             if (!this.isAbortError(reason)) {
+                this.candidates.value = []
                 this.loading.value = false
-            }
+            } // else we don't make any state change because another entityLocDidChange() is running (and has aborted this one)
         }
-        this.loading.value = false
     }
 
     //
