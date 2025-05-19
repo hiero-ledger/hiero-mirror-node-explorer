@@ -71,7 +71,7 @@ export class RouteManager {
         this.router.beforeEach(this.setupTitleAndHeaders)
 
         const currentNetworkDidChange = () => {
-            axios.defaults.baseURL = this.currentNetworkEntry.value.mirrorNodeURL
+            axios.defaults.baseURL = this.currentNetworkEntry.value.url
             this.switchThemes()
         }
         watch(this.currentNetwork, () => {
@@ -132,7 +132,7 @@ export class RouteManager {
     public readonly hgraphURL = computed(() => {
         let result: string | null
         const hgraphKey = this.hgraphKey.value
-        switch (this.currentNetworkEntry.value.mirrorNodeURL) {
+        switch (this.currentNetworkEntry.value.url) {
             case "https://mainnet-public.mirrornode.hedera.com/":
             case "https://mainnet.mirrornode.hedera.com/":
                 result = hgraphKey !== null

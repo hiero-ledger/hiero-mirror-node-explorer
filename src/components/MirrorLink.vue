@@ -39,7 +39,7 @@ const props = defineProps({
 const isMediumScreen = inject("isMediumScreen")
 
 const endpointURL = computed(() => {
-  let result = routeManager.currentNetworkEntry.value.mirrorNodeURL
+  let result = routeManager.currentNetworkEntry.value.url
   result += `api/v1/${props.entityUrl}`
   if (props.loc !== null) {
     result += `/${props.loc}`
