@@ -18,6 +18,8 @@
         <div v-if="isHcs1Topic" class="h-has-pill" style="margin-top: 2px">
           HCS-1
         </div>
+        <span class="mr-1"/>
+        <PublicLabel v-if="label" :label-definition="label"/>
       </template>
 
       <template #content>
@@ -154,6 +156,8 @@ import HCSContentSection from "@/components/topic/HCSContentSection.vue";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import PlayPauseButton from "@/components/PlayPauseButton.vue";
 import TopicFeesSection from "@/components/topic/TopicFeesSection.vue";
+import PublicLabel from "@/components/values/PublicLabel.vue";
+import {PublicLabelsCache} from "@/utils/cache/PublicLabelsCache.ts";
 
 const props = defineProps({
   topicId: {
@@ -231,6 +235,15 @@ const hcs1Asset = assetLookup.entity
 //
 const customFees = computed(() => topic.value?.custom_fees ?? null)
 const hasExemptList = computed(() => topic.value?.fee_exempt_key_list && topic.value.fee_exempt_key_list.length > 0)
+
+//
+// Label
+//
+const indexLookup = PublicLabelsCache.instance.makeLookup()
+onMounted(() => indexLookup.mount())
+onBeforeUnmount(() => indexLookup.unmount())
+const index = indexLookup.entity
+const label = computed(() => normalizedTopicId.value ? index.value?.lookup(normalizedTopicId.value) ?? null : null)
 
 </script>
 
