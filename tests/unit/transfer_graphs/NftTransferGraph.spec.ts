@@ -21,12 +21,7 @@ describe("NftTransferGraph.vue", () => {
 
         await router.push("/") // To avoid "missing required param 'network'" error
 
-        const wrapper = mount(NftTransferGraph, {
-            global: {
-                plugins: [router]
-            },
-            props: {},
-        })
+        const wrapper = mount(NftTransferGraph)
 
         await flushPromises()
 
@@ -40,8 +35,6 @@ describe("NftTransferGraph.vue", () => {
     })
 
     test("Two tokens, Transfer", async () => {
-
-        await router.push("/") // To avoid "missing required param 'network'" error
 
         const transaction = {
             "nft_transfers": [
@@ -164,8 +157,6 @@ describe("NftTransferGraph.vue", () => {
 
     test("Mint, one token, one destination", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         const transaction = {
             "nft_transfers": [
                 {
@@ -208,8 +199,6 @@ describe("NftTransferGraph.vue", () => {
     })
 
     test("Mint, one token, two destinations", async () => {
-
-        await router.push("/") // To avoid "missing required param 'network'" error
 
         const transaction = {
             "nft_transfers": [
@@ -264,8 +253,6 @@ describe("NftTransferGraph.vue", () => {
 
     test("Burn, one token, one source", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         const transaction = {
             "nft_transfers": [
                 {
@@ -308,8 +295,6 @@ describe("NftTransferGraph.vue", () => {
     })
 
     test("Burn, one token, two sources", async () => {
-
-        await router.push("/") // To avoid "missing required param 'network'" error
 
         const transaction = {
             "nft_transfers": [

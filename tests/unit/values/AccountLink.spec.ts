@@ -12,8 +12,6 @@ describe("AccountLink.vue", () => {
 
     it("props.accountId set ; no extra", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         const mock = new MockAdapter(axios as any);
         const matcher1 = "/api/v1/network/nodes"
         mock.onGet(matcher1).reply(200, SAMPLE_NETWORK_NODES);
@@ -42,8 +40,6 @@ describe("AccountLink.vue", () => {
 
     it("props.accountId unset, nullLabel unset", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         const wrapper = mount(AccountLink, {
             global: {
                 plugins: [router]
@@ -60,8 +56,6 @@ describe("AccountLink.vue", () => {
 
 
     it("props.accountId unset, nullLabel set", async () => {
-
-        await router.push("/") // To avoid "missing required param 'network'" error
 
         const wrapper = mount(AccountLink, {
             global: {
@@ -81,8 +75,6 @@ describe("AccountLink.vue", () => {
 
 
     it("props.extra set", async () => {
-
-        await router.push("/") // To avoid "missing required param 'network'" error
 
         const mock = new MockAdapter(axios as any);
         const matcher1 = "/api/v1/network/nodes"

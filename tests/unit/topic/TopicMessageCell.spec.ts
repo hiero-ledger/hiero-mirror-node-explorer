@@ -3,7 +3,6 @@
 import {describe, expect, test} from 'vitest'
 import {flushPromises, mount} from "@vue/test-utils";
 import TopicMessageCell, {TopicMessageCellItem} from "@/components/topic/TopicMessageCell.vue";
-import router from "@/router";
 import Oruga from "@oruga-ui/oruga-next";
 import {SAMPLE_TOPIC_MESSAGES} from "../Mocks";
 import MockAdapter from "axios-mock-adapter";
@@ -13,11 +12,9 @@ describe("TopicMessageCell.vue", () => {
 
     test("default props", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         const wrapper = mount(TopicMessageCell, {
             global: {
-                plugins: [router, Oruga]
+                plugins: [Oruga]
             },
             props: {},
         })
@@ -33,8 +30,6 @@ describe("TopicMessageCell.vue", () => {
 
     test("timestamp and default property", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         // Mock axios
         const mock = new MockAdapter(axios as any)
 
@@ -46,7 +41,7 @@ describe("TopicMessageCell.vue", () => {
 
         const wrapper = mount(TopicMessageCell, {
             global: {
-                plugins: [router, Oruga]
+                plugins: [Oruga]
             },
             props: {
                 timestamp: timestamp
@@ -64,8 +59,6 @@ describe("TopicMessageCell.vue", () => {
 
     test("timestamp and property", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         // Mock axios
         const mock = new MockAdapter(axios as any)
 
@@ -77,7 +70,7 @@ describe("TopicMessageCell.vue", () => {
 
         const wrapper = mount(TopicMessageCell, {
             global: {
-                plugins: [router, Oruga]
+                plugins: [Oruga]
             },
             props: {
                 timestamp: timestamp,

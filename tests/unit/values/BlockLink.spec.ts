@@ -9,8 +9,6 @@ describe("BlockLink.vue", () => {
 
     it("should construct a valid BlockLink to block #12", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         const testBlockNumber = 12
         const wrapper = mount(BlockLink, {
             global: {
@@ -30,8 +28,6 @@ describe("BlockLink.vue", () => {
     });
 
     it("should construct an empty BlockLink", async () => {
-
-        await router.push("/") // To avoid "missing required param 'network'" error
 
         const wrapper = mount(BlockLink, {
             global: {

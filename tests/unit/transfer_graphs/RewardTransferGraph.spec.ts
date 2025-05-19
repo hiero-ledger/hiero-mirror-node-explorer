@@ -17,12 +17,7 @@ describe("RewardTransferGraph.vue", () => {
 
     test("Without transaction prop", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         const wrapper = mount(RewardTransferGraph, {
-            global: {
-                plugins: [router]
-            },
             props: {},
         })
 
@@ -39,12 +34,7 @@ describe("RewardTransferGraph.vue", () => {
 
     test("with transfers and no rewards", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         const wrapper = mount(RewardTransferGraph, {
-            global: {
-                plugins: [router]
-            },
             props: {
                 transaction: SAMPLE_CRYPTO_TRANSFER_WITH_ONLY_FEE as Transaction,
             },
@@ -61,8 +51,6 @@ describe("RewardTransferGraph.vue", () => {
     })
 
     test("with multiple transfers and rewards", async () => {
-
-        await router.push("/") // To avoid "missing required param 'network'" error
 
         const mock = new MockAdapter(axios as any);
         const matcher1 = "/api/v1/network/exchangerate"

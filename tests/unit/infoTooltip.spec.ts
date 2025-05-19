@@ -15,11 +15,9 @@ describe("InfoTooltip.vue", () => {
 
     test("InfoTooltip with information message", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         const wrapper = mount(InfoTooltip, {
             global: {
-                plugins: [router, Oruga]
+                plugins: [Oruga]
             },
             props: {
                 label: sampleInfoLabel,
@@ -43,7 +41,7 @@ describe("InfoTooltip.vue", () => {
 
         const wrapper = mount(InfoTooltip, {
             global: {
-                plugins: [router, Oruga]
+                plugins: [Oruga]
             },
             props: {
                 warningLabel: sampleWarningLabel,
@@ -67,7 +65,7 @@ describe("InfoTooltip.vue", () => {
 
         const wrapper = mount(InfoTooltip, {
             global: {
-                plugins: [router, Oruga]
+                plugins: [Oruga]
             },
             props: {
                 label: sampleInfoLabel,
@@ -92,7 +90,7 @@ describe("InfoTooltip.vue", () => {
 
         const wrapper = mount(InfoTooltip, {
             global: {
-                plugins: [router, Oruga]
+                plugins: [Oruga]
             },
             props: {},
         })

@@ -2,7 +2,6 @@
 
 import {describe, expect, test} from 'vitest'
 import {flushPromises, mount} from "@vue/test-utils"
-import router from "@/router";
 import TransactionIdValue from "@/components/values/TransactionIdValue.vue";
 import {TransactionID} from "@/utils/TransactionID";
 
@@ -10,12 +9,7 @@ describe("TransactionIdValue.vue", () => {
 
     test("default props", async () => {
 
-        const wrapper = mount(TransactionIdValue, {
-            global: {
-                plugins: [router]
-            },
-            props: {},
-        });
+        const wrapper = mount(TransactionIdValue);
         await flushPromises()
 
         expect(wrapper.text()).toBe("")
@@ -30,9 +24,6 @@ describe("TransactionIdValue.vue", () => {
     test("transaction ID with at", async () => {
 
         const wrapper = mount(TransactionIdValue, {
-            global: {
-                plugins: [router]
-            },
             props: {
                 id: tId
 

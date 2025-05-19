@@ -4,7 +4,6 @@
 
 import {describe, expect, it} from 'vitest'
 import {flushPromises, mount} from "@vue/test-utils"
-import router from "@/router";
 import Oruga from "@oruga-ui/oruga-next";
 import {HMSF} from "@/utils/HMSF";
 import HCSContentSection from "@/components/topic/HCSContentSection.vue";
@@ -60,14 +59,12 @@ describe("HCSContentSection.vue", () => {
 
     it("Should display HCS-1 Content section with JSON asset", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         const hcs1TopicMemo = HCSTopicMemo.parse(topicMemo)
         const hcs1Asset = await HCSAsset.reassemble([topicMessage], true)
 
         const wrapper = mount(HCSContentSection, {
             global: {
-                plugins: [router, Oruga]
+                plugins: [Oruga]
             },
             props: {
                 topicMemo: hcs1TopicMemo,
@@ -97,14 +94,12 @@ describe("HCSContentSection.vue", () => {
 
     it("Should display HCS-1 Content section without preview for incomplete JSON asset", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         const hcs1TopicMemo = HCSTopicMemo.parse(topicMemo)
         const hcs1Asset = await HCSAsset.reassemble([topicMessage], false)
 
         const wrapper = mount(HCSContentSection, {
             global: {
-                plugins: [router, Oruga]
+                plugins: [Oruga]
             },
             props: {
                 topicMemo: hcs1TopicMemo,
@@ -132,14 +127,12 @@ describe("HCSContentSection.vue", () => {
 
     it("Should display HCS-1 Content section without preview for JSON asset with hash mismatch", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         const hcs1TopicMemo = HCSTopicMemo.parse(topicMemoWithWrongHash)
         const hcs1Asset = await HCSAsset.reassemble([topicMessage], false)
 
         const wrapper = mount(HCSContentSection, {
             global: {
-                plugins: [router, Oruga]
+                plugins: [Oruga]
             },
             props: {
                 topicMemo: hcs1TopicMemo,
@@ -167,14 +160,12 @@ describe("HCSContentSection.vue", () => {
 
     it("Should display HCS-1 Content section without preview for unsupported compression algorithm", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         const topicMemo = "3a43f42084de067e470a0ae677a601eaad58a8808b59a935dda4bdb8ae34e21b:unknown:base64"
         const hcs1TopicMemo = HCSTopicMemo.parse(topicMemo)
 
         const wrapper = mount(HCSContentSection, {
             global: {
-                plugins: [router, Oruga]
+                plugins: [Oruga]
             },
             props: {
                 topicMemo: hcs1TopicMemo,
@@ -201,8 +192,6 @@ describe("HCSContentSection.vue", () => {
     });
 
     it("Should display HCS-1 Content section with preview for asset using brotli compression algo", async () => {
-
-        await router.push("/") // To avoid "missing required param 'network'" error
 
         const topicMemo = "3a43f42084de067e470a0ae677a601eaad58a8808b59a935dda4bdb8ae34e21b:brotli:base64"
         const topicMessage = {
@@ -247,7 +236,7 @@ describe("HCSContentSection.vue", () => {
 
         const wrapper = mount(HCSContentSection, {
             global: {
-                plugins: [router, Oruga]
+                plugins: [Oruga]
             },
             props: {
                 topicMemo: hcs1TopicMemo,

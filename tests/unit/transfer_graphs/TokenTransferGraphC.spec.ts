@@ -23,12 +23,7 @@ describe("TokenTransferGraphC.vue", () => {
 
     test("Without transaction", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         const wrapper = mount(TokenTransferGraphC, {
-            global: {
-                plugins: [router]
-            },
             props: {},
         })
 
@@ -48,8 +43,6 @@ describe("TokenTransferGraphC.vue", () => {
     //
 
     test("Single token, zero source, single dest", async () => {
-
-        await router.push("/") // To avoid "missing required param 'network'" error
 
         const transaction = {
             "token_transfers": [
@@ -80,8 +73,6 @@ describe("TokenTransferGraphC.vue", () => {
     })
 
     test("Single token, single source, single dest", async () => {
-
-        await router.push("/") // To avoid "missing required param 'network'" error
 
         const transaction = {
             "token_transfers": [
@@ -114,8 +105,6 @@ describe("TokenTransferGraphC.vue", () => {
     })
 
     test("Single token, single source, two dest", async () => {
-
-        await router.push("/") // To avoid "missing required param 'network'" error
 
         const transaction = {
             "token_transfers": [
@@ -151,8 +140,6 @@ describe("TokenTransferGraphC.vue", () => {
 
     test("Single token, two sources, zero dest", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         const transaction = {
             "token_transfers": [
                 {"account": "0.0.101", "amount": -3, "token_id": SAMPLE_TOKEN.token_id},
@@ -183,8 +170,6 @@ describe("TokenTransferGraphC.vue", () => {
     })
 
     test("Single token, two sources, single dest", async () => {
-
-        await router.push("/") // To avoid "missing required param 'network'" error
 
         const transaction = {
             "token_transfers": [
@@ -218,8 +203,6 @@ describe("TokenTransferGraphC.vue", () => {
     })
 
     test("Single token, two sources, two dest", async () => {
-
-        await router.push("/") // To avoid "missing required param 'network'" error
 
         const transaction = {
             "token_transfers": [
@@ -260,8 +243,6 @@ describe("TokenTransferGraphC.vue", () => {
     //
 
     test("Two token", async () => {
-
-        await router.push("/") // To avoid "missing required param 'network'" error
 
         const transaction = {
             "token_transfers": [

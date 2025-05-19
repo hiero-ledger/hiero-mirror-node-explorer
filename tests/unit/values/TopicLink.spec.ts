@@ -9,8 +9,6 @@ describe("TopicLink.vue", () => {
 
     it("props.topicId set", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         const testTopicId = "0.0.42"
         const wrapper = mount(TopicLink, {
             global: {
@@ -30,8 +28,6 @@ describe("TopicLink.vue", () => {
     });
 
     it("props.topicId unset", async () => {
-
-        await router.push("/") // To avoid "missing required param 'network'" error
 
         const wrapper = mount(TopicLink, {
             global: {

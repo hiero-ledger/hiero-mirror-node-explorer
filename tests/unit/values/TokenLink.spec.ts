@@ -20,8 +20,6 @@ describe("TokenLink.vue", () => {
 
     it("props.topicId set", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         const mock = new MockAdapter(axios as any);
         const matcher = "/api/v1/tokens/" + SAMPLE_TOKEN.token_id
         mock.onGet(matcher).reply(200, SAMPLE_TOKEN);
@@ -48,8 +46,6 @@ describe("TokenLink.vue", () => {
     });
 
     it("props.topicId set and showExtra", async () => {
-
-        await router.push("/") // To avoid "missing required param 'network'" error
 
         const mock = new MockAdapter(axios as any);
         const matcher = "/api/v1/tokens/" + SAMPLE_TOKEN.token_id
@@ -88,8 +84,6 @@ describe("TokenLink.vue", () => {
     });
 
     it("props.topicId unset", async () => {
-
-        await router.push("/mainnet/dashboard") // To avoid "missing required param 'network'" error
 
         const wrapper = mount(TokenLink, {
             global: {

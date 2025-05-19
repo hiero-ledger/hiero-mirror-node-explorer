@@ -2,7 +2,6 @@
 
 import {describe, expect, test} from 'vitest'
 import {flushPromises, mount} from "@vue/test-utils"
-import router from "@/router";
 import TimestampValue from "@/components/values/TimestampValue.vue";
 import {HMSF} from "@/utils/HMSF";
 
@@ -16,12 +15,7 @@ describe("TimestampValue.vue", () => {
 
     test("timestamp undefined, showNone == false", async () => {
 
-        const wrapper = mount(TimestampValue, {
-            global: {
-                plugins: [router]
-            },
-            props: {},
-        });
+        const wrapper = mount(TimestampValue);
 
         await flushPromises()
 
@@ -34,9 +28,6 @@ describe("TimestampValue.vue", () => {
     test("timestamp undefined, showNone == true", async () => {
 
         const wrapper = mount(TimestampValue, {
-            global: {
-                plugins: [router]
-            },
             props: {
                 showNone: true
             },
@@ -63,9 +54,6 @@ describe("TimestampValue.vue", () => {
     test("timestamp expressed in seconds", async () => {
 
         const wrapper = mount(TimestampValue, {
-            global: {
-                plugins: [router]
-            },
             props: {
                 timestamp: TIMESTAMP_SECONDS
             },
@@ -88,9 +76,6 @@ describe("TimestampValue.vue", () => {
     test("timestamp expressed in nanoseconds", async () => {
 
         const wrapper = mount(TimestampValue, {
-            global: {
-                plugins: [router]
-            },
             props: {
                 timestamp: TIMESTAMP_NANOS,
                 nano: true
@@ -115,9 +100,6 @@ describe("TimestampValue.vue", () => {
     test("infinite timestamp", async () => {
 
         const wrapper = mount(TimestampValue, {
-            global: {
-                plugins: [router]
-            },
             props: {
                 timestamp: INFINITE_TIMESTAMP
             },

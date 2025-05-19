@@ -3,7 +3,6 @@
 import {describe, expect, test} from 'vitest'
 import {flushPromises, mount} from "@vue/test-utils"
 import NftAttribute from '@/components/token/NftAttribute.vue';
-import router from "@/router";
 import {HMSF} from "@/utils/HMSF";
 
 /*
@@ -24,9 +23,6 @@ describe("NftAttribute.vue", () => {
     test("NftAttribute containing string with no display type", async () => {
 
         const wrapper = mount(NftAttribute, {
-            global: {
-                plugins: [router]
-            },
             props: {
                 attribute: {
                     trait_type: "String with no type",
@@ -45,9 +41,6 @@ describe("NftAttribute.vue", () => {
     test("NftAttribute containing string with 'text' display type", async () => {
 
         const wrapper = mount(NftAttribute, {
-            global: {
-                plugins: [router]
-            },
             props: {
                 attribute: {
                     trait_type: "String with type 'text",
@@ -67,9 +60,6 @@ describe("NftAttribute.vue", () => {
     test("NftAttribute containing number with 'text' display type", async () => {
 
         const wrapper = mount(NftAttribute, {
-            global: {
-                plugins: [router]
-            },
             props: {
                 attribute: {
                     trait_type: "Number",
@@ -89,9 +79,6 @@ describe("NftAttribute.vue", () => {
     test("NftAttribute containing number with 'percentage' display type", async () => {
 
         const wrapper = mount(NftAttribute, {
-            global: {
-                plugins: [router]
-            },
             props: {
                 attribute: {
                     trait_type: "Number with percentage",
@@ -111,9 +98,6 @@ describe("NftAttribute.vue", () => {
     test("NftAttribute containing unix timestamp with 'text' display type", async () => {
 
         const wrapper = mount(NftAttribute, {
-            global: {
-                plugins: [router]
-            },
             props: {
                 attribute: {
                     trait_type: "DateTime",
@@ -133,9 +117,6 @@ describe("NftAttribute.vue", () => {
     test("NftAttribute containing unix timestamp with 'datetime' display type", async () => {
 
         const wrapper = mount(NftAttribute, {
-            global: {
-                plugins: [router]
-            },
             props: {
                 attribute: {
                     trait_type: "DateTime",

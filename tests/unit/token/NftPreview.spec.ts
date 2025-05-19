@@ -3,7 +3,6 @@
 import {describe, expect, test} from 'vitest'
 import {flushPromises, mount} from "@vue/test-utils";
 import NftPreview from "@/components/token/NftPreview.vue";
-import router from "@/router";
 import Oruga from "@oruga-ui/oruga-next";
 
 describe("NftPreview.vue", () => {
@@ -12,11 +11,9 @@ describe("NftPreview.vue", () => {
 
     test("No URL and default values", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         const wrapper = mount(NftPreview, {
             global: {
-                plugins: [router, Oruga]
+                plugins: [Oruga]
             },
             props: {},
         })
@@ -39,12 +36,10 @@ describe("NftPreview.vue", () => {
 
     test("No URL and custom size", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         const tooltipText = 'The NFT metadata does not provide any image'
         const wrapper = mount(NftPreview, {
             global: {
-                plugins: [router, Oruga]
+                plugins: [Oruga]
             },
             props: {
                 size: 250
@@ -73,11 +68,9 @@ describe("NftPreview.vue", () => {
 
     test("With URL and custom size", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         const wrapper = mount(NftPreview, {
             global: {
-                plugins: [router, Oruga]
+                plugins: [Oruga]
             },
             props: {
                 url: contentUrl,
@@ -107,11 +100,9 @@ describe("NftPreview.vue", () => {
 
     test("With URL, image type and custom size", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         const wrapper = mount(NftPreview, {
             global: {
-                plugins: [router, Oruga]
+                plugins: [Oruga]
             },
             props: {
                 url: contentUrl,
@@ -142,11 +133,9 @@ describe("NftPreview.vue", () => {
 
     test("With URL, unsupported type and custom size", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         const wrapper = mount(NftPreview, {
             global: {
-                plugins: [router, Oruga]
+                plugins: [Oruga]
             },
             props: {
                 url: contentUrl,

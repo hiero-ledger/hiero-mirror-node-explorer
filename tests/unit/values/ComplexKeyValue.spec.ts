@@ -12,8 +12,6 @@ describe("ComplexKeyValue.vue", () => {
 
     it("props.keyBytes set with complex key", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         const wrapper = mount(ComplexKeyValue, {
             global: {
                 plugins: [router]
@@ -32,8 +30,6 @@ describe("ComplexKeyValue.vue", () => {
 
     it("props.keyBytes set with contract key", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         const wrapper = mount(ComplexKeyValue, {
             global: {
                 plugins: [router]
@@ -51,8 +47,6 @@ describe("ComplexKeyValue.vue", () => {
 
     it("props.keyBytes unset, showNone=false", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         const wrapper = mount(ComplexKeyValue, {
             global: {
                 plugins: [router]
@@ -66,8 +60,6 @@ describe("ComplexKeyValue.vue", () => {
     });
 
     it("props.keyBytes unset, showNone=true", async () => {
-
-        await router.push("/") // To avoid "missing required param 'network'" error
 
         const wrapper = mount(ComplexKeyValue, {
             global: {

@@ -25,8 +25,6 @@ describe("MainDashboard.vue", () => {
 
     test("no props", async () => {
 
-        await router.push({name: "MainDashboard", params: {network: 'mainnet'}})
-
         const mock = new MockAdapter(axios as any)
 
         const matcher3 = "/api/v1/network/supply"

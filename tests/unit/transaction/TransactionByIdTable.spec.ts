@@ -30,8 +30,6 @@ describe("TransactionByIdTable.vue", () => {
 
     it("Should list transactions as parent and child", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         const mock = new MockAdapter(axios as any);
         const matcher1 = "/api/v1/tokens/" + "0.0.48193741"
         mock.onGet(matcher1).reply(200, SAMPLE_DUDE_WITH_KEYS)
@@ -63,8 +61,6 @@ describe("TransactionByIdTable.vue", () => {
     });
 
     it("Should list transactions as scheduling and scheduled", async () => {
-
-        await router.push("/") // To avoid "missing required param 'network'" error
 
         const SCHEDULED = SAMPLE_SCHEDULING_SCHEDULED_TRANSACTIONS.transactions![1]
         const TOKEN_ID = SCHEDULED.token_transfers ? SCHEDULED.token_transfers[0].token_id : "0.0.1304757"
@@ -106,14 +102,13 @@ describe("TransactionByIdTable.vue", () => {
 
     it("Should list transactions as unrelated", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
         const mock = new MockAdapter(axios as any);
         const matcher1 = "/api/v1/tokens/" + "0.0.48193741"
         mock.onGet(matcher1).reply(200, SAMPLE_DUDE_WITH_KEYS)
 
         const wrapper = mount(TransactionByIdTable, {
             global: {
-                plugins: [router, Oruga]
+                plugins: [Oruga]
             },
             props: {
                 narrowed: true,

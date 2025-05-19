@@ -35,8 +35,6 @@ describe("ContractResult.vue", () => {
 
     it("Should display the contract result and logs, given consensus timestamp", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         const contractId = SAMPLE_CONTRACT_RESULT_DETAILS.contract_id
         const timestamp = SAMPLE_CONTRACT_RESULT_DETAILS.timestamp
 
@@ -106,8 +104,6 @@ describe("ContractResult.vue", () => {
 
     it("Should display the reverted contract result and decode the error message", async () => {
 
-        await router.push("/") // To avoid "missing required param 'network'" error
-
         const contractId = SAMPLE_REVERT_CONTRACT_RESULT_DETAILS.contract_id
         const timestamp = SAMPLE_REVERT_CONTRACT_RESULT_DETAILS.timestamp
 
@@ -162,8 +158,6 @@ describe("ContractResult.vue", () => {
     });
 
     it("Should display the reverted contract result with call trace and state trace", async () => {
-
-        await router.push("/") // To avoid "missing required param 'network'" error
 
         const mock = new MockAdapter(axios as any);
 
