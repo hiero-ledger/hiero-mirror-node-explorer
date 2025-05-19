@@ -4,9 +4,11 @@ import {describe, expect, it} from 'vitest'
 import {flushPromises, mount} from "@vue/test-utils"
 import BlobValue from '@/components/values/BlobValue.vue';
 import {IPFS_GATEWAY_PREFIX} from "../Mocks";
-import router from "@/router";
 import {CoreConfig} from "@/config/CoreConfig";
 import {coreConfigKey} from "@/AppKeys";
+import {fetchGetURLs} from "../MockUtils.ts";
+import MockAdapter from "axios-mock-adapter";
+import axios from "axios";
 
 describe("BlobValue.vue", () => {
 
@@ -16,12 +18,7 @@ describe("BlobValue.vue", () => {
 
     it("blobValue undefined, showNone == false", async () => {
 
-        const wrapper = mount(BlobValue, {
-            global: {
-                plugins: [router]
-            },
-            props: {},
-        });
+        const wrapper = mount(BlobValue, {});
 
         await flushPromises()
 
@@ -34,9 +31,6 @@ describe("BlobValue.vue", () => {
     it("blobValue undefined, showNone == true", async () => {
 
         const wrapper = mount(BlobValue, {
-            global: {
-                plugins: [router]
-            },
             props: {
                 showNone: true
             },
@@ -59,9 +53,6 @@ describe("BlobValue.vue", () => {
     it("blobValue plain text", async () => {
 
         const wrapper = mount(BlobValue, {
-            global: {
-                plugins: [router]
-            },
             props: {
                 blobValue: BLOB_PLAIN_TEXT
             },
@@ -78,9 +69,6 @@ describe("BlobValue.vue", () => {
     it("blobValue plain text, base64 == true", async () => {
 
         const wrapper = mount(BlobValue, {
-            global: {
-                plugins: [router]
-            },
             props: {
                 blobValue: BLOB_PLAIN_TEXT
             },
@@ -103,9 +91,6 @@ describe("BlobValue.vue", () => {
     it("blobValue base64", async () => {
 
         const wrapper = mount(BlobValue, {
-            global: {
-                plugins: [router]
-            },
             props: {
                 blobValue: BLOB_BASE64,
                 base64: true
@@ -127,9 +112,6 @@ describe("BlobValue.vue", () => {
     it("should display raw value and base64-decoded value as extra", async () => {
 
         const wrapper = mount(BlobValue, {
-            global: {
-                plugins: [router]
-            },
             props: {
                 blobValue: BLOB_BASE64,
                 base64: true,
@@ -153,9 +135,6 @@ describe("BlobValue.vue", () => {
     it("should display the (unencoded) blob value and ignore the showBase64AsExtra prop", async () => {
 
         const wrapper = mount(BlobValue, {
-            global: {
-                plugins: [router]
-            },
             props: {
                 blobValue: BLOB_PLAIN_TEXT,
                 base64: true,
@@ -179,9 +158,6 @@ describe("BlobValue.vue", () => {
         const invalidBase64 = BLOB_BASE64.substring(1)
 
         const wrapper = mount(BlobValue, {
-            global: {
-                plugins: [router]
-            },
             props: {
                 blobValue: invalidBase64,
                 base64: true
@@ -205,9 +181,6 @@ describe("BlobValue.vue", () => {
     it("blobValue url", async () => {
 
         const wrapper = mount(BlobValue, {
-            global: {
-                plugins: [router]
-            },
             props: {
                 blobValue: BLOB_URL
             },
@@ -236,17 +209,19 @@ describe("BlobValue.vue", () => {
     // Encoded HTTPS and IPFS URL
     //
 
-    const BLOB_IPFS_URL = "ipfs://bafkreibvlezrqebhb57weqec4g2npf7yfskpcpmfq2cy3c336x7exqvjsq"
-    const BLOB_RESULTING_URL = IPFS_GATEWAY_PREFIX + "bafkreibvlezrqebhb57weqec4g2npf7yfskpcpmfq2cy3c336x7exqvjsq"
+    const BLOB_CID = "bafkreibvlezrqebhb57weqec4g2npf7yfskpcpmfq2cy3c336x7exqvjsq"
+    const BLOB_IPFS_URL = "ipfs://" + BLOB_CID
+    const BLOB_RESULTING_URL = IPFS_GATEWAY_PREFIX + BLOB_CID
 
 
-    it("blobValue IPFS URL", async () => {
+    it("blobValue IPFS URL (with fallback IPFS gateway)", async () => {
+
+        const mock = new MockAdapter(axios as any)
 
         const encodedUrl = btoa(BLOB_IPFS_URL)
 
         const wrapper = mount(BlobValue, {
             global: {
-                plugins: [router],
                 provide: {[coreConfigKey]: CoreConfig.FALLBACK}
             },
             props: {
@@ -256,9 +231,40 @@ describe("BlobValue.vue", () => {
         });
 
         await flushPromises()
+        expect(fetchGetURLs(mock)).toStrictEqual([])
 
         expect(wrapper.find("a").text()).toBe(BLOB_IPFS_URL)
         expect(wrapper.find("a").attributes("href")).toBe(BLOB_RESULTING_URL)
+
+        wrapper.unmount()
+        await flushPromises()
+    })
+
+
+    it("blobValue IPFS URL (with custom IPFS gateway)", async () => {
+
+        const mock = new MockAdapter(axios as any)
+
+        const encodedUrl = btoa(BLOB_IPFS_URL)
+
+        const CUSTOM_IPFS_GATEWAY_PREFIX = "https://custom-ipfs.com/"
+        const coreConfig = { ...CoreConfig.FALLBACK, ipfsGatewayURL: CUSTOM_IPFS_GATEWAY_PREFIX }
+
+        const wrapper = mount(BlobValue, {
+            global: {
+                provide: {[coreConfigKey]: coreConfig}
+            },
+            props: {
+                blobValue: encodedUrl,
+                base64: true
+            },
+        });
+
+        await flushPromises()
+        expect(fetchGetURLs(mock)).toStrictEqual([])
+
+        expect(wrapper.find("a").text()).toBe(BLOB_IPFS_URL)
+        expect(wrapper.find("a").attributes("href")).toBe(CUSTOM_IPFS_GATEWAY_PREFIX + BLOB_CID)
 
         wrapper.unmount()
         await flushPromises()
