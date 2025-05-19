@@ -7,6 +7,9 @@ import {IPFS_GATEWAY_PREFIX} from "../Mocks";
 import router from "@/router";
 import {CoreConfig} from "@/config/CoreConfig";
 import {coreConfigKey} from "@/AppKeys";
+import {fetchGetURLs} from "../MockUtils.ts";
+import MockAdapter from "axios-mock-adapter";
+import axios from "axios";
 
 describe("BlobValue.vue", () => {
 
@@ -236,11 +239,14 @@ describe("BlobValue.vue", () => {
     // Encoded HTTPS and IPFS URL
     //
 
-    const BLOB_IPFS_URL = "ipfs://bafkreibvlezrqebhb57weqec4g2npf7yfskpcpmfq2cy3c336x7exqvjsq"
-    const BLOB_RESULTING_URL = IPFS_GATEWAY_PREFIX + "bafkreibvlezrqebhb57weqec4g2npf7yfskpcpmfq2cy3c336x7exqvjsq"
+    const BLOB_CID = "bafkreibvlezrqebhb57weqec4g2npf7yfskpcpmfq2cy3c336x7exqvjsq"
+    const BLOB_IPFS_URL = "ipfs://" + BLOB_CID
+    const BLOB_RESULTING_URL = IPFS_GATEWAY_PREFIX + BLOB_CID
 
 
-    it("blobValue IPFS URL", async () => {
+    it("blobValue IPFS URL (with fallback IPFS gateway)", async () => {
+
+        const mock = new MockAdapter(axios as any)
 
         const encodedUrl = btoa(BLOB_IPFS_URL)
 
@@ -256,9 +262,41 @@ describe("BlobValue.vue", () => {
         });
 
         await flushPromises()
+        expect(fetchGetURLs(mock)).toStrictEqual([])
 
         expect(wrapper.find("a").text()).toBe(BLOB_IPFS_URL)
         expect(wrapper.find("a").attributes("href")).toBe(BLOB_RESULTING_URL)
+
+        wrapper.unmount()
+        await flushPromises()
+    })
+
+
+    it("blobValue IPFS URL (with custom IPFS gateway)", async () => {
+
+        const mock = new MockAdapter(axios as any)
+
+        const encodedUrl = btoa(BLOB_IPFS_URL)
+
+        const CUSTOM_IPFS_GATEWAY_PREFIX = "https://custom-ipfs.com/"
+        const coreConfig = { ...CoreConfig.FALLBACK, ipfsGatewayURL: CUSTOM_IPFS_GATEWAY_PREFIX }
+
+        const wrapper = mount(BlobValue, {
+            global: {
+                plugins: [router],
+                provide: {[coreConfigKey]: coreConfig}
+            },
+            props: {
+                blobValue: encodedUrl,
+                base64: true
+            },
+        });
+
+        await flushPromises()
+        expect(fetchGetURLs(mock)).toStrictEqual([])
+
+        expect(wrapper.find("a").text()).toBe(BLOB_IPFS_URL)
+        expect(wrapper.find("a").attributes("href")).toBe(CUSTOM_IPFS_GATEWAY_PREFIX + BLOB_CID)
 
         wrapper.unmount()
         await flushPromises()
