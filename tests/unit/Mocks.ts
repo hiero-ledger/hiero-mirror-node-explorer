@@ -13,6 +13,7 @@ import {
     TransactionResponse,
     TransactionType
 } from "@/schemas/MirrorNodeSchemas.ts";
+import {NetworkConfig} from "@/config/NetworkConfig.ts";
 
 export const SAMPLE_TOKEN = {
     "admin_key": null,
@@ -3869,3 +3870,27 @@ export const SAMPLE_4BYTE_0xB01EF608 = {
     ]
 
 }
+
+//
+// Public labels
+//
+
+export const SAMPLE_PUBLIC_LABELS_URL = "https://example.com/publiclabels.json"
+export const SAMPLE_PUBLIC_LABELS_JSON = [
+    {
+        "entityId": SAMPLE_ACCOUNT.account,
+        "name": "Sample Account Label",
+        "type": "Exchange",
+        "description": "Sample Account Description",
+        "website": "https://example.com"
+    },
+]
+
+export const SAMPLE_NETWORK_CONFIG_JSON = [
+    {
+        ...NetworkConfig.FALLBACK.entries[0],
+        publicLabelsURL: SAMPLE_PUBLIC_LABELS_URL
+    }
+]
+export const SAMPLE_NETWORK_CONFIG = NetworkConfig.parse(SAMPLE_NETWORK_CONFIG_JSON)
+
