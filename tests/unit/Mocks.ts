@@ -3891,6 +3891,13 @@ export const SAMPLE_PUBLIC_LABELS_JSON = [
         "description": "Sample Contract Description",
         "website": "https://contract-example.com"
     },
+    {
+        "entityId": SAMPLE_TOKEN.token_id,
+        "name": "Sample Token Label",
+        "type": "Sample Type",
+        "description": "Sample Token Description",
+        "website": "https://token-example.com"
+    },
 ]
 
 export const SAMPLE_NETWORK_CONFIG_JSON = [
