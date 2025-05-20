@@ -4,15 +4,15 @@
 
 import {describe, expect, it} from 'vitest'
 import {flushPromises, mount} from "@vue/test-utils"
-import router from "@/router";
+import router, {routeManager} from "@/router";
 import TokenDetails from "@/pages/TokenDetails.vue";
 import axios from "axios";
 import {
-    SAMPLE_BALANCES,
+    SAMPLE_BALANCES, SAMPLE_NETWORK_CONFIG,
     SAMPLE_NETWORK_EXCHANGERATE,
     SAMPLE_NFTS,
     SAMPLE_NONFUNGIBLE,
-    SAMPLE_NONFUNGIBLE_DUDE,
+    SAMPLE_NONFUNGIBLE_DUDE, SAMPLE_PUBLIC_LABELS_JSON, SAMPLE_PUBLIC_LABELS_URL,
     SAMPLE_TOKEN,
     SAMPLE_TOKEN_WITH_KEYS,
     SAMPLE_TOKEN_WITHOUT_KEYS,
@@ -30,6 +30,7 @@ import RoyaltyFeeTable from "@/components/token/RoyaltyFeeTable.vue";
 import {TransactionID} from "@/utils/TransactionID";
 import TokenFeesSection from "@/components/token/TokenFeesSection.vue";
 import {fetchGetURLs} from "../MockUtils";
+import {networkConfigKey} from "@/AppKeys.ts";
 
 /*
     Bookmarks
@@ -742,4 +743,74 @@ describe("TokenDetails.vue", () => {
         wrapper.unmount()
         await flushPromises()
     });
+
+    it("Should display details of fungible token with public label", async () => {
+
+        const mock = new MockAdapter(axios as any);
+
+        const testTokenId = SAMPLE_TOKEN.token_id
+        const matcher1 = "/api/v1/tokens/" + testTokenId
+        mock.onGet(matcher1).reply(200, SAMPLE_TOKEN);
+        const matcher2 = "/api/v1/tokens/" + testTokenId + "/balances"
+        mock.onGet(matcher2).reply(200, SAMPLE_BALANCES);
+        const matcher3 = "/api/v1/contracts/" + testTokenId + "/results"
+        mock.onGet(matcher3).reply(200, []);
+        const matcher4 = "/api/v1/transactions"
+        mock.onGet(matcher4).reply(200, SAMPLE_TRANSACTIONS);
+
+        mock.onGet(SAMPLE_PUBLIC_LABELS_URL).reply(200, SAMPLE_PUBLIC_LABELS_JSON);
+
+        routeManager.configure(routeManager.coreConfig.value, SAMPLE_NETWORK_CONFIG) // global.provide is not enough
+        const wrapper = mount(TokenDetails, {
+            global: {
+                plugins: [router, Oruga],
+                provide: {
+                    "isMediumScreen": false,
+                    [networkConfigKey]: SAMPLE_NETWORK_CONFIG
+                }
+            },
+            props: {
+                tokenId: testTokenId
+            },
+        });
+        await flushPromises()
+        // console.log(wrapper.text())
+
+        expect(fetchGetURLs(mock)).toStrictEqual([
+            SAMPLE_PUBLIC_LABELS_URL,
+            "api/v1/network/nodes",
+            "api/v1/tokens/" + SAMPLE_TOKEN.token_id,
+            "api/v1/contracts/" + SAMPLE_TOKEN.token_id + "/results",
+            "api/v1/transactions",
+            "api/v1/contracts/" + SAMPLE_TOKEN.auto_renew_account,
+            "api/v1/contracts/" + SAMPLE_TOKEN.treasury_account_id,
+            "api/v1/contracts/" + SAMPLE_TOKEN.token_id,
+            "api/v1/contracts/" + SAMPLE_TOKEN.custom_fees.fixed_fees[0].collector_account_id,
+            "api/v1/contracts/" + SAMPLE_TOKEN.custom_fees.fixed_fees[1].collector_account_id,
+            "api/v1/contracts/" + SAMPLE_TOKEN.custom_fees.fixed_fees[2].collector_account_id,
+            "api/v1/network/exchangerate",
+            "api/v1/contracts/0x0000000000000000000000000000000001c49eec",
+            "api/v1/accounts/0x0000000000000000000000000000000001c49eec",
+            "api/v1/tokens/" + SAMPLE_TOKEN.token_id + "/balances",
+        ])
+
+        expect(wrapper.text()).toMatch("Sample Token LabelPublic Label for ID 0.0.29662956 [Sample Type]Sample Token Descriptionhttps://token-example.comToken ID0.0.29662956")
+
+        const LABEL_INFO = SAMPLE_PUBLIC_LABELS_JSON[2]
+        expect(wrapper.text()).toMatch(
+            LABEL_INFO.name
+            + "Public Label for ID "
+            + LABEL_INFO.entityId
+            + " [" + LABEL_INFO.type + "]"
+            + LABEL_INFO.description
+            + LABEL_INFO.website
+            + "Token ID"
+            + LABEL_INFO.entityId)
+
+        mock.restore()
+        wrapper.unmount()
+        await flushPromises()
+
+    });
+
 });

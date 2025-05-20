@@ -4,7 +4,7 @@
 
 import {describe, expect, it} from 'vitest'
 import {flushPromises, mount} from "@vue/test-utils"
-import router from "@/router";
+import router, {routeManager} from "@/router";
 import axios from "axios";
 import AccountDetails from "@/pages/AccountDetails.vue";
 import {
@@ -25,6 +25,8 @@ import {
     SAMPLE_TOKEN_DUDE,
     SAMPLE_TRANSACTION,
     SAMPLE_TRANSACTIONS,
+    SAMPLE_PUBLIC_LABELS_URL,
+    SAMPLE_PUBLIC_LABELS_JSON, SAMPLE_NETWORK_CONFIG,
 } from "../Mocks";
 import MockAdapter from "axios-mock-adapter";
 import Oruga from "@oruga-ui/oruga-next";
@@ -729,6 +731,7 @@ describe("AccountDetails.vue", () => {
                 accountId: SAMPLE_ACCOUNT_STAKING_NODE.account ?? undefined
             },
         });
+        routeManager.configure(routeManager.coreConfig.value, networkConfig) // global.provide is not enough
 
         await flushPromises()
         // console.log(wrapper.html())
@@ -770,6 +773,124 @@ describe("AccountDetails.vue", () => {
         expect(wrapper.get("#stakedToValue").text()).toBe("Account 0.0.5Hosted by Hedera | Central, USA")
         expect(wrapper.get("#pendingRewardValue").text()).toBe("0.00000000ℏ$0.00000")
         expect(wrapper.find("#declineRewardValue").exists()).toBe(false)
+
+        mock.restore()
+        wrapper.unmount()
+        await flushPromises()
+    });
+
+    it("Should display account with a public label", async () => {
+        await router.push("/") // To avoid "missing required param 'network'" error
+
+        const mock = new MockAdapter(axios as any);
+
+        const matcher1 = "/api/v1/accounts/" + SAMPLE_ACCOUNT.account
+        mock.onGet(matcher1).reply(200, SAMPLE_ACCOUNT);
+
+        const matcher2 = "/api/v1/transactions"
+        mock.onGet(matcher2).reply(200, SAMPLE_TRANSACTIONS);
+
+        const token = SAMPLE_TOKEN
+        const matcher3 = "/api/v1/tokens/" + token.token_id
+        mock.onGet(matcher3).reply(200, token);
+
+        const nft = SAMPLE_NONFUNGIBLE
+        const matcher4 = "/api/v1/tokens/" + nft.token_id
+        mock.onGet(matcher4).reply(200, nft);
+
+        const matcher5 = "/api/v1/balances"
+        mock.onGet(matcher5).reply(200, SAMPLE_ACCOUNT_BALANCES);
+
+        const matcher6 = "/api/v1/network/exchangerate"
+        mock.onGet(matcher6).reply(200, SAMPLE_NETWORK_EXCHANGERATE);
+
+        const matcher7 = "/api/v1/transactions?timestamp=" + SAMPLE_ACCOUNT.created_timestamp
+        mock.onGet(matcher7).reply(200, SAMPLE_TRANSACTIONS);
+
+        const matcher8 = "/api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/rewards"
+        mock.onGet(matcher8).reply(200, {rewards: []})
+
+        const matcher9 = "/api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/allowances/crypto"
+        mock.onGet(matcher9).reply(200, {rewards: []})
+
+        const matcher10 = "/api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/allowances/tokens"
+        mock.onGet(matcher10).reply(200, {rewards: []})
+
+        const matcher11 = "/api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/allowances/nfts"
+        mock.onGet(matcher11).reply(200, {nfts: []})
+
+        const matcher12 = "api/v1/tokens"
+        mock.onGet(matcher12).reply(200, {tokens: []});
+
+        const matcher13 = "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/nfts"
+        mock.onGet(matcher13).reply(200, {nfts: []});
+
+        const matcher14 = "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/airdrops/pending"
+        mock.onGet(matcher14).reply(200, {airdrops: []});
+
+        mock.onGet(SAMPLE_PUBLIC_LABELS_URL).reply(200, SAMPLE_PUBLIC_LABELS_JSON);
+
+        routeManager.configure(routeManager.coreConfig.value, SAMPLE_NETWORK_CONFIG) // global.provide is not enough
+        const wrapper = mount(AccountDetails, {
+            global: {
+                plugins: [router, Oruga],
+                provide: {
+                    "isMediumScreen": false,
+                    [networkConfigKey]: SAMPLE_NETWORK_CONFIG
+                }
+            },
+            props: {
+                accountId: SAMPLE_ACCOUNT.account ?? undefined
+            },
+        });
+
+        await flushPromises()
+        // console.log(wrapper.html())
+
+        expect(fetchGetURLs(mock)).toStrictEqual([
+            "api/v1/accounts/" + SAMPLE_ACCOUNT.account,
+            "api/v1/network/nodes",
+            SAMPLE_PUBLIC_LABELS_URL,
+            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/rewards?limit=1",
+            "api/v1/balances",
+            "api/v1/contracts/" + SAMPLE_ACCOUNT.account,
+            "api/v1/transactions",
+            "api/v1/transactions",
+            "api/v1/contracts/" + SAMPLE_ACCOUNT.evm_address,
+            "api/v1/tokens/" + SAMPLE_ACCOUNT.account,
+            "api/v1/network/exchangerate",
+            "api/v1/blocks",
+            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/nfts",
+            "api/v1/tokens",
+            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/airdrops/pending",
+            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/airdrops/pending",
+            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/allowances/crypto",
+            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/allowances/tokens",
+            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/nfts",
+            "api/v1/tokens/" + SAMPLE_TOKEN.token_id,
+            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/nfts",
+            "api/v1/tokens",
+            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/airdrops/pending",
+            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/airdrops/pending",
+            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/allowances/crypto",
+            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/allowances/tokens",
+            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/nfts",
+            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/allowances/nfts",
+            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/allowances/nfts",
+        ])
+
+        expect(wrapper.text()).toMatch("Sample Account LabelPublic Label for ID 0.0.730631 [Exchange]Sample Account Descriptionhttps://example.com Account ID 0.0.730631")
+
+        const LABEL_INFO = SAMPLE_PUBLIC_LABELS_JSON[0]
+        expect(wrapper.text()).toMatch(
+            LABEL_INFO.name
+            + "Public Label for ID "
+            + LABEL_INFO.entityId
+            + " [" + LABEL_INFO.type + "]"
+            + LABEL_INFO.description
+            + LABEL_INFO.website
+            + " Account ID "
+            + LABEL_INFO.entityId)
 
         mock.restore()
         wrapper.unmount()
