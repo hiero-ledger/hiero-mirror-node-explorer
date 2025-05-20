@@ -3898,6 +3898,13 @@ export const SAMPLE_PUBLIC_LABELS_JSON = [
         "description": "Sample Token Description",
         "website": "https://token-example.com"
     },
+    {
+        "entityId": SAMPLE_TOPIC.topic_id,
+        "name": "Sample Topic Label",
+        "type": "Sample Type (topic)",
+        "description": "Sample Topic Description",
+        "website": "https://topic-example.com"
+    },
 ]
 
 export const SAMPLE_NETWORK_CONFIG_JSON = [
