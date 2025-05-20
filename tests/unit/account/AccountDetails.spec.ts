@@ -879,11 +879,12 @@ describe("AccountDetails.vue", () => {
             "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/allowances/nfts",
         ])
 
-        expect(wrapper.text()).toMatch("Account LabelPublic Label for ID 0.0.730631 [Exchange]Sample Account Descriptionhttps://example.com Account ID 0.0.730631")
+        expect(wrapper.text()).toMatch("Sample Account LabelPublic Label for ID 0.0.730631 [Exchange]Sample Account Descriptionhttps://example.com Account ID 0.0.730631")
 
         const LABEL_INFO = SAMPLE_PUBLIC_LABELS_JSON[0]
         expect(wrapper.text()).toMatch(
-            "Account LabelPublic Label for ID "
+            LABEL_INFO.name
+            + "Public Label for ID "
             + LABEL_INFO.entityId
             + " [" + LABEL_INFO.type + "]"
             + LABEL_INFO.description
