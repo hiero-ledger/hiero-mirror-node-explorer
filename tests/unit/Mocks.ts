@@ -3884,6 +3884,13 @@ export const SAMPLE_PUBLIC_LABELS_JSON = [
         "description": "Sample Account Description",
         "website": "https://example.com"
     },
+    {
+        "entityId": SAMPLE_CONTRACT.contract_id,
+        "name": "Sample Contract Label",
+        "type": "Sample Type",
+        "description": "Sample Contract Description",
+        "website": "https://contract-example.com"
+    },
 ]
 
 export const SAMPLE_NETWORK_CONFIG_JSON = [

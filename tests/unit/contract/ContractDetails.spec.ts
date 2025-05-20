@@ -15,7 +15,10 @@ import {
     SAMPLE_CONTRACT_DUDE,
     SAMPLE_CONTRACT_DUDE_AS_ACCOUNT,
     SAMPLE_CONTRACT_RESULTS,
+    SAMPLE_NETWORK_CONFIG,
     SAMPLE_NETWORK_EXCHANGERATE,
+    SAMPLE_PUBLIC_LABELS_JSON,
+    SAMPLE_PUBLIC_LABELS_URL,
     SAMPLE_TRANSACTION,
     SAMPLE_TRANSACTIONS
 } from "../Mocks";
@@ -28,6 +31,7 @@ import {TransactionID} from "@/utils/TransactionID";
 import ContractResultTable from "@/components/contract/ContractResultTable.vue";
 import {ContractStateResponse} from "@/schemas/MirrorNodeSchemas.ts";
 import {fetchGetURLs} from "../MockUtils";
+import {networkConfigKey} from "@/AppKeys.ts";
 
 /*
     Bookmarks
@@ -949,6 +953,114 @@ describe("ContractDetails.vue", () => {
         wrapper.unmount()
         await flushPromises()
     });
+
+
+
+    it("Should display contract details with public label", async () => {
+
+        const mock = new MockAdapter(axios as any);
+
+        const matcherAirdrop = "api/v1/accounts/" + SAMPLE_CONTRACT.contract_id + "/airdrops/pending"
+        mock.onGet(matcherAirdrop).reply(200, {"airdrops": []})
+
+        const matcher1 = "/api/v1/contracts/" + SAMPLE_CONTRACT.contract_id
+        mock.onGet(matcher1).reply(200, SAMPLE_CONTRACT);
+
+        const matcher2 = "/api/v1/accounts/" + SAMPLE_CONTRACT.contract_id
+        mock.onGet(matcher2).reply(200, SAMPLE_CONTRACT_AS_ACCOUNT);
+
+        const matcher3 = "/api/v1/transactions"
+        mock.onGet(matcher3).reply(200, SAMPLE_TRANSACTIONS);
+
+        const matcher4 = "/api/v1/network/exchangerate"
+        mock.onGet(matcher4).reply(200, SAMPLE_NETWORK_EXCHANGERATE);
+
+        const matcher5 = "/api/v1/contracts/" + SAMPLE_CONTRACT.contract_id + "/results"
+        mock.onGet(matcher5).reply(200, SAMPLE_CONTRACT_RESULTS);
+
+        const matcher6 = "/api/v1/balances"
+        mock.onGet(matcher6).reply(200, SAMPLE_ACCOUNT_BALANCES);
+
+        const matcher7 = "api/v1/contracts/" + SAMPLE_CONTRACT.contract_id + "/state?slot=0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc"
+        mock.onGet(matcher7).reply<ContractStateResponse>(200, {state: [], links: undefined})
+
+        const matcher8 = "api/v1/contracts/" + SAMPLE_CONTRACT.contract_id + "/state?slot=0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103"
+        mock.onGet(matcher8).reply<ContractStateResponse>(200, {state: [], links: undefined})
+
+        const matcher10 = "api/v1/tokens"
+        mock.onGet(matcher10).reply(200, {tokens: []});
+
+        const matcher11 = "api/v1/accounts/" + SAMPLE_CONTRACT.contract_id + "/nfts"
+        mock.onGet(matcher11).reply(200, {nfts: []});
+
+        mock.onGet(SAMPLE_PUBLIC_LABELS_URL).reply(200, SAMPLE_PUBLIC_LABELS_JSON);
+
+        routeManager.configure(routeManager.coreConfig.value, SAMPLE_NETWORK_CONFIG) // global.provide is not enough
+        const wrapper = mount(ContractDetails, {
+            global: {
+                plugins: [router, Oruga],
+                provide: {
+                    "isMediumScreen": false,
+                    [networkConfigKey]: SAMPLE_NETWORK_CONFIG
+                }
+            },
+            props: {
+                contractId: SAMPLE_CONTRACT.contract_id
+            },
+        });
+
+        await flushPromises()
+        // console.log(wrapper.html())
+
+        expect(fetchGetURLs(mock)).toStrictEqual([
+            SAMPLE_PUBLIC_LABELS_URL,
+            "api/v1/network/nodes",
+            "http://localhost:3000/mainnet/erc-1155.json",
+            "api/v1/contracts/" + SAMPLE_CONTRACT.contract_id,
+            "api/v1/accounts/" + SAMPLE_CONTRACT.contract_id,
+            "http://localhost:3000/mainnet/erc-20.json",
+            "http://localhost:3000/mainnet/erc-721.json",
+            "api/v1/contracts/" + SAMPLE_CONTRACT.contract_id + "/results/logs",
+            "api/v1/balances",
+            "api/v1/transactions",
+            "api/v1/contracts/" + SAMPLE_CONTRACT.auto_renew_account,
+            "api/v1/contracts/" + SAMPLE_CONTRACT.contract_id + "/state?slot=0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
+            "http://localhost:3000/files/any/295/0x00000000000000000000000000000000000b70cf",
+            "api/v1/network/exchangerate",
+            "api/v1/contracts/" + SAMPLE_CONTRACT.contract_id + "/state?slot=0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103",
+            "api/v1/accounts/" + SAMPLE_CONTRACT.contract_id + "/nfts",
+            "api/v1/tokens",
+            "api/v1/accounts/" + SAMPLE_CONTRACT.contract_id + "/airdrops/pending",
+            "api/v1/accounts/" + SAMPLE_CONTRACT.contract_id + "/airdrops/pending",
+            "api/v1/contracts/0xffffffffffffffffffffffffffffffffffffffff",
+            "api/v1/accounts/0xffffffffffffffffffffffffffffffffffffffff",
+            "api/v1/accounts/" + SAMPLE_CONTRACT.contract_id + "/nfts",
+            "api/v1/tokens",
+            "api/v1/accounts/" + SAMPLE_CONTRACT.contract_id + "/airdrops/pending",
+            "api/v1/accounts/" + SAMPLE_CONTRACT.contract_id + "/airdrops/pending",
+            "api/v1/contracts/" + SAMPLE_CONTRACT.contract_id + "/results",
+            "api/v1/contracts/0.0.1260",
+            "api/v1/contracts/0x00000000000000000000000000000000000004ec",
+            "api/v1/tokens/0.0.1260",
+            "api/v1/accounts/0x00000000000000000000000000000000000004ec",
+        ])
+
+        expect(wrapper.text()).toMatch("Sample Contract LabelPublic Label for ID 0.0.749775 [Sample Type]Sample Contract Descriptionhttps://contract-example.com")
+
+        const LABEL_INFO = SAMPLE_PUBLIC_LABELS_JSON[1]
+        expect(wrapper.text()).toMatch(
+            LABEL_INFO.name
+            + "Public Label for ID "
+            + LABEL_INFO.entityId
+            + " [" + LABEL_INFO.type + "]"
+            + LABEL_INFO.description
+            + LABEL_INFO.website)
+
+        mock.restore()
+        wrapper.unmount()
+        await flushPromises()
+    });
+
 });
 
 
