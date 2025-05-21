@@ -97,6 +97,7 @@ export class NetworkEntry {
         const erc721IndexURL = fetchURL(obj, "erc721IndexURL")
         const erc1155IndexURL = fetchURL(obj, "erc1155IndexURL")
         const publicLabelsURL = fetchURL(obj, "publicLabelsURL")
+        const blockscoutURL = fetchURL(obj, "blockscoutURL")
 
         const sourcifySetupObj = fetchObject(obj, "sourcifySetup")
 
@@ -133,6 +134,7 @@ export class NetworkEntry {
             erc721IndexURL,
             erc1155IndexURL,
             publicLabelsURL,
+            blockscoutURL,
             sourcifySetup
         )
     }
@@ -166,6 +168,8 @@ export class NetworkEntry {
         public readonly erc1155IndexURL: string | null,
         // The URL of the public labels index
         public readonly publicLabelsURL: string | null,
+        // The URL of the BlockScout REST endpoint
+        public readonly blockscoutURL: string | null,
         public readonly sourcifySetup: SourcifySetup | null
     ) {
     }
