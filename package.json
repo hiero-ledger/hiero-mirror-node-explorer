@@ -50,7 +50,7 @@
     "globals": "^16.1.0",
     "jszip": "^3.10.1",
     "lucide-vue-next": "^0.511.0",
-    "multiformats": "^13.3.4",
+    "multiformats": "^13.3.6",
     "prismjs": "^1.30.0",
     "vue": "^3.5.14",
     "vue-router": "^4.5.1"
