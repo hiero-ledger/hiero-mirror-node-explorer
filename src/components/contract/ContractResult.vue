@@ -179,8 +179,8 @@ const props = defineProps({
   }
 })
 
-const gasUsedTooltip = "This represents the actual amount of gas (i.e. the real computational effort) required to execute the smart contract."
-const gasConsumedTooltip = "This represents the amount of gas that is actually deducted from the user's balance (i.e it may include additional factors like base fees or refunds, etc…)."
+const gasConsumedTooltip = "This represents the actual amount of gas (i.e. the real computational effort) required to execute the smart contract."
+const gasUsedTooltip = "This represents the amount of gas that is actually deducted from the user's balance (i.e it may include additional factors like base fees or refunds, etc…)."
 
 const isXLargeScreen = inject('isXLargeScreen', true)
 
