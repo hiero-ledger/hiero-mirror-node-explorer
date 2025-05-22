@@ -7,7 +7,7 @@
 <template>
   <EntityLabel :label="props.domainName" :compact="props.compact">
     <template #icon>
-      <NotebookTabs :size="12" :class="{'low-contrast':props.compact}"/>
+      <NotebookTabs :size="14" :class="{'low-contrast':props.compact}"/>
     </template>
 
     <template #tooltip>

@@ -323,9 +323,8 @@ hr.horizontal-line {
     border: solid 1px var(--border-secondary);
     border-radius: 4px;
     color: var(--text-primary);
-    font-size: 12px;
-    font-weight: 500;
-    line-height: 16px;
+    font-size: 14px;
+    font-weight: 400;
     padding: 3px 6px 3px;
 }
 
