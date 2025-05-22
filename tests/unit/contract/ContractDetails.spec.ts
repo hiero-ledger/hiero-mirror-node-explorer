@@ -32,6 +32,7 @@ import ContractResultTable from "@/components/contract/ContractResultTable.vue";
 import {ContractStateResponse} from "@/schemas/MirrorNodeSchemas.ts";
 import {fetchGetURLs} from "../MockUtils";
 import {networkConfigKey} from "@/AppKeys.ts";
+import PageHeader from "@/components/page/header/PageHeader.vue";
 
 /*
     Bookmarks
@@ -129,7 +130,9 @@ describe("ContractDetails.vue", () => {
             "api/v1/accounts/0x00000000000000000000000000000000000004ec",
         ])
 
-        expect(wrapper.text()).toMatch(RegExp("Contract " + " Associated account " + "Contract ID " + SAMPLE_CONTRACT.contract_id))
+        expect(wrapper.getComponent(PageHeader).text()).toMatch("Contract " + SAMPLE_CONTRACT.contract_id)
+
+        expect(wrapper.text()).toMatch(RegExp("Contract " + "Associated account " + "Contract ID " + SAMPLE_CONTRACT.contract_id))
         expect(wrapper.get("#balanceValue").text()).toContain("23.42647909ℏ$5.76369")
         expect(wrapper.get("#keyValue").text()).toBe("0x421050820e1485acdd59726088e0e4a2130ebbbb70009f640ad95c78dd5a7b38CopyED25519")
         expect(wrapper.get("#memoValue").text()).toBe("Mirror Node acceptance test: 2022-03-07T15:09:15.228564328Z Create contract")
@@ -263,7 +266,7 @@ describe("ContractDetails.vue", () => {
             "api/v1/accounts/0x00000000000000000000000000000000000004ec",
         ])
 
-        expect(wrapper.text()).toMatch(RegExp("Contract " + " Associated account " + "Contract ID " + SAMPLE_CONTRACT.contract_id))
+        expect(wrapper.text()).toMatch(RegExp("Contract " + "Associated account " + "Contract ID " + SAMPLE_CONTRACT.contract_id))
         expect(wrapper.get("#balanceValue").text()).toContain("23.42647909ℏ$5.76369")
         expect(wrapper.get("#keyValue").text()).toBe("0x421050820e1485acdd59726088e0e4a2130ebbbb70009f640ad95c78dd5a7b38CopyED25519")
         expect(wrapper.get("#memoValue").text()).toBe("Mirror Node acceptance test: 2022-03-07T15:09:15.228564328Z Create contract")
@@ -393,7 +396,7 @@ describe("ContractDetails.vue", () => {
             "api/v1/accounts/0x00000000000000000000000000000000000004ec",
         ])
 
-        expect(wrapper.text()).toMatch(RegExp("Contract " + " Associated account " + "Contract ID " + SAMPLE_CONTRACT.contract_id))
+        expect(wrapper.text()).toMatch(RegExp("Contract " + "Associated account " + "Contract ID " + SAMPLE_CONTRACT.contract_id))
 
         const resultTable = wrapper.findComponent(ContractResultTable)
         expect(resultTable.exists()).toBe(true)
@@ -496,7 +499,7 @@ describe("ContractDetails.vue", () => {
             "api/v1/accounts/0x00000000000000000000000000000000000004ec",
         ])
 
-        expect(wrapper.text()).toMatch(RegExp("Contract " + " Associated account " + "Contract ID " + SAMPLE_CONTRACT.contract_id))
+        expect(wrapper.text()).toMatch(RegExp("Contract " + "Associated account " + "Contract ID " + SAMPLE_CONTRACT.contract_id))
 
         expect(wrapper.findComponent(NotificationBanner).exists()).toBe(false)
 
@@ -555,7 +558,7 @@ describe("ContractDetails.vue", () => {
             "api/v1/contracts/" + SAMPLE_CONTRACT_DUDE.contract_id + "/results",
         ])
 
-        expect(wrapper.text()).toMatch(RegExp("Contract " + " Associated account " + "Contract ID " + SAMPLE_CONTRACT_DUDE.contract_id))
+        expect(wrapper.text()).toMatch(RegExp("Contract " + "Associated account " + "Contract ID " + SAMPLE_CONTRACT_DUDE.contract_id))
         expect(wrapper.get("#keyValue").text()).toBe("None")
         expect(wrapper.get("#maxAutoAssociationValue").text()).toBe("No Auto Association")
         expect(wrapper.get("#memoValue").text()).toBe("None")
@@ -719,7 +722,7 @@ describe("ContractDetails.vue", () => {
             "api/v1/accounts/0x00000000000000000000000000000000000004ec",
         ])
 
-        expect(wrapper.text()).toMatch(RegExp("Contract " + " Associated account " + "Contract ID " + SAMPLE_CONTRACT_DUDE.contract_id))
+        expect(wrapper.text()).toMatch(RegExp("Contract " + "Associated account " + "Contract ID " + SAMPLE_CONTRACT_DUDE.contract_id))
 
         const banner = wrapper.findComponent(NotificationBanner)
         expect(banner.exists()).toBe(false)
@@ -804,7 +807,7 @@ describe("ContractDetails.vue", () => {
             "api/v1/accounts/0x00000000000000000000000000000000000004ec",
         ])
 
-        expect(wrapper.text()).toMatch(RegExp("Contract DetailsContract is deletedContract  Associated account Contract ID " + contract.contract_id))
+        expect(wrapper.getComponent(PageHeader).text()).toMatch("Contract " + contract.contract_id)
 
         const banner = wrapper.findComponent(NotificationBanner)
         expect(banner.exists()).toBe(true)
@@ -942,7 +945,7 @@ describe("ContractDetails.vue", () => {
         ])
 
         expect(wrapper.text()).toMatch(RegExp(
-            "Contract   " +
+            "Contract  " +
             "ERC 1155" +
             " Associated account " +
             "Contract ID " +
