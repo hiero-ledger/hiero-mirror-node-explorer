@@ -115,7 +115,7 @@ const props = defineProps({
   },
 })
 
-const handleClick = (n: Nft, c: unknown, i: number, ci: number, event: MouseEvent,) => {
+const handleClick = (n: Nft, c: unknown, i: number, ci: number, event: Event,) => {
   if (n.token_id && n.serial_number) {
     routeManager.routeToSerial(n.token_id, n.serial_number, event);
   }

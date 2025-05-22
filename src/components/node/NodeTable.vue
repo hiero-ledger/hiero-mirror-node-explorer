@@ -153,7 +153,7 @@ const makeWeightPercentage = (node: NetworkNode) => {
   return node.stake && props.stakeTotal ? makeStakePercentage(node, props.stakeTotal) : "0"
 }
 
-const handleClick = (node: NetworkNode, c: unknown, i: number, ci: number, event: MouseEvent) => {
+const handleClick = (node: NetworkNode, c: unknown, i: number, ci: number, event: Event) => {
   if (node.node_id !== undefined) {
     routeManager.routeToNode(node.node_id, event)
   }

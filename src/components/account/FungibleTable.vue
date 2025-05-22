@@ -115,7 +115,7 @@ watch([props.controller.rows, () => props.checkEnabled], () =>
     checkedRows.value.splice(0)
 )
 
-const handleClick = (balance: TokenBalance, c: unknown, i: number, ci: number, event: MouseEvent) => {
+const handleClick = (balance: TokenBalance, c: unknown, i: number, ci: number, event: Event) => {
   if (balance.token_id) {
     routeManager.routeToToken(balance.token_id, event)
   }

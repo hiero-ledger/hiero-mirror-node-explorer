@@ -93,7 +93,7 @@ const paginationNeeded = computed(() => {
 const showRelationship = computed(() => props.transactions.length >= 2 && makeRelationshipLabel(props.transactions[0]))
 const showNonce = computed(() => props.transactions.length >= 2 && !props.transactions[1].scheduled)
 
-const handleClick = (t: Transaction, c: unknown, i: number, ci: number, event: MouseEvent) => {
+const handleClick = (t: Transaction, c: unknown, i: number, ci: number, event: Event) => {
   routeManager.routeToTransaction(t, event)
 }
 

@@ -96,7 +96,7 @@ const isTouchDevice = inject('isTouchDevice', false)
 
 const formatChunk = (t: TopicMessage) => t.chunk_info ? `${t.chunk_info.number}/${t.chunk_info.total}` : ''
 
-const handleClick = (t: TopicMessage, c: unknown, i: number, ci: number, event: MouseEvent) => {
+const handleClick = (t: TopicMessage, c: unknown, i: number, ci: number, event: Event) => {
   const consensusTimestamp = t.consensus_timestamp
   if (consensusTimestamp) {
     routeManager.routeToTransactionByTs(consensusTimestamp, event)

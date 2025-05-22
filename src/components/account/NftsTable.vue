@@ -130,7 +130,7 @@ watch([props.controller.rows, () => props.checkEnabled], () =>
     checkedRows.value.splice(0)
 )
 
-const handleClick = (nft: Nft, c: unknown, i: number, ci: number, event: MouseEvent,) => {
+const handleClick = (nft: Nft, c: unknown, i: number, ci: number, event: Event,) => {
   if (nft.token_id && nft.serial_number) {
     routeManager.routeToSerial(nft.token_id, nft.serial_number, event);
   }

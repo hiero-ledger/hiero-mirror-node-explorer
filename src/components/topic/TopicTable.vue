@@ -79,7 +79,7 @@ const props = defineProps({
   }
 })
 
-const handleClick = (t: Transaction, c: unknown, i: number, ci: number, event: MouseEvent) => {
+const handleClick = (t: Transaction, c: unknown, i: number, ci: number, event: Event) => {
   if (t.entity_id) {
     routeManager.routeToTopic(t.entity_id, event)
   }

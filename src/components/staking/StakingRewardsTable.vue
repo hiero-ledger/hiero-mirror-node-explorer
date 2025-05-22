@@ -84,7 +84,7 @@ const props = defineProps({
 onMounted(() => props.controller.mount())
 onBeforeUnmount(() => props.controller.unmount())
 
-const handleClick = (t: StakingReward, c: unknown, i: number, ci: number, event: MouseEvent) => {
+const handleClick = (t: StakingReward, c: unknown, i: number, ci: number, event: Event) => {
   if (t.timestamp) {
     routeManager.routeToTransactionByTs(t.timestamp, event)
   }

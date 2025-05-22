@@ -86,7 +86,7 @@ const props = defineProps({
   },
 })
 
-const handleClick = (t: TokenDistribution, c: unknown, i: number, ci: number, event: MouseEvent) => {
+const handleClick = (t: TokenDistribution, c: unknown, i: number, ci: number, event: Event) => {
   if (t.account) {
     routeManager.routeToAccount(t.account, event)
   }

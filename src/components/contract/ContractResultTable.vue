@@ -99,7 +99,7 @@ const props = defineProps({
 
 const isLargeScreen = inject('isLargeScreen', true)
 
-const handleClick = (result: ContractResult, c: unknown, i: number, ci: number, event: MouseEvent) => {
+const handleClick = (result: ContractResult, c: unknown, i: number, ci: number, event: Event) => {
   routeManager.routeToTransactionByTs(result.timestamp, event)
 }
 
