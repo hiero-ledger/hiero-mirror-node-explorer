@@ -56,7 +56,7 @@
 
       <o-table-column
           v-if="enableStaking"
-          id="stake-range-column" v-slot="props" field="stake-range" label="STAKE RANGE" position="right"
+          v-slot="props" field="stake-range" label="STAKE RANGE" position="right"
           style="padding-bottom: 2px; padding-top: 12px;"
       >
         <Tooltip>
