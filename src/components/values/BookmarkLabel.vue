@@ -11,7 +11,7 @@
     </template>
 
     <template #tooltip>
-      <p>Bookmark for ID {{ entityId }} [{{ type }}]</p>
+      <p>{{ `Bookmark for ID ${entityId}` + (type ? ` [${type}]` : '') }}</p>
       <p>{{ description }}</p>
       <p>{{ website }}</p>
     </template>
