@@ -71,7 +71,6 @@
       <TablePageSize
           v-if="props.fullPage"
           v-model:size="props.controller.pageSize.value"
-          :storage-key="AppStorage.ACCOUNT_TOKENS_TABLE_PAGE_SIZE_KEY"
       />
     </template>
 
@@ -83,7 +82,6 @@
       && !props.checkEnabled
       && props.fullPage"
       v-model:size="props.controller.pageSize.value"
-      :storage-key="AppStorage.ACCOUNT_TOKENS_TABLE_PAGE_SIZE_KEY"
       style="width: 102px; margin-left: 4px"
   />
 
@@ -105,7 +103,6 @@ import EmptyTable from "@/components/EmptyTable.vue";
 import {routeManager} from "@/router";
 import TokenCell, {TokenCellItem} from "@/components/token/TokenCell.vue";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
-import {AppStorage} from "@/AppStorage";
 import {PendingAirdropTableController} from "@/components/account/PendingAirdropTableController";
 import NftCell, {NftCellItem} from "@/components/token/NftCell.vue";
 import TokenIOL from "@/components/values/link/TokenIOL.vue";

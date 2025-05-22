@@ -51,7 +51,6 @@
     <template v-slot:bottom-left>
       <TablePageSize
           v-model:size="perPage"
-          :storage-key="AppStorage.BLOCK_TRANSACTION_TABLE_PAGE_SIZE_KEY"
       />
     </template>
 
@@ -60,7 +59,6 @@
   <TablePageSize
       v-if="!paginated && showPageSizeSelector"
       v-model:size="perPage"
-      :storage-key="AppStorage.BLOCK_TRANSACTION_TABLE_PAGE_SIZE_KEY"
       style="width: 116px; margin-left: 4px"
   />
 
@@ -85,7 +83,6 @@ import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
 import EmptyTable from "@/components/EmptyTable.vue";
 import TransactionSummary from "@/components/transaction/TransactionSummary.vue";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
-import {AppStorage} from "@/AppStorage";
 
 const props = defineProps({
   narrowed: Boolean,

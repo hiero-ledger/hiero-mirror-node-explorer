@@ -50,7 +50,6 @@
     <template v-slot:bottom-left>
       <TablePageSize
           v-model:size="perPage"
-          :storage-key="AppStorage.BLOCK_TABLE_PAGE_SIZE_KEY"
       />
     </template>
   </o-table>
@@ -75,7 +74,6 @@ import EmptyTable from "@/components/EmptyTable.vue";
 import PlainAmount from "@/components/values/PlainAmount.vue";
 import {BlockTableController} from "@/components/block/BlockTableController";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
-import {AppStorage} from "@/AppStorage";
 
 const props = defineProps({
   controller: {
