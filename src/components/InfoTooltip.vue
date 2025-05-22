@@ -37,7 +37,7 @@ const props = defineProps({
     default: null
   },
   position: {
-    type: String as PropType<string | null>,
+    type: String as PropType<"auto" | "left" | "right" | "bottom" | "top" | "bottom-left" | "top-right" | "top-left" | "bottom-right">,
     default: 'auto'
   },
 })

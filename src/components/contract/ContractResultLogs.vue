@@ -58,6 +58,7 @@
 <script setup lang="ts">
 
 import {computed, onMounted, PropType, Ref, ref, watch} from "vue";
+import {OPagination} from "@oruga-ui/oruga-next";
 import ContractResultLogEntry from "@/components/contract/ContractResultLogEntry.vue";
 import {ContractLog} from "@/schemas/MirrorNodeSchemas";
 import {AppStorage} from "@/AppStorage";

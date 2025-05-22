@@ -79,6 +79,7 @@
 <script lang="ts">
 
 import {computed, defineComponent, inject, onBeforeUnmount, onMounted, PropType, ref, Ref, watch} from 'vue';
+import {OPagination} from '@oruga-ui/oruga-next';
 import {ContractResultStateChange} from "@/schemas/MirrorNodeSchemas";
 import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
 import {TransactionByTsCache} from "@/utils/cache/TransactionByTsCache";
@@ -113,6 +114,7 @@ export default defineComponent({
     DashboardCardV2,
     SelectView,
     ContractResultStateChangeEntry,
+    OPagination
   },
 
   props: {
