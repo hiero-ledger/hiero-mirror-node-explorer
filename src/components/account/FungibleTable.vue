@@ -83,7 +83,7 @@
 
 import {PropType, watch} from 'vue';
 import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
-import {Nft, Token, TokenBalance} from "@/schemas/MirrorNodeSchemas";
+import {Nft, Token} from "@/schemas/MirrorNodeSchemas";
 import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
 import EmptyTable from "@/components/EmptyTable.vue";
 import {routeManager} from "@/router";
@@ -116,7 +116,7 @@ watch([props.controller.rows, () => props.checkEnabled], () =>
     checkedRows.value.splice(0)
 )
 
-const handleClick = (balance: TokenBalance, c: unknown, i: number, ci: number, event: Event) => {
+const handleClick = (balance: Token|Nft, c: unknown, i: number, ci: number, event: Event) => {
   if (balance.token_id) {
     routeManager.routeToToken(balance.token_id, event)
   }
