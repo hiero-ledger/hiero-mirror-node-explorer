@@ -44,7 +44,6 @@
       <template v-slot:bottom-left>
         <TablePageSize
             v-model:size="perPage"
-            :storage-key="AppStorage.TOKEN_BALANCE_TABLE_PAGE_SIZE_KEY"
         />
       </template>
 
@@ -53,7 +52,6 @@
     <TablePageSize
         v-if="!paginated && showPageSizeSelector"
         v-model:size="perPage"
-        :storage-key="AppStorage.TOKEN_BALANCE_TABLE_PAGE_SIZE_KEY"
         style="width: 116px; margin-left: 4px"
     />
 
@@ -78,7 +76,6 @@ import EmptyTable from "@/components/EmptyTable.vue";
 import {TokenBalanceTableController} from "@/components/token/TokenBalanceTableController";
 import AccountIOL from "@/components/values/link/AccountIOL.vue";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
-import {AppStorage} from "@/AppStorage";
 
 const props = defineProps({
   controller: {

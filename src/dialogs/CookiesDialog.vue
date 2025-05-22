@@ -5,7 +5,7 @@
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <template>
-  <ModalDialog v-model:show-dialog="showDialog" :show-close-icon="false">
+  <ModalDialog v-model:show-dialog="showDialog">
     <template #modalDialogTitle>
       <span>Accept Cookies</span>
     </template>

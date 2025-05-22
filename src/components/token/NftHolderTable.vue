@@ -74,7 +74,6 @@
       <template v-slot:bottom-left>
         <TablePageSize
             v-model:size="perPage"
-            :storage-key="AppStorage.NFT_HOLDER_TABLE_PAGE_SIZE_KEY"
         />
       </template>
 
@@ -107,7 +106,6 @@ import {routeManager} from "@/router";
 import AccountIOL from "@/components/values/link/AccountIOL.vue";
 import NftCell, {NftCellItem} from "@/components/token/NftCell.vue";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
-import {AppStorage} from "@/AppStorage";
 
 const props = defineProps({
   controller: {

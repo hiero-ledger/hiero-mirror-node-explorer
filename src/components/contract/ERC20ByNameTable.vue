@@ -49,7 +49,6 @@
     <template v-slot:bottom-left>
       <TablePageSize
           v-model:size="perPage"
-          :storage-key="AppStorage.TOKEN_TABLE_PAGE_SIZE_KEY"
       />
     </template>
   </o-table>
@@ -70,7 +69,6 @@ import {routeManager} from "@/router";
 import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
 import EmptyTable from "@/components/EmptyTable.vue";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
-import {AppStorage} from "@/AppStorage";
 import {ERC20ByNameTableLoader} from "@/components/contract/ERC20ByNameTableLoader.ts";
 import {ERC20Contract} from "@/utils/cache/ERC20Cache.ts";
 import ContractIOL from "@/components/values/link/ContractIOL.vue";

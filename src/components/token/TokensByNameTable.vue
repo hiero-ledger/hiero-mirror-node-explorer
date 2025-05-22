@@ -49,7 +49,6 @@
     <template v-slot:bottom-left>
       <TablePageSize
           v-model:size="pageSize"
-          :storage-key="AppStorage.TOKEN_TABLE_PAGE_SIZE_KEY"
       />
     </template>
   </o-table>
@@ -72,7 +71,6 @@ import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
 import EmptyTable from "@/components/EmptyTable.vue";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
 import TokenIOL from "@/components/values/link/TokenIOL.vue";
-import {AppStorage} from "@/AppStorage";
 import {TokensByNameTableLoader} from "@/components/token/TokensByNameTableLoader";
 
 const props = defineProps({

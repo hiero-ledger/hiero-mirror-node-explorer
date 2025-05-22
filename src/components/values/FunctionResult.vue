@@ -27,7 +27,7 @@
     <Property :custom-nb-col-class="customNbColClass" id="functionOutput">
       <template v-slot:name>Output Result</template>
       <template v-slot:value>
-        <ByteCodeValue :byte-code="output ?? undefined" :height-in-pixel="140"/>
+        <ByteCodeValue :byte-code="output ?? undefined"/>
         <div v-if="outputDecodingStatus" class="h-is-extra-text">
           <span class="icon fas fa-exclamation-circle h-is-low-contrast is-small mt-1 mr-1"/>
           <span>{{ outputDecodingStatus }}</span>

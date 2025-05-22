@@ -42,7 +42,6 @@
     <template v-slot:bottom-left>
       <TablePageSize
           v-model:size="perPage"
-          :storage-key="storageKey"
       />
     </template>
   </o-table>
@@ -50,7 +49,6 @@
   <TablePageSize
       v-if="!paginated && showPageSizeSelector"
       v-model:size="perPage"
-      :storage-key="storageKey"
       style="width: 116px; margin-left: 4px"
   />
 
@@ -100,7 +98,6 @@ const handleClick = (contract: Contract, c: unknown, i: number, ci: number, even
 
 const contracts = props.controller.contracts
 const perPage = props.controller.pageSize
-const storageKey = props.controller.storageKey
 const paginated = props.controller.paginated
 const showPageSizeSelector = props.controller.showPageSizeSelector
 

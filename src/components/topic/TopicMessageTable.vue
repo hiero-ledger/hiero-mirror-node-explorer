@@ -51,7 +51,6 @@
       <template v-slot:bottom-left>
         <TablePageSize
             v-model:size="perPage"
-            :storage-key="AppStorage.TOPIC_MESSAGE_TABLE_PAGE_SIZE_KEY"
         />
       </template>
 
@@ -84,7 +83,6 @@ import EmptyTable from "@/components/EmptyTable.vue";
 import {TopicMessage} from "@/schemas/MirrorNodeSchemas";
 import {routeManager} from "@/router";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
-import {AppStorage} from "@/AppStorage";
 
 const props = defineProps({
   controller: {
