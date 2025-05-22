@@ -14,7 +14,6 @@
             :id="change?.changes.contract_id"
             :address="change.changes.address"
             compact
-            has-custom-font
         />
       </div>
       <div class="balance-info">
