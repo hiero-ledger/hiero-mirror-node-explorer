@@ -36,6 +36,15 @@
 
     </div>
 
+    <DashboardCardV2  v-if="blockscoutEnabled">
+      <template #title>
+        <span>Top ERC Tokens</span>
+      </template>
+      <template #content>
+        <ERCTokenTable/>
+      </template>
+    </DashboardCardV2>
+
   </PageFrameV2>
 
 </template>
@@ -46,7 +55,7 @@
 
 <script setup lang="ts">
 
-import {inject, onBeforeUnmount, onMounted, ref} from 'vue';
+import {computed, inject, onBeforeUnmount, onMounted, ref} from 'vue';
 import TokenTable from "@/components/token/TokenTable.vue";
 import PageFrameV2 from "@/components/page/PageFrameV2.vue";
 import {TokenTableController} from "@/components/token/TokenTableController";
@@ -54,12 +63,15 @@ import {useRouter} from "vue-router";
 import {TokenType} from "@/schemas/MirrorNodeSchemas";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import PlayPauseButton from "@/components/PlayPauseButton.vue";
+import ERCTokenTable from "@/components/ercToken/ERCTokenTable.vue";
+import {routeManager} from "@/router.ts";
 
 defineProps({
   network: String
 })
 
 const isMediumScreen = inject('isMediumScreen', true)
+const blockscoutEnabled = computed(() => routeManager.currentNetworkEntry.value.blockscoutURL !== null)
 
 //
 // NFT and TOKEN TableController
