@@ -83,6 +83,7 @@
 <script setup lang="ts">
 
 import {computed, onBeforeUnmount, onMounted, PropType} from "vue";
+import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
 import {Transaction, TransactionType} from "@/schemas/MirrorNodeSchemas";
 import TransactionSummary from "@/components/transaction/TransactionSummary.vue";
 import TimestampValue from "@/components/values/TimestampValue.vue";

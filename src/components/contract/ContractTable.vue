@@ -67,6 +67,7 @@
 <script setup lang="ts">
 
 import {onBeforeUnmount, onMounted, PropType} from 'vue';
+import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
 import {Contract} from "@/schemas/MirrorNodeSchemas";
 import {routeManager} from "@/router";
 import BlobValue from "@/components/values/BlobValue.vue";

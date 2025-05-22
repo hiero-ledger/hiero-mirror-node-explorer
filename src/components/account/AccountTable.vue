@@ -89,6 +89,7 @@
 <script setup lang="ts">
 
 import {PropType} from 'vue';
+import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
 import {AccountInfo} from "@/schemas/MirrorNodeSchemas";
 import {routeManager} from "@/router";
 import HbarAmount from "@/components/values/HbarAmount.vue";

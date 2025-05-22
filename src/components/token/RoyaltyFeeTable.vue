@@ -45,6 +45,7 @@
 <script setup lang="ts">
 
 import {PropType} from 'vue';
+import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
 import AccountLink from "@/components/values/link/AccountLink.vue";
 import PlainAmount from "@/components/values/PlainAmount.vue";
 import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";

@@ -75,6 +75,7 @@
 <script setup lang="ts">
 
 import {inject, PropType} from 'vue';
+import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
 import {TopicMessageTableController} from "@/components/topic/TopicMessageTableController";
 import TimestampValue from "@/components/values/TimestampValue.vue";
 import BlobValue from "@/components/values/BlobValue.vue";
