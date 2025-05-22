@@ -95,6 +95,7 @@
 <script setup lang="ts">
 
 import {PropType, watch} from 'vue';
+import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
 import {Nft, Token} from "@/schemas/MirrorNodeSchemas";
 import EmptyTable from "@/components/EmptyTable.vue";
 import {routeManager} from "@/router";
@@ -130,8 +131,8 @@ watch([props.controller.rows, () => props.checkEnabled], () =>
     checkedRows.value.splice(0)
 )
 
-const handleClick = (nft: Nft, c: unknown, i: number, ci: number, event: Event,) => {
-  if (nft.token_id && nft.serial_number) {
+const handleClick = (nft: Token | Nft, c: unknown, i: number, ci: number, event: Event,) => {
+  if (nft.token_id && "serial_number" in nft) {
     routeManager.routeToSerial(nft.token_id, nft.serial_number, event);
   }
 };

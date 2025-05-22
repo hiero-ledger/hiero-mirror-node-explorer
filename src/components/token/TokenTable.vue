@@ -66,6 +66,7 @@
 <script setup lang="ts">
 
 import {PropType} from 'vue';
+import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
 import {routeManager} from "@/router";
 import {Token} from "@/schemas/MirrorNodeSchemas";
 import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";

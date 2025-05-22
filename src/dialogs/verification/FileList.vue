@@ -86,6 +86,7 @@
 <script setup lang="ts">
 
 import {computed, PropType, ref} from "vue";
+import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
 import {ContractSourceAnalyzerItem} from "@/utils/analyzer/ContractSourceAnalyzer.ts";
 import {FileJson} from 'lucide-vue-next';
 

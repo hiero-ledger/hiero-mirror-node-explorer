@@ -67,6 +67,7 @@
 <script setup lang="ts">
 
 import {computed, inject, PropType, ref} from 'vue';
+import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
 import {Transaction} from '@/schemas/MirrorNodeSchemas.ts';
 import {makeTypeLabel} from "@/utils/TransactionTools";
 import {routeManager} from "@/router";

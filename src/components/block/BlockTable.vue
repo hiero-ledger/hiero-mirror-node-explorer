@@ -66,6 +66,7 @@
 <script setup lang="ts">
 
 import {PropType} from 'vue';
+import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
 import {Block} from '@/schemas/MirrorNodeSchemas.ts';
 import {routeManager} from "@/router";
 import TimestampValue from "@/components/values/TimestampValue.vue";

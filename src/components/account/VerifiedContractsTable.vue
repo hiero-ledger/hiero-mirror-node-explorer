@@ -65,6 +65,7 @@
 <script setup lang="ts">
 
 import {computed, onBeforeUnmount, onMounted, PropType} from 'vue';
+import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
 import {Contract} from "@/schemas/MirrorNodeSchemas";
 import TimestampValue from "@/components/values/TimestampValue.vue";
 import {routeManager} from "@/router";

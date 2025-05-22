@@ -8,9 +8,9 @@
 
   <o-tooltip
       v-if="props.text || slots.content"
-      :label="props.text"
-      :position="position ?? 'auto'"
-      :delay="props.delay"
+      :label="props.text ?? undefined"
+      :position="props.position"
+      :delay="props.delay ?? undefined"
       multiline
   >
     <slot/>
@@ -30,6 +30,7 @@
 <script setup lang="ts">
 
 import {PropType, useSlots} from 'vue';
+import {OTooltip} from "@oruga-ui/oruga-next";
 
 const props = defineProps({
   text: {
@@ -37,7 +38,7 @@ const props = defineProps({
     default: null
   },
   position: {
-    type: String as PropType<string | null>,
+    type: String as PropType<"auto" | "left" | "right" | "bottom" | "top" | "bottom-left" | "top-right" | "top-left" | "bottom-right">,
     default: 'auto'
   },
   delay: {

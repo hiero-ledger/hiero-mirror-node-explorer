@@ -82,6 +82,7 @@
 <script setup lang="ts">
 
 import {PropType, watch} from 'vue';
+import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
 import {Nft, Token, TokenBalance} from "@/schemas/MirrorNodeSchemas";
 import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
 import EmptyTable from "@/components/EmptyTable.vue";

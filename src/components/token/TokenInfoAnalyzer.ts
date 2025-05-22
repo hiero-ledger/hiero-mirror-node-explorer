@@ -70,10 +70,10 @@ export class TokenInfoAnalyzer {
         () => this.hasFixedFees ? this.tokenInfo.value?.custom_fees?.fixed_fees : null)
 
     public readonly fractionalFees = computed(
-        () => this.hasFractionalFees ? this.tokenInfo.value?.custom_fees?.fractional_fees : null)
+        () => this.tokenInfo.value?.custom_fees?.fractional_fees ?? [])
 
     public readonly royaltyFees = computed(
-        () => this.hasRoyaltyFees ? this.tokenInfo.value?.custom_fees?.royalty_fees : null)
+        () => this.tokenInfo.value?.custom_fees?.royalty_fees ?? [])
 
     public readonly customFees = computed(() => this.tokenInfo.value?.custom_fees)
 

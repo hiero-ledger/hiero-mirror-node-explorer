@@ -94,6 +94,7 @@
 <script setup lang="ts">
 
 import {computed, inject, PropType} from 'vue';
+import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
 import {ContractAction} from "@/schemas/MirrorNodeSchemas";
 import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
 import EmptyTable from "@/components/EmptyTable.vue";

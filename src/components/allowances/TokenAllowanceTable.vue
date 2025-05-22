@@ -80,6 +80,7 @@
 <script setup lang="ts">
 
 import {computed, PropType, ref, watch} from 'vue';
+import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
 import {TokenAllowance} from "@/schemas/MirrorNodeSchemas";
 import {isValidAssociation} from "@/schemas/MirrorNodeUtils.ts";
 import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";

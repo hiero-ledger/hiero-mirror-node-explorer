@@ -64,6 +64,7 @@
 <script setup lang="ts">
 
 import {onBeforeUnmount, onMounted, PropType} from 'vue';
+import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
 import {StakingReward} from '@/schemas/MirrorNodeSchemas.ts';
 import {routeManager} from "@/router";
 import TimestampValue from "@/components/values/TimestampValue.vue";

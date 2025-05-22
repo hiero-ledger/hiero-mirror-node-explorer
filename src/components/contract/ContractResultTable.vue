@@ -76,6 +76,7 @@
 <script setup lang="ts">
 
 import {inject, PropType} from 'vue';
+import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
 import {ContractResult} from "@/schemas/MirrorNodeSchemas";
 import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
 import {ContractResultTableController} from "@/components/contract/ContractResultTableController";
