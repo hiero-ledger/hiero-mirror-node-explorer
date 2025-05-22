@@ -95,7 +95,7 @@ onBeforeUnmount(() => {
   loader.unmount()
 })
 
-const handleClick = (t: Token, c: unknown, i: number, ci: number, event: MouseEvent) => {
+const handleClick = (t: Token, c: unknown, i: number, ci: number, event: Event) => {
   if (t.token_id !== null) {
     routeManager.routeToToken(t.token_id, event)
   }

@@ -90,7 +90,7 @@ const loader = new ERC20ByNameTableLoader(perPage, targetName)
 onMounted(() => loader.mount())
 onBeforeUnmount(() => loader.unmount())
 
-const handleClick = (t: ERC20Info, c: unknown, i: number, ci: number, event: MouseEvent) => {
+const handleClick = (t: ERC20Info, c: unknown, i: number, ci: number, event: Event) => {
   if (t.contractId !== null) {
     routeManager.routeToContract(t.contractId, event)
   }

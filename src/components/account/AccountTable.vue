@@ -113,7 +113,7 @@ const props = defineProps({
   }
 })
 
-const handleClick = (a: AccountInfo, c: unknown, i: number, ci: number, event: MouseEvent) => {
+const handleClick = (a: AccountInfo, c: unknown, i: number, ci: number, event: Event) => {
   if (a.account) {
     routeManager.routeToAccount(a.account, event)
   }

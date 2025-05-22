@@ -93,7 +93,7 @@ const props = defineProps({
 onMounted(() => props.controller.mount())
 onBeforeUnmount(() => props.controller.unmount())
 
-const handleClick = (t: Transaction, c: unknown, i: number, ci: number, event: MouseEvent) => {
+const handleClick = (t: Transaction, c: unknown, i: number, ci: number, event: Event) => {
   routeManager.routeToContract(t.entity_id!, event)
 }
 

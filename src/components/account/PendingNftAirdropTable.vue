@@ -132,7 +132,7 @@ const checkedRows = defineModel("checkedAirdrops", {
 
 watch([props.controller.rows, () => props.checkEnabled], () => checkedRows.value.splice(0))
 
-const handleClick = (airdrop: TokenAirdrop, c: unknown, i: number, ci: number, event: MouseEvent) => {
+const handleClick = (airdrop: TokenAirdrop, c: unknown, i: number, ci: number, event: Event) => {
   if (airdrop.token_id && airdrop.serial_number) {
     routeManager.routeToSerial(airdrop.token_id, airdrop.serial_number, event)
   }

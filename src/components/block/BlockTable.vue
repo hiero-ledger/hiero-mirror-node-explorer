@@ -87,7 +87,7 @@ const props = defineProps({
   }
 })
 
-const handleClick = (block: Block, c: unknown, i: number, ci: number, event: MouseEvent) => {
+const handleClick = (block: Block, c: unknown, i: number, ci: number, event: Event) => {
   if (block.number) {
     routeManager.routeToBlock(block.number, event)
   }

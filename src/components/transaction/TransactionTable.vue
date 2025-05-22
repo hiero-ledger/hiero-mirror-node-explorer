@@ -110,7 +110,7 @@ const showingEthereumTransactions = computed(() => {
   return props.controller.transactionType.value === TransactionType.ETHEREUMTRANSACTION
 })
 
-const handleClick = (t: Transaction, c: unknown, i: number, ci: number, event: MouseEvent) => {
+const handleClick = (t: Transaction, c: unknown, i: number, ci: number, event: Event) => {
   routeManager.routeToTransaction(t, event)
 }
 

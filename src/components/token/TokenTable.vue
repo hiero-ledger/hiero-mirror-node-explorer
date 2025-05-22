@@ -86,7 +86,7 @@ const props = defineProps({
   }
 })
 
-const handleClick = (t: Token, c: unknown, i: number, ci: number, event: MouseEvent) => {
+const handleClick = (t: Token, c: unknown, i: number, ci: number, event: Event) => {
   if (t.token_id) {
     routeManager.routeToToken(t.token_id, event)
   }
