@@ -6,7 +6,7 @@
 
 <template>
 
-  <PageFrameV2 page-title="Account Details">
+  <PageFrameV2 :page-title="`Account ${normalizedAccountId}`">
 
     <template v-if="notification" #banner>
       <NotificationBanner :message="notification" :is-error="!isInactiveEvmAddress"/>
@@ -14,39 +14,35 @@
 
     <DashboardCardV2 collapsible-key="accountDetails">
       <template #title>
-          <span v-if="isInactiveEvmAddress">
+        <span v-if="isInactiveEvmAddress">
           Inactive EVM Address
         </span>
-          <span v-else-if="isMyAccount" class="my-account">
+        <span v-else-if="isMyAccount" class="my-account">
           <img :src="walletIconURL ?? undefined" alt="wallet logo">
           <span>My Account</span>
         </span>
-          <span v-else>
+        <span v-else>
           Account
         </span>
-          <span class="mr-1"/>
-          <PublicLabel v-if="label" :label-definition="label"/>
-          <DomainLabel v-if="domainName" :domain-name="domainName" :provider-name="domainProviderName"/>
+        <span class="mr-1"/>
+        <DomainLabel v-if="domainName" :domain-name="domainName" :provider-name="domainProviderName"/>
+        <PublicLabel v-if="label" :label-definition="label"/>
+        <ArrowLink
+            v-if="showContractVisible && contractRoute"
+            :route="contractRoute" id="showContractLink"
+            text="Associated contract"
+        />
       </template>
 
       <template #right-control>
-        <template v-if="isAccountEditable">
-          <ButtonView
-              v-if="isAccountEditable"
-              id="update-button"
-              :is-default="true"
-              :size="ButtonSize.small"
-              @action="onUpdateAccount"
-          >
-            UPDATE ACCOUNT
-          </ButtonView>
-        </template>
-        <template v-else-if="showContractVisible && contractRoute">
-          <ArrowLink
-              :route="contractRoute" id="showContractLink"
-              text="Associated contract"
-          />
-        </template>
+        <ButtonView
+            v-if="isAccountEditable"
+            id="update-button"
+            :size="ButtonSize.small"
+            @action="onUpdateAccount"
+        >
+          UPDATE ACCOUNT
+        </ButtonView>
       </template>
 
       <template #content>
@@ -528,13 +524,11 @@ const rewardsTableController = new StakingRewardsTableController(
 //
 // Transactions download
 //
-
 const transactionDownloadDialogVisible = ref(false)
 
 //
 // Naming
 //
-
 const nameQuery = new NameQuery(accountLocParser.accountId)
 onMounted(() => nameQuery.mount())
 onBeforeUnmount(() => nameQuery.unmount())
@@ -542,9 +536,8 @@ const domainName = nameQuery.name
 const domainProviderName = nameQuery.providerName
 
 //
-// Label
+// Public Label
 //
-
 const indexLookup = PublicLabelsCache.instance.makeLookup()
 onMounted(() => indexLookup.mount())
 onBeforeUnmount(() => indexLookup.unmount())
@@ -556,7 +549,6 @@ const label = computed(() =>
 //
 // Account Update
 //
-
 const showUpdateAccountDialog = ref(false)
 
 const onUpdateAccount = () => showUpdateAccountDialog.value = true

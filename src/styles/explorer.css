@@ -383,6 +383,11 @@ a.h-banner-link:hover {
     color: #D7D7D7;
 }
 
+.card-title-extra {
+    color: var(--network-text-accent-color);
+    word-break: break-all;
+}
+
 /*  ============================================================================
     Maintain code which is still using BULMA classes
 */
