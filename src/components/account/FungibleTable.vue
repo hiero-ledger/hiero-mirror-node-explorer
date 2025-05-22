@@ -18,7 +18,7 @@
       v-model:current-page="props.controller.currentPage.value"
       :per-page="props.controller.pageSize.value"
       @page-change="props.controller.onPageChange"
-      @cellClick="handleClick"
+      @cell-click="handleClick"
       :checkable="props.checkEnabled"
       v-model:checked-rows="checkedRows"
 

@@ -18,7 +18,7 @@
       :current-page="props.controller.currentPage.value"
       :per-page="props.controller.pageSize.value"
       @page-change="props.controller.onPageChange"
-      @cellClick="handleClick"
+      @cell-click="handleClick"
 
       :hoverable="true"
       :narrowed="true"
