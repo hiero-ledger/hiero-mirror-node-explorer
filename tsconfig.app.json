@@ -9,5 +9,11 @@
     "paths": {
       "@/*": ["./src/*"]
     }
+  },
+  "vueCompilerOptions": {
+    "strictTemplates": true,
+    "fallthroughAttributes": true,
+    "dataAttributes": ["data-cy"],
+    "checkUnknownProps": false
   }
 }
