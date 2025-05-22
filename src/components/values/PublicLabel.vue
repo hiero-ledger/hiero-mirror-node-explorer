@@ -7,7 +7,7 @@
 <template>
   <EntityLabel :label="name" :url="website" :compact="props.compact">
     <template #icon>
-      <Tag :size="12" :class="{'low-contrast':props.compact}"/>
+      <Tag :size="14" :class="{'low-contrast':props.compact}"/>
     </template>
 
     <template #tooltip>

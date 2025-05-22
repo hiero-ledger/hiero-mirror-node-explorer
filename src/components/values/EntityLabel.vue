@@ -14,17 +14,17 @@
       >
         <slot name="icon"/>
         <span>{{ label }}</span>
+        <SquareArrowOutUpRight
+            v-if="props.url && !compact"
+            :size="14"
+            class="link-icon"
+            @click="navigate(props.url)"
+        />
       </div>
       <template v-if="slots.tooltip" #content>
         <slot name="tooltip"/>
       </template>
     </Tooltip>
-    <SquareArrowOutUpRight
-        v-if="props.url && !compact"
-        :size="14"
-        class="shy-icon"
-        @click="navigate(props.url)"
-    />
   </div>
 </template>
 
@@ -85,17 +85,9 @@ const navigate = (url: string | null) => {
   gap: 4px
 }
 
-.shy-icon {
+.link-icon {
   color: var(--text-secondary);
   cursor: pointer;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  visibility: hidden;
-}
-
-.hover-container:hover .shy-icon {
-  opacity: 1;
-  visibility: visible;
 }
 
 </style>
