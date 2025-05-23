@@ -12,7 +12,7 @@
         :compact="props.compact"
     >
       <template #icon>
-        <Bookmark :size="12" :class="{'low-contrast':props.compact}"/>
+        <Bookmark :size="14" :class="{'low-contrast':props.compact}"/>
       </template>
 
       <template #tooltip>
