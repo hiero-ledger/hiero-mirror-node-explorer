@@ -33,6 +33,10 @@
         <span class="mr-1"/>
         <DomainLabel v-if="domainName" :domain-name="domainName" :provider-name="domainProviderName"/>
         <PublicLabel v-if="label" :label-definition="label"/>
+        <BookmarkLabel
+            v-if="bookmark"
+            :entity-bookmark="bookmark"
+        />
         <ArrowLink
             v-if="showContractVisible && contractRoute"
             :route="contractRoute" id="showContractLink"
@@ -395,6 +399,8 @@ import DomainLabel from "@/components/values/DomainLabel.vue";
 import PublicLabel from "@/components/values/PublicLabel.vue";
 import {PublicLabelsCache} from "@/utils/cache/PublicLabelsCache.ts";
 import router, {routeManager, walletManager} from "@/utils/RouteManager.ts";
+import BookmarkLabel from "@/components/values/BookmarkLabel.vue";
+import {ProfileController} from "@/utils/profile/ProfileController.ts";
 
 const props = defineProps({
   accountId: String,
@@ -405,6 +411,7 @@ const rewardIssueWarning = import.meta.env.VITE_APP_TEMPORARY_TOOLTIP ?? null
 
 const isMediumScreen = inject('isMediumScreen', true)
 const networkConfig = NetworkConfig.inject()
+const profileController = ProfileController.inject()
 
 const enableExpiry = routeManager.enableExpiry
 const enableStaking = routeManager.enableStaking
@@ -550,6 +557,13 @@ onBeforeUnmount(() => indexLookup.unmount())
 const index = indexLookup.entity
 const label = computed(() =>
     accountLocParser.accountId.value ? index.value?.lookup(accountLocParser.accountId.value) ?? null : null
+)
+
+//
+// Bookmark
+//
+const bookmark = computed(() =>
+    accountLocParser.accountId.value ? profileController.findBookmark(accountLocParser.accountId.value) : null
 )
 
 //
