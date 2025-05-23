@@ -39,11 +39,27 @@
         </div>
         <DomainLabel v-if="domainName" :domain-name="domainName" :provider-name="domainProviderName"/>
         <PublicLabel v-if="label" :label-definition="label"/>
+        <BookmarkLabel
+            v-if="bookmark"
+            :entity-bookmark="bookmark"
+            @edit="onAddBookmark()"
+        />
         <ArrowLink
             v-if="contract && accountRoute"
             :route="accountRoute" id="showAccountLink"
             text="Associated account"
         />
+      </template>
+
+      <template #right-control>
+        <ButtonView
+            v-if="connectionStatus === ProfileConnectionStatus.Connected && !bookmark"
+            id="add-bookmark-button"
+            :size="ButtonSize.small"
+            @action="onAddBookmark()"
+        >
+          <span>ADD BOOKMARK</span>
+        </ButtonView>
       </template>
 
       <template #content>
@@ -214,6 +230,10 @@
 
   </PageFrameV2>
 
+  <EditBookmarkDialog
+      v-model:show-dialog="showEditBookmarkDialog"
+      :entity-id="normalizedContractId"
+  />
 </template>
 
 <!-- --------------------------------------------------------------------------------------------------------------- -->
@@ -222,7 +242,7 @@
 
 <script setup lang="ts">
 
-import {computed, onBeforeUnmount, onMounted} from 'vue';
+import {computed, onBeforeUnmount, onMounted, ref} from 'vue';
 import KeyValue from "@/components/values/KeyValue.vue";
 import AccountLink from "@/components/values/link/AccountLink.vue";
 import TimestampValue from "@/components/values/TimestampValue.vue";
@@ -257,6 +277,11 @@ import DomainLabel from "@/components/values/DomainLabel.vue";
 import PublicLabel from "@/components/values/PublicLabel.vue";
 import {PublicLabelsCache} from "@/utils/cache/PublicLabelsCache.ts";
 import {routeManager} from "@/utils/RouteManager.ts";
+import BookmarkLabel from "@/components/values/BookmarkLabel.vue";
+import {ProfileConnectionStatus, ProfileController} from "@/utils/profile/ProfileController.ts";
+import {ButtonSize} from "@/dialogs/core/DialogUtils.ts";
+import ButtonView from "@/elements/ButtonView.vue";
+import EditBookmarkDialog from "@/dialogs/profile/EditBookmarkDialog.vue";
 
 const props = defineProps({
   contractId: String,
@@ -264,6 +289,7 @@ const props = defineProps({
 })
 
 const networkConfig = NetworkConfig.inject()
+const profileController = ProfileController.inject()
 
 const normalizedContractId = computed(() => {
   return contractLocParser.contractId.value
@@ -359,6 +385,18 @@ const label = computed(() =>
     normalizedContractId.value ? index.value?.lookup(normalizedContractId.value) ?? null : null
 )
 
+//
+// Bookmark
+//
+const bookmark = computed(() =>
+    normalizedContractId.value ? profileController.findBookmark(normalizedContractId.value) : null
+)
+const showEditBookmarkDialog = ref(false)
+const onAddBookmark = () => {
+  showEditBookmarkDialog.value = true
+}
+
+const connectionStatus = profileController.connectionStatus
 const enableExpiry = routeManager.enableExpiry
 const contract = contractLocParser.entity
 const ethereumAddress = contractLocParser.ethereumAddress
