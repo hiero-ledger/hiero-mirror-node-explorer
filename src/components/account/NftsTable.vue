@@ -12,8 +12,6 @@
       :paginated="props.controller.paginated.value && props.fullPage"
       backend-pagination
       pagination-order="centered"
-      :range-before="1"
-      :range-after="1"
       :total="props.controller.totalRowCount.value"
       v-model:current-page="props.controller.currentPage.value"
       :per-page="props.controller.pageSize.value"
@@ -27,10 +25,6 @@
       :striped="true"
       :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
 
-      aria-current-label="Current page"
-      aria-next-label="Next page"
-      aria-page-label="Page"
-      aria-previous-label="Previous page"
   >
 
     <o-table-column v-slot="{ row }" field="image" label="IMAGE">
@@ -102,7 +96,6 @@ import {routeManager} from "@/router";
 import NftCell, {NftCellItem} from "@/components/token/NftCell.vue";
 import {NftsTableController} from "@/components/account/NftsTableController";
 import TokenCell, {TokenCellItem} from "@/components/token/TokenCell.vue";
-import {AppStorage} from "@/AppStorage";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
 import TokenIOL from "@/components/values/link/TokenIOL.vue";
 import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";

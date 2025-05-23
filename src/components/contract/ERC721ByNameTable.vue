@@ -12,8 +12,6 @@
       paginated
       backend-pagination
       pagination-order="centered"
-      :range-before="1"
-      :range-after="1"
       :total="total"
       v-model:current-page="currentPage"
       :per-page="pageSize"
@@ -24,11 +22,7 @@
       :striped="true"
       :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
 
-      aria-current-label="Current page"
-      aria-next-label="Next page"
-      aria-page-label="Page"
-      aria-previous-label="Previous page"
-      customRowKey="token_id"
+      row-key="token_id"
   >
     <o-table-column v-slot="props" field="contract_id" label="CONTRACT ID">
       <ContractIOL class="h-is-bold" :contract-id="props.row.contractId"/>

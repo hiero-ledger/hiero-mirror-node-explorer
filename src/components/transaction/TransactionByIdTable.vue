@@ -13,16 +13,10 @@
       :narrowed="props.narrowed"
       :paginated="!isTouchDevice && paginationNeeded"
       pagination-order="centered"
-      :range-before="1"
-      :range-after="1"
       :per-page="isMediumScreen ? pageSize : 5"
       :striped="true"
       :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
-      aria-current-label="Current page"
-      aria-next-label="Next page"
-      aria-page-label="Page"
-      aria-previous-label="Previous page"
-      customRowKey="consensus_timestamp"
+      row-key="consensus_timestamp"
       @cell-click="handleClick"
   >
     <o-table-column v-slot="props" field="timestamp" label="TIME">

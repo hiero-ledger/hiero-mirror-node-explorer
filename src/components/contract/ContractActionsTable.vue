@@ -12,8 +12,6 @@
         :data="props.actions ?? []"
         :paginated="isPaginated"
         pagination-order="centered"
-        :range-before="1"
-        :range-after="1"
         :per-page="NB_ACTIONS_PER_PAGE"
 
         :detailed="isMediumScreen"
@@ -25,10 +23,6 @@
         :striped="false"
         :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
 
-        aria-current-label="Current page"
-        aria-next-label="Next page"
-        aria-page-label="Page"
-        aria-previous-label="Previous page"
     >
 
       <o-table-column v-slot="props" field="call_type" label="CALL TYPE">

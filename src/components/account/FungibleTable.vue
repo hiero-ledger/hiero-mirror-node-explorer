@@ -12,8 +12,6 @@
       :paginated="props.controller.paginated.value && props.fullPage"
       backend-pagination
       pagination-order="centered"
-      :range-before="1"
-      :range-after="1"
       :total="props.controller.totalRowCount.value"
       v-model:current-page="props.controller.currentPage.value"
       :per-page="props.controller.pageSize.value"
@@ -27,11 +25,7 @@
       :striped="true"
       :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
 
-      aria-current-label="Current page"
-      aria-next-label="Next page"
-      aria-page-label="Page"
-      aria-previous-label="Previous page"
-      customRowKey="token_id"
+      row-key="token_id"
   >
     <o-table-column v-slot="{ row }" field="token_id" label="TOKEN ID">
       <TokenIOL class="token-id-label" :token-id="row.token_id"/>

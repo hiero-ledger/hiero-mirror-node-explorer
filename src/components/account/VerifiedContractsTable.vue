@@ -13,17 +13,11 @@
       :narrowed="true"
       :paginated="contracts.length > perPage"
       pagination-order="centered"
-      :range-before="1"
-      :range-after="1"
 
       :per-page="perPage"
       :striped="true"
-      aria-current-label="Current page"
 
-      aria-next-label="Next page"
-      aria-page-label="Page"
-      aria-previous-label="Previous page"
-      customRowKey="contract_id"
+      row-key="contract_id"
       @cell-click="handleClick"
   >
 

@@ -12,8 +12,6 @@
       paginated
       backend-pagination
       pagination-order="centered"
-      :range-before="1"
-      :range-after="1"
       :total="total"
       v-model:current-page="currentPage"
       :per-page="perPage"
@@ -25,11 +23,7 @@
       :striped="true"
       :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
 
-      aria-current-label="Current page"
-      aria-next-label="Next page"
-      aria-page-label="Page"
-      aria-previous-label="Previous page"
-      customRowKey="contract_id"
+      row-key="contract_id"
   >
     <o-table-column v-slot="props" field="contract_id" label="ID">
       <ContractIOL class="contract_id" :contract-id="props.row.contract_id"/>
@@ -78,7 +72,6 @@ import {ContractTableController} from "@/components/contract/ContractTableContro
 import ContractName from "@/components/values/ContractName.vue";
 import ContractIOL from "@/components/values/link/ContractIOL.vue";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
-import {AppStorage} from "@/AppStorage";
 
 const props = defineProps({
   controller: {

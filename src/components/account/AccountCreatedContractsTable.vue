@@ -15,19 +15,12 @@
       :narrowed="true"
       :paginated="paginated"
       pagination-order="centered"
-      :range-before="1"
-      :range-after="1"
       :per-page="perPage"
       :striped="true"
 
       :total="total"
-      aria-current-label="Current page"
-      aria-next-label="Next page"
-      aria-page-label="Page"
-
-      aria-previous-label="Previous page"
       backend-pagination
-      customRowKey="consensus_timestamp"
+      row-key="consensus_timestamp"
       default-sort="consensus_timestamp"
       @page-change="onPageChange"
       @cell-click="handleClick"

@@ -12,8 +12,6 @@
       :paginated="paginated"
       backend-pagination
       pagination-order="centered"
-      :range-before="1"
-      :range-after="1"
       :total="total"
       v-model:current-page="currentPage"
       :per-page="perPage"
@@ -25,11 +23,7 @@
       :striped="true"
       :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
 
-      aria-current-label="Current page"
-      aria-next-label="Next page"
-      aria-page-label="Page"
-      aria-previous-label="Previous page"
-      customRowKey="account"
+      row-key="account"
   >
     <o-table-column v-slot="props" field="account" label="ID">
       <AccountIOL class="account_id" :account-id="props.row.account"/>
@@ -101,7 +95,6 @@ import EmptyTable from "@/components/EmptyTable.vue";
 import {AccountTableController} from "@/components/account/AccountTableController";
 import AccountIOL from "@/components/values/link/AccountIOL.vue";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
-import {AppStorage} from "@/AppStorage";
 
 const props = defineProps({
   controller: {

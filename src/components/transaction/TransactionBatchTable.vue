@@ -13,16 +13,10 @@
       :narrowed="props.narrowed"
       :paginated="!isTouchDevice && paginationNeeded"
       pagination-order="centered"
-      :range-before="1"
-      :range-after="1"
       :per-page="isMediumScreen ? pageSize : 5"
       :striped="true"
       :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
-      aria-current-label="Current page"
-      aria-next-label="Next page"
-      aria-page-label="Page"
-      aria-previous-label="Previous page"
-      customRowKey="transaction_id"
+      row-key="transaction_id"
       @cell-click="handleClick"
   >
     <o-table-column v-slot="props" field="transaction_id" label="ID">

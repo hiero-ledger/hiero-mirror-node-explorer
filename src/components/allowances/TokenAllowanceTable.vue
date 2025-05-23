@@ -15,19 +15,12 @@
       :narrowed="true"
       :paginated="paginated"
       pagination-order="centered"
-      :range-before="1"
-      :range-after="1"
       :per-page="perPage"
       :striped="true"
 
       :total="total"
-      aria-current-label="Current page"
-      aria-next-label="Next page"
-      aria-page-label="Page"
-
-      aria-previous-label="Previous page"
       backend-pagination
-      customRowKey="spender"
+      row-key="spender"
       default-sort="spender"
       @page-change="onPageChange">
 
@@ -93,7 +86,6 @@ import TokenLink from "@/components/values/link/TokenLink.vue";
 import {walletManager} from "@/router";
 import InfoTooltip from "@/components/InfoTooltip.vue";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
-import {AppStorage} from "@/AppStorage";
 
 interface DisplayedTokenAllowance extends TokenAllowance {
   isEditable: boolean
