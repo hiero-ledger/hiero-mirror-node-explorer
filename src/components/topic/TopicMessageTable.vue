@@ -16,7 +16,6 @@
         :total="total"
         v-model:current-page="currentPage"
         :per-page="perPage"
-        focusable
         @page-change="onPageChange"
         @cell-click="handleClick"
 
