@@ -63,11 +63,11 @@ describe("ContractResult.vue", () => {
 
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/contracts/results",
+            "api/v1/transactions",
             "api/v1/network/fees",
             "api/v1/contracts/" + SAMPLE_CONTRACT_RESULT_DETAILS.contract_id + "/results/1646025151.667604000",
             "api/v1/contracts/0.0.846260",
             "api/v1/contracts/" + SAMPLE_CONTRACT_RESULT_DETAILS.contract_id,
-            "api/v1/transactions",
             "api/v1/contracts/" + SAMPLE_CONTRACT_RESULT_DETAILS.logs[1].contract_id,
             "api/v1/contracts/" + SAMPLE_CONTRACT_RESULT_DETAILS.from,
             "api/v1/contracts/" + SAMPLE_CONTRACT_RESULT_DETAILS.to,
@@ -132,11 +132,11 @@ describe("ContractResult.vue", () => {
 
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/contracts/results",
+            "api/v1/transactions",
             "api/v1/network/fees",
             "api/v1/contracts/" + SAMPLE_REVERT_CONTRACT_RESULT_DETAILS.contract_id + "/results/1677085141.263832358",
             "api/v1/contracts/0.0.1466",
             "api/v1/contracts/" + SAMPLE_REVERT_CONTRACT_RESULT_DETAILS.contract_id,
-            "api/v1/transactions",
             "api/v1/contracts/" + SAMPLE_REVERT_CONTRACT_RESULT_DETAILS.from,
             "api/v1/contracts/" + SAMPLE_REVERT_CONTRACT_RESULT_DETAILS.to,
             "api/v1/tokens/0.0.1466",
@@ -192,11 +192,11 @@ describe("ContractResult.vue", () => {
 
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/contracts/results",
+            "api/v1/transactions",
             "api/v1/network/fees",
             "api/v1/contracts/" + SAMPLE_REVERT_CONTRACT_RESULT_DETAILS_WITH_TRACES.contract_id + "/results/1677504382.107973330",
             "api/v1/contracts/0.0.8942",
             "api/v1/contracts/results/" + SAMPLE_REVERT_CONTRACT_RESULT_DETAILS_WITH_TRACES.hash + "/actions?limit=100",
-            "api/v1/transactions",
             "api/v1/contracts/" + SAMPLE_REVERT_CONTRACT_RESULT_DETAILS_WITH_TRACES.state_changes[0].contract_id,
             "api/v1/contracts/" + SAMPLE_REVERT_CONTRACT_RESULT_DETAILS_WITH_TRACES.state_changes[3].contract_id,
             // "api/v1/contracts/" + SAMPLE_REVERT_CONTRACT_RESULT_DETAILS_WITH_TRACES.state_changes[9].contract_id,

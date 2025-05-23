@@ -5,8 +5,8 @@
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <template>
-  <div v-if="functionHash">
-    <HexaDumpValue :byte-string="functionHash" show-none/>
+  <div v-if="signature">
+    <HexaDumpValue v-if="functionHash" :byte-string="functionHash" show-none/>
     <div class="signature">
       <div class="h-is-extra-text h-should-wrap">{{ signature }}</div>
       <Tooltip v-if="is4byteSignature"

@@ -11,6 +11,7 @@ import axios from "axios";
 import {SignatureCache} from "@/utils/cache/SignatureCache";
 import {routeManager} from "@/router";
 import {fetchGetURLs} from "../../MockUtils.ts";
+import {ethers} from "ethers";
 
 describe("FunctionCallAnalyzer.spec.ts", () => {
 
@@ -66,7 +67,7 @@ describe("FunctionCallAnalyzer.spec.ts", () => {
         await vi.dynamicImportSettled()
         expect(fetchGetURLs(mock)).toStrictEqual([])
         expect(functionCallAnalyzer.functionHash.value).toBe("0x49146bde")
-        expect(functionCallAnalyzer.signature.value).toBe("associateToken(address,address)")
+        expect(functionCallAnalyzer.signature.value).toBe("function associateToken(address account, address token) returns (int64 responseCode)")
         expect(functionCallAnalyzer.inputs.value).toStrictEqual([
             new NameTypeValue("account", "address", "0x845b706151aEd537b1FD81c1Ea4EA03920097ABD", null, null),
             new NameTypeValue("token", "address", "0x0000000000000000000000000000000002E6Ae09", null, null),
@@ -90,7 +91,7 @@ describe("FunctionCallAnalyzer.spec.ts", () => {
         await flushPromises()
         expect(fetchGetURLs(mock)).toStrictEqual([])
         expect(functionCallAnalyzer.functionHash.value).toBe("0x618dc65e")
-        expect(functionCallAnalyzer.signature.value).toBe("redirectForToken(address,bytes)")
+        expect(functionCallAnalyzer.signature.value).toBe("function redirectForToken(address token, bytes encodedFunctionSelector) returns (uint256 balanceOf)")
         expect(functionCallAnalyzer.inputs.value).toEqual([
             {
                 name: 'token',
@@ -133,7 +134,7 @@ describe("FunctionCallAnalyzer.spec.ts", () => {
         await flushPromises()
         expect(fetchGetURLs(mock)).toStrictEqual([])
         expect(functionCallAnalyzer.functionHash.value).toBe("0x49146bde")
-        expect(functionCallAnalyzer.signature.value).toBe("associateToken(address,address)")
+        expect(functionCallAnalyzer.signature.value).toBe("function associateToken(address account, address token) returns (int64 responseCode)")
         expect(functionCallAnalyzer.inputs.value).toStrictEqual([
             new NameTypeValue("account", "address", "0x845b706151aEd537b1FD81c1Ea4EA03920097ABD", null, null),
             new NameTypeValue("token", "address", "0x0000000000000000000000000000000002E6Ae09", null, null),
@@ -230,7 +231,7 @@ describe("FunctionCallAnalyzer.spec.ts", () => {
             "http://localhost:3000/files/any/295/0x00000000000000000000000000000000002E7A5D",
         ])
         expect(functionCallAnalyzer.functionHash.value).toBe("0xf305d719")
-        expect(functionCallAnalyzer.signature.value).toBe("addLiquidityETH(address,uint256,uint256,uint256,address,uint256)")
+        expect(functionCallAnalyzer.signature.value).toBe("function addLiquidityETH(address token, uint256 amountTokenDesired, uint256 amountTokenMin, uint256 amountETHMin, address to, uint256 deadline) payable returns (uint256 amountToken, uint256 amountETH, uint256 liquidity)")
         expect(functionCallAnalyzer.inputs.value).toStrictEqual([
             new NameTypeValue("token", "address", "0x000000000000000000000000000000000022D6de", null, null),
             new NameTypeValue("amountTokenDesired", "uint256", 1445100000000n, null, null),
@@ -338,7 +339,7 @@ describe("FunctionCallAnalyzer.spec.ts", () => {
             "http://localhost:3000/files/any/295/0x00000000000000000000000000000000002E7A5D",
         ])
         expect(functionCallAnalyzer.functionHash.value).toBe("0xf305d719")
-        expect(functionCallAnalyzer.signature.value).toBe("addLiquidityETH(address,uint256,uint256,uint256,address,uint256)")
+        expect(functionCallAnalyzer.signature.value).toBe("function addLiquidityETH(address token, uint256 amountTokenDesired, uint256 amountTokenMin, uint256 amountETHMin, address to, uint256 deadline) payable returns (uint256 amountToken, uint256 amountETH, uint256 liquidity)")
         expect(functionCallAnalyzer.inputs.value).toStrictEqual([
             new NameTypeValue("token", "address", "0x000000000000000000000000000000000022D6de", null, null),
             new NameTypeValue("amountTokenDesired", "uint256", 1445100000000n, null, null),
@@ -380,6 +381,109 @@ describe("FunctionCallAnalyzer.spec.ts", () => {
         expect(functionCallAnalyzer.inputArgsOnly.value).toBe("0x000000000000000000000000000000000000000000000000000000000022d6de0000000000000000000000000000000000000000000000000000015076ac13000000000000000000000000000000000000000000000000000000014ec7ffb1a00000000000000000000000000000000000000000000000000000000f558e95eb00000000000000000000000000000000000000000000000000000000000f45b30000000000000000000000000000000000000000000000000000018cd5a698af")
         expect(functionCallAnalyzer.is4byteSignature.value).toBe(false)
 
+        mock.restore()
+
+    })
+
+    test("Call to verified contract (constructor)", async () => {
+
+        SignatureCache.instance.clear()
+
+        const sourcifyURL = routeManager.currentNetworkEntry.value.sourcifySetup?.repoURL
+
+        const mock = new MockAdapter(axios as any);
+        const matcher1 = sourcifyURL + "files/any/295/0x00000000000000000000000000000000002E7A5D"
+        mock.onGet(matcher1).reply(200, SOURCIFY_RESPONSE)
+        const matcher2 = "api/v1/contracts/" + CONTRACT_DETAILS.contract_id
+        mock.onGet(matcher2).reply(200, CONTRACT_DETAILS)
+
+        // 1) new
+        const input: Ref<string | null> = ref(null)
+        const output: Ref<string | null> = ref(null)
+        const error: Ref<string | null> = ref(null)
+        const contractId: Ref<string | null> = ref(null)
+        const isContractCreate = ref(true)
+        const functionCallAnalyzer = new FunctionCallAnalyzer(input, output, error, contractId, isContractCreate)
+        await flushPromises()
+        expect(fetchGetURLs(mock)).toStrictEqual([])
+        expect(functionCallAnalyzer.functionHash.value).toBeNull()
+        expect(functionCallAnalyzer.signature.value).toBeNull()
+        expect(functionCallAnalyzer.inputs.value).toStrictEqual([])
+        expect(functionCallAnalyzer.outputs.value).toStrictEqual([])
+        expect(functionCallAnalyzer.errorHash.value).toBeNull()
+        expect(functionCallAnalyzer.errorSignature.value).toBeNull()
+        expect(functionCallAnalyzer.errorInputs.value).toStrictEqual([])
+        expect(functionCallAnalyzer.inputDecodingStatus.value).toBeNull()
+        expect(functionCallAnalyzer.outputDecodingStatus.value).toBeNull()
+        expect(functionCallAnalyzer.errorDecodingStatus.value).toBeNull()
+        expect(functionCallAnalyzer.inputArgsOnly.value).toBeNull()
+        expect(functionCallAnalyzer.is4byteSignature.value).toBe(false)
+
+        // 2) mount
+        functionCallAnalyzer.mount()
+        await flushPromises()
+        expect(fetchGetURLs(mock)).toStrictEqual([])
+        expect(functionCallAnalyzer.functionHash.value).toBeNull()
+        expect(functionCallAnalyzer.signature.value).toBeNull()
+        expect(functionCallAnalyzer.inputs.value).toStrictEqual([])
+        expect(functionCallAnalyzer.outputs.value).toStrictEqual([])
+        expect(functionCallAnalyzer.errorHash.value).toBeNull()
+        expect(functionCallAnalyzer.errorSignature.value).toBeNull()
+        expect(functionCallAnalyzer.errorInputs.value).toStrictEqual([])
+        expect(functionCallAnalyzer.inputDecodingStatus.value).toBeNull()
+        expect(functionCallAnalyzer.outputDecodingStatus.value).toBeNull()
+        expect(functionCallAnalyzer.errorDecodingStatus.value).toBeNull()
+        expect(functionCallAnalyzer.inputArgsOnly.value).toBeNull()
+        expect(functionCallAnalyzer.is4byteSignature.value).toBe(false)
+
+        // 3) setup
+        input.value = "0x000000000000000000000000000000000000000000000000000000000036a14300000000000000000000000070b7ba8a89cf329159d30f6c5273901979731661"
+        output.value = "0x"
+        error.value = "0x"
+        contractId.value = "0.0.3045981"
+        await flushPromises()
+        expect(fetchGetURLs(mock)).toStrictEqual([
+            "api/v1/contracts/" + CONTRACT_DETAILS.contract_id,
+            "http://localhost:3000/files/any/295/0x00000000000000000000000000000000002E7A5D",
+        ])
+        expect(functionCallAnalyzer.functionHash.value).toBeNull()
+        expect(functionCallAnalyzer.signature.value).toBe("constructor(address _factory, address _WHBAR)")
+        expect(functionCallAnalyzer.inputs.value).toStrictEqual([
+            new NameTypeValue("_factory", "address", "0x000000000000000000000000000000000036A143", null, null),
+            new NameTypeValue("_WHBAR", "address", "0x70b7bA8A89cf329159d30F6c5273901979731661", null, null),
+        ])
+        expect(functionCallAnalyzer.outputs.value).toStrictEqual([])
+        expect(functionCallAnalyzer.errorHash.value).toBeNull()
+        expect(functionCallAnalyzer.errorSignature.value).toBeNull()
+        expect(functionCallAnalyzer.errorInputs.value).toStrictEqual([])
+        expect(functionCallAnalyzer.inputDecodingStatus.value).toBeNull()
+        expect(functionCallAnalyzer.outputDecodingStatus.value).toBeNull()
+        expect(functionCallAnalyzer.errorDecodingStatus.value).toBeNull()
+        expect(functionCallAnalyzer.inputArgsOnly.value).toBe("0x000000000000000000000000000000000000000000000000000000000036a14300000000000000000000000070b7ba8a89cf329159d30f6c5273901979731661")
+        expect(functionCallAnalyzer.is4byteSignature.value).toBe(false)
+
+
+        // 4) unmount
+        functionCallAnalyzer.unmount()
+        await flushPromises()
+        expect(fetchGetURLs(mock)).toStrictEqual([
+            "api/v1/contracts/" + CONTRACT_DETAILS.contract_id,
+            "http://localhost:3000/files/any/295/0x00000000000000000000000000000000002E7A5D",
+        ])
+        expect(functionCallAnalyzer.functionHash.value).toBeNull()
+        expect(functionCallAnalyzer.signature.value).toBeNull()
+        expect(functionCallAnalyzer.inputs.value).toStrictEqual([])
+        expect(functionCallAnalyzer.outputs.value).toStrictEqual([])
+        expect(functionCallAnalyzer.errorHash.value).toBeNull()
+        expect(functionCallAnalyzer.errorSignature.value).toBeNull()
+        expect(functionCallAnalyzer.errorInputs.value).toStrictEqual([])
+        expect(functionCallAnalyzer.inputDecodingStatus.value).toBeNull()
+        expect(functionCallAnalyzer.outputDecodingStatus.value).toBeNull()
+        expect(functionCallAnalyzer.errorDecodingStatus.value).toBeNull()
+        expect(functionCallAnalyzer.inputArgsOnly.value).toBe("0x000000000000000000000000000000000000000000000000000000000036a14300000000000000000000000070b7ba8a89cf329159d30f6c5273901979731661")
+        expect(functionCallAnalyzer.is4byteSignature.value).toBe(false)
+
+        SignatureCache.instance.clear()
         mock.restore()
 
     })
@@ -443,7 +547,7 @@ describe("FunctionCallAnalyzer.spec.ts", () => {
             "https://www.4byte.directory/api/v1/signatures/?format=json&hex_signature=0xf305d719",
         ])
         expect(functionCallAnalyzer.functionHash.value).toBe("0xf305d719")
-        expect(functionCallAnalyzer.signature.value).toBe("addLiquidityETH(address,uint256,uint256,uint256,address,uint256)")
+        expect(functionCallAnalyzer.signature.value).toBe("function addLiquidityETH(address, uint256, uint256, uint256, address, uint256)")
         expect(functionCallAnalyzer.inputs.value).toStrictEqual([
             new NameTypeValue("", "address", "0x000000000000000000000000000000000022D6de", null, null),
             new NameTypeValue("", "uint256", 1445100000000n, null, null),
@@ -542,7 +646,7 @@ describe("FunctionCallAnalyzer.spec.ts", () => {
         await vi.dynamicImportSettled()
         expect(fetchGetURLs(mock)).toStrictEqual([])
         expect(functionCallAnalyzer.functionHash.value).toBe("0x618dc65e")
-        expect(functionCallAnalyzer.signature.value).toBe("redirectForToken(address,bytes)")
+        expect(functionCallAnalyzer.signature.value).toBe("function redirectForToken(address token, bytes encodedFunctionSelector) returns (bool approve)")
         expect(functionCallAnalyzer.inputs.value).toStrictEqual([
             new NameTypeValue("token", "address", "0x0000000000000000000000000000000000163b5a", null, null),
             new NameTypeValue("encodedFunctionSelector", "bytes", "0x095ea7b300000000000000000000000000000000000000000000000000000000003c437a0000000000000000000000000000000000000000000000008ac7230489e80000", null, null)

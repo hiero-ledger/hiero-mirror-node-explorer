@@ -101,6 +101,7 @@ describe("ContractResultAnalyzer.spec.ts", () => {
         // console.log(JSON.stringify(fetchGetURLs(mock), null, "  "))
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/contracts/results",
+            "api/v1/transactions",
             "api/v1/contracts/0.0.6810663/results/1704186823.658538003",
             "api/v1/contracts/0.0.6810663",
             sourcifyURL + "files/any/295/0x06a50d1f642cA50284EFb59988AF9b60683FAD3F",
@@ -198,6 +199,7 @@ describe("ContractResultAnalyzer.spec.ts", () => {
         // console.log(JSON.stringify(fetchGetURLs(mock), null, "  "))
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/contracts/results",
+            "api/v1/transactions",
             "api/v1/contracts/0.0.6810663/results/1704186823.658538003",
             "api/v1/contracts/0.0.6810663",
             sourcifyURL + "files/any/295/0x06a50d1f642cA50284EFb59988AF9b60683FAD3F",
@@ -271,7 +273,7 @@ describe("ContractResultAnalyzer.spec.ts", () => {
         expect(analyzer.contractType.value).toBeNull()
         expect(analyzer.contractResult.value).toStrictEqual(CONTRACT_RESULT_DETAILS_HTS)
         expect(analyzer.functionCallAnalyzer.functionHash.value).toBe("0x49146bde")
-        expect(analyzer.functionCallAnalyzer.signature.value).toBe("associateToken(address,address)")
+        expect(analyzer.functionCallAnalyzer.signature.value).toBe("function associateToken(address account, address token) returns (int64 responseCode)")
         expect(analyzer.functionCallAnalyzer.is4byteSignature.value).toBe(false)
 
         // 4) unmount
@@ -292,6 +294,7 @@ describe("ContractResultAnalyzer.spec.ts", () => {
         // 5) check history
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/contracts/results",
+            "api/v1/transactions",
             "api/v1/contracts/results/0x4f0887dcc3c3f23ce2e80a2e3c3bfa246d488698d5e0cc17c76ef13262580d73",
         ])
 
