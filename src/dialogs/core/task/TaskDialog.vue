@@ -126,6 +126,10 @@ const props = defineProps({
   width: {
     type: Number,
   },
+  reportSuccess: {
+    type: Boolean,
+    default: true
+  }
 })
 
 enum TaskDialogState {
@@ -162,6 +166,9 @@ const handleConfirmExecute = async () => {
     await props.controller.execute()
     props.controller.executeError.value = null
     changeState(TaskDialogState.Success)
+    if (!props.reportSuccess) {
+      props.controller.showDialog.value = false
+    }
   } catch (error) {
     props.controller.executeError.value = error
     changeState(TaskDialogState.Error)
