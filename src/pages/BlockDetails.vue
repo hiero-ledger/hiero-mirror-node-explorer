@@ -6,7 +6,13 @@
 
 <template>
 
-  <PageFrameV2 page-title="Block Details">
+  <PageFrameV2>
+    <template #page-title>
+      Block
+      <span style="white-space: nowrap; font-size: smaller">
+         {{ block?.number?.toString() ?? "" }}
+      </span>
+    </template>
 
     <template v-if="notification" #banner>
       <NotificationBanner :message="notification"/>
@@ -14,7 +20,7 @@
 
     <DashboardCardV2 collapsible-key="blockDetails">
       <template #title>
-        Block {{ block?.number?.toString() ?? "" }}
+        Block Details
       </template>
 
       <template #right-control>
@@ -39,16 +45,16 @@
       </template>
 
       <template #content>
-        <Property id="count" full-width>
-          <template #name>No. Transactions</template>
-          <template v-slot:value>
-            <PlainAmount :amount="block?.count"/>
-          </template>
-        </Property>
         <Property id="blockHash" full-width>
           <template v-slot:name>Hash</template>
           <template v-slot:value>
             <KeyValue :key-bytes="block?.hash" :show-none="true" key-type="SHA384"/>
+          </template>
+        </Property>
+        <Property id="count" full-width>
+          <template #name>No. Transactions</template>
+          <template v-slot:value>
+            <PlainAmount :amount="block?.count"/>
           </template>
         </Property>
         <Property id="fromTimestamp" full-width>
