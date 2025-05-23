@@ -27,6 +27,22 @@
         </div>
         <span class="mr-1"/>
         <PublicLabel v-if="label" :label-definition="label"/>
+        <BookmarkLabel
+            v-if="bookmark"
+            :entity-bookmark="bookmark"
+            @edit="onAddBookmark()"
+        />
+      </template>
+
+      <template #right-control>
+        <ButtonView
+            v-if="connectionStatus === ProfileConnectionStatus.Connected && !bookmark"
+            id="add-bookmark-button"
+            :size="ButtonSize.small"
+            @action="onAddBookmark()"
+        >
+          <span>ADD BOOKMARK</span>
+        </ButtonView>
       </template>
 
       <template #content>
@@ -133,6 +149,10 @@
 
   </PageFrameV2>
 
+  <EditBookmarkDialog
+      v-model:show-dialog="showEditBookmarkDialog"
+      :entity-id="normalizedTopicId"
+  />
 </template>
 
 <!-- --------------------------------------------------------------------------------------------------------------- -->
@@ -165,6 +185,11 @@ import PlayPauseButton from "@/components/PlayPauseButton.vue";
 import TopicFeesSection from "@/components/topic/TopicFeesSection.vue";
 import PublicLabel from "@/components/values/PublicLabel.vue";
 import {PublicLabelsCache} from "@/utils/cache/PublicLabelsCache.ts";
+import BookmarkLabel from "@/components/values/BookmarkLabel.vue";
+import {ProfileConnectionStatus, ProfileController} from "@/utils/profile/ProfileController.ts";
+import {ButtonSize} from "@/dialogs/core/DialogUtils.ts";
+import ButtonView from "@/elements/ButtonView.vue";
+import EditBookmarkDialog from "@/dialogs/profile/EditBookmarkDialog.vue";
 
 const props = defineProps({
   topicId: {
@@ -176,6 +201,7 @@ const props = defineProps({
 
 const isMediumScreen = inject('isMediumScreen', true)
 const initialLoading = inject(initialLoadingKey, ref(false))
+const profileController = ProfileController.inject()
 
 const validEntityId = computed(() =>
     props.topicId ? EntityID.parse(props.topicId) != null : false
@@ -251,6 +277,19 @@ onMounted(() => indexLookup.mount())
 onBeforeUnmount(() => indexLookup.unmount())
 const index = indexLookup.entity
 const label = computed(() => normalizedTopicId.value ? index.value?.lookup(normalizedTopicId.value) ?? null : null)
+
+//
+// Bookmark
+//
+const bookmark = computed(() =>
+    normalizedTopicId.value ? profileController.findBookmark(normalizedTopicId.value) : null
+)
+const showEditBookmarkDialog = ref(false)
+const onAddBookmark = () => {
+  showEditBookmarkDialog.value = true
+}
+
+const connectionStatus = profileController.connectionStatus
 
 </script>
 
