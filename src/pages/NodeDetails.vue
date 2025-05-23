@@ -6,7 +6,13 @@
 
 <template>
 
-  <PageFrameV2 page-title="Node Details">
+  <PageFrameV2>
+    <template #page-title>
+      Node
+      <span style="white-space: nowrap; font-size: smaller">
+        {{ nodeIdNb }}
+      </span>
+    </template>
 
     <template v-if="notification" #banner>
       <NotificationBanner :message="notification"/>
@@ -14,7 +20,7 @@
 
     <DashboardCardV2>
       <template #title>
-        {{ `Node ${nodeIdNb}` }}
+        Node Details
       </template>
 
       <template #left-content>
