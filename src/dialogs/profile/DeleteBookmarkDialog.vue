@@ -4,6 +4,7 @@
 
   <TaskDialog
       :controller="controller"
+      :report-success="false"
   >
 
     <!-- title -->
@@ -23,7 +24,7 @@
 
 <script setup lang="ts">
 
-import {computed, PropType, Ref} from "vue";
+import {computed, PropType} from "vue";
 import {routeManager} from "@/router.ts";
 import TaskDialog from "@/dialogs/core/task/TaskDialog.vue";
 import {ProfileController} from "@/utils/profile/ProfileController.ts";

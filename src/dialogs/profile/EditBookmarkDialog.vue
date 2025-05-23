@@ -7,6 +7,7 @@
 <template>
   <TaskDialog
       :controller="controller"
+      :report-success="false"
   >
 
     <!-- title -->
