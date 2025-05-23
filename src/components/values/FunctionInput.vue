@@ -20,7 +20,7 @@
       <div class="h-sub-section">Input</div>
 
       <template v-for="arg in inputs" :key="arg.name">
-        <Property :custom-nb-col-class="customNbColClass">
+        <Property :custom-nb-col-class="customNbColClass" :keep-case="true">
           <template #name>
             <span style="padding-left: 16px;">{{ arg.name }}</span>
           </template>
