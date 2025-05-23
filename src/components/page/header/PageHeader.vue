@@ -41,7 +41,12 @@
     <!--  Second line of page header-->
     <div class="l2">
       <template v-if="isMediumScreen">
-        <div class="title">{{ props.pageTitle }}</div>
+        <div v-if="slots['page-title']" class="title">
+          <slot name="page-title"/>
+        </div>
+        <div v-else class="title">
+          {{ props.pageTitle }}
+        </div>
         <SearchBar/>
       </template>
       <template v-else>
@@ -49,7 +54,12 @@
           <SearchBar @search="onSearch" style="flex-grow: 1"/>
         </template>
         <template v-else>
-          <div class="title">{{ props.pageTitle }}</div>
+          <div v-if="slots['page-title']" class="title">
+            <slot name="page-title"/>
+          </div>
+          <div v-else class="title">
+            {{ props.pageTitle }}
+          </div>
           <button class="search-button" @click="onClick" data-cy="mobile-search-button">
             <Search :size="18" class="search-icon"/>
           </button>
@@ -74,7 +84,7 @@ import AxiosStatus from "@/components/AxiosStatus.vue";
 import TabBar from "@/components/page/header/TabBar.vue";
 import SearchBar from "@/components/search/SearchBar.vue";
 import ConnectWalletButton from "@/components/page/header/wallet/ConnectWalletButton.vue";
-import {computed, inject, ref} from "vue";
+import {computed, inject, PropType, ref, useSlots} from "vue";
 import {routeManager, walletManager} from "@/router.ts";
 import {WalletManagerStatus} from "@/utils/wallet/WalletManagerV4.ts";
 import WalletStatusButton from "@/components/page/header/wallet/WalletStatusButton.vue";
@@ -83,11 +93,12 @@ import {Search} from "lucide-vue-next";
 
 const props = defineProps({
   pageTitle: {
-    type: String,
-    required: true,
+    type: String as PropType<string | null>,
+    default: null,
   }
 })
 
+const slots = useSlots()
 const isLargeScreen = inject('isLargeScreen', true)
 const isMediumScreen = inject('isMediumScreen', true)
 const enableWallet = routeManager.enableWallet
@@ -145,6 +156,7 @@ div.right {
 div.l2 {
   align-items: center;
   display: flex;
+  gap: 16px;
   height: 72px;
   justify-content: space-between;
 }
@@ -160,7 +172,7 @@ div.title {
 
 @media (min-width: 1080px) {
   div.title {
-    font-size: 32px;
+    font-size: 26px;
     font-weight: 400;
     height: 42px;
     line-height: 36px;
