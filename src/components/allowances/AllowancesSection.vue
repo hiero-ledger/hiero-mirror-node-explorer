@@ -16,7 +16,6 @@
       <ButtonView
           v-if="isWalletConnected && isHieroWallet"
           id="approve-button"
-          :is-default="true"
           :size="ButtonSize.small"
           @action="onClick"
       >

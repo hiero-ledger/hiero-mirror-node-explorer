@@ -21,7 +21,6 @@
     <template #right-control>
       <ButtonView
           v-if="isVerificationAvailable && !isVerified"
-          :is-default="true"
           :size="ButtonSize.small"
           @action="showVerifyDialog = true"
       >
@@ -39,7 +38,6 @@
             <ButtonView
                 v-if="!isFullMatch"
                 id="verify-button"
-                :is-default="true"
                 :size="ButtonSize.small"
                 @action="showVerifyDialog = true"
             >
