@@ -28,7 +28,6 @@
         <template v-if="accountId">
           <span> for account </span>
           <AccountLink :account-id="accountId"/>
-          <span class="checksum">-{{ accountChecksum }}</span>
         </template>
       </template>
 
@@ -241,10 +240,6 @@ p.staking-notice {
   font-size: 10px;
   font-weight: 400;
   height: 13px;
-}
-
-span.checksum {
-  color: var(--text-secondary);
 }
 
 p.connect-wallet-text {

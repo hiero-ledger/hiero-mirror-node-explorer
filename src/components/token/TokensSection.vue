@@ -26,7 +26,6 @@
         <ButtonView
             id="reject-button"
             :enabled="rejectButtonEnabled"
-            :is-default="true"
             :size="ButtonSize.small"
             @action="onReject"
         >
@@ -40,7 +39,6 @@
         <ButtonView
             id="claim-button"
             :enabled="claimActionEnabled"
-            :is-default="true"
             :size="ButtonSize.small"
             @action="onClaim"
         >

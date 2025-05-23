@@ -16,7 +16,6 @@
           v-if="collapseAllVisible"
           id="collapseAllButton"
           :enabled="!collapseAllDisabled"
-          :is-default="true"
           :size="ButtonSize.small"
           @action="collapseAll"
       >
@@ -25,7 +24,6 @@
       <ButtonView
           v-else
           id="expandAllButton"
-          :is-default="true"
           :size="ButtonSize.small"
           @action="expandAll"
       >
