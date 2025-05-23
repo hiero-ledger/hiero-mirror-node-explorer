@@ -25,10 +25,6 @@
         :striped="true"
         :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
 
-        aria-current-label="Current page"
-        aria-next-label="Next page"
-        aria-page-label="Page"
-        aria-previous-label="Previous page"
         customRowKey="account"
     >
       <o-table-column v-slot="props" field="account" label="ACCOUNT ID">

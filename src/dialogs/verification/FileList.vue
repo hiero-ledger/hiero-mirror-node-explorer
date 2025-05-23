@@ -36,10 +36,7 @@
         :paginated="isPaginated"
         pagination-order="centered"
         :per-page="perPage"
-        aria-current-label="Current page"
-        aria-next-label="Next page"
-        aria-page-label="Page"
-        aria-previous-label="Previous page">
+    >
 
       <o-table-column v-slot="props" field="type_and_name">
         <div class="table-row ">

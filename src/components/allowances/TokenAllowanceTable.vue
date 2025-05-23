@@ -19,11 +19,6 @@
       :striped="true"
 
       :total="total"
-      aria-current-label="Current page"
-      aria-next-label="Next page"
-      aria-page-label="Page"
-
-      aria-previous-label="Previous page"
       backend-pagination
       customRowKey="spender"
       default-sort="spender"

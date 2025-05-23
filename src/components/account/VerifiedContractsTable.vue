@@ -16,11 +16,7 @@
 
       :per-page="perPage"
       :striped="true"
-      aria-current-label="Current page"
 
-      aria-next-label="Next page"
-      aria-page-label="Page"
-      aria-previous-label="Previous page"
       customRowKey="contract_id"
       @cell-click="handleClick"
   >

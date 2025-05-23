@@ -22,10 +22,6 @@
       :striped="true"
       :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
 
-      aria-current-label="Current page"
-      aria-next-label="Next page"
-      aria-page-label="Page"
-      aria-previous-label="Previous page"
       customRowKey="token_id"
   >
     <o-table-column v-slot="props" field="contract_id" label="CONTRACT ID">

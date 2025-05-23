@@ -37,10 +37,6 @@
             :range-before="1"
             :range-after="1"
             :per-page="pageSize"
-            aria-next-label="Next page"
-            aria-previous-label="Previous page"
-            aria-page-label="Page"
-            aria-current-label="Current page"
         >
         </o-pagination>
       </div>

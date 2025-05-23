@@ -23,10 +23,6 @@
         :striped="false"
         :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
 
-        aria-current-label="Current page"
-        aria-next-label="Next page"
-        aria-page-label="Page"
-        aria-previous-label="Previous page"
     >
 
       <o-table-column v-slot="props" field="call_type" label="CALL TYPE">

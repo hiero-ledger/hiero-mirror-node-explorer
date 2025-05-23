@@ -26,10 +26,6 @@
       v-model:checked-rows="checkedRows"
       :checkable="props.checkEnabled"
 
-      aria-current-label="Current page"
-      aria-next-label="Next page"
-      aria-page-label="Page"
-      aria-previous-label="Previous page"
   >
     <o-table-column v-slot="{ row }" field="token_id" label="TOKEN ID">
       <TokenIOL class="token-id-label" :token-id="row.token_id"/>
