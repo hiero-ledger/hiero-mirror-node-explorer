@@ -1,13 +1,15 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import {FunctionCallAnalyzer} from "@/utils/analyzer/FunctionCallAnalyzer"
-import {ContractResultDetails} from "@/schemas/MirrorNodeSchemas"
+import {ContractResultDetails, Transaction, TransactionType} from "@/schemas/MirrorNodeSchemas"
 import {EntityID} from "@/utils/EntityID"
 import {computed, ref, Ref, watch, WatchStopHandle} from "vue"
 import {ContractResultByTsCache} from "@/utils/cache/ContractResultByTsCache";
 import {ContractByAddressCache} from "@/utils/cache/ContractByAddressCache";
 import {systemContractRegistry} from "@/schemas/SystemContractRegistry";
 import {routeManager} from "@/router.ts";
+import {TransactionByTsCache} from "@/utils/cache/TransactionByTsCache.ts";
+import {EntityLookup} from "@/utils/cache/base/EntityCache.ts";
 
 export class ContractResultAnalyzer {
 
@@ -17,6 +19,7 @@ export class ContractResultAnalyzer {
     public readonly toId: Ref<string | null> = ref(null)
     public readonly fromId: Ref<string | null> = ref(null)
     private readonly watchHandle: Ref<WatchStopHandle[]> = ref([])
+    private readonly transactionLookup: EntityLookup<string, Transaction|null>
 
     //
     // Public
@@ -24,7 +27,9 @@ export class ContractResultAnalyzer {
 
     public constructor(timestamp: Ref<string | null>) {
         this.timestamp = timestamp
-        this.functionCallAnalyzer = new FunctionCallAnalyzer(this.input, this.output, this.error, this.toId)
+        this.functionCallAnalyzer = new FunctionCallAnalyzer(
+            this.input, this.output, this.error, this.toId, this.isContractCreate)
+        this.transactionLookup = TransactionByTsCache.instance.makeLookup(timestamp)
     }
 
     public mount(): void {
@@ -32,10 +37,12 @@ export class ContractResultAnalyzer {
             watch(this.timestamp, this.updateContractResult, {immediate: true}),
         ]
         this.functionCallAnalyzer.mount()
+        this.transactionLookup.mount()
     }
 
     public unmount(): void {
         this.functionCallAnalyzer.unmount()
+        this.transactionLookup.unmount()
         for (const wh of this.watchHandle.value) {
             wh()
         }
@@ -98,6 +105,9 @@ export class ContractResultAnalyzer {
 
     private readonly error = computed(
         () => this.contractResult.value?.error_message ?? null)
+
+    private readonly isContractCreate = computed(
+        () => this.transactionLookup.entity.value?.name === TransactionType.CONTRACTCREATEINSTANCE )
 
     private readonly updateContractResult = async () => {
         if (this.timestamp.value !== null) {

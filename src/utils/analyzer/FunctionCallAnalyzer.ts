@@ -13,12 +13,9 @@ import {
 
 export class FunctionCallAnalyzer {
 
-    public readonly input: Ref<string | null>
-    public readonly output: Ref<string | null>
-    public readonly error: Ref<string | null>
     private readonly contractAnalyzer: ContractAnalyzer
     private readonly signatureResponse = shallowRef<SignatureResponse | null>(null)
-    private readonly functionFragment = shallowRef<ethers.FunctionFragment | null>(null)
+    private readonly functionFragment = shallowRef<ethers.FunctionFragment | ethers.ConstructorFragment | null>(null)
     private readonly is4byteFunctionFragment = ref<boolean>(false)
     private readonly functionDecodingFailure = shallowRef<unknown>(null)
     private readonly inputResult = shallowRef<ethers.Result | null>(null)
@@ -33,10 +30,12 @@ export class FunctionCallAnalyzer {
     // Public
     //
 
-    public constructor(input: Ref<string | null>, output: Ref<string | null>, error: Ref<string | null>, contractId: Ref<string | null>) {
-        this.input = input
-        this.output = output
-        this.error = error
+    public constructor(
+        public readonly input: Ref<string | null>,
+        public readonly output: Ref<string | null>,
+        public readonly error: Ref<string | null>,
+        public readonly contractId: Ref<string | null>,
+        public readonly contractCreate: Ref<boolean> = ref(false)) {
         this.contractAnalyzer = new ContractAnalyzer(contractId)
     }
 
@@ -81,13 +80,19 @@ export class FunctionCallAnalyzer {
         return this.error.value == "0x" ? null : this.error.value
     })
 
-    public readonly functionHash: ComputedRef<string | null> = computed(() => {
-        const input = this.normalizedInput.value
-        return input !== null ? input.slice(0, 10) : null
+    public readonly functionHash: ComputedRef<string|null> = computed(() => {
+        let result: string|null
+        if (this.contractCreate.value) {
+            result = null
+        } else {
+            const input = this.normalizedInput.value
+            result = input !== null ? input.slice(0, 10) : null
+        }
+        return result
     })
 
     public readonly signature: ComputedRef<string | null> = computed(() => {
-        return this.functionFragment.value?.format() ?? null
+        return this.functionFragment.value?.format("full") ?? null
     })
 
     public readonly is4byteSignature: ComputedRef<boolean> = computed(() => {
@@ -119,7 +124,7 @@ export class FunctionCallAnalyzer {
 
     public readonly outputs: ComputedRef<NameTypeValue[]> = computed(() => {
         const result: NameTypeValue[] = []
-        if (this.functionFragment.value !== null && this.outputResult.value !== null) {
+        if (this.functionFragment.value instanceof ethers.FunctionFragment && this.outputResult.value !== null) {
             const results = this.outputResult.value
             const fragmentOutputs = this.functionFragment.value.outputs
             for (let i = 0, count = results.length; i < count; i += 1) {
@@ -192,7 +197,13 @@ export class FunctionCallAnalyzer {
     public readonly inputArgsOnly = computed(() => {
         let result: string | null
         if (this.normalizedInput.value !== null) {
-            result = "0x" + this.normalizedInput.value.slice(10) // "0x" + 2x4 bytes
+            if (this.contractCreate.value) {
+                // constructor input has no 4-bytes selector
+                result = this.normalizedInput.value
+            } else {
+                // function input starts with 4-bytes selector => we remove it
+                result = "0x" + this.normalizedInput.value.slice(10) // "0x" + 2x4 bytes
+            }
         } else {
             result = null
         }
@@ -229,10 +240,16 @@ export class FunctionCallAnalyzer {
         const contractId = this.contractAnalyzer.contractId.value
         const inputArgs = this.inputArgsOnly.value
 
+        if (i !== null) {
+            try {
+                if (this.contractCreate.value) {
 
-        if (functionHash !== null && inputArgs !== null && contractId !== null) {
-            if (i !== null) {
-                try {
+                    this.functionFragment.value = getConstructor(i)
+                    this.functionDecodingFailure.value = null
+                    this.is4byteFunctionFragment.value = false
+
+                } else if (functionHash !== null && inputArgs !== null && contractId !== null) {
+
                     const ff = i.getFunction(functionHash)
                     this.functionDecodingFailure.value = null
                     this.is4byteFunctionFragment.value = false
@@ -244,33 +261,33 @@ export class FunctionCallAnalyzer {
                     } else {
                         this.functionFragment.value = ff
                     }
-                } catch (failure) {
-                    this.functionFragment.value = null
-                    this.functionDecodingFailure.value = failure
-                    this.is4byteFunctionFragment.value = false
-                }
-            } else if (r !== null && r.results.length >= 1) {
-                let r0: SignatureRecord | null
-                if (r.results.length == 1) {
-                    r0 = r.results[0]
-                } else {
-                    // Mmmm ... we have multiple signatures for this selector … :(
-                    // We take the first one which enables to decode input… if we have input … :/
-                    if (this.inputArgsOnly.value !== null) {
-                        r0 = FunctionCallAnalyzer.resolveSignatureCollisions(r.results, this.inputArgsOnly.value)
-                    } else {
-                        r0 = null // We'll see later when this.input.value is available
-                    }
-                }
-                if (r0 !== null) {
-                    this.functionFragment.value = ethers.FunctionFragment.from(r0.text_signature)
-                    this.functionDecodingFailure.value = null
-                    this.is4byteFunctionFragment.value = true
                 } else {
                     this.functionFragment.value = null
                     this.functionDecodingFailure.value = null
                     this.is4byteFunctionFragment.value = false
                 }
+            } catch (failure) {
+                this.functionFragment.value = null
+                this.functionDecodingFailure.value = failure
+                this.is4byteFunctionFragment.value = false
+            }
+        } else if (r !== null && r.results.length >= 1) {
+            let r0: SignatureRecord | null
+            if (r.results.length == 1) {
+                r0 = r.results[0]
+            } else {
+                // Mmmm ... we have multiple signatures for this selector … :(
+                // We take the first one which enables to decode input… if we have input … :/
+                if (this.inputArgsOnly.value !== null) {
+                    r0 = FunctionCallAnalyzer.resolveSignatureCollisions(r.results, this.inputArgsOnly.value)
+                } else {
+                    r0 = null // We'll see later when this.input.value is available
+                }
+            }
+            if (r0 !== null) {
+                this.functionFragment.value = ethers.FunctionFragment.from(r0.text_signature)
+                this.functionDecodingFailure.value = null
+                this.is4byteFunctionFragment.value = true
             } else {
                 this.functionFragment.value = null
                 this.functionDecodingFailure.value = null
@@ -289,16 +306,29 @@ export class FunctionCallAnalyzer {
         const contractId = this.contractAnalyzer.contractId.value
         const functionHash = this.functionHash.value
 
-        if (ff !== null && inputArgs !== null) {
+        if (inputArgs !== null) {
             try {
-                if (contractId !== null && functionHash !== null) {
-                    if (isRedirectForTokenTx(contractId, functionHash)) {
-                        this.inputResult.value = decodeRedirectForTokenInput(ff, inputArgs)
-                        this.inputDecodingFailure.value = null
+                if (ff instanceof ethers.FunctionFragment) {
+                    // Call is a function
+                    if (contractId !== null && functionHash !== null) {
+                        if (isRedirectForTokenTx(contractId, functionHash)) {
+                            this.inputResult.value = decodeRedirectForTokenInput(ff, inputArgs)
+                            this.inputDecodingFailure.value = null
+                        } else {
+                            this.inputResult.value = ethers.AbiCoder.defaultAbiCoder().decode(ff.inputs, inputArgs)
+                            this.inputDecodingFailure.value = null
+                        }
                     } else {
-                        this.inputResult.value = ethers.AbiCoder.defaultAbiCoder().decode(ff.inputs, inputArgs)
+                        this.inputResult.value = null
                         this.inputDecodingFailure.value = null
                     }
+                } else if (ff instanceof ethers.ConstructorFragment) {
+                    // Call is a constructor
+                    this.inputResult.value = ethers.AbiCoder.defaultAbiCoder().decode(ff.inputs, inputArgs)
+                    this.inputDecodingFailure.value = null
+                } else {
+                    this.inputResult.value = null
+                    this.inputDecodingFailure.value = null
                 }
             } catch (failure) {
                 this.inputResult.value = null
@@ -313,7 +343,7 @@ export class FunctionCallAnalyzer {
     private readonly updateOutputResult = () => {
         const ff = this.functionFragment.value
         const output = this.normalizedOutput.value
-        if (ff !== null && output !== null) {
+        if (ff instanceof ethers.FunctionFragment && output !== null) {
             try {
                 this.outputResult.value = ethers.AbiCoder.defaultAbiCoder().decode(ff.outputs, output)
                 this.outputDecodingFailure.value = null
@@ -393,4 +423,10 @@ export class NameTypeValue {
         this.indexed = indexed
         this.comment = comment
     }
+}
+
+
+function getConstructor(i: ethers.Interface): ethers.ConstructorFragment|null {
+    const result = i.fragments.find((f: ethers.Fragment): boolean => ethers.ConstructorFragment.isFragment(f))
+    return result as ethers.ConstructorFragment|null
 }
