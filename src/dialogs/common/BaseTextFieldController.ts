@@ -16,11 +16,15 @@ export class BaseTextFieldController {
 
     public constructor(oldText: Ref<string | null>) {
         this.oldText = oldText
+        watch(this.oldText, () => {
+            if (this.oldText.value) {
+                this.inputText.value = this.oldText.value
+            }
+        }, {immediate: true})
         watch(this.inputText, this.inputTextDidChange, {immediate: true})
     }
 
-    public readonly newText = computed(
-        () => this.newTextRef.value)
+    public readonly newText = computed(() => this.newTextRef.value)
 
     //
     // Private
