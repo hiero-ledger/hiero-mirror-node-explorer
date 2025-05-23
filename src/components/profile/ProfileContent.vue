@@ -94,17 +94,9 @@
           :narrowed="true"
           :paginated="bookmarks.length > perPage"
           pagination-order="centered"
-          :range-before="1"
-          :range-after="1"
-
           :per-page="perPage"
           :striped="true"
-          aria-current-label="Current page"
-
-          aria-next-label="Next page"
-          aria-page-label="Page"
-          aria-previous-label="Previous page"
-          customRowKey="contract_id"
+          row-key="contract_id"
       >
 
         <o-table-column v-slot="props" field="name" label="NAME">
@@ -156,6 +148,7 @@
 
 <script setup lang="ts">
 
+import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
 import {ProfileConnectionStatus, ProfileController} from "@/utils/profile/ProfileController.ts";
 import {ButtonSize} from "@/dialogs/core/DialogUtils.ts";
 import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints.ts";
