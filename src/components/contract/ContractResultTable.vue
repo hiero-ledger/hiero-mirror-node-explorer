@@ -86,7 +86,6 @@ import EVMAddress from "@/components/values/EVMAddress.vue";
 import {decodeSolidityErrorMessage} from "@/schemas/MirrorNodeUtils.ts";
 import HbarAmount from "@/components/values/HbarAmount.vue";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
-import {AppStorage} from "@/AppStorage";
 import {TriangleAlert} from 'lucide-vue-next';
 
 const props = defineProps({

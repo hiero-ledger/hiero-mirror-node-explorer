@@ -62,7 +62,7 @@
 <script setup lang="ts">
 import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
 import {computed, PropType,} from "vue"
-import {NftTransactionTransfer, Transaction, TransactionType,} from "@/schemas/MirrorNodeSchemas"
+import {NftTransactionTransfer, TransactionType,} from "@/schemas/MirrorNodeSchemas"
 import NftTransactionSummary from "@/components/transaction/NftTransactionSummary.vue"
 import TimestampValue from "@/components/values/TimestampValue.vue"
 import TransactionLabel from "@/components/values/TransactionLabel.vue"

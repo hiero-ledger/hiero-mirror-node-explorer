@@ -85,7 +85,6 @@ import TokenLink from "@/components/values/link/TokenLink.vue";
 import {walletManager} from "@/router";
 import {NftAllowanceTableController} from "@/components/allowances/NftAllowanceTableController";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
-import {AppStorage} from "@/AppStorage";
 
 const emit = defineEmits(["deleteAllowance"])
 

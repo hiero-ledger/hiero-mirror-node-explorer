@@ -100,7 +100,6 @@ import {routeManager} from "@/router";
 import NftCell, {NftCellItem} from "@/components/token/NftCell.vue";
 import {NftsTableController} from "@/components/account/NftsTableController";
 import TokenCell, {TokenCellItem} from "@/components/token/TokenCell.vue";
-import {AppStorage} from "@/AppStorage";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
 import TokenIOL from "@/components/values/link/TokenIOL.vue";
 import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";

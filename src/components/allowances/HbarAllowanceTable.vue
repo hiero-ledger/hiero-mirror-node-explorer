@@ -78,7 +78,6 @@ import AccountLink from "@/components/values/link/AccountLink.vue";
 import HbarAmount from "@/components/values/HbarAmount.vue";
 import {walletManager} from "@/router";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
-import {AppStorage} from "@/AppStorage";
 
 const emit = defineEmits(["editAllowance"])
 

@@ -76,7 +76,6 @@ import {ContractTableController} from "@/components/contract/ContractTableContro
 import ContractName from "@/components/values/ContractName.vue";
 import ContractIOL from "@/components/values/link/ContractIOL.vue";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
-import {AppStorage} from "@/AppStorage";
 
 const props = defineProps({
   controller: {

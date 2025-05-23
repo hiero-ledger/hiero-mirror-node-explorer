@@ -86,7 +86,6 @@ import InfoTooltip from "@/components/InfoTooltip.vue";
 import {NftAllSerialsAllowanceTableController} from "@/components/allowances/NftAllSerialsAllowanceTableController";
 import {isValidAssociation} from "@/schemas/MirrorNodeUtils.ts";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
-import {AppStorage} from "@/AppStorage";
 
 interface DisplayedNftAllowance extends NftAllowance {
   isEditable: boolean

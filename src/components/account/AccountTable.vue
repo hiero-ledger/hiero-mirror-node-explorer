@@ -99,7 +99,6 @@ import EmptyTable from "@/components/EmptyTable.vue";
 import {AccountTableController} from "@/components/account/AccountTableController";
 import AccountIOL from "@/components/values/link/AccountIOL.vue";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
-import {AppStorage} from "@/AppStorage";
 
 const props = defineProps({
   controller: {
