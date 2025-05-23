@@ -11,7 +11,7 @@
     <div class="h-sub-section">Output</div>
 
     <template v-for="result in outputs" :key="result.name">
-      <Property :custom-nb-col-class="customNbColClass">
+      <Property :custom-nb-col-class="customNbColClass" :keep-case="true">
         <template v-slot:name>
           <span style="padding-left: 16px;">{{ result.name }}</span>
         </template>
