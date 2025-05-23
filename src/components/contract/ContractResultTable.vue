@@ -20,7 +20,7 @@
 
       :total="total"
       backend-pagination
-      customRowKey="consensus_timestamp"
+      row-key="consensus_timestamp"
       default-sort="consensus_timestamp"
       @cell-click="handleClick"
       @page-change="onPageChange">

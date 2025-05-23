@@ -24,7 +24,7 @@
       :striped="true"
       :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
 
-      customRowKey="consensus_timestamp"
+      row-key="consensus_timestamp"
   >
     <o-table-column v-slot="props" field="timestamp" label="ID">
       <TransactionLabel

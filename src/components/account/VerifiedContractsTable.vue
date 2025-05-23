@@ -17,7 +17,7 @@
       :per-page="perPage"
       :striped="true"
 
-      customRowKey="contract_id"
+      row-key="contract_id"
       @cell-click="handleClick"
   >
 

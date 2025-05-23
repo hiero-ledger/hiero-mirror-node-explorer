@@ -23,7 +23,7 @@
       :striped="true"
       :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
 
-      customRowKey="contract_id"
+      row-key="contract_id"
   >
     <o-table-column v-slot="props" field="contract_id" label="ID">
       <ContractIOL class="contract_id" :contract-id="props.row.contract_id"/>

@@ -23,7 +23,7 @@
       :striped="true"
       :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
 
-      customRowKey="number"
+      row-key="number"
   >
     <o-table-column v-slot="props" field="number" label="NUMBER">
       <p class="block_number">{{ props.row.number }}</p>

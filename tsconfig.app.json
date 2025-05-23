@@ -13,6 +13,6 @@
   "vueCompilerOptions": {
     "strictTemplates": true,
     "fallthroughAttributes": true,
-    "dataAttributes": ["id","data-cy","customRowKey"]
+    "dataAttributes": ["id","data-cy"]
   }
 }

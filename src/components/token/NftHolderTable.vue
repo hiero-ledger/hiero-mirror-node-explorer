@@ -24,7 +24,7 @@
         :striped="true"
         :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
 
-        customRowKey="serial_number"
+        row-key="serial_number"
     >
       <o-table-column v-slot="props" field="image" label="PREVIEW">
         <NftCell

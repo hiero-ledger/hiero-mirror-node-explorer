@@ -20,7 +20,7 @@
 
       :total="total"
       backend-pagination
-      customRowKey="spender"
+      row-key="spender"
       default-sort="spender"
       @page-change="onPageChange">
 

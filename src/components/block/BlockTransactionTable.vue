@@ -17,7 +17,7 @@
       :per-page="perPage"
       :striped="true"
       :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
-      customRowKey="consensus_timestamp"
+      row-key="consensus_timestamp"
       @cell-click="handleClick"
   >
     <o-table-column v-slot="props" field="transaction_id" label="ID">

@@ -16,7 +16,7 @@
       :per-page="isMediumScreen ? pageSize : 5"
       :striped="true"
       :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
-      customRowKey="transaction_id"
+      row-key="transaction_id"
       @cell-click="handleClick"
   >
     <o-table-column v-slot="props" field="transaction_id" label="ID">

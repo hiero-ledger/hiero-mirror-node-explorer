@@ -22,7 +22,7 @@
       :striped="true"
       :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
 
-      customRowKey="token_id"
+      row-key="token_id"
   >
     <o-table-column v-slot="props" field="contract_id" label="CONTRACT ID">
       <ContractIOL class="h-is-bold" :contract-id="props.row.contractId"/>

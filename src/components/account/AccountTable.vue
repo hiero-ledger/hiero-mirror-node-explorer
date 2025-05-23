@@ -23,7 +23,7 @@
       :striped="true"
       :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
 
-      customRowKey="account"
+      row-key="account"
   >
     <o-table-column v-slot="props" field="account" label="ID">
       <AccountIOL class="account_id" :account-id="props.row.account"/>

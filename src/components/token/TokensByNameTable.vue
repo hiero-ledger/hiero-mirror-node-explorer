@@ -22,7 +22,7 @@
       :striped="true"
       :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
 
-      customRowKey="token_id"
+      row-key="token_id"
   >
     <o-table-column v-slot="props" field="token_id" label="TOKEN">
       <TokenIOL class="h-is-bold" :token-id="props.row.token_id"/>
