@@ -5,7 +5,7 @@
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <template>
-  <div class="hover-container">
+  <div>
     <Tooltip>
       <div
           v-if="label"
@@ -77,7 +77,6 @@ const navigate = (url: string | null) => {
 
 <style scoped>
 
-.hover-container,
 .entity-label {
   align-items: center;
   display: flex;
