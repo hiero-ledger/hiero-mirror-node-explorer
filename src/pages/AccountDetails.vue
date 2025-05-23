@@ -36,6 +36,7 @@
         <BookmarkLabel
             v-if="bookmark"
             :entity-bookmark="bookmark"
+            @edit="onEditBookmark()"
         />
         <ArrowLink
             v-if="showContractVisible && contractRoute"
@@ -52,6 +53,14 @@
             @action="onUpdateAccount"
         >
           UPDATE ACCOUNT
+        </ButtonView>
+        <ButtonView
+            v-if="connectionStatus === ProfileConnectionStatus.Connected && !bookmark"
+            id="add-bookmark-button"
+            :size="ButtonSize.small"
+            @action="onEditBookmark()"
+        >
+          <span>ADD BOOKMARK</span>
         </ButtonView>
       </template>
 
@@ -337,6 +346,10 @@
 
   </PageFrameV2>
 
+  <EditBookmarkDialog
+      v-model:show-dialog="showEditBookmarkDialog"
+      :entity-id="normalizedAccountId"
+  />
 </template>
 
 <!-- --------------------------------------------------------------------------------------------------------------- -->
@@ -400,7 +413,8 @@ import PublicLabel from "@/components/values/PublicLabel.vue";
 import {PublicLabelsCache} from "@/utils/cache/PublicLabelsCache.ts";
 import router, {routeManager, walletManager} from "@/utils/RouteManager.ts";
 import BookmarkLabel from "@/components/values/BookmarkLabel.vue";
-import {ProfileController} from "@/utils/profile/ProfileController.ts";
+import {ProfileConnectionStatus, ProfileController} from "@/utils/profile/ProfileController.ts";
+import EditBookmarkDialog from "@/dialogs/profile/EditBookmarkDialog.vue";
 
 const props = defineProps({
   accountId: String,
@@ -565,6 +579,10 @@ const label = computed(() =>
 const bookmark = computed(() =>
     accountLocParser.accountId.value ? profileController.findBookmark(accountLocParser.accountId.value) : null
 )
+const showEditBookmarkDialog = ref(false)
+const onEditBookmark = () => {
+  showEditBookmarkDialog.value = true
+}
 
 //
 // Account Update
@@ -581,6 +599,7 @@ const isHieroWallet = computed(() => walletManager.isHieroWallet.value)
 const isAccountEditable = computed(() => isMyAccount.value && isHieroWallet.value
 )
 
+const connectionStatus = profileController.connectionStatus
 const hbarBalance = balanceAnalyzer.hbarBalance
 const transactionType = transactionTableController.transactionType
 const loaded = verifiedContractsController.loaded
