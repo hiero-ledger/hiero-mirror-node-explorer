@@ -23,14 +23,27 @@
         <span v-if="tokenInfo">
           {{ tokenInfo.type === 'NON_FUNGIBLE_UNIQUE' ? 'NFT Collection' : 'Fungible Token' }}
         </span>
-        <div class="title-extra">
+        <div class="card-title-extra">
           {{ `${displayName} (${displaySymbol})` }}
         </div>
         <span class="mr-1"/>
         <PublicLabel v-if="label" :label-definition="label"/>
+        <BookmarkLabel
+            v-if="bookmark"
+            :entity-bookmark="bookmark"
+            @edit="onAddBookmark"
+        />
       </template>
 
       <template #right-control>
+        <ButtonView
+            v-if="connectionStatus === ProfileConnectionStatus.Connected && !bookmark"
+            id="add-bookmark-button"
+            :size="ButtonSize.small"
+            @action="onAddBookmark()"
+        >
+          <span>ADD BOOKMARK</span>
+        </ButtonView>
         <TokenActions
             v-if="isWalletConnected"
             :analyzer="tokenAnalyzer"
@@ -210,6 +223,10 @@
 
   </PageFrameV2>
 
+  <EditBookmarkDialog
+      v-model:show-dialog="showEditBookmarkDialog"
+      :entity-id="normalizedTokenId"
+  />
 </template>
 
 <!-- --------------------------------------------------------------------------------------------------------------- -->
@@ -218,7 +235,7 @@
 
 <script setup lang="ts">
 
-import {computed, inject, onBeforeUnmount, onMounted} from 'vue';
+import {computed, inject, onBeforeUnmount, onMounted, ref} from 'vue';
 import {useRouter} from "vue-router";
 import TimestampValue from "@/components/values/TimestampValue.vue";
 import TokenBalanceTable from "@/components/token/TokenBalanceTable.vue";
@@ -255,6 +272,11 @@ import EntityIDView from "@/components/values/EntityIDView.vue";
 import PublicLabel from "@/components/values/PublicLabel.vue";
 import {PublicLabelsCache} from "@/utils/cache/PublicLabelsCache.ts";
 import {routeManager, walletManager} from "@/utils/RouteManager.ts";
+import BookmarkLabel from "@/components/values/BookmarkLabel.vue";
+import {ProfileConnectionStatus, ProfileController} from "@/utils/profile/ProfileController.ts";
+import {ButtonSize} from "@/dialogs/core/DialogUtils.ts";
+import ButtonView from "@/elements/ButtonView.vue";
+import EditBookmarkDialog from "@/dialogs/profile/EditBookmarkDialog.vue";
 
 const props = defineProps({
   tokenId: {
@@ -266,6 +288,7 @@ const props = defineProps({
 
 const isMediumScreen = inject('isMediumScreen', true)
 const networkConfig = NetworkConfig.inject()
+const profileController = ProfileController.inject()
 
 const normalizedTokenId = computed(() => {
   const network = routeManager.currentNetworkEntry.value
@@ -351,6 +374,18 @@ onBeforeUnmount(() => indexLookup.unmount())
 const index = indexLookup.entity
 const label = computed(() => normalizedTokenId.value ? index.value?.lookup(normalizedTokenId.value) ?? null : null)
 
+//
+// Bookmark
+//
+const bookmark = computed(() =>
+    normalizedTokenId.value ? profileController.findBookmark(normalizedTokenId.value) : null
+)
+const showEditBookmarkDialog = ref(false)
+const onAddBookmark = () => {
+  showEditBookmarkDialog.value = true
+}
+
+const connectionStatus = profileController.connectionStatus
 const analyzer = tokenAnalyzer
 const tokenInfo = tokenLookup.entity
 const isNft = tokenAnalyzer.isNft
@@ -375,10 +410,5 @@ const parseBigIntString = (s: string | undefined): bigint | undefined => {
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <style scoped>
-
-div.title-extra {
-  color: var(--network-text-accent-color);
-  word-break: break-all;
-}
 
 </style>
