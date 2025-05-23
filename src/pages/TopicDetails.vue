@@ -7,14 +7,21 @@
 <template>
 
 
-  <PageFrameV2 page-title="Topic Details">
+  <PageFrameV2>
+    <template #page-title>
+      Topic
+      <span style="white-space: nowrap; font-size: smaller">
+        {{ normalizedTopicId }}
+      </span>
+    </template>
+
     <template v-if="!initialLoading && notification" #banner>
       <NotificationBanner :message="notification"/>
     </template>
 
     <DashboardCardV2 collapsible-key="topicDetails">
       <template #title>
-        {{ `Topic ${normalizedTopicId}` }}
+        Topic
         <div v-if="isHcs1Topic" class="h-has-pill" style="margin-top: 2px">
           HCS-1
         </div>

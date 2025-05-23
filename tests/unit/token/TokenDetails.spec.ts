@@ -8,11 +8,14 @@ import router, {routeManager} from "@/router";
 import TokenDetails from "@/pages/TokenDetails.vue";
 import axios from "axios";
 import {
-    SAMPLE_BALANCES, SAMPLE_NETWORK_CONFIG,
+    SAMPLE_BALANCES,
+    SAMPLE_NETWORK_CONFIG,
     SAMPLE_NETWORK_EXCHANGERATE,
     SAMPLE_NFTS,
     SAMPLE_NONFUNGIBLE,
-    SAMPLE_NONFUNGIBLE_DUDE, SAMPLE_PUBLIC_LABELS_JSON, SAMPLE_PUBLIC_LABELS_URL,
+    SAMPLE_NONFUNGIBLE_DUDE,
+    SAMPLE_PUBLIC_LABELS_JSON,
+    SAMPLE_PUBLIC_LABELS_URL,
     SAMPLE_TOKEN,
     SAMPLE_TOKEN_WITH_KEYS,
     SAMPLE_TOKEN_WITHOUT_KEYS,
@@ -31,6 +34,8 @@ import {TransactionID} from "@/utils/TransactionID";
 import TokenFeesSection from "@/components/token/TokenFeesSection.vue";
 import {fetchGetURLs} from "../MockUtils";
 import {networkConfigKey} from "@/AppKeys.ts";
+import PageHeader from "@/components/page/header/PageHeader.vue";
+import NotificationBanner from "@/components/NotificationBanner.vue";
 
 /*
     Bookmarks
@@ -389,7 +394,13 @@ describe("TokenDetails.vue", () => {
         expect((wrapper.vm as any).tokenBalanceTableController.mounted.value).toBe(true)
         expect((wrapper.vm as any).nftHolderTableController.mounted.value).toBe(true)
 
-        expect(wrapper.text()).toContain("Token DetailsToken is deletedNFT Collection" + testTokenName + ' (' + testTokenSymbol + ')' + 'Token ID' + testTokenId)
+        expect(wrapper.getComponent(PageHeader).text()).toMatch("Token " + testTokenId)
+
+        const banner = wrapper.findComponent(NotificationBanner)
+        expect(banner.exists()).toBe(true)
+        expect(banner.text()).toBe("Token is deleted")
+
+        expect(wrapper.text()).toContain("NFT Collection" + testTokenName + ' (' + testTokenSymbol + ')' + 'Token ID' + testTokenId)
 
         expect(wrapper.text()).toMatch("Token Keys")
         expect(wrapper.find("#adminKey").text()).toBe("Admin Key0xc539536f9599daefeeb777677aa1aeea2242dfc7cca92348c228a5187a0faf2bCopyED25519")
@@ -456,7 +467,13 @@ describe("TokenDetails.vue", () => {
         expect((wrapper.vm as any).tokenBalanceTableController.mounted.value).toBe(true)
         expect((wrapper.vm as any).nftHolderTableController.mounted.value).toBe(true)
 
-        expect(wrapper.text()).toContain("Token DetailsToken is deletedNFT Collection" + testTokenName + ' (' + testTokenSymbol + ')' + 'Token ID' + testTokenId)
+        expect(wrapper.getComponent(PageHeader).text()).toMatch("Token " + testTokenId)
+
+        const banner = wrapper.findComponent(NotificationBanner)
+        expect(banner.exists()).toBe(true)
+        expect(banner.text()).toBe("Token is deleted")
+
+        expect(wrapper.text()).toContain("NFT Collection" + testTokenName + ' (' + testTokenSymbol + ')' + 'Token ID' + testTokenId)
 
         expect(wrapper.text()).toMatch("Token Keys")
         expect(wrapper.find("#adminKey").text()).toBe("Admin KeyNoneToken is immutable")
@@ -522,8 +539,14 @@ describe("TokenDetails.vue", () => {
             "api/v1/tokens/" + SAMPLE_NFTS.nfts[2].token_id + "/nfts/342",
         ])
 
+        expect(wrapper.getComponent(PageHeader).text()).toMatch("Token " + testTokenId)
+
+        const banner = wrapper.findComponent(NotificationBanner)
+        expect(banner.exists()).toBe(true)
+        expect(banner.text()).toBe("Token is deleted")
+
         expect(wrapper.text()).toContain(
-            "Token DetailsToken is deletedNFT Collection" + testTokenName + ' (' + testTokenSymbol + ')'
+            "NFT Collection" + testTokenName + ' (' + testTokenSymbol + ')'
             + 'Token ID' + testTokenIdWithChecksum
             + 'EVM Address' + testTokenEVMAddress + "Copy")
         expect(wrapper.text()).toMatch("Token is deleted")
@@ -732,8 +755,14 @@ describe("TokenDetails.vue", () => {
             "api/v1/tokens/" + SAMPLE_NFTS.nfts[2].token_id + "/nfts/342",
         ])
 
+        expect(wrapper.getComponent(PageHeader).text()).toMatch("Token " + testTokenId)
+
+        const banner = wrapper.findComponent(NotificationBanner)
+        expect(banner.exists()).toBe(true)
+        expect(banner.text()).toBe("Token is deleted")
+
         expect(wrapper.text()).toContain(
-            "Token DetailsToken is deletedNFT Collection" + testTokenName
+            "NFT Collection" + testTokenName
             + ' (' + testTokenSymbol + ')' + 'Token ID' + testTokenId)
 
         const customFees = wrapper.findComponent(TokenFeesSection)

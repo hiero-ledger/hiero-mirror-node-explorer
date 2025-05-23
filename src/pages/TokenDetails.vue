@@ -6,7 +6,13 @@
 
 <template>
 
-  <PageFrameV2 page-title="Token Details">
+  <PageFrameV2>
+    <template #page-title>
+      Token
+      <span style="white-space: nowrap; font-size: smaller">
+        {{ normalizedTokenId }}
+      </span>
+    </template>
 
     <template v-if="notification" #banner>
       <NotificationBanner :message="notification"/>
@@ -24,8 +30,9 @@
         <PublicLabel v-if="label" :label-definition="label"/>
       </template>
 
-      <template v-if="isWalletConnected" #right-control>
+      <template #right-control>
         <TokenActions
+            v-if="isWalletConnected"
             :analyzer="tokenAnalyzer"
             @completed="onActionCompleted"
         />

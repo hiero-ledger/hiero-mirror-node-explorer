@@ -6,15 +6,21 @@
 
 <template>
 
-  <PageFrameV2 page-title="Transaction Details">
+  <PageFrameV2>
+    <template #page-title>
+      Transaction
+      <span style="white-space: nowrap; font-size: smaller">
+        {{ formattedTransactionId }}
+      </span>
+    </template>
+
     <template v-if="notification" #banner>
       <NotificationBanner :message="notification"/>
     </template>
 
     <DashboardCardV2 collapsible-key="transactionDetails">
       <template #title>
-        <span>Transaction </span>
-        <TransactionIdValue :id="formattedTransactionId"/>
+        Transaction
         <template v-if="transaction">
           <div v-if="transactionSucceeded" class="h-has-pill h-chip-success" style="margin-top: 2px">
             SUCCESS
@@ -54,6 +60,12 @@
       </template>
 
       <template #left-content>
+        <Property id="transactionID">
+          <template #name>ID</template>
+          <template #value>
+            <TransactionIdValue :id="formattedTransactionId" :enable-copy="true"/>
+          </template>
+        </Property>
         <Property id="transactionType">
           <template #name>Type</template>
           <template #value>
@@ -334,7 +346,6 @@ import {TransactionGroupCache} from "@/utils/cache/TransactionGroupCache";
 import MirrorLink from "@/components/MirrorLink.vue";
 import TokenExtra from "@/components/values/link/TokenExtra.vue";
 import {TransactionID} from "@/utils/TransactionID";
-import TransactionIdValue from "@/components/values/TransactionIdValue.vue";
 import {CoreConfig} from "@/config/CoreConfig.ts";
 import SelectView from "@/elements/SelectView.vue";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
@@ -345,6 +356,7 @@ import TransactionLink from "@/components/values/TransactionLink.vue";
 import KeyValue from "@/components/values/KeyValue.vue";
 import {HbarPriceCache} from "@/utils/cache/HbarPriceCache.ts";
 import {cryptoRateToPrice} from "@/schemas/MirrorNodeUtils.ts";
+import TransactionIdValue from "@/components/values/TransactionIdValue.vue";
 
 const MAX_INLINE_CHILDREN = 10
 
@@ -505,9 +517,12 @@ const cryptoPrice = computed(() => {
   return price !== null ? "$" + price.toFixed(4) : null
 })
 
+const formattedTransactionId = computed(() =>
+    transactionAnalyzer.formattedTransactionId.value
+)
+
 const transactionId = transactionLocParser.transactionId
 const transaction = transactionDetail
-const formattedTransactionId = transactionAnalyzer.formattedTransactionId
 const netAmount = transactionAnalyzer.netAmount
 const entity = transactionAnalyzer.entityDescriptor
 const systemContract = transactionAnalyzer.systemContract

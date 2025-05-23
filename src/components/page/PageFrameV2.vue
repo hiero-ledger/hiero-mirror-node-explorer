@@ -7,7 +7,13 @@
 <template>
 
   <div class="h-page-frame">
-    <PageHeader :page-title="props.pageTitle"/>
+    <PageHeader
+        :page-title="props.pageTitle"
+    >
+      <template v-if="slots['page-title']" #page-title>
+        <slot name="page-title"/>
+      </template>
+    </PageHeader>
 
     <div v-if="slots.banner">
       <slot name="banner"/>
@@ -34,8 +40,8 @@ import {PropType, useSlots} from "vue";
 
 const props = defineProps({
   pageTitle: {
-    type: String,
-    required: true,
+    type: String as PropType<string | null>,
+    default: null,
   },
   notification: {
     type: String as PropType<string | null>,
@@ -51,4 +57,4 @@ const slots = useSlots()
 <!--                                                       STYLE                                                     -->
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
-<style />
+<style/>

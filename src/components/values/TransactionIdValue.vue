@@ -6,9 +6,16 @@
 
 <template>
 
-  <div class="is-inline-block">
-    <span>{{ transactionId }}</span>
-  </div>
+  <Copyable
+      :enable-copy="enableCopy"
+      :content-to-copy="transactionId ?? ''"
+  >
+    <template #content>
+      <div class="is-inline-block">
+        <span>{{ transactionId }}</span>
+      </div>
+    </template>
+  </Copyable>
 
 </template>
 
@@ -16,29 +23,27 @@
 <!--                                                      SCRIPT                                                     -->
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
-<script lang="ts">
+<script setup lang="ts">
 
-import {defineComponent, PropType, ref, watch} from "vue";
+import {PropType, ref, watch} from "vue";
 import {TransactionID} from "@/utils/TransactionID";
+import Copyable from "@/elements/Copyable.vue";
 
-export default defineComponent({
-  name: "TransactionIdValue",
-  props: {
-    id: {
-      type: String as PropType<string | null>,
-      default: null
-    }
+const props = defineProps({
+  id: {
+    type: String as PropType<string | null>,
+    default: null
   },
-  setup(props) {
-    const transactionId = ref(TransactionID.normalizeForDisplay(props.id ?? ''))
-    watch([() => props.id, TransactionID.useAtForm], () =>
-        transactionId.value = TransactionID.normalizeForDisplay(props.id ?? ''), {immediate: true}
-    )
-    return {
-      transactionId
-    }
+  enableCopy: {
+    type: Boolean,
+    default: false
   }
-});
+})
+
+const transactionId = ref(TransactionID.normalizeForDisplay(props.id ?? ''))
+watch([() => props.id, TransactionID.useAtForm], () =>
+    transactionId.value = TransactionID.normalizeForDisplay(props.id ?? ''), {immediate: true}
+)
 
 </script>
 
@@ -47,4 +52,3 @@ export default defineComponent({
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <style/>
-

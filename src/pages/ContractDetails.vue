@@ -6,7 +6,13 @@
 
 <template>
 
-  <PageFrameV2 page-title="Contract Details">
+  <PageFrameV2>
+    <template #page-title>
+      Contract
+      <span style="white-space: nowrap; font-size: smaller">
+        {{ normalizedContractId }}
+      </span>
+    </template>
 
     <template v-if="notification" #banner>
       <NotificationBanner :message="notification"/>
@@ -14,31 +20,30 @@
 
     <DashboardCardV2 collapsible-key="contractDetails">
       <template #title>
-          {{ `Contract ${contractName ?? ''}` }}
+        Contract
+        <div v-if="contractName" class="card-title-extra">
+          {{ contractName }}
+        </div>
         <span class="mr-1"/>
         <div v-if="isVerified" class="h-has-pill h-chip-success">
-            VERIFIED
-          </div>
-          <div v-if="isErc20" class="h-has-pill">
-            ERC 20
-          </div>
-          <div v-if="isErc721" class="h-has-pill">
-            ERC 721
-          </div>
-          <div v-if="isErc1155" class="h-has-pill">
-            ERC 1155
-          </div>
-          <PublicLabel v-if="label" :label-definition="label"/>
-          <DomainLabel  v-if="domainName" :domain-name="domainName" :provider-name="domainProviderName"/>
-      </template>
-
-      <template #right-control>
-        <template v-if="contract && accountRoute">
-          <ArrowLink
-              :route="accountRoute" id="showAccountLink"
-              text="Associated account"
-          />
-        </template>
+          VERIFIED
+        </div>
+        <div v-if="isErc20" class="h-has-pill">
+          ERC 20
+        </div>
+        <div v-if="isErc721" class="h-has-pill">
+          ERC 721
+        </div>
+        <div v-if="isErc1155" class="h-has-pill">
+          ERC 1155
+        </div>
+        <DomainLabel v-if="domainName" :domain-name="domainName" :provider-name="domainProviderName"/>
+        <PublicLabel v-if="label" :label-definition="label"/>
+        <ArrowLink
+            v-if="contract && accountRoute"
+            :route="accountRoute" id="showAccountLink"
+            text="Associated account"
+        />
       </template>
 
       <template #content>
@@ -267,7 +272,6 @@ const normalizedContractId = computed(() => {
 //
 // contract
 //
-
 const contractLocParser = new ContractLocParser(computed(() => props.contractId ?? null))
 onMounted(() => contractLocParser.mount())
 onBeforeUnmount(() => contractLocParser.unmount())
@@ -299,7 +303,6 @@ const accountChecksum = computed(() =>
 //
 // account
 //
-
 const accountLookup = AccountByIdCache.instance.makeLookup(normalizedContractId)
 onMounted(() => accountLookup.mount())
 onBeforeUnmount(() => accountLookup.unmount())
@@ -307,7 +310,6 @@ onBeforeUnmount(() => accountLookup.unmount())
 //
 // BalanceAnalyzer
 //
-
 const balanceAnalyzer = new BalanceAnalyzer(contractLocParser.contractId, 10000)
 onMounted(() => balanceAnalyzer.mount())
 onBeforeUnmount(() => balanceAnalyzer.unmount())
@@ -353,7 +355,9 @@ const indexLookup = PublicLabelsCache.instance.makeLookup()
 onMounted(() => indexLookup.mount())
 onBeforeUnmount(() => indexLookup.unmount())
 const index = indexLookup.entity
-const label = computed(() => normalizedContractId.value ? index.value?.lookup(normalizedContractId.value) ?? null : null)
+const label = computed(() =>
+    normalizedContractId.value ? index.value?.lookup(normalizedContractId.value) ?? null : null
+)
 
 const enableExpiry = routeManager.enableExpiry
 const contract = contractLocParser.entity

@@ -17,16 +17,17 @@ import {
     SAMPLE_ACCOUNT_STAKING_NODE,
     SAMPLE_FAILED_TRANSACTION,
     SAMPLE_FAILED_TRANSACTIONS,
+    SAMPLE_NETWORK_CONFIG,
     SAMPLE_NETWORK_EXCHANGERATE,
     SAMPLE_NETWORK_NODES,
     SAMPLE_NODE_ACCOUNT,
     SAMPLE_NONFUNGIBLE,
+    SAMPLE_PUBLIC_LABELS_JSON,
+    SAMPLE_PUBLIC_LABELS_URL,
     SAMPLE_TOKEN,
     SAMPLE_TOKEN_DUDE,
     SAMPLE_TRANSACTION,
     SAMPLE_TRANSACTIONS,
-    SAMPLE_PUBLIC_LABELS_URL,
-    SAMPLE_PUBLIC_LABELS_JSON, SAMPLE_NETWORK_CONFIG,
 } from "../Mocks";
 import MockAdapter from "axios-mock-adapter";
 import Oruga from "@oruga-ui/oruga-next";
@@ -38,6 +39,7 @@ import TransactionFilterSelect from "@/components/transaction/TransactionFilterS
 import {NetworkConfig} from "@/config/NetworkConfig.ts";
 import {networkConfigKey} from "@/AppKeys.ts";
 import {fetchGetURLs} from "../MockUtils";
+import PageHeader from "@/components/page/header/PageHeader.vue";
 
 /*
     Bookmarks
@@ -142,6 +144,8 @@ describe("AccountDetails.vue", () => {
             "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/allowances/nfts",
             "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/allowances/nfts",
         ])
+
+        expect(wrapper.getComponent(PageHeader).text()).toMatch("Account " + SAMPLE_ACCOUNT.account)
 
         expect(wrapper.text()).toMatch("Account  Account ID " + SAMPLE_ACCOUNT.account)
         expect(wrapper.get("#balanceValue").text()).toContain("23.42647909ℏ$5.76369")
@@ -469,7 +473,7 @@ describe("AccountDetails.vue", () => {
         await flushPromises()
     });
 
-    it("Should display notification of deleted contract", async () => {
+    it("Should display notification of deleted account", async () => {
 
         await router.push("/") // To avoid "missing required param 'network'" error
 
@@ -557,7 +561,7 @@ describe("AccountDetails.vue", () => {
             "api/v1/accounts/" + SAMPLE_ACCOUNT_DELETED.account + "/allowances/nfts",
         ])
 
-        expect(wrapper.text()).toMatch(RegExp("Account DetailsAccount is deleted Account  Account ID " + deletedAccount.account))
+        expect(wrapper.getComponent(PageHeader).text()).toMatch("Account " + deletedAccount.account)
 
         const banner = wrapper.findComponent(NotificationBanner)
         expect(banner.exists()).toBe(true)
