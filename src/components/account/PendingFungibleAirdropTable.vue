@@ -12,8 +12,6 @@
       :paginated="props.controller.paginated.value ?? props.fullPage"
       backend-pagination
       pagination-order="centered"
-      :range-before="1"
-      :range-after="1"
       :total="props.controller.totalRowCount.value"
       :current-page="props.controller.currentPage.value"
       :per-page="props.controller.pageSize.value"

@@ -13,8 +13,6 @@
       :narrowed="true"
       :paginated="contracts.length > perPage"
       pagination-order="centered"
-      :range-before="1"
-      :range-after="1"
 
       :per-page="perPage"
       :striped="true"

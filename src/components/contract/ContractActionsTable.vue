@@ -12,8 +12,6 @@
         :data="props.actions ?? []"
         :paginated="isPaginated"
         pagination-order="centered"
-        :range-before="1"
-        :range-after="1"
         :per-page="NB_ACTIONS_PER_PAGE"
 
         :detailed="isMediumScreen"

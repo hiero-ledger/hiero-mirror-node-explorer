@@ -13,8 +13,6 @@
         :paginated="paginated"
         backend-pagination
         pagination-order="centered"
-        :range-before="1"
-        :range-after="1"
         :total="total"
         v-model:current-page="currentPage"
         :per-page="perPage"

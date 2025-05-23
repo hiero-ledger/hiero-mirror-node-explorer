@@ -14,8 +14,6 @@
       :narrowed="narrowed"
       :paginated="paginated"
       pagination-order="centered"
-      :range-before="1"
-      :range-after="1"
       :per-page="perPage"
       :striped="true"
       :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"

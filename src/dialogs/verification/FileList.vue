@@ -35,8 +35,6 @@
         :data="displayedAuditItems"
         :paginated="isPaginated"
         pagination-order="centered"
-        :range-before="0"
-        :range-after="0"
         :per-page="perPage"
         aria-current-label="Current page"
         aria-next-label="Next page"
