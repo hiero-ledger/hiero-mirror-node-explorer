@@ -137,8 +137,9 @@
       :entity-id="bookmarkTargetEntityId"
   />
   <DeleteBookmarkDialog
-    v-model:show-dialog="showDeleteBookmarkDialog"
-  :entity-id="bookmarkTargetEntityId"/>
+      v-model:show-dialog="showDeleteBookmarkDialog"
+      :entity-id="bookmarkTargetEntityId"
+  />
 
 </template>
 
@@ -178,9 +179,9 @@ const perPage = ref(15)
 
 const showEditBookmarkDialog = ref(false)
 const showDeleteBookmarkDialog = ref(false)
-const bookmarkTargetEntityId = ref<string|null>(null)
+const bookmarkTargetEntityId = ref<string | null>(null)
 
-const handleEditBookmark = (bookmark: Portal.EntityBookmark|null) => {
+const handleEditBookmark = (bookmark: Portal.EntityBookmark | null) => {
   bookmarkTargetEntityId.value = bookmark?.entityId ?? null
   showEditBookmarkDialog.value = true
 }
