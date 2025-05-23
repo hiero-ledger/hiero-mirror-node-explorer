@@ -7,7 +7,13 @@
 <template>
 
 
-  <PageFrameV2 :page-title="`Topic ${normalizedTopicId}`">
+  <PageFrameV2>
+    <template #page-title>
+      Topic
+      <span style="white-space: nowrap; font-size: smaller">
+        {{ normalizedTopicId }}
+      </span>
+    </template>
 
     <template v-if="!initialLoading && notification" #banner>
       <NotificationBanner :message="notification"/>

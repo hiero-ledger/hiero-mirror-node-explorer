@@ -6,7 +6,13 @@
 
 <template>
 
-  <PageFrameV2 :page-title="`Account ${normalizedAccountId}`">
+  <PageFrameV2>
+    <template #page-title>
+      Account
+      <span style="white-space: nowrap; font-size: smaller">
+        {{ normalizedAccountId }}
+      </span>
+    </template>
 
     <template v-if="notification" #banner>
       <NotificationBanner :message="notification" :is-error="!isInactiveEvmAddress"/>

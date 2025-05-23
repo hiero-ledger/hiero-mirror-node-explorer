@@ -6,7 +6,13 @@
 
 <template>
 
-  <PageFrameV2 :page-title="`Token ${normalizedTokenId}`">
+  <PageFrameV2>
+    <template #page-title>
+      Token
+      <span style="white-space: nowrap; font-size: smaller">
+        {{ normalizedTokenId }}
+      </span>
+    </template>
 
     <template v-if="notification" #banner>
       <NotificationBanner :message="notification"/>

@@ -6,7 +6,13 @@
 
 <template>
 
-  <PageFrameV2 :page-title="`Contract ${normalizedContractId}`">
+  <PageFrameV2>
+    <template #page-title>
+      Contract
+      <span style="white-space: nowrap; font-size: smaller">
+        {{ normalizedContractId }}
+      </span>
+    </template>
 
     <template v-if="notification" #banner>
       <NotificationBanner :message="notification"/>
