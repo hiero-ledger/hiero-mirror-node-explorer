@@ -6,7 +6,13 @@
 
 <template>
 
-  <PageFrameV2 page-title="Profile">
+  <PageFrameV2>
+    <template #page-title>
+      <span v-if="greeting">
+        {{ greeting }}'s
+      </span>
+      Profile
+    </template>
 
     <template v-if="connectionStatus == ProfileConnectionStatus.Disconnected">
       <ProfileSignIn/>
@@ -34,6 +40,11 @@ import PageFrameV2 from "@/components/page/PageFrameV2.vue";
 import {ProfileConnectionStatus, ProfileController} from "@/utils/profile/ProfileController.ts";
 import ProfileContent from "@/components/profile/ProfileContent.vue";
 import ProfileSignIn from "@/components/profile/ProfileSignIn.vue";
+import {computed} from "vue";
+
+const greeting = computed(() =>
+    profileController.user.value?.profile?.firstName ?? profileController.user.value?.userId ?? null
+)
 
 const profileController = ProfileController.inject()
 const connectionStatus = profileController.connectionStatus
