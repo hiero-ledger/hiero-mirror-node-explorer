@@ -236,9 +236,7 @@
         <Property v-if="transaction?.scheduled===true && schedulingTransaction" id="scheduleCreateTransaction">
           <template #name>Schedule Create Transaction</template>
           <template #value>
-            <div class="multi-item-property-value">
-              <TransactionLink :transactionLoc="schedulingTransaction?.consensus_timestamp ?? undefined"/>
-            </div>
+            <TransactionLink :transactionLoc="schedulingTransaction?.consensus_timestamp ?? undefined"/>
           </template>
         </Property>
         <template v-if="batchKey">
