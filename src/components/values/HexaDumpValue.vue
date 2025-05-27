@@ -8,7 +8,7 @@
   <Copyable v-if="normByteString"
             :content-to-copy="'0x' + normByteString" :enable-copy="isCopyEnabled">
     <template #content>
-      <div class="hexa-dump-value">
+      <div class="hexa-dump-value" :class="{'scrollbar': props.scrollBar}">
         {{ flow(isMediumScreen ? wordWrapMedium : wordWrapSmall) }}
       </div>
     </template>
@@ -49,6 +49,10 @@ const props = defineProps({
     default: null
   },
   copyable: {
+    type: Boolean,
+    default: true
+  },
+  scrollBar: {
     type: Boolean,
     default: true
   }
@@ -104,8 +108,11 @@ div.hexa-dump-value {
   color: var(--text-secondary);
   font-family: var(--font-family-monospace), sans-serif;
   max-height: 400px;
-  overflow-y: auto;
   word-break: break-word;
+}
+
+div.hexa-dump-value.scrollbar {
+  overflow-y: auto;
 }
 
 </style>

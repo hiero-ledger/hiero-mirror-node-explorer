@@ -7,7 +7,7 @@
 <template>
 
   <div v-if="nonNullValue" id="bytecode">
-    <HexaDumpValue :byte-string="textValue" :copyable="false"/>
+    <HexaDumpValue :byte-string="textValue" :copyable="false" :scroll-bar="false"/>
   </div>
 
   <span v-else-if="initialLoading"/>
