@@ -152,11 +152,14 @@ export class WalletClient_Ethereum extends WalletClient {
         if (value !== null) {
             ethParams["value"] = value
         }
-        const request = {
-            method: "eth_sendTransaction",
+        const signRequest = {
+            method: "eth_signTransaction",
             params: [ethParams]
         }
-        return await this.provider.request(request) as string
+        const signature = await this.provider.request(signRequest)
+        console.log("signature", JSON.stringify(signature))
+
+        throw "Ca marche po"
     }
 
     private async estimateGas(fromAddress: string, toAddress: string, callData: string): Promise<string> {

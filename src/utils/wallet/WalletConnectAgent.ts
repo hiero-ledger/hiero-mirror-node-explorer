@@ -219,6 +219,7 @@ export class WalletConnectAgent {
             eip155: {
                 chains: eip155Chains,
                 methods: [
+                    'eth_signTransaction',
                     'eth_sendRawTransaction',
                 ],
                 events: [
