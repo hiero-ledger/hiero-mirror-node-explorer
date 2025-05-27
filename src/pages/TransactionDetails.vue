@@ -147,7 +147,9 @@
             Associated Token<span v-if="associatedTokens.length > 1">s</span>
           </template>
           <template #value>
-            <TokenLink v-for="t of associatedTokens" :key="t" :token-id="t" :show-extra="true"/>
+            <div class="multi-item-property-value" style="column-gap: 12px">
+              <TokenLink v-for="t of associatedTokens" :key="t" :token-id="t" :show-extra="true"/>
+            </div>
           </template>
         </Property>
         <Property v-if="systemContract" id="entityId">
@@ -234,9 +236,7 @@
         <Property v-if="transaction?.scheduled===true && schedulingTransaction" id="scheduleCreateTransaction">
           <template #name>Schedule Create Transaction</template>
           <template #value>
-            <div class="multi-item-property-value">
-              <TransactionLink :transactionLoc="schedulingTransaction?.consensus_timestamp ?? undefined"/>
-            </div>
+            <TransactionLink :transactionLoc="schedulingTransaction?.consensus_timestamp ?? undefined"/>
           </template>
         </Property>
         <template v-if="batchKey">
@@ -553,8 +553,15 @@ const innerTransactions = transactionGroupAnalyzer.innerTransactions
 div.multi-item-property-value {
   align-items: center;
   display: flex;
-  gap: 8px;
   flex-wrap: wrap;
+  column-gap: 8px;
+  justify-content: flex-end;
+}
+
+@media (min-width: 768px) {
+  div.multi-item-property-value {
+    justify-content: flex-start;
+  }
 }
 
 </style>
