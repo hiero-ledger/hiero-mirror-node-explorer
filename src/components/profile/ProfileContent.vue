@@ -9,7 +9,7 @@
   <DashboardCardV2 collapsible-key="profileDetails">
 
     <template #title>
-      Profile
+      Details
     </template>
 
     <template #right-control>
@@ -46,20 +46,19 @@
         </template>
       </Property>
 
-
     </template>
 
     <template #right-content>
 
       <Property id="ecdsa-account-id" full-width>
-        <template #name>ECDSA Account ID</template>
+        <template #name>ECDSA Account</template>
         <template v-slot:value>
           <AccountLink :account-id="ecdsaAccountId"/>
         </template>
       </Property>
 
       <Property id="firstName" full-width>
-        <template #name>ED25519 Account ID</template>
+        <template #name>ED25519 Account</template>
         <template v-slot:value>
           <AccountLink :account-id="ed25519AccountId"/>
         </template>
@@ -100,11 +99,15 @@
       >
 
         <o-table-column v-slot="props" field="name" label="NAME">
-          <StringValue :string-value="props.row.name"/>
+          <EntityLink :route="selectRoute(props.row.entityId, props.row.entityType)">
+            <StringValue :string-value="props.row.name"/>
+          </EntityLink>
         </o-table-column>
 
         <o-table-column v-slot="props" field="entityId" label="ID">
-          <StringValue :string-value="props.row.entityId"/>
+          <EntityLink :route="selectRoute(props.row.entityId, props.row.entityType)">
+            <StringValue :string-value="props.row.entityId"/>
+          </EntityLink>
         </o-table-column>
 
         <o-table-column v-slot="props" field="entityType" label="ENTITY">
@@ -116,11 +119,11 @@
         </o-table-column>
 
         <o-table-column v-slot="props" field="website" label="WEB SITE">
-          <StringValue :string-value="props.row.website"/>
+          <BlobValue :blob-value="props.row.website"/>
         </o-table-column>
 
         <o-table-column v-slot="props" position="right" label="">
-          <div style="display: inline-flex; flex-direction: row-reverse; column-gap: 10px">
+          <div style="display: inline-flex; flex-direction: row-reverse; column-gap: 8px">
             <Trash2 :size="16" style="color: var(--text-secondary)" @click="handleDeleteBookmark(props.row)"/>
             <Pencil :size="16" style="color: var(--text-secondary)" @click="handleEditBookmark(props.row)"/>
           </div>
@@ -163,6 +166,10 @@ import {Portal} from "@/utils/profile/Portal.ts";
 import {Pencil, Trash2} from 'lucide-vue-next';
 import EditBookmarkDialog from "@/dialogs/profile/EditBookmarkDialog.vue";
 import DeleteBookmarkDialog from "@/dialogs/profile/DeleteBookmarkDialog.vue";
+import {RouteLocationRaw} from "vue-router";
+import {routeManager} from "@/router.ts";
+import EntityLink from "@/components/values/link/EntityLink.vue";
+import BlobValue from "@/components/values/BlobValue.vue";
 
 const profileController = ProfileController.inject()
 const connectionStatus = profileController.connectionStatus
@@ -180,6 +187,27 @@ const perPage = ref(15)
 const showEditBookmarkDialog = ref(false)
 const showDeleteBookmarkDialog = ref(false)
 const bookmarkTargetEntityId = ref<string | null>(null)
+
+const selectRoute = (entityId: string, type: string) => {
+  let result: RouteLocationRaw | null
+  switch (type) {
+    case 'account':
+      result = routeManager.makeRouteToAccount(entityId)
+      break
+    case 'contract':
+      result = routeManager.makeRouteToContract(entityId)
+      break
+    case 'token':
+      result = routeManager.makeRouteToToken(entityId)
+      break
+    case 'topic':
+      result = routeManager.makeRouteToTopic(entityId)
+      break
+    default:
+      result = null
+  }
+  return result
+}
 
 const handleEditBookmark = (bookmark: Portal.EntityBookmark | null) => {
   bookmarkTargetEntityId.value = bookmark?.entityId ?? null
