@@ -70,7 +70,7 @@
     "@vue/tsconfig": "^0.7.0",
     "axios-mock-adapter": "^2.1.0",
     "cypress": "^14.4.0",
-    "esbuild": "^0.25.4",
+    "esbuild": "^0.25.5",
     "eslint": "^9.27.0",
     "eslint-plugin-cypress": "^4.3.0",
     "eslint-plugin-vue": "^10.1.0",
