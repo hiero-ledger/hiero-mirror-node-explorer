@@ -7,17 +7,18 @@ import {
     AccountAllowanceDeleteTransaction,
     AccountId,
     AccountUpdateTransaction,
+    Client,
     ContractExecuteTransaction,
     NftId,
     PendingAirdropId,
+    SignatureMap,
     TokenAssociateTransaction,
     TokenClaimAirdropTransaction,
     TokenDissociateTransaction,
     TokenId,
     TokenRejectTransaction,
-    TransactionId,
-    TransactionResponse,
-    TransactionResponseJSON
+    Transaction as TransactionSDK,
+    TransactionId
 } from "@hashgraph/sdk";
 import {ContractResultDetails, TokenAirdrop, Transaction} from "@/schemas/MirrorNodeSchemas";
 import {WalletClient, WalletClientError, WalletClientRejectError} from "@/utils/wallet/client/WalletClient";
@@ -228,15 +229,19 @@ export class WalletClient_Hiero extends WalletClient {
             transaction.freeze()
             const transactionBytes = transaction.toBytes()
             const transactionBase64 = base64Encode(transactionBytes)
-            const request = {
-                method: "hedera_signAndExecuteTransaction",
+            const signRequest = {
+                method: "hedera_signTransaction",
                 params: {
                     signerAccountId: "hedera:" + this.network + ":" + this.accountId,
-                    transactionList: transactionBase64,
+                    transactionBody: transactionBase64,
                 }
             }
-            const response = await this.provider.request(request) as TransactionResponseJSON
-            const tr = TransactionResponse.fromJSON(response)
+            const signature = await this.provider.request(signRequest) as SignatureMap
+            const txSigned = TransactionSDK.fromBytes(transactionBytes);
+            txSigned.addSignature(this.publicKey, signature);
+
+            const client = Client.forName(this.network)
+            const tr = await txSigned.execute(client)
             result = tr.transactionId.toString()
         } catch (reason) {
             if (isUserReject(reason)) {
@@ -307,6 +312,6 @@ function isUserReject(error: unknown): boolean {
     //
     const code = eth_getErrorCode(error)
     const message = eth_getMessage(error)
-    return (code === 9000 && message == "USER_REJECT") || code == -32603 || eth_isUserReject(error)
+    return (code === 9000 && message == "USER_REJECT") || eth_isUserReject(error)
 }
 

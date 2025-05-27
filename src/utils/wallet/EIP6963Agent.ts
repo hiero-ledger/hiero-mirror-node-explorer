@@ -5,7 +5,7 @@
 import {shallowRef} from "vue";
 import {AccountByAddressCache} from "@/utils/cache/AccountByAddressCache";
 import {WalletSession} from "@/utils/wallet/WalletSession";
-import {WalletClient} from "@/utils/wallet/client/WalletClient";
+import {getPublicKey, WalletClient} from "@/utils/wallet/client/WalletClient";
 import {HEDERA_LOGO, networkToChainId, WalletClient_Ethereum} from "@/utils/wallet/client/WalletClient_Ethereum";
 import {routeManager} from "@/router";
 import {EIP6963AnnounceProviderEvent, EIP6963ProviderDetail} from "@/utils/wallet/eip6963";
@@ -222,9 +222,11 @@ class WalletSession_EIP6963 extends WalletSession {
     // WalletSession
     //
 
-    public makeClient(accountId: string): Promise<WalletClient | null> {
-        const result = new WalletClient_Ethereum(accountId,
-            routeManager.currentNetwork.value, this.providerDetails.provider)
+    public async makeClient(accountId: string): Promise<WalletClient | null> {
+        const publicKey = await getPublicKey(accountId)
+        const result = publicKey !== null ?
+            new WalletClient_Ethereum(accountId, publicKey,
+            routeManager.currentNetwork.value, this.providerDetails.provider) : null
         return Promise.resolve(result)
     }
 

@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import {WalletSession} from "@/utils/wallet/WalletSession";
-import {WalletClient} from "@/utils/wallet/client/WalletClient";
+import {getPublicKey, WalletClient} from "@/utils/wallet/client/WalletClient";
 import {WalletClient_Hiero} from "@/utils/wallet/client/WalletClient_Hiero";
 import {networkToChainId, WalletClient_Ethereum} from "@/utils/wallet/client/WalletClient_Ethereum";
 import {EIP1193Provider} from "@/utils/wallet/eip1193";
@@ -208,8 +208,8 @@ export class WalletConnectAgent {
                     // "hedera_executeTransaction",
                     // "hedera_signMessage",
                     // "hedera_signAndExecuteQuery",
-                    "hedera_signAndExecuteTransaction",
-                    // "hedera_signTransaction"
+                    // "hedera_signAndExecuteTransaction",
+                    "hedera_signTransaction"
                 ],
                 events: [
                     'chainChanged',
@@ -287,13 +287,14 @@ class WalletSession_WC extends WalletSession {
     public async makeClient(accountId: string): Promise<WalletClient | null> {
         let result: WalletClient | null
         const caAccountId = await this.findCaAccountId(accountId)
-        if (caAccountId !== null) {
+        const publicKey = await getPublicKey(accountId)
+        if (caAccountId !== null && publicKey !== null) {
             const caChainId = caAccountId.chainId
             const provider = new Provider_WC(this.signClient, this.session, caChainId)
             if (caChainId.isHedera()) {
-                result = new WalletClient_Hiero(accountId, routeManager.currentNetwork.value, provider)
+                result = new WalletClient_Hiero(accountId, publicKey, routeManager.currentNetwork.value, provider)
             } else if (caChainId.isEIP155()) {
-                result = new WalletClient_Ethereum(accountId, routeManager.currentNetwork.value, provider)
+                result = new WalletClient_Ethereum(accountId, publicKey, routeManager.currentNetwork.value, provider)
             } else {
                 result = null
             }
