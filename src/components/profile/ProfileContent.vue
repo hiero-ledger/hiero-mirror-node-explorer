@@ -88,6 +88,7 @@
     <template #content>
 
       <o-table
+          class="bookmark-table"
           :data="bookmarks"
           :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
           :narrowed="true"
@@ -225,4 +226,10 @@ const handleDeleteBookmark = async (bookmark: Portal.EntityBookmark) => {
 <!--                                                       STYLE                                                     -->
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
-<style/>
+<style>
+
+table.o-table.bookmark-table > tbody > tr {
+  cursor: default;
+}
+
+</style>
