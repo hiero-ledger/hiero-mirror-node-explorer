@@ -96,7 +96,7 @@ export class EditBookmarkController extends TaskController {
     public dialogStartShowing(): void {
         const existing = this.oldEntityBookmark.value
         this.entityIdInputText.value = existing?.entityId ?? this.entityIdInputText.value
-        this.nameInputText.value = existing?.name ?? "Nice name"
+        this.nameInputText.value = existing?.name ?? "Nice bookmark"
         this.typeInputText.value = existing?.type ?? ""
         this.descriptionInputText.value = existing?.description ?? ""
         this.websiteInputText.value = existing?.website ?? ""
