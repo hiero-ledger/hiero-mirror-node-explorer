@@ -300,11 +300,8 @@
 
     <TopicMessage :message="topicMessage"/>
 
-    <ContractResult :timestamp="transaction?.consensus_timestamp"
-                    :is-parent="transaction?.parent_consensus_timestamp === null"
+    <ContractResult :transaction="transaction"
                     :block-number="blockNumber ?? undefined"
-                    :transaction-hash="formattedHash ?? undefined"
-                    :transaction-type="transaction?.name ?? undefined"
     />
 
     <MirrorLink :network="props.network" entityUrl="transactions" :loc="transactionId!"/>

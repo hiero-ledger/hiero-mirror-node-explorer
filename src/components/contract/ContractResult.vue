@@ -114,13 +114,13 @@
 
     </DashboardCardV2>
 
-    <ContractResultTrace v-if="props.isParent" :transaction-id-or-hash="contractResult?.hash ?? undefined"
+    <ContractResultTrace v-if="isParent" :transaction-id-or-hash="contractResult?.hash ?? undefined"
                          :analyzer="analyzer"/>
 
     <ContractResultStates :state-changes="contractResult?.state_changes" :time-stamp="contractResult?.timestamp"/>
 
     <ContractResultLogs :logs="contractResult?.logs" :block-number="props.blockNumber"
-                        :transaction-hash="props.transactionHash"/>
+                        :transaction-hash="props.transaction?.transaction_hash"/>
 
   </template>
 
@@ -147,29 +147,19 @@ import FunctionResult from "@/components/values/FunctionResult.vue";
 import FunctionError from "@/components/values/FunctionError.vue";
 import GasAmount from "@/components/values/GasAmount.vue";
 import {NetworkFeesCache} from "@/utils/cache/NetworkFeesCache.ts";
-import {TransactionType} from "@/schemas/MirrorNodeSchemas.ts";
+import {Transaction, TransactionType} from "@/schemas/MirrorNodeSchemas.ts";
 import {lookupTransactionType} from "@/schemas/MirrorNodeUtils.ts";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import HexaValue from "@/components/values/HexaValue.vue";
 
 const props = defineProps({
-  timestamp: {
-    type: String,
-  },
-  isParent: {
-    type: Boolean,
-    default: false
+  transaction: {
+    type: Object as PropType<Transaction|null>,
+    default: null
   },
   blockNumber: {
     type: Number
   },
-  transactionHash: {
-    type: String
-  },
-  transactionType: {
-    type: String as PropType<TransactionType>,
-    default: TransactionType.ETHEREUMTRANSACTION
-  }
 })
 
 const gasConsumedTooltip = "This represents the actual amount of gas (i.e. the real computational effort) required to execute the smart contract."
@@ -177,7 +167,9 @@ const gasUsedTooltip = "This represents the amount of gas that is actually deduc
 
 const isXLargeScreen = inject('isXLargeScreen', true)
 
-const timestamp = computed(() => props.timestamp ?? null)
+const timestamp = computed(() => props.transaction?.consensus_timestamp ?? null)
+const transactionType = computed(() => props.transaction?.name ?? TransactionType.ETHEREUMTRANSACTION)
+const isParent = computed(() => props.transaction?.parent_consensus_timestamp === null)
 
 const contractResultAnalyzer = new ContractResultAnalyzer(timestamp)
 onMounted(() => contractResultAnalyzer.mount())
@@ -191,7 +183,7 @@ const gasPrice = computed(() => {
   let result: number | null = contractResultAnalyzer.gasPrice.value
 
   if (!result && timestamp.value !== null) {
-    result = lookupTransactionType(feeLookup.entity.value, props.transactionType)
+    result = lookupTransactionType(feeLookup.entity.value, transactionType.value)
   }
   result = result ?? contractResultAnalyzer.gasPrice.value
   return result
