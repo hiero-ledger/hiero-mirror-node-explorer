@@ -9,7 +9,7 @@
   <DashboardCardV2>
 
     <template #title>
-      Profile Details
+      User Details
     </template>
 
     <template #right-control>
@@ -19,7 +19,7 @@
           :size="ButtonSize.small"
           @action="profileController.disconnect()"
       >
-        <span>DISCONNECT</span>
+        <span>SIGN OUT</span>
       </ButtonView>
     </template>
 
