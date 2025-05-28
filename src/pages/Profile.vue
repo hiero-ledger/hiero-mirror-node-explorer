@@ -8,10 +8,8 @@
 
   <PageFrameV2>
     <template #page-title>
-      <span v-if="greeting">
-        {{ greeting }}'s
-      </span>
-      Profile
+      <span v-if="greeting">{{ greeting }}'s Profile</span>
+      <span v-else>User Profile</span>
     </template>
 
     <template v-if="connectionStatus == ProfileConnectionStatus.Disconnected">
