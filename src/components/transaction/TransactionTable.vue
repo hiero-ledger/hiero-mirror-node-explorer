@@ -35,9 +35,7 @@
     </o-table-column>
 
     <o-table-column v-slot="props" field="name" label="TYPE">
-      <div class="h-has-pill" style="display: inline-block">
-        {{ makeTypeLabel(props.row.name) }}
-      </div>
+      <TransactionSmartType :transaction="props.row"/>
     </o-table-column>
 
     <o-table-column v-if="showingEthereumTransactions" v-slot="props" field="sender" label="Sender">
@@ -80,9 +78,9 @@ import {computed, onBeforeUnmount, onMounted, PropType} from "vue";
 import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
 import {Transaction, TransactionType} from "@/schemas/MirrorNodeSchemas";
 import TransactionSummary from "@/components/transaction/TransactionSummary.vue";
+import TransactionSmartType from "@/components/transaction/TransactionSmartType.vue";
 import TimestampValue from "@/components/values/TimestampValue.vue";
 import TransactionLabel from "@/components/values/TransactionLabel.vue";
-import {makeTypeLabel} from "@/utils/TransactionTools";
 import {routeManager} from "@/router";
 import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
 import {TransactionTableControllerXL} from "@/components/transaction/TransactionTableControllerXL";
