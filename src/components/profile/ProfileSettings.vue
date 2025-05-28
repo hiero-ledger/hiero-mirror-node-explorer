@@ -6,7 +6,7 @@
 
 <template>
 
-  <DashboardCardV2>
+  <DashboardCardV2 collapsible-key="=userSettings">
 
     <template #title>
       Settings
@@ -14,15 +14,15 @@
 
     <template #content>
 
-      <EditableProperty id="property" full-width :editable="true">
-        <template #name>Preference 1</template>
+      <EditableProperty id="property" full-width :editable="false">
+        <template #name>Setting 1</template>
         <template v-slot:value>
           <StringValue :string-value="'Value 1'"/>
         </template>
       </EditableProperty>
 
-      <EditableProperty id="property" full-width :editable="true">
-        <template #name>Preference 2</template>
+      <EditableProperty id="property" full-width :editable="false">
+        <template #name>Setting 2</template>
         <template v-slot:value>
           <StringValue :string-value="'Value 2'"/>
         </template>
