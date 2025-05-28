@@ -15,8 +15,10 @@
         </div>
         <div v-if="isMediumScreen" class="right-header">
           <slot name="right-control" v-if="!isCollapsed"/>
-          <img v-if="isCollapsed" alt="Expand" @click="toggleCollapsed" :src="arrowDownURL">
-          <img v-else alt="Collapse" @click="toggleCollapsed" :src="arrowUpURL">
+          <template v-if="isCollapsible">
+            <img v-if="isCollapsed" id="expandIcon" alt="Expand" @click="toggleCollapsed" :src="arrowDownURL">
+            <img v-else id="collapseIcon" alt="Collapse" @click="toggleCollapsed" :src="arrowUpURL">
+          </template>
         </div>
       </div>
       <div v-if="!isMediumScreen && !isCollapsed" class="wrapped-controls">

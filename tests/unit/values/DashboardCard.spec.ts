@@ -55,5 +55,46 @@ describe("DashboardCardV2.vue", () => {
         wrapper.unmount()
     })
 
+    it("should be collapsible", async () => {
+
+        const sampleTitle = "ZeTitle"
+        const sampleContent = "ZeContent"
+
+        const wrapper = mount(DashboardCardV2, {
+            slots: {
+                title: sampleTitle,
+                content: sampleContent,
+            },
+            props: {
+                collapsibleKey: 'ZeKey'
+            },
+        });
+
+        expect(wrapper.text()).toContain(sampleTitle)
+        expect(wrapper.text()).toContain(sampleContent)
+        expect(wrapper.find('#collapseIcon').exists()).toBe(true)
+        expect(wrapper.find('#expandIcon').exists()).toBe(false)
+        wrapper.unmount()
+    })
+
+    it("should not be collapsible", async () => {
+
+        const sampleTitle = "ZeTitle"
+        const sampleContent = "ZeContent"
+
+        const wrapper = mount(DashboardCardV2, {
+            slots: {
+                title: sampleTitle,
+                content: sampleContent,
+            },
+            props: {},
+        });
+
+        expect(wrapper.text()).toContain(sampleTitle)
+        expect(wrapper.text()).toContain(sampleContent)
+        expect(wrapper.find('#collapseIcon').exists()).toBe(false)
+        expect(wrapper.find('#expandIcon').exists()).toBe(false)
+        wrapper.unmount()
+    })
 })
 
