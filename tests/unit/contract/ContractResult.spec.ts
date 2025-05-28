@@ -10,7 +10,8 @@ import {
     SAMPLE_CONTRACT_RESULT_DETAILS,
     SAMPLE_REVERT_CONTRACT_RESULT_ACTIONS,
     SAMPLE_REVERT_CONTRACT_RESULT_DETAILS,
-    SAMPLE_REVERT_CONTRACT_RESULT_DETAILS_WITH_TRACES
+    SAMPLE_REVERT_CONTRACT_RESULT_DETAILS_WITH_TRACES,
+    SAMPLE_TRANSACTION
 } from "../Mocks";
 import MockAdapter from "axios-mock-adapter";
 import {HMSF} from "@/utils/HMSF";
@@ -21,6 +22,7 @@ import ContractResultStates from "@/components/contract/ContractResultStates.vue
 import ContractActionsTable from "@/components/contract/ContractActionsTable.vue";
 import ContractResultStateChangeEntry from "@/components/contract/ContractResultStateChangeEntry.vue";
 import {fetchGetURLs} from "../MockUtils";
+import {Transaction} from "@/schemas/MirrorNodeSchemas.ts";
 
 /*
     Bookmarks
@@ -53,7 +55,7 @@ describe("ContractResult.vue", () => {
                 plugins: [router, Oruga]
             },
             props: {
-                timestamp: timestamp
+                transaction: SAMPLE_TRANSACTION as unknown as Transaction
             },
         });
         await flushPromises()
@@ -64,9 +66,10 @@ describe("ContractResult.vue", () => {
             "api/v1/contracts/results",
             "api/v1/transactions",
             "api/v1/network/fees",
-            "api/v1/contracts/" + SAMPLE_CONTRACT_RESULT_DETAILS.contract_id + "/results/1646025151.667604000",
+            "api/v1/contracts/" + SAMPLE_CONTRACT_RESULT_DETAILS.contract_id + "/results/" + SAMPLE_CONTRACT_RESULT_DETAILS.timestamp,
             "api/v1/contracts/0.0.846260",
             "api/v1/contracts/" + SAMPLE_CONTRACT_RESULT_DETAILS.contract_id,
+            "api/v1/contracts/results/" + SAMPLE_CONTRACT_RESULT_DETAILS.hash + "/actions?limit=100",
             "api/v1/contracts/" + SAMPLE_CONTRACT_RESULT_DETAILS.logs[1].contract_id,
             "api/v1/contracts/" + SAMPLE_CONTRACT_RESULT_DETAILS.from,
             "api/v1/contracts/" + SAMPLE_CONTRACT_RESULT_DETAILS.to,
@@ -121,7 +124,7 @@ describe("ContractResult.vue", () => {
                 plugins: [router, Oruga]
             },
             props: {
-                timestamp: timestamp
+                transaction: SAMPLE_TRANSACTION as unknown as Transaction
             },
         });
         await flushPromises()
@@ -132,9 +135,10 @@ describe("ContractResult.vue", () => {
             "api/v1/contracts/results",
             "api/v1/transactions",
             "api/v1/network/fees",
-            "api/v1/contracts/" + SAMPLE_REVERT_CONTRACT_RESULT_DETAILS.contract_id + "/results/1677085141.263832358",
+            "api/v1/contracts/" + SAMPLE_REVERT_CONTRACT_RESULT_DETAILS.contract_id + "/results/" + SAMPLE_REVERT_CONTRACT_RESULT_DETAILS.timestamp,
             "api/v1/contracts/0.0.1466",
             "api/v1/contracts/" + SAMPLE_REVERT_CONTRACT_RESULT_DETAILS.contract_id,
+            "api/v1/contracts/results/" + SAMPLE_REVERT_CONTRACT_RESULT_DETAILS.hash + "/actions?limit=100",
             "api/v1/contracts/" + SAMPLE_REVERT_CONTRACT_RESULT_DETAILS.from,
             "api/v1/contracts/" + SAMPLE_REVERT_CONTRACT_RESULT_DETAILS.to,
             "api/v1/tokens/0.0.1466",
@@ -179,8 +183,7 @@ describe("ContractResult.vue", () => {
                 plugins: [router, Oruga]
             },
             props: {
-                timestamp: timestamp,
-                isParent: true
+                transaction: SAMPLE_TRANSACTION as unknown as Transaction
             },
         });
         await flushPromises()
@@ -191,7 +194,7 @@ describe("ContractResult.vue", () => {
             "api/v1/contracts/results",
             "api/v1/transactions",
             "api/v1/network/fees",
-            "api/v1/contracts/" + SAMPLE_REVERT_CONTRACT_RESULT_DETAILS_WITH_TRACES.contract_id + "/results/1677504382.107973330",
+            "api/v1/contracts/" + SAMPLE_REVERT_CONTRACT_RESULT_DETAILS_WITH_TRACES.contract_id + "/results/" + SAMPLE_REVERT_CONTRACT_RESULT_DETAILS_WITH_TRACES.timestamp,
             "api/v1/contracts/0.0.8942",
             "api/v1/contracts/results/" + SAMPLE_REVERT_CONTRACT_RESULT_DETAILS_WITH_TRACES.hash + "/actions?limit=100",
             "api/v1/contracts/" + SAMPLE_REVERT_CONTRACT_RESULT_DETAILS_WITH_TRACES.state_changes[0].contract_id,
@@ -204,7 +207,7 @@ describe("ContractResult.vue", () => {
             // "api/v1/contracts/" + SAMPLE_REVERT_CONTRACT_RESULT_DETAILS_WITH_TRACES.state_changes[9].address,
             "api/v1/accounts/" + SAMPLE_REVERT_CONTRACT_RESULT_DETAILS_WITH_TRACES.from,
             "api/v1/network/exchangerate",
-            "api/v1/contracts/0.0.33483",
+            "api/v1/contracts/" + SAMPLE_REVERT_CONTRACT_RESULT_DETAILS_WITH_TRACES.state_changes[9].contract_id,
             "api/v1/tokens/0.0.8942",
             "api/v1/contracts/" + SAMPLE_REVERT_CONTRACT_RESULT_ACTIONS.actions[0].to,
             "api/v1/contracts/" + SAMPLE_REVERT_CONTRACT_RESULT_ACTIONS.actions[1].to,
@@ -212,11 +215,11 @@ describe("ContractResult.vue", () => {
             "api/v1/accounts/" + SAMPLE_REVERT_CONTRACT_RESULT_DETAILS_WITH_TRACES.state_changes[0].address,
             "api/v1/accounts/" + SAMPLE_REVERT_CONTRACT_RESULT_DETAILS_WITH_TRACES.state_changes[3].address,
             // "api/v1/accounts/" + SAMPLE_REVERT_CONTRACT_RESULT_DETAILS_WITH_TRACES.state_changes[9].address,
-            "api/v1/tokens/0.0.10410",
-            "api/v1/tokens/0.0.33481",
+            "api/v1/tokens/" + SAMPLE_REVERT_CONTRACT_RESULT_DETAILS_WITH_TRACES.state_changes[0].contract_id,
+            "api/v1/tokens/" + SAMPLE_REVERT_CONTRACT_RESULT_DETAILS_WITH_TRACES.state_changes[3].contract_id,
             "api/v1/tokens/" + SAMPLE_REVERT_CONTRACT_RESULT_DETAILS_WITH_TRACES.contract_id,
             "https://www.4byte.directory/api/v1/signatures/?format=json&hex_signature=0x7d1ee005",
-            "api/v1/tokens/0.0.33483",
+            "api/v1/tokens/" + SAMPLE_REVERT_CONTRACT_RESULT_DETAILS_WITH_TRACES.state_changes[9].contract_id,
         ])
 
         expect(wrapper.text()).toMatch(RegExp("^Contract Result"))
