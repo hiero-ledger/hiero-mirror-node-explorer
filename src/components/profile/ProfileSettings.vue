@@ -6,24 +6,31 @@
 
 <template>
 
-  <Tabs
-      :selected-tab="selectedTab"
-      :tab-ids="tabIds"
-      :tab-labels="tabLabels"
-      @update:selected-tab="onSelectTab($event)"
-  />
+  <DashboardCardV2>
 
-  <template v-if="selectedTab === 'details'">
-    <ProfileDetails/>
-  </template>
+    <template #title>
+      Settings
+    </template>
 
-  <template v-else-if="selectedTab === 'bookmarks'">
-    <ProfileBookmarks/>
-  </template>
+    <template #content>
 
-  <template v-else>
-    <ProfileSettings/>
-  </template>
+      <EditableProperty id="property" full-width :editable="true">
+        <template #name>Preference 1</template>
+        <template v-slot:value>
+          <StringValue :string-value="'Value 1'"/>
+        </template>
+      </EditableProperty>
+
+      <EditableProperty id="property" full-width :editable="true">
+        <template #name>Preference 2</template>
+        <template v-slot:value>
+          <StringValue :string-value="'Value 2'"/>
+        </template>
+      </EditableProperty>
+
+    </template>
+
+  </DashboardCardV2>
 
 </template>
 
@@ -33,20 +40,9 @@
 
 <script setup lang="ts">
 
-import {Ref, ref} from "vue";
-import Tabs from "@/components/Tabs.vue";
-import ProfileDetails from "@/components/profile/ProfileDetails.vue";
-import ProfileBookmarks from "@/components/profile/ProfileBookmarks.vue";
-import ProfileSettings from "@/components/profile/ProfileSettings.vue";
-
-const tabIds = ['details', 'bookmarks', 'settings']
-const tabLabels = ['Profile Details', 'Bookmarks', 'Settings']
-const selectedTab: Ref<string | null> = ref(tabIds[0])
-
-const onSelectTab = (tab: string | null) => {
-  selectedTab.value = tab
-}
-
+import DashboardCardV2 from "@/components/DashboardCardV2.vue";
+import StringValue from "@/components/values/StringValue.vue";
+import EditableProperty from "@/components/EditableProperty.vue";
 </script>
 
 <!-- --------------------------------------------------------------------------------------------------------------- -->
