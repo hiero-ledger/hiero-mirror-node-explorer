@@ -10,10 +10,7 @@
 
     <DashboardCardV2 collapsible-key="contractResult">
       <template #title>
-        <span v-if="props.topLevel">
-          Contract Result for {{ contractResult?.contract_id }} at {{ contractResult?.timestamp }}
-        </span>
-        <span v-else>Contract Result</span>
+        <span>Contract Result</span>
       </template>
 
       <template #left-content>
@@ -158,10 +155,6 @@ import HexaValue from "@/components/values/HexaValue.vue";
 const props = defineProps({
   timestamp: {
     type: String,
-  },
-  topLevel: {
-    type: Boolean,
-    default: false
   },
   isParent: {
     type: Boolean,

@@ -53,8 +53,7 @@ describe("ContractResult.vue", () => {
                 plugins: [router, Oruga]
             },
             props: {
-                timestamp: timestamp,
-                topLevel: true
+                timestamp: timestamp
             },
         });
         await flushPromises()
@@ -81,7 +80,7 @@ describe("ContractResult.vue", () => {
             "https://www.4byte.directory/api/v1/signatures/?format=json&hex_signature=0x18cbafe5",
         ])
 
-        expect(wrapper.text()).toMatch(RegExp("^Contract Result for " + contractId + " at " + timestamp))
+        expect(wrapper.text()).toMatch(RegExp("^Contract Result"))
         expect(wrapper.get("#resultValue").text()).toBe("SUCCESS")
         expect(wrapper.get("#fromValue").text()).toBe("0x00000000000000000000000000000000000ce9b4Copy(0.0.846260)")
         expect(wrapper.get("#toValue").text()).toBe("0x0000000000000000000000000000000000103783Copy(0.0.1062787)")
@@ -122,8 +121,7 @@ describe("ContractResult.vue", () => {
                 plugins: [router, Oruga]
             },
             props: {
-                timestamp: timestamp,
-                topLevel: true
+                timestamp: timestamp
             },
         });
         await flushPromises()
@@ -146,7 +144,7 @@ describe("ContractResult.vue", () => {
             "https://www.4byte.directory/api/v1/signatures/?format=json&hex_signature=0x49257b42",
         ])
 
-        expect(wrapper.text()).toMatch(RegExp("^Contract Result for " + contractId + " at " + timestamp))
+        expect(wrapper.text()).toMatch(RegExp("^Contract Result"))
         expect(wrapper.get("#resultValue").text()).toBe("CONTRACT_REVERT_EXECUTED")
         expect(wrapper.get("#errorMessageValue").text()).toBe("Error(\"Insufficient token balance for wiped\")")
         expect(wrapper.get("#ethereumNonceValue").text()).toBe("None")
@@ -182,7 +180,6 @@ describe("ContractResult.vue", () => {
             },
             props: {
                 timestamp: timestamp,
-                topLevel: false,
                 isParent: true
             },
         });
