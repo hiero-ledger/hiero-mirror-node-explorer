@@ -6,7 +6,7 @@
 
 <template>
 
-  <DashboardCardV2>
+  <DashboardCardV2 collapsible-key="=userDetails">
 
     <template #title>
       User Details
