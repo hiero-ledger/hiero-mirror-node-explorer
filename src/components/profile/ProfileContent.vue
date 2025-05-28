@@ -13,15 +13,12 @@
       @update:selected-tab="onSelectTab($event)"
   />
 
-  <template v-if="selectedTab === 'details'">
-    <ProfileDetails/>
-  </template>
-
-  <template v-else-if="selectedTab === 'bookmarks'">
+  <template v-if="selectedTab === 'bookmarks'">
     <ProfileBookmarks/>
   </template>
 
-  <template v-else>
+  <template v-else-if="selectedTab === 'settings'">
+    <ProfileDetails/>
     <ProfileSettings/>
   </template>
 
@@ -39,8 +36,8 @@ import ProfileDetails from "@/components/profile/ProfileDetails.vue";
 import ProfileBookmarks from "@/components/profile/ProfileBookmarks.vue";
 import ProfileSettings from "@/components/profile/ProfileSettings.vue";
 
-const tabIds = ['details', 'bookmarks', 'settings']
-const tabLabels = ['Profile Details', 'Bookmarks', 'Settings']
+const tabIds = ['bookmarks', 'settings']
+const tabLabels = ['Bookmarks', 'Settings']
 const selectedTab: Ref<string | null> = ref(tabIds[0])
 
 const onSelectTab = (tab: string | null) => {
