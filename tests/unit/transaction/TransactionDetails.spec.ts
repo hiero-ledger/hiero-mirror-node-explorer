@@ -361,7 +361,6 @@ describe("TransactionDetails.vue", () => {
             "api/v1/contracts/results/" + SAMPLE_TRANSACTION.transaction_id,
             "api/v1/contracts/" + SAMPLE_TRANSACTION.transfers[0].account,
             "api/v1/contracts/results",
-            "api/v1/transactions",
             "api/v1/network/fees",
             "api/v1/contracts/" + SAMPLE_TRANSACTION.transfers[2].account,
             "api/v1/contracts/" + SAMPLE_TRANSACTION.transfers[1].account,

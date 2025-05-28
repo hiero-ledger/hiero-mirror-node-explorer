@@ -8,41 +8,33 @@ import {ContractResultByTsCache} from "@/utils/cache/ContractResultByTsCache";
 import {ContractByAddressCache} from "@/utils/cache/ContractByAddressCache";
 import {systemContractRegistry} from "@/schemas/SystemContractRegistry";
 import {routeManager} from "@/router.ts";
-import {TransactionByTsCache} from "@/utils/cache/TransactionByTsCache.ts";
-import {EntityLookup} from "@/utils/cache/base/EntityCache.ts";
 
 export class ContractResultAnalyzer {
 
-    public readonly timestamp: Ref<string | null>
     public readonly functionCallAnalyzer: FunctionCallAnalyzer
     public readonly contractResult: Ref<ContractResultDetails | null> = ref(null)
     public readonly toId: Ref<string | null> = ref(null)
     public readonly fromId: Ref<string | null> = ref(null)
     private readonly watchHandle: Ref<WatchStopHandle[]> = ref([])
-    private readonly transactionLookup: EntityLookup<string, Transaction|null>
 
     //
     // Public
     //
 
-    public constructor(timestamp: Ref<string | null>) {
-        this.timestamp = timestamp
+    public constructor(public readonly transaction: Ref<Transaction | null>) {
         this.functionCallAnalyzer = new FunctionCallAnalyzer(
             this.input, this.output, this.error, this.toId, this.isContractCreate)
-        this.transactionLookup = TransactionByTsCache.instance.makeLookup(timestamp)
     }
 
     public mount(): void {
         this.watchHandle.value = [
-            watch(this.timestamp, this.updateContractResult, {immediate: true}),
+            watch(this.transaction, this.updateContractResult, {immediate: true}),
         ]
         this.functionCallAnalyzer.mount()
-        this.transactionLookup.mount()
     }
 
     public unmount(): void {
         this.functionCallAnalyzer.unmount()
-        this.transactionLookup.unmount()
         for (const wh of this.watchHandle.value) {
             wh()
         }
@@ -107,12 +99,12 @@ export class ContractResultAnalyzer {
         () => this.contractResult.value?.error_message ?? null)
 
     private readonly isContractCreate = computed(
-        () => this.transactionLookup.entity.value?.name === TransactionType.CONTRACTCREATEINSTANCE )
+        () => this.transaction.value?.name === TransactionType.CONTRACTCREATEINSTANCE )
 
     private readonly updateContractResult = async () => {
-        if (this.timestamp.value !== null) {
+        if (this.transaction.value !== null) {
             try {
-                this.contractResult.value = await ContractResultByTsCache.instance.lookup(this.timestamp.value)
+                this.contractResult.value = await ContractResultByTsCache.instance.lookup(this.transaction.value.consensus_timestamp)
                 await this.updateFromId()
                 await this.updateToId()
             } catch {

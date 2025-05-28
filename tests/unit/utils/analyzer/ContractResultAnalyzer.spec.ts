@@ -10,6 +10,7 @@ import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
 import {fetchGetURLs} from "../../MockUtils";
 import {routeManager} from "@/router";
+import {Transaction} from "@/schemas/MirrorNodeSchemas.ts";
 
 describe("ContractResultAnalyzer.spec.ts", () => {
 
@@ -35,9 +36,9 @@ describe("ContractResultAnalyzer.spec.ts", () => {
         mock.onGet(matcher3).reply(200, SOURCIFY_RESPONSE);
 
         // 1) new
-        const timestamp = ref<string | null>(null)
-        const analyzer = new ContractResultAnalyzer(timestamp)
-        expect(analyzer.timestamp.value).toBeNull()
+        const transaction = ref<Transaction|null>(null)
+        const analyzer = new ContractResultAnalyzer(transaction)
+        expect(analyzer.transaction.value).toBeNull()
         expect(analyzer.fromId.value).toBeNull()
         expect(analyzer.toId.value).toBeNull()
         expect(analyzer.gasPrice.value).toBeNull()
@@ -53,7 +54,7 @@ describe("ContractResultAnalyzer.spec.ts", () => {
         // 2) mount
         analyzer.mount()
         await flushPromises()
-        expect(analyzer.timestamp.value).toBeNull()
+        expect(analyzer.transaction.value).toBeNull()
         expect(analyzer.fromId.value).toBeNull()
         expect(analyzer.toId.value).toBeNull()
         expect(analyzer.gasPrice.value).toBeNull()
@@ -66,10 +67,10 @@ describe("ContractResultAnalyzer.spec.ts", () => {
         expect(analyzer.functionCallAnalyzer.signature.value).toBeNull()
         expect(analyzer.functionCallAnalyzer.is4byteSignature.value).toBe(false)
 
-        // 3) setup timestamp
-        timestamp.value = CONTRACT_RESULT.timestamp
+        // 3) setup transaction
+        transaction.value = CONTRACT_TRANSACTION as any
         await flushPromises()
-        expect(analyzer.timestamp.value).toBe(CONTRACT_RESULT.timestamp)
+        expect(analyzer.transaction.value).toStrictEqual(CONTRACT_TRANSACTION)
         expect(analyzer.fromId.value).toBe("0.0.5939756")
         expect(analyzer.toId.value).toBe(CONTRACT_RESULT.contract_id)
         expect(analyzer.gasPrice.value).toBe(0)
@@ -84,7 +85,7 @@ describe("ContractResultAnalyzer.spec.ts", () => {
 
         // 4) unmount
         analyzer.unmount()
-        expect(analyzer.timestamp.value).toBe(CONTRACT_RESULT.timestamp)
+        expect(analyzer.transaction.value).toStrictEqual(CONTRACT_TRANSACTION)
         expect(analyzer.fromId.value).toBeNull()
         expect(analyzer.toId.value).toBeNull()
         expect(analyzer.gasPrice.value).toBeNull()
@@ -101,7 +102,6 @@ describe("ContractResultAnalyzer.spec.ts", () => {
         // console.log(JSON.stringify(fetchGetURLs(mock), null, "  "))
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/contracts/results",
-            "api/v1/transactions",
             "api/v1/contracts/0.0.6810663/results/1704186823.658538003",
             "api/v1/contracts/0.0.6810663",
             sourcifyURL + "files/any/295/0x06a50d1f642cA50284EFb59988AF9b60683FAD3F",
@@ -133,9 +133,9 @@ describe("ContractResultAnalyzer.spec.ts", () => {
         mock.onGet(matcher3).reply(200, SOURCIFY_RESPONSE);
 
         // 1) new
-        const timestamp = ref<string | null>(null)
-        const analyzer = new ContractResultAnalyzer(timestamp)
-        expect(analyzer.timestamp.value).toBeNull()
+        const transaction = ref<Transaction|null>(null)
+        const analyzer = new ContractResultAnalyzer(transaction)
+        expect(analyzer.transaction.value).toBeNull()
         expect(analyzer.fromId.value).toBeNull()
         expect(analyzer.toId.value).toBeNull()
         expect(analyzer.gasPrice.value).toBeNull()
@@ -149,9 +149,9 @@ describe("ContractResultAnalyzer.spec.ts", () => {
         expect(analyzer.functionCallAnalyzer.is4byteSignature.value).toBe(false)
 
         // 2) setup timestamp
-        timestamp.value = CONTRACT_RESULT.timestamp
+        transaction.value = CONTRACT_TRANSACTION as any
         await flushPromises()
-        expect(analyzer.timestamp.value).toBe(CONTRACT_RESULT.timestamp)
+        expect(analyzer.transaction.value).toStrictEqual(CONTRACT_TRANSACTION)
         expect(analyzer.fromId.value).toBeNull()
         expect(analyzer.toId.value).toBeNull()
         expect(analyzer.gasPrice.value).toBeNull()
@@ -167,7 +167,7 @@ describe("ContractResultAnalyzer.spec.ts", () => {
         // 3) mount
         analyzer.mount()
         await flushPromises()
-        expect(analyzer.timestamp.value).toBe(CONTRACT_RESULT.timestamp)
+        expect(analyzer.transaction.value).toStrictEqual(CONTRACT_TRANSACTION)
         expect(analyzer.fromId.value).toBe("0.0.5939756")
         expect(analyzer.toId.value).toBe(CONTRACT_RESULT.contract_id)
         expect(analyzer.gasPrice.value).toBe(0)
@@ -182,7 +182,7 @@ describe("ContractResultAnalyzer.spec.ts", () => {
 
         // 4) unmount
         analyzer.unmount()
-        expect(analyzer.timestamp.value).toBe(CONTRACT_RESULT.timestamp)
+        expect(analyzer.transaction.value).toStrictEqual(CONTRACT_TRANSACTION)
         expect(analyzer.fromId.value).toBeNull()
         expect(analyzer.toId.value).toBeNull()
         expect(analyzer.gasPrice.value).toBeNull()
@@ -199,7 +199,6 @@ describe("ContractResultAnalyzer.spec.ts", () => {
         // console.log(JSON.stringify(fetchGetURLs(mock), null, "  "))
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/contracts/results",
-            "api/v1/transactions",
             "api/v1/contracts/0.0.6810663/results/1704186823.658538003",
             "api/v1/contracts/0.0.6810663",
             sourcifyURL + "files/any/295/0x06a50d1f642cA50284EFb59988AF9b60683FAD3F",
@@ -228,9 +227,9 @@ describe("ContractResultAnalyzer.spec.ts", () => {
         mock.onGet(matcher4).reply(200, BYTES4_RESPONSE)
 
         // 1) new
-        const timestamp = ref<string | null>(null)
-        const analyzer = new ContractResultAnalyzer(timestamp)
-        expect(analyzer.timestamp.value).toBeNull()
+        const transaction = ref<Transaction|null>(null)
+        const analyzer = new ContractResultAnalyzer(transaction)
+        expect(analyzer.transaction.value).toBeNull()
         expect(analyzer.fromId.value).toBeNull()
         expect(analyzer.toId.value).toBeNull()
         expect(analyzer.gasPrice.value).toBeNull()
@@ -243,10 +242,10 @@ describe("ContractResultAnalyzer.spec.ts", () => {
         expect(analyzer.functionCallAnalyzer.signature.value).toBeNull()
         expect(analyzer.functionCallAnalyzer.is4byteSignature.value).toBe(false)
 
-        // 2) setup timestamp
-        timestamp.value = CONTRACT_RESULT_HTS.timestamp
+        // 2) setup transaction
+        transaction.value = CONTRACT_TRANSACTION_HTS as any
         await flushPromises()
-        expect(analyzer.timestamp.value).toBe(CONTRACT_RESULT_HTS.timestamp)
+        expect(analyzer.transaction.value).toStrictEqual(CONTRACT_TRANSACTION_HTS)
         expect(analyzer.fromId.value).toBeNull()
         expect(analyzer.toId.value).toBeNull()
         expect(analyzer.gasPrice.value).toBeNull()
@@ -263,7 +262,7 @@ describe("ContractResultAnalyzer.spec.ts", () => {
         analyzer.mount()
         await flushPromises()
         await vi.dynamicImportSettled()
-        expect(analyzer.timestamp.value).toBe(CONTRACT_RESULT_HTS.timestamp)
+        expect(analyzer.transaction.value).toStrictEqual(CONTRACT_TRANSACTION_HTS)
         expect(analyzer.fromId.value).toBe("0.0.1584")
         expect(analyzer.toId.value).toBe("0.0.359")
         expect(analyzer.gasPrice.value).toBeNull()
@@ -278,7 +277,7 @@ describe("ContractResultAnalyzer.spec.ts", () => {
 
         // 4) unmount
         analyzer.unmount()
-        expect(analyzer.timestamp.value).toBe(CONTRACT_RESULT_HTS.timestamp)
+        expect(analyzer.transaction.value).toStrictEqual(CONTRACT_TRANSACTION_HTS)
         expect(analyzer.fromId.value).toBeNull()
         expect(analyzer.toId.value).toBeNull()
         expect(analyzer.gasPrice.value).toBeNull()
@@ -294,7 +293,6 @@ describe("ContractResultAnalyzer.spec.ts", () => {
         // 5) check history
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/contracts/results",
-            "api/v1/transactions",
             "api/v1/contracts/results/0x4f0887dcc3c3f23ce2e80a2e3c3bfa246d488698d5e0cc17c76ef13262580d73",
         ])
 
@@ -323,6 +321,42 @@ const CONTRACT = {
     timestamp: {},
     bytecode: null,
     runtime_bytecode: null
+}
+
+export const CONTRACT_TRANSACTION = {
+    "bytes": null,
+    "charged_tx_fee": 470065,
+    "consensus_timestamp": "1704186823.658538003",
+    "entity_id": null,
+    "max_fee": "100000000",
+    "memo_base64": "",
+    "name": "CONTRACTCALL",
+    "nft_transfers": [],
+    "node": "0.0.5",
+    "nonce": 0,
+    "parent_consensus_timestamp": null,
+    "result": "SUCCESS",
+    "scheduled": false,
+    "staking_reward_transfers": [],
+    "token_transfers": [],
+    "transaction_hash": "oBKWEjLtfShCg26V9+nENW/f4t4IGZCRcBqWnB0f2TZx0weO6Dso+0YKiLTL2OzS",
+    "transaction_id": "0.0.29624024-1646025139-152901498",
+    "transfers": [
+        {
+            "account": "0.0.4",
+            "amount": 22028
+        },
+        {
+            "account": "0.0.98",
+            "amount": 448037
+        },
+        {
+            "account": "0.0.29624024",
+            "amount": -470065
+        }
+    ],
+    "valid_duration_seconds": "120",
+    "valid_start_timestamp": "1646025139.152901498",
 }
 
 
@@ -794,6 +828,43 @@ const SOURCIFY_RESPONSE = {
             "content": "// SPDX-License-Identifier: GPL-2.0-or-later\npragma solidity >=0.5.0;\n\n// added this interface explicitly instead of importing from hedera-smart-contracts\n// in order to avoid issue with solidity compiler versions\n// i.e. this codebase uses 0.7.6 and hedera-smart-contracts uses 0.8+\ninterface IHRC {\n    function associate() external returns (uint256 responseCode);\n\n    function dissociate() external returns (uint256 responseCode);\n}\n"
         }
     ]
+}
+
+
+const CONTRACT_TRANSACTION_HTS = {
+    "bytes": null,
+    "charged_tx_fee": 470065,
+    "consensus_timestamp": "1711559858.799271379",
+    "entity_id": null,
+    "max_fee": "100000000",
+    "memo_base64": "",
+    "name": "CONTRACTCALL",
+    "nft_transfers": [],
+    "node": "0.0.5",
+    "nonce": 0,
+    "parent_consensus_timestamp": null,
+    "result": "SUCCESS",
+    "scheduled": false,
+    "staking_reward_transfers": [],
+    "token_transfers": [],
+    "transaction_hash": "oBKWEjLtfShCg26V9+nENW/f4t4IGZCRcBqWnB0f2TZx0weO6Dso+0YKiLTL2OzS",
+    "transaction_id": "0.0.29624024-1646025139-152901498",
+    "transfers": [
+        {
+            "account": "0.0.4",
+            "amount": 22028
+        },
+        {
+            "account": "0.0.98",
+            "amount": 448037
+        },
+        {
+            "account": "0.0.29624024",
+            "amount": -470065
+        }
+    ],
+    "valid_duration_seconds": "120",
+    "valid_start_timestamp": "1646025139.152901498",
 }
 
 
