@@ -6,8 +6,8 @@
 
 <template>
   <div class="sign-in-root">
-    <div class="sign-in-line1">Connection to Hedera Portal</div>
-    <div class="sign-in-line2">If you have an account on Hedera Portal, connect with it and benefit form extra features like entity bookmarks.</div>
+    <div class="sign-in-line1">Connection to HashScan Backend</div>
+    <div class="sign-in-line2">If you have an account on Hedera Portal, you may use it to connect and benefit from additional features like entity bookmarks.</div>
     <div class="sign-in-form">
       <TextFieldView v-model="emailText" placeholder="e-Mail"/>
       <TextFieldView v-model="passwordText" placeholder="Password" type="password"/>
