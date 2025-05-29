@@ -8,35 +8,38 @@
 
   <PageFrameV2 page-title="Tokens">
 
-    <div class="h-side-by-side-content">
+    <Tabs
+        :tab-ids="tabIds"
+        :tab-labels="tabLabels"
+        :selected-tab="selectedTab"
+        @update:selected-tab="onUpdate($event)"
+    />
 
-      <DashboardCardV2>
-        <template #title>
-          <span>Recent NFTs</span>
-        </template>
-        <template #left-control>
-          <PlayPauseButton :controller="nftTableController"/>
-        </template>
-        <template #content>
-          <TokenTable :controller="nftTableController"/>
-        </template>
-      </DashboardCardV2>
+    <DashboardCardV2 v-if="selectedTab === 'nft'">
+      <template #title>
+        <span>Recent NFTs</span>
+      </template>
+      <template #left-control>
+        <PlayPauseButton :controller="nftTableController"/>
+      </template>
+      <template #content>
+        <TokenTable :controller="nftTableController"/>
+      </template>
+    </DashboardCardV2>
 
-      <DashboardCardV2>
-        <template #title>
-          <span>Recent Fungible Tokens</span>
-        </template>
-        <template #left-control>
-          <PlayPauseButton :controller="tokenTableController"/>
-        </template>
-        <template #content>
-          <TokenTable :controller="tokenTableController"/>
-        </template>
-      </DashboardCardV2>
+    <DashboardCardV2 v-else-if="selectedTab === 'fungible'">
+      <template #title>
+        <span>Recent Fungible Tokens</span>
+      </template>
+      <template #left-control>
+        <PlayPauseButton :controller="tokenTableController"/>
+      </template>
+      <template #content>
+        <TokenTable :controller="tokenTableController"/>
+      </template>
+    </DashboardCardV2>
 
-    </div>
-
-    <DashboardCardV2  v-if="blockscoutEnabled">
+    <DashboardCardV2 v-else-if="selectedTab === 'erc'">
       <template #title>
         <span>Top ERC Tokens</span>
       </template>
@@ -65,6 +68,7 @@ import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import PlayPauseButton from "@/components/PlayPauseButton.vue";
 import ERCTokenTable from "@/components/ercToken/ERCTokenTable.vue";
 import {routeManager} from "@/router.ts";
+import Tabs from "@/components/Tabs.vue";
 
 defineProps({
   network: String
@@ -72,6 +76,13 @@ defineProps({
 
 const isMediumScreen = inject('isMediumScreen', true)
 const blockscoutEnabled = computed(() => routeManager.currentNetworkEntry.value.blockscoutURL !== null)
+
+const tabIds = blockscoutEnabled ? ['erc', 'fungible', 'nft'] :  ['fungible', 'nft']
+const tabLabels = ['ERC Tokens', 'Hedera Fungible', 'Hedera NFT']
+const selectedTab = ref<string | null>(tabIds[0])
+const onUpdate = (tab: string | null) => {
+  selectedTab.value = tab
+}
 
 //
 // NFT and TOKEN TableController
