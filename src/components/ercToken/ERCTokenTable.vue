@@ -76,6 +76,7 @@ import ERCTokenSupport from "@/components/ercToken/ERCTokenSupport.vue";
 import EVMAddress from "@/components/values/EVMAddress.vue";
 import {ContractByAddressCache} from "@/utils/cache/ContractByAddressCache.ts";
 import {EntityID} from "@/utils/EntityID";
+import {BlockscoutTokenInfo, BlockscoutTokenResponse} from "@/schemas/BlockScoutSchemas.ts";
 
 const handleClick = async (tokenInfo: BlockscoutTokenInfo, c: unknown, i: number, ci: number, event: Event) => {
 
@@ -114,28 +115,6 @@ onMounted(async () => {
 onBeforeUnmount(() => {
   tokens.value = []
 })
-
-//
-// https://eth.blockscout.com/api-docs
-//
-
-interface BlockscoutTokenInfo {
-  circulating_market_cap: string|null
-  icon_url: string|null
-  name: string|null
-  decimals: string|null
-  symbol: string|null
-  address: string
-  type: string
-  holders: string|null
-  exchange_rate: string|null
-  total_supply: string
-}
-
-interface BlockscoutTokenResponse {
-  items: BlockscoutTokenInfo[]
-  next_page_params: object
-}
 
 </script>
 
