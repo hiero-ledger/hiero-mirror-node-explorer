@@ -76,9 +76,9 @@ import ERCTokenSupport from "@/components/ercToken/ERCTokenSupport.vue";
 import EVMAddress from "@/components/values/EVMAddress.vue";
 import {ContractByAddressCache} from "@/utils/cache/ContractByAddressCache.ts";
 import {EntityID} from "@/utils/EntityID";
-import {BlockscoutTokenInfo, BlockscoutTokenResponse} from "@/schemas/BlockScoutSchemas.ts";
+import {Blockscout} from "@/utils/blockscout/Blockscout.ts";
 
-const handleClick = async (tokenInfo: BlockscoutTokenInfo, c: unknown, i: number, ci: number, event: Event) => {
+const handleClick = async (tokenInfo: Blockscout.TokenInfo, c: unknown, i: number, ci: number, event: Event) => {
 
   const evmAddress = tokenInfo.address
   const contractInfo = await ContractByAddressCache.instance.lookup(evmAddress)
@@ -95,14 +95,14 @@ const handleClick = async (tokenInfo: BlockscoutTokenInfo, c: unknown, i: number
 }
 
 const loading = ref(false)
-const tokens = ref<BlockscoutTokenInfo[]>([])
+const tokens = ref<Blockscout.TokenInfo[]>([])
 
 onMounted(async () => {
   const blockscoutURL = routeManager.currentNetworkEntry.value.blockscoutURL
   if (blockscoutURL !== null) {
     loading.value = true
     try {
-      const response = await axios.get<BlockscoutTokenResponse>(blockscoutURL + "api/v2/tokens")
+      const response = await axios.get<Blockscout.TokenInfoResponse>(blockscoutURL + "api/v2/tokens")
       tokens.value = response.data.items
     } catch(reason) {
       console.log("reason=" + reason)
@@ -115,6 +115,28 @@ onMounted(async () => {
 onBeforeUnmount(() => {
   tokens.value = []
 })
+
+//
+// https://eth.blockscout.com/api-docs
+//
+
+interface BlockscoutTokenInfo {
+  circulating_market_cap: string|null
+  icon_url: string|null
+  name: string|null
+  decimals: string|null
+  symbol: string|null
+  address: string
+  type: string
+  holders: string|null
+  exchange_rate: string|null
+  total_supply: string
+}
+
+interface BlockscoutTokenResponse {
+  items: BlockscoutTokenInfo[]
+  next_page_params: object
+}
 
 </script>
 
