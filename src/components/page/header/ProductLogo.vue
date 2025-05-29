@@ -36,6 +36,7 @@ const isXLargeScreen = inject('isXLargeScreen', true)
 <style scoped>
 
 img {
+  display: block;
   height: auto;
   max-width: 130px;
 }
