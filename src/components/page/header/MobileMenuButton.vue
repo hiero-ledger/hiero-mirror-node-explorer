@@ -7,8 +7,11 @@
 <template>
   <DropdownPanel v-model:deployed="showMobileMenu" :right-aligned="false">
     <template #button>
-      <Menu :size="18" style="color: var(--text-primary)" @click="showMobileMenu = !showMobileMenu"
-            data-cy="mobile-menu-icon"/>
+      <Menu
+          :size="18"
+          class="menu-icon"
+          @click="showMobileMenu = !showMobileMenu"
+          data-cy="mobile-menu-icon"/>
     </template>
 
     <template #panel>
@@ -79,6 +82,11 @@ div.menu-l1 {
   justify-content: space-between;
   padding-left: 8px;
   width: 100%;
+}
+
+.menu-icon {
+  color: var(--text-primary);
+  display: block;
 }
 
 .menu-items {
