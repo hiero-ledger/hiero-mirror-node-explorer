@@ -171,7 +171,8 @@ const timestamp = computed(() => props.transaction?.consensus_timestamp ?? null)
 const transactionType = computed(() => props.transaction?.name ?? TransactionType.ETHEREUMTRANSACTION)
 const isParent = computed(() => props.transaction?.parent_consensus_timestamp === null)
 
-const contractResultAnalyzer = new ContractResultAnalyzer(timestamp)
+const transaction = computed(() => props.transaction ?? null)
+const contractResultAnalyzer = new ContractResultAnalyzer(transaction)
 onMounted(() => contractResultAnalyzer.mount())
 onBeforeUnmount(() => contractResultAnalyzer.unmount())
 
