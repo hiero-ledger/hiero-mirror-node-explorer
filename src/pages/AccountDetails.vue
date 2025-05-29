@@ -222,6 +222,8 @@
       </template>
     </DashboardCardV2>
 
+    <ERCTokensSection :account-id="normalizedAccountId"/>
+
     <TokensSection :account-id="normalizedAccountId" :full-page="false"/>
 
     <DashboardCardV2 v-if="!isInactiveEvmAddress" collapsible-key="recentTransactions">
@@ -394,6 +396,7 @@ import {Download} from 'lucide-vue-next';
 import DomainLabel from "@/components/values/DomainLabel.vue";
 import PublicLabel from "@/components/values/PublicLabel.vue";
 import {PublicLabelsCache} from "@/utils/cache/PublicLabelsCache.ts";
+import ERCTokensSection from "@/components/token/ERCTokensSection.vue";
 import router, {routeManager, walletManager} from "@/utils/RouteManager.ts";
 
 const props = defineProps({
