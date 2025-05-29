@@ -15,11 +15,7 @@
       :striped="true"
       :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
 
-      aria-current-label="Current page"
-      aria-next-label="Next page"
-      aria-page-label="Page"
-      aria-previous-label="Previous page"
-      customRowKey="token_id"
+      row-key="token_id"
   >
     <o-table-column v-slot="props" field="token_id" label="TOKEN">
       <ERCTokenIOL :evm-address="props.row.address"/>
@@ -70,6 +66,7 @@
 <script setup lang="ts">
 
 import {onBeforeUnmount, onMounted, ref} from 'vue';
+import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
 import axios from "axios";
 import {routeManager} from "@/router.ts";
 import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints.ts";
@@ -80,7 +77,7 @@ import EVMAddress from "@/components/values/EVMAddress.vue";
 import {ContractByAddressCache} from "@/utils/cache/ContractByAddressCache.ts";
 import {EntityID} from "@/utils/EntityID";
 
-const handleClick = async (tokenInfo: BlockscoutTokenInfo, c: unknown, i: number, ci: number, event: MouseEvent) => {
+const handleClick = async (tokenInfo: BlockscoutTokenInfo, c: unknown, i: number, ci: number, event: Event) => {
 
   const evmAddress = tokenInfo.address
   const contractInfo = await ContractByAddressCache.instance.lookup(evmAddress)
@@ -97,7 +94,7 @@ const handleClick = async (tokenInfo: BlockscoutTokenInfo, c: unknown, i: number
 }
 
 const loading = ref(false)
-const tokens = ref<object[]>([])
+const tokens = ref<BlockscoutTokenInfo[]>([])
 
 onMounted(async () => {
   const blockscoutURL = routeManager.currentNetworkEntry.value.blockscoutURL
@@ -147,9 +144,4 @@ interface BlockscoutTokenResponse {
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <style scoped>
-
-.token_id {
-  font-weight: 600;
-}
-
 </style>
