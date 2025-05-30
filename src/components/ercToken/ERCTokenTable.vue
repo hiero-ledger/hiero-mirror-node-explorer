@@ -77,7 +77,7 @@
 
 <script setup lang="ts">
 
-import {computed, onBeforeUnmount, onMounted, watch} from 'vue';
+import {computed, onBeforeUnmount, onMounted} from 'vue';
 import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
 import {routeManager} from "@/router.ts";
 import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints.ts";
@@ -109,21 +109,18 @@ const handleClick = async (tokenInfo: Blockscout.TokenInfo, c: unknown, i: numbe
 }
 
 const blockscoutURL = computed(() => routeManager.currentNetworkEntry.value.blockscoutURL)
-const tokenTableController = new ERCTokenTableController(10, blockscoutURL, AppStorage.ERC_TOKEN_TABLE_PAGE_SIZE_KEY)
-onMounted(() => tokenTableController.mount())
-onBeforeUnmount(() => tokenTableController.unmount())
+const tableController = new ERCTokenTableController(10, blockscoutURL, AppStorage.ERC_TOKEN_TABLE_PAGE_SIZE_KEY)
+onMounted(() => tableController.mount())
+onBeforeUnmount(() => tableController.unmount())
 
-const loading = tokenTableController.loading
-const tokens = tokenTableController.rows
-const paginated = tokenTableController.paginated
-const perPage = tokenTableController.pageSize
-const total = tokenTableController.totalRowCount
-const currentPage = tokenTableController.currentPage
-const onPageChange = tokenTableController.onPageChange
+const loading = tableController.loading
+const tokens = tableController.rows
+const paginated = tableController.paginated
+const perPage = tableController.pageSize
+const total = tableController.totalRowCount
+const currentPage = tableController.currentPage
+const onPageChange = tableController.onPageChange
 
-watch(tokens, () => {
-  console.log("tokens=" + tokens.value.length)
-}, {immediate: true})
 </script>
 
 <!-- --------------------------------------------------------------------------------------------------------------- -->
