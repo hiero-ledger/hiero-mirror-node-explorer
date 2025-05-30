@@ -65,9 +65,8 @@
 
 <script setup lang="ts">
 
-import {onBeforeUnmount, onMounted, ref} from 'vue';
+import {computed, onBeforeUnmount, onMounted} from 'vue';
 import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
-import axios from "axios";
 import {routeManager} from "@/router.ts";
 import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints.ts";
 import EmptyTable from "@/components/EmptyTable.vue";
@@ -77,6 +76,8 @@ import EVMAddress from "@/components/values/EVMAddress.vue";
 import {ContractByAddressCache} from "@/utils/cache/ContractByAddressCache.ts";
 import {EntityID} from "@/utils/EntityID";
 import {Blockscout} from "@/utils/blockscout/Blockscout.ts";
+import {AppStorage} from "@/AppStorage.ts";
+import {ERCTokenTableController} from "@/components/ercToken/ERCTokenTableController.ts";
 
 const handleClick = async (tokenInfo: Blockscout.TokenInfo, c: unknown, i: number, ci: number, event: Event) => {
 
@@ -94,27 +95,14 @@ const handleClick = async (tokenInfo: Blockscout.TokenInfo, c: unknown, i: numbe
   }
 }
 
-const loading = ref(false)
-const tokens = ref<Blockscout.TokenInfo[]>([])
+const blockscoutURL = computed(() => routeManager.currentNetworkEntry.value.blockscoutURL)
+const tokenTableController = new ERCTokenTableController(10, blockscoutURL, AppStorage.ERC_TOKEN_TABLE_PAGE_SIZE_KEY)
+onMounted(() => tokenTableController.mount())
+onBeforeUnmount(() => tokenTableController.unmount())
 
-onMounted(async () => {
-  const blockscoutURL = routeManager.currentNetworkEntry.value.blockscoutURL
-  if (blockscoutURL !== null) {
-    loading.value = true
-    try {
-      const response = await axios.get<Blockscout.TokenInfoResponse>(blockscoutURL + "api/v2/tokens")
-      tokens.value = response.data.items
-    } catch(reason) {
-      console.log("reason=" + reason)
-    } finally {
-      loading.value = false
-    }
-  }
-})
+const loading = tokenTableController.loading
+const tokens = tokenTableController.rows
 
-onBeforeUnmount(() => {
-  tokens.value = []
-})
 
 //
 // https://eth.blockscout.com/api-docs
