@@ -328,7 +328,7 @@ onBeforeUnmount(() => contractAnalyzer.unmount())
 //
 // ERCAnalyzer
 //
-const ercAnalyzer = new ERCAnalyzer(normalizedContractId)
+const ercAnalyzer = new ERCAnalyzer(normalizedContractId, contractLocParser.ethereumAddress)
 onMounted(() => ercAnalyzer.mount())
 onBeforeUnmount(() => ercAnalyzer.unmount())
 
