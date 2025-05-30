@@ -19,7 +19,7 @@ import {
 } from "@/schemas/MirrorNodeSchemas";
 import {drainAccounts} from "@/schemas/MirrorNodeUtils.ts";
 import {aliasToBase32, byteToHex, paddedBytes} from "@/utils/B64Utils";
-import axios from "axios";
+import axios, {AxiosRequestConfig} from "axios";
 import {RouteLocationRaw} from "vue-router";
 import {routeManager} from "@/router";
 import {TransactionID} from "@/utils/TransactionID";
@@ -32,6 +32,9 @@ import {SelectedTokensCache} from "@/utils/cache/SelectedTokensCache";
 import {ERC20Cache} from "@/utils/cache/ERC20Cache.ts";
 import {ERC721Cache} from "@/utils/cache/ERC721Cache.ts";
 import {PublicLabelsCache} from "@/utils/cache/PublicLabelsCache.ts";
+import {Blockscout} from "@/utils/blockscout/Blockscout.ts";
+import {ContractByAddressCache} from "@/utils/cache/ContractByAddressCache.ts";
+import {TokenInfoCache} from "@/utils/cache/TokenInfoCache.ts";
 
 export abstract class SearchAgent<L, E> {
 
@@ -561,10 +564,6 @@ export abstract class TokenNameSearchAgent extends SearchAgent<string, TokenLike
             tokens = []
         }
 
-        const truncate = (value: string, length: number): string => {
-            return value.length > length ? value.slice(0, length) + '…' : value
-        }
-
         const result: SearchCandidate<TokenLike>[] = []
         if (tokens.length >= 1) {
             for (const t of tokens.slice(0, this.limit)) {
@@ -789,4 +788,119 @@ export class ERC721SearchAgent extends TokenNameSearchAgent {
     protected makeRoute(tokenName: string): RouteLocationRaw {
         return routeManager.makeRouteToERC721ByName(tokenName)
     }
+}
+
+export interface ERCSearchRecord {
+    searchResult: Blockscout.SearchResultToken
+    support: string // "contract", "token", "unknown"
+    entityId: string|null
+}
+
+export class ERCSearchAgent extends SearchAgent<string, ERCSearchRecord> {
+
+    //
+    // Public
+    //
+
+    public constructor() {
+        super("ERC Tokens")
+    }
+
+    //
+    // SearchAgent
+    //
+
+    protected async load(tokenName: string): Promise<SearchCandidate<ERCSearchRecord>[]> {
+        const result: SearchCandidate<ERCSearchRecord>[] = []
+
+        const searchResults = await this.searchBlockscout(tokenName, 10)
+        for (const sr of searchResults) {
+            const record = await this.makeSearchRecord(sr)
+            if (record.entityId !== null) {
+                const description = truncate(record.searchResult.name, 35)
+                const extra = " " + record.entityId
+                const route = this.makeRouteForErcSearchRecord(record)
+                const candidate = new SearchCandidate(description, extra, route, record, this)
+                result.push(candidate)
+            }
+        }
+        return Promise.resolve(result)
+    }
+
+    //
+    // Private
+    //
+
+    private async searchBlockscout(tokenName: string, limit: number): Promise<Blockscout.SearchResultToken[]> {
+        const result: Blockscout.SearchResultToken[] = []
+
+        let drained = false
+        let lastResponse: Blockscout.SearchResultResponse|null = null
+        const blockscoutURL = routeManager.currentNetworkEntry.value.blockscoutURL
+        if (blockscoutURL !== null) {
+            const url = blockscoutURL + "api/v2/search?q=" + tokenName
+            while (!drained && result.length < limit) {
+                const params = lastResponse?.next_page_params ?? {}
+                const config: AxiosRequestConfig = {params}
+                const r = await axios.get<Blockscout.SearchResultResponse>(url, config)
+                lastResponse = r.data
+                drained = lastResponse.next_page_params === null
+                for (const i of lastResponse.items) {
+                    if (i.type === "token") {
+                        result.push(i as Blockscout.SearchResultToken)
+                    }
+                }
+            }
+        }
+        // else leaves result empty
+
+        return Promise.resolve(result)
+    }
+
+    private async makeSearchRecord(searchResult: Blockscout.SearchResultToken): Promise<ERCSearchRecord> {
+        let result: ERCSearchRecord|null
+        const contractInfo = await ContractByAddressCache.instance.lookup(searchResult.address)
+        if (contractInfo !== null) {
+            result = { searchResult: searchResult, support: "contract", entityId: contractInfo.contract_id}
+        } else {
+            const tokenId = EntityID.fromAddress(searchResult.address)?.toString()
+            if (tokenId) {
+                const tokenInfo = await TokenInfoCache.instance.lookup(tokenId)
+                if (tokenInfo?.token_id) {
+                    result = { searchResult: searchResult, support: "token", entityId: tokenInfo.token_id}
+                } else {
+                    result = null
+                }
+            } else {
+                result = null
+            }
+        }
+        return result ?? { searchResult: searchResult, support: "unknown", entityId: null}
+    }
+
+    private makeRouteForErcSearchRecord(record: ERCSearchRecord): RouteLocationRaw | null {
+        let result: RouteLocationRaw | null
+        if (record.entityId !== null) {
+            switch(record.support) {
+                case "contract":
+                    result = routeManager.makeRouteToContract(record.entityId)
+                    break
+                case "token":
+                    result = routeManager.makeRouteToToken(record.entityId)
+                    break;
+                default:
+                    result = null
+                    break
+            }
+        } else {
+            result = null
+        }
+        return result
+    }
+}
+
+
+
+function truncate(value: string, length: number): string {
+    return value.length > length ? value.slice(0, length) + '…' : value
 }
