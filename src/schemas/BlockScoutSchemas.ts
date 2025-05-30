@@ -38,8 +38,43 @@ export interface BlockScoutNFTInstance {
     external_app_url: string | null
     media_type: string | null
     media_url: string | null
-    metadata: any | null
-    owner: any | null
-    thumbnails: any | null
+    metadata: object | null
+    owner: object | null
+    thumbnails: object | null
     token: BlockscoutTokenInfo
+}
+
+export interface BlockscoutHolder {
+    address: BlockscoutAddressParam
+    value: string
+    token_id: string
+}
+
+export interface BlockscoutAddressParam {
+    hash: string
+    implementation_name: string
+    name: string
+    ens_domain_name: string | null
+    metadata: object | null
+    is_contract: boolean
+    private_tags: BlockscoutAddressTag []
+    watchlist_names: BlockscoutWatchlistName []
+    public_tags: BlockscoutAddressTag []
+    is_verified: boolean
+}
+
+export interface BlockscoutAddressTag {
+    address_hash: string
+    display_name: string
+    label: string
+}
+
+export interface BlockscoutWatchlistName {
+    display_name: string
+    label: string
+}
+
+export interface BlockscoutHolderResponse {
+    items: BlockscoutHolder[]
+    next_page_params: object
 }
