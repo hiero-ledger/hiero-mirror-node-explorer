@@ -76,7 +76,7 @@ import ERCTokenSupport from "@/components/ercToken/ERCTokenSupport.vue";
 import EVMAddress from "@/components/values/EVMAddress.vue";
 import {ContractByAddressCache} from "@/utils/cache/ContractByAddressCache.ts";
 import {EntityID} from "@/utils/EntityID";
-import {BlockscoutTokenBalance} from "@/schemas/BlockScoutSchemas.ts";
+import {Blockscout} from "@/utils/blockscout/Blockscout.ts";
 
 const props = defineProps({
   accountAddress: {
@@ -85,7 +85,7 @@ const props = defineProps({
   }
 })
 
-const handleClick = async (tokenBalance: BlockscoutTokenBalance, c: unknown, i: number, ci: number, event: Event) => {
+const handleClick = async (tokenBalance: Blockscout.TokenBalance, c: unknown, i: number, ci: number, event: Event) => {
 
   const evmAddress = tokenBalance.token.address
   const contractInfo = await ContractByAddressCache.instance.lookup(evmAddress)
@@ -102,7 +102,7 @@ const handleClick = async (tokenBalance: BlockscoutTokenBalance, c: unknown, i: 
 }
 
 const loading = ref(false)
-const tokens = ref<BlockscoutTokenBalance[]>([])
+const tokens = ref<Blockscout.TokenBalance[]>([])
 
 onMounted(async () => {
   const blockscoutURL = routeManager.currentNetworkEntry.value.blockscoutURL
@@ -110,7 +110,7 @@ onMounted(async () => {
     loading.value = true
     try {
       const url = blockscoutURL + "api/v2/addresses/" + props.accountAddress + "/token-balances"
-      const response = await axios.get<BlockscoutTokenBalance[]>(url)
+      const response = await axios.get<Blockscout.TokenBalance[]>(url)
       tokens.value = response.data.slice(0, 15)
     } catch (reason) {
       console.log("reason=" + reason)
