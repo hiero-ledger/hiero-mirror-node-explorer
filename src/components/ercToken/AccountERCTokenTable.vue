@@ -9,6 +9,13 @@
   <o-table
       :data="tokens"
       :loading="loading"
+      :paginated="paginated"
+      backend-pagination
+      pagination-order="centered"
+      :total="total"
+      v-model:current-page="currentPage"
+      :per-page="perPage"
+      @page-change="onPageChange"
       @cell-click="handleClick"
 
       :hoverable="true"
@@ -65,9 +72,8 @@
 
 <script setup lang="ts">
 
-import {onBeforeUnmount, onMounted, PropType, ref} from 'vue';
+import {computed, onBeforeUnmount, onMounted, PropType} from 'vue';
 import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
-import axios from "axios";
 import {routeManager} from "@/router.ts";
 import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints.ts";
 import EmptyTable from "@/components/EmptyTable.vue";
@@ -77,6 +83,8 @@ import EVMAddress from "@/components/values/EVMAddress.vue";
 import {ContractByAddressCache} from "@/utils/cache/ContractByAddressCache.ts";
 import {EntityID} from "@/utils/EntityID";
 import {Blockscout} from "@/utils/blockscout/Blockscout.ts";
+import {AccountERCTokenTableController} from "@/components/ercToken/AccountERCTokenTableController.ts";
+import {AppStorage} from "@/AppStorage.ts";
 
 const props = defineProps({
   accountAddress: {
@@ -101,28 +109,19 @@ const handleClick = async (tokenBalance: Blockscout.TokenBalance, c: unknown, i:
   }
 }
 
-const loading = ref(false)
-const tokens = ref<Blockscout.TokenBalance[]>([])
+const blockscoutURL = computed(() => routeManager.currentNetworkEntry.value.blockscoutURL)
+const accountAddress = computed(() => props.accountAddress)
+const tableController = new AccountERCTokenTableController(accountAddress, 10, blockscoutURL, AppStorage.ERC_TOKEN_TABLE_PAGE_SIZE_KEY)
+onMounted(() => tableController.mount())
+onBeforeUnmount(() => tableController.unmount())
 
-onMounted(async () => {
-  const blockscoutURL = routeManager.currentNetworkEntry.value.blockscoutURL
-  if (blockscoutURL !== null) {
-    loading.value = true
-    try {
-      const url = blockscoutURL + "api/v2/addresses/" + props.accountAddress + "/token-balances"
-      const response = await axios.get<Blockscout.TokenBalance[]>(url)
-      tokens.value = response.data.slice(0, 15)
-    } catch (reason) {
-      console.log("reason=" + reason)
-    } finally {
-      loading.value = false
-    }
-  }
-})
-
-onBeforeUnmount(() => {
-  tokens.value = []
-})
+const loading = tableController.loading
+const tokens = tableController.rows
+const paginated = tableController.paginated
+const perPage = tableController.pageSize
+const total = tableController.totalRowCount
+const currentPage = tableController.currentPage
+const onPageChange = tableController.onPageChange
 
 </script>
 
