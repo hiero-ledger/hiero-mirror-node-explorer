@@ -12,7 +12,8 @@ export class ERCTokenTableController extends Blockscout.TableController<Blocksco
 
     public async load(nextPageParams: Blockscout.NextPageParams | null, blockscoutURL: string): Promise<Blockscout.TokenInfoResponse | null> {
         const config = nextPageParams !== null ? { params: nextPageParams } : {}
-        const r = await axios.get<Blockscout.TokenInfoResponse>(blockscoutURL + "api/v2/tokens", config)
+        const url = blockscoutURL + "api/v2/tokens"
+        const r = await axios.get<Blockscout.TokenInfoResponse>(url, config)
         return r.data
     }
 }
