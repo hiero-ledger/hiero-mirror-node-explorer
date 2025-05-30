@@ -2,7 +2,6 @@
 
 import {computed, ComputedRef, ref, Ref, watch} from "vue";
 import {AppStorage} from "@/AppStorage.ts";
-import axios from "axios";
 
 export namespace Blockscout {
 
@@ -23,12 +22,67 @@ export namespace Blockscout {
         total_supply: string
     }
 
+
+    export interface TokenBalance {
+        token_instance?: NFTInstance | null
+        value: string
+        token_id: string | null
+        token: TokenInfo
+    }
+
+    export interface NFTInstance {
+        is_unique: boolean | null
+        id: string
+        holder_address_hash: string
+        image_url: string | null
+        animation_url: string
+        external_app_url: string | null
+        media_type: string | null
+        media_url: string | null
+        metadata: object | null
+        owner: object | null
+        thumbnails: object | null
+        token: TokenInfo
+    }
+
+    export interface Holder {
+        address: AddressParam
+        value: string
+        token_id: string
+    }
+
+    export interface AddressParam {
+        hash: string
+        implementation_name: string
+        name: string
+        ens_domain_name: string | null
+        metadata: object | null
+        is_contract: boolean
+        private_tags: AddressTag []
+        watchlist_names: WatchlistName []
+        public_tags: AddressTag []
+        is_verified: boolean
+    }
+
+    export interface AddressTag {
+        address_hash: string
+        display_name: string
+        label: string
+    }
+
+    export interface WatchlistName {
+        display_name: string
+        label: string
+    }
+
+
     export interface Response<T> {
         items: T[]
         next_page_params: NextPageParams|null
     }
 
     export type TokenInfoResponse = Response<TokenInfo>
+    export type HolderResponse = Response<Holder>
     export type NextPageParams = Record<string, unknown>
 }
 
