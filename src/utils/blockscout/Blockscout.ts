@@ -75,6 +75,35 @@ export namespace Blockscout {
         label: string
     }
 
+    export interface SearchResult {
+        type: string // "token", "address|contract", "block", "transaction"
+    }
+
+    export interface SearchResultToken extends SearchResult {
+        address: string
+        address_url: string
+        exchange_rate: string
+        icon_url: string
+        is_smart_contract_verified: boolean,
+        name: string,
+        symbol: string,
+        token_type: string, // ERC-20
+        token_url: string,
+        total_supply: string,
+    }
+    //
+    // export interface SearchResultAddressOrContract extends SearchResult {
+    //     // To be filled when/if needed
+    // }
+    //
+    // export interface SearchResultBlock extends SearchResult {
+    //     // To be filled when/if needed
+    // }
+    //
+    // export interface SearchResultTransaction extends SearchResult {
+    //     // To be filled when/if needed
+    // }
+
 
     export interface Response<T> {
         items: T[]
@@ -83,6 +112,7 @@ export namespace Blockscout {
 
     export type TokenInfoResponse = Response<TokenInfo>
     export type TokenBalanceResponse = Response<TokenBalance>
+    export type SearchResultResponse = Response<SearchResult>
     export type HolderResponse = Response<Holder>
     export type NextPageParams = Record<string, unknown>
 }
