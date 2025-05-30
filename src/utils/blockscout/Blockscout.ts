@@ -82,6 +82,7 @@ export namespace Blockscout {
     }
 
     export type TokenInfoResponse = Response<TokenInfo>
+    export type TokenBalanceResponse = Response<TokenBalance>
     export type HolderResponse = Response<Holder>
     export type NextPageParams = Record<string, unknown>
 }
@@ -96,6 +97,7 @@ export namespace Blockscout {
     export class TableController<R> {
 
         private readonly buffer: RowBuffer<R>
+        private mounted = false
 
         //
         // Public
@@ -129,11 +131,20 @@ export namespace Blockscout {
         }
 
         public mount(): void {
+            this.mounted = true
             this.onPageChange(1)
         }
 
         public unmount(): void {
+            this.mounted = false
             this.buffer.reset()
+        }
+
+        public remount(): void {
+            if (this.mounted) {
+                this.unmount()
+                this.mount()
+            }
         }
 
         //
