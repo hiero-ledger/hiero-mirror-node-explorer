@@ -98,7 +98,7 @@ export namespace Blockscout {
                               private readonly blockscoutURL: Ref<string|null>,
                               pageSizeStorageKey: string) {
             this.pageSize = ref(AppStorage.getTablePageSize(pageSizeStorageKey) ?? defaultPageSize)
-            this.buffer = new RowBuffer<R>(this)
+            this.buffer = new RowBuffer<R>(this, this.pageSize)
             watch(this.pageSize, () => AppStorage.setTablePageSize(pageSizeStorageKey, this.pageSize.value))
         }
 
@@ -124,11 +124,10 @@ export namespace Blockscout {
         public readonly loading = ref(false)
         private readonly allRows = ref<R[]>([]) as Ref<R[]>
         private readonly startIndex = ref<number>(-1)
-        private readonly pageSize = ref<number>(10)
         private readonly nextPageParams = ref<NextPageParams|null>(null)
         private readonly loadCount = ref(0)
 
-        constructor(private readonly controller: TableController<R>) {}
+        constructor(private readonly controller: TableController<R>, private readonly pageSize: Ref<number>) {}
 
         readonly currentRows = computed<R[]>(() => {
             let result: R[]
