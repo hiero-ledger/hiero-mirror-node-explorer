@@ -9,6 +9,13 @@
   <o-table
       :data="tokens"
       :loading="loading"
+      :paginated="paginated"
+      backend-pagination
+      pagination-order="centered"
+      :total="total"
+      v-model:current-page="currentPage"
+      :per-page="perPage"
+      @page-change="onPageChange"
       @cell-click="handleClick"
 
       :hoverable="true"
@@ -53,6 +60,11 @@
       </div>
     </o-table-column>
 
+    <template v-slot:bottom-left>
+      <TablePageSize
+          v-model:size="perPage"
+      />
+    </template>
   </o-table>
 
   <EmptyTable v-if="!tokens.length"/>
@@ -65,7 +77,7 @@
 
 <script setup lang="ts">
 
-import {computed, onBeforeUnmount, onMounted} from 'vue';
+import {computed, onBeforeUnmount, onMounted, watch} from 'vue';
 import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
 import {routeManager} from "@/router.ts";
 import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints.ts";
@@ -78,6 +90,7 @@ import {EntityID} from "@/utils/EntityID";
 import {Blockscout} from "@/utils/blockscout/Blockscout.ts";
 import {AppStorage} from "@/AppStorage.ts";
 import {ERCTokenTableController} from "@/components/ercToken/ERCTokenTableController.ts";
+import TablePageSize from "@/components/transaction/TablePageSize.vue";
 
 const handleClick = async (tokenInfo: Blockscout.TokenInfo, c: unknown, i: number, ci: number, event: Event) => {
 
@@ -102,30 +115,15 @@ onBeforeUnmount(() => tokenTableController.unmount())
 
 const loading = tokenTableController.loading
 const tokens = tokenTableController.rows
+const paginated = tokenTableController.paginated
+const perPage = tokenTableController.pageSize
+const total = tokenTableController.totalRowCount
+const currentPage = tokenTableController.currentPage
+const onPageChange = tokenTableController.onPageChange
 
-
-//
-// https://eth.blockscout.com/api-docs
-//
-
-interface BlockscoutTokenInfo {
-  circulating_market_cap: string|null
-  icon_url: string|null
-  name: string|null
-  decimals: string|null
-  symbol: string|null
-  address: string
-  type: string
-  holders: string|null
-  exchange_rate: string|null
-  total_supply: string
-}
-
-interface BlockscoutTokenResponse {
-  items: BlockscoutTokenInfo[]
-  next_page_params: object
-}
-
+watch(tokens, () => {
+  console.log("tokens=" + tokens.value.length)
+}, {immediate: true})
 </script>
 
 <!-- --------------------------------------------------------------------------------------------------------------- -->
