@@ -6,48 +6,59 @@
 
 <template>
 
-  <DashboardCardV2 v-if="erc20 || erc721" collapsible-key="contractERCProperties">
+  <DashboardCardV2 v-if="isErc20 || isErc721 || isErc1155" collapsible-key="contractERCProperties">
     <template #title>
       ERC Token
     </template>
 
     <template #content>
 
-      <!-- Properties common to ERC 20 and ERC 721 -->
       <Property id="erc-type" :full-width="true">
         <template #name>Type</template>
         <template #value>
-          <StringValue :string-value="erc20 ? 'ERC 20' : 'ERC 721'"/>
-        </template>
-      </Property>
-      <Property id="erc-name" :full-width="true">
-        <template #name>Name</template>
-        <template #value>
-          <StringValue :string-value="ercName"/>
-        </template>
-      </Property>
-      <Property v-if="ercSymbol" id="erc-symbol" :full-width="true">
-        <template #name>Symbol</template>
-        <template #value>
-          <StringValue :string-value="ercSymbol"/>
+          <StringValue :string-value="type"/>
         </template>
       </Property>
 
-      <!-- Properties specific to ERC 20 -->
-      <template v-if="erc20">
-        <Property v-if="erc20.decimals" id="erc-decimals" :full-width="true">
-          <template #name>Decimals</template>
-          <template #value>
-            <PlainAmount :amount="erc20.decimals"/>
-          </template>
-        </Property>
-        <Property v-if="erc20TotalSupply" id="erc-total-supply" :full-width="true">
+      <Property id="erc-name" :full-width="true">
+        <template #name>Name</template>
+        <template #value>
+          <StringValue :string-value="name"/>
+        </template>
+      </Property>
+
+      <Property v-if="symbol" id="erc-symbol" :full-width="true">
+        <template #name>Symbol</template>
+        <template #value>
+          <StringValue :string-value="symbol"/>
+        </template>
+      </Property>
+
+      <Property v-if="decimals" id="erc-decimals" :full-width="true">
+        <template #name>Decimals</template>
+        <template #value>
+          <PlainAmount :amount="Number(decimals)"/>
+        </template>
+      </Property>
+
+      <Property v-if="holders" id="erc-holders" :full-width="true">
+        <template #name># Holders</template>
+        <template #value>
+          <PlainAmount :amount="Number(holders)"/>
+        </template>
+      </Property>
+
+      <Property v-if="displayTotalSupply" id="erc-total-supply" :full-width="true">
           <template #name>Total Supply</template>
           <template #value>
-            <StringValue :string-value="erc20TotalSupply"/>
+            <StringValue :string-value="displayTotalSupply"/>
           </template>
         </Property>
-      </template>
+
+      <div class="h-sub-section mt-4">
+        Top Holders
+      </div>
+      <ERCTokenHolderTable :token-address="contractAddress"/>
 
     </template>
   </DashboardCardV2>
@@ -67,6 +78,7 @@ import PlainAmount from "@/components/values/PlainAmount.vue";
 import {formatUnits} from "ethers";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import {ERCAnalyzer} from "@/utils/analyzer/ERCAnalyzer.ts";
+import ERCTokenHolderTable from "@/components/ercToken/ERCTokenHolderTable.vue";
 
 const props = defineProps({
   ercAnalyzer: {
@@ -75,15 +87,21 @@ const props = defineProps({
   },
 })
 
-const erc20 = computed(() => props.ercAnalyzer?.erc20.value ?? null)
-const erc721 = computed(() => props.ercAnalyzer?.erc721.value ?? null)
+const contractAddress = computed(() => props.ercAnalyzer?.contractAddress.value ?? null)
+const isErc20 = computed(() => props.ercAnalyzer?.isErc20.value ?? null)
+const isErc721 = computed(() => props.ercAnalyzer?.isErc721.value ?? null)
+const isErc1155 = computed(() => props.ercAnalyzer?.isErc1155.value ?? false)
 
-const ercName = computed(() => erc20.value?.name ?? erc721.value?.name)
-const ercSymbol = computed(() => erc20.value?.symbol ?? erc721.value?.symbol)
-const erc20TotalSupply = computed(() =>
-    erc20.value?.totalSupply && erc20.value?.decimals
-        ? formatUnits(erc20.value.totalSupply, erc20.value.decimals)
-        : null
+const type = computed(() => props.ercAnalyzer?.type.value ?? null)
+const name = computed(() => props.ercAnalyzer?.name.value ?? null)
+const symbol = computed(() => props.ercAnalyzer?.symbol.value ?? null)
+const holders = computed(() => props.ercAnalyzer?.holders.value ?? null)
+const totalSupply = computed(() => props.ercAnalyzer?.totalSupply.value ?? null)
+const decimals = computed(() => props.ercAnalyzer?.decimals.value ?? null)
+const displayTotalSupply = computed(() =>
+    totalSupply.value !== null && decimals.value !== null
+        ? formatUnits(totalSupply.value, decimals.value)
+        : totalSupply.value
 )
 
 </script>
