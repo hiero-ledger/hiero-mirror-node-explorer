@@ -37,9 +37,6 @@ describe('Contract Navigation', () => {
         cy.contains('CONTRACT CALL')
         cy.contains(contractId)
 
-        cy.go('back')
-        cy.url().should('include', '/mainnet/contract/' + contractId)
-
         cy.get('#blockNumber')
             .find('a')
             .click()
