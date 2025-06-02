@@ -7,7 +7,7 @@
 <template>
 
   <div v-if="nonNullValue" id="bytecode">
-    <HexaDumpValue :byte-string="textValue" :copyable="false" :scroll-bar="false"/>
+    <HexaDumpValue :byte-string="textValue" :copyable="false" :scroll-bar="props.scrollBar"/>
   </div>
 
   <span v-else-if="initialLoading"/>
@@ -20,34 +20,26 @@
 <!--                                                      SCRIPT                                                     -->
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
-<script lang="ts">
+<script setup lang="ts">
 
-import {computed, defineComponent, inject, ref, watch} from 'vue';
+import {computed, inject, ref, watch} from 'vue';
 import {initialLoadingKey} from "@/AppKeys";
 import HexaDumpValue from "@/components/values/HexaDumpValue.vue";
 
-export default defineComponent({
-  name: 'ByteCodeValue',
-  components: {HexaDumpValue},
-
-  props: {
-    byteCode: String,
-  },
-
-  setup(props) {
-    const textValue = ref(props.byteCode)
-    watch(() => props.byteCode, () => {
-      textValue.value = props.byteCode
-    })
-    const nonNullValue = computed(() => props.byteCode != undefined && props.byteCode != '0x')
-    const initialLoading = inject(initialLoadingKey, ref(false))
-    return {
-      textValue,
-      nonNullValue,
-      initialLoading
-    }
+const props = defineProps({
+  byteCode: String,
+  scrollBar: {
+    type: Boolean,
+    default: true
   }
-});
+})
+
+const textValue = ref(props.byteCode)
+watch(() => props.byteCode, () => {
+  textValue.value = props.byteCode
+})
+const nonNullValue = computed(() => props.byteCode != undefined && props.byteCode != '0x')
+const initialLoading = inject(initialLoadingKey, ref(false))
 
 </script>
 
