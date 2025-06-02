@@ -13,6 +13,7 @@
       <ByteCodeValue
           class="h-code-box h-code-source"
           :byte-code="props.byteCode ?? undefined"
+          :scroll-bar="false"
       />
     </div>
 

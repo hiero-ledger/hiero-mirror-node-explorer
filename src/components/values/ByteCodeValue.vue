@@ -7,7 +7,7 @@
 <template>
 
   <div v-if="nonNullValue" id="bytecode">
-    <HexaDumpValue :byte-string="textValue" :copyable="false" :scroll-bar="false"/>
+    <HexaDumpValue :byte-string="textValue" :copyable="false" :scroll-bar="props.scrollBar"/>
   </div>
 
   <span v-else-if="initialLoading"/>
@@ -28,6 +28,10 @@ import HexaDumpValue from "@/components/values/HexaDumpValue.vue";
 
 const props = defineProps({
   byteCode: String,
+  scrollBar: {
+    type: Boolean,
+    default: true
+  }
 })
 
 const textValue = ref(props.byteCode)
