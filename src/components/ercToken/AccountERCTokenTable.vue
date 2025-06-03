@@ -74,7 +74,7 @@
 
 import {computed, onBeforeUnmount, onMounted, PropType} from 'vue';
 import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
-import {routeManager} from "@/router.ts";
+import {routeManager} from "@/utils/RouteManager.ts";
 import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints.ts";
 import EmptyTable from "@/components/EmptyTable.vue";
 import ERCTokenIOL from "@/components/values/link/ERCTokenIOL.vue";
