@@ -7,7 +7,7 @@ import {
     RouteLocationNormalized,
     RouteLocationNormalizedLoaded,
     RouteLocationRaw,
-    Router,
+    Router, RouteRecord,
     RouteRecordRaw
 } from "vue-router";
 import {App, computed, shallowRef, watch} from "vue";
@@ -49,6 +49,10 @@ import {CoreConfig} from "@/config/CoreConfig";
 import {NetworkConfig, NetworkEntry} from "@/config/NetworkConfig";
 import ERC20ByName from "@/pages/ERC20ByName.vue";
 import ERC721ByName from "@/pages/ERC721ByName.vue";
+import TokenDetails_Summary from "@/pages/TokenDetails_Summary.vue";
+import TokenDetails_Holders from "@/pages/TokenDetails_Holders.vue";
+import TokenDetails_Metadata from "@/pages/TokenDetails_Metadata.vue";
+import TokenDetails_Extra from "@/pages/TokenDetails_Extra.vue";
 
 export class RouteManager {
 
@@ -86,10 +90,18 @@ export class RouteManager {
 
     public readonly currentNetwork = computed(() => this.currentNetworkEntry.value.name)
 
+    public readonly currentRouteRootMatch = computed(() => {
+        const matched = this.router.currentRoute.value.matched
+        return matched.length >= 1 ? matched[0] : null
+    })
+
+    public readonly currentRouteLeafMatch = computed(() => {
+        const matched = this.router.currentRoute.value.matched
+        return matched.length >= 1 ? matched[matched.length-1] : null
+    })
+
     public readonly currentTabId = computed(() => {
-        const matched = this.router.currentRoute.value?.matched
-        const meta = matched && matched.length >= 1 && matched[0].meta ? matched[0].meta : null
-        return meta?.tabId ?? null
+        return this.currentRouteRootMatch.value?.meta?.tabId ?? null
     })
 
     public readonly enableWallet = computed(() => {
@@ -306,18 +318,23 @@ export class RouteManager {
     // Token
     //
 
-    public makeRouteToToken(tokenId: string): RouteLocationRaw {
-        return {name: 'TokenDetails', params: {tokenId: tokenId, network: this.currentNetwork.value}}
+    public readonly tokenDetailsOperator = new RouteOperator(TOKEN_DETAILS_ROUTE, this)
+
+    public makeRouteToToken(tokenId: string, tabId: string|null = null): RouteLocationRaw {
+        const targetTabId = tabId ?? this.tokenDetailsOperator.defaultTabId
+        return {name: targetTabId, params: {tokenId: tokenId, network: this.currentNetwork.value}}
     }
 
-    public routeToToken(tokenId: string, event: Event): Promise<NavigationFailure | void | undefined> {
+    public routeToToken(tokenId: string, event: Event|null, tabId: string|null = null, replace = false): Promise<NavigationFailure | void | undefined> {
         let result: Promise<NavigationFailure | void | undefined>
         if (this.shouldOpenNewWindow(event)) {
-            const routeData = this.router.resolve(this.makeRouteToToken(tokenId));
+            const routeData = this.router.resolve(this.makeRouteToToken(tokenId, tabId));
             window.open(routeData.href, '_blank');
             result = Promise.resolve()
+        } else if (replace) {
+            result = this.router.replace(this.makeRouteToToken(tokenId, tabId))
         } else {
-            result = this.router.push(this.makeRouteToToken(tokenId))
+            result = this.router.push(this.makeRouteToToken(tokenId, tabId))
         }
         return result
     }
@@ -743,6 +760,83 @@ export enum TabId {
 // ===========
 //
 
+export class RouteOperator {
+
+    public readonly tabIds: string[] = []
+    public readonly tabLabels: string[] = []
+    public readonly defaultTabId: string
+
+    constructor(private readonly routeRecord: RouteRecordRaw, private readonly routeManager: RouteManager) {
+        for (const c of routeRecord.children ?? []) {
+            if (typeof c.name === "string" && typeof c.meta?.tabLabel === "string") {
+                this.tabIds.push(c.name)
+                this.tabLabels.push(c.meta.tabLabel)
+            }
+        }
+        this.defaultTabId = this.tabIds[0]
+    }
+
+    public selectedTabId = computed(() => {
+        let result: string|null
+        const topMatch = this.routeManager.currentRouteRootMatch.value
+        const leafMatch = this.routeManager.currentRouteLeafMatch.value
+        if (topMatch !== null && leafMatch !== null && topMatch.name === this.routeRecord.name) {
+            result = typeof leafMatch.name === "string" ? leafMatch.name : null
+        } else {
+            result = null
+        }
+        return result
+    })
+}
+
+const TOKEN_DETAILS_ROUTE: RouteRecordRaw = {
+
+    path: '/:network/token/:tokenId',
+    name: 'TokenDetails',
+    component: TokenDetails,
+    children: [
+        {
+            path:'',
+            name: 'TokenDetails_Summary',
+            component: TokenDetails_Summary,
+            props: true,
+            meta: {
+                tabLabel: "Summary"
+            }
+        },
+        {
+            path:'holders',
+            name: 'TokenDetails_Holders',
+            component: TokenDetails_Holders,
+            props: true,
+            meta: {
+                tabLabel: "Holders"
+            }
+        },
+        {
+            path:'metadata',
+            name: 'TokenDetails_Metadata',
+            props: true,
+            component: TokenDetails_Metadata,
+            meta: {
+                tabLabel: "Metadata"
+            }
+        },
+        {
+            path:'extra',
+            name: 'TokenDetails_Extra',
+            props: true,
+            component: TokenDetails_Extra,
+            meta: {
+                tabLabel: "Others"
+            }
+        },
+    ],
+    props: true,
+    meta: {
+        tabId: TabId.Tokens
+    }
+}
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -882,15 +976,7 @@ const routes: Array<RouteRecordRaw> = [
             tabId: TabId.Tokens
         }
     },
-    {
-        path: '/:network/token/:tokenId',
-        name: 'TokenDetails',
-        component: TokenDetails,
-        props: true,
-        meta: {
-            tabId: TabId.Tokens
-        }
-    },
+    TOKEN_DETAILS_ROUTE,
     {
         path: '/:network/token/:tokenId/:serialNumber',
         name: 'NftDetails',
@@ -1050,5 +1136,3 @@ const routes: Array<RouteRecordRaw> = [
         redirect: '/page-not-found'
     },
 ]
-
-

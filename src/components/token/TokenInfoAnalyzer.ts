@@ -2,38 +2,44 @@
 
 import {computed, Ref} from "vue";
 import {makeEthAddressForToken, makeTokenSymbol} from "@/schemas/MirrorNodeUtils.ts";
-import {TokenInfo, TokenType} from "@/schemas/MirrorNodeSchemas";
+import {TokenAirdrop, TokenInfo, TokenRelationship, TokenType} from "@/schemas/MirrorNodeSchemas";
 import {NetworkConfig} from "@/config/NetworkConfig";
 import {routeManager, walletManager} from "@/router";
 import {TokenAssociationCache} from "@/utils/cache/TokenAssociationCache";
 import {PendingAirdropCache} from "@/utils/cache/PendingAirdropCache.ts";
+import {EntityLookup} from "@/utils/cache/base/EntityCache";
+import {TokenInfoCache} from "@/utils/cache/TokenInfoCache.ts";
 
 export class TokenInfoAnalyzer {
 
-    private readonly tokenInfo: Ref<TokenInfo | null>
-    private readonly networkConfig: NetworkConfig
+    private readonly tokenLookup: EntityLookup<string, TokenInfo|null>
+    private readonly associationLookup: EntityLookup<string, TokenRelationship[]|null>
+    private readonly pendingAirdropLookup: EntityLookup<string, TokenAirdrop[]|null>
 
     //
     // Public
     //
 
-    public constructor(tokenInfo: Ref<TokenInfo | null>, networkConfig: NetworkConfig) {
-        this.tokenInfo = tokenInfo
-        this.networkConfig = networkConfig
+    public constructor(public readonly tokenId: Ref<string|null>, private readonly networkConfig: NetworkConfig) {
+        this.tokenLookup = TokenInfoCache.instance.makeLookup(tokenId)
+        this.associationLookup = TokenAssociationCache.instance.makeTokenAssociationLookup(walletManager.accountId, tokenId)
+        this.pendingAirdropLookup = PendingAirdropCache.instance.makeAirdropLookup(walletManager.accountId, tokenId)
+
     }
 
     public mount() {
+        this.tokenLookup.mount()
         this.associationLookup.mount()
         this.pendingAirdropLookup.mount()
     }
 
     public unmount() {
+        this.tokenLookup.unmount()
         this.associationLookup.unmount()
         this.pendingAirdropLookup.unmount()
     }
 
-    public readonly tokenId = computed(
-        () => this.tokenInfo.value?.token_id ?? null)
+    public readonly tokenInfo = computed(() => this.tokenLookup.entity.value)
 
     public readonly ethereumAddress = computed(
         () => this.tokenInfo.value !== null ? makeEthAddressForToken(this.tokenInfo.value) : null)
@@ -125,16 +131,6 @@ export class TokenInfoAnalyzer {
             this.associationLookup.mount()
         }
     }
-
-    //
-    // Private
-    //
-
-    private readonly associationLookup
-        = TokenAssociationCache.instance.makeTokenAssociationLookup(walletManager.accountId, this.tokenId)
-
-    private readonly pendingAirdropLookup
-        = PendingAirdropCache.instance.makeAirdropLookup(walletManager.accountId, this.tokenId)
 }
 
 export enum TokenAssociationStatus {
