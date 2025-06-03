@@ -4,7 +4,7 @@ import {EntityCache} from "@/utils/cache/base/EntityCache";
 import axios from "axios";
 import {Blockscout} from "@/utils/blockscout/Blockscout.ts";
 import {computed} from "vue";
-import {routeManager} from "@/router.ts";
+import {routeManager} from "@/utils/RouteManager.ts";
 
 export class ERCTokenByAddressCache extends EntityCache<string, Blockscout.TokenInfo | null> {
 
