@@ -7,7 +7,8 @@ import {
     RouteLocationNormalized,
     RouteLocationNormalizedLoaded,
     RouteLocationRaw,
-    Router
+    Router,
+    RouteRecordRaw
 } from "vue-router";
 import {App, computed, shallowRef, watch} from "vue";
 import {AppStorage} from "@/AppStorage";
@@ -56,10 +57,18 @@ export class RouteManager {
 
     public readonly currentNetwork = computed(() => this.currentNetworkEntry.value.name)
 
+    public readonly currentRouteRootMatch = computed(() => {
+        const matched = this.router.currentRoute.value.matched
+        return matched.length >= 1 ? matched[0] : null
+    })
+
+    public readonly currentRouteLeafMatch = computed(() => {
+        const matched = this.router.currentRoute.value.matched
+        return matched.length >= 1 ? matched[matched.length-1] : null
+    })
+
     public readonly currentTabId = computed(() => {
-        const matched = this.router.currentRoute.value?.matched
-        const meta = matched && matched.length >= 1 && matched[0].meta ? matched[0].meta : null
-        return meta?.tabId ?? null
+        return this.currentRouteRootMatch.value?.meta?.tabId ?? null
     })
 
     public readonly enableWallet = computed(() => {
@@ -693,6 +702,36 @@ export function fetchNumberQueryParam(paramName: string, route: RouteLocationNor
         result = null
     }
     return result
+}
+
+
+export class RouteOperator {
+
+    public readonly tabIds: string[] = []
+    public readonly tabLabels: string[] = []
+    public readonly defaultTabId: string
+
+    constructor(private readonly routeRecord: RouteRecordRaw, private readonly routeManager: RouteManager) {
+        for (const c of routeRecord.children ?? []) {
+            if (typeof c.name === "string" && typeof c.meta?.tabLabel === "string") {
+                this.tabIds.push(c.name)
+                this.tabLabels.push(c.meta.tabLabel)
+            }
+        }
+        this.defaultTabId = this.tabIds[0]
+    }
+
+    public selectedTabId = computed(() => {
+        let result: string|null
+        const topMatch = this.routeManager.currentRouteRootMatch.value
+        const leafMatch = this.routeManager.currentRouteLeafMatch.value
+        if (topMatch !== null && leafMatch !== null && topMatch.name === this.routeRecord.name) {
+            result = typeof leafMatch.name === "string" ? leafMatch.name : null
+        } else {
+            result = null
+        }
+        return result
+    })
 }
 
 
