@@ -19,7 +19,7 @@ import {TransactionID} from "@/utils/TransactionID.ts";
 import {CoreConfig} from "@/config/CoreConfig";
 import {NetworkConfig, NetworkEntry} from "@/config/NetworkConfig";
 import {WalletManagerV4} from "@/utils/wallet/WalletManagerV4.ts";
-import {routes} from "@/router.ts";
+import {routes, TOKEN_DETAILS_ROUTE} from "@/router.ts";
 
 export class RouteManager {
 
@@ -285,18 +285,23 @@ export class RouteManager {
     // Token
     //
 
-    public makeRouteToToken(tokenId: string): RouteLocationRaw {
-        return {name: 'TokenDetails', params: {tokenId: tokenId, network: this.currentNetwork.value}}
+    public readonly tokenDetailsOperator = new RouteOperator(TOKEN_DETAILS_ROUTE, this)
+
+    public makeRouteToToken(tokenId: string, tabId: string|null = null): RouteLocationRaw {
+        const targetTabId = tabId ?? this.tokenDetailsOperator.defaultTabId
+        return {name: targetTabId, params: {tokenId: tokenId, network: this.currentNetwork.value}}
     }
 
-    public routeToToken(tokenId: string, event: Event): Promise<NavigationFailure | void | undefined> {
+    public routeToToken(tokenId: string, event: Event|null, tabId: string|null = null, replace = false): Promise<NavigationFailure | void | undefined> {
         let result: Promise<NavigationFailure | void | undefined>
         if (this.shouldOpenNewWindow(event)) {
-            const routeData = this.router.resolve(this.makeRouteToToken(tokenId));
+            const routeData = this.router.resolve(this.makeRouteToToken(tokenId, tabId));
             window.open(routeData.href, '_blank');
             result = Promise.resolve()
+        } else if (replace) {
+            result = this.router.replace(this.makeRouteToToken(tokenId, tabId))
         } else {
-            result = this.router.push(this.makeRouteToToken(tokenId))
+            result = this.router.push(this.makeRouteToToken(tokenId, tabId))
         }
         return result
     }
@@ -741,4 +746,5 @@ export class RouteOperator {
 
 export const routeManager = new RouteManager()
 export const walletManager = new WalletManagerV4(routeManager)
-export default routeManager.router;
+export default routeManager.router
+

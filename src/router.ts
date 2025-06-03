@@ -33,6 +33,10 @@ import Staking from "@/pages/Staking.vue";
 import Blocks from "@/pages/Blocks.vue";
 import BlockDetails from "@/pages/BlockDetails.vue";
 import SearchHelp from "@/pages/SearchHelp.vue";
+import TokenDetails_Summary from "@/pages/TokenDetails_Summary.vue";
+import TokenDetails_Holders from "@/pages/TokenDetails_Holders.vue";
+import TokenDetails_Metadata from "@/pages/TokenDetails_Metadata.vue";
+import TokenDetails_Extra from "@/pages/TokenDetails_Extra.vue";
 import Metrics from "@/pages/Metrics.vue";
 
 export enum TabId {
@@ -46,6 +50,55 @@ export enum TabId {
     Staking = "Staking",
     Blocks = "Blocks",
     Metrics = "Metrics",
+}
+
+export const TOKEN_DETAILS_ROUTE: RouteRecordRaw = {
+
+    path: '/:network/token/:tokenId',
+    name: 'TokenDetails',
+    component: TokenDetails,
+    children: [
+        {
+            path:'',
+            name: 'TokenDetails_Summary',
+            component: TokenDetails_Summary,
+            props: true,
+            meta: {
+                tabLabel: "Summary"
+            }
+        },
+        {
+            path:'holders',
+            name: 'TokenDetails_Holders',
+            component: TokenDetails_Holders,
+            props: true,
+            meta: {
+                tabLabel: "Holders"
+            }
+        },
+        {
+            path:'metadata',
+            name: 'TokenDetails_Metadata',
+            props: true,
+            component: TokenDetails_Metadata,
+            meta: {
+                tabLabel: "Metadata"
+            }
+        },
+        {
+            path:'extra',
+            name: 'TokenDetails_Extra',
+            props: true,
+            component: TokenDetails_Extra,
+            meta: {
+                tabLabel: "Others"
+            }
+        },
+    ],
+    props: true,
+    meta: {
+        tabId: TabId.Tokens
+    }
 }
 
 export const routes: Array<RouteRecordRaw> = [
@@ -193,15 +246,7 @@ export const routes: Array<RouteRecordRaw> = [
             tabId: TabId.Tokens
         }
     },
-    {
-        path: '/:network/token/:tokenId',
-        name: 'TokenDetails',
-        component: TokenDetails,
-        props: true,
-        meta: {
-            tabId: TabId.Tokens
-        }
-    },
+    TOKEN_DETAILS_ROUTE,
     {
         path: '/:network/token/:tokenId/:serialNumber',
         name: 'NftDetails',
