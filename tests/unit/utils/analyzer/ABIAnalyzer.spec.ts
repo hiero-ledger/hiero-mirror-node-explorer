@@ -18,7 +18,8 @@ import {fetchGetURLs} from "../../MockUtils";
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
 import {ABIController, ABIMode} from "@/components/contract/ABIController";
-import {routeManager} from "@/router";
+
+import {routeManager} from "@/utils/RouteManager.ts";
 
 
 describe("ABIAnalyzer.ts", async () => {

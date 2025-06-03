@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import {computed, Ref} from "vue";
-import {walletManager} from "@/router.ts";
 import {TransactionController} from "@/dialogs/core/transaction/TransactionController.ts";
 import {TokenInfoAnalyzer} from "@/components/token/TokenInfoAnalyzer.ts";
 import {Transaction} from "@/schemas/MirrorNodeSchemas.ts";
+import {walletManager} from "@/utils/RouteManager.ts";
 
 export class WatchTokenController extends TransactionController {
 

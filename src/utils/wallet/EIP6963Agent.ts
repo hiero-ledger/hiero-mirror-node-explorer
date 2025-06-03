@@ -7,7 +7,6 @@ import {AccountByAddressCache} from "@/utils/cache/AccountByAddressCache";
 import {WalletSession} from "@/utils/wallet/WalletSession";
 import {WalletClient} from "@/utils/wallet/client/WalletClient";
 import {HEDERA_LOGO, networkToChainId, WalletClient_Ethereum} from "@/utils/wallet/client/WalletClient_Ethereum";
-import {routeManager} from "@/router";
 import {EIP6963AnnounceProviderEvent, EIP6963ProviderDetail} from "@/utils/wallet/eip6963";
 import {
     AddEthereumChainParameter,
@@ -20,6 +19,7 @@ import {
     wallet_revokePermissions,
     wallet_switchEthereumChain
 } from "@/utils/wallet/eip1193";
+import {routeManager} from "@/utils/RouteManager.ts";
 
 
 export class EIP6963Agent {

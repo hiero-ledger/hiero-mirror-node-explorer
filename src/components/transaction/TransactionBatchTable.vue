@@ -64,13 +64,13 @@ import {computed, inject, PropType, ref} from 'vue';
 import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
 import {Transaction} from '@/schemas/MirrorNodeSchemas.ts';
 import {makeTypeLabel} from "@/utils/TransactionTools";
-import {routeManager} from "@/router";
 import TimestampValue from "@/components/values/TimestampValue.vue";
 import TransactionSummary from "@/components/transaction/TransactionSummary.vue";
 import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
 import EmptyTable from "@/components/EmptyTable.vue";
 import {TriangleAlert} from "lucide-vue-next";
 import TransactionLabel from "@/components/values/TransactionLabel.vue";
+import {routeManager} from "@/utils/RouteManager.ts";
 
 const props = defineProps({
   narrowed: Boolean,

@@ -71,8 +71,8 @@ import TimestampValue from "@/components/values/TimestampValue.vue";
 import EmptyTable from "@/components/EmptyTable.vue";
 import AccountLink from "@/components/values/link/AccountLink.vue";
 import HbarAmount from "@/components/values/HbarAmount.vue";
-import {walletManager} from "@/router";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
+import {walletManager} from "@/utils/RouteManager.ts";
 
 const emit = defineEmits(["editAllowance"])
 

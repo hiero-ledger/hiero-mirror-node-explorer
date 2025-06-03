@@ -2,7 +2,8 @@
 
 import axios from "axios";
 import {SingletonCache} from "@/utils/cache/base/SingletonCache";
-import {routeManager} from "@/router";
+
+import {routeManager} from "@/utils/RouteManager.ts";
 
 export class ERC20Cache extends SingletonCache<ERC20Contract[]> {
 

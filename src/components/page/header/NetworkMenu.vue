@@ -20,9 +20,9 @@
 <script setup lang="ts">
 
 import {ref, watch} from "vue";
-import {routeManager} from "@/router.ts";
 import {NetworkConfig} from "@/config/NetworkConfig.ts";
 import {Check} from 'lucide-vue-next';
+import {routeManager} from "@/utils/RouteManager.ts";
 
 const networkEntries = NetworkConfig.inject().entries
 

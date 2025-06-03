@@ -68,7 +68,6 @@
 <script setup lang="ts">
 
 import {computed, PropType} from "vue";
-import {walletManager} from "@/router.ts";
 import TaskDialog from "@/dialogs/core/task/TaskDialog.vue";
 import {ContractCallBuilder} from "@/dialogs/abi/ContractCallBuilder.ts";
 import {ContractAbiController} from "@/dialogs/abi/ContractAbiController.ts";
@@ -76,6 +75,7 @@ import ParamTypeEditor from "@/dialogs/abi/ParamTypeEditor.vue";
 import {TaskPanelMode} from "@/dialogs/core/DialogUtils.ts";
 import TaskPanel from "@/dialogs/core/task/TaskPanel.vue";
 import ParamHbarEditor from "@/dialogs/abi/ParamHbarEditor.vue";
+import {walletManager} from "@/utils/RouteManager.ts";
 
 const showDialog = defineModel("showDialog", {
   type: Boolean,

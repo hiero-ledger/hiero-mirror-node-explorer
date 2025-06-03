@@ -18,7 +18,8 @@
 
 import {computed, PropType} from "vue";
 import {RouteLocationRaw} from "vue-router";
-import {routeManager} from "@/router.ts";
+
+import {routeManager} from "@/utils/RouteManager.ts";
 
 const props = defineProps({
   tabId: {

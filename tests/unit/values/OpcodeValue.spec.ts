@@ -14,7 +14,8 @@ import OpcodeValue from "@/components/values/OpcodeValue.vue";
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
 import {DisassembledOpcodeOutput} from "@/utils/bytecode_tools/disassembler/utils/helpers";
-import router from "@/router";
+
+import router from "@/utils/RouteManager.ts";
 
 describe("OpcodeValue.vue", () => {
 

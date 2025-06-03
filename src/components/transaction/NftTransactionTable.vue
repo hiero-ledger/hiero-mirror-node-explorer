@@ -63,11 +63,11 @@ import NftTransactionSummary from "@/components/transaction/NftTransactionSummar
 import TimestampValue from "@/components/values/TimestampValue.vue"
 import TransactionLabel from "@/components/values/TransactionLabel.vue"
 import {makeTypeLabel} from "@/utils/TransactionTools"
-import {routeManager} from "@/router"
 import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
 import EmptyTable from "@/components/EmptyTable.vue"
 import InnerSenderEVMAddress from "@/components/values/InnerSenderEVMAddress.vue"
 import {NftTransactionTableController} from "./NftTransactionTableController"
+import {routeManager} from "@/utils/RouteManager.ts";
 
 const props = defineProps({
   narrowed: Boolean,

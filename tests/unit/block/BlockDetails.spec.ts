@@ -4,7 +4,6 @@
 
 import {describe, expect, it} from 'vitest'
 import {flushPromises, mount} from "@vue/test-utils"
-import router from "@/router";
 import axios from "axios";
 import {SAMPLE_BLOCKSRESPONSE, SAMPLE_CONTRACTCALL_TRANSACTIONS, SAMPLE_TOKEN, SAMPLE_TRANSACTIONS,} from "../Mocks";
 import MockAdapter from "axios-mock-adapter";
@@ -15,6 +14,7 @@ import BlockDetails from "@/pages/BlockDetails.vue";
 import BlockTransactionTable from "@/components/block/BlockTransactionTable.vue";
 import {PathParam} from "@/utils/PathParam";
 import {fetchGetURLs} from "../MockUtils";
+import router from "@/utils/RouteManager.ts";
 
 /*
     Bookmarks

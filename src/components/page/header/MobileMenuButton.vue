@@ -47,8 +47,8 @@ import {computed, ref, watch} from "vue";
 import TabBar from "@/components/page/header/TabBar.vue";
 import NetworkSelector from "@/components/page/header/NetworkSelector.vue";
 import ThemeSwitch from "@/components/ThemeSwitch.vue";
-import {routeManager} from "@/router.ts";
 import NetworkMenu from "@/components/page/header/NetworkMenu.vue";
+import {routeManager} from "@/utils/RouteManager.ts";
 
 const MAX_ITEMS_IN_NETWORK_MENU = 5
 

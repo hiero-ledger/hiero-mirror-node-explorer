@@ -2,7 +2,6 @@
 
 import {describe, expect, it} from 'vitest'
 import {flushPromises, mount} from "@vue/test-utils"
-import router from "@/router";
 import {
     SAMPLE_DUDE_WITH_KEYS,
     SAMPLE_PARENT_CHILD_TRANSACTIONS,
@@ -16,6 +15,7 @@ import {Transaction} from "@/schemas/MirrorNodeSchemas";
 import TransactionByIdTable from "@/components/transaction/TransactionByIdTable.vue";
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
+import router from "@/utils/RouteManager.ts";
 
 /*
     Bookmarks

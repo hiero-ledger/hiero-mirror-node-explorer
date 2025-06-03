@@ -29,13 +29,13 @@
 <script lang="ts">
 
 import {computed, defineComponent, onBeforeUnmount, onMounted, PropType, ref, watch} from "vue";
-import {routeManager} from "@/router";
 import {NetworkCache} from "@/utils/cache/NetworkCache";
 import {ContractByIdCache} from "@/utils/cache/ContractByIdCache";
 import {RouteLocationRaw} from "vue-router";
 import EntityLink from "@/components/values/link/EntityLink.vue";
 import AccountIOL from "@/components/values/link/AccountIOL.vue";
 import {makeOperatorDescription} from "@/schemas/MirrorNodeUtils.ts";
+import {routeManager} from "@/utils/RouteManager.ts";
 
 export default defineComponent({
   name: "AccountLink",

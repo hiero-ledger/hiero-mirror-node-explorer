@@ -142,7 +142,6 @@ import BlobValue from "@/components/values/BlobValue.vue";
 import PageFrameV2 from "@/components/page/PageFrameV2.vue";
 import NotificationBanner from "@/components/NotificationBanner.vue";
 import Property from "@/components/Property.vue";
-import {routeManager} from "@/router"
 import MirrorLink from "@/components/MirrorLink.vue";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import {ScheduleByIdCache} from "@/utils/cache/ScheduleByIdCache.ts";
@@ -153,6 +152,7 @@ import {base64Decode, byteToHex} from "@/utils/B64Utils.ts";
 import HexaValue from "@/components/values/HexaValue.vue";
 import {proto} from "@hashgraph/proto";
 import {loadingKey} from "@/AppKeys.ts";
+import {routeManager} from "@/utils/RouteManager.ts";
 
 const props = defineProps({
   scheduleId: String,

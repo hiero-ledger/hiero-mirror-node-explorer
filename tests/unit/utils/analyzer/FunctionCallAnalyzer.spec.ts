@@ -9,9 +9,9 @@ import {flushPromises} from "@vue/test-utils";
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
 import {SignatureCache} from "@/utils/cache/SignatureCache";
-import {routeManager} from "@/router";
 import {fetchGetURLs} from "../../MockUtils.ts";
 import {ethers} from "ethers";
+import {routeManager} from "@/utils/RouteManager.ts";
 
 describe("FunctionCallAnalyzer.spec.ts", () => {
 

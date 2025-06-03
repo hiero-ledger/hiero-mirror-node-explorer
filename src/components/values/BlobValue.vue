@@ -65,9 +65,9 @@ import {initialLoadingKey} from "@/AppKeys";
 import {CoreConfig} from "@/config/CoreConfig";
 import {blob2URL} from "@/utils/URLUtils.ts";
 import {HCSURI} from "@/utils/HCSURI.ts";
-import {routeManager} from "@/router.ts";
 import EntityLink from "@/components/values/link/EntityLink.vue";
 import {base64Decode, utf8Encode} from "@/utils/B64Utils.ts";
+import {routeManager} from "@/utils/RouteManager.ts";
 
 const props = defineProps({
   blobValue: {

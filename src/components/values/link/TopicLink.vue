@@ -23,9 +23,9 @@
 <script lang="ts">
 
 import {computed, defineComponent} from "vue";
-import {routeManager} from "@/router";
 import TopicIOL from "@/components/values/link/TopicIOL.vue";
 import EntityLink from "@/components/values/link/EntityLink.vue";
+import {routeManager} from "@/utils/RouteManager.ts";
 
 export default defineComponent({
   name: "TopicLink",

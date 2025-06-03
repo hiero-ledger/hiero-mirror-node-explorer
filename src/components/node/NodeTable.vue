@@ -120,7 +120,6 @@ import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
 import EmptyTable from "@/components/EmptyTable.vue";
 import HbarAmount from "@/components/values/HbarAmount.vue";
 import StakeRange from "@/components/node/StakeRange.vue";
-import {routeManager} from "@/router";
 import StringValue from "@/components/values/StringValue.vue";
 import {
   makeAnnualizedRate,
@@ -130,6 +129,7 @@ import {
 } from "@/schemas/MirrorNodeUtils.ts";
 import {NetworkAnalyzer} from "@/utils/analyzer/NetworkAnalyzer";
 import Tooltip from "@/components/Tooltip.vue";
+import {routeManager} from "@/utils/RouteManager.ts";
 
 const props = defineProps({
   nodes: {

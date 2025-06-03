@@ -2,8 +2,8 @@
 
 import {describe, expect, it} from 'vitest'
 import {mount} from "@vue/test-utils"
-import router from "@/router";
 import BlockLink from "@/components/values/BlockLink.vue";
+import router from "@/utils/RouteManager.ts";
 
 describe("BlockLink.vue", () => {
 

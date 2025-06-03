@@ -189,13 +189,13 @@ import {PathParam} from "@/utils/PathParam";
 import {NodeAnalyzer} from "@/utils/analyzer/NodeAnalyzer";
 import {NetworkNode} from "@/schemas/MirrorNodeSchemas";
 import {makeStakePercentage} from "@/schemas/MirrorNodeUtils.ts";
-import {routeManager} from "@/router";
 import {CoreConfig} from "@/config/CoreConfig.ts";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import NetworkDashboardItemV2 from "@/components/node/NetworkDashboardItemV2.vue";
 import MirrorLink from "@/components/MirrorLink.vue";
 import HexaValue from "@/components/values/HexaValue.vue";
 import {loadingKey} from "@/AppKeys.ts";
+import {routeManager} from "@/utils/RouteManager.ts";
 
 const props = defineProps({
   nodeId: {

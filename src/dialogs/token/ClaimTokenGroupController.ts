@@ -3,8 +3,8 @@
 import {computed, Ref} from "vue";
 import {TransactionGroupController} from "@/dialogs/core/transaction/TransactionGroupController.ts";
 import {TokenAirdrop, Transaction} from "@/schemas/MirrorNodeSchemas.ts";
-import {walletManager} from "@/router.ts";
 import {PendingAirdropCache} from "@/utils/cache/PendingAirdropCache.ts";
+import {walletManager} from "@/utils/RouteManager.ts";
 
 export class ClaimTokenGroupController extends TransactionGroupController {
 

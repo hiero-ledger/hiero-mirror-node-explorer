@@ -19,9 +19,9 @@
 
 <script setup lang="ts">
 
-import {routeManager} from "@/router.ts"
 import {ThemeController} from "@/components/ThemeController.ts";
 import {inject} from "vue";
+import {routeManager} from "@/utils/RouteManager.ts";
 
 const productLogoURL = ThemeController.inject().productLogoURL
 const productMiniLogoURL = ThemeController.inject().productMiniLogoURL

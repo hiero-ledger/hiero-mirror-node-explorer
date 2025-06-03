@@ -64,7 +64,8 @@ import * as hashgraph from "@hashgraph/proto";
 import HexaDumpValue from "@/components/values/HexaDumpValue.vue";
 import ContractLink from "@/components/values/link/ContractLink.vue";
 import {initialLoadingKey} from "@/AppKeys";
-import {routeManager} from "@/router";
+
+import {routeManager} from "@/utils/RouteManager.ts";
 
 const MAX_INLINE_LEVEL = 1
 

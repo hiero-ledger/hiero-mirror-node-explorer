@@ -76,11 +76,11 @@ import TimestampValue from "@/components/values/TimestampValue.vue";
 import EmptyTable from "@/components/EmptyTable.vue";
 import AccountLink from "@/components/values/link/AccountLink.vue";
 import TokenLink from "@/components/values/link/TokenLink.vue";
-import {walletManager} from "@/router";
 import InfoTooltip from "@/components/InfoTooltip.vue";
 import {NftAllSerialsAllowanceTableController} from "@/components/allowances/NftAllSerialsAllowanceTableController";
 import {isValidAssociation} from "@/schemas/MirrorNodeUtils.ts";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
+import {walletManager} from "@/utils/RouteManager.ts";
 
 interface DisplayedNftAllowance extends NftAllowance {
   isEditable: boolean

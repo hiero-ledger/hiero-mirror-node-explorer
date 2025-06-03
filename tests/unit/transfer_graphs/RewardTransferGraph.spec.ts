@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import {describe, expect, test} from 'vitest'
-import router from "@/router";
 import {flushPromises, mount} from "@vue/test-utils";
 import {Transaction, TransactionDetail} from "@/schemas/MirrorNodeSchemas";
 import RewardTransferGraph from "@/components/transfer_graphs/RewardTransferGraph.vue";
@@ -12,6 +11,7 @@ import {
 } from "../Mocks";
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
+import router from "@/utils/RouteManager.ts";
 
 describe("RewardTransferGraph.vue", () => {
 

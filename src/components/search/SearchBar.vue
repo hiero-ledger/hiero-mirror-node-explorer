@@ -40,11 +40,11 @@
 
 import {computed, inject, ref, watch} from "vue";
 import {SearchController} from "@/components/search/SearchController";
-import router from "@/router";
 import {SearchAgent, SearchCandidate} from "@/components/search/SearchAgent";
 import DropdownPanel from "@/components/DropdownPanel.vue";
 import SearchDropdown from "@/components/search/SearchDropdown.vue";
 import {Search} from "lucide-vue-next";
+import router from "@/utils/RouteManager.ts";
 
 const props = defineProps({
   size: {

@@ -77,9 +77,9 @@ import TimestampValue from "@/components/values/TimestampValue.vue";
 import EmptyTable from "@/components/EmptyTable.vue";
 import AccountLink from "@/components/values/link/AccountLink.vue";
 import TokenLink from "@/components/values/link/TokenLink.vue";
-import {walletManager} from "@/router";
 import {NftAllowanceTableController} from "@/components/allowances/NftAllowanceTableController";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
+import {walletManager} from "@/utils/RouteManager.ts";
 
 const emit = defineEmits(["deleteAllowance"])
 

@@ -157,7 +157,6 @@ import {computed, ComputedRef, onBeforeUnmount, onMounted, PropType, ref, watch}
 import StringValue from "@/components/values/StringValue.vue";
 import Property from "@/components/Property.vue";
 import {ContractAnalyzer} from "@/utils/analyzer/ContractAnalyzer";
-import {routeManager} from "@/router";
 import InfoTooltip from "@/components/InfoTooltip.vue";
 import ContractVerificationDialog from "@/dialogs/verification/ContractVerificationDialog.vue";
 import {AppStorage} from "@/AppStorage";
@@ -178,6 +177,7 @@ import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import ButtonView from "@/elements/ButtonView.vue";
 import ContractByteCodeValue from "@/components/values/ContractByteCodeValue.vue";
 import {ButtonSize} from "@/dialogs/core/DialogUtils.ts";
+import {routeManager} from "@/utils/RouteManager.ts";
 
 const FULL_MATCH_TOOLTIP = `A Full Match indicates that the bytecode of the deployed contract is byte-by-byte the same as the compilation output of the given source code files with the settings defined in the metadata file. This means the contents of the source code files and the compilation settings are exactly the same as when the contract author compiled and deployed the contract.`
 const PARTIAL_MATCH_TOOLTIP = `A Partial Match indicates that the bytecode of the deployed contract is the same as the compilation output of the given source code files except for the metadata hash. This means the deployed contract and the given source code + metadata function in the same way but there are differences in source code comments, variable names, or other metadata fields such as source paths.`

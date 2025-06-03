@@ -226,9 +226,9 @@ import InfoTooltip from "@/components/InfoTooltip.vue";
 import SelectView from "@/elements/SelectView.vue";
 import SwitchView from "@/elements/SwitchView.vue";
 import RabioBoxView from "@/elements/RabioBoxView.vue";
-import {routeManager} from "@/router.ts";
 import StackView from "@/elements/StackView.vue";
 import {NetworkConfig} from "@/config/NetworkConfig.ts";
+import {routeManager} from "@/utils/RouteManager.ts";
 
 const showDialog = defineModel("showDialog", {
   type: Boolean,

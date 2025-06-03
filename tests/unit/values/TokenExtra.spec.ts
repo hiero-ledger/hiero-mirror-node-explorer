@@ -9,12 +9,12 @@
 
 import {describe, expect, it} from 'vitest'
 import {flushPromises, mount} from "@vue/test-utils";
-import router from "@/router";
 import {SAMPLE_TOKEN, SAMPLE_TOKEN_DUDE} from "../Mocks";
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
 import TokenExtra from "@/components/values/link/TokenExtra.vue";
 import {truncateTokenSymbol} from "./TokenLink.spec";
+import router from "@/utils/RouteManager.ts";
 
 describe("TokenExtra.vue", () => {
 

@@ -3,11 +3,11 @@
 import {describe, expect, test, vi} from 'vitest'
 import {flushPromises, mount} from "@vue/test-utils";
 import EVMAddress from "@/components/values/EVMAddress.vue";
-import router from "@/router";
 import Oruga from "@oruga-ui/oruga-next";
 import {SAMPLE_ACCOUNT_WITH_NATIVE_EVM_ADDRESS} from "../Mocks";
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
+import router from "@/utils/RouteManager.ts";
 
 describe("EVMAddress", () => {
 

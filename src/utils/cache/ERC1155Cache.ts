@@ -2,7 +2,8 @@
 
 import {SingletonCache} from "@/utils/cache/base/SingletonCache";
 import axios from "axios";
-import {routeManager} from "@/router";
+
+import {routeManager} from "@/utils/RouteManager.ts";
 
 export class ERC1155Cache extends SingletonCache<ERC1155Index> {
 

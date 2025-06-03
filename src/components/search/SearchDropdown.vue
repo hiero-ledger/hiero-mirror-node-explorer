@@ -36,10 +36,10 @@
 
 import {computed, PropType} from "vue";
 import {SearchController} from "@/components/search/SearchController";
-import router, {routeManager} from "@/router";
 import SearchTabs from "@/components/search/SearchTabs.vue";
 import SearchSection from "@/components/search/SearchSection.vue";
 import {SearchAgent} from "@/components/search/SearchAgent";
+import router, {routeManager} from "@/utils/RouteManager.ts";
 
 const props = defineProps({
   "searchController": {

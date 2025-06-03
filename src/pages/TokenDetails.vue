@@ -220,7 +220,6 @@
 
 import {computed, inject, onBeforeUnmount, onMounted} from 'vue';
 import {useRouter} from "vue-router";
-import {routeManager, walletManager} from "@/router";
 import TimestampValue from "@/components/values/TimestampValue.vue";
 import TokenBalanceTable from "@/components/token/TokenBalanceTable.vue";
 import DurationValue from "@/components/values/DurationValue.vue";
@@ -255,6 +254,7 @@ import PlayPauseButton from "@/components/PlayPauseButton.vue";
 import EntityIDView from "@/components/values/EntityIDView.vue";
 import PublicLabel from "@/components/values/PublicLabel.vue";
 import {PublicLabelsCache} from "@/utils/cache/PublicLabelsCache.ts";
+import {routeManager, walletManager} from "@/utils/RouteManager.ts";
 
 const props = defineProps({
   tokenId: {

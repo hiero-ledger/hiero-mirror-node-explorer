@@ -23,8 +23,8 @@ import {
 } from "@/components/search/SearchAgent";
 import {nameServiceProviders} from "@/utils/name_service/provider/AllProviders";
 import {InputChangeController} from "@/components/utils/InputChangeController.ts";
-import {routeManager} from "@/router.ts";
 import {PublicLabelsCache} from "@/utils/cache/PublicLabelsCache.ts";
+import {routeManager} from "@/utils/RouteManager.ts";
 
 export class SearchController {
 

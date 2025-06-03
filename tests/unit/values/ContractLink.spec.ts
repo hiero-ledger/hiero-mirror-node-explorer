@@ -2,8 +2,8 @@
 
 import {describe, expect, test} from 'vitest'
 import {mount} from "@vue/test-utils"
-import router from "@/router";
 import ContractLink from "@/components/values/link/ContractLink.vue";
+import router from "@/utils/RouteManager.ts";
 
 describe("ContractLink.vue", () => {
 

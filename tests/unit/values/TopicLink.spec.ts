@@ -3,7 +3,8 @@
 import {describe, expect, it} from 'vitest'
 import {mount} from "@vue/test-utils"
 import TopicLink from "@/components/values/link/TopicLink.vue"
-import router from "@/router";
+
+import router from "@/utils/RouteManager.ts";
 
 describe("TopicLink.vue", () => {
 

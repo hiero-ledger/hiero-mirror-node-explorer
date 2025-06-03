@@ -4,7 +4,6 @@
 
 import {describe, expect, it} from 'vitest'
 import {flushPromises, mount} from "@vue/test-utils"
-import router from "@/router";
 import axios, {AxiosRequestConfig} from "axios";
 import {SAMPLE_SCHEDULE, SAMPLE_SCHEDULING_SCHEDULED_TRANSACTIONS} from "../Mocks";
 import MockAdapter from "axios-mock-adapter";
@@ -13,6 +12,7 @@ import {TransactionID} from "@/utils/TransactionID";
 import Oruga from "@oruga-ui/oruga-next";
 import {fetchGetURLs} from "../MockUtils";
 import ScheduleDetails from "@/pages/ScheduleDetails.vue";
+import router from "@/utils/RouteManager.ts";
 
 /*
     Bookmarks

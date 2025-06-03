@@ -116,12 +116,12 @@ import PageFrameV2 from "@/components/page/PageFrameV2.vue";
 import PlainAmount from "@/components/values/PlainAmount.vue";
 import BlockTransactionTable from "@/components/block/BlockTransactionTable.vue";
 import {TransactionGroupByBlockCache} from "@/utils/cache/TransactionGroupByBlockCache";
-import {routeManager} from "@/router";
 import MirrorLink from "@/components/MirrorLink.vue";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import ButtonView from "@/elements/ButtonView.vue";
 import {ArrowLeft, ArrowRight} from 'lucide-vue-next';
 import {ButtonSize} from "@/dialogs/core/DialogUtils.ts";
+import {routeManager} from "@/utils/RouteManager.ts";
 
 const props = defineProps({
   blockHon: String,

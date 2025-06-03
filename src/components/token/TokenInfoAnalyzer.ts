@@ -4,9 +4,9 @@ import {computed, Ref} from "vue";
 import {makeEthAddressForToken, makeTokenSymbol} from "@/schemas/MirrorNodeUtils.ts";
 import {TokenInfo, TokenType} from "@/schemas/MirrorNodeSchemas";
 import {NetworkConfig} from "@/config/NetworkConfig";
-import {routeManager, walletManager} from "@/router";
 import {TokenAssociationCache} from "@/utils/cache/TokenAssociationCache";
 import {PendingAirdropCache} from "@/utils/cache/PendingAirdropCache.ts";
+import {routeManager, walletManager} from "@/utils/RouteManager.ts";
 
 export class TokenInfoAnalyzer {
 

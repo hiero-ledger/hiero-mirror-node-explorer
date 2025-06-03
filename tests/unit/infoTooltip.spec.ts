@@ -3,8 +3,8 @@
 import {describe, expect, test} from 'vitest'
 import {flushPromises, mount} from "@vue/test-utils";
 import InfoTooltip from "@/components/InfoTooltip.vue";
-import router from "@/router";
 import Oruga from "@oruga-ui/oruga-next";
+import router from "@/utils/RouteManager.ts";
 
 describe("InfoTooltip.vue", () => {
 

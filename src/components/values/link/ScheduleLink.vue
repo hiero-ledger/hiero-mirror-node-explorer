@@ -23,9 +23,9 @@
 <script setup lang="ts">
 
 import {computed} from "vue";
-import {routeManager} from "@/router";
 import EntityLink from "@/components/values/link/EntityLink.vue";
 import EntityIOL from "@/components/values/link/EntityIOL.vue";
+import {routeManager} from "@/utils/RouteManager.ts";
 
 const props = defineProps({
   scheduleId: String,

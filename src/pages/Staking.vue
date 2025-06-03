@@ -113,7 +113,6 @@
 
 import {computed, onBeforeUnmount, onMounted, ref} from 'vue';
 import PageFrameV2 from "@/components/page/PageFrameV2.vue";
-import {routeManager, walletManager} from "@/router";
 import UpdateAccountDialog from "@/dialogs/UpdateAccountDialog.vue";
 import StopStakingDialog from "@/dialogs/staking/StopStakingDialog.vue";
 import AccountLink from "@/components/values/link/AccountLink.vue";
@@ -128,6 +127,7 @@ import NetworkDashboardItemV2 from "@/components/node/NetworkDashboardItemV2.vue
 import RecentRewardsSection from "@/components/staking/RecentRewardsSection.vue";
 import ButtonView from "@/elements/ButtonView.vue";
 import NotificationBanner from "@/components/NotificationBanner.vue";
+import {routeManager, walletManager} from "@/utils/RouteManager.ts";
 
 defineProps({
   network: String

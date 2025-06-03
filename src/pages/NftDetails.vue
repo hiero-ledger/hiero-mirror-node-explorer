@@ -155,7 +155,6 @@
 
 <script setup lang="ts">
 import {computed, inject, onBeforeUnmount, onMounted, ref, watch} from "vue"
-import router, {routeManager} from "@/router"
 import TimestampValue from "@/components/values/TimestampValue.vue"
 import BlobValue from "@/components/values/BlobValue.vue"
 import PageFrameV2 from "@/components/page/PageFrameV2.vue";
@@ -179,6 +178,7 @@ import NftPreview from "@/components/token/NftPreview.vue";
 import {CoreConfig} from "@/config/CoreConfig";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import PlayPauseButton from "@/components/PlayPauseButton.vue";
+import router, {routeManager} from "@/utils/RouteManager.ts";
 
 const props = defineProps({
   tokenId: {

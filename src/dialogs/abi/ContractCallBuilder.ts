@@ -4,10 +4,10 @@ import {computed, ref, watch} from "vue";
 import {ethers} from "ethers";
 import {AppStorage} from "@/AppStorage.ts";
 import {ContractCallRequest, ContractCallResponse, extractMessageFromErrorBody} from "@/schemas/MirrorNodeSchemas.ts";
-import {walletManager} from "@/router.ts";
 import axios from "axios";
 import {ABIController} from "@/components/contract/ABIController.ts";
 import {ContractByIdCache} from "@/utils/cache/ContractByIdCache.ts";
+import {walletManager} from "@/utils/RouteManager.ts";
 
 export class ContractCallBuilder {
 

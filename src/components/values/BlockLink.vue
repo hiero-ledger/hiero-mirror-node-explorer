@@ -19,7 +19,8 @@
 <script lang="ts">
 
 import {computed, defineComponent} from "vue";
-import {routeManager} from "@/router";
+
+import {routeManager} from "@/utils/RouteManager.ts";
 
 export default defineComponent({
   name: "BlockLink",

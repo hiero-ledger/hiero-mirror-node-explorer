@@ -4,8 +4,8 @@ import {computed, ref, Ref} from "vue";
 import {EntityLookup} from "@/utils/cache/base/EntityCache.ts";
 import {InputChangeController} from "@/components/utils/InputChangeController.ts";
 import {EntityID} from "@/utils/EntityID.ts";
-import {walletManager} from "@/router.ts";
 import {NftCollectionCache, NftCollectionInfo} from "@/utils/cache/NftCollectionCache.ts";
+import {walletManager} from "@/utils/RouteManager.ts";
 
 export class NftSerialsTextFieldController {
 

@@ -34,9 +34,9 @@ import TransactionDialog from "@/dialogs/core/transaction/TransactionDialog.vue"
 import {computed, PropType} from "vue";
 import {TokenInfoAnalyzer} from "@/components/token/TokenInfoAnalyzer.ts";
 import {DissociateTokenController} from "@/dialogs/token/DissociateTokenController.ts";
-import {walletManager} from "@/router.ts";
 import {TaskPanelMode} from "@/dialogs/core/DialogUtils.ts";
 import TaskPanel from "@/dialogs/core/task/TaskPanel.vue";
+import {walletManager} from "@/utils/RouteManager.ts";
 
 const showDialog = defineModel("showDialog", {
   type: Boolean,

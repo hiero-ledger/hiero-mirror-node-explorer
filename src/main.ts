@@ -2,7 +2,6 @@
 
 import {createApp} from 'vue'
 import Root from './Root.vue'
-import router, {routeManager} from './router'
 import axios from 'axios'
 import {OrugaConfig} from '@oruga-ui/oruga-next'
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
@@ -13,6 +12,7 @@ import "@/styles/explorer.css";
 import {AxiosMonitor} from "@/utils/AxiosMonitor";
 import {CoreConfig} from "@/config/CoreConfig";
 import {NetworkConfig} from "@/config/NetworkConfig";
+import router, {routeManager} from "@/utils/RouteManager.ts";
 
 library.add(faForward);
 export default FontAwesomeIcon;

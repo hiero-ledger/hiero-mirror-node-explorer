@@ -61,13 +61,13 @@
 import {PropType} from 'vue';
 import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
 import {Block} from '@/schemas/MirrorNodeSchemas.ts';
-import {routeManager} from "@/router";
 import TimestampValue from "@/components/values/TimestampValue.vue";
 import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
 import EmptyTable from "@/components/EmptyTable.vue";
 import PlainAmount from "@/components/values/PlainAmount.vue";
 import {BlockTableController} from "@/components/block/BlockTableController";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
+import {routeManager} from "@/utils/RouteManager.ts";
 
 const props = defineProps({
   controller: {

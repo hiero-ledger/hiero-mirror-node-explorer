@@ -4,7 +4,6 @@
 
 import {describe, expect, it} from 'vitest'
 import {flushPromises, mount} from "@vue/test-utils"
-import router, {routeManager} from "@/router";
 import axios from "axios";
 import {SAMPLE_CONTRACT} from "../Mocks";
 import MockAdapter from "axios-mock-adapter";
@@ -13,6 +12,7 @@ import Oruga from "@oruga-ui/oruga-next";
 import ContractResultLogEntry from "@/components/contract/ContractResultLogEntry.vue";
 import {SAMPLE_LOG_RESULT, SAMPLE_SOURCIFY_RESPONSE} from "../utils/analyzer/ContractLogAnalyzer.spec";
 import {fetchGetURLs} from "../MockUtils";
+import router, {routeManager} from "@/utils/RouteManager.ts";
 
 /*
     Bookmarks

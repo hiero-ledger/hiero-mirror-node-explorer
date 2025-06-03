@@ -39,11 +39,11 @@
 <script setup lang="ts">
 
 import {ref} from "vue";
-import {walletManager} from "@/router.ts";
 import DropdownPanel from "@/components/DropdownPanel.vue";
 import ButtonView from "@/elements/ButtonView.vue";
 import {ButtonSize} from "@/dialogs/core/DialogUtils.ts";
 import WalletOptions from "@/components/page/header/wallet/WalletOptions.vue";
+import {walletManager} from "@/utils/RouteManager.ts";
 
 const accountId = walletManager.accountId
 const walletIconURL = walletManager.walletIconURL

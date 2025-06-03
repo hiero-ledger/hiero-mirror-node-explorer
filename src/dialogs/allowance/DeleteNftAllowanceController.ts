@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import {computed, Ref} from "vue";
-import {walletManager} from "@/router.ts";
 import {TransactionController} from "@/dialogs/core/transaction/TransactionController.ts";
 import {TokenInfo} from "@/schemas/MirrorNodeSchemas.ts";
 import {EntityLookup} from "@/utils/cache/base/EntityCache.ts";
 import {TokenInfoCache} from "@/utils/cache/TokenInfoCache.ts";
+import {walletManager} from "@/utils/RouteManager.ts";
 
 export class DeleteNftAllowanceController extends TransactionController {
 

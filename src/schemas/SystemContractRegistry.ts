@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import {EntityID} from "@/utils/EntityID";
-import {routeManager} from "@/router.ts";
 import {ethers} from "ethers";
+import {routeManager} from "@/utils/RouteManager.ts";
 
 export class SystemContractRegistry {
 

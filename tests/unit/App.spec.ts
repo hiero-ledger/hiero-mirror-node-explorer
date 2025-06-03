@@ -2,7 +2,6 @@
 
 import {describe, expect, test} from 'vitest'
 import {flushPromises, mount} from "@vue/test-utils"
-import router from "@/router";
 import axios from "axios";
 import {SAMPLE_NETWORK_EXCHANGERATE, SAMPLE_NETWORK_SUPPLY, SAMPLE_TOKEN, SAMPLE_TRANSACTIONS} from "./Mocks";
 import App from "@/App.vue";
@@ -10,10 +9,10 @@ import MockAdapter from "axios-mock-adapter";
 import Oruga from "@oruga-ui/oruga-next";
 import {HMSF} from "@/utils/HMSF";
 import {NetworkConfig} from "@/config/NetworkConfig.ts";
-import {routeManager} from "@/router.ts";
 import MainDashboardHeader from "@/components/page/header/MainDashboardHeader.vue";
 import Footer from "@/components/page/Footer.vue";
 import ChartView from "@/charts/core/ChartView.vue";
+import router, {routeManager} from "@/utils/RouteManager.ts";
 
 /*
     Bookmarks

@@ -19,8 +19,8 @@ import Oruga from "@oruga-ui/oruga-next";
 import TokensSection from "@/components/token/TokensSection.vue";
 import Tabs from "@/components/Tabs.vue";
 import {HMSF} from "@/utils/HMSF.ts";
-import router from "@/router";
 import {fetchGetURLs} from "../MockUtils";
+import router from "@/utils/RouteManager.ts";
 
 /*
     Bookmarks

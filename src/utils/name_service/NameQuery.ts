@@ -2,9 +2,9 @@
 
 
 import {computed, ref, Ref, watch, WatchStopHandle} from "vue";
-import {routeManager} from "@/router";
 import {AppStorage} from "@/AppStorage";
 import {NameRecord, NameService} from "@/utils/name_service/NameService";
+import {routeManager} from "@/utils/RouteManager.ts";
 
 export class NameQuery {
 

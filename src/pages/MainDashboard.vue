@@ -63,7 +63,8 @@ import ChartView from "@/charts/core/ChartView.vue";
 import {NetworkFeeController} from "@/charts/hgraph/NetworkFeeController.ts";
 import {ActiveAccountController} from "@/charts/hgraph/ActiveAccountController.ts";
 import {ThemeController} from "@/components/ThemeController.ts";
-import {routeManager} from "@/router.ts";
+
+import {routeManager} from "@/utils/RouteManager.ts";
 
 defineProps({
   network: String

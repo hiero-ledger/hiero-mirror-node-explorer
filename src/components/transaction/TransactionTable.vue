@@ -83,12 +83,12 @@ import TransactionSummary from "@/components/transaction/TransactionSummary.vue"
 import TimestampValue from "@/components/values/TimestampValue.vue";
 import TransactionLabel from "@/components/values/TransactionLabel.vue";
 import {makeTypeLabel} from "@/utils/TransactionTools";
-import {routeManager} from "@/router";
 import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
 import {TransactionTableControllerXL} from "@/components/transaction/TransactionTableControllerXL";
 import EmptyTable from "@/components/EmptyTable.vue";
 import InnerSenderEVMAddress from "@/components/values/InnerSenderEVMAddress.vue";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
+import {routeManager} from "@/utils/RouteManager.ts";
 
 const props = defineProps({
   narrowed: Boolean,

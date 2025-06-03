@@ -66,11 +66,11 @@ import TabBar from "@/components/page/header/TabBar.vue";
 import SearchBar from "@/components/search/SearchBar.vue";
 import ConnectWalletButton from "@/components/page/header/wallet/ConnectWalletButton.vue";
 import {computed, inject} from "vue";
-import {routeManager, walletManager} from "@/router.ts";
 import {WalletManagerStatus} from "@/utils/wallet/WalletManagerV4.ts";
 import WalletStatusButton from "@/components/page/header/wallet/WalletStatusButton.vue";
 import MobileMenuButton from "@/components/page/header/MobileMenuButton.vue";
 import MarketDashboard from "@/components/dashboard/MarketDashboard.vue";
+import {routeManager, walletManager} from "@/utils/RouteManager.ts";
 
 const props = defineProps({
   fullPage: {
