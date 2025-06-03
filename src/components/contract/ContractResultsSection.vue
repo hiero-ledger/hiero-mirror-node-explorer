@@ -31,11 +31,11 @@
 <script setup lang="ts">
 
 import {computed, inject, onBeforeUnmount, onMounted} from 'vue';
-import router from "@/router";
 import {ContractResultTableController} from "@/components/contract/ContractResultTableController";
 import ContractResultTable from "@/components/contract/ContractResultTable.vue";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import PlayPauseButton from "@/components/PlayPauseButton.vue";
+import router from "@/utils/RouteManager.ts";
 
 const props = defineProps({
   contractId: String,

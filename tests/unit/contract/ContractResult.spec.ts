@@ -4,7 +4,6 @@
 
 import {describe, expect, it} from 'vitest'
 import {flushPromises, mount} from "@vue/test-utils"
-import router from "@/router";
 import axios from "axios";
 import {
     SAMPLE_CONTRACT_RESULT_DETAILS,
@@ -23,6 +22,7 @@ import ContractActionsTable from "@/components/contract/ContractActionsTable.vue
 import ContractResultStateChangeEntry from "@/components/contract/ContractResultStateChangeEntry.vue";
 import {fetchGetURLs} from "../MockUtils";
 import {Transaction} from "@/schemas/MirrorNodeSchemas.ts";
+import router from "@/utils/RouteManager.ts";
 
 /*
     Bookmarks

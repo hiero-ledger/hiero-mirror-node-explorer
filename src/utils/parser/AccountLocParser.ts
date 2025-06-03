@@ -8,11 +8,11 @@ import {AccountAlias} from "@/utils/AccountAlias";
 import {AccountByIdCache} from "@/utils/cache/AccountByIdCache";
 import {AccountBalanceTransactions, Key, TokenBalance} from "@/schemas/MirrorNodeSchemas";
 import {NetworkConfig} from "@/config/NetworkConfig";
-import {routeManager} from "@/router";
 import {NodeAnalyzer} from "@/utils/analyzer/NodeAnalyzer";
 import {makeEthAddressForAccount} from "@/schemas/MirrorNodeUtils.ts";
 import {AccountByAddressCache} from "@/utils/cache/AccountByAddressCache";
 import {AccountByAliasCache} from "@/utils/cache/AccountByAliasCache";
+import {routeManager} from "@/utils/RouteManager.ts";
 
 export class AccountLocParser {
 

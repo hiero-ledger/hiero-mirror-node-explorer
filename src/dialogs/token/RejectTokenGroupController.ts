@@ -6,9 +6,9 @@ import {FreezeStatus, Nft, Token, Transaction} from "@/schemas/MirrorNodeSchemas
 import {tokenOrNftId} from "@/schemas/MirrorNodeUtils.ts";
 import {NftId, TokenId, TokenRejectTransaction} from "@hashgraph/sdk";
 import {TokenAssociationCache} from "@/utils/cache/TokenAssociationCache.ts";
-import {walletManager} from "@/router.ts";
 import {TokenInfoCache} from "@/utils/cache/TokenInfoCache.ts";
 import {TaskPanelMode} from "@/dialogs/core/DialogUtils.ts";
+import {walletManager} from "@/utils/RouteManager.ts";
 
 export class RejectTokenGroupController extends TransactionGroupController {
 

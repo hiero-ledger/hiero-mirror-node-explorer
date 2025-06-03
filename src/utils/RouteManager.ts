@@ -49,6 +49,7 @@ import {CoreConfig} from "@/config/CoreConfig";
 import {NetworkConfig, NetworkEntry} from "@/config/NetworkConfig";
 import ERC20ByName from "@/pages/ERC20ByName.vue";
 import ERC721ByName from "@/pages/ERC721ByName.vue";
+import {WalletManagerV4} from "@/utils/wallet/WalletManagerV4.ts";
 
 export class RouteManager {
 
@@ -1052,3 +1053,6 @@ const routes: Array<RouteRecordRaw> = [
 ]
 
 
+export const routeManager = new RouteManager()
+export const walletManager = new WalletManagerV4(routeManager)
+export default routeManager.router;

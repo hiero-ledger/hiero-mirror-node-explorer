@@ -9,13 +9,13 @@
 
 import {afterAll, beforeAll, describe, expect, it} from 'vitest'
 import {flushPromises, mount} from "@vue/test-utils";
-import router from "@/router";
 import {SAMPLE_TOKEN, SAMPLE_TOKEN_DUDE, SAMPLE_TOKEN_WITH_LARGE_DECIMAL_COUNT} from "../Mocks";
 import TokenAmount from "@/components/values/TokenAmount.vue";
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
 import Oruga from "@oruga-ui/oruga-next";
 import {truncateTokenSymbol} from "./TokenLink.spec";
+import router from "@/utils/RouteManager.ts";
 
 describe("TokenAmount.vue", () => {
 

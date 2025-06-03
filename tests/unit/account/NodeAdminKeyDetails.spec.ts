@@ -4,7 +4,6 @@
 
 import {describe, expect, test} from 'vitest'
 import {flushPromises, mount} from "@vue/test-utils"
-import router from "@/router";
 import axios from "axios";
 import {SAMPLE_NETWORK_NODES,} from "../Mocks";
 import MockAdapter from "axios-mock-adapter";
@@ -14,6 +13,7 @@ import ComplexKeyValue from "@/components/values/ComplexKeyValue.vue";
 import KeyValue from "@/components/values/KeyValue.vue";
 import {fetchGetURLs} from "../MockUtils";
 import NodeAdminKeyDetails from "@/pages/NodeAdminKeyDetails.vue";
+import router from "@/utils/RouteManager.ts";
 
 /*
     Bookmarks

@@ -33,9 +33,9 @@
 
 import {computed, defineComponent} from "vue";
 import TokenExtra from "@/components/values/link/TokenExtra.vue";
-import {routeManager} from "@/router";
 import TokenIOL from "@/components/values/link/TokenIOL.vue";
 import EntityLink from "@/components/values/link/EntityLink.vue";
+import {routeManager} from "@/utils/RouteManager.ts";
 
 export default defineComponent({
   name: "TokenLink",

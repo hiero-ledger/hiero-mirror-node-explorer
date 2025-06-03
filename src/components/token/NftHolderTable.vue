@@ -96,10 +96,10 @@ import {Nft} from "@/schemas/MirrorNodeSchemas";
 import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
 import EmptyTable from "@/components/EmptyTable.vue";
 import {NftHolderTableController} from "@/components/token/NftHolderTableController";
-import {routeManager} from "@/router";
 import AccountIOL from "@/components/values/link/AccountIOL.vue";
 import NftCell, {NftCellItem} from "@/components/token/NftCell.vue";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
+import {routeManager} from "@/utils/RouteManager.ts";
 
 const props = defineProps({
   controller: {

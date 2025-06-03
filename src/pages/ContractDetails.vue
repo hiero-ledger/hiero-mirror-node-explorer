@@ -235,7 +235,6 @@ import Property from "@/components/Property.vue";
 import {AccountByIdCache} from "@/utils/cache/AccountByIdCache";
 import {ContractLocParser} from "@/utils/parser/ContractLocParser";
 import {NetworkConfig} from "@/config/NetworkConfig";
-import {routeManager} from "@/router";
 import TransactionLink from "@/components/values/TransactionLink.vue";
 import EVMAddress from "@/components/values/EVMAddress.vue";
 import ContractByteCodeSection from "@/components/contract/ContractByteCodeSection.vue";
@@ -257,6 +256,7 @@ import {ERCAnalyzer} from "@/utils/analyzer/ERCAnalyzer.ts";
 import DomainLabel from "@/components/values/DomainLabel.vue";
 import PublicLabel from "@/components/values/PublicLabel.vue";
 import {PublicLabelsCache} from "@/utils/cache/PublicLabelsCache.ts";
+import {routeManager} from "@/utils/RouteManager.ts";
 
 const props = defineProps({
   contractId: String,

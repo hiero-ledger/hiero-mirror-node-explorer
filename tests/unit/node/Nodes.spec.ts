@@ -2,7 +2,6 @@
 
 import {describe, expect, it} from 'vitest'
 import {flushPromises, mount} from "@vue/test-utils"
-import router from "@/router";
 import axios from "axios";
 import {SAMPLE_NETWORK_NODES, SAMPLE_NETWORK_STAKE} from "../Mocks";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
@@ -13,6 +12,7 @@ import Nodes from "@/pages/Nodes.vue";
 import NodeTable from "@/components/node/NodeTable.vue";
 import NetworkDashboardItemV2 from "@/components/node/NetworkDashboardItemV2.vue";
 import {fetchGetURLs} from "../MockUtils";
+import router from "@/utils/RouteManager.ts";
 
 /*
     Bookmarks

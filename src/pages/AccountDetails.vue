@@ -358,7 +358,6 @@ import AccountLink from "@/components/values/link/AccountLink.vue";
 import {AccountLocParser} from "@/utils/parser/AccountLocParser";
 import {ContractByIdCache} from "@/utils/cache/ContractByIdCache";
 import TransactionFilterSelect from "@/components/transaction/TransactionFilterSelect.vue";
-import router, {routeManager, walletManager} from "@/router";
 import TransactionLink from "@/components/values/TransactionLink.vue";
 import {StakingRewardsTableController} from "@/components/staking/StakingRewardsTableController";
 import StakingRewardsTable from "@/components/staking/StakingRewardsTable.vue";
@@ -395,6 +394,7 @@ import {Download} from 'lucide-vue-next';
 import DomainLabel from "@/components/values/DomainLabel.vue";
 import PublicLabel from "@/components/values/PublicLabel.vue";
 import {PublicLabelsCache} from "@/utils/cache/PublicLabelsCache.ts";
+import router, {routeManager, walletManager} from "@/utils/RouteManager.ts";
 
 const props = defineProps({
   accountId: String,

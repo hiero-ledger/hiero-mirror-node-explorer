@@ -103,7 +103,6 @@
 <script setup lang="ts">
 
 import {computed, onBeforeUnmount, onMounted, ref} from "vue";
-import router, {routeManager, walletManager} from "@/router.ts";
 import GroupBoxView from "@/elements/GroupBoxView.vue";
 import ButtonView from "@/elements/ButtonView.vue";
 import LabelView from "@/elements/LabelView.vue";
@@ -118,6 +117,7 @@ import ApproveAllowanceDialog from "@/dialogs/allowance/ApproveAllowanceDialog.v
 import {CheckCheck, UserRoundPen} from 'lucide-vue-next';
 import HbarAmount from "@/components/values/HbarAmount.vue";
 import AccountSelector from "@/components/page/header/wallet/AccountSelector.vue";
+import router, {routeManager, walletManager} from "@/utils/RouteManager.ts";
 
 const showWalletOptions = defineModel("showWalletOptions", {
   type: Boolean,

@@ -3,12 +3,12 @@
 import {describe, expect, test} from 'vitest'
 import {flushPromises, mount} from "@vue/test-utils";
 import TokenCell, {TokenCellItem} from "@/components/token/TokenCell.vue";
-import router from "@/router";
 import Oruga from "@oruga-ui/oruga-next";
 import {SAMPLE_ASSOCIATED_TOKEN, SAMPLE_NONFUNGIBLE} from "../Mocks";
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
 import {fetchGetURLs} from "../MockUtils";
+import router from "@/utils/RouteManager.ts";
 
 describe("TokenCell.vue", () => {
 

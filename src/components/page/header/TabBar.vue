@@ -35,8 +35,7 @@
 
 <script setup lang="ts">
 
-import {routeManager} from "@/router.ts"
-import {TabId} from "@/utils/RouteManager.ts"
+import {routeManager, TabId} from "@/utils/RouteManager.ts"
 import TabItem from "@/components/page/header/TabItem.vue";
 
 const props = defineProps({

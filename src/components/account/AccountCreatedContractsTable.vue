@@ -68,12 +68,12 @@ import {onBeforeUnmount, onMounted, PropType} from 'vue';
 import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
 import {Transaction} from "@/schemas/MirrorNodeSchemas";
 import TimestampValue from "@/components/values/TimestampValue.vue";
-import {routeManager} from "@/router";
 import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
 import EmptyTable from "@/components/EmptyTable.vue";
 import {TransactionTableController} from "@/components/transaction/TransactionTableController";
 import ContractName from "@/components/values/ContractName.vue";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
+import {routeManager} from "@/utils/RouteManager.ts";
 
 const props = defineProps({
   controller: {

@@ -11,10 +11,10 @@
 import {describe, expect, it} from 'vitest'
 import {flushPromises, mount} from "@vue/test-utils";
 import TokenLink from "@/components/values/link/TokenLink.vue";
-import router from "@/router";
 import {SAMPLE_TOKEN, SAMPLE_TOKEN_DUDE} from "../Mocks";
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
+import router from "@/utils/RouteManager.ts";
 
 describe("TokenLink.vue", () => {
 

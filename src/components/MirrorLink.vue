@@ -21,7 +21,8 @@
 <script setup lang="ts">
 import {ArrowRight} from "lucide-vue-next";
 import {computed, inject, PropType} from "vue";
-import {routeManager} from "@/router.ts";
+
+import {routeManager} from "@/utils/RouteManager.ts";
 
 const props = defineProps({
   network: String,

@@ -34,13 +34,13 @@
 
 import {onBeforeUnmount, onMounted, ref} from 'vue';
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
-import {walletManager} from "@/router.ts";
 import DownloadButton from "@/components/DownloadButton.vue";
 import StakingRewardsTable from "@/components/staking/StakingRewardsTable.vue";
 import {StakingRewardsTableController} from "@/components/staking/StakingRewardsTableController.ts";
 import {AppStorage} from "@/AppStorage.ts";
 import RewardDownloadDialog from "@/dialogs/download/RewardDownloadDialog.vue";
 import {useRouter} from "vue-router";
+import {walletManager} from "@/utils/RouteManager.ts";
 
 const router = useRouter()
 const showDownloadDialog = ref(false)

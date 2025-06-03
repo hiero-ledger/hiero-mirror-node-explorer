@@ -82,7 +82,6 @@
 <script setup lang="ts">
 
 import {computed, PropType, ref} from "vue";
-import {walletManager} from "@/router.ts";
 import {TokenAssociationStatus, TokenInfoAnalyzer} from "@/components/token/TokenInfoAnalyzer.ts";
 import ButtonView from "@/elements/ButtonView.vue";
 import AssociateTokenDialog from "@/dialogs/token/AssociateTokenDialog.vue";
@@ -91,6 +90,7 @@ import {ButtonSize} from "@/dialogs/core/DialogUtils.ts";
 import RejectTokenDialog from "@/dialogs/token/RejectTokenDialog.vue";
 import ClaimTokenDialog from "@/dialogs/token/ClaimTokenDialog.vue";
 import WatchTokenDialog from "@/dialogs/token/WatchTokenDialog.vue";
+import {walletManager} from "@/utils/RouteManager.ts";
 
 const props = defineProps({
   analyzer: {

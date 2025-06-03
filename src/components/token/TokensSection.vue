@@ -142,7 +142,6 @@ import {NftsTableController} from "@/components/account/NftsTableController";
 import NftsTable from "@/components/account/NftsTable.vue";
 import FungibleTable from "@/components/account/FungibleTable.vue";
 import {FungibleTableController} from "@/components/account/FungibleTableController";
-import {routeManager, walletManager} from "@/router";
 import {Nft, Token, TokenAirdrop, TokenType} from "@/schemas/MirrorNodeSchemas";
 import RejectTokenGroupDialog from "@/dialogs/token/RejectTokenGroupDialog.vue";
 import ClaimTokenGroupDialog from "@/dialogs/token/ClaimTokenGroupDialog.vue";
@@ -154,6 +153,7 @@ import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import ButtonView from "@/elements/ButtonView.vue";
 import ArrowLink from "@/components/ArrowLink.vue";
 import {ButtonSize} from "@/dialogs/core/DialogUtils.ts";
+import {routeManager, walletManager} from "@/utils/RouteManager.ts";
 
 const props = defineProps({
   accountId: {

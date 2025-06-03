@@ -97,7 +97,6 @@
 <script setup lang="ts">
 
 import {computed, inject, onBeforeUnmount, onMounted, ref, watch} from 'vue';
-import router, {walletManager} from "@/router";
 import {HbarAllowanceTableController} from "@/components/allowances/HbarAllowanceTableController";
 import {TokenAllowanceTableController} from "@/components/allowances/TokenAllowanceTableController";
 import HbarAllowanceTable from "@/components/allowances/HbarAllowanceTable.vue";
@@ -117,6 +116,7 @@ import {ButtonSize} from "@/dialogs/core/DialogUtils.ts";
 import UpdateCryptoAllowanceDialog from "@/dialogs/allowance/UpdateCryptoAllowanceDialog.vue";
 import UpdateTokenAllowanceDialog from "@/dialogs/allowance/UpdateTokenAllowanceDialog.vue";
 import DeleteNftAllowanceDialog from "@/dialogs/allowance/DeleteNftAllowanceDialog.vue";
+import router, {walletManager} from "@/utils/RouteManager.ts";
 
 const props = defineProps({
   accountId: String,

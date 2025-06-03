@@ -32,12 +32,12 @@
 <script setup lang="ts">
 
 import {computed, PropType} from "vue";
-import {walletManager} from "@/router.ts";
 import TransactionDialog from "@/dialogs/core/transaction/TransactionDialog.vue";
 import {TokenInfoAnalyzer} from "@/components/token/TokenInfoAnalyzer.ts";
 import {WatchTokenController} from "@/dialogs/token/WatchTokenController.ts";
 import {TaskPanelMode} from "@/dialogs/core/DialogUtils.ts";
 import TaskPanel from "@/dialogs/core/task/TaskPanel.vue";
+import {walletManager} from "@/utils/RouteManager.ts";
 
 const showDialog = defineModel("showDialog", {
   type: Boolean,

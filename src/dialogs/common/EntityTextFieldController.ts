@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import {computed, Ref, watch} from "vue";
-import {routeManager} from "@/router.ts";
 import {NetworkConfig} from "@/config/NetworkConfig.ts";
 import {EntityID} from "@/utils/EntityID.ts";
 import {BaseTextFieldController} from "@/dialogs/common/BaseTextFieldController.ts"
 import {extractChecksum, stripChecksum} from "@/schemas/MirrorNodeUtils.ts";
+import {routeManager} from "@/utils/RouteManager.ts";
 
 export class EntityTextFieldController {
 

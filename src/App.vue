@@ -30,8 +30,8 @@ import {AppStorage} from "@/AppStorage";
 import {LARGE_BREAKPOINT, MEDIUM_BREAKPOINT, SMALL_BREAKPOINT, XLARGE_BREAKPOINT} from "@/BreakPoints";
 import {CoreConfig} from "@/config/CoreConfig";
 import {NetworkConfig} from "@/config/NetworkConfig";
-import {walletManager} from "@/router.ts";
 import {ThemeController} from "@/components/ThemeController.ts";
+import {walletManager} from "@/utils/RouteManager.ts";
 
 const props = defineProps({
   "coreConfig": {

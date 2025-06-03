@@ -2,7 +2,6 @@
 
 import {describe, expect, it} from 'vitest'
 import {flushPromises, mount} from "@vue/test-utils"
-import router, {routeManager} from "@/router";
 import axios from "axios";
 import TopicDetails from "@/pages/TopicDetails.vue";
 import TopicMessageTable from "@/components/topic/TopicMessageTable.vue";
@@ -25,6 +24,7 @@ import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import FixedFeeTable from "@/components/token/FixedFeeTable.vue";
 import {networkConfigKey} from "@/AppKeys.ts";
 import PageHeader from "@/components/page/header/PageHeader.vue";
+import router, {routeManager} from "@/utils/RouteManager.ts";
 
 /*
     Bookmarks

@@ -44,7 +44,8 @@ import PageFrameV2 from "@/components/page/PageFrameV2.vue";
 import KeyValue from "@/components/values/KeyValue.vue";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import {NodeAnalyzer} from "@/utils/analyzer/NodeAnalyzer.ts";
-import {routeManager} from "@/router.ts";
+
+import {routeManager} from "@/utils/RouteManager.ts";
 
 const props = defineProps({
   nodeId: {

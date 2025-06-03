@@ -28,7 +28,6 @@
 
 import {computed, onMounted, PropType, ref, watch} from "vue";
 import {TransactionID} from "@/utils/TransactionID";
-import {routeManager} from "@/router";
 import {Transaction} from "@/schemas/MirrorNodeSchemas";
 import {PathParam} from "@/utils/PathParam";
 import {Timestamp} from "@/utils/Timestamp";
@@ -36,6 +35,7 @@ import {TransactionHash} from "@/utils/TransactionHash";
 import {TransactionByHashCache} from "@/utils/cache/TransactionByHashCache";
 import {TransactionByTsCache} from "@/utils/cache/TransactionByTsCache";
 import TransactionIdValue from "@/components/values/TransactionIdValue.vue";
+import {routeManager} from "@/utils/RouteManager.ts";
 
 const props = defineProps({
   transactionLoc: String as PropType<string | undefined>,

@@ -2,8 +2,8 @@
 
 import {Contract, ContractsResponse, TransactionResponse} from "@/schemas/MirrorNodeSchemas";
 import axios, {AxiosResponse} from "axios";
-import {routeManager} from "@/router";
 import {SourcifyCache} from "@/utils/cache/SourcifyCache";
+import {routeManager} from "@/utils/RouteManager.ts";
 
 export class VerifiedContractsBuffer {
 

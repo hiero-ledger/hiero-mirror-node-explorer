@@ -4,7 +4,6 @@
 
 import {describe, expect, it} from 'vitest'
 import {flushPromises, mount} from "@vue/test-utils"
-import router, {routeManager} from "@/router";
 import TokenDetails from "@/pages/TokenDetails.vue";
 import axios from "axios";
 import {
@@ -36,6 +35,7 @@ import {fetchGetURLs} from "../MockUtils";
 import {networkConfigKey} from "@/AppKeys.ts";
 import PageHeader from "@/components/page/header/PageHeader.vue";
 import NotificationBanner from "@/components/NotificationBanner.vue";
+import router, {routeManager} from "@/utils/RouteManager.ts";
 
 /*
     Bookmarks

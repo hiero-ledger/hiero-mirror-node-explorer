@@ -75,13 +75,13 @@ import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
 import {ContractResultTableController} from "@/components/contract/ContractResultTableController";
 import TimestampValue from "@/components/values/TimestampValue.vue";
 import EmptyTable from "@/components/EmptyTable.vue";
-import {routeManager} from "@/router";
 import StringValue from "@/components/values/StringValue.vue";
 import EVMAddress from "@/components/values/EVMAddress.vue";
 import {decodeSolidityErrorMessage} from "@/schemas/MirrorNodeUtils.ts";
 import HbarAmount from "@/components/values/HbarAmount.vue";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
 import {TriangleAlert} from 'lucide-vue-next';
+import {routeManager} from "@/utils/RouteManager.ts";
 
 const props = defineProps({
   controller: {

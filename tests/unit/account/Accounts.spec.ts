@@ -2,7 +2,6 @@
 
 import {describe, expect, test} from 'vitest'
 import {flushPromises, mount} from "@vue/test-utils"
-import router from "@/router";
 import axios from "axios";
 import {SAMPLE_ACCOUNTS, SAMPLE_TOKEN} from "../Mocks";
 import Accounts from "@/pages/Accounts.vue";
@@ -11,6 +10,7 @@ import AccountTable from "@/components/account/AccountTable.vue";
 import MockAdapter from "axios-mock-adapter";
 import Oruga from "@oruga-ui/oruga-next";
 import {HMSF} from "@/utils/HMSF";
+import router from "@/utils/RouteManager.ts";
 
 /*
     Bookmarks

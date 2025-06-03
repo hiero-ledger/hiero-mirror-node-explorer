@@ -334,7 +334,6 @@ import ContractResult from "@/components/contract/ContractResult.vue";
 import {TransactionDetail, TransactionType} from "@/schemas/MirrorNodeSchemas";
 import TopicMessage from "@/components/topic/TopicMessage.vue";
 import {TopicMessageByTimestampCache} from "@/utils/cache/TopicMessageByTimestampCache.ts";
-import {routeManager} from "@/router"
 import TokenLink from "@/components/values/link/TokenLink.vue";
 import {TransactionLocParser} from "@/utils/parser/TransactionLocParser";
 import {TransactionGroupAnalyzer} from "@/components/transaction/TransactionGroupAnalyzer";
@@ -354,6 +353,7 @@ import KeyValue from "@/components/values/KeyValue.vue";
 import {HbarPriceCache} from "@/utils/cache/HbarPriceCache.ts";
 import {cryptoRateToPrice} from "@/schemas/MirrorNodeUtils.ts";
 import TransactionIdValue from "@/components/values/TransactionIdValue.vue";
+import {routeManager} from "@/utils/RouteManager.ts";
 
 const MAX_INLINE_CHILDREN = 10
 

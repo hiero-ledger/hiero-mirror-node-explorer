@@ -83,11 +83,11 @@
 import {computed, PropType} from "vue";
 import TaskDialog from "@/dialogs/core/task/TaskDialog.vue";
 import {TransactionGroupController} from "@/dialogs/core/transaction/TransactionGroupController.ts";
-import {walletManager} from "@/router.ts";
 import TaskPanel from "@/dialogs/core/task/TaskPanel.vue";
 import {TaskPanelMode} from "@/dialogs/core/DialogUtils.ts";
 import {TransactionID} from "@/utils/TransactionID.ts";
 import {isSuccessfulResult} from "@/utils/TransactionTools.ts";
+import {walletManager} from "@/utils/RouteManager.ts";
 
 
 const props = defineProps({

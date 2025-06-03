@@ -59,13 +59,13 @@
 
 import {computed, inject, onBeforeUnmount, onMounted, PropType, ref} from 'vue';
 import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
-import {routeManager} from "@/router";
 import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
 import EmptyTable from "@/components/EmptyTable.vue";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
 import {ERC721Contract} from "@/utils/cache/ERC721Cache.ts";
 import ContractIOL from "@/components/values/link/ContractIOL.vue";
 import {ERC721ByNameTableLoader} from "@/components/contract/ERC721ByNameTableLoader.ts";
+import {routeManager} from "@/utils/RouteManager.ts";
 
 const props = defineProps({
   narrowed: Boolean,

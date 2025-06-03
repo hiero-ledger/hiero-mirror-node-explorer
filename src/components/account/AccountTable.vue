@@ -85,7 +85,6 @@
 import {PropType} from 'vue';
 import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
 import {AccountInfo} from "@/schemas/MirrorNodeSchemas";
-import {routeManager} from "@/router";
 import HbarAmount from "@/components/values/HbarAmount.vue";
 import BlobValue from "@/components/values/BlobValue.vue";
 import TimestampValue from "@/components/values/TimestampValue.vue";
@@ -95,6 +94,7 @@ import EmptyTable from "@/components/EmptyTable.vue";
 import {AccountTableController} from "@/components/account/AccountTableController";
 import AccountIOL from "@/components/values/link/AccountIOL.vue";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
+import {routeManager} from "@/utils/RouteManager.ts";
 
 const props = defineProps({
   controller: {

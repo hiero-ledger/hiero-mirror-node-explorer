@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import {computed, ref, Ref} from "vue";
-import {walletManager} from "@/router.ts";
 import {TransactionController} from "@/dialogs/core/transaction/TransactionController.ts";
 import {AccountTextFieldController, AccountTextFieldState} from "@/dialogs/common/AccountTextFieldController.ts";
 import {TokenTextFieldController, TokenTextFieldState} from "@/dialogs/common/TokenTextFieldController.ts";
@@ -15,6 +14,7 @@ import {
     NftSerialsTextFieldController,
     NftSerialsTextFieldState
 } from "@/dialogs/common/NftSerialsTextFieldController.ts";
+import {walletManager} from "@/utils/RouteManager.ts";
 
 export class ApproveAllowanceController extends TransactionController {
 

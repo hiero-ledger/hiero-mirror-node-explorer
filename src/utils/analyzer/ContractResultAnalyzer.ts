@@ -7,7 +7,8 @@ import {computed, ref, Ref, watch, WatchStopHandle} from "vue"
 import {ContractResultByTsCache} from "@/utils/cache/ContractResultByTsCache";
 import {ContractByAddressCache} from "@/utils/cache/ContractByAddressCache";
 import {systemContractRegistry} from "@/schemas/SystemContractRegistry";
-import {routeManager} from "@/router.ts";
+
+import {routeManager} from "@/utils/RouteManager.ts";
 
 export class ContractResultAnalyzer {
 

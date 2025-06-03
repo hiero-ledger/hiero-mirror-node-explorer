@@ -11,11 +11,11 @@ import {CAAccountId, CAChainId} from "@/utils/wallet/caip";
 import {AccountByIdCache} from "@/utils/cache/AccountByIdCache";
 import type SignClient from "@walletconnect/sign-client";
 import {ProposalTypes, SessionTypes, SignClientTypes} from "@walletconnect/types";
-import {routeManager} from "@/router";
 import type {WalletConnectModal} from "@walletconnect/modal"; // "type" to avoid unit test break
 import {AccountByAddressCache} from "@/utils/cache/AccountByAddressCache";
 import {EntityID} from "@/utils/EntityID";
 import {getSdkError} from "@walletconnect/utils";
+import {routeManager} from "@/utils/RouteManager.ts";
 
 export class WalletConnectAgent {
 

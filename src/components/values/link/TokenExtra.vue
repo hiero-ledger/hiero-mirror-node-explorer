@@ -27,7 +27,8 @@ import {computed, defineComponent, onMounted, ref, watch} from "vue";
 import {TokenInfo} from "@/schemas/MirrorNodeSchemas";
 import {TokenInfoCache} from "@/utils/cache/TokenInfoCache";
 import {makeTokenSymbol} from "@/schemas/MirrorNodeUtils.ts";
-import {routeManager} from "@/router";
+
+import {routeManager} from "@/utils/RouteManager.ts";
 
 export default defineComponent({
   name: "TokenExtra",

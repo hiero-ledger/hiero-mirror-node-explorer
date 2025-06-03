@@ -51,7 +51,8 @@ import TokenExtra from "@/components/values/link/TokenExtra.vue";
 import {initialLoadingKey} from "@/AppKeys";
 import InfoTooltip from "@/components/InfoTooltip.vue";
 import {formatTokenAmount} from "@/schemas/MirrorNodeUtils.ts";
-import {routeManager} from "@/router";
+
+import {routeManager} from "@/utils/RouteManager.ts";
 
 export const MAX_DECIMALS = 20
 

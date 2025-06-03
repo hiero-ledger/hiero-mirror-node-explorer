@@ -2,7 +2,6 @@
 
 import {describe, expect, test} from 'vitest'
 import {flushPromises, mount} from "@vue/test-utils"
-import router from "@/router";
 import axios from "axios";
 import {SAMPLE_NETWORK_EXCHANGERATE, SAMPLE_NETWORK_SUPPLY,} from "../Mocks";
 import MainDashboard from "@/pages/MainDashboard.vue";
@@ -11,6 +10,7 @@ import Oruga from "@oruga-ui/oruga-next";
 import {HMSF} from "@/utils/HMSF";
 import MarketDashboard from "@/components/dashboard/MarketDashboard.vue";
 import {fetchGetURLs} from "../MockUtils";
+import router from "@/utils/RouteManager.ts";
 
 /*
     Bookmarks

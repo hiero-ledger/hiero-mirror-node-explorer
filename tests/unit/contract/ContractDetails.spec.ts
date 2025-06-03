@@ -4,7 +4,6 @@
 
 import {describe, expect, it} from 'vitest'
 import {flushPromises, mount} from "@vue/test-utils"
-import router, {routeManager} from "@/router";
 import axios from "axios";
 import {
     SAMPLE_ACCOUNT_BALANCES,
@@ -33,6 +32,7 @@ import {ContractStateResponse} from "@/schemas/MirrorNodeSchemas.ts";
 import {fetchGetURLs} from "../MockUtils";
 import {networkConfigKey} from "@/AppKeys.ts";
 import PageHeader from "@/components/page/header/PageHeader.vue";
+import router, {routeManager} from "@/utils/RouteManager.ts";
 
 /*
     Bookmarks

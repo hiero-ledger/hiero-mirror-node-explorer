@@ -5,10 +5,10 @@ import {TransactionController} from "@/dialogs/core/transaction/TransactionContr
 import {AccountTextFieldController, AccountTextFieldState} from "@/dialogs/common/AccountTextFieldController.ts";
 import {NetworkAnalyzer} from "@/utils/analyzer/NetworkAnalyzer.ts";
 import {NetworkConfig} from "@/config/NetworkConfig.ts"
-import {walletManager} from "@/router.ts";
 import {AccountByIdCache} from "@/utils/cache/AccountByIdCache.ts";
 import {TokenRelationshipCache} from "@/utils/cache/TokenRelationshipCache.ts";
 import {AccountUpdateTransaction} from "@hashgraph/sdk";
+import {walletManager} from "@/utils/RouteManager.ts";
 
 export enum PeriodUnit {
     Seconds = "seconds",

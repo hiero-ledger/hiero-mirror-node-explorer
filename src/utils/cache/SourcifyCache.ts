@@ -4,7 +4,8 @@ import axios, {AxiosResponse} from "axios";
 import {EntityCache} from "@/utils/cache/base/EntityCache";
 import {SolcMetadata} from "@/utils/solc/SolcMetadata";
 import {ContractByIdCache} from "@/utils/cache/ContractByIdCache";
-import {routeManager} from "@/router";
+
+import {routeManager} from "@/utils/RouteManager.ts";
 
 export class SourcifyCache extends EntityCache<string, SourcifyRecord | null> {
 

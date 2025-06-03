@@ -15,11 +15,11 @@
 <script setup lang="ts">
 
 import {onMounted} from 'vue';
-import router, {routeManager} from "@/router";
 import {PathParam} from "@/utils/PathParam";
 import {RouteLocationRaw} from "vue-router";
 import {ContractByAddressCache} from "@/utils/cache/ContractByAddressCache";
 import {AccountByAddressCache} from "@/utils/cache/AccountByAddressCache";
+import router, {routeManager} from "@/utils/RouteManager.ts";
 
 const props = defineProps({
   accountAddress: String,

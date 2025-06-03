@@ -26,7 +26,7 @@
 
 import {PropType} from "vue";
 import {SearchAgent, SearchCandidate} from "@/components/search/SearchAgent";
-import router from "@/router";
+import router from "@/utils/RouteManager.ts";
 import {SearchController} from "@/components/search/SearchController";
 
 const props = defineProps({

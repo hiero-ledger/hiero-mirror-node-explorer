@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 
-import {routeManager} from "@/router";
 import {ContractByIdCache} from "@/utils/cache/ContractByIdCache";
 import axios from "axios";
+import {routeManager} from "@/utils/RouteManager.ts";
 
 export class SourcifyUtils {
 

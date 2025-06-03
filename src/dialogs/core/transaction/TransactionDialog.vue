@@ -78,9 +78,9 @@
 import {computed, PropType, useSlots} from "vue";
 import TaskDialog from "@/dialogs/core/task/TaskDialog.vue";
 import {TransactionController} from "@/dialogs/core/transaction/TransactionController.ts";
-import {walletManager} from "@/router.ts";
 import TaskPanel from "@/dialogs/core/task/TaskPanel.vue";
 import {TaskPanelMode} from "@/dialogs/core/DialogUtils.ts";
+import {walletManager} from "@/utils/RouteManager.ts";
 
 const props = defineProps({
   controller: {

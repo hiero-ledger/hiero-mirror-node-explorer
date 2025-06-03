@@ -60,13 +60,13 @@
 
 import {PropType} from 'vue';
 import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
-import {routeManager} from "@/router";
 import {Token} from "@/schemas/MirrorNodeSchemas";
 import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
 import EmptyTable from "@/components/EmptyTable.vue";
 import {TokenTableController} from "@/components/token/TokenTableController";
 import TokenIOL from "@/components/values/link/TokenIOL.vue";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
+import {routeManager} from "@/utils/RouteManager.ts";
 
 const props = defineProps({
   controller: {

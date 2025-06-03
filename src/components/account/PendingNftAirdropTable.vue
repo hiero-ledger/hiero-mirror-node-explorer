@@ -94,13 +94,13 @@ import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
 import {TokenAirdrop} from "@/schemas/MirrorNodeSchemas";
 import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
 import EmptyTable from "@/components/EmptyTable.vue";
-import {routeManager} from "@/router";
 import TokenCell, {TokenCellItem} from "@/components/token/TokenCell.vue";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
 import {PendingAirdropTableController} from "@/components/account/PendingAirdropTableController";
 import NftCell, {NftCellItem} from "@/components/token/NftCell.vue";
 import TokenIOL from "@/components/values/link/TokenIOL.vue";
 import TimestampValue from "@/components/values/TimestampValue.vue";
+import {routeManager} from "@/utils/RouteManager.ts";
 
 const props = defineProps({
   controller: {

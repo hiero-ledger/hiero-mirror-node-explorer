@@ -80,11 +80,11 @@ import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
 import {Nft, Token} from "@/schemas/MirrorNodeSchemas";
 import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
 import EmptyTable from "@/components/EmptyTable.vue";
-import {routeManager} from "@/router";
 import TokenCell, {TokenCellItem} from "@/components/token/TokenCell.vue";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
 import {FungibleTableController} from "@/components/account/FungibleTableController";
 import TokenIOL from "@/components/values/link/TokenIOL.vue";
+import {routeManager} from "@/utils/RouteManager.ts";
 
 const props = defineProps({
   controller: {

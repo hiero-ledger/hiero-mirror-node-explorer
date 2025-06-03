@@ -2,13 +2,13 @@
 
 import {computed, Ref} from "vue";
 import {TransactionController} from "@/dialogs/core/transaction/TransactionController.ts";
-import {walletManager} from "@/router.ts";
 import {AccountBalanceTransactions} from "@/schemas/MirrorNodeSchemas.ts";
 import {NodeAnalyzer} from "@/utils/analyzer/NodeAnalyzer.ts";
 import {AccountByIdCache} from "@/utils/cache/AccountByIdCache.ts";
 import {EntityLookup} from "@/utils/cache/base/EntityCache.ts";
 import {AccountByAliasCache} from "@/utils/cache/AccountByAliasCache.ts";
 import {AccountByAddressCache} from "@/utils/cache/AccountByAddressCache.ts";
+import {walletManager} from "@/utils/RouteManager.ts";
 
 export class StopStackingController extends TransactionController {
 

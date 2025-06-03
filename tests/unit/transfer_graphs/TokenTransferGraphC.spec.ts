@@ -3,13 +3,13 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import {describe, expect, test} from 'vitest'
-import router from "@/router";
 import {flushPromises, mount} from "@vue/test-utils";
 import TokenTransferGraphC from "@/components/transfer_graphs/TokenTransferGraphC.vue";
 import {Transaction} from "@/schemas/MirrorNodeSchemas";
 import {SAMPLE_TOKEN, SAMPLE_TOKEN_DUDE} from "../Mocks";
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
+import router from "@/utils/RouteManager.ts";
 
 
 const mock = new MockAdapter(axios as any);

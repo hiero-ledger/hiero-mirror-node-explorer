@@ -21,7 +21,6 @@ import {drainAccounts} from "@/schemas/MirrorNodeUtils.ts";
 import {aliasToBase32, byteToHex, paddedBytes} from "@/utils/B64Utils";
 import axios from "axios";
 import {RouteLocationRaw} from "vue-router";
-import {routeManager} from "@/router";
 import {TransactionID} from "@/utils/TransactionID";
 import {Timestamp} from "@/utils/Timestamp";
 import {NameRecord, NameService} from "@/utils/name_service/NameService";
@@ -32,6 +31,7 @@ import {SelectedTokensCache} from "@/utils/cache/SelectedTokensCache";
 import {ERC20Cache} from "@/utils/cache/ERC20Cache.ts";
 import {ERC721Cache} from "@/utils/cache/ERC721Cache.ts";
 import {PublicLabelsCache} from "@/utils/cache/PublicLabelsCache.ts";
+import {routeManager} from "@/utils/RouteManager.ts";
 
 export abstract class SearchAgent<L, E> {
 

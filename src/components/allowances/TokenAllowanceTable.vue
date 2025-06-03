@@ -83,9 +83,9 @@ import AccountLink from "@/components/values/link/AccountLink.vue";
 import {TokenAllowanceTableController} from "@/components/allowances/TokenAllowanceTableController";
 import TokenAmount from "@/components/values/TokenAmount.vue";
 import TokenLink from "@/components/values/link/TokenLink.vue";
-import {walletManager} from "@/router";
 import InfoTooltip from "@/components/InfoTooltip.vue";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
+import {walletManager} from "@/utils/RouteManager.ts";
 
 interface DisplayedTokenAllowance extends TokenAllowance {
   isEditable: boolean

@@ -2,9 +2,9 @@
 
 
 import {describe, expect, it} from 'vitest'
-import router from "@/router";
 import {mount} from "@vue/test-utils";
 import ComplexKeyValue from "@/components/values/ComplexKeyValue.vue";
+import router from "@/utils/RouteManager.ts";
 
 describe("ComplexKeyValue.vue", () => {
 

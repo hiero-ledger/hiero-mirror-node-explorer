@@ -2,7 +2,6 @@
 
 import {describe, expect, it} from 'vitest'
 import {flushPromises, mount} from "@vue/test-utils"
-import router from "@/router";
 import axios from "axios";
 import {SAMPLE_BLOCKSRESPONSE} from "../Mocks";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
@@ -12,6 +11,7 @@ import {HMSF} from "@/utils/HMSF";
 import Blocks from "@/pages/Blocks.vue";
 import BlockTable from "@/components/block/BlockTable.vue";
 import {fetchGetURLs} from "../MockUtils";
+import router from "@/utils/RouteManager.ts";
 
 /*
     Bookmarks

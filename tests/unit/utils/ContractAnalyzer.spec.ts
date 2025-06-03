@@ -10,8 +10,8 @@ import axios from "axios";
 import {ContractAnalyzer, GlobalState} from "@/utils/analyzer/ContractAnalyzer";
 import {SAMPLE_CONTRACT, SAMPLE_TOKEN, SAMPLE_TOKEN_WITH_KEYS} from "../Mocks";
 import {SourcifyResponse} from "@/utils/cache/SourcifyCache";
-import {routeManager} from "@/router";
 import {fetchGetURLs} from "../MockUtils.ts";
+import {routeManager} from "@/utils/RouteManager.ts";
 
 describe("ContractAnalyzer.spec.ts", () => {
 

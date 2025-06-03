@@ -91,10 +91,10 @@ import {formatSeconds} from "@/utils/Duration";
 import {StakeCache} from "@/utils/cache/StakeCache";
 import {NetworkAnalyzer} from "@/utils/analyzer/NetworkAnalyzer";
 import {makeAnnualizedRate} from "@/schemas/MirrorNodeUtils.ts";
-import {routeManager} from "@/router";
 import {CoreConfig} from "@/config/CoreConfig.ts";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import NetworkDashboardItemV2 from "@/components/node/NetworkDashboardItemV2.vue";
+import {routeManager} from "@/utils/RouteManager.ts";
 
 defineProps({
   network: String

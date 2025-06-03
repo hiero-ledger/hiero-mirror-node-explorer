@@ -19,9 +19,9 @@
 <script setup lang="ts">
 
 import {ref, watch} from "vue";
-import {routeManager} from "@/router.ts";
 import {NetworkConfig} from "@/config/NetworkConfig.ts";
 import SelectView from "@/elements/SelectView.vue";
+import {routeManager} from "@/utils/RouteManager.ts";
 
 const networkEntries = NetworkConfig.inject().entries
 

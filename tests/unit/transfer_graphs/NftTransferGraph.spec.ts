@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import {describe, expect, test} from 'vitest'
-import router from "@/router";
 import {flushPromises, mount} from "@vue/test-utils";
 import NftTransferGraph from "@/components/transfer_graphs/NftTransferGraph.vue";
 import {TransactionDetail} from "@/schemas/MirrorNodeSchemas";
 import {SAMPLE_NONFUNGIBLE, SAMPLE_NONFUNGIBLE_DUDE} from "../Mocks";
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
+import router from "@/utils/RouteManager.ts";
 
 const mock = new MockAdapter(axios as any);
 const matcher1 = "/api/v1/tokens/" + SAMPLE_NONFUNGIBLE.token_id

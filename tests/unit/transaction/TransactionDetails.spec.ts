@@ -4,7 +4,6 @@
 
 import {describe, expect, it} from 'vitest'
 import {flushPromises, mount} from "@vue/test-utils"
-import router from "@/router";
 import TransactionDetails from "@/pages/TransactionDetails.vue";
 import HbarTransferGraphF from "@/components/transfer_graphs/HbarTransferGraphF.vue";
 import TokenTransferGraph from "@/components/transfer_graphs/TokenTransferGraphF.vue";
@@ -49,6 +48,7 @@ import Oruga from "@oruga-ui/oruga-next";
 import ContractResult from "@/components/contract/ContractResult.vue";
 import {base64Decode, byteToHex} from "@/utils/B64Utils";
 import {fetchGetURLs} from "../MockUtils";
+import router from "@/utils/RouteManager.ts";
 
 /*
     Bookmarks

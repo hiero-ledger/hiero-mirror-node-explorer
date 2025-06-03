@@ -7,8 +7,8 @@ import {IPFS_METADATA_CONTENT, IPFS_METADATA_CONTENT_URL, SAMPLE_NFTS, SAMPLE_NO
 import MockAdapter from "axios-mock-adapter";
 import Oruga from "@oruga-ui/oruga-next";
 import {HMSF} from "@/utils/HMSF.ts";
-import router from "@/router";
 import NftDetails from "@/pages/NftDetails.vue";
+import router from "@/utils/RouteManager.ts";
 
 /*
     Bookmarks

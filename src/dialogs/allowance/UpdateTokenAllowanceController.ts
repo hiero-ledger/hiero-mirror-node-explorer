@@ -8,7 +8,8 @@ import {
     TokenAmountTextFieldState
 } from "@/dialogs/common/TokenAmountTextFieldController.ts";
 import {TokenAllowance} from "@/schemas/MirrorNodeSchemas.ts";
-import {walletManager} from "@/router.ts";
+
+import {walletManager} from "@/utils/RouteManager.ts";
 
 export class UpdateTokenAllowanceController extends TransactionController {
 
