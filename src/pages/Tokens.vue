@@ -67,7 +67,7 @@ import {TokenType} from "@/schemas/MirrorNodeSchemas";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import PlayPauseButton from "@/components/PlayPauseButton.vue";
 import ERCTokenTable from "@/components/ercToken/ERCTokenTable.vue";
-import {routeManager} from "@/router.ts";
+import {routeManager} from "@/utils/RouteManager.ts";
 import Tabs from "@/components/Tabs.vue";
 
 defineProps({

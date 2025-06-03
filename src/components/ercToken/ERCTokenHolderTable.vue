@@ -42,7 +42,7 @@
 import {onBeforeUnmount, onMounted, PropType, ref} from 'vue';
 import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
 import axios from "axios";
-import {routeManager} from "@/router.ts";
+import {routeManager} from "@/utils/RouteManager.ts";
 import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints.ts";
 import EmptyTable from "@/components/EmptyTable.vue";
 import EVMAddress from "@/components/values/EVMAddress.vue";
