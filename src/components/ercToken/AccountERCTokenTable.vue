@@ -81,7 +81,6 @@ import ERCTokenIOL from "@/components/values/link/ERCTokenIOL.vue";
 import ERCTokenSupport from "@/components/ercToken/ERCTokenSupport.vue";
 import EVMAddress from "@/components/values/EVMAddress.vue";
 import {ContractByAddressCache} from "@/utils/cache/ContractByAddressCache.ts";
-import {EntityID} from "@/utils/EntityID";
 import {Blockscout} from "@/utils/blockscout/Blockscout.ts";
 import {AccountERCTokenTableController} from "@/components/ercToken/AccountERCTokenTableController.ts";
 import {AppStorage} from "@/AppStorage.ts";
@@ -97,15 +96,10 @@ const handleClick = async (tokenBalance: Blockscout.TokenBalance, c: unknown, i:
 
   const evmAddress = tokenBalance.token.address
   const contractInfo = await ContractByAddressCache.instance.lookup(evmAddress)
-  if (contractInfo?.contract_id) {
-    await routeManager.routeToContract(contractInfo.contract_id, event)
+  if (contractInfo) {
+    await routeManager.routeToToken(evmAddress, event)
   } else {
-    const tokenId = EntityID.fromAddress(evmAddress)?.toString()
-    if (tokenId) {
-      await routeManager.routeToToken(tokenId, event)
-    } else {
-      console.log("Failed to construct route for ERC token address: " + evmAddress)
-    }
+    console.log("Failed to construct route for ERC token address: " + evmAddress)
   }
 }
 
