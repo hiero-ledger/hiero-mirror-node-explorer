@@ -10,7 +10,7 @@
     <template #page-title>
       Token
       <span style="white-space: nowrap; font-size: smaller">
-        {{ normalizedTokenId }}
+        {{ tokenId }}
       </span>
     </template>
 
@@ -41,9 +41,8 @@ import {computed, onBeforeUnmount, onMounted} from 'vue';
 import NotificationBanner from "@/components/NotificationBanner.vue";
 import PageFrameV2 from "@/components/page/PageFrameV2.vue";
 import Tabs from "@/components/Tabs.vue";
-import {EntityID} from "@/utils/EntityID.ts";
-import {TokenInfoCache} from "@/utils/cache/TokenInfoCache.ts";
 import {routeManager} from "@/utils/RouteManager.ts";
+import {SyntheticTokenAnalyzer} from "@/utils/analyzer/SyntheticTokenAnalyzer.ts";
 
 const tabIds = routeManager.tokenDetailsOperator.tabIds
 const tabLabels = routeManager.tokenDetailsOperator.tabLabels
@@ -63,37 +62,16 @@ const props = defineProps({
   network: String
 })
 
-const normalizedTokenId = computed(() => {
-  const network = routeManager.currentNetworkEntry.value
-  const result =
-      EntityID.parse(props.tokenId)
-      ?? EntityID.fromAddress(props.tokenId, network.baseShard, network.baseRealm)
-  return result !== null ? result.toString() : null
-})
+//
+// Synthetic Token Analyzer
+//
+const tokenLoc = computed(() => props.tokenId)
+const tokenAnalyzer = new SyntheticTokenAnalyzer(tokenLoc)
+onMounted(() => tokenAnalyzer.mount())
+onBeforeUnmount(() => tokenAnalyzer.unmount())
 
-const validEntityId = computed(() => normalizedTokenId.value != null)
-
-const tokenLookup = TokenInfoCache.instance.makeLookup(normalizedTokenId)
-onMounted(() => tokenLookup.mount())
-onBeforeUnmount(() => tokenLookup.unmount())
-
-const notification = computed(() => {
-  let result
-  if (!validEntityId.value) {
-    result = "Invalid token ID: " + props.tokenId
-  } else if (tokenLookup.entity.value == null) {
-    if (tokenLookup.isLoaded.value) {
-      result = "Token with ID " + props.tokenId + " was not found"
-    } else {
-      result = null
-    }
-  } else if (tokenLookup.entity.value?.deleted) {
-    result = "Token is deleted"
-  } else {
-    result = null
-  }
-  return result
-})
+const tokenId = tokenAnalyzer.tokenId
+const notification = tokenAnalyzer.errorNotification
 
 </script>
 
