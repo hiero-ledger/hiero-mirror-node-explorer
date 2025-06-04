@@ -77,17 +77,17 @@ import Property from "@/components/Property.vue";
 import PlainAmount from "@/components/values/PlainAmount.vue";
 import {formatUnits} from "ethers";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
-import {ERCAnalyzer} from "@/utils/analyzer/ERCAnalyzer.ts";
+import {SyntheticTokenAnalyzer} from "@/utils/analyzer/SyntheticTokenAnalyzer.ts";
 import ERCTokenHolderTable from "@/components/ercToken/ERCTokenHolderTable.vue";
 
 const props = defineProps({
   ercAnalyzer: {
-    type: Object as PropType<ERCAnalyzer | null>,
+    type: Object as PropType<SyntheticTokenAnalyzer | null>,
     default: null
   },
 })
 
-const contractAddress = computed(() => props.ercAnalyzer?.contractAddress.value ?? null)
+const contractAddress = computed(() => props.ercAnalyzer?.tokenAddress.value ?? null)
 const isErc20 = computed(() => props.ercAnalyzer?.isErc20.value ?? null)
 const isErc721 = computed(() => props.ercAnalyzer?.isErc721.value ?? null)
 const isErc1155 = computed(() => props.ercAnalyzer?.isErc1155.value ?? false)
@@ -100,7 +100,7 @@ const totalSupply = computed(() => props.ercAnalyzer?.totalSupply.value ?? null)
 const decimals = computed(() => props.ercAnalyzer?.decimals.value ?? null)
 const displayTotalSupply = computed(() =>
     totalSupply.value !== null && decimals.value !== null
-        ? formatUnits(totalSupply.value, decimals.value)
+        ? formatUnits(totalSupply.value, Number(decimals.value))
         : totalSupply.value
 )
 
