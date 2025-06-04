@@ -108,6 +108,7 @@ export class AppStorage {
     public static readonly BLOCK_TRANSACTION_TABLE_PAGE_SIZE_KEY = 'blockTransactionPageSize'
 
     public static readonly ERC_TOKEN_TABLE_PAGE_SIZE_KEY = 'ercTokenTablePageSize'
+    public static readonly ERC_TOKEN_HOLDER_TABLE_PAGE_SIZE_KEY = 'ercTokenHolderTablePageSize'
 
     public static getTablePageSize(key: string): number | null {
         const size = this.getLocalStorageItem(key)
