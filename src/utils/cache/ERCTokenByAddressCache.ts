@@ -17,18 +17,18 @@ export class ERCTokenByAddressCache extends EntityCache<string, Blockscout.Token
     //
 
     protected async load(address: string): Promise<Blockscout.TokenInfo | null> {
-        let result: Promise<Blockscout.TokenInfo | null>
+        let result: Blockscout.TokenInfo | null
         try {
-            const url = ERCTokenByAddressCache.blockscoutURL.value + "tokens/" + address
+            const url = ERCTokenByAddressCache.blockscoutURL.value + "api/v2/tokens/" + address
             const response = await axios.get<Blockscout.TokenInfo>(url)
-            result = Promise.resolve(response.data)
+            result = response.data
         } catch (error) {
             if (axios.isAxiosError(error) && error.response?.status == 404) {
-                result = Promise.resolve(null)
+                result = null
             } else {
                 throw error
             }
         }
-        return result
+        return Promise.resolve(result)
     }
 }
