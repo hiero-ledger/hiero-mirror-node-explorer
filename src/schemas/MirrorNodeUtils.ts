@@ -59,18 +59,23 @@ export function makeEthAddressForToken(token: TokenInfo): string | null {
     return result
 }
 
-export function makeTokenName(token: TokenInfo | Token | null, maxLength: number = 40): string {
-    let result = token?.name ?? '?'
-    if (result.length > maxLength) {
-        result = result.slice(0, maxLength) + '…'
-    }
-    return result
+export const TOKEN_NAME_DISPLAY_LENGTH = 40
+export const TOKEN_SYMBOL_DISPLAY_LENGTH = 11
+
+export function makeTokenName(token: TokenInfo | Token | null, maxLength: number = TOKEN_NAME_DISPLAY_LENGTH): string {
+    return truncateWithEllipsis(token?.name ?? '?', maxLength)
 }
 
-export function makeTokenSymbol(token: TokenInfo | Token | null, maxLength: number = 11): string {
-    let result = token?.symbol ?? '?'
-    if (result.length > maxLength) {
-        result = result.slice(0, maxLength) + '…'
+export function makeTokenSymbol(token: TokenInfo | Token | null, maxLength: number = TOKEN_SYMBOL_DISPLAY_LENGTH): string {
+    return truncateWithEllipsis(token?.symbol ?? '?', maxLength)
+}
+
+export function truncateWithEllipsis(str: string, maxLength: number): string {
+    let result: string
+    if (str.length > maxLength) {
+        result = str.slice(0, maxLength) + '…'
+    } else {
+        result = str
     }
     return result
 }
@@ -164,8 +169,8 @@ export function isFeeTransfer(t: Transfer, nodes: NetworkNode[]): boolean {
 
 const emptyITF = new ethers.Interface([]) // To decode errors
 
-export function decodeSolidityErrorMessage(message: string|null): string | null {
-    let result: string|null
+export function decodeSolidityErrorMessage(message: string | null): string | null {
+    let result: string | null
 
     if (message === null || message === "0x" || message === "") {
         result = null
