@@ -6,22 +6,45 @@
 
 <template>
 
-  <DashboardCardV2 v-if="tokenInfo" collapsible-key="nftHolders">
+  <template v-if="isHts && isErc20">
+    <DashboardCardV2 collapsible-key="tokenHolders">
+      <template #title>
+        Fungible Token Balances
+      </template>
+      <template #left-control>
+        <PlayPauseButton :controller="tokenBalanceTableController"/>
+      </template>
+      <template #content>
+        <TokenBalanceTable :controller="tokenBalanceTableController"/>
+      </template>
+    </DashboardCardV2>
+  </template>
 
-    <template #title>
-      {{ tokenInfo.type === 'NON_FUNGIBLE_UNIQUE' ? 'NFTs' : 'Balances' }}
-    </template>
+  <template v-else-if="isHts && isErc721">
+    <DashboardCardV2 collapsible-key="tokenHolders">
+      <template #title>
+        NFT Collection Items
+      </template>
+      <template #left-control>
+        <PlayPauseButton :controller="nftHolderTableController"/>
+      </template>
+      <template #content>
+        <NftHolderTable :controller="nftHolderTableController"/>
+      </template>
+    </DashboardCardV2>
+  </template>
 
-    <template #left-control>
-      <PlayPauseButton :controller="isNft ? nftHolderTableController : tokenBalanceTableController"/>
-    </template>
+  <template v-else>
+    <DashboardCardV2 collapsible-key="tokenHolders">
+      <template #title>
+        Token Top Holders
+      </template>
+      <template #content>
+        <ERCTokenHolderTable :token-address="tokenAddress"/>
+      </template>
 
-    <template #content>
-      <NftHolderTable v-if="isNft" :controller="nftHolderTableController"/>
-      <TokenBalanceTable v-else :controller="tokenBalanceTableController"/>
-    </template>
-
-  </DashboardCardV2>
+    </DashboardCardV2>
+  </template>
 
 </template>
 
@@ -41,6 +64,8 @@ import {TokenBalanceTableController} from "@/components/token/TokenBalanceTableC
 import {NftHolderTableController} from "@/components/token/NftHolderTableController.ts";
 import {routeManager} from "@/utils/RouteManager.ts";
 import {NetworkConfig} from "@/config/NetworkConfig.ts";
+import {SyntheticTokenAnalyzer} from "@/utils/analyzer/SyntheticTokenAnalyzer.ts";
+import ERCTokenHolderTable from "@/components/ercToken/ERCTokenHolderTable.vue";
 
 const props = defineProps({
   tokenId: {
@@ -51,22 +76,34 @@ const props = defineProps({
 })
 
 //
-// Token analyzer
+// Synthetic Token Analyzer
 //
-const tokenId = computed(() => props.tokenId ?? null)
-const networkConfig = NetworkConfig.inject()
-const tokenAnalyzer = new TokenInfoAnalyzer(tokenId, networkConfig)
+const tokenLoc = computed(() => props.tokenId)
+const tokenAnalyzer = new SyntheticTokenAnalyzer(tokenLoc)
 onMounted(() => tokenAnalyzer.mount())
 onBeforeUnmount(() => tokenAnalyzer.unmount())
-const tokenInfo = tokenAnalyzer.tokenInfo
-const isNft = tokenAnalyzer.isNft
+
+const tokenId = tokenAnalyzer.tokenId
+const tokenAddress = tokenAnalyzer.tokenAddress
+
+const isHts = tokenAnalyzer.isHts
+const isErc20 = tokenAnalyzer.isErc20
+const isErc721 = tokenAnalyzer.isErc721
+
+//
+// Token analyzer
+//
+const networkConfig = NetworkConfig.inject()
+const tokenInfoAnalyzer = new TokenInfoAnalyzer(tokenId, networkConfig)
+onMounted(() => tokenInfoAnalyzer.mount())
+onBeforeUnmount(() => tokenInfoAnalyzer.unmount())
 
 //
 // TokenBalanceTableController
 //
 const isMediumScreen = inject('isMediumScreen', true)
 const defaultPageSize = isMediumScreen ? 10 : 5
-const fungibleTokenId = computed(() => tokenAnalyzer.isFungible.value ? tokenId.value : null)
+const fungibleTokenId = computed(() => tokenInfoAnalyzer.isFungible.value ? tokenId.value : null)
 const tokenBalanceTableController = new TokenBalanceTableController(routeManager.router, fungibleTokenId, defaultPageSize);
 onMounted(() => tokenBalanceTableController.mount())
 onBeforeUnmount(() => tokenBalanceTableController.unmount())
@@ -74,7 +111,7 @@ onBeforeUnmount(() => tokenBalanceTableController.unmount())
 //
 // NftHolderTableController
 //
-const nftTokenId = computed(() => tokenAnalyzer.isNft.value ? tokenId.value : null)
+const nftTokenId = computed(() => tokenInfoAnalyzer.isNft.value ? tokenId.value : null)
 const nftHolderTableController = new NftHolderTableController(routeManager.router, nftTokenId, defaultPageSize)
 onMounted(() => nftHolderTableController.mount())
 onBeforeUnmount(() => nftHolderTableController.unmount())
