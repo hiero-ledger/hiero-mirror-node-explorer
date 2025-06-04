@@ -96,8 +96,8 @@ const handleClick = async (tokenInfo: Blockscout.TokenInfo, c: unknown, i: numbe
 
   const evmAddress = tokenInfo.address
   const contractInfo = await ContractByAddressCache.instance.lookup(evmAddress)
-  if (contractInfo?.contract_id) {
-    await routeManager.routeToContract(contractInfo.contract_id, event)
+  if (contractInfo) {
+    await routeManager.routeToToken(evmAddress, event)
   } else {
     const tokenId = EntityID.fromAddress(evmAddress)?.toString()
     if (tokenId) {
