@@ -54,22 +54,22 @@
           <BlobValue :blob-value="displaySymbol" :show-none="true"/>
         </template>
       </Property>
-      <Property v-if="holders" id="holders" full-width>
-        <template #name>Holders</template>
-        <template #value>
-          <StringValue :string-value="holders"/>
-        </template>
-      </Property>
       <Property id="totalSupply" full-width>
         <template #name>Total Supply</template>
-        <template v-if="validEntityId" #value>
+        <template #value>
           <StringValue :string-value="displayTotalSupply"/>
         </template>
       </Property>
       <Property id="decimals" full-width>
         <template #name>Decimals</template>
-        <template v-if="validEntityId" #value>
+        <template #value>
           <StringValue :string-value="decimals"/>
+        </template>
+      </Property>
+      <Property v-if="holders" id="holders" full-width>
+        <template #name>Holders</template>
+        <template #value>
+          <StringValue :string-value="holders"/>
         </template>
       </Property>
     </template>
@@ -129,13 +129,6 @@ onBeforeUnmount(() => tokenAnalyzer.unmount())
 const tokenId = tokenAnalyzer.tokenId
 const tokenAddress = tokenAnalyzer.tokenAddress
 
-const validEntityId = computed(() => tokenId.value != null)
-
-const isHts = tokenAnalyzer.isHts
-const isErc20 = tokenAnalyzer.isErc20
-const isErc721 = tokenAnalyzer.isErc721
-const isErc1155 = tokenAnalyzer.isErc1155
-
 const displayName = computed(() =>
     truncateWithEllipsis(tokenAnalyzer.name.value ?? '?', TOKEN_NAME_DISPLAY_LENGTH)
 )
@@ -165,7 +158,6 @@ const tokenInfoAnalyzer = new TokenInfoAnalyzer(tokenId, networkConfig)
 onMounted(() => tokenInfoAnalyzer.mount())
 onBeforeUnmount(() => tokenInfoAnalyzer.unmount())
 const tokenChecksum = tokenInfoAnalyzer.tokenChecksum
-const ethereumAddress = tokenInfoAnalyzer.ethereumAddress
 
 //
 // Label
