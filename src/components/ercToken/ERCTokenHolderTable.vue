@@ -25,7 +25,7 @@
       row-key="account"
   >
     <o-table-column v-slot="props" field="account" label="ACCOUNT">
-      <EVMAddress :address="props.row.address.hash" :show-id="false"/>
+      <EVMAddress :address="props.row.address.hash" :show-id="false" :enable-copy="false"/>
     </o-table-column>
 
     <o-table-column v-slot="props" field="balance" label="BALANCE">
