@@ -6,11 +6,8 @@
 
 <template>
 
-  <DashboardCardV2 collapsible-key="tokenDetails">
+  <DashboardCardV2 collapsible-key="tokenSummary">
     <template #title>
-        <span v-if="tokenInfo">
-          {{ tokenInfo.type === 'NON_FUNGIBLE_UNIQUE' ? 'NFT Collection' : 'Fungible Token' }}
-        </span>
       <div class="title-extra">
         {{ `${displayName} (${displaySymbol})` }}
       </div>
@@ -21,7 +18,7 @@
     <template #right-control>
       <TokenActions
           v-if="isWalletConnected"
-          :analyzer="tokenAnalyzer"
+          :analyzer="tokenInfoAnalyzer"
           @completed="onActionCompleted"
       />
     </template>
@@ -33,136 +30,46 @@
           <EntityIDView :id="tokenId" :checksum="tokenChecksum"/>
         </template>
       </Property>
-      <Property v-if="ethereumAddress" id="evmAddress" full-width>
+      <Property v-if="tokenAddress" id="evmAddress" full-width>
         <template #name>EVM Address</template>
         <template #value>
-          <EVMAddress :show-id="false" :address="ethereumAddress"/>
+          <EVMAddress :show-id="false" :address="tokenAddress"/>
         </template>
       </Property>
-    </template>
-
-    <template #left-content>
-      <Property id="name">
+      <Property id="type" full-width>
+        <template #name>Type</template>
+        <template #value>
+          <BlobValue :blob-value="type" :show-none="true"/>
+        </template>
+      </Property>
+      <Property id="name" full-width>
         <template #name>Name</template>
         <template #value>
-          <BlobValue :blob-value="tokenInfo?.name" :show-none="true"/>
+          <BlobValue :blob-value="displayName" :show-none="true"/>
         </template>
       </Property>
-      <Property id="symbol">
+      <Property id="symbol" full-width>
         <template #name>Symbol</template>
         <template #value>
-          <BlobValue :blob-value="tokenInfo?.symbol" :show-none="true"/>
+          <BlobValue :blob-value="displaySymbol" :show-none="true"/>
         </template>
       </Property>
-      <Property id="memo">
-        <template #name>Memo</template>
+      <Property v-if="holders" id="holders" full-width>
+        <template #name>Holders</template>
         <template #value>
-          <BlobValue :blob-value="tokenInfo?.memo" :show-none="true"/>
+          <StringValue :string-value="holders"/>
         </template>
       </Property>
-      <Property id="metadata">
-        <template #name>Metadata</template>
-        <template #value>
-          <BlobValue
-              :base64="true"
-              :blob-value="tokenInfo?.metadata"
-              :show-none="true"
-          />
-        </template>
-      </Property>
-      <Property id="createTransaction">
-        <template #name>Create Transaction</template>
-        <template #value>
-          <TransactionLink :transactionLoc="tokenInfo?.created_timestamp ?? undefined"/>
-        </template>
-      </Property>
-      <Property id="expiresAt" tooltip="Token expiry is not turned on yet. Value in this field is not relevant.">
-        <template #name>
-          <span>Expires at</span>
-        </template>
-        <template #value>
-          <TimestampValue :nano="true" :show-none="true" :timestamp="tokenInfo?.expiry_timestamp?.toString()"/>
-        </template>
-      </Property>
-      <Property id="autoRenewPeriod"
-                tooltip="Token auto-renew is not turned on yet. Value in this field is not relevant.">
-        <template #name>
-          <span>Auto Renew Period</span>
-        </template>
-        <template #value>
-          <DurationValue :number-value="tokenInfo?.auto_renew_period ?? undefined"/>
-        </template>
-      </Property>
-      <Property id="autoRenewAccount"
-                tooltip="Token auto-renew is not turned on yet. Value in this field is not relevant.">
-        <template #name>
-          <span>Auto Renew Account</span>
-        </template>
-        <template #value>
-          <AccountLink :account-id="tokenInfo?.auto_renew_account"/>
-        </template>
-      </Property>
-      <Property id="freezeDefault">
-        <template #name>Freeze Default</template>
-        <template #value>
-          <StringValue :string-value="tokenInfo?.freeze_default?.toString()"/>
-        </template>
-      </Property>
-    </template>
-
-    <template #right-content>
-      <Property id="treasuryAccount">
-        <template #name>Treasury Account</template>
-        <template #value>
-          <AccountLink :account-id="tokenInfo?.treasury_account_id"/>
-        </template>
-      </Property>
-      <Property id="createdAt">
-        <template #name>Created at</template>
-        <template #value>
-          <TimestampValue :show-none="true" :timestamp="tokenInfo?.created_timestamp"/>
-        </template>
-      </Property>
-      <Property id="modifiedAt">
-        <template #name>Modified at</template>
-        <template #value>
-          <TimestampValue :show-none="true" :timestamp="tokenInfo?.modified_timestamp"/>
-        </template>
-      </Property>
-      <Property id="totalSupply">
+      <Property id="totalSupply" full-width>
         <template #name>Total Supply</template>
         <template v-if="validEntityId" #value>
-          <TokenAmount :amount="parseBigIntString(tokenInfo?.total_supply)" :show-extra="false"
-                       :token-id="tokenId"/>
+          <StringValue :string-value="displayTotalSupply"/>
         </template>
       </Property>
-      <Property id="initialSupply">
-        <template #name>Initial Supply</template>
-        <template v-if="validEntityId" #value>
-          <TokenAmount :amount="parseBigIntString(tokenInfo?.initial_supply)" :show-extra="false"
-                       :token-id="tokenId"/>
-        </template>
-      </Property>
-      <Property id="maxSupply">
-        <template #name>Max Supply</template>
-        <template v-if="validEntityId" #value>
-          <div v-if="tokenInfo?.supply_type === 'INFINITE'" class="h-is-low-contrast">Infinite</div>
-          <TokenAmount v-else :amount="parseBigIntString(tokenInfo?.max_supply)" :show-extra="false"
-                       :token-id="tokenId"/>
-        </template>
-      </Property>
-      <Property id="decimals">
+      <Property id="decimals" full-width>
         <template #name>Decimals</template>
         <template v-if="validEntityId" #value>
-          <StringValue :string-value="tokenInfo?.decimals"/>
-        </template>
-      </Property>
-      <Property id="pauseStatus">
-        <template #name>Pause Status</template>
-        <template #value>
-          <StringValue v-if="tokenInfo?.pause_status === 'NOT_APPLICABLE'"
-                       class="h-is-low-contrast" string-value="Not applicable"/>
-          <StringValue v-else :string-value="tokenInfo?.pause_status"/>
+          <StringValue :string-value="decimals"/>
         </template>
       </Property>
     </template>
@@ -180,26 +87,27 @@
 <script setup lang="ts">
 
 import {computed, onBeforeUnmount, onMounted} from "vue";
-import AccountLink from "@/components/values/link/AccountLink.vue";
 import BlobValue from "@/components/values/BlobValue.vue";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
-import DurationValue from "@/components/values/DurationValue.vue";
 import EVMAddress from "@/components/values/EVMAddress.vue";
 import EntityIDView from "@/components/values/EntityIDView.vue";
 import Property from "@/components/Property.vue";
 import PublicLabel from "@/components/values/PublicLabel.vue";
 import StringValue from "@/components/values/StringValue.vue";
-import TimestampValue from "@/components/values/TimestampValue.vue";
 import TokenActions from "@/components/token/TokenActions.vue";
-import TokenAmount from "@/components/values/TokenAmount.vue";
-import TransactionLink from "@/components/values/TransactionLink.vue";
 import {NetworkConfig} from "@/config/NetworkConfig.ts";
 import {PublicLabelsCache} from "@/utils/cache/PublicLabelsCache.ts";
 import {TokenInfoAnalyzer} from "@/components/token/TokenInfoAnalyzer.ts";
 import {WalletManagerStatus} from "@/utils/wallet/WalletManagerV4.ts";
-import {makeTokenName, makeTokenSymbol} from "@/schemas/MirrorNodeUtils.ts";
+import {
+  TOKEN_NAME_DISPLAY_LENGTH,
+  TOKEN_SYMBOL_DISPLAY_LENGTH,
+  truncateWithEllipsis
+} from "@/schemas/MirrorNodeUtils.ts";
 import {walletManager} from "@/utils/RouteManager.ts";
 import MirrorLink from "@/components/MirrorLink.vue";
+import {SyntheticTokenAnalyzer} from "@/utils/analyzer/SyntheticTokenAnalyzer.ts";
+import {formatUnits} from "ethers";
 
 
 const props = defineProps({
@@ -210,21 +118,54 @@ const props = defineProps({
   network: String
 })
 
-
 //
-// Token analyzer
+// Synthetic Token Analyzer
 //
-const tokenId = computed(() => props.tokenId ?? null)
-const networkConfig = NetworkConfig.inject()
-const tokenAnalyzer = new TokenInfoAnalyzer(tokenId, networkConfig)
+const tokenLoc = computed(() => props.tokenId)
+const tokenAnalyzer = new SyntheticTokenAnalyzer(tokenLoc)
 onMounted(() => tokenAnalyzer.mount())
 onBeforeUnmount(() => tokenAnalyzer.unmount())
-const tokenInfo = tokenAnalyzer.tokenInfo
-const tokenChecksum = tokenAnalyzer.tokenChecksum
-const ethereumAddress = tokenAnalyzer.ethereumAddress
-const displayName = computed(() => makeTokenName(tokenInfo.value, 80))
-const displaySymbol = computed(() => makeTokenSymbol(tokenInfo.value, 80))
+
+const tokenId = tokenAnalyzer.tokenId
+const tokenAddress = tokenAnalyzer.tokenAddress
+
 const validEntityId = computed(() => tokenId.value != null)
+
+const isHts = tokenAnalyzer.isHts
+const isErc20 = tokenAnalyzer.isErc20
+const isErc721 = tokenAnalyzer.isErc721
+const isErc1155 = tokenAnalyzer.isErc1155
+
+const displayName = computed(() =>
+    truncateWithEllipsis(tokenAnalyzer.name.value ?? '?', TOKEN_NAME_DISPLAY_LENGTH)
+)
+const displaySymbol = computed(() =>
+    truncateWithEllipsis(tokenAnalyzer.symbol.value ?? '?', TOKEN_SYMBOL_DISPLAY_LENGTH)
+)
+
+const type = tokenAnalyzer.type
+const holders = tokenAnalyzer.holders
+const decimals = tokenAnalyzer.decimals
+const displayTotalSupply = computed(() => {
+  let result: string | null
+  if (tokenAnalyzer.totalSupply.value !== null && decimals.value !== null) {
+    result = formatUnits(tokenAnalyzer.totalSupply.value, Number(decimals.value))
+  } else {
+    result = tokenAnalyzer.totalSupply.value
+  }
+  console.log(`displayTotalSupply: ${result}`)
+  return result
+})
+
+//
+// HTS TokenInfo analyzer
+//
+const networkConfig = NetworkConfig.inject()
+const tokenInfoAnalyzer = new TokenInfoAnalyzer(tokenId, networkConfig)
+onMounted(() => tokenInfoAnalyzer.mount())
+onBeforeUnmount(() => tokenInfoAnalyzer.unmount())
+const tokenChecksum = tokenInfoAnalyzer.tokenChecksum
+const ethereumAddress = tokenInfoAnalyzer.ethereumAddress
 
 //
 // Label
