@@ -68,6 +68,17 @@
       </template>
 
       <template #left-content>
+        <Property v-if="tokenName" id="tokenName">
+          <template #name>
+            Token Name
+          </template>
+          <template #value>
+            <EntityLink
+                :route="ethereumAddress ? routeManager.makeRouteToToken(ethereumAddress) : null">
+              <BlobValue :blob-value="tokenName"/>
+            </EntityLink>
+          </template>
+        </Property>
         <Property id="balance">
           <template #name>
             Balance
@@ -202,8 +213,6 @@
 
     <TokensSection :account-id="normalizedContractId"/>
 
-    <ContractERCSection :erc-analyzer="ercAnalyzer"/>
-
     <ContractResultsSection :contract-id="normalizedContractId ?? undefined"/>
 
     <ContractByteCodeSection :contract-analyzer="contractAnalyzer"/>
@@ -247,15 +256,15 @@ import MirrorLink from "@/components/MirrorLink.vue";
 import {NameQuery} from "@/utils/name_service/NameQuery";
 import {labelForAutomaticTokenAssociation} from "@/schemas/MirrorNodeUtils.ts";
 import TokensSection from "@/components/token/TokensSection.vue";
-import ContractERCSection from "@/components/contract/ContractERCSection.vue";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import ArrowLink from "@/components/ArrowLink.vue";
 import EntityIDView from "@/components/values/EntityIDView.vue";
 import HbarAmount from "@/components/values/HbarAmount.vue";
-import {ERCAnalyzer} from "@/utils/analyzer/ERCAnalyzer.ts";
+import {SyntheticTokenAnalyzer} from "@/utils/analyzer/SyntheticTokenAnalyzer.ts";
 import DomainLabel from "@/components/values/DomainLabel.vue";
 import PublicLabel from "@/components/values/PublicLabel.vue";
 import {PublicLabelsCache} from "@/utils/cache/PublicLabelsCache.ts";
+import EntityLink from "@/components/values/link/EntityLink.vue";
 import {routeManager} from "@/utils/RouteManager.ts";
 
 const props = defineProps({
@@ -326,11 +335,11 @@ onMounted(() => contractAnalyzer.mount())
 onBeforeUnmount(() => contractAnalyzer.unmount())
 
 //
-// ERCAnalyzer
+// TokenAnalyzer
 //
-const ercAnalyzer = new ERCAnalyzer(normalizedContractId, contractLocParser.ethereumAddress)
-onMounted(() => ercAnalyzer.mount())
-onBeforeUnmount(() => ercAnalyzer.unmount())
+const tokenAnalyzer = new SyntheticTokenAnalyzer(contractAnalyzer.contractAddress)
+onMounted(() => tokenAnalyzer.mount())
+onBeforeUnmount(() => tokenAnalyzer.unmount())
 
 //
 // contract results logs - event logs at contract level
@@ -367,9 +376,10 @@ const hbarBalance = balanceAnalyzer.hbarBalance
 const isVerified = contractAnalyzer.isVerified
 const contractName = contractAnalyzer.contractName
 const logs = contractResultsLogsAnalyzer.logs
-const isErc20 = ercAnalyzer.isErc20
-const isErc721 = ercAnalyzer.isErc721
-const isErc1155 = ercAnalyzer.isErc1155
+const isErc20 = tokenAnalyzer.isErc20
+const isErc721 = tokenAnalyzer.isErc721
+const isErc1155 = tokenAnalyzer.isErc1155
+const tokenName = tokenAnalyzer.name
 
 </script>
 
