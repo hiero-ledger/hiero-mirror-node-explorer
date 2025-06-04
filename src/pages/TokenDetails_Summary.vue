@@ -24,10 +24,18 @@
     </template>
 
     <template #content>
-      <Property id="entityId" full-width>
+      <Property id="entityId" full-width :tooltip="tokenIdTooltip">
         <template #name>Token ID</template>
         <template #value>
-          <EntityIDView :id="tokenId" :checksum="tokenChecksum"/>
+          <div style="display: flex; gap:12px; align-items: baseline">
+            <EntityIDView :id="tokenId" :checksum="tokenChecksum"/>
+            <ArrowLink
+                v-if="!isHts && contractRoute"
+                :route="contractRoute"
+                id="showSupportContractLink"
+                text="Supporting contract"
+            />
+          </div>
         </template>
       </Property>
       <Property v-if="tokenAddress" id="evmAddress" full-width>
@@ -39,7 +47,7 @@
       <Property id="type" full-width>
         <template #name>Type</template>
         <template #value>
-          <BlobValue :blob-value="type" :show-none="true"/>
+          <BlobValue :blob-value="displayType" :show-none="true"/>
         </template>
       </Property>
       <Property id="name" full-width>
@@ -104,10 +112,11 @@ import {
   TOKEN_SYMBOL_DISPLAY_LENGTH,
   truncateWithEllipsis
 } from "@/schemas/MirrorNodeUtils.ts";
-import {walletManager} from "@/utils/RouteManager.ts";
+import {routeManager, walletManager} from "@/utils/RouteManager.ts";
 import MirrorLink from "@/components/MirrorLink.vue";
 import {SyntheticTokenAnalyzer} from "@/utils/analyzer/SyntheticTokenAnalyzer.ts";
 import {formatUnits} from "ethers";
+import ArrowLink from "@/components/ArrowLink.vue";
 
 
 const props = defineProps({
@@ -136,9 +145,9 @@ const displaySymbol = computed(() =>
     truncateWithEllipsis(tokenAnalyzer.symbol.value ?? '?', TOKEN_SYMBOL_DISPLAY_LENGTH)
 )
 
-const type = tokenAnalyzer.type
 const holders = tokenAnalyzer.holders
 const decimals = tokenAnalyzer.decimals
+
 const displayTotalSupply = computed(() => {
   let result: string | null
   if (tokenAnalyzer.totalSupply.value !== null && decimals.value !== null) {
@@ -148,6 +157,26 @@ const displayTotalSupply = computed(() => {
   }
   console.log(`displayTotalSupply: ${result}`)
   return result
+})
+
+const displayType = computed(() => {
+  let result: string
+  switch (tokenAnalyzer.type.value) {
+    case "ERC-20":
+      result = "Fungible Token (ERC-20)"
+      break
+    case "ERC-721":
+      result = "NFT (ERC-721)"
+      break
+    case "ERC-1155":
+    default:
+      result = "NFT (ERC-1155)"
+  }
+  return result
+})
+
+const contractRoute = computed(() => {
+  return tokenId.value !== null ? routeManager.makeRouteToContract(tokenId.value) : null
 })
 
 //
@@ -167,6 +196,15 @@ onMounted(() => indexLookup.mount())
 onBeforeUnmount(() => indexLookup.unmount())
 const index = indexLookup.entity
 const label = computed(() => tokenId.value ? index.value?.lookup(tokenId.value) ?? null : null)
+
+//
+// Tooltip
+//
+const isHts = tokenAnalyzer.isHts
+const tokenIdTooltip = computed(() => isHts
+    ? `This token is implemented by a smart contract which has a ${tokenAnalyzer.type.value} compliant interface. So this is the ID of a contract.`
+    : undefined
+)
 
 const isWalletConnected = computed(() => walletManager.status.value == WalletManagerStatus.connected)
 
