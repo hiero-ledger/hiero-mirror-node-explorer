@@ -40,7 +40,7 @@ export class TOCLocParser {
 
     public readonly isToken = computed(() => this.tokenInfo.value !== null)
 
-    // public readonly isContract = computed(() => this.contractInfo.value !== null)
+    public readonly isContract = computed(() => this.contractInfo.value !== null)
 
     public readonly entityId: ComputedRef<string | null>
         = computed(() => this.tokenInfo.value?.token_id ?? this.contractInfo.value?.contract_id ?? null)
