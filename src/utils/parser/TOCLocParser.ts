@@ -7,6 +7,7 @@ import {ContractResponse, TokenInfo} from "@/schemas/MirrorNodeSchemas.ts";
 import {EntityID} from "@/utils/EntityID.ts";
 import {EthereumAddress} from "@/utils/EthereumAddress.ts";
 import {TokenInfoCache} from "@/utils/cache/TokenInfoCache.ts";
+import {routeManager} from "@/utils/RouteManager.ts";
 
 export class TOCLocParser {
 
@@ -59,6 +60,12 @@ export class TOCLocParser {
         return result
     })
 
+    public readonly entityChecksum = computed(() => {
+        const entityId = this.entityId.value
+        const networkConfig = routeManager.networkConfig.value
+        const currentNetwork = routeManager.currentNetwork.value
+        return entityId !== null ? networkConfig.computeChecksum(entityId, currentNetwork) : null
+    })
 
     public readonly errorNotification: ComputedRef<string | null> = computed(() => {
         let result: string | null

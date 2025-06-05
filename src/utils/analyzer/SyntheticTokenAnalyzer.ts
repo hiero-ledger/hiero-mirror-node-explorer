@@ -40,6 +40,9 @@ export class SyntheticTokenAnalyzer {
     public readonly tokenAddress: ComputedRef<string | null> = computed(
         () => this.tocLocParser.ethereumAddress.value)
 
+    public readonly tokenChecksum: ComputedRef<string | null> = computed(
+        () => this.tocLocParser.entityChecksum.value)
+
     public readonly tokenInfo: ComputedRef<TokenInfo|null> = computed(
         () => this.tocLocParser.tokenInfo.value)
 
