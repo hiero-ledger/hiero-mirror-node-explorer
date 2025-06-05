@@ -63,7 +63,6 @@ import {TokenInfoAnalyzer} from "@/components/token/TokenInfoAnalyzer.ts";
 import {TokenBalanceTableController} from "@/components/token/TokenBalanceTableController.ts";
 import {NftHolderTableController} from "@/components/token/NftHolderTableController.ts";
 import {routeManager} from "@/utils/RouteManager.ts";
-import {NetworkConfig} from "@/config/NetworkConfig.ts";
 import {SyntheticTokenAnalyzer} from "@/utils/analyzer/SyntheticTokenAnalyzer.ts";
 import ERCTokenHolderTable from "@/components/ercToken/ERCTokenHolderTable.vue";
 
@@ -93,8 +92,7 @@ const isErc721 = tokenAnalyzer.isErc721
 //
 // Token analyzer
 //
-const networkConfig = NetworkConfig.inject()
-const tokenInfoAnalyzer = new TokenInfoAnalyzer(tokenId, networkConfig)
+const tokenInfoAnalyzer = new TokenInfoAnalyzer(tokenId)
 onMounted(() => tokenInfoAnalyzer.mount())
 onBeforeUnmount(() => tokenInfoAnalyzer.unmount())
 

@@ -3,10 +3,9 @@
 import {computed, Ref} from "vue";
 import {makeEthAddressForToken, makeTokenSymbol} from "@/schemas/MirrorNodeUtils.ts";
 import {TokenAirdrop, TokenInfo, TokenRelationship, TokenType} from "@/schemas/MirrorNodeSchemas";
-import {NetworkConfig} from "@/config/NetworkConfig";
 import {TokenAssociationCache} from "@/utils/cache/TokenAssociationCache";
 import {PendingAirdropCache} from "@/utils/cache/PendingAirdropCache.ts";
-import {routeManager, walletManager} from "@/utils/RouteManager.ts";
+import {walletManager} from "@/utils/RouteManager.ts";
 import {EntityLookup} from "@/utils/cache/base/EntityCache";
 import {TokenInfoCache} from "@/utils/cache/TokenInfoCache.ts";
 
@@ -20,7 +19,7 @@ export class TokenInfoAnalyzer {
     // Public
     //
 
-    public constructor(public readonly tokenId: Ref<string|null>, private readonly networkConfig: NetworkConfig) {
+    public constructor(public readonly tokenId: Ref<string|null>) {
         this.tokenLookup = TokenInfoCache.instance.makeLookup(tokenId)
         this.associationLookup = TokenAssociationCache.instance.makeTokenAssociationLookup(walletManager.accountId, tokenId)
         this.pendingAirdropLookup = PendingAirdropCache.instance.makeAirdropLookup(walletManager.accountId, tokenId)
@@ -84,12 +83,6 @@ export class TokenInfoAnalyzer {
     public readonly customFees = computed(() => this.tokenInfo.value?.custom_fees)
 
     public readonly treasuryAccount = computed(() => this.tokenInfo.value?.treasury_account_id ?? null)
-
-    public readonly tokenChecksum = computed(() =>
-        this.tokenInfo.value?.token_id ? this.networkConfig.computeChecksum(
-            this.tokenInfo.value?.token_id,
-            routeManager.currentNetwork.value
-        ) : null)
 
 
     public readonly balance = computed(() => {

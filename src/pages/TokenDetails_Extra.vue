@@ -24,7 +24,6 @@ import ContractResultsSection from "@/components/contract/ContractResultsSection
 import TokenFeesSection from "@/components/token/TokenFeesSection.vue";
 import TokenKeysSection from "@/components/token/TokenKeysSection.vue";
 import {computed, onBeforeUnmount, onMounted} from "vue";
-import {NetworkConfig} from "@/config/NetworkConfig.ts";
 import {TokenInfoAnalyzer} from "@/components/token/TokenInfoAnalyzer.ts";
 
 const props = defineProps({
@@ -36,8 +35,7 @@ const props = defineProps({
 })
 
 const tokenId = computed(() => props.tokenId ?? null)
-const networkConfig = NetworkConfig.inject()
-const tokenAnalyzer = new TokenInfoAnalyzer(tokenId, networkConfig)
+const tokenAnalyzer = new TokenInfoAnalyzer(tokenId)
 onMounted(() => tokenAnalyzer.mount())
 onBeforeUnmount(() => tokenAnalyzer.unmount())
 const tokenInfo = tokenAnalyzer.tokenInfo
