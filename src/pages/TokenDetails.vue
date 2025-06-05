@@ -42,7 +42,7 @@ import NotificationBanner from "@/components/NotificationBanner.vue";
 import PageFrameV2 from "@/components/page/PageFrameV2.vue";
 import Tabs from "@/components/Tabs.vue";
 import {routeManager} from "@/utils/RouteManager.ts";
-import {SyntheticTokenAnalyzer} from "@/utils/analyzer/SyntheticTokenAnalyzer.ts";
+import {TOCLocParser} from "@/utils/parser/TOCLocParser.ts";
 
 const tabIds = routeManager.tokenDetailsOperator.tabIds
 const tabLabels = routeManager.tokenDetailsOperator.tabLabels
@@ -66,12 +66,12 @@ const props = defineProps({
 // Synthetic Token Analyzer
 //
 const tokenLoc = computed(() => props.tokenId)
-const tokenAnalyzer = new SyntheticTokenAnalyzer(tokenLoc)
-onMounted(() => tokenAnalyzer.mount())
-onBeforeUnmount(() => tokenAnalyzer.unmount())
+const tocLocAnalyzer = new TOCLocParser(tokenLoc)
+onMounted(() => tocLocAnalyzer.mount())
+onBeforeUnmount(() => tocLocAnalyzer.unmount())
 
-const tokenId = tokenAnalyzer.tokenId
-const notification = tokenAnalyzer.errorNotification
+const tokenId = tocLocAnalyzer.entityId
+const notification = tocLocAnalyzer.errorNotification
 
 </script>
 
