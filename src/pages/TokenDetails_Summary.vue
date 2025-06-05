@@ -137,6 +137,7 @@ onBeforeUnmount(() => tokenAnalyzer.unmount())
 
 const tokenId = tokenAnalyzer.tokenId
 const tokenAddress = tokenAnalyzer.tokenAddress
+const tokenChecksum = tokenAnalyzer.tokenChecksum
 
 const displayName = computed(() => {
   const name = tokenAnalyzer.name.value
@@ -193,7 +194,6 @@ const networkConfig = NetworkConfig.inject()
 const tokenInfoAnalyzer = new TokenInfoAnalyzer(tokenId, networkConfig)
 onMounted(() => tokenInfoAnalyzer.mount())
 onBeforeUnmount(() => tokenInfoAnalyzer.unmount())
-const tokenChecksum = tokenInfoAnalyzer.tokenChecksum
 
 //
 // Label
@@ -221,16 +221,6 @@ const onActionCompleted = () => {
   // } else {
   //   tokenBalanceTableController.refresh()
   // }
-}
-
-const parseBigIntString = (s: string | undefined): bigint | undefined => {
-  let result: bigint | undefined
-  try {
-    result = s ? BigInt(s) : undefined
-  } catch {
-    result = undefined
-  }
-  return result
 }
 
 </script>
