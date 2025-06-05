@@ -84,6 +84,92 @@
 
   </DashboardCardV2>
 
+  <DashboardCardV2 v-if="isHts" collapsible-key="htsTokenSummary">
+    <template #title>HTS Info</template>
+
+    <template #content>
+
+      <Property id="memo" full-width>
+        <template #name>Memo</template>
+        <template #value>
+          <BlobValue :blob-value="tokenInfo?.memo" :show-none="true"/>
+        </template>
+      </Property>
+      <Property id="treasuryAccount" full-width>
+        <template #name>Treasury Account</template>
+        <template #value>
+          <AccountLink :account-id="tokenInfo?.treasury_account_id"/>
+        </template>
+      </Property>
+      <Property id="createTransaction" full-width>
+        <template #name>Create Transaction</template>
+        <template #value>
+          <TransactionLink :transactionLoc="tokenInfo?.created_timestamp ?? undefined"/>
+        </template>
+      </Property>
+      <Property id="createdAt" full-width>
+        <template #name>Created at</template>
+        <template #value>
+          <TimestampValue :show-none="true" :timestamp="tokenInfo?.created_timestamp"/>
+        </template>
+      </Property>
+      <Property id="modifiedAt" full-width>
+        <template #name>Modified at</template>
+        <template #value>
+          <TimestampValue :show-none="true" :timestamp="tokenInfo?.modified_timestamp"/>
+        </template>
+      </Property>
+
+
+    </template>
+
+  </DashboardCardV2>
+
+  <DashboardCardV2 v-else-if="isErc" collapsible-key="ercTokenSummary">
+    <template #title>Supporting ERC Contract</template>
+
+    <template #content>
+
+      <Property id="entityId" full-width>
+        <template #name>
+          Contract ID
+        </template>
+        <template #value>
+          <ContractLink :contract-id="tokenId"/>
+        </template>
+      </Property>
+
+      <Property id="memo" full-width>
+        <template #name>Memo</template>
+        <template #value>
+          <BlobValue :blob-value="contractInfo?.memo" :show-none="true" :base64="true" :show-base64-as-extra="true"/>
+        </template>
+      </Property>
+
+      <Property id="createTransaction" full-width>
+        <template #name>Create Transaction</template>
+        <template #value>
+          <TransactionLink :transactionLoc="contractInfo?.created_timestamp ?? undefined"/>
+        </template>
+      </Property>
+      <Property id="verificationStatus" full-width>
+        <template v-slot:name>Verification Status</template>
+        <template v-slot:value>
+          {{ verificationStatus }}
+        </template>
+      </Property>
+
+      <Property id="contractName" full-width>
+        <template v-slot:name>Contract Name</template>
+        <template v-slot:value>
+          <StringValue :string-value="contractName ?? undefined"/>
+        </template>
+      </Property>
+
+    </template>
+
+  </DashboardCardV2>
+
   <MirrorLink :network="network" entityUrl="tokens" :loc="tokenId"/>
 
 </template>
@@ -115,6 +201,11 @@ import MirrorLink from "@/components/MirrorLink.vue";
 import {SyntheticTokenAnalyzer} from "@/utils/analyzer/SyntheticTokenAnalyzer.ts";
 import {formatUnits} from "ethers";
 import ArrowLink from "@/components/ArrowLink.vue";
+import AccountLink from "@/components/values/link/AccountLink.vue";
+import TimestampValue from "@/components/values/TimestampValue.vue";
+import TransactionLink from "@/components/values/TransactionLink.vue";
+import ContractLink from "@/components/values/link/ContractLink.vue";
+import {ContractAnalyzer} from "@/utils/analyzer/ContractAnalyzer.ts";
 
 
 const props = defineProps({
@@ -136,6 +227,12 @@ onBeforeUnmount(() => tokenAnalyzer.unmount())
 const tokenId = tokenAnalyzer.tokenId
 const tokenAddress = tokenAnalyzer.tokenAddress
 const tokenChecksum = tokenAnalyzer.tokenChecksum
+const tokenInfo = tokenAnalyzer.tokenInfo
+
+const contractInfo = tokenAnalyzer.contractInfo
+
+const isHts = tokenAnalyzer.isHts
+const isErc = tokenAnalyzer.isErc
 
 const displayName = computed(() => {
   const name = tokenAnalyzer.name.value
@@ -195,9 +292,27 @@ const index = indexLookup.entity
 const label = computed(() => tokenId.value ? index.value?.lookup(tokenId.value) ?? null : null)
 
 //
+// ContractAnalyzer
+//
+const contractId = computed(() => isErc.value ? tokenId.value : null)
+const contractAnalyzer = new ContractAnalyzer(contractId)
+onMounted(() => contractAnalyzer.mount())
+onBeforeUnmount(() => contractAnalyzer.unmount())
+const contractName = contractAnalyzer.contractName
+const verificationStatus = computed(() => {
+  let result: string
+  if (contractAnalyzer.isVerified.value) {
+    result = contractAnalyzer.fullMatch.value ? "Full Match" : "Partial Match"
+  } else {
+    result = "Unverified"
+  }
+  return result
+})
+
+
+//
 // Tooltip
 //
-const isHts = tokenAnalyzer.isHts
 const tokenIdTooltip = computed(() => !isHts.value
     ? `This token is implemented by a smart contract which has a ${tokenAnalyzer.type.value} compliant interface. So this is the ID of a contract.`
     : undefined

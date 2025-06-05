@@ -5,7 +5,7 @@ import {Blockscout} from "@/utils/blockscout/Blockscout.ts";
 import {ERCTokenByAddressCache} from "@/utils/cache/ERCTokenByAddressCache.ts";
 import {EntityLookup} from "@/utils/cache/base/EntityCache.ts";
 import {TOCLocParser} from "@/utils/parser/TOCLocParser.ts";
-import {TokenInfo, TokenType} from "@/schemas/MirrorNodeSchemas.ts";
+import {ContractResponse, TokenInfo, TokenType} from "@/schemas/MirrorNodeSchemas.ts";
 
 export class SyntheticTokenAnalyzer {
 
@@ -46,6 +46,9 @@ export class SyntheticTokenAnalyzer {
     public readonly tokenInfo: ComputedRef<TokenInfo|null> = computed(
         () => this.tocLocParser.tokenInfo.value)
 
+    public readonly contractInfo: ComputedRef<ContractResponse|null> = computed(
+        () => this.tocLocParser.contractInfo.value)
+
     public readonly ercTokenInfo: ComputedRef<Blockscout.TokenInfo|null> = computed(
         () => this.ercTokenLookup.entity.value)
 
@@ -53,6 +56,7 @@ export class SyntheticTokenAnalyzer {
         () => this.tocLocParser.errorNotification.value)
 
     public readonly isHts = computed(() => this.tocLocParser.isToken.value)
+    public readonly isErc = computed(() => this.tocLocParser.isContract.value)
 
     public readonly isErc20 = computed(() => this.type.value === "ERC-20")
     public readonly isErc721 = computed(() => this.type.value === "ERC-721")
