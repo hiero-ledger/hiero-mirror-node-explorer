@@ -9,7 +9,7 @@
   <DashboardCardV2 collapsible-key="tokenSummary">
     <template #title>
       <div class="title-extra">
-        {{ `${displayName} (${displaySymbol})` }}
+        {{ title }}
       </div>
       <span class="mr-1"/>
       <PublicLabel v-if="label" :label-definition="label"/>
@@ -138,12 +138,19 @@ onBeforeUnmount(() => tokenAnalyzer.unmount())
 const tokenId = tokenAnalyzer.tokenId
 const tokenAddress = tokenAnalyzer.tokenAddress
 
-const displayName = computed(() =>
-    truncateWithEllipsis(tokenAnalyzer.name.value ?? '?', TOKEN_NAME_DISPLAY_LENGTH)
-)
-const displaySymbol = computed(() =>
-    truncateWithEllipsis(tokenAnalyzer.symbol.value ?? '?', TOKEN_SYMBOL_DISPLAY_LENGTH)
-)
+const displayName = computed(() => {
+  const name = tokenAnalyzer.name.value
+  return name !== null ? truncateWithEllipsis(name, TOKEN_NAME_DISPLAY_LENGTH) : null
+})
+
+const displaySymbol = computed(() => {
+  const symbol = tokenAnalyzer.symbol.value
+  return symbol !== null ? truncateWithEllipsis(symbol, TOKEN_SYMBOL_DISPLAY_LENGTH) : null
+})
+
+const title = computed(() => {
+  return tokenAnalyzer.isLoaded.value ? `${displayName.value} (${displaySymbol.value})` : ""
+})
 
 const holders = tokenAnalyzer.holders
 const decimals = tokenAnalyzer.decimals
