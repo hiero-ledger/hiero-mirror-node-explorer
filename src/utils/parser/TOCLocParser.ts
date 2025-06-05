@@ -35,6 +35,8 @@ export class TOCLocParser {
         this.loadCounter.value = 0
     }
 
+    public isLoaded = computed(() => this.loadCounter.value >= 1)
+
     public readonly isToken = computed(() => this.tokenInfo.value !== null)
 
     // public readonly isContract = computed(() => this.contractInfo.value !== null)
