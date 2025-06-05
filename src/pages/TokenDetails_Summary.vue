@@ -103,7 +103,6 @@ import Property from "@/components/Property.vue";
 import PublicLabel from "@/components/values/PublicLabel.vue";
 import StringValue from "@/components/values/StringValue.vue";
 import TokenActions from "@/components/token/TokenActions.vue";
-import {NetworkConfig} from "@/config/NetworkConfig.ts";
 import {PublicLabelsCache} from "@/utils/cache/PublicLabelsCache.ts";
 import {TokenInfoAnalyzer} from "@/components/token/TokenInfoAnalyzer.ts";
 import {WalletManagerStatus} from "@/utils/wallet/WalletManagerV4.ts";
@@ -190,8 +189,7 @@ const contractRoute = computed(() => {
 //
 // HTS TokenInfo analyzer
 //
-const networkConfig = NetworkConfig.inject()
-const tokenInfoAnalyzer = new TokenInfoAnalyzer(tokenId, networkConfig)
+const tokenInfoAnalyzer = new TokenInfoAnalyzer(tokenId)
 onMounted(() => tokenInfoAnalyzer.mount())
 onBeforeUnmount(() => tokenInfoAnalyzer.unmount())
 
