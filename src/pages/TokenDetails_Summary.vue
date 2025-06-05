@@ -201,7 +201,7 @@ const label = computed(() => tokenId.value ? index.value?.lookup(tokenId.value) 
 // Tooltip
 //
 const isHts = tokenAnalyzer.isHts
-const tokenIdTooltip = computed(() => isHts
+const tokenIdTooltip = computed(() => !isHts.value
     ? `This token is implemented by a smart contract which has a ${tokenAnalyzer.type.value} compliant interface. So this is the ID of a contract.`
     : undefined
 )
