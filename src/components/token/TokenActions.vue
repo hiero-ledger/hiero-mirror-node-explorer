@@ -81,7 +81,7 @@
 
 <script setup lang="ts">
 
-import {computed, PropType, ref} from "vue";
+import {computed, onBeforeUnmount, onMounted, PropType, ref} from "vue";
 import {TokenAssociationStatus, TokenInfoAnalyzer} from "@/components/token/TokenInfoAnalyzer.ts";
 import ButtonView from "@/elements/ButtonView.vue";
 import AssociateTokenDialog from "@/dialogs/token/AssociateTokenDialog.vue";
@@ -93,10 +93,10 @@ import WatchTokenDialog from "@/dialogs/token/WatchTokenDialog.vue";
 import {walletManager} from "@/utils/RouteManager.ts";
 
 const props = defineProps({
-  analyzer: {
-    type: Object as PropType<TokenInfoAnalyzer>,
-    required: true
-  }
+  tokenId: {
+    type: String as PropType<string|null>,
+    default: null
+  },
 })
 
 const emit = defineEmits(["completed"])
@@ -128,11 +128,15 @@ const emit = defineEmits(["completed"])
 // xxxEnabled
 //
 
-const treasuryAccountId = computed(() => props.analyzer.treasuryAccount.value)
-const associationStatus = computed(() => props.analyzer.associationStatus.value)
-const balanceForConnectedAccount = computed(() => props.analyzer.balance.value)
-const tokenAirdrops = computed(() => props.analyzer.pendingAirdrops.value)
-const isFungibleToken = computed(() => props.analyzer.isFungible.value)
+const analyzer = new TokenInfoAnalyzer(computed(() => props.tokenId))
+onMounted(() => analyzer.mount())
+onBeforeUnmount(() => analyzer.unmount())
+
+const treasuryAccountId = computed(() => analyzer.treasuryAccount.value)
+const associationStatus = computed(() => analyzer.associationStatus.value)
+const balanceForConnectedAccount = computed(() => analyzer.balance.value)
+const tokenAirdrops = computed(() => analyzer.pendingAirdrops.value)
+const isFungibleToken = computed(() => analyzer.isFungible.value)
 
 const connectedAccountOK = computed(() =>
     walletManager.accountId.value !== null && walletManager.accountId.value !== treasuryAccountId.value)

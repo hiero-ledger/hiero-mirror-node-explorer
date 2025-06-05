@@ -18,7 +18,7 @@
     <template #right-control>
       <TokenActions
           v-if="isWalletConnected"
-          :analyzer="tokenInfoAnalyzer"
+          :token-id="tokenId"
           @completed="onActionCompleted"
       />
     </template>
@@ -104,7 +104,6 @@ import PublicLabel from "@/components/values/PublicLabel.vue";
 import StringValue from "@/components/values/StringValue.vue";
 import TokenActions from "@/components/token/TokenActions.vue";
 import {PublicLabelsCache} from "@/utils/cache/PublicLabelsCache.ts";
-import {TokenInfoAnalyzer} from "@/components/token/TokenInfoAnalyzer.ts";
 import {WalletManagerStatus} from "@/utils/wallet/WalletManagerV4.ts";
 import {
   TOKEN_NAME_DISPLAY_LENGTH,
@@ -185,13 +184,6 @@ const displayType = computed(() => {
 const contractRoute = computed(() => {
   return tokenId.value !== null ? routeManager.makeRouteToContract(tokenId.value) : null
 })
-
-//
-// HTS TokenInfo analyzer
-//
-const tokenInfoAnalyzer = new TokenInfoAnalyzer(tokenId)
-onMounted(() => tokenInfoAnalyzer.mount())
-onBeforeUnmount(() => tokenInfoAnalyzer.unmount())
 
 //
 // Label
