@@ -16,7 +16,7 @@ export class SyntheticTokenAnalyzer {
     // Public
     //
 
-    public constructor(private readonly tocLoc: Ref<string | null>) {
+    public constructor(tocLoc: Ref<string | null>) {
         this.tocLocParser = new TOCLocParser(tocLoc)
         this.ercTokenLookup = ERCTokenByAddressCache.instance.makeLookup(this.tokenAddress)
     }
@@ -30,6 +30,9 @@ export class SyntheticTokenAnalyzer {
         this.tocLocParser.unmount()
         this.ercTokenLookup.unmount()
     }
+
+    public readonly isLoaded = computed(
+        () => this.tocLocParser.isLoaded.value && this.ercTokenLookup.isLoaded.value)
 
     public readonly tokenId: ComputedRef<string | null> = computed(
         () => this.tocLocParser.entityId.value)
