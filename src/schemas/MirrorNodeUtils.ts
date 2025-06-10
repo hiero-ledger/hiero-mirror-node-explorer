@@ -305,6 +305,13 @@ export function decodeRedirectForTokenInput(functionFragment: ethers.FunctionFra
     }
 }
 
+export function decodeRedirectForTokenOutput(output: string): ethers.Result {
+    // Official signature of redirectToken is:
+    //      function redirectForToken(address token, bytes encodedFunctionSelector) returns (int64 responseCode, bytes response)
+    // But output params return by mirror node contains "bytes response".
+    return new ethers.Result([output])
+}
+
 export function resolveFunctionFragmentForHTSProxyContract(functionFragment: ethers.FunctionFragment, inputArgs: string): ethers.FunctionFragment {
     const inputResult = decodeRedirectForTokenInput(functionFragment, inputArgs)
     const encodedFunction4BytesSignature = inputResult[1].slice(0, 10)

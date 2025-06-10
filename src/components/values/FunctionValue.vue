@@ -32,7 +32,7 @@
 import {computed, inject, PropType, ref} from 'vue';
 import {initialLoadingKey} from "@/AppKeys";
 import EVMAddress from "@/components/values/EVMAddress.vue";
-import {NameTypeValue} from "@/utils/analyzer/FunctionCallAnalyzer";
+import {NameTypeValue} from "@/utils/analyzer/call/FunctionCallDecoder.ts";
 
 const props = defineProps({
   ntv: Object as PropType<NameTypeValue>,
