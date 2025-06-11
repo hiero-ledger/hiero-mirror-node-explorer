@@ -5,9 +5,10 @@
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <template>
-  <template v-if="errorSignature">
-    <template v-if="error">
-      <div class="h-sub-section">Error</div>
+  <template v-if="errorInputs.length >= 1">
+    <div class="h-sub-section">Error</div>
+
+    <template v-if="errorSignature">
 
       <Property :custom-nb-col-class="customNbColClass" id="errorFunction">
         <template #name>
@@ -18,24 +19,15 @@
           <div class="h-is-extra-text h-should-wrap">{{ errorSignature }}</div>
         </template>
       </Property>
-
-      <template v-for="arg in errorInputs" :key="arg.name">
-        <Property :custom-nb-col-class="customNbColClass" :keep-case="true">
-          <template #name>
-            <span style="padding-left: 16px;">{{ arg.name != "" ? arg.name : "message" }}</span>
-          </template>
-          <template #value>
-            <FunctionValue :ntv="arg"/>
-          </template>
-        </Property>
-      </template>
     </template>
 
-    <template v-else>
-      <Property :custom-nb-col-class="customNbColClass" id="functionInput">
-        <template #name>Error Message</template>
+    <template v-for="arg in errorInputs" :key="arg.name">
+      <Property :custom-nb-col-class="customNbColClass" :keep-case="true">
+        <template #name>
+          <span style="padding-left: 16px;">{{ arg.name != "" ? arg.name : "message" }}</span>
+        </template>
         <template #value>
-          <HexaDumpValue :show-none="true"/>
+          <FunctionValue :ntv="arg"/>
         </template>
       </Property>
     </template>
