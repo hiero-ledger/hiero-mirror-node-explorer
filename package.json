@@ -39,7 +39,7 @@
     "@vuepic/vue-datepicker": "^11.0.2",
     "@walletconnect/modal": "^2.7.0",
     "@walletconnect/sign-client": "^2.21.1",
-    "@walletconnect/types": "^2.21.0",
+    "@walletconnect/types": "^2.21.2",
     "axios": "^1.9.0",
     "base32-decode": "^1.0.0",
     "base32-encode": "^2.0.0",
