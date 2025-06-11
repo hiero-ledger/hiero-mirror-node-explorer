@@ -25,8 +25,9 @@ describe("FunctionCallAnalyzer.spec.ts", () => {
         const input: Ref<string | null> = ref(null)
         const output: Ref<string | null> = ref(null)
         const error: Ref<string | null> = ref(null)
+        const revertReason: Ref<string | null> = ref(null)
         const contractId: Ref<string | null> = ref(null)
-        const functionCallAnalyzer = new FunctionCallAnalyzer(input, output, error, contractId)
+        const functionCallAnalyzer = new FunctionCallAnalyzer(input, output, error, revertReason, contractId)
         await flushPromises()
         expect(fetchGetURLs(mock)).toStrictEqual([])
         expect(functionCallAnalyzer.functionHash.value).toBeNull()
@@ -192,8 +193,9 @@ describe("FunctionCallAnalyzer.spec.ts", () => {
         const input: Ref<string | null> = ref(null)
         const output: Ref<string | null> = ref(null)
         const error: Ref<string | null> = ref(null)
+        const revertReason: Ref<string | null> = ref(null)
         const contractId: Ref<string | null> = ref(null)
-        const functionCallAnalyzer = new FunctionCallAnalyzer(input, output, error, contractId)
+        const functionCallAnalyzer = new FunctionCallAnalyzer(input, output, error, revertReason, contractId)
         await flushPromises()
         expect(fetchGetURLs(mock)).toStrictEqual([])
         expect(functionCallAnalyzer.functionHash.value).toBeNull()
@@ -300,8 +302,9 @@ describe("FunctionCallAnalyzer.spec.ts", () => {
         const input: Ref<string | null> = ref(null)
         const output: Ref<string | null> = ref(null)
         const error: Ref<string | null> = ref(null)
+        const revertReason: Ref<string | null> = ref(null)
         const contractId: Ref<string | null> = ref(null)
-        const functionCallAnalyzer = new FunctionCallAnalyzer(input, output, error, contractId)
+        const functionCallAnalyzer = new FunctionCallAnalyzer(input, output, error, revertReason, contractId)
         await flushPromises()
         expect(fetchGetURLs(mock)).toStrictEqual([])
         expect(functionCallAnalyzer.functionHash.value).toBeNull()
@@ -407,9 +410,10 @@ describe("FunctionCallAnalyzer.spec.ts", () => {
         const input: Ref<string | null> = ref(null)
         const output: Ref<string | null> = ref(null)
         const error: Ref<string | null> = ref(null)
+        const revertReason: Ref<string | null> = ref(null)
         const contractId: Ref<string | null> = ref(null)
         const isContractCreate = ref(true)
-        const functionCallAnalyzer = new FunctionCallAnalyzer(input, output, error, contractId, isContractCreate)
+        const functionCallAnalyzer = new FunctionCallAnalyzer(input, output, error, revertReason, contractId, isContractCreate)
         await flushPromises()
         expect(fetchGetURLs(mock)).toStrictEqual([])
         expect(functionCallAnalyzer.functionHash.value).toBeNull()
@@ -507,8 +511,9 @@ describe("FunctionCallAnalyzer.spec.ts", () => {
         const input: Ref<string | null> = ref(null)
         const output: Ref<string | null> = ref(null)
         const error: Ref<string | null> = ref(null)
+        const revertReason: Ref<string | null> = ref(null)
         const contractId: Ref<string | null> = ref(null)
-        const functionCallAnalyzer = new FunctionCallAnalyzer(input, output, error, contractId)
+        const functionCallAnalyzer = new FunctionCallAnalyzer(input, output, error, revertReason, contractId)
         await flushPromises()
         expect(fetchGetURLs(mock)).toStrictEqual([])
         expect(functionCallAnalyzer.functionHash.value).toBeNull()
@@ -608,8 +613,9 @@ describe("FunctionCallAnalyzer.spec.ts", () => {
         const input: Ref<string | null> = ref(null)
         const output: Ref<string | null> = ref(null)
         const error: Ref<string | null> = ref(null)
+        const revertReason: Ref<string | null> = ref(null)
         const contractId: Ref<string | null> = ref(null)
-        const functionCallAnalyzer = new FunctionCallAnalyzer(input, output, error, contractId)
+        const functionCallAnalyzer = new FunctionCallAnalyzer(input, output, error, revertReason, contractId)
         await flushPromises()
         expect(fetchGetURLs(mock)).toStrictEqual([])
         expect(functionCallAnalyzer.functionHash.value).toBeNull()
@@ -649,6 +655,7 @@ describe("FunctionCallAnalyzer.spec.ts", () => {
         input.value = "0x618dc65e0000000000000000000000000000000000163b5a095ea7b300000000000000000000000000000000000000000000000000000000003c437a0000000000000000000000000000000000000000000000008ac7230489e80000"
         output.value = null
         error.value = "0x494e56414c49445f4f5045524154494f4e"
+        revertReason.value = "0x0000000000000000000000000000000000000000000000000000000000000124"
         contractId.value = "0.0.359"
         await flushPromises()
         await vi.dynamicImportSettled()
@@ -662,7 +669,9 @@ describe("FunctionCallAnalyzer.spec.ts", () => {
         expect(functionCallAnalyzer.outputs.value).toStrictEqual([])
         expect(functionCallAnalyzer.errorHash.value).toBeNull()
         expect(functionCallAnalyzer.errorSignature.value).toBeNull()
-        expect(functionCallAnalyzer.errorInputs.value).toStrictEqual([])
+        expect(functionCallAnalyzer.errorInputs.value).toStrictEqual([
+            new NameTypeValue("revertReason", "int64", 292n, null, "SPENDER_DOES_NOT_HAVE_ALLOWANCE")
+        ])
         expect(functionCallAnalyzer.inputDecodingStatus.value).toBeNull()
         expect(functionCallAnalyzer.outputDecodingStatus.value).toBeNull()
         expect(functionCallAnalyzer.errorDecodingStatus.value).toBeNull()
@@ -684,7 +693,9 @@ describe("FunctionCallAnalyzer.spec.ts", () => {
         expect(functionCallAnalyzer.outputs.value).toStrictEqual([])
         expect(functionCallAnalyzer.errorHash.value).toBeNull()
         expect(functionCallAnalyzer.errorSignature.value).toBeNull()
-        expect(functionCallAnalyzer.errorInputs.value).toStrictEqual([])
+        expect(functionCallAnalyzer.errorInputs.value).toStrictEqual([
+            new NameTypeValue("revertReason", "int64", 292n, null, "SPENDER_DOES_NOT_HAVE_ALLOWANCE")
+        ])
         expect(functionCallAnalyzer.inputDecodingStatus.value).toBeNull()
         expect(functionCallAnalyzer.outputDecodingStatus.value).toBeNull()
         expect(functionCallAnalyzer.errorDecodingStatus.value).toBeNull()
@@ -704,8 +715,9 @@ describe("FunctionCallAnalyzer.spec.ts", () => {
         const input: Ref<string | null> = ref(null)
         const output: Ref<string | null> = ref(null)
         const error: Ref<string | null> = ref(null)
+        const revertReason: Ref<string | null> = ref(null)
         const contractId: Ref<string | null> = ref(null)
-        const functionCallAnalyzer = new FunctionCallAnalyzer(input, output, error, contractId)
+        const functionCallAnalyzer = new FunctionCallAnalyzer(input, output, error, revertReason, contractId)
         await flushPromises()
         expect(fetchGetURLs(mock)).toStrictEqual([])
         expect(functionCallAnalyzer.functionHash.value).toBeNull()
@@ -743,6 +755,7 @@ describe("FunctionCallAnalyzer.spec.ts", () => {
         input.value = "0x618dc65e00000000000000000000000000000000005cea6223b872dd000000000000000000000000208b15dab9903be8d34336d0b7f930e5f0a76ec5000000000000000000000000d717723692444f3d0f18d8ec2ccae7b25fc1d696000000000000000000000000000000000000000000000000000000000000000a"
         output.value = null
         error.value = "0x0000000000000000000000000000000000000000000000000000000000000124"
+        revertReason.value = null
         contractId.value = "0.0.359"
         await flushPromises()
         await vi.dynamicImportSettled()

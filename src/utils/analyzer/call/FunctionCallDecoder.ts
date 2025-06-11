@@ -4,6 +4,7 @@ import {computed, ComputedRef, Ref} from "vue";
 import {ethers} from "ethers";
 import {ContractAnalyzer} from "@/utils/analyzer/ContractAnalyzer.ts";
 import {FourByteAnalyzer} from "@/utils/analyzer/call/FourByteAnalyzer.ts";
+import {labelForResponseCode} from "@/schemas/MirrorNodeUtils.ts";
 
 export class FunctionCallDecoder {
 
@@ -19,6 +20,7 @@ export class FunctionCallDecoder {
         private readonly input: Ref<string | null>,
         private readonly output: Ref<string | null>,
         private readonly error: Ref<string | null>,
+        private readonly revertReason: Ref<string | null>,
         private readonly contractCreate: Ref<boolean>) {
         this.contractAnalyzer = new ContractAnalyzer(contractId)
         this.fourByteAnalyzer = new FourByteAnalyzer(this.functionHash, this.functionParams, this.fourByteAnalyzerEnabled)
@@ -217,6 +219,24 @@ export class FunctionCallDecoder {
             }
         } else {
             // Keeps result empty
+        }
+
+        const revertReason = this.revertReason.value
+        if (revertReason !== null) {
+            try {
+                const r = ethers.AbiCoder.defaultAbiCoder().decode(["int64"], revertReason)
+                if (r.length >= 1) {
+                    const comment = labelForResponseCode(r[0])
+                    const ntv = new NameTypeValue("revertReason", "int64", r[0], null, comment)
+                    result.push(ntv)
+                } else {
+                    const ntv = new NameTypeValue("revertReason", "string", revertReason, null, null)
+                    result.push(ntv)
+                }
+            } catch {
+                const ntv = new NameTypeValue("revertReason", "byte", revertReason, null, null)
+                result.push(ntv)
+            }
         }
 
         return result

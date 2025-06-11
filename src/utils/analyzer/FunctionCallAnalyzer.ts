@@ -17,6 +17,7 @@ export class FunctionCallAnalyzer {
         private readonly input: Ref<string | null>,
         private readonly output: Ref<string | null>,
         private readonly error: Ref<string | null>,
+        private readonly revertReason: Ref<string | null>,
         private readonly contractId: Ref<string | null>,
         private readonly contractCreate: Ref<boolean> = ref(false)) {
         this.callDecoder = new FunctionCallDecoder(
@@ -24,6 +25,7 @@ export class FunctionCallAnalyzer {
             this.inputForDecoder,
             this.normalizedOutput,
             this.normalizedError,
+            this.normalizedRevertReason,
             this.contractCreate
         )
     }
@@ -78,6 +80,10 @@ export class FunctionCallAnalyzer {
 
     public readonly normalizedError: ComputedRef<string | null> = computed(() => {
         return this.error.value == "0x" ? null : this.error.value
+    })
+
+    public readonly normalizedRevertReason: ComputedRef<string | null> = computed(() => {
+        return this.revertReason.value == "0x" ? null : this.revertReason.value
     })
 
     public readonly signature: ComputedRef<string | null> = computed(() => {
