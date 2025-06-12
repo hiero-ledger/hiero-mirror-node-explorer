@@ -6,10 +6,23 @@
 
 <template>
 
-  <div v-if="props.endpoints && props.endpoints.length">
+  <!--  If domain_name is provided:               -->
+  <!--      www.example.com:50211 (34.94.106.61)  -->
+  <!--  otherwise:                                -->
+  <!--      34.94.106.61:50211                    -->
+
+  <div v-if="props.endpoints && props.endpoints.length > 0">
     <div v-for="s in props.endpoints" :key="s.ip_address_v4" class="h-is-monospace">
-      <span v-if="s.ip_address_v4">{{ s.ip_address_v4 }}</span>
-      <span v-if="s.ip_address_v4 && s.port != null" class="h-is-low-contrast">{{ ':' + s.port }}</span>
+      <template v-if="s.domain_name.length > 0">
+        <span>{{ s.domain_name.length > 0 ? s.domain_name : "www.example.com"}}</span>
+        <span v-if="s.port > 0" class="h-is-low-contrast">{{ ':' + s.port }}</span>
+        <span v-if="s.ip_address_v4.length > 0" class="ml-1">{{ `(${s.ip_address_v4})` }}</span>
+      </template>
+      <template v-else-if="s.ip_address_v4.length > 0">
+        <span>{{ s.ip_address_v4 }}</span>
+        <span v-if="s.port > 0" class="h-is-low-contrast">{{ ':' + s.port }}</span>
+      </template>
+      <template v-else/>
     </div>
   </div>
 
