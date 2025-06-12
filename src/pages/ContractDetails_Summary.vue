@@ -16,15 +16,6 @@
       <div v-if="isVerified" class="h-has-pill h-chip-success">
         VERIFIED
       </div>
-      <div v-if="isErc20" class="h-has-pill">
-        ERC 20
-      </div>
-      <div v-if="isErc721" class="h-has-pill">
-        ERC 721
-      </div>
-      <div v-if="isErc1155" class="h-has-pill">
-        ERC 1155
-      </div>
       <DomainLabel v-if="domainName" :domain-name="domainName" :provider-name="domainProviderName"/>
       <PublicLabel v-if="label" :label-definition="label"/>
       <ArrowLink
@@ -199,6 +190,65 @@
     </template>
   </DashboardCardV2>
 
+  <DashboardCardV2 v-if="isErc" collapsible-key="ercTokenSummary">
+    <template #title>
+      <div class="title-extra">
+        {{ ercTitle }}
+      </div>
+      <span class="mr-1"/>
+      <div v-if="isErc20" class="h-has-pill">
+        ERC 20
+      </div>
+      <div v-if="isErc721" class="h-has-pill">
+        ERC 721
+      </div>
+      <div v-if="isErc1155" class="h-has-pill">
+        ERC 1155
+      </div>
+    </template>
+
+    <template #content>
+      <Property id="type" full-width>
+        <template #name>Type</template>
+        <template #value>
+          <BlobValue :blob-value="displayType" :show-none="true"/>
+        </template>
+      </Property>
+      <Property id="name" full-width>
+        <template #name>Name</template>
+        <template #value>
+          <BlobValue :blob-value="displayName" :show-none="true"/>
+        </template>
+      </Property>
+      <Property id="symbol" full-width>
+        <template #name>Symbol</template>
+        <template #value>
+          <BlobValue :blob-value="displaySymbol" :show-none="true"/>
+        </template>
+      </Property>
+      <Property id="totalSupply" full-width>
+        <template #name>Total Supply</template>
+        <template #value>
+          <StringValue :string-value="displayTotalSupply"/>
+        </template>
+      </Property>
+      <Property id="decimals" full-width>
+        <template #name>Decimals</template>
+        <template #value>
+          <StringValue :string-value="decimals"/>
+        </template>
+      </Property>
+      <Property v-if="holders" id="holders" full-width>
+        <template #name>Holders</template>
+        <template #value>
+          <StringValue :string-value="holders"/>
+        </template>
+      </Property>
+
+    </template>
+
+  </DashboardCardV2>
+
 </template>
 
 <!-- --------------------------------------------------------------------------------------------------------------- -->
@@ -208,6 +258,7 @@
 <script setup lang="ts">
 
 import {computed, onBeforeUnmount, onMounted} from "vue";
+import {formatUnits} from "ethers";
 import AccountLink from "@/components/values/link/AccountLink.vue";
 import ArrowLink from "@/components/ArrowLink.vue";
 import BlobValue from "@/components/values/BlobValue.vue";
@@ -231,7 +282,11 @@ import {NameQuery} from "@/utils/name_service/NameQuery.ts";
 import {NetworkConfig} from "@/config/NetworkConfig.ts";
 import {PublicLabelsCache} from "@/utils/cache/PublicLabelsCache.ts";
 import {SyntheticTokenAnalyzer} from "@/utils/analyzer/SyntheticTokenAnalyzer.ts";
-import {labelForAutomaticTokenAssociation} from "@/schemas/MirrorNodeUtils.ts";
+import {
+  labelForAutomaticTokenAssociation,
+  TOKEN_NAME_DISPLAY_LENGTH, TOKEN_SYMBOL_DISPLAY_LENGTH,
+  truncateWithEllipsis
+} from "@/schemas/MirrorNodeUtils.ts";
 import {routeManager} from "@/utils/RouteManager.ts";
 
 const props = defineProps({
@@ -285,6 +340,46 @@ const tokenName = tokenAnalyzer.name
 const isErc20 = tokenAnalyzer.isErc20
 const isErc721 = tokenAnalyzer.isErc721
 const isErc1155 = tokenAnalyzer.isErc1155
+const isErc = tokenAnalyzer.isErc
+const holders = tokenAnalyzer.holders
+const decimals = tokenAnalyzer.decimals
+const displayTotalSupply = computed(() => {
+  let result: string | null
+  if (tokenAnalyzer.totalSupply.value !== null && decimals.value !== null) {
+    result = formatUnits(tokenAnalyzer.totalSupply.value, Number(decimals.value))
+  } else {
+    result = tokenAnalyzer.totalSupply.value
+  }
+  console.log(`displayTotalSupply: ${result}`)
+  return result
+})
+const displayType = computed(() => {
+  let result: string
+  switch (tokenAnalyzer.type.value) {
+    case "ERC-20":
+      result = "Fungible Token (ERC-20)"
+      break
+    case "ERC-721":
+      result = "NFT (ERC-721)"
+      break
+    case "ERC-1155":
+    default:
+      result = "NFT (ERC-1155)"
+  }
+  return result
+})
+const displayName = computed(() => {
+  const name = tokenAnalyzer.name.value
+  return name !== null ? truncateWithEllipsis(name, TOKEN_NAME_DISPLAY_LENGTH) : null
+})
+const displaySymbol = computed(() => {
+  const symbol = tokenAnalyzer.symbol.value
+  return symbol !== null ? truncateWithEllipsis(symbol, TOKEN_SYMBOL_DISPLAY_LENGTH) : null
+})
+const ercTitle = computed(() => {
+  return tokenAnalyzer.isLoaded.value ? `${displayName.value} (${displaySymbol.value})` : ""
+})
+
 
 //
 // Naming
