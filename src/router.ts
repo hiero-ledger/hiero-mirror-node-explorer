@@ -37,6 +37,10 @@ import TokenDetails_Summary from "@/pages/TokenDetails_Summary.vue";
 import TokenDetails_Holders from "@/pages/TokenDetails_Holders.vue";
 import TokenDetails_Metadata from "@/pages/TokenDetails_Metadata.vue";
 import TokenDetails_Extra from "@/pages/TokenDetails_Extra.vue";
+import ContractDetails_Summary from "@/pages/ContractDetails_Summary.vue";
+import ContractDetails_Assets from "@/pages/ContractDetails_Assets.vue";
+import ContractDetails_ByteCode from "@/pages/ContractDetails_ByteCode.vue";
+import ContractDetails_Others from "@/pages/ContractDetails_Others.vue";
 
 export enum TabId {
     Home = "Home",
@@ -48,6 +52,54 @@ export enum TabId {
     Nodes = "Nodes",
     Staking = "Staking",
     Blocks = "Blocks",
+}
+
+export const CONTRACT_DETAILS_ROUTE: RouteRecordRaw = {
+    path: '/:network/contract/:contractId',
+    name: 'ContractDetails',
+    component: ContractDetails,
+    props: true,
+    meta: {
+        tabId: TabId.Contracts
+    },
+    children: [
+        {
+            path:'',
+            name: 'ContractDetails_Summary',
+            component: ContractDetails_Summary,
+            props: true,
+            meta: {
+                tabLabel: "Summary"
+            }
+        },
+        {
+            path:'assets',
+            name: 'ContractDetails_Assets',
+            component: ContractDetails_Assets,
+            props: true,
+            meta: {
+                tabLabel: "Assets"
+            }
+        },
+        {
+            path:'bytecode',
+            name: 'ContractDetails_ByteCode',
+            component: ContractDetails_ByteCode,
+            props: true,
+            meta: {
+                tabLabel: "Bytecode"
+            }
+        },
+        {
+            path:'others',
+            name: 'ContractDetails_Others',
+            component: ContractDetails_Others,
+            props: true,
+            meta: {
+                tabLabel: "Others"
+            }
+        },
+    ],
 }
 
 export const TOKEN_DETAILS_ROUTE: RouteRecordRaw = {
@@ -308,15 +360,7 @@ export const routes: Array<RouteRecordRaw> = [
             tabId: TabId.Contracts
         }
     },
-    {
-        path: '/:network/contract/:contractId',
-        name: 'ContractDetails',
-        component: ContractDetails,
-        props: true,
-        meta: {
-            tabId: TabId.Contracts
-        }
-    },
+    CONTRACT_DETAILS_ROUTE,
     {
         path: '/:network/topics',
         name: 'Topics',

@@ -19,7 +19,7 @@ import {TransactionID} from "@/utils/TransactionID.ts";
 import {CoreConfig} from "@/config/CoreConfig";
 import {NetworkConfig, NetworkEntry} from "@/config/NetworkConfig";
 import {WalletManagerV4} from "@/utils/wallet/WalletManagerV4.ts";
-import {routes, TOKEN_DETAILS_ROUTE} from "@/router.ts";
+import {CONTRACT_DETAILS_ROUTE, routes, TOKEN_DETAILS_ROUTE} from "@/router.ts";
 
 export class RouteManager {
 
@@ -357,18 +357,23 @@ export class RouteManager {
     // Contract
     //
 
-    public makeRouteToContract(contractId: string): RouteLocationRaw {
-        return {name: 'ContractDetails', params: {contractId: contractId, network: this.currentNetwork.value}}
+    public readonly contractDetailsOperator = new RouteOperator(CONTRACT_DETAILS_ROUTE, this)
+
+    public makeRouteToContract(contractId: string, tabId: string|null = null): RouteLocationRaw {
+        const targetTabId = tabId ?? this.contractDetailsOperator.defaultTabId
+        return {name: targetTabId, params: {contractId: contractId, network: this.currentNetwork.value}}
     }
 
-    public routeToContract(contractId: string, event: Event): Promise<NavigationFailure | void | undefined> {
+    public routeToContract(contractId: string, event: Event|null, tabId: string|null = null, replace = false): Promise<NavigationFailure | void | undefined> {
         let result: Promise<NavigationFailure | void | undefined>
         if (this.shouldOpenNewWindow(event)) {
-            const routeData = this.router.resolve(this.makeRouteToContract(contractId));
+            const routeData = this.router.resolve(this.makeRouteToContract(contractId, tabId));
             window.open(routeData.href, '_blank');
             result = Promise.resolve()
+        } else if (replace) {
+            result = this.router.replace(this.makeRouteToContract(contractId, tabId))
         } else {
-            result = this.router.push(this.makeRouteToContract(contractId))
+            result = this.router.push(this.makeRouteToContract(contractId, tabId))
         }
         return result
     }
