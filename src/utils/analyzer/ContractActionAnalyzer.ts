@@ -20,7 +20,7 @@ export class ContractActionAnalyzer {
 
     public constructor(action: Ref<ContractAction | null>) {
         this.action = action
-        this.functionCallAnalyzer = new FunctionCallAnalyzer(this.input, this.output, this.error, this.toId)
+        this.functionCallAnalyzer = new FunctionCallAnalyzer(this.input, this.output, this.error, this.revertReason, this.toId)
     }
 
     public mount(): void {
@@ -97,7 +97,17 @@ export class ContractActionAnalyzer {
 
     public readonly error = computed(() => {
         let result: string | null
-        if (this.action?.value?.result_data_type != ResultDataType.OUTPUT) {
+        if (this.action?.value?.result_data_type == ResultDataType.ERROR) {
+            result = this.action?.value?.result_data ?? null
+        } else {
+            result = null
+        }
+        return result
+    })
+
+    private readonly revertReason = computed(() => {
+        let result: string | null
+        if (this.action?.value?.result_data_type == ResultDataType.REVERT_REASON) {
             result = this.action?.value?.result_data ?? null
         } else {
             result = null

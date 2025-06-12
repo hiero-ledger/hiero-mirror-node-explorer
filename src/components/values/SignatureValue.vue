@@ -11,7 +11,7 @@
       <div class="h-is-extra-text h-should-wrap">{{ signature }}</div>
       <Tooltip v-if="is4byteSignature"
                text="Decoding of the signature provided by the 4byte.directory Signature Database">
-        <span class="h-has-pill" style="background-color: var(--status-success-color)">4byte</span>
+        <span class="h-has-pill h-chip-success">4byte</span>
       </Tooltip>
     </div>
   </div>

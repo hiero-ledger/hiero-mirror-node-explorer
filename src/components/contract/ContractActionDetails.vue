@@ -38,9 +38,9 @@
         <PlainAmount :amount="action?.gas_used"/>
       </template>
     </Property>
-    <FunctionError :analyzer="functionCallAnalyzer" :custom-nb-col-class="propertySizeClass" :show-none="true"/>
-    <FunctionInput :analyzer="functionCallAnalyzer" :custom-nb-col-class="propertySizeClass" :show-none="true"/>
+    <FunctionInput :analyzer="functionCallAnalyzer" :custom-nb-col-class="propertySizeClass"/>
     <FunctionResult :analyzer="functionCallAnalyzer" :custom-nb-col-class="propertySizeClass" :show-none="true"/>
+    <FunctionError :analyzer="functionCallAnalyzer" :custom-nb-col-class="propertySizeClass" :show-none="true"/>
   </div>
 </template>
 

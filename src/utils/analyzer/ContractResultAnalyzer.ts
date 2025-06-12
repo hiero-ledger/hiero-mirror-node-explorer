@@ -24,7 +24,7 @@ export class ContractResultAnalyzer {
 
     public constructor(public readonly transaction: Ref<Transaction | null>) {
         this.functionCallAnalyzer = new FunctionCallAnalyzer(
-            this.input, this.output, this.error, this.toId, this.isContractCreate)
+            this.input, this.output, this.error, ref(null), this.toId, this.isContractCreate)
     }
 
     public mount(): void {

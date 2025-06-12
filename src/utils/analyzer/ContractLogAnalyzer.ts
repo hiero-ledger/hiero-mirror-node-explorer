@@ -4,7 +4,7 @@ import {computed, ComputedRef, Ref, shallowRef, watch, WatchStopHandle} from "vu
 import {ContractResultLog} from "@/schemas/MirrorNodeSchemas";
 import {ContractAnalyzer} from "@/utils/analyzer/ContractAnalyzer";
 import {ethers} from "ethers";
-import {NameTypeValue} from "@/utils/analyzer/FunctionCallAnalyzer";
+import {NameTypeValue} from "@/utils/analyzer/call/FunctionCallDecoder.ts";
 
 export class ContractLogAnalyzer {
 
