@@ -774,9 +774,11 @@ export interface NetworkNode {
     stake_rewarded: number | null // The sum (balance + staked) for all accounts staked to the node that are not declining rewards at the beginning of the staking period
     staking_period: TimestampRange | null
     reward_rate_start: number | null
+    grpc_proxy_endpoint: ServiceEndPoint
 }
 
 export interface ServiceEndPoint {
+    domain_name: string
     ip_address_v4: string
     port: number
 }
