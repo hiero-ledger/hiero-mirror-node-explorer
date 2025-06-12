@@ -6,6 +6,7 @@
 
 <template>
 
+  <ERCTokensSection :account-id="props.contractId"/>
   <TokensSection :account-id="props.contractId"/>
 
 </template>
@@ -17,6 +18,7 @@
 <script setup lang="ts">
 
 import TokensSection from "@/components/token/TokensSection.vue";
+import ERCTokensSection from "@/components/token/ERCTokensSection.vue";
 
 const props = defineProps({
   contractId: String,
