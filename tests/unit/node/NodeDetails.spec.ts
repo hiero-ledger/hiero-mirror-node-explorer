@@ -84,7 +84,13 @@ describe("NodeDetails.vue", () => {
         expect(wrapper.get("#rangeFromValue").text()).toBe("4:10:06.0411 PMJun 6, 2022, UTC")
         expect(wrapper.get("#rangeToValue").text()).toBe("None")
         expect(wrapper.get("#nodeCertHashValue").text()).toBe("0xd316b5ef57b76daf37e3bebbe3b69e6f67b669ce1dd1ed75e5c69a69bf75f36d376f475f7b571d79a6f8e37e37f1f736f3d69b73c6daf1ae9a7dff3775be5fd5bdf7e34e3a75af3c73Copy")
-        expect(wrapper.get("#serviceEndpointsValue").text()).toBe("3.211.248.172:502113.211.248.172:5021235.231.208.148:035.231.208.148:5021135.231.208.148:50212")
+        expect(wrapper.get("#serviceEndpointsValue").text()).toBe(
+            "www.example.com:50211(3.211.248.172)" +
+            "www.example.com:50212" +
+            "www.example.com(35.231.208.148)" +
+            "35.231.208.148:50211" +
+            "35.231.208.148")
+        expect(wrapper.get("#grpcEndpointValue").text()).toBe("www.example.com:42(34.94.106.6)")
 
         expect(wrapper.get("#yearlyRate").text()).toBe("LAST PERIOD REWARD RATE 1%APPROX ANNUAL EQUIVALENT")
         expect(wrapper.get("#consensusStake").text()).toBe("STAKE FOR CONSENSUS 6,000,000HBAR25.00% of total")

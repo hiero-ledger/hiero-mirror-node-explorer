@@ -66,6 +66,12 @@
             <Endpoints :endpoints="node?.service_endpoints"></Endpoints>
           </template>
         </Property>
+        <Property id="grpcEndpoint">
+          <template #name>gRPC Web Proxy Endpoint</template>
+          <template #value>
+            <Endpoints :endpoints="node?.grpc_proxy_endpoint ? [node.grpc_proxy_endpoint] : []"></Endpoints>
+          </template>
+        </Property>
         <Property id="adminKey">
           <template #name>Admin Key</template>
           <template #value>

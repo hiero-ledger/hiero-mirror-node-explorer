@@ -3619,6 +3619,11 @@ export const SAMPLE_NETWORK_NODES = {
             "decline_reward": null,
             "description": "Hosted by Hedera | East Coast, USA",
             "file_id": "0.0.102",
+            "grpc_proxy_endpoint": {
+                "domain_name": "www.example.com",
+                "ip_address_v4": "34.94.106.6",
+                "port": 42
+            },
             "memo": "0.0.3",
             "node_id": 0,
             "node_account_id": "0.0.3",
@@ -3627,24 +3632,29 @@ export const SAMPLE_NETWORK_NODES = {
             "reward_rate_start": 2740,
             "service_endpoints": [
                 {
+                    "domain_name": "www.example.com",
                     "ip_address_v4": "3.211.248.172",
                     "port": 50211
                 },
                 {
-                    "ip_address_v4": "3.211.248.172",
+                    "domain_name": "www.example.com",
+                    "ip_address_v4": "",
                     "port": 50212
                 },
                 {
+                    "domain_name": "www.example.com",
                     "ip_address_v4": "35.231.208.148",
                     "port": 0
                 },
                 {
+                    "domain_name": "",
                     "ip_address_v4": "35.231.208.148",
                     "port": 50211
                 },
                 {
+                    "domain_name": "",
                     "ip_address_v4": "35.231.208.148",
-                    "port": 50212
+                    "port": 0
                 },
             ],
             "timestamp": {
@@ -3670,10 +3680,13 @@ export const SAMPLE_NETWORK_NODES = {
             "reward_rate_start": 5479,
             "service_endpoints": [
                 {
+                    "domain_name": "",
                     "ip_address_v4": "3.133.213.146",
                     "port": 50211
                 },
                 {
+                    "domain_name": "",
+                    "ip_address_v4": "",
                     "port": 50212
                 }
             ],
@@ -3704,11 +3717,14 @@ export const SAMPLE_NETWORK_NODES = {
             "reward_rate_start": 8219,
             "service_endpoints": [
                 {
+                    "domain_name": "",
                     "ip_address_v4": "3.133.213.146",
                     "port": 50211
                 },
                 {
-                    "ip_address_v4": "3.133.213.147"
+                    "domain_name": "",
+                    "ip_address_v4": "3.133.213.147",
+                    "port": 0
                 }
             ],
             "timestamp": {

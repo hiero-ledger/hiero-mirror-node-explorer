@@ -30,7 +30,7 @@ describe("Endpoint.vue", () => {
         await flushPromises()
     })
 
-    it("should not output an endpoint where the address is undefined", async () => {
+    it("should not output an endpoint when both domain_name and address are undefined", async () => {
         const wrapper = mount(Endpoints, {
             props: {
                 endpoints: SAMPLE_NETWORK_NODES.nodes[1].service_endpoints as Array<ServiceEndPoint>
@@ -43,7 +43,7 @@ describe("Endpoint.vue", () => {
         await flushPromises()
     })
 
-    it("should output an endpoint address alone when port is undefined", async () => {
+    it("should output endpoint address without port when port is 0", async () => {
         const wrapper = mount(Endpoints, {
             props: {
                 endpoints: SAMPLE_NETWORK_NODES.nodes[2].service_endpoints as Array<ServiceEndPoint>
@@ -58,7 +58,7 @@ describe("Endpoint.vue", () => {
         await flushPromises()
     })
 
-    it("should ouput <address>:<port> for all 5 endpoints", async () => {
+    it("should ouput all variants of endpoint", async () => {
         const wrapper = mount(Endpoints, {
             props: {
                 endpoints: SAMPLE_NETWORK_NODES.nodes[0].service_endpoints as Array<ServiceEndPoint>
@@ -66,11 +66,12 @@ describe("Endpoint.vue", () => {
         });
         await flushPromises()
         expect(wrapper.text()).toBe(
-            "3.211.248.172:50211" +
-            "3.211.248.172:50212" +
-            "35.231.208.148:0" +
+            "www.example.com:50211(3.211.248.172)" +
+            "www.example.com:50212" +
+            "www.example.com(35.231.208.148)" +
             "35.231.208.148:50211" +
-            "35.231.208.148:50212")
+            "35.231.208.148"
+        )
 
         wrapper.unmount()
         await flushPromises()
