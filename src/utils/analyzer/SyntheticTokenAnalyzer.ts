@@ -56,7 +56,7 @@ export class SyntheticTokenAnalyzer {
         () => this.tocLocParser.errorNotification.value)
 
     public readonly isHts = computed(() => this.tocLocParser.isToken.value)
-    public readonly isErc = computed(() => this.tocLocParser.isContract.value)
+    public readonly isErc = computed(() => this.ercTokenInfo.value !== null)
 
     public readonly isErc20 = computed(() => this.type.value === "ERC-20")
     public readonly isErc721 = computed(() => this.type.value === "ERC-721")
