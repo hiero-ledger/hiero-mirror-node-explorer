@@ -14,7 +14,7 @@
   <div v-if="props.endpoints && props.endpoints.length > 0">
     <div v-for="s in props.endpoints" :key="s.ip_address_v4" class="h-is-monospace">
       <template v-if="s.domain_name.length > 0">
-        <span>{{ s.domain_name.length > 0 ? s.domain_name : "www.example.com"}}</span>
+        <span>{{ s.domain_name }}</span>
         <span v-if="s.port > 0" class="h-is-low-contrast">{{ ':' + s.port }}</span>
         <span v-if="s.ip_address_v4.length > 0" class="ml-1">{{ `(${s.ip_address_v4})` }}</span>
       </template>
