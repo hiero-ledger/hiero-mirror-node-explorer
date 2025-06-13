@@ -65,6 +65,15 @@
       </template>
     </DashboardCardV2>
 
+    <DashboardCardV2>
+      <template #title>
+        Map
+      </template>
+      <template #content>
+        <NodeMap :nodes="nodes"/>
+      </template>
+    </DashboardCardV2>
+
     <DashboardCardV2 collapsible-key="nodes">
       <template #title>
         <span>{{ `${nodes.length}  Nodes` }}</span>
@@ -94,6 +103,7 @@ import {makeAnnualizedRate} from "@/schemas/MirrorNodeUtils.ts";
 import {CoreConfig} from "@/config/CoreConfig.ts";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import NetworkDashboardItemV2 from "@/components/node/NetworkDashboardItemV2.vue";
+import NodeMap from "@/components/node/NodeMap.vue";
 import {routeManager} from "@/utils/RouteManager.ts";
 
 defineProps({
