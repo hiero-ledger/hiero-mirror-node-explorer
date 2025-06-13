@@ -4,7 +4,7 @@ import {computed, inject, ref, watch} from "vue";
 import {CoreConfig} from "@/config/CoreConfig.ts";
 import {Portal} from "@/utils/profile/Portal.ts";
 import {profileControllerKey} from "@/AppKeys.ts";
-import {routeManager} from '@/router.ts'
+import {routeManager} from "@/utils/RouteManager.ts";
 
 export class ProfileController {
 

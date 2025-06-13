@@ -25,12 +25,12 @@
 <script setup lang="ts">
 
 import {computed, PropType} from "vue";
-import {routeManager} from "@/router.ts";
 import TaskDialog from "@/dialogs/core/task/TaskDialog.vue";
 import {ProfileController} from "@/utils/profile/ProfileController.ts";
 import {TaskController} from "@/dialogs/core/task/TaskController.ts";
 import {TaskPanelMode} from "@/dialogs/core/DialogUtils.ts";
 import TaskPanel from "@/dialogs/core/task/TaskPanel.vue";
+import {routeManager} from "@/utils/RouteManager.ts";
 
 const showDialog = defineModel("showDialog", {
   type: Boolean,

@@ -9,7 +9,7 @@ import {ProfileController} from "@/utils/profile/ProfileController.ts";
 import {BlockByNbCache} from "@/utils/cache/BlockByNbCache.ts";
 import {EntityAnalyzer, EntityReportType} from "@/utils/analyzer/EntityAnalyzer.ts";
 import {makePublicKeyDER} from "@/schemas/MirrorNodeUtils.ts";
-import {routeManager} from "@/router.ts";
+import {routeManager} from "@/utils/RouteManager.ts";
 
 export class EditBookmarkController extends TaskController {
 
