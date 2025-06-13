@@ -1,3 +1,5 @@
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/hiero-ledger/hiero-mirror-node-explorer/badge)](https://api.scorecard.dev/projects/github.com/hiero-ledger/hiero-mirror-node-explorer)
+[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/10697/badge)](https://bestpractices.coreinfrastructure.org/projects/10697)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 # hiero-ledger/hiero-mirror-node-explorer
@@ -101,6 +103,14 @@ Please see
 Contributions are welcome. Please see the
 [contributing guide](https://github.com/hashgraph/.github/blob/main/CONTRIBUTING.md)
 to see how you can get involved.
+
+## Help/Community
+
+- Join our [community discussions](https://discord.lfdecentralizedtrust.org/) on discord.
+
+## About Users and Maintainers
+
+- Users and Maintainers guidelines are located in **[Hiero-Ledger's roles and groups guidelines](https://github.com/hiero-ledger/governance/blob/main/roles-and-groups.md#maintainers).**
 
 ## Code of Conduct
 
