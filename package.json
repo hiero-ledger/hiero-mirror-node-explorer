@@ -37,6 +37,7 @@
     "@oruga-ui/oruga-next": "^0.11.1",
     "@oruga-ui/theme-oruga": "^0.7.0",
     "@vuepic/vue-datepicker": "^11.0.2",
+    "@vueuse/core": "^13.3.0",
     "@walletconnect/modal": "^2.7.0",
     "@walletconnect/sign-client": "^2.21.4",
     "@walletconnect/types": "^2.21.4",
