@@ -58,6 +58,7 @@ export abstract class ChartController<M> {
             this.chart = null
         }
         this.error.value = null
+        this.revealed.value = false
         this.watchHandles.forEach(w => w())
         this.watchHandles = []
         if (this.observer !== null) {
