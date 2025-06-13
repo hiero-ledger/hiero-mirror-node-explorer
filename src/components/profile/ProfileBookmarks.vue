@@ -104,9 +104,9 @@ import {Pencil, Trash2} from 'lucide-vue-next';
 import EditBookmarkDialog from "@/dialogs/profile/EditBookmarkDialog.vue";
 import DeleteBookmarkDialog from "@/dialogs/profile/DeleteBookmarkDialog.vue";
 import {RouteLocationRaw} from "vue-router";
-import {routeManager} from "@/router.ts";
 import EntityLink from "@/components/values/link/EntityLink.vue";
 import BlobValue from "@/components/values/BlobValue.vue";
+import {routeManager} from "@/utils/RouteManager.ts";
 
 const profileController = ProfileController.inject()
 const connectionStatus = profileController.connectionStatus

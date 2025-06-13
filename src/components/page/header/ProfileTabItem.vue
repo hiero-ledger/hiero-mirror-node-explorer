@@ -20,10 +20,10 @@
 <script setup lang="ts">
 
 import {computed} from "vue";
-import {routeManager} from "@/router.ts";
-import {TabId} from "@/utils/RouteManager.ts";
+import {routeManager} from "@/utils/RouteManager.ts";
 import {Zap} from "lucide-vue-next";
 import {ProfileConnectionStatus, ProfileController} from "@/utils/profile/ProfileController.ts";
+import {TabId} from "@/router.ts";
 
 const targetRoute = routeManager.makeRouteToProfile()
 const isRimmed = computed(() => TabId.Profile === routeManager.currentTabId.value)

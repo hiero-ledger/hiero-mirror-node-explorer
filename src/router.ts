@@ -32,6 +32,7 @@ import NodeDetails from "@/pages/NodeDetails.vue";
 import Staking from "@/pages/Staking.vue";
 import Blocks from "@/pages/Blocks.vue";
 import BlockDetails from "@/pages/BlockDetails.vue";
+import Profile from "@/pages/Profile.vue";
 import SearchHelp from "@/pages/SearchHelp.vue";
 
 export enum TabId {
@@ -44,6 +45,7 @@ export enum TabId {
     Nodes = "Nodes",
     Staking = "Staking",
     Blocks = "Blocks",
+    Profile = "Profile"
 }
 
 export const routes: Array<RouteRecordRaw> = [
@@ -170,6 +172,15 @@ export const routes: Array<RouteRecordRaw> = [
         props: true,
         meta: {
             tabId: TabId.Nodes
+        }
+    },
+    {
+        path: '/:network/profile',
+        name: 'Profile',
+        component: Profile,
+        props: true,
+        meta: {
+            tabId: TabId.Profile
         }
     },
     {
