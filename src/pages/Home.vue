@@ -39,6 +39,10 @@
           Other Charts
         </div>
 
+        <div style="display: flex">
+          <CounterView :controller="contractCounterController"/>
+        </div>
+
         <div class="dashboard-separator"/>
 
         <div class="dashboard-content">
@@ -83,6 +87,7 @@ import Footer from "@/components/page/Footer.vue";
 import HomeHeader from "@/components/page/header/HomeHeader.vue";
 import {TxOverTimeController} from "@/charts/hgraph/TxOverTimeController.ts";
 import ChartView from "@/charts/core/ChartView.vue";
+import CounterView from "@/charts/core/CounterView.vue";
 import {NetworkFeeController} from "@/charts/hgraph/NetworkFeeController.ts";
 import {ActiveAccountController} from "@/charts/hgraph/ActiveAccountController.ts";
 import {AccountGrowthController} from "@/charts/hgraph/AccountGrowthController.ts";
@@ -92,6 +97,7 @@ import {ThemeController} from "@/components/ThemeController.ts";
 
 import {routeManager} from "@/utils/RouteManager.ts";
 import {TPSController} from "@/charts/hgraph/TPSController.ts";
+import {TransactionCounterController} from "@/charts/core/CounterController.ts";
 
 defineProps({
   network: String
@@ -128,6 +134,10 @@ onBeforeUnmount(() => avgTimeToConsensusController.unmount())
 const tpsController = new TPSController(themeController, routeManager)
 onMounted(() => tpsController.mount())
 onBeforeUnmount(() => tpsController.unmount())
+
+const contractCounterController = new TransactionCounterController(11, "Account Created", "", routeManager)
+onMounted(() => contractCounterController.mount())
+onBeforeUnmount(() => contractCounterController.unmount())
 
 
 </script>
