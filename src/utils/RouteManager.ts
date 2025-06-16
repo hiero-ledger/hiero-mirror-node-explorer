@@ -135,7 +135,7 @@ export class RouteManager {
         const defaultNetwork = AppStorage.getLastNetwork() ?? networkConfig.entries[0].name
         this.router.addRoute({
             path: '/',
-            redirect: '/' + defaultNetwork + '/dashboard'
+            redirect: '/' + defaultNetwork + '/home'
         })
         this.router.addRoute({
             path: '/page-not-found',
@@ -530,7 +530,7 @@ export class RouteManager {
 
         switch (to.name as string) {
             case "MainDashboard":
-                document.title = titlePrefix + "Dashboard"
+                document.title = titlePrefix + "Home"
                 break;
             case "TransactionsById":
                 document.title = titlePrefix + "Transactions with ID " + TransactionID.normalizeForDisplay(to.params.transactionId as string)

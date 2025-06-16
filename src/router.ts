@@ -35,7 +35,7 @@ import BlockDetails from "@/pages/BlockDetails.vue";
 import SearchHelp from "@/pages/SearchHelp.vue";
 
 export enum TabId {
-    Dashboard = "Dashboard",
+    Home = "Home",
     Transactions = "Transactions",
     Tokens = "Tokens",
     Topics = "Topics",
@@ -49,7 +49,7 @@ export enum TabId {
 export const routes: Array<RouteRecordRaw> = [
     {
         path: '/',
-        redirect: '/' + AppStorage.getLastNetwork() + '/dashboard'
+        redirect: '/' + AppStorage.getLastNetwork() + '/home'
     },
     {
         path: '/page-not-found',
@@ -68,14 +68,21 @@ export const routes: Array<RouteRecordRaw> = [
         redirect: {name: 'MainDashboard'}
     },
     {
-        path: '/:network/dashboard',
+        path: '/:network/home',
         name: 'MainDashboard',
         component: MainDashboard,
         props: true,
         meta: {
-            tabId: TabId.Dashboard
+            tabId: TabId.Home
         }
     },
+    // {
+    //     path: '/:network/dashboard',
+    //     redirect: to => {
+    //         // receives the target route as the argument
+    //         return to.path.replace(/dashboard$/, 'home')
+    //     },
+    // },
     {
         path: '/:network/spec',
         name: 'RoutingSpec',

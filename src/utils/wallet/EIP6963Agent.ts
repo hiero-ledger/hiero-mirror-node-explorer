@@ -250,7 +250,7 @@ const NATIVE_CURRENCY = {
 const CHAIN_PARAM_MAINNET: AddEthereumChainParameter = {
     chainId: "0x127",
     blockExplorerUrls: [
-        "https://hashscan.io/mainnet/dashboard"
+        "https://hashscan.io/mainnet/home"
     ],
     chainName: "Hedera Mainnet",
     iconUrls: [
@@ -265,7 +265,7 @@ const CHAIN_PARAM_MAINNET: AddEthereumChainParameter = {
 const CHAIN_PARAM_TESTNET: AddEthereumChainParameter = {
     chainId: "0x128",
     blockExplorerUrls: [
-        "https://hashscan.io/testnet/dashboard"
+        "https://hashscan.io/testnet/home"
     ],
     chainName: "Hedera Testnet",
     iconUrls: [
@@ -280,7 +280,7 @@ const CHAIN_PARAM_TESTNET: AddEthereumChainParameter = {
 const CHAIN_PARAM_PREVIEWNET: AddEthereumChainParameter = {
     chainId: "0x129",
     blockExplorerUrls: [
-        "https://hashscan.io/previewnet/dashboard"
+        "https://hashscan.io/previewnet/home"
     ],
     chainName: "Hedera Previewnet",
     iconUrls: [

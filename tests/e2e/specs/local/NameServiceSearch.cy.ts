@@ -5,8 +5,8 @@
 describe('Name Service Search', () => {
 
     beforeEach(() => {
-        cy.visit('/mainnet/dashboard')
-        cy.url().should('include', '/mainnet/dashboard')
+        cy.visit('/mainnet/home')
+        cy.url().should('include', '/mainnet/home')
     })
 
     it('should find account with KNS name', () => {

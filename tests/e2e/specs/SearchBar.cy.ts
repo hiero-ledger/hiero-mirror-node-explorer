@@ -9,8 +9,8 @@ import {makeExchangeFormat} from "../TestUtils";
 describe('Search Bar', () => {
 
     beforeEach(() => {
-        cy.visit('/mainnet/dashboard')
-        cy.url().should('include', '/mainnet/dashboard')
+        cy.visit('/mainnet/home')
+        cy.url().should('include', '/mainnet/home')
     })
 
     it('should find the account ID', () => {
@@ -91,7 +91,7 @@ describe('Search Bar', () => {
     })
 
     it('should find the transaction by hash', () => {
-        cy.visit('/mainnet/dashboard')
+        cy.visit('/mainnet/home')
         const searchHash = "0x08e62c0531e603fa6d29930195682e937978d542bd404d490546717bb128da4ec4ed586e6d516735f24049b2c3eb7b20"
         const timestamp = "1674821555.935799283"
         testBodyV2(
@@ -103,7 +103,7 @@ describe('Search Bar', () => {
     })
 
     it('should find the transaction by evm hash', () => {
-        cy.visit('/mainnet/dashboard')
+        cy.visit('/mainnet/home')
         const searchEvmHash = "0x08e62c0531e603fa6d29930195682e937978d542bd404d490546717bb128da4e"
         const timestamp = "1674821555.935799283"
         testBodyV2(
@@ -192,7 +192,7 @@ describe('Search Bar', () => {
     })
 
     it('should find the account by public key', () => {
-        cy.visit('/mainnet/dashboard')
+        cy.visit('/mainnet/home')
         const searchKey = "0x02e783457e4d054db3c7850c2dc83e458a13b210fca75984bc7cfb0fae7343ff60"
         const searchAccount = "0.0.1753997"
         testBodyV2(
@@ -207,14 +207,14 @@ describe('Search Bar', () => {
         const searchBase32Alias = "CIQAAAH4AY2OFK2FL37TSPYEQGPPUJRP4XTKWHD62HKPQX543DTOFFQ"
         const searchHexaAlias = "0x12200000fc0634e2ab455eff393f04819efa262fe5e6ab1c7ed1d4f85fbcd8e6e296"
         const searchAccount = "0.0.721838"
-        cy.visit('/mainnet/dashboard')
+        cy.visit('/mainnet/home')
         testBodyV2(
             searchBase32Alias,
             '/mainnet/account/' + searchAccount,
             'Account ' + searchAccount,
             false,
         )
-        cy.visit('/mainnet/dashboard')
+        cy.visit('/mainnet/home')
         testBodyV2(
             searchHexaAlias,
             '/mainnet/account/' + searchAccount,
@@ -224,7 +224,7 @@ describe('Search Bar', () => {
     })
 
     it('should find the account by Ethereum-format alias', () => {
-        cy.visit('/mainnet/dashboard')
+        cy.visit('/mainnet/home')
         const searchAccount = "0.0.721838"
         testBodyV2(
             searchAccount,
@@ -235,17 +235,17 @@ describe('Search Bar', () => {
     })
 
     it('should not fail with empty search string', () => {
-        cy.visit('/testnet/dashboard')
+        cy.visit('/testnet/home')
 
         cy.get('[data-cy=searchBar]').submit()
 
-        cy.url().should('include', '/testnet/dashboard')
+        cy.url().should('include', '/testnet/home')
         cy.get('form').get('input').should('be.enabled')
     })
 
     it('should bring "No result" with unknown ID', () => {
         const unknownID = "42.42.42"
-        cy.visit('/testnet/dashboard')
+        cy.visit('/testnet/home')
         cy.get('[data-cy=searchBar]').within(() => {
             cy.get('input').type(unknownID)
         })

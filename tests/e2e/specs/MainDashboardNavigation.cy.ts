@@ -6,7 +6,7 @@ describe('Main Dashboard sanity check', () => {
 
     it('should include the expected high level components', () => {
         cy.visit('/')
-        cy.url().should('include', '/' + defaultNetwork + '/dashboard')
+        cy.url().should('include', '/' + defaultNetwork + '/home')
 
         cy.get('.market-dashboard')
             .find('[data-cy="market-dashboard-item"]')

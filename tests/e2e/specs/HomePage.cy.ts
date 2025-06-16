@@ -8,21 +8,21 @@ describe('Hedera Explorer home page', () => {
 
     it('Visits the app root URL', () => {
         cy.visit('/')
-        cy.url().should('include', '/' + defaultNetwork + '/dashboard')
+        cy.url().should('include', '/' + defaultNetwork + '/home')
         cy.contains('Transactions Over Time')
         cy.contains('Network Fees')
         cy.contains('Active Accounts')
     })
     it('Visits the /network URL', () => {
         cy.visit('/' + defaultNetwork)
-        cy.url().should('include', '/' + defaultNetwork + '/dashboard')
+        cy.url().should('include', '/' + defaultNetwork + '/home')
         cy.contains('Transactions Over Time')
         cy.contains('Network Fees')
         cy.contains('Active Accounts')
     })
     it('Visits an old hash-based URL', () => {
         cy.visit('/#/testnet/token/0.0.48789573')
-        cy.url().should('include', '/' + defaultNetwork + '/dashboard')
+        cy.url().should('include', '/' + defaultNetwork + '/home')
         cy.contains('Transactions Over Time')
         cy.contains('Network Fees')
         cy.contains('Active Accounts')

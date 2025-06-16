@@ -9,7 +9,7 @@ describe('Top Navigation Bar', () => {
     beforeEach(() => {
         cy.viewport(2000, 800)
         cy.visit('/')
-        cy.url().should('include', '/' + defaultNetwork + '/dashboard')
+        cy.url().should('include', '/' + defaultNetwork + '/home')
     })
 
     it('should switch networks', () => {
@@ -21,7 +21,7 @@ describe('Top Navigation Bar', () => {
             .select('MAINNET')
             .should('have.value', 'mainnet')
 
-        cy.url().should('include', '/mainnet/dashboard')
+        cy.url().should('include', '/mainnet/home')
         cy.contains('Transactions Over Time')
         cy.contains('Network Fees')
         cy.contains('Active Accounts')
@@ -30,7 +30,7 @@ describe('Top Navigation Bar', () => {
             .select('TESTNET')
             .should('have.value', 'testnet')
 
-        cy.url().should('include', '/testnet/dashboard')
+        cy.url().should('include', '/testnet/home')
         cy.contains('Transactions Over Time')
         cy.contains('Network Fees')
         cy.contains('Active Accounts')
@@ -39,7 +39,7 @@ describe('Top Navigation Bar', () => {
             .select('PREVIEWNET')
             .should('have.value', 'previewnet')
 
-        cy.url().should('include', '/previewnet/dashboard')
+        cy.url().should('include', '/previewnet/home')
     })
 
     it('should navigate to top level pages', () => {
@@ -70,7 +70,7 @@ describe('Top Navigation Bar', () => {
         cy.contains('Blocks').click()
         cy.contains('Blocks')
 
-        cy.contains('Dashboard').click()
+        cy.contains('Home').click()
         cy.contains('Transactions Over Time')
         cy.contains('Network Fees')
         cy.contains('Active Accounts')

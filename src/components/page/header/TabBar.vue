@@ -7,7 +7,7 @@
 <template>
   <div class="tab-bar" :class="{'vertical': props.vertical}">
 
-    <TabItem :tabId="TabId.Dashboard"
+    <TabItem :tabId="TabId.Home"
              :target-route="routeManager.makeRouteToMainDashboard()"/>
     <TabItem :tabId="TabId.Transactions"
              :target-route="routeManager.makeRouteToTransactions()"/>

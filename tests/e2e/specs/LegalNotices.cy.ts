@@ -6,7 +6,7 @@ describe('Hedera Explorer legal notices', () => {
 
     it('Visits the terms of use notice', () => {
         cy.visit('/testnet')
-        cy.url().should('include', '/testnet/dashboard')
+        cy.url().should('include', '/testnet/home')
         cy.get('[data-cy=termsOfUse]').should('not.exist')
     })
 
