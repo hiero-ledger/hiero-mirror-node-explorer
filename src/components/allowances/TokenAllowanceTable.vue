@@ -32,7 +32,7 @@
       <TokenLink :token-id="props.row.token_id" :show-extra="true"/>
     </o-table-column>
 
-    <o-table-column v-slot="props" field="amount" label="AMOUNT">
+    <o-table-column v-slot="props" field="amount" label="AMOUNT REMAINING">
       <TokenAmount :token-id="props.row.token_id" :amount="BigInt(props.row.amount)"/>
     </o-table-column>
 
