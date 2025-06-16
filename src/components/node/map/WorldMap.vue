@@ -7,8 +7,6 @@
 <template>
   <div class="stack">
     <img ref="imgRef" :src="worldMapURL" alt=""/>
-    <div>imgHeight: {{ imgSize.height }}</div>
-    <div style="left:100px; top: 50px; position: absolute">o</div>
     <template v-for="(annotation, index) of props.annotations" :key="index">
       <MarkerView
           :xy="projectToXY(annotation.lat, annotation.lon)"
