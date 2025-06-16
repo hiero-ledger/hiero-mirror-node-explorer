@@ -15,7 +15,7 @@
 <script setup lang="ts">
 
 import {PropType} from "vue";
-import MarketDashboardItem from "@/components/dashboard/MarketDashboardItem.vue";
+import MarketDashboardItem from "@/components/home/MarketDashboardItem.vue";
 import {CounterController} from "@/charts/core/CounterController.ts";
 
 
