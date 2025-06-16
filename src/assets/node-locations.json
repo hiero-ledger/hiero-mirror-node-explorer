@@ -49,6 +49,81 @@
       "name": "Texas",
       "lat": 30.2711286,
       "lon": -97.7436995
+    },
+    {
+      "name": "Berlin",
+      "lat": 52.51089,
+      "lon": 13.39894
+    },
+    {
+      "name": "Pennsylvania",
+      "lat": 40.26631,
+      "lon": -76.88611
+    },
+    {
+      "name": "Singapore",
+      "lat": 1.28992,
+      "lon": 103.85191
+    },
+    {
+      "name": "Johannesburg",
+      "lat": -26.20500,
+      "lon": 28.04972
+    },
+    {
+      "name": "Sydney",
+      "lat": -33.86984,
+      "lon": 151.20828
+    },
+    {
+      "name": "Paris",
+      "lat": 48.85889,
+      "lon": 2.32004
+    },
+    {
+      "name": "Paris",
+      "lat": 48.85889,
+      "lon": 2.32004
+    },
+    {
+      "name": "London",
+      "lat": 51.50745,
+      "lon": -0.12777
+    },
+    {
+      "name": "Michigan",
+      "lat": 43.62120,
+      "lon": -84.68243
+    },
+    {
+      "name": "Naaldwijk",
+      "lat": 51.99300,
+      "lon": -4.20742
+    },
+    {
+      "name": "Washington",
+      "lat": 47.39263,
+      "lon": -120.57857
+    },
+    {
+      "name": "Quebec",
+      "lat": 46.80623,
+      "lon": -71.21169
+    },
+    {
+      "name": "Virginia",
+      "lat": 37.12322,
+      "lon": -78.49277
+    },
+    {
+      "name": "Mumbai",
+      "lat": 19.05500,
+      "lon": 72.86920
+    },
+    {
+      "name": "Stockholm",
+      "lat": 59.32512,
+      "lon": 18.07109
     }
   ],
   "entries": [
@@ -106,6 +181,11 @@
       "nodeName": "IBM",
       "nodePublicKey": "0x308201a2300d06092a864886f70d01010105000382018f003082018a028201810098755a408b5321e263052000d6d7d4a2c3a554d5e1384a9cb5ebf474ae882c63b486bd08d144ddf1a94ce9a7d6251963006afdaac458846f17640195fe2539a656930efa854f2148e68ec1a08c1c49d200c3f3045fe7147f06d534c4bd262100cb1dd39739d760d81a0bd20f83f255d2507d4ccb1106b53618c6a94409c887cae262d4cee9c86232147cec1404e0c57bba7317130ee39643888af3d598edd82b8c61e65ae81a4e1a56bc06d397143a98d41ca87d3ef433ef0aeab6801191b3e38480968f66b6e88662af45a9e212994f68b288eb967beb98478c243e2136c1a1591f061f5bc04b21ff2ba48b29f18431088873bdfe99f8a52e9408971856e804dea602a311786c985652963c3a3770329b409f74fdfc746b22a5f8418912071c4ce846c9b4b320fedf6e9b64e2cbe384f9a82b6aaad4b20907431df1a33f69207a565600be81070d0832900995859a4498d5b59315bcebefee807eb0a3a942f1cdf3367dd4444fdb29886efcdd0be4abe9a188803953875eda33db72989f763b0203010001",
       "placeName": "Texas"
+    },
+    {
+      "nodeName": "Deutsche Telekom",
+      "nodePublicKey": "0x308201a2300d06092a864886f70d01010105000382018f003082018a0282018100a9db7f8baa126898fab789115a3b5d89744f197e28041ae098f3e886c69871721e11bb0ad11f3ce9124aa961d6a0dc845f49765c3fab19958402676f564462bf281dba5588780f03e905798e184269aaa60f7a1472331e2fb1deadd877c84cbcb641ca9e5c8ad6e45bc159cb079fcb0d449cdcd8d9239c1a047e7b448da0cdca26610a25f296d96e7469b676d4a444516e7a59e85293a8086f840c052854e02a8cb2002dad35825be4d83b52fa91e8c73ff049746148862787c1118f924d31cbac1b44feff22d436b3979eadf9b43a4bfa72e15b4755fcab260e06a279c3bb73bc7f16a060d4d522fd490580388aa595d8044736e522f6424915f7803b7583e095cdf78c32519697de81b89fb50054753b1a17f9aafb064d84c992f9ab11ccbc8cb10814dcaf5264aa45f21bdefac82ccacaaf358e31373ee1ba4e7402fd8a70ea0c28ca5cc74dc42510c969cd2c459b1ec3688a01ea39a992710cd2297c98a84b6348a577804fdc234d3fe1903e2c21e172da28b59ae6e4c7e8edd8b71c49d70203010001",
+      "placeName": "Berlin"
     }
   ]
 }
