@@ -5,10 +5,10 @@
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <template>
-  <router-link v-if="isXLargeScreen" :to="routeManager.makeRouteToMainDashboard()">
+  <router-link v-if="isXLargeScreen" :to="routeManager.makeRouteToHome()">
     <img alt="Product Logo" :src="productLogoURL"/>
   </router-link>
-  <router-link v-else-if="productMiniLogoURL !== null" :to="routeManager.makeRouteToMainDashboard()">
+  <router-link v-else-if="productMiniLogoURL !== null" :to="routeManager.makeRouteToHome()">
     <img class="mini-logo" alt="Product Logo" :src="productMiniLogoURL"/>
   </router-link>
 </template>

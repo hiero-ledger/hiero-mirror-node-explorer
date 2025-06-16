@@ -4,7 +4,7 @@ import {describe, expect, test} from 'vitest'
 import {flushPromises, mount} from "@vue/test-utils"
 import axios from "axios";
 import {SAMPLE_NETWORK_EXCHANGERATE, SAMPLE_NETWORK_SUPPLY,} from "../Mocks";
-import MainDashboard from "@/pages/MainDashboard.vue";
+import Home from "@/pages/Home.vue";
 import MockAdapter from "axios-mock-adapter";
 import Oruga from "@oruga-ui/oruga-next";
 import {HMSF} from "@/utils/HMSF";
@@ -21,7 +21,7 @@ import router from "@/utils/RouteManager.ts";
 
 HMSF.forceUTC = true
 
-describe("MainDashboard.vue", () => {
+describe("Home.vue", () => {
 
     test("no props", async () => {
 
@@ -33,7 +33,7 @@ describe("MainDashboard.vue", () => {
         const matcher4 = "/api/v1/network/exchangerate"
         mock.onGet(matcher4).reply(200, SAMPLE_NETWORK_EXCHANGERATE);
 
-        const wrapper = mount(MainDashboard, {
+        const wrapper = mount(Home, {
             global: {
                 plugins: [router, Oruga]
             },

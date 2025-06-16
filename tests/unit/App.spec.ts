@@ -9,7 +9,7 @@ import MockAdapter from "axios-mock-adapter";
 import Oruga from "@oruga-ui/oruga-next";
 import {HMSF} from "@/utils/HMSF";
 import {NetworkConfig} from "@/config/NetworkConfig.ts";
-import MainDashboardHeader from "@/components/page/header/MainDashboardHeader.vue";
+import HomeHeader from "@/components/page/header/HomeHeader.vue";
 import Footer from "@/components/page/Footer.vue";
 import ChartView from "@/charts/core/ChartView.vue";
 import router, {routeManager} from "@/utils/RouteManager.ts";
@@ -27,7 +27,7 @@ describe("App.vue", () => {
 
     test("normal screen", async () => {
 
-        await router.push({name: "MainDashboard", params: {network: 'mainnet'}})
+        await router.push({name: "Home", params: {network: 'mainnet'}})
         Object.defineProperty(window, 'innerWidth', {writable: true, configurable: true, value: 1920})
 
         const mock = new MockAdapter(axios as any)
@@ -98,7 +98,7 @@ describe("App.vue", () => {
         const charts = wrapper.findAllComponents(ChartView)
         expect(charts.length).toBe(0)
 
-        expect(wrapper.findComponent(MainDashboardHeader).exists()).toBe(true)
+        expect(wrapper.findComponent(HomeHeader).exists()).toBe(true)
         expect(wrapper.findComponent(Footer).exists()).toBe(true)
 
         mock.restore()

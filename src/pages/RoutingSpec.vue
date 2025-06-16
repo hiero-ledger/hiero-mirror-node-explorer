@@ -71,7 +71,7 @@ const handleClick = (item: number) => {
 const routes = ref([
   {
     title: "/{network}/home",
-    subtitle: "Dashboard",
+    subtitle: "Home",
     description: `Displays general information about ${cryptoName} and tables showing recent transfers, contract calls, and HCS messages.`,
     data: [
       cryptoName + " Price",

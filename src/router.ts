@@ -3,7 +3,7 @@
 import {RouteRecordRaw} from "vue-router";
 import {AppStorage} from "@/AppStorage.ts";
 import PageNotFound from "@/pages/PageNotFound.vue";
-import MainDashboard from "@/pages/MainDashboard.vue";
+import Home from "@/pages/Home.vue";
 import RoutingSpec from "@/pages/RoutingSpec.vue";
 import Transactions from "@/pages/Transactions.vue";
 import TransactionsById from "@/pages/TransactionsById.vue";
@@ -65,12 +65,12 @@ export const routes: Array<RouteRecordRaw> = [
     },
     {
         path: '/:network',
-        redirect: {name: 'MainDashboard'}
+        redirect: {name: 'Home'}
     },
     {
         path: '/:network/home',
-        name: 'MainDashboard',
-        component: MainDashboard,
+        name: 'Home',
+        component: Home,
         props: true,
         meta: {
             tabId: TabId.Home

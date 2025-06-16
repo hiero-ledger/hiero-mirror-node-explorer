@@ -8,7 +8,7 @@
   <div class="tab-bar" :class="{'vertical': props.vertical}">
 
     <TabItem :tabId="TabId.Home"
-             :target-route="routeManager.makeRouteToMainDashboard()"/>
+             :target-route="routeManager.makeRouteToHome()"/>
     <TabItem :tabId="TabId.Transactions"
              :target-route="routeManager.makeRouteToTransactions()"/>
     <TabItem :tabId="TabId.Tokens"

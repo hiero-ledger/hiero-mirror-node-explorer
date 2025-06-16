@@ -8,30 +8,30 @@
 
   <template v-if="showCharts">
     <div class="h-page-frame">
-      <MainDashboardHeader/>
+      <HomeHeader/>
 
       <div class="h-page-content">
-        <div class="dashboard-title">
+        <div class="home-title">
           Network
         </div>
 
-        <div class="dashboard-separator"/>
+        <div class="home-separator"/>
 
-        <div class="dashboard-content">
+        <div class="home-content">
           <ChartView :controller="txOverTimeController" data-cy="chart-view"/>
         </div>
 
-        <div class="dashboard-content">
+        <div class="home-content">
           <ChartView :controller="networkFeeController" data-cy="chart-view"/>
         </div>
 
-        <div class="dashboard-title">
+        <div class="home-title">
           Accounts
         </div>
 
-        <div class="dashboard-separator"/>
+        <div class="home-separator"/>
 
-        <div class="dashboard-content">
+        <div class="home-content">
           <ChartView :controller="activeAccountsController" data-cy="chart-view"/>
         </div>
       </div>
@@ -42,7 +42,7 @@
 
   <template v-else>
     <div class="h-page-frame">
-      <MainDashboardHeader full-page/>
+      <HomeHeader full-page/>
       <Footer/>
     </div>
   </template>
@@ -57,7 +57,7 @@
 
 import {computed, onBeforeUnmount, onMounted} from 'vue';
 import Footer from "@/components/page/Footer.vue";
-import MainDashboardHeader from "@/components/page/header/MainDashboardHeader.vue";
+import HomeHeader from "@/components/page/header/HomeHeader.vue";
 import {TxOverTimeController} from "@/charts/hgraph/TxOverTimeController.ts";
 import ChartView from "@/charts/core/ChartView.vue";
 import {NetworkFeeController} from "@/charts/hgraph/NetworkFeeController.ts";
@@ -94,7 +94,7 @@ onBeforeUnmount(() => activeAccountsController.unmount())
 
 <style scoped>
 
-div.dashboard-title {
+div.home-title {
   color: var(--text-primary);
   font-family: var(--font-family-heading), sans-serif;
   font-size: 20px;
@@ -104,7 +104,7 @@ div.dashboard-title {
 }
 
 @media (min-width: 1080px) {
-  div.dashboard-title {
+  div.home-title {
     font-size: 32px;
     font-weight: 400;
     line-height: 42px;
@@ -112,13 +112,13 @@ div.dashboard-title {
   }
 }
 
-div.dashboard-separator {
+div.home-separator {
   background-color: var(--network-button-color);
   height: 2px;
   width: 100%;
 }
 
-div.dashboard-content {
+div.home-content {
   background-color: var(--background-tertiary);
   border: 1px solid var(--table-border);
   border-radius: 16px;
@@ -126,7 +126,7 @@ div.dashboard-content {
 }
 
 @media (min-width: 1080px) {
-  div.dashboard-content {
+  div.home-content {
     padding: 32px;
   }
 }
