@@ -33,6 +33,10 @@
     </o-table-column>
 
     <o-table-column v-slot="props" field="amount" label="AMOUNT" position="right">
+      <HbarAmount :amount="props.row.amount"/>
+    </o-table-column>
+
+    <o-table-column v-slot="props" field="granted" label="AMOUNT GRANTED" position="right">
       <HbarAmount :amount="props.row.amount_granted"/>
     </o-table-column>
 
