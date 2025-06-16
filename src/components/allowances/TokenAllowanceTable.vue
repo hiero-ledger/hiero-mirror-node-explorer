@@ -28,12 +28,16 @@
       <AccountLink class="entity-id" :account-id="props.row.spender" :show-extra="true"/>
     </o-table-column>
 
-    <o-table-column v-slot="props" field="amount" label="AMOUNT">
-      <TokenAmount :token-id="props.row.token_id" :amount="BigInt(props.row.amount_granted)"/>
-    </o-table-column>
-
     <o-table-column v-slot="props" field="token" label="TOKEN ID">
       <TokenLink :token-id="props.row.token_id" :show-extra="true"/>
+    </o-table-column>
+
+    <o-table-column v-slot="props" field="amount" label="AMOUNT">
+      <TokenAmount :token-id="props.row.token_id" :amount="BigInt(props.row.amount)"/>
+    </o-table-column>
+
+    <o-table-column v-slot="props" field="granted" label="AMOUNT GRANTED">
+      <TokenAmount :token-id="props.row.token_id" :amount="BigInt(props.row.amount_granted)"/>
     </o-table-column>
 
     <o-table-column v-slot="props" field="timestamp" label="TIME">
