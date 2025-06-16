@@ -69,7 +69,7 @@ import {computed, inject} from "vue";
 import {WalletManagerStatus} from "@/utils/wallet/WalletManagerV4.ts";
 import WalletStatusButton from "@/components/page/header/wallet/WalletStatusButton.vue";
 import MobileMenuButton from "@/components/page/header/MobileMenuButton.vue";
-import MarketDashboard from "@/components/dashboard/MarketDashboard.vue";
+import MarketDashboard from "@/components/home/MarketDashboard.vue";
 import {routeManager, walletManager} from "@/utils/RouteManager.ts";
 
 const props = defineProps({

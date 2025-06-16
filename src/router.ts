@@ -3,7 +3,7 @@
 import {RouteRecordRaw} from "vue-router";
 import {AppStorage} from "@/AppStorage.ts";
 import PageNotFound from "@/pages/PageNotFound.vue";
-import MainDashboard from "@/pages/MainDashboard.vue";
+import Home from "@/pages/Home.vue";
 import RoutingSpec from "@/pages/RoutingSpec.vue";
 import Transactions from "@/pages/Transactions.vue";
 import TransactionsById from "@/pages/TransactionsById.vue";
@@ -35,7 +35,7 @@ import BlockDetails from "@/pages/BlockDetails.vue";
 import SearchHelp from "@/pages/SearchHelp.vue";
 
 export enum TabId {
-    Dashboard = "Dashboard",
+    Home = "Home",
     Transactions = "Transactions",
     Tokens = "Tokens",
     Topics = "Topics",
@@ -49,7 +49,7 @@ export enum TabId {
 export const routes: Array<RouteRecordRaw> = [
     {
         path: '/',
-        redirect: '/' + AppStorage.getLastNetwork() + '/dashboard'
+        redirect: '/' + AppStorage.getLastNetwork() + '/home'
     },
     {
         path: '/page-not-found',
@@ -65,17 +65,24 @@ export const routes: Array<RouteRecordRaw> = [
     },
     {
         path: '/:network',
-        redirect: {name: 'MainDashboard'}
+        redirect: {name: 'Home'}
     },
     {
-        path: '/:network/dashboard',
-        name: 'MainDashboard',
-        component: MainDashboard,
+        path: '/:network/home',
+        name: 'Home',
+        component: Home,
         props: true,
         meta: {
-            tabId: TabId.Dashboard
+            tabId: TabId.Home
         }
     },
+    // {
+    //     path: '/:network/dashboard',
+    //     redirect: to => {
+    //         // receives the target route as the argument
+    //         return to.path.replace(/dashboard$/, 'home')
+    //     },
+    // },
     {
         path: '/:network/spec',
         name: 'RoutingSpec',

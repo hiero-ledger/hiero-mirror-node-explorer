@@ -32,7 +32,7 @@ watch(routeManager.currentNetwork, (newNetwork) => {
 })
 watch(selectedNetwork, (newNetwork) => {
   if (newNetwork !== routeManager.currentNetwork.value) {
-    routeManager.routeToMainDashboard(newNetwork)
+    routeManager.routeToHome(newNetwork)
   }
 })
 

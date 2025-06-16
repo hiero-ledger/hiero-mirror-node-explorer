@@ -10,7 +10,7 @@ describe('Hedera Explorer page not found', () => {
     beforeEach(() => {
         localStorage.removeItem("network")
         cy.visit('/')
-        cy.url().should('include', '/' + defaultNetwork + '/dashboard')
+        cy.url().should('include', '/' + defaultNetwork + '/home')
     })
 
     //

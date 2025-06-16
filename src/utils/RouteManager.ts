@@ -135,7 +135,7 @@ export class RouteManager {
         const defaultNetwork = AppStorage.getLastNetwork() ?? networkConfig.entries[0].name
         this.router.addRoute({
             path: '/',
-            redirect: '/' + defaultNetwork + '/dashboard'
+            redirect: '/' + defaultNetwork + '/home'
         })
         this.router.addRoute({
             path: '/page-not-found',
@@ -447,12 +447,12 @@ export class RouteManager {
     // Main Pages
     //
 
-    public makeRouteToMainDashboard(network: string | null = null): RouteLocationRaw {
-        return {name: 'MainDashboard', params: {network: network ?? this.currentNetwork.value}}
+    public makeRouteToHome(network: string | null = null): RouteLocationRaw {
+        return {name: 'Home', params: {network: network ?? this.currentNetwork.value}}
     }
 
-    public routeToMainDashboard(network: string | null = null): Promise<NavigationFailure | void | undefined> {
-        return this.router.push(this.makeRouteToMainDashboard(network))
+    public routeToHome(network: string | null = null): Promise<NavigationFailure | void | undefined> {
+        return this.router.push(this.makeRouteToHome(network))
     }
 
     public makeRouteToTransactions(type: TransactionType | null = null): RouteLocationRaw {
@@ -529,8 +529,8 @@ export class RouteManager {
         const titlePrefix = envTitlePrefix !== "" ? envTitlePrefix + " " : ""
 
         switch (to.name as string) {
-            case "MainDashboard":
-                document.title = titlePrefix + "Dashboard"
+            case "Home":
+                document.title = titlePrefix + "Home"
                 break;
             case "TransactionsById":
                 document.title = titlePrefix + "Transactions with ID " + TransactionID.normalizeForDisplay(to.params.transactionId as string)

@@ -13,16 +13,16 @@ describe('Mobile Menu', () => {
     it('should bring up mobile menu and dismiss it', () => {
 
         cy.visit('/')
-        cy.url().should('include', '/' + defaultNetwork + '/dashboard')
+        cy.url().should('include', '/' + defaultNetwork + '/home')
         cy.contains('Transactions Over Time')
         cy.contains('Network Fees')
         cy.contains('Active Accounts')
 
         cy.get('[data-cy="mobile-menu-icon"]').click()
-        cy.url().should('include', '/' + defaultNetwork + '/dashboard')
+        cy.url().should('include', '/' + defaultNetwork + '/home')
 
         cy.get('[data-cy="mobile-menu-content"]').then(() => {
-            cy.contains('Dashboard')
+            cy.contains('Home')
             cy.contains('Transactions')
             cy.contains('Tokens')
             cy.contains('Topics')
@@ -35,20 +35,20 @@ describe('Mobile Menu', () => {
 
 
         cy.get('[data-cy="mobile-menu-close-icon"]').click()
-        cy.url().should('include', '/' + defaultNetwork + '/dashboard')
+        cy.url().should('include', '/' + defaultNetwork + '/home')
     })
 
     it('should switch networks from mobile menu', () => {
 
-        cy.visit('/mainnet/dashboard')
-        cy.url().should('include', '/mainnet/dashboard')
+        cy.visit('/mainnet/home')
+        cy.url().should('include', '/mainnet/home')
 
         cy.get('[data-cy="mobile-menu-icon"]').click()
-        cy.url().should('include', '/' + defaultNetwork + '/dashboard')
+        cy.url().should('include', '/' + defaultNetwork + '/home')
 
         for (const n of ['PREVIEWNET', 'TESTNET', 'MAINNET']) {
             cy.contains(n).click()
-            cy.url().should('include', '/' + n.toLowerCase() + '/dashboard')
+            cy.url().should('include', '/' + n.toLowerCase() + '/home')
 
             cy.get('[data-cy="mobile-menu-icon"]').click()
         }
@@ -57,12 +57,12 @@ describe('Mobile Menu', () => {
     it('should navigate to top level pages', () => {
 
         cy.visit('/')
-        cy.url().should('include', '/' + defaultNetwork + '/dashboard')
+        cy.url().should('include', '/' + defaultNetwork + '/home')
 
         cy.get('[data-cy="mobile-menu-icon"]').click()
-        cy.url().should('include', '/' + defaultNetwork + '/dashboard')
+        cy.url().should('include', '/' + defaultNetwork + '/home')
 
-        for (const p of ['Transactions', 'Tokens', 'Topics', 'Contracts', 'Accounts', 'Nodes', 'Staking', 'Blocks', 'Dashboard']) {
+        for (const p of ['Transactions', 'Tokens', 'Topics', 'Contracts', 'Accounts', 'Nodes', 'Staking', 'Blocks', 'Home']) {
             cy.contains(p).click()
             cy.url().should('include', '/' + defaultNetwork + '/' + p.toLowerCase())
 
