@@ -8,7 +8,7 @@ import Home from "@/pages/Home.vue";
 import MockAdapter from "axios-mock-adapter";
 import Oruga from "@oruga-ui/oruga-next";
 import {HMSF} from "@/utils/HMSF";
-import MarketDashboard from "@/components/dashboard/MarketDashboard.vue";
+import MarketDashboard from "@/components/home/MarketDashboard.vue";
 import {fetchGetURLs} from "../MockUtils";
 import router from "@/utils/RouteManager.ts";
 

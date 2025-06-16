@@ -57,8 +57,8 @@
 <script setup lang="ts">
 
 import {computed, inject, onBeforeUnmount, onMounted, ref} from 'vue';
-import MarketDashboardItem from "@/components/dashboard/MarketDashboardItem.vue";
-import {NetworkMetricsLoader} from "@/components/dashboard/metrics/NetworkMetricsLoader";
+import MarketDashboardItem from "@/components/home/MarketDashboardItem.vue";
+import {NetworkMetricsLoader} from "@/components/home/metrics/NetworkMetricsLoader";
 import {CoreConfig} from "@/config/CoreConfig.ts";
 import {ThemeController} from "@/components/ThemeController.ts";
 import {ArrowBigUpDash, Coins, Globe} from 'lucide-vue-next';
