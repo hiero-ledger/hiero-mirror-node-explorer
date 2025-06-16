@@ -73,7 +73,7 @@
           </template>
         </Property>
         <Property id="adminKey">
-          <template #name>Admin Key</template>
+          <template #name>Node Admin Key</template>
           <template #value>
             <KeyValue
                 :node-id="nodeIdNb"
