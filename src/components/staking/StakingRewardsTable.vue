@@ -24,7 +24,7 @@
       :striped="true"
       :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
 
-      row-key="consensus_timestamp"
+      row-key="timestamp"
   >
     <o-table-column v-slot="props" field="timestamp" label="TIME">
       <TimestampValue class="timestamp-value" :timestamp="props.row.timestamp"/>
