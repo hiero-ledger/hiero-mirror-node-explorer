@@ -5,7 +5,9 @@
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <template>
-  <MarketDashboardItem :title="title" :info="info" :value="value"/>
+  <MarketDashboardItem :title="title" :info="info" :value="value">
+    <slot/>
+  </MarketDashboardItem>
 </template>
 
 <!-- --------------------------------------------------------------------------------------------------------------- -->
