@@ -52,13 +52,13 @@ describe("RewardsCalculator.vue", () => {
 
         const options = wrapper.find('select').findAll('option')
         expect(options.length).toBe(SAMPLE_NETWORK_NODES.nodes.length)
-        expect(options.at(0)?.element.text).toBe('0 - Hosted by Hedera | East Coast, USA - Rewarding (staked for reward is 16.7% of max)')
-        expect(options.at(1)?.element.text).toBe('1 - Hosted by Hedera | East Coast, USA - Rewarding (staked for reward is 23.3% of max)')
-        expect(options.at(2)?.element.text).toBe('2 - Hosted by Hedera | Central, USA - Rewarding (staked for reward is 23.3% of max)')
+        expect(options[0].element.text).toBe('0 - Hosted by Hedera | East Coast, USA - Rewarding (staked for reward is 16.7% of max)')
+        expect(options[1].element.text).toBe('1 - Hosted by Hedera | East Coast, USA - Rewarding (staked for reward is 23.3% of max)')
+        expect(options[2].element.text).toBe('2 - Hosted by Hedera | Central, USA - Rewarding (staked for reward is 23.3% of max)')
 
-        expect(options.at(0)?.element.selected).toBe(false)
-        expect(options.at(1)?.element.selected).toBe(false)
-        expect(options.at(2)?.element.selected).toBe(false)
+        expect(options[0].element.selected).toBe(false)
+        expect(options[1].element.selected).toBe(false)
+        expect(options[2].element.selected).toBe(false)
 
         expect(wrapper.find('#currentReward').text()).toBe("Current 24h Period Reward 0HBAR".toUpperCase())
         expect(wrapper.find('#monthlyReward').text()).toBe("Approx Monthly Reward 0HBAR".toUpperCase())
@@ -104,13 +104,13 @@ describe("RewardsCalculator.vue", () => {
 
         const options = wrapper.find('select').findAll('option')
         expect(options.length).toBe(SAMPLE_NETWORK_NODES.nodes.length)
-        expect(options.at(0)?.element.text).toBe('0 - Hosted by Hedera | East Coast, USA - Rewarding (staked for reward is 16.7% of max)')
-        expect(options.at(1)?.element.text).toBe('1 - Hosted by Hedera | East Coast, USA - Rewarding (staked for reward is 23.3% of max)')
-        expect(options.at(2)?.element.text).toBe('2 - Hosted by Hedera | Central, USA - Rewarding (staked for reward is 23.3% of max)')
+        expect(options[0].element.text).toBe('0 - Hosted by Hedera | East Coast, USA - Rewarding (staked for reward is 16.7% of max)')
+        expect(options[1].element.text).toBe('1 - Hosted by Hedera | East Coast, USA - Rewarding (staked for reward is 23.3% of max)')
+        expect(options[2].element.text).toBe('2 - Hosted by Hedera | Central, USA - Rewarding (staked for reward is 23.3% of max)')
 
-        expect(options.at(0)?.element.selected).toBe(false)
-        expect(options.at(1)?.element.selected).toBe(true)
-        expect(options.at(2)?.element.selected).toBe(false)
+        expect(options[0].element.selected).toBe(false)
+        expect(options[1].element.selected).toBe(true)
+        expect(options[2].element.selected).toBe(false)
 
         expect(wrapper.find('#currentReward').text()).toBe("Current 24h Period Reward 0.5479HBAR".toUpperCase())
         expect(wrapper.find('#monthlyReward').text()).toBe("Approx Monthly Reward 16.44HBAR".toUpperCase())
@@ -158,13 +158,13 @@ describe("RewardsCalculator.vue", () => {
         const options = wrapper.find('select').findAll('option')
 
         expect(options.length).toBe(SAMPLE_NETWORK_NODES.nodes.length)
-        expect(options.at(0)?.element.text).toBe('0 - Hosted by Hedera | East Coast, USA - Rewarding (staked for reward is 16.7% of max)')
-        expect(options.at(1)?.element.text).toBe('1 - Hosted by Hedera | East Coast, USA - Rewarding (staked for reward is 23.3% of max)')
-        expect(options.at(2)?.element.text).toBe('2 - Hosted by Hedera | Central, USA - Rewarding (staked for reward is 23.3% of max)')
+        expect(options[0].element.text).toBe('0 - Hosted by Hedera | East Coast, USA - Rewarding (staked for reward is 16.7% of max)')
+        expect(options[1].element.text).toBe('1 - Hosted by Hedera | East Coast, USA - Rewarding (staked for reward is 23.3% of max)')
+        expect(options[2].element.text).toBe('2 - Hosted by Hedera | Central, USA - Rewarding (staked for reward is 23.3% of max)')
 
-        expect(options.at(0)?.element.selected).toBe(false)
-        expect(options.at(1)?.element.selected).toBe(false)
-        expect(options.at(2)?.element.selected).toBe(false)
+        expect(options[0].element.selected).toBe(false)
+        expect(options[1].element.selected).toBe(false)
+        expect(options[2].element.selected).toBe(false)
 
         expect(wrapper.find('#currentReward').text()).toBe("Current 24h Period Reward 0HBAR".toUpperCase())
         expect(wrapper.find('#monthlyReward').text()).toBe("Approx Monthly Reward 0HBAR".toUpperCase())
@@ -173,7 +173,7 @@ describe("RewardsCalculator.vue", () => {
 
         // Change Node Selection
         // await  wrapper.find('select').findAll('option').at(2)?.setValue(false)
-        await options.at(1)?.setValue(false)
+        await options[1].setValue(false)
 
         // Change Hbar Amount
         await wrapper.find('input[type="number"]').setValue('10000')
