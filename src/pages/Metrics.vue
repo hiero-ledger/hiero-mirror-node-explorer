@@ -8,55 +8,50 @@
 
   <PageFrameV2 page-title="Metrics">
 
-    <div class="metrics-title">
-      Network
-    </div>
+    <div class="mt-2"/>
 
-    <div class="metrics-separator"/>
+    <MetricsDashboard/>
 
-    <div class="metrics-content">
-      <ChartView :controller="txOverTimeController" data-cy="chart-view"/>
-    </div>
+    <div class="mt-2"/>
 
-    <div class="metrics-content">
-      <ChartView :controller="networkFeeController" data-cy="chart-view"/>
-    </div>
+    <Tabs
+        :tab-ids="tabIds"
+        :tab-labels="tabLabels"
+        :selected-tab="selectedTab"
+        @update:selected-tab="onUpdate($event)"
+    />
 
-    <div class="metrics-title">
-      Accounts
-    </div>
+    <template v-if="selectedTab === 'network'">
+      <div class="metrics-content">
+        <ChartView :controller="networkFeeController" data-cy="chart-view"/>
+      </div>
+      <div class="metrics-content">
+        <ChartView :controller="avgTimeToConsensusController" data-cy="chart-view"/>
+      </div>
+    </template>
 
-    <div class="metrics-separator"/>
+    <template v-else-if="selectedTab === 'transactions'">
+      <div class="metrics-content">
+        <ChartView :controller="txOverTimeController" data-cy="chart-view"/>
+      </div>
+      <div class="metrics-content">
+        <ChartView :controller="transactionCountController" data-cy="chart-view"/>
+      </div>
+      <div class="metrics-content">
+        <ChartView :controller="tpsController" data-cy="chart-view"/>
+      </div>
+    </template>
 
-    <div class="metrics-content">
-      <ChartView :controller="activeAccountsController" data-cy="chart-view"/>
-    </div>
+    <template v-else-if="selectedTab === 'accounts'">
+      <div class="metrics-content">
+        <ChartView :controller="activeAccountsController" data-cy="chart-view"/>
+      </div>
 
-    <div class="metrics-title">
-      Other Charts
-    </div>
-
-    <div style="display: flex">
-      <CounterView :controller="contractCounterController"/>
-    </div>
-
-    <div class="metrics-separator"/>
-
-    <div class="metrics-content">
-      <ChartView :controller="accountGrowthController" data-cy="chart-view"/>
-    </div>
-
-    <div class="metrics-content">
-      <ChartView :controller="transactionCountController" data-cy="chart-view"/>
-    </div>
-
-    <div class="metrics-content">
-      <ChartView :controller="avgTimeToConsensusController" data-cy="chart-view"/>
-    </div>
-
-    <div class="metrics-content">
-      <ChartView :controller="tpsController" data-cy="chart-view"/>
-    </div>
+      <div class="metrics-content">
+        <ChartView :controller="accountGrowthController" data-cy="chart-view"/>
+      </div>
+    </template>
+    <template v-else/>
 
   </PageFrameV2>
 
@@ -70,9 +65,8 @@
 
 import PageFrameV2 from "@/components/page/PageFrameV2.vue";
 import ChartView from "@/charts/core/ChartView.vue";
-import CounterView from "@/charts/core/CounterView.vue";
 import {ThemeController} from "@/components/ThemeController.ts";
-import {onBeforeUnmount, onMounted} from "vue";
+import {onBeforeUnmount, onMounted, ref} from "vue";
 import {routeManager} from "@/utils/RouteManager.ts";
 import {TxOverTimeController} from "@/charts/hgraph/TxOverTimeController.ts";
 import {NetworkFeeController} from "@/charts/hgraph/NetworkFeeController.ts";
@@ -81,13 +75,21 @@ import {AccountGrowthController} from "@/charts/hgraph/AccountGrowthController.t
 import {TransactionCountController} from "@/charts/hgraph/TransactionCountController.ts";
 import {AvgTimeToConsensusController} from "@/charts/hgraph/AvgTimeToConsensusController.ts";
 import {TPSController} from "@/charts/hgraph/TPSController.ts";
-import {TransactionCounterController} from "@/charts/core/CounterController.ts";
+import MetricsDashboard from "@/components/home/MetricsDashboard.vue";
+import Tabs from "@/components/Tabs.vue";
 
 defineProps({
   network: String
 })
 
 const themeController = ThemeController.inject()
+
+const tabIds = ['network', 'transactions', 'accounts']
+const tabLabels = ['Network', 'Transactions', 'Accounts']
+const selectedTab = ref<string | null>(tabIds[0])
+const onUpdate = (tab: string | null) => {
+  selectedTab.value = tab
+}
 
 const txOverTimeController = new TxOverTimeController(themeController, routeManager)
 onMounted(() => txOverTimeController.mount())
@@ -117,10 +119,6 @@ const tpsController = new TPSController(themeController, routeManager)
 onMounted(() => tpsController.mount())
 onBeforeUnmount(() => tpsController.unmount())
 
-const contractCounterController = new TransactionCounterController(11, "Account Created", "", routeManager)
-onMounted(() => contractCounterController.mount())
-onBeforeUnmount(() => contractCounterController.unmount())
-
 </script>
 
 <!-- --------------------------------------------------------------------------------------------------------------- -->
@@ -128,30 +126,6 @@ onBeforeUnmount(() => contractCounterController.unmount())
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <style scoped>
-
-div.metrics-title {
-  color: var(--text-primary);
-  font-family: var(--font-family-heading), sans-serif;
-  font-size: 20px;
-  font-weight: 500;
-  line-height: 26px;
-  margin-top: 12px;
-}
-
-@media (min-width: 1080px) {
-  div.metrics-title {
-    font-size: 32px;
-    font-weight: 400;
-    line-height: 42px;
-    margin-top: 8px;
-  }
-}
-
-div.metrics-separator {
-  background-color: var(--network-button-color);
-  height: 2px;
-  width: 100%;
-}
 
 div.metrics-content {
   background-color: var(--background-tertiary);
