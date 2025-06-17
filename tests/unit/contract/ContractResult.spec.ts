@@ -249,15 +249,15 @@ describe("ContractResult.vue", () => {
 
         const options = stateTrace.find('select').findAll('option')
         expect(options.length).toBe(4)
-        expect(options.at(0)?.element.text).toBe('Show 5 items')
-        expect(options.at(1)?.element.text).toBe('Show 10 items')
-        expect(options.at(2)?.element.text).toBe('Show 15 items')
-        expect(options.at(3)?.element.text).toBe('Show all items')
+        expect(options[0].element.text).toBe('Show 5 items')
+        expect(options[1].element.text).toBe('Show 10 items')
+        expect(options[2].element.text).toBe('Show 15 items')
+        expect(options[3].element.text).toBe('Show all items')
 
-        expect(options.at(0)?.element.selected).toBe(true)
-        expect(options.at(1)?.element.selected).toBe(false)
-        expect(options.at(2)?.element.selected).toBe(false)
-        expect(options.at(3)?.element.selected).toBe(false)
+        expect(options[0].element.selected).toBe(true)
+        expect(options[1].element.selected).toBe(false)
+        expect(options[2].element.selected).toBe(false)
+        expect(options[3].element.selected).toBe(false)
 
         const entries = stateTrace.findAllComponents(ContractResultStateChangeEntry)
         expect(entries.length).toBe(5)
