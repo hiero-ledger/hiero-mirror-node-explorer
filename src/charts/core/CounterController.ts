@@ -81,7 +81,47 @@ interface GraphQLResponse {
 
 export class TransactionCounterController extends CounterController<TransactionAggregate> {
 
+    public static readonly CONTRACT_CALL = 7
+    public static readonly CONTRACT_CREATE = 8
+    public static readonly CONTRACT_UPDATE = 9
     public static readonly ACCOUNT_CREATE = 11
+    public static readonly ACCOUNT_DELETE = 12
+    public static readonly CRYPTO_TRANSFER = 14
+    public static readonly ACCOUNT_UPDATE = 15
+    public static readonly CONTRACT_DELETE = 22
+    public static readonly CREATE_TOPIC = 24
+    public static readonly UPDATE_TOPIC = 25
+    public static readonly DELETE_TOPIC = 26
+    public static readonly SUBMIT_MESSAGE = 27
+    public static readonly TOKEN_CREATE = 29
+    public static readonly TOKEN_FREEZE = 31
+    public static readonly TOKEN_UNFREEZE = 32
+    public static readonly TOKEN_KYC_GRANT = 33
+    public static readonly TOKEN_KYC_REVOKE = 34
+    public static readonly TOKEN_DELETE = 35
+    public static readonly TOKEN_UPDATE = 36
+    public static readonly TOKEN_MINT = 37
+    public static readonly TOKEN_BURN = 38
+    public static readonly TOKEN_WIPE = 39
+    public static readonly TOKEN_ASSOCIATE = 40
+    public static readonly TOKEN_DISSOCIATE = 41
+    public static readonly SCHEDULE_CREATE = 42
+    public static readonly SCHEDULE_DELETE = 43
+    public static readonly SCHEDULE_SIGN = 44
+    public static readonly TOKEN_FEE_SCHEDULE_UPDATE = 45
+    public static readonly TOKEN_PAUSE = 46
+    public static readonly TOKEN_UNPAUSE = 47
+    public static readonly APPROVE_ALLOWANCE = 48
+    public static readonly DELETE_ALLOWANCE = 49
+    public static readonly ETHEREUM_TRANSACTION = 50
+    public static readonly NODE_STAKE_UPDATE = 51
+    public static readonly PSEUDORANDOM_NUMBER_GENERATE = 52
+    public static readonly UPDATE_NFTS = 53
+    public static readonly NODE_DELETE = 56
+    public static readonly TOKEN_REJECT = 57
+    public static readonly TOKEN_AIRDROP = 58
+    public static readonly CANCEL_AIRDROP = 59
+    public static readonly CLAIM_AIRDROP = 60
 
     //
     // Public
