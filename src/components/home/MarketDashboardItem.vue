@@ -12,7 +12,7 @@
 
     <div class="item-content">
       <div class="item-l1">
-        {{ props.title }}
+        {{ props.title?.toUpperCase() }}
       </div>
 
       <div v-if="props.value !== null" class="item-l2">
