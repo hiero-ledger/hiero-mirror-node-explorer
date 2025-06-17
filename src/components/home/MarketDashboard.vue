@@ -8,43 +8,43 @@
 
   <div class="dashboard-root">
     <div class="dashboard-content">
-      <MarketDashboardItem
+      <DashboardItemView
           data-cy="market-dashboard-item"
           :title="hbarPriceLabel"
           :value="hbarPrice"
       >
         <img id="crypto-logo" alt="Crypto Logo" :src="cryptoLogoURL ?? ''">
-      </MarketDashboardItem>
+      </DashboardItemView>
 
-      <div class="line"/>
+      <div class="mini-line-separator"/>
 
-      <MarketDashboardItem
+      <DashboardItemView
           data-cy="market-dashboard-item"
           :title="hbarMarketCapLabel"
           :value="hbarMarketCap"
       >
         <Globe :size="32"/>
-      </MarketDashboardItem>
+      </DashboardItemView>
 
-      <div v-if="isLargeScreen || !isSmallScreen" class="line"/>
+      <div v-if="isLargeScreen || !isSmallScreen" class="mini-line-separator"/>
 
-      <MarketDashboardItem
+      <DashboardItemView
           data-cy="market-dashboard-item"
           :title="hbarReleasedLabel"
           :value="hbarReleased"
       >
         <ArrowBigUpDash :size="32"/>
-      </MarketDashboardItem>
+      </DashboardItemView>
 
-      <div class="line"/>
+      <div class="mini-line-separator"/>
 
-      <MarketDashboardItem
+      <DashboardItemView
           data-cy="market-dashboard-item"
           :title="hbarTotalLabel"
           :value="hbarTotal"
       >
         <Coins :size="32"/>
-      </MarketDashboardItem>
+      </DashboardItemView>
     </div>
   </div>
 
@@ -57,7 +57,7 @@
 <script setup lang="ts">
 
 import {computed, inject, onBeforeUnmount, onMounted, ref} from 'vue';
-import MarketDashboardItem from "@/components/home/MarketDashboardItem.vue";
+import DashboardItemView from "@/components/home/DashboardItemView.vue";
 import {NetworkMetricsLoader} from "@/components/home/metrics/NetworkMetricsLoader";
 import {CoreConfig} from "@/config/CoreConfig.ts";
 import {ThemeController} from "@/components/ThemeController.ts";

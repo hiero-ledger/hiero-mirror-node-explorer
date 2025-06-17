@@ -12,7 +12,7 @@
 
     <div class="item-content">
       <div class="item-l1">
-        {{ props.title }}
+        {{ title }}
       </div>
 
       <div v-if="props.value !== null" class="item-l2">
@@ -32,11 +32,15 @@
 
 <script setup lang="ts">
 
+import {computed} from "vue";
+
 const props = defineProps({
   title: String,
   value: String,
   info: String,
 })
+
+const title = computed(() => props.title?.toUpperCase())
 
 </script>
 
