@@ -3,6 +3,7 @@
 import {computed, ref, Ref, watch, WatchStopHandle} from "vue";
 import axios, {AxiosRequestConfig} from "axios";
 import {RouteManager} from "@/utils/RouteManager.ts";
+import {EcosystemMetric} from "@/charts/hgraph/EcosystemMetric.ts";
 
 export abstract class CounterController<M> {
 
@@ -74,6 +75,7 @@ interface TransactionAggregate {
 
 interface GraphQLResponse {
     data?: {
+        all_metrics?: EcosystemMetric[]
         transaction_aggregate?: TransactionAggregate
     }
     errors?: unknown[]
@@ -205,4 +207,98 @@ export class TransactionCounterController extends CounterController<TransactionA
             "}"
     }
 
+}
+
+export class AccumulatedTransactionCounterController extends CounterController<number> {
+
+    //
+    // Public
+    //
+
+    public constructor(title: string, info: string, routeManager: RouteManager) {
+        super(title, info, routeManager)
+    }
+
+    //
+    // CounterController
+    //
+
+    protected async loadData(): Promise<number|null> {
+        let result: number|null
+
+        const url = this.routeManager.hgraphURL.value
+        if (url !== null) {
+            const query = this.makeQuery()
+            result = await this.runQuery(url, query)
+        } else {
+            result = null
+        }
+
+        return Promise.resolve(result)
+    }
+
+    protected metricToValue(m: number): string {
+        return m.toString()
+    }
+
+    //
+    // Private
+    //
+
+    private makeConfig(): AxiosRequestConfig {
+        let result: AxiosRequestConfig
+        const hgraphKey = this.routeManager.hgraphKey.value
+        if (hgraphKey !== null) {
+            result = {
+                headers: {
+                    "X-API-KEY": hgraphKey
+                }
+            }
+        } else {
+            result = {}
+        }
+        return result
+    }
+
+    private async runQuery(url: string, query: string): Promise<number|null> {
+        let result: number|null
+
+        const config = this.makeConfig()
+        const response = await axios.post<GraphQLResponse>(url, {query}, config)
+        if (response.status === 200 && typeof response.data === "object" && response.data !== null) {
+            if (response.data.data) {
+                const metrics = response.data.data.all_metrics ?? []
+                // we accumulate
+                result = 0
+                for (const m of metrics) {
+                    result += m.total
+                }
+            } else {
+                const errors = response.data.errors ?? []
+                const error = errors.length >= 1 ? errors[0] : null
+                throw error ?? "GraphQL query failed"
+            }
+        } else {
+            throw "HTTP Error " + response.status
+        }
+
+        return Promise.resolve(result)
+    }
+
+    protected makeQuery(): string {
+        // We request all rows so that transformMetrics() can perform accumulation
+        return "{" +
+            "  all_metrics: ecosystem_metric(" +
+            "    where: {" +
+            "      name: {_eq: \"transactions\"}, " +
+            "      period: {_eq: \"hour\"}," +
+            "    }" +
+            "    order_by: {end_date: asc}" +
+            "  ) {" +
+            "    start_date" +
+            "    end_date" +
+            "    total" +
+            "  }" +
+            "}"
+    }
 }
