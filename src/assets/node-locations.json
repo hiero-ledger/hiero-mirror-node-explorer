@@ -18,7 +18,8 @@
     {
       "name": "Amsterdam",
       "lat": 52.3730796,
-      "lon": 4.8924534
+      "lon": 4.8924534,
+      "labelPlacement": "north"
     },
     {
       "name": "Tokyo",
@@ -28,7 +29,8 @@
     {
       "name": "Helsinki",
       "lat": 60.1674881,
-      "lon": 24.9427473
+      "lon": 24.9427473,
+      "labelPlacement": "east"
     },
     {
       "name": "Kuwait City",
@@ -43,22 +45,26 @@
     {
       "name": "Frankfurt",
       "lat": 50.1106444,
-      "lon": 8.6820917
+      "lon": 8.6820917,
+      "labelPlacement": "east"
     },
     {
       "name": "Texas",
       "lat": 30.2711286,
-      "lon": -97.7436995
+      "lon": -97.7436995,
+      "labelPlacement": "west"
     },
     {
       "name": "Berlin",
       "lat": 52.51089,
-      "lon": 13.39894
+      "lon": 13.39894,
+      "labelPlacement": "east"
     },
     {
       "name": "Pennsylvania",
       "lat": 40.26631,
-      "lon": -76.88611
+      "lon": -76.88611,
+      "labelPlacement": "east"
     },
     {
       "name": "Singapore",
@@ -78,27 +84,25 @@
     {
       "name": "Paris",
       "lat": 48.85889,
-      "lon": 2.32004
-    },
-    {
-      "name": "Paris",
-      "lat": 48.85889,
-      "lon": 2.32004
+      "lon": 2.32004,
+      "labelPlacement": "west"
     },
     {
       "name": "London",
       "lat": 51.50745,
-      "lon": -0.12777
+      "lon": -0.12777,
+      "labelPlacement": "west"
     },
     {
       "name": "Michigan",
       "lat": 43.62120,
-      "lon": -84.68243
+      "lon": -84.68243,
+      "labelPlacement": "north"
     },
     {
       "name": "Naaldwijk",
       "lat": 51.99300,
-      "lon": -4.20742
+      "lon": 4.20742
     },
     {
       "name": "Washington",
@@ -108,12 +112,14 @@
     {
       "name": "Quebec",
       "lat": 46.80623,
-      "lon": -71.21169
+      "lon": -71.21169,
+      "labelPlacement": "east"
     },
     {
       "name": "Virginia",
       "lat": 37.12322,
-      "lon": -78.49277
+      "lon": -78.49277,
+      "labelPlacement": "east"
     },
     {
       "name": "Mumbai",
@@ -123,7 +129,8 @@
     {
       "name": "Stockholm",
       "lat": 59.32512,
-      "lon": 18.07109
+      "lon": 18.07109,
+      "labelPlacement": "west"
     }
   ],
   "entries": [

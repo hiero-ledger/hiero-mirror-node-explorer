@@ -24,10 +24,13 @@ export class GeoLocationCache extends SingletonCache<GeoLocationBook> {
     }
 }
 
+export type LabelPlacement = "south" | "north" | "east" | "west"
+
 export interface GeoPlace {
     name: string,
     lat: number,
-    lon: number
+    lon: number,
+    labelPlacement?: LabelPlacement
 }
 
 export interface GeoLocationBookEntry {

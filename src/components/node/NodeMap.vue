@@ -39,7 +39,8 @@ const updateAnnotations = async () => {
       lat: p.lat,
       lon: p.lon,
       title: p.name,
-      subTitle: ""
+      subTitle: "",
+      placement: p.labelPlacement,
     })
   }
 
