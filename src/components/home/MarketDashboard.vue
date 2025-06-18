@@ -108,45 +108,4 @@ div.dashboard-root {
   justify-content: center;
 }
 
-div.dashboard-content {
-  align-items: flex-start;
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-  height: fit-content;
-  padding: 26px 32px 26px 32px;
-  width: fit-content;
-}
-
-@media (min-width: 768px) {
-  div.dashboard-content {
-    align-items: center;
-    display: grid;
-    gap: 16px;
-    grid-template-columns: 1fr auto 1fr;
-    justify-items: flex-start;
-  }
-}
-
-@media (min-width: 1280px) {
-  div.dashboard-content {
-    grid-template-columns:  repeat(7, auto);
-    justify-items: center;
-  }
-}
-
-div.line {
-  border: 1px solid var(--border-secondary);
-  rotate: 0deg;
-  width: 100%;
-}
-
-@media (min-width: 768px) {
-  div.line {
-    border: 1px solid var(--border-secondary);
-    rotate: -90deg;
-    width: 32px;
-  }
-}
-
 </style>
