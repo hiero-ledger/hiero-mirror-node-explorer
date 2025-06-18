@@ -7,7 +7,9 @@
 <template>
   <div ref="containerRef" class="container" :style="containerStyle">
     <Circle :size="iconSize"/>
-    <div style="font-size: 12px">{{ props.title }}</div>
+    <div style="display: flex; flex-direction: column">
+      <div style="font-size: 12px" v-for="t in props.title">{{ t }}</div>
+    </div>
   </div>
 </template>
 
@@ -28,12 +30,8 @@ const props = defineProps({
     required: true
   },
   title: {
-    type: String,
-    default: ""
-  },
-  subTitle: {
-    type: String,
-    default: ""
+    type: Array as PropType<string[]>,
+    default: []
   },
   placement: {
     type: String as PropType<LabelPlacement>,

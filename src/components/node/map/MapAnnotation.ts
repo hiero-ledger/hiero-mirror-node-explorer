@@ -5,7 +5,6 @@ import {LabelPlacement} from "@/utils/cache/GeoLocationCache.ts";
 export interface MapAnnotation {
     lat: number,
     lon: number,
-    title: string,
-    subTitle: string,
+    title: string[],
     placement?: LabelPlacement,
 }

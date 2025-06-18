@@ -11,7 +11,6 @@
       <MarkerView
           :xy="projectToXY(annotation.lat, annotation.lon)"
           :title="annotation.title"
-          :sub-title="annotation.subTitle"
           :placement="annotation.placement"
       />
     </template>
