@@ -135,6 +135,12 @@ export function makeNodeOwnerDescription(node: NetworkNode, short = false): stri
     return short ? result.split('|')[0].trimEnd() : result
 }
 
+export function makeNodeOwnerName(node: NetworkNode): string {
+    const description = makeNodeOwnerDescription(node)
+    const pipeIndex = description.indexOf("|")
+    return pipeIndex >= 0 ? description.substring(0, pipeIndex).trim() : description
+}
+
 export function makeDefaultNodeDescription(nodeId: number | null): string {
     return nodeId ? "Node " + nodeId : "?"
 }
