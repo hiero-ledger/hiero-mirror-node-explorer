@@ -81,9 +81,8 @@ onBeforeUnmount(() => accumulatedTransactionCountController.unmount())
 <style scoped>
 
 div.dashboard-root {
-  background-color: var(--background-primary-transparent);
-  backdrop-filter: blur(12px);
-  border: 1px solid var(--border-secondary);
+  background-color: var(--background-tertiary);
+  border: 1px solid var(--table-border);
   border-radius: 16px;
   display: flex;
   justify-content: center;
