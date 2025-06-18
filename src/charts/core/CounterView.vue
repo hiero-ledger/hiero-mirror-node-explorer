@@ -5,9 +5,9 @@
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <template>
-  <MarketDashboardItem :title="title" :info="info" :value="value">
+  <DashboardItemView :title="title" :info="info" :value="value">
     <slot/>
-  </MarketDashboardItem>
+  </DashboardItemView>
 </template>
 
 <!-- --------------------------------------------------------------------------------------------------------------- -->
@@ -17,8 +17,8 @@
 <script setup lang="ts">
 
 import {PropType} from "vue";
-import MarketDashboardItem from "@/components/home/MarketDashboardItem.vue";
 import {CounterController} from "@/charts/core/CounterController.ts";
+import DashboardItemView from "@/components/home/DashboardItemView.vue";
 
 
 const props = defineProps({
