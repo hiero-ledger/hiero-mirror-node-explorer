@@ -5,7 +5,7 @@
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <template>
-  <WorldMap :annotations="annotations"/>
+  <WorldMapV2 :annotations="annotations"/>
 </template>
 
 <!-- --------------------------------------------------------------------------------------------------------------- -->
@@ -15,7 +15,7 @@
 <script setup lang="ts">
 
 import {onMounted, PropType, ref, watch} from "vue";
-import WorldMap from "@/components/node/map/WorldMap.vue";
+import WorldMapV2 from "@/components/node/map/WorldMapV2.vue";
 import {NetworkNode} from "@/schemas/MirrorNodeSchemas.ts";
 import {MapAnnotation} from "@/components/node/map/MapAnnotation.ts";
 import {makeNodeOwnerDescription} from "@/schemas/MirrorNodeUtils.ts";
