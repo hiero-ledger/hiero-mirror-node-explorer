@@ -13,7 +13,6 @@
           :title="annotation.title"
           :sub-title="annotation.subTitle"
       />
-      <div style="left:100px; top: 50px; position: absolute">o</div>
     </template>
   </div>
 </template>
