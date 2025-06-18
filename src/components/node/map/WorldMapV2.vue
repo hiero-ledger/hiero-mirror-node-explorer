@@ -7,7 +7,7 @@
 <template>
   <div class="stack">
     <svg ref="svgRef" width="100%" :height="svgHeight"/>
-    <template v-for="(annotation, index) of props.annotations" :key="index">
+    <template v-for="(annotation, index) of annotations" :key="index">
       <MarkerView
           :xy="projectToXY(annotation.lat, annotation.lon)"
           :title="annotation.title"
@@ -43,44 +43,56 @@ const svgRef = useTemplateRef<HTMLImageElement>("svgRef")
 const svgSize = useElementSize(svgRef)
 const svgHeight = computed(() => svgSize.width.value * mapRatio.value)
 
-onMounted(() => {
-  watch([svgRef, svgSize.width], updateSVG, {immediate: true})
+onMounted(async () => {
+  watch([mapData, svgSize.width], updateMapProjection)
+  watch([mapData, mapProjection, svgRef, svgSize.width], updateSVG)
+  await updateMapData()
 })
 
-const mapRatio = ref(0.5)
-const mapProjection = shallowRef<d3geo.GeoProjection|null>(null)
-let mapFeatures: GeoJSON.Feature | null = null
+const mapData = shallowRef<GeoJSON.Feature|null>(null)
+const updateMapData = async () => {
+  const jsonMod = await import("@/assets/countries-110m.json")
+  const jsonData = jsonMod.default as unknown as Topology
+  mapData.value = topojson.feature(jsonData, "countries")
+}
 
+const mapProjection = shallowRef<d3geo.GeoProjection|null>(null)
+const updateMapProjection = () => {
+  if (mapData.value !== null) {
+    mapProjection.value = d3geo.geoNaturalEarth1().fitWidth(svgSize.width.value, mapData.value)
+  } else {
+    mapProjection.value = null
+  }
+}
+
+const mapRatio = ref<number>(0.5)
 const updateSVG = async () => {
-  if (svgRef.value !== null && svgSize.width.value > 0) {
+  if (svgRef.value !== null) {
 
     // Removes all svg content
     while (svgRef.value.lastChild !== null) {
       svgRef.value.removeChild(svgRef.value.lastChild)
     }
 
-    // Add new content
-    const svg = d3.select(svgRef.value)
-    // .attr("width", width)
-    // .attr("height", height);
+    if (svgSize.width.value > 0 && mapProjection.value !== null && mapData.value !== null) {
 
-    if (mapFeatures === null) {
-      const jsonMod = await import("@/assets/countries-110m.json")
-      const jsonData = jsonMod.default as unknown as Topology
-      mapFeatures = topojson.feature(jsonData, "countries")
+      // Add new content
+      const svg = d3.select(svgRef.value)
+      const path = d3geo.geoPath(mapProjection.value)
+      svg.append("path")
+          .datum(mapData.value)
+          .attr("d", path);
+
+      // Update map ratio
+      const mapSize = d3geo.geoBounds(mapData.value)[1]
+      mapRatio.value = mapSize[1] / mapSize[0]
     }
-    mapProjection.value = d3geo.geoNaturalEarth1().fitWidth(svgSize.width.value, mapFeatures)
-
-    const path = d3geo.geoPath(mapProjection.value)
-    svg.append("path")
-        .datum(mapFeatures)
-        .attr("d", path);
-
-    const mapSize = d3geo.geoBounds(mapFeatures)[1]
-    mapRatio.value = mapSize[1] / mapSize[0]
-
   }
 }
+
+const annotations = computed(() => {
+  return mapProjection.value !== null ? props.annotations : []
+})
 
 const projectToXY = (lat: number, lon: number): { x: number; y: number } => {
   const p = mapProjection.value !== null ? mapProjection.value([lon, lat]) : null
