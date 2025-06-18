@@ -35,11 +35,12 @@ const updateAnnotations = async () => {
 
   const newAnnotations: MapAnnotation[] = []
   for (const p of geoLocationBook.places) {
+    const nodeEntries = geoLocationBook.findNodeNames(p.name)
+    const nodeNames = nodeEntries.map((entry) => entry.nodeName)
     newAnnotations.push({
       lat: p.lat,
       lon: p.lon,
-      title: p.name,
-      subTitle: "",
+      title: nodeNames,
       placement: p.labelPlacement,
     })
   }
