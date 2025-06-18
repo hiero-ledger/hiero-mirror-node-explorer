@@ -18,7 +18,7 @@ import {onMounted, PropType, ref, watch} from "vue";
 import WorldMapV2 from "@/components/node/map/WorldMapV2.vue";
 import {NetworkNode} from "@/schemas/MirrorNodeSchemas.ts";
 import {MapAnnotation} from "@/components/node/map/MapAnnotation.ts";
-import makeNodeOwnerName} from "@/schemas/MirrorNodeUtils.ts";
+import {makeNodeOwnerName} from "@/schemas/MirrorNodeUtils.ts";
 import {GeoLocationCache} from "@/utils/cache/GeoLocationCache.ts";
 
 const props = defineProps({
