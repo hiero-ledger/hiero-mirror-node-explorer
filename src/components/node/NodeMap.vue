@@ -18,7 +18,7 @@ import {onMounted, PropType, ref, watch} from "vue";
 import WorldMapV2 from "@/components/node/map/WorldMapV2.vue";
 import {NetworkNode} from "@/schemas/MirrorNodeSchemas.ts";
 import {MapAnnotation} from "@/components/node/map/MapAnnotation.ts";
-import {makeNodeOwnerDescription} from "@/schemas/MirrorNodeUtils.ts";
+import makeNodeOwnerName} from "@/schemas/MirrorNodeUtils.ts";
 import {GeoLocationCache} from "@/utils/cache/GeoLocationCache.ts";
 
 const props = defineProps({
@@ -35,14 +35,16 @@ const updateAnnotations = async () => {
 
   const newAnnotations: MapAnnotation[] = []
   for (const p of geoLocationBook.places) {
-    const nodeEntries = geoLocationBook.findNodeNames(p.name)
-    const nodeNames = nodeEntries.map((entry) => entry.nodeName).sort()
-    newAnnotations.push({
-      lat: p.lat,
-      lon: p.lon,
-      title: nodeNames,
-      placement: p.labelPlacement,
-    })
+    const nodeEntries = await findNodesAtPlace(p.name)
+    const nodeNames = nodeEntries.map((n) => makeNodeOwnerName(n)).sort()
+    if (nodeNames.length > 0) {
+      newAnnotations.push({
+        lat: p.lat,
+        lon: p.lon,
+        title: nodeNames,
+        placement: p.labelPlacement,
+      })
+    }
   }
 
   // const newAnnotations: MapAnnotation[] = []
@@ -62,6 +64,20 @@ const updateAnnotations = async () => {
   // }
 
   annotations.value = newAnnotations
+}
+
+const findNodesAtPlace = async (placeName: string): Promise<NetworkNode[]>  => {
+  const result: NetworkNode[] = []
+  const book = await GeoLocationCache.instance.lookup()
+  for (const n of props.nodes) {
+    if (n.public_key) {
+      const place = book.findPlace(n.public_key)
+      if (place !== null && place.name == placeName) {
+        result.push(n)
+      }
+    }
+  }
+  return Promise.resolve(result)
 }
 
 const annotations = ref<MapAnnotation[]>([])

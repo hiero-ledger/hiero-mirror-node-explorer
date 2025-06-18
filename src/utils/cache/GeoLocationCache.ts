@@ -42,10 +42,14 @@ export interface GeoLocationBookEntry {
 export class GeoLocationBook {
 
     private readonly placeMap = new Map<string, GeoPlace>()
+    private readonly entryMap = new Map<string, GeoLocationBookEntry>()
 
     constructor(public readonly places: GeoPlace[], public readonly entries: GeoLocationBookEntry[]) {
         for (const p of places) {
             this.placeMap.set(p.name, p)
+        }
+        for (const e of entries) {
+            this.entryMap.set(e.nodePublicKey, e)
         }
         this.checkConsistency()
     }
@@ -64,13 +68,9 @@ export class GeoLocationBook {
         }
     }
 
-    public findNodeNames(placeName: string): GeoLocationBookEntry[] {
-        const result: GeoLocationBookEntry[] = []
-        for (const e of this.entries) {
-            if (e.placeName === placeName) {
-                result.push(e)
-            }
-        }
-        return result
+    public findPlace(nodePublicKey: string): GeoPlace|null {
+        const entry = this.entryMap.get(nodePublicKey)
+        const place = entry ? this.placeMap.get(entry.placeName) : null
+        return place ?? null
     }
 }
