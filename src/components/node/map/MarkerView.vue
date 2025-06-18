@@ -6,9 +6,9 @@
 
 <template>
   <div ref="containerRef" class="container" :style="containerStyle">
-    <Circle :size="iconSize"/>
+    <Circle :size="iconSize" fill="var(--network-text-accent-color)" stroke="none"/>
     <div class="label-container">
-      <div style="font-size: 12px" v-for="t in props.title">{{ t }}</div>
+      <div v-for="t in props.title">{{ t }}</div>
     </div>
   </div>
 </template>
@@ -19,7 +19,7 @@
 
 <script setup lang="ts">
 
-import {Circle} from 'lucide-vue-next';
+import {Circle, MapPin} from 'lucide-vue-next';
 import {computed, PropType, StyleValue, useTemplateRef} from "vue";
 import {useElementSize} from "@vueuse/core";
 import {LabelPlacement} from "@/utils/cache/GeoLocationCache.ts";
@@ -42,7 +42,7 @@ const props = defineProps({
 const containerRef = useTemplateRef<HTMLDivElement>("containerRef")
 const containerSize = useElementSize(containerRef)
 
-const iconSize = 10
+const iconSize = props.title.length == 1 ? 10 : 20
 
 const containerStyle = computed(() => {
   let result: StyleValue = {}
@@ -88,9 +88,11 @@ div.container {
 }
 
 div.label-container {
+  color: var(--text-primary);
   display: flex;
   flex-direction: column;
-  background: rgba(255, 255, 255, 0.7);
+  font-size: 12px;
+  background-color: hsl(from var(--background-secondary) h s l / 40%);
   border-width: 1px;
   border-color: rgba(0, 0, 0, 0.2);
   border-style: solid;
