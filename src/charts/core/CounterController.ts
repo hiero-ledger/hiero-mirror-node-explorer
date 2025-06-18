@@ -154,7 +154,7 @@ export class TransactionCounterController extends CounterController<TransactionA
     }
 
     protected metricToValue(m: TransactionAggregate): string {
-        return m.aggregate.count.toString()
+        return Number(m.aggregate.count).toLocaleString('en-US')
     }
 
 
@@ -238,7 +238,7 @@ export class AccumulatedTransactionCounterController extends CounterController<n
     }
 
     protected metricToValue(m: number): string {
-        return m.toString()
+        return Number(m).toLocaleString('en-US')
     }
 
     //
