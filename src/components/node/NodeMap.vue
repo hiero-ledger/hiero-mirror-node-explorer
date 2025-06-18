@@ -36,7 +36,7 @@ const updateAnnotations = async () => {
   const newAnnotations: MapAnnotation[] = []
   for (const p of geoLocationBook.places) {
     const nodeEntries = geoLocationBook.findNodeNames(p.name)
-    const nodeNames = nodeEntries.map((entry) => entry.nodeName)
+    const nodeNames = nodeEntries.map((entry) => entry.nodeName).sort()
     newAnnotations.push({
       lat: p.lat,
       lon: p.lon,
