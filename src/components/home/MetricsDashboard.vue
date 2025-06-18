@@ -12,19 +12,19 @@
         <User :size="32"/>
       </CounterView>
 
-      <div class="line"/>
+      <div class="mini-line-separator"/>
 
       <CounterView :controller="contractCreateCounterController">
         <FileScan :size="32"/>
       </CounterView>
 
-      <div v-if="isLargeScreen || !isSmallScreen" class="line"/>
+      <div v-if="isLargeScreen || !isSmallScreen" class="mini-line-separator"/>
 
       <CounterView :controller="tokenCreateCounterController">
         <Hexagon :size="32"/>
       </CounterView>
 
-      <div class="line"/>
+      <div class="mini-line-separator"/>
 
       <CounterView :controller="accumulatedTransactionCountController">
         <MoveHorizontal :size="32"/>
@@ -87,47 +87,6 @@ div.dashboard-root {
   border-radius: 16px;
   display: flex;
   justify-content: center;
-}
-
-div.dashboard-content {
-  align-items: flex-start;
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-  height: fit-content;
-  padding: 26px 32px 26px 32px;
-  width: fit-content;
-}
-
-@media (min-width: 768px) {
-  div.dashboard-content {
-    align-items: center;
-    display: grid;
-    gap: 16px;
-    grid-template-columns: 1fr auto 1fr;
-    justify-items: flex-start;
-  }
-}
-
-@media (min-width: 1280px) {
-  div.dashboard-content {
-    grid-template-columns:  repeat(7, auto);
-    justify-items: center;
-  }
-}
-
-div.line {
-  border: 1px solid var(--border-secondary);
-  rotate: 0deg;
-  width: 100%;
-}
-
-@media (min-width: 768px) {
-  div.line {
-    border: 1px solid var(--border-secondary);
-    rotate: -90deg;
-    width: 32px;
-  }
 }
 
 </style>
