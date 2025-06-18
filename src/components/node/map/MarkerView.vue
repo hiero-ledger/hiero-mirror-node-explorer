@@ -7,7 +7,7 @@
 <template>
   <div ref="containerRef" class="container" :style="containerStyle">
     <Circle :size="iconSize"/>
-    <div style="display: flex; flex-direction: column">
+    <div class="label-container">
       <div style="font-size: 12px" v-for="t in props.title">{{ t }}</div>
     </div>
   </div>
@@ -84,6 +84,17 @@ div.container {
   position: absolute;
   align-items: center;
   column-gap: 2px;
+  row-gap: 2px;
+}
+
+div.label-container {
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.7);
+  border-width: 1px;
+  border-color: rgba(0, 0, 0, 0.2);
+  border-style: solid;
+  padding: 2px
 }
 
 </style>
