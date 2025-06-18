@@ -63,4 +63,14 @@ export class GeoLocationBook {
             console.log("Check node-locations.json !!!!")
         }
     }
+
+    public findNodeNames(placeName: string): GeoLocationBookEntry[] {
+        const result: GeoLocationBookEntry[] = []
+        for (const e of this.entries) {
+            if (e.placeName === placeName) {
+                result.push(e)
+            }
+        }
+        return result
+    }
 }
