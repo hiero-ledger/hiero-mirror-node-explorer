@@ -47,6 +47,13 @@
       />
     </o-table-column>
 
+    <o-table-column v-slot="{ row }" field="freeze-status" label="FREEZE STATUS">
+      <FreezeStatusView
+          :account-id="props.controller.accountId.value"
+          :token-id="row.token_id"
+      />
+    </o-table-column>
+
     <template v-slot:bottom-left>
       <TablePageSize
           v-if="props.fullPage"
@@ -85,6 +92,7 @@ import TablePageSize from "@/components/transaction/TablePageSize.vue";
 import {FungibleTableController} from "@/components/account/FungibleTableController";
 import TokenIOL from "@/components/values/link/TokenIOL.vue";
 import {routeManager} from "@/utils/RouteManager.ts";
+import FreezeStatusView from "@/components/token/FreezeStatusView.vue";
 
 const props = defineProps({
   controller: {
