@@ -178,7 +178,7 @@ export class AccountLocParser {
                 } else { // l instanceof AccountAlias
                     this.accountInfo.value = await AccountByAliasCache.instance.lookup(l.toString())
                 }
-            } catch (error) {
+            } catch {
                 this.accountInfo.value = null
             } finally {
                 this.loadCounter.value += 1

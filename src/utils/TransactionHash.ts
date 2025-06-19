@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
-import {base64Decode, base64Encode, byteToHex, hexToByte} from "@/utils/B64Utils";
+import {base64Decode, byteToHex, hexToByte} from "@/utils/B64Utils";
 
 export class TransactionHash {
 

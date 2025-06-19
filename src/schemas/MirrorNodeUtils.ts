@@ -298,7 +298,7 @@ export function lookupNFTTransfer(transaction: Transaction, tokenId: string): Nf
 export function decodeRedirectForTokenInput(functionFragment: ethers.FunctionFragment, inputArgs: string): ethers.Result {
     try {
         return ethers.AbiCoder.defaultAbiCoder().decode(functionFragment.inputs, inputArgs)
-    } catch (e) {
+    } catch {
         const tokenAddress = `0x${inputArgs.slice(2, 42)}`
         const encodedFunctionSelector = `0x${inputArgs.slice(42)}`
         return new ethers.Result(tokenAddress, encodedFunctionSelector)

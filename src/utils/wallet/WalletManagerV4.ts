@@ -315,7 +315,7 @@ export class WalletManagerV4 {
         if (walletConnectID !== null) {
             try {
                 this.walletConnectAgent = await WalletConnectAgent.makeInstance(walletConnectID)
-            } catch (error) {
+            } catch {
                 // this.traceError(error, "WalletManagerV4.initWalletConnect()")
                 this.walletConnectAgent = null
             }

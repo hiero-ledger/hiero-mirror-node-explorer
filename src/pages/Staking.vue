@@ -206,7 +206,6 @@ const stakingChanged = () => {
 const enableWallet = routeManager.enableWallet
 const accountId = walletManager.accountId
 const isHieroWallet = walletManager.isHieroWallet
-const accountChecksum = accountLocParser.accountChecksum
 const stakePeriodStart = accountLocParser.stakePeriodStart
 const stakedNode = stakedNodeAnalyzer.node
 

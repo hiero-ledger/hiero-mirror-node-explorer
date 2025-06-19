@@ -23,6 +23,7 @@ export class TxOverTimeController extends HgraphChartController {
     //
 
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     protected makeQuery(range: ChartRange): string {
         // We request all rows so that transformMetrics() can perform accumulation
         return "{" +
@@ -69,10 +70,11 @@ export class TxOverTimeController extends HgraphChartController {
         return Promise.resolve(result)
     }
 
+
     protected makeChartConfig(metrics: EcosystemMetric[],
-                              range: ChartRange,
-                              context: CanvasRenderingContext2D): ChartConfiguration {
-        return this.makeBarChartConfig(metrics, range, false, "# of transactions", context)
+                              range: ChartRange/*,
+                              context: CanvasRenderingContext2D*/): ChartConfiguration {
+        return this.makeBarChartConfig(metrics, range, false, "# of transactions")
     }
 
 }

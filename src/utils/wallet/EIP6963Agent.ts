@@ -44,7 +44,7 @@ export class EIP6963Agent {
                 if (!await this.isChainOK(d)) {
                     await this.trySetupChain(d)
                 }
-            } catch (error) {
+            } catch {
                 // Let's go forward and try the remaining steps… :/
             }
             // 2) Creates session

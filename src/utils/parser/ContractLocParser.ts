@@ -90,7 +90,7 @@ export class ContractLocParser {
                 } else {
                     this.contractResponse.value = await ContractByAddressCache.instance.lookup(l.toString())
                 }
-            } catch (error) {
+            } catch {
                 this.contractResponse.value = null
             } finally {
                 this.loadCounter.value += 1
