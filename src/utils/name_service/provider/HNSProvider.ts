@@ -2,6 +2,7 @@
 
 import {NameServiceProvider} from "@/utils/name_service/provider/NameServiceProvider";
 import {Resolver} from '@hedera-name-service/hns-resolution-sdk'
+import {NetworkType} from "@hedera-name-service/hns-resolution-sdk/dist/types/NetworkType";
 
 export class HNSProvider extends NameServiceProvider {
 
@@ -36,7 +37,7 @@ export class HNSProvider extends NameServiceProvider {
 
     private findResolver(network: string): Resolver | null {
 
-        let service: string | null
+        let service: NetworkType | null
         switch (network) {
             case "mainnet":
                 service = "hedera_main"
@@ -53,7 +54,7 @@ export class HNSProvider extends NameServiceProvider {
         if (service !== null) {
             result = this.resolverCache.get(service) ?? null
             if (result == null) {
-                result = new Resolver(service as any)
+                result = new Resolver(service)
                 this.resolverCache.set(service, result)
             }
         } else {

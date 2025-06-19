@@ -242,7 +242,7 @@ const handleDownload = async () => {
       zip.file(filePath, file.content);
     }
     zip.generateAsync({type: "blob"})
-        .then(function (content: any) {
+        .then(function (content: Blob) {
           const zipName = props.contractAnalyzer.contractAddress.value + '.zip'
           saveAs(content, zipName);
         });

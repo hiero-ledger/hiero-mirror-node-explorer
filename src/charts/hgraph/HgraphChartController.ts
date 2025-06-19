@@ -4,7 +4,7 @@ import {ChartController, LoadedData} from "@/charts/core/ChartController.ts";
 import {ChartGranularity, ChartRange, computeGranularityForRange} from "@/charts/core/ChartRange.ts";
 import {aggregateMetrics, EcosystemMetric, getEndDate, getStartDate} from "@/charts/hgraph/EcosystemMetric.ts";
 import axios, {AxiosRequestConfig} from "axios";
-import {ChartConfiguration} from "chart.js";
+import {ChartConfiguration, ChartDataset} from "chart.js";
 
 export abstract class HgraphChartController extends ChartController<EcosystemMetric> {
 
@@ -26,7 +26,7 @@ export abstract class HgraphChartController extends ChartController<EcosystemMet
                                  context: CanvasRenderingContext2D): ChartConfiguration {
         const granularity = computeGranularityForRange(range)
         const graphLabels = makeGraphLabels(metrics, granularity)
-        const graphDataSet = this.makeBarGraphDataSet(metrics, context) as any
+        const graphDataSet = this.makeBarGraphDataSet(metrics, context)
         const textPrimaryColor = this.themeController.getTextPrimaryColor()
         const textSecondaryColor = this.themeController.getTextSecondaryColor()
         const yScaleType = logarithmic ? "logarithmic" : "linear"
@@ -78,7 +78,7 @@ export abstract class HgraphChartController extends ChartController<EcosystemMet
                                   context: CanvasRenderingContext2D): ChartConfiguration {
         const granularity = computeGranularityForRange(range)
         const graphLabels = makeGraphLabels(metrics, granularity)
-        const graphDataSet = this.makeLineGraphDataSet(metrics, context) as any
+        const graphDataSet = this.makeLineGraphDataSet(metrics, context)
         const textPrimaryColor = this.themeController.getTextPrimaryColor()
         const textSecondaryColor = this.themeController.getTextSecondaryColor()
         const yScaleType = logarithmic ? "logarithmic" : "linear"
@@ -133,7 +133,7 @@ export abstract class HgraphChartController extends ChartController<EcosystemMet
     }
 
     protected makeBarGraphDataSet(metrics: EcosystemMetric[],
-                                  context: CanvasRenderingContext2D): object {
+                                  context: CanvasRenderingContext2D): ChartDataset {
         const totals = metrics.map((m: EcosystemMetric) => m.total)
         const graphBarColor = this.themeController.getGraphBarColor()
         return {
@@ -146,7 +146,7 @@ export abstract class HgraphChartController extends ChartController<EcosystemMet
     }
 
     protected makeLineGraphDataSet(metrics: EcosystemMetric[],
-                                   context: CanvasRenderingContext2D): object {
+                                   context: CanvasRenderingContext2D): ChartDataset {
         const totals = metrics.map((m: EcosystemMetric) => m.total)
         const graphLineColor = this.themeController.getGraphLineColor()
         const gradient = context.createLinearGradient(0, 0, 0, 300)

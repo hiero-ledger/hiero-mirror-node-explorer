@@ -94,13 +94,7 @@ export class ContractVerificationController extends TaskController {
     //
 
     public readonly extraErrorMessage = computed(() => {
-        let result: string | null
-        if (this.verificationError.value !== null) {
-            result = (this.verificationError.value as any).toString()
-        } else {
-            result = null
-        }
-        return result
+        return this.verificationError.value?.toString() ?? null
     })
 
     //

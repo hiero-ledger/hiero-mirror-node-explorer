@@ -11,13 +11,13 @@ export class HCSAssetFragment {
 
     public static parse(topicMessage: TopicMessage): HCSAssetFragment | null {
         let result: HCSAssetFragment | null
-        let chunk: any
+        let chunk: Record<string, unknown>|null
         try {
             chunk = JSON.parse(atob(topicMessage.message))
         } catch {
             chunk = null
         }
-        if (chunk !== null && chunk.o != undefined && chunk.c != undefined) {
+        if (chunk !== null && typeof chunk.o === "number" && typeof chunk.c === "string") {
             result = new HCSAssetFragment(
                 chunk.o,
                 chunk.c
