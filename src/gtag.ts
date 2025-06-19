@@ -9,7 +9,7 @@
 
 declare global {
     interface Window {
-        gtag: Function | undefined
+        gtag: (command: string, ...options: unknown[]) => void
     }
 }
 
