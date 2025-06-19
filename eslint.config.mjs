@@ -27,8 +27,6 @@ export default tseslint.config(
 
 
             "@typescript-eslint/no-explicit-any": "off",
-            "@typescript-eslint/no-require-imports": "off",
-            "@typescript-eslint/no-this-alias": "off",
 
             "vue/no-reserved-component-names": "off",
             "vue/multi-word-component-names": "off",
