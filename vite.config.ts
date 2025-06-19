@@ -3,7 +3,6 @@ import {fileURLToPath, URL} from 'node:url'
 import {defineConfig} from 'vite'
 import vue from '@vitejs/plugin-vue'
 import basicSsl from '@vitejs/plugin-basic-ssl'
-import {nodePolyfills} from 'vite-plugin-node-polyfills'
 import * as child from "child_process"
 import {readFileSync} from "fs"
 
@@ -33,17 +32,6 @@ export default defineConfig({
   plugins: [
     vue(),
     basicSsl(),
-    nodePolyfills({ // hashgraph/proto needs NodeJS buffers
-      exclude: [
-        'fs', // Excludes the polyfill for `fs` and `node:fs`.
-      ],
-      globals: {
-        Buffer: true,
-        global: false,
-        process: true,
-      },
-      protocolImports: false,
-    }),
   ],
   resolve: {
     alias: {

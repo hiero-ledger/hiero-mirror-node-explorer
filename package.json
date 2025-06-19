@@ -82,7 +82,6 @@
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.34.1",
     "vite": "^6.3.5",
-    "vite-plugin-node-polyfills": "^0.23.0",
     "vite-plugin-require-transform": "^1.0.21",
     "vitest": "^3.2.3",
     "vue-tsc": "^2.2.10"
