@@ -85,7 +85,6 @@ describe("HbarAllowanceTable.vue", () => {
         });
         controller.mount()
         await flushPromises()
-        console.log(wrapper.text())
 
         expect(wrapper.find('thead').text()).toBe("SPENDER TOKEN ID TIME")
         expect(wrapper.find('tbody').text()).toBe(
