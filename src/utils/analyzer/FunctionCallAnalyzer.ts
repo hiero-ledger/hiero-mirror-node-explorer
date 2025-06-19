@@ -123,7 +123,7 @@ export class FunctionCallAnalyzer {
                     result.push(
                         new NameTypeValue("signature", "string", this.callDecoder.signature.value, null, null),
                     )
-                    for (let ntv of this.callDecoder.decodedInput.value) {
+                    for (const ntv of this.callDecoder.decodedInput.value) {
                         result.push(ntv)
                     }
                 }

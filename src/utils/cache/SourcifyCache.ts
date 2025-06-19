@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
-import axios, {AxiosResponse} from "axios";
+import axios from "axios";
 import {EntityCache} from "@/utils/cache/base/EntityCache";
 import {SolcMetadata} from "@/utils/solc/SolcMetadata";
 import {ContractByIdCache} from "@/utils/cache/ContractByIdCache";
@@ -49,10 +49,10 @@ export class SourcifyCache extends EntityCache<string, SourcifyRecord | null> {
             queryParams.append('addresses', addressesToCheck.slice(i, i + MAX_VERIFICATIONS).join());
             const requestURL = `${baseURL}?${queryParams.toString()}`;
 
-            const sourcifyResponse: AxiosResponse<Array<any>> = await axios.get<Array<any>>(requestURL)
+            const sourcifyResponse = await axios.get<Array<Record<string, unknown>>>(requestURL)
             if (sourcifyResponse.data) {
                 for (const r of sourcifyResponse.data) {
-                    if ('chainIds' in r) {
+                    if ('chainIds' in r && typeof r.address === 'string') {
                         verifiedAddresses.push(r.address.toLowerCase())
                     }
                 }

@@ -142,7 +142,7 @@ export class WalletClient_Ethereum extends WalletClient {
     }
 
     private async sendTransaction(fromAddress: string, toAddress: string, callData: string, value: string|null): Promise<string> {
-        const ethParams: Record<string, any> = {
+        const ethParams: Record<string, unknown> = {
             from: fromAddress,
             to: toAddress,
             data: callData,

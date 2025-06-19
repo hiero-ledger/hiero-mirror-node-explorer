@@ -18,7 +18,7 @@ export class CoreConfig {
         let result: CoreConfig
         const response = await axios.get<unknown>(url)
         if (response.status === 200 && typeof response.data === "object" && response.data !== null) {
-            result = this.parse(response.data)
+            result = this.parse(response.data as Record<string, unknown>)
         } else {
             throw new Error("core-config.json is missing or cannot be decoded")
         }
@@ -98,7 +98,7 @@ export class CoreConfig {
     ) {
     }
 
-    private static parse(obj: object): CoreConfig {
+    private static parse(obj: Record<string, unknown>): CoreConfig {
         return new CoreConfig(
             fetchString(obj, "productName") ?? "Hiero Explorer",
             fetchURL(obj, "productLogoLightURL") ?? localPathToURL("product-logo-light.png") ,

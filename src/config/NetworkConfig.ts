@@ -14,7 +14,7 @@ export class SourcifySetup {
     // Public
     //
 
-    static parse(obj: object): SourcifySetup {
+    static parse(obj: Record<string, unknown>): SourcifySetup {
 
         const activate = fetchBoolean(obj, "activate") ?? true
         const repoURL = fetchURL(obj, "repoURL")
@@ -80,7 +80,7 @@ export class NetworkEntry {
 
     public static readonly NETWORK_NAME_MAX_LENGTH = 15
 
-    static parse(obj: object): NetworkEntry {
+    static parse(obj: Record<string, unknown>): NetworkEntry {
 
         const name = fetchString(obj, "name")
         const displayName = fetchString(obj, "displayName")

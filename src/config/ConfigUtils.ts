@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
-export function fetchBoolean(obj: any, key: string): boolean | null {
+export function fetchBoolean(obj: Record<string, unknown>, key: string): boolean | null {
     let result: boolean | null
     if (key in obj) {
         const value = obj[key]
@@ -17,7 +17,7 @@ export function fetchBoolean(obj: any, key: string): boolean | null {
     return result
 }
 
-export function fetchNumber(obj: any, key: string): number | null {
+export function fetchNumber(obj: Record<string, unknown>, key: string): number | null {
     let result: number | null
     if (key in obj) {
         const value = obj[key]
@@ -34,7 +34,7 @@ export function fetchNumber(obj: any, key: string): number | null {
     return result
 }
 
-export function fetchString(obj: any, key: string): string | null {
+export function fetchString(obj: Record<string, unknown>, key: string): string | null {
     let result: string | null
     if (key in obj) {
         const value = obj[key]
@@ -51,7 +51,7 @@ export function fetchString(obj: any, key: string): string | null {
     return result
 }
 
-export function fetchURL(obj: any, key: string): string | null {
+export function fetchURL(obj: Record<string, unknown>, key: string): string | null {
     let result: string | null
     const s = fetchString(obj, key)
     if (s !== null) {
@@ -66,14 +66,14 @@ export function fetchURL(obj: any, key: string): string | null {
     return result
 }
 
-export function fetchObject(obj: any, key: string): object | null {
-    let result: object | null
+export function fetchObject(obj: Record<string, unknown>, key: string): Record<string, unknown> | null {
+    let result: Record<string, unknown> | null
     if (key in obj) {
         const value = obj[key]
         if (value === null) {
             result = null
         } else if (typeof value === 'object') {
-            result = value
+            result = value as Record<string, unknown>
         } else {
             throw new TypeError('Expected ' + key + ' to be object, got ' + typeof value)
         }

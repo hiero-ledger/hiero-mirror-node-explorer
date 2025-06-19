@@ -30,7 +30,7 @@ export interface NftFile {
 export class TokenMetadataAnalyzer {
 
     private watchHandle: WatchStopHandle | null = null
-    private metadataContentRef = ref<any>(null)
+    private metadataContentRef = ref<unknown>(null)
 
     //
     // Public
@@ -99,7 +99,7 @@ export class TokenMetadataAnalyzer {
             || (this.name.value != null && this.image.value != null && this.type.value != null)
     )
 
-    public metadataContent = computed<any>(() => this.metadataContentRef.value)
+    public metadataContent = computed<unknown>(() => this.metadataContentRef.value)
 
     public metadataString = computed<string | null>(
         () => this.metadataContent.value !== null
@@ -108,22 +108,22 @@ export class TokenMetadataAnalyzer {
     )
 
     public metadataKeys = computed(
-        () => this.metadataContent.value !== null
+        () => this.metadataContent.value !== null && typeof this.metadataContent.value === "object"
             ? Object.keys(this.metadataContent.value)
             : []
     )
 
-    public name = computed<string | null>(() => this.getProperty('name'))
-    public creator = computed<string | null>(() => this.getProperty('creator'))
-    public creatorDID = computed<string | null>(() => this.getProperty('creatordid'))
-    public description = computed<string | null>(() => this.getProperty('description'))
-    public image = computed<string | null>(() => this.getProperty('image'))
-    public checksum = computed<string | null>(() => this.getProperty('checksum'))
-    public type = computed<string | null>(() => this.getProperty('type'))
-    public format = computed<string | null>(() => this.getProperty('format'))
+    public name = computed<string | null>(() => this.getStringProperty('name'))
+    public creator = computed<string | null>(() => this.getStringProperty('creator'))
+    public creatorDID = computed<string | null>(() => this.getStringProperty('creatordid'))
+    public description = computed<string | null>(() => this.getStringProperty('description'))
+    public image = computed<string | null>(() => this.getStringProperty('image'))
+    public checksum = computed<string | null>(() => this.getStringProperty('checksum'))
+    public type = computed<string | null>(() => this.getStringProperty('type'))
+    public format = computed<string | null>(() => this.getStringProperty('format'))
 
     public properties = computed<string | null>(() => {
-        let result = this.getProperty('properties')
+        let result = this.getStringProperty('properties')
         if (result != null) {
             result = JSON.stringify(result)
             if (result === '{}') {
@@ -235,7 +235,7 @@ export class TokenMetadataAnalyzer {
     }
 
     private async updateImage(): Promise<void> {
-        const uri = this.getProperty('image') ?? this.getProperty(('picture'))
+        const uri = this.getStringProperty('image') ?? this.getStringProperty(('picture'))
         if (uri !== null) {
             let url = blob2URL(uri, this.ipfsGatewayPrefix, this.arweaveServer)
             if (url === null) {
@@ -253,11 +253,11 @@ export class TokenMetadataAnalyzer {
         }
     }
 
-    private async readMetadataFromUrl(url: string): Promise<any> {
+    private async readMetadataFromUrl(url: string): Promise<unknown> {
         // console.log(`readMetadataFromUrl: ${url}`)
-        let result: any
+        let result: unknown
         try {
-            result = await AssetCache.instance.lookup(url) as any
+            result = await AssetCache.instance.lookup(url)
             this.loadSuccessRef.value = true
         } catch (reason) {
             console.warn(`Failed to read metadata from URL ${url} - error: ${reason}`)
@@ -271,9 +271,9 @@ export class TokenMetadataAnalyzer {
         return Promise.resolve(result)
     }
 
-    private async readMetadataFromTopic(id: string): Promise<any> {
+    private async readMetadataFromTopic(id: string): Promise<unknown> {
         // console.log(`readMetadataFromTopic: ${id}`)
-        let result: any
+        let result: unknown
         try {
             const content = await HCSAssetCache.instance.lookup(id)
             this.loadSuccessRef.value = true
@@ -291,9 +291,9 @@ export class TokenMetadataAnalyzer {
         return Promise.resolve(result)
     }
 
-    private async readMetadataFromTimestamp(timestamp: string): Promise<any> {
+    private async readMetadataFromTimestamp(timestamp: string): Promise<unknown> {
         // console.log(`readMetadataFromTimestamp: ${timestamp}`)
-        let result: any
+        let result: unknown
         try {
             const topicMessage = await TopicMessageByTimestampCache.instance.lookup(timestamp)
             this.loadSuccessRef.value = true
@@ -311,14 +311,22 @@ export class TokenMetadataAnalyzer {
         return Promise.resolve(result)
     }
 
-    private getProperty(name: string): any | null {
-        let result: string | null = null
-        for (const key of this.metadataKeys.value) {
-            if (key.toLowerCase() === name) {
-                result = this.metadataContent.value[key]
-                break
+    private getProperty(name: string): unknown {
+        let result: unknown
+        if (this.metadataContentRef.value && typeof this.metadataContentRef.value === "object") {
+            const metadataContent = this.metadataContentRef.value as Record<string, unknown>
+            for (const key of this.metadataKeys.value) {
+                if (key.toLowerCase() === name) {
+                    result = metadataContent[key]
+                    break
+                }
             }
         }
         return result
+    }
+
+    private getStringProperty(name: string): string|null {
+        const v = this.getProperty(name)
+        return typeof v === "string" ? v : null
     }
 }

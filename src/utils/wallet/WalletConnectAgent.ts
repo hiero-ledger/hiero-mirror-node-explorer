@@ -383,7 +383,7 @@ class Provider_WC implements EIP1193Provider {
     request(request: { method: string, params?: Array<unknown> } | object): Promise<unknown> {
         const requestParams = {
             topic: this.session.topic,
-            request: request as any,
+            request: request as { method: string; params: unknown; },
             chainId: this.caChainId.toString()
         }
         return this.signClient.request(requestParams)
