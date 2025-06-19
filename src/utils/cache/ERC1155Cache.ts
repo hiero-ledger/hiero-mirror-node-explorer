@@ -20,7 +20,6 @@ export class ERC1155Cache extends SingletonCache<ERC1155Index> {
             const response = await axios.get<ERC1155Contract[]>(url)
             if (response.status === 200 && typeof response.data === "object" && response.data !== null) {
                 contracts = response.data
-                console.log(`Read ${contracts.length} contracts from url: ${url}`)
             } else {
                 contracts = []
                 console.warn(`Could not read contracts from url: ${url}`)
