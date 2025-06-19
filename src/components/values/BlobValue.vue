@@ -109,7 +109,7 @@ const jsonValue = computed(() => {
   if (decodedValue.value && decodedValue.value != '{}' && props.pretty) {
     try {
       result = JSON.parse(decodedValue.value)
-    } catch (e) {
+    } catch {
       result = null
     }
   } else {

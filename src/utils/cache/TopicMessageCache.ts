@@ -1,9 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 
-import {EntityCache, EntityLookup} from "@/utils/cache/base/EntityCache";
+import {EntityCache} from "@/utils/cache/base/EntityCache";
 import {TopicMessage} from "@/schemas/MirrorNodeSchemas";
 import axios from "axios";
-import {computed, Ref} from "vue";
 
 export class TopicMessageCache extends EntityCache<string, TopicMessage | null> {
 

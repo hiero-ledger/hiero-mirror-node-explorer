@@ -139,7 +139,6 @@ const props = defineProps({
   stakeTotal: Number
 })
 
-const tooltipDelay = 500
 const tooltipStake = "Total amount of HBAR staked to this specific validator for consensus."
 const tooltipPercentage = "Total amount of HBAR staked to this validator for consensus / total amount of HBAR staked to all validators for consensus."
 const tooltipRewardRate = "Approximate annual reward rate based on the reward earned during the last 24h period."

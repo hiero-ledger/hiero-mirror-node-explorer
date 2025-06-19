@@ -22,11 +22,10 @@ export abstract class HgraphChartController extends ChartController<EcosystemMet
     //
 
     protected makeBarChartConfig(metrics: EcosystemMetric[], range: ChartRange,
-                                 logarithmic: boolean, yLabel: string | null,
-                                 context: CanvasRenderingContext2D): ChartConfiguration {
+                                 logarithmic: boolean, yLabel: string | null): ChartConfiguration {
         const granularity = computeGranularityForRange(range)
         const graphLabels = makeGraphLabels(metrics, granularity)
-        const graphDataSet = this.makeBarGraphDataSet(metrics, context)
+        const graphDataSet = this.makeBarGraphDataSet(metrics)
         const textPrimaryColor = this.themeController.getTextPrimaryColor()
         const textSecondaryColor = this.themeController.getTextSecondaryColor()
         const yScaleType = logarithmic ? "logarithmic" : "linear"
@@ -132,8 +131,7 @@ export abstract class HgraphChartController extends ChartController<EcosystemMet
         }
     }
 
-    protected makeBarGraphDataSet(metrics: EcosystemMetric[],
-                                  context: CanvasRenderingContext2D): ChartDataset {
+    protected makeBarGraphDataSet(metrics: EcosystemMetric[]): ChartDataset {
         const totals = metrics.map((m: EcosystemMetric) => m.total)
         const graphBarColor = this.themeController.getGraphBarColor()
         return {

@@ -116,11 +116,12 @@ export abstract class ChartController<M> {
     public abstract getMetricDate(metric: M): Date | null
 
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     protected async loadData(range: ChartRange): Promise<LoadedData<M>> {
         throw "to be subclassed"
     }
 
-
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     protected async transformMetrics(metrics: M[], range: ChartRange): Promise<M[]> {
         // No transformation by default
         return metrics
@@ -186,7 +187,7 @@ export abstract class ChartController<M> {
                 const chartConfig = this.makeChartConfig(
                     this.metrics.value, this.range.value, context)
                 this.chart = new Chart(this.canvas.value, chartConfig)
-            } catch (error) {
+            } catch {
                 this.chart = null
             }
         } // else leaves this.chart to null

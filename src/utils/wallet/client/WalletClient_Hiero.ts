@@ -189,6 +189,7 @@ export class WalletClient_Hiero extends WalletClient {
         return Promise.resolve(result)
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public async callContract(contractId: string, functionData: string, value: string|null): Promise<ContractResultDetails | string> {
         let result: string | ContractResultDetails
 

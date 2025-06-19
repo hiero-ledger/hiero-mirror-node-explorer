@@ -81,7 +81,7 @@ export class BlockLocParser {
                 } else { // l instanceof EthereumHash
                     this.block.value = await BlockByHashCache.instance.lookup(l.toString())
                 }
-            } catch (error) {
+            } catch {
                 this.block.value = null
             } finally {
                 this.loadCounter.value += 1

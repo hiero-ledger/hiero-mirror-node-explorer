@@ -16,16 +16,19 @@ export abstract class WalletClient {
     }
 
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public async associateToken(tokenId: string): Promise<string> {
         throw "to be implemented"
     }
 
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public async dissociateToken(tokenId: string): Promise<string> {
         throw "to be implemented"
     }
 
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     public async callContract(contractId: string, functionData: string, value: string|null): Promise<ContractResultDetails | string> {
         throw "to be implemented"
     }
