@@ -249,21 +249,18 @@ export class WalletConnectAgent {
         approval: () => Promise<SessionTypes.Struct>,
         connectModal: WalletConnectModal): Promise<SessionTypes.Struct | null> {
 
-        return new Promise(async (resolve, reject) => {
+        return new Promise((resolve, reject) => {
             connectModal.subscribeModal((state: { open: boolean }) => {
                 if (!state.open) {
                     // User has closed the modal without flashing the QR code
                     resolve(null)
                 }
             })
-            try {
-                await connectModal.openModal({uri})
-                resolve(await approval())
-            } catch (reason) {
-                reject(reason)
-            } finally {
-                connectModal.closeModal()
-            }
+            connectModal.openModal({uri})
+                .then(() => approval())
+                .then((session) => resolve(session))
+                .catch((reason) => reject(reason))
+                .finally(() => connectModal.closeModal())
         })
     }
 }
