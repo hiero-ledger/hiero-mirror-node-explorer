@@ -27,6 +27,9 @@ import ERC721ByName from "@/pages/ERC721ByName.vue";
 import ContractDetails from "@/pages/ContractDetails.vue";
 import Topics from "@/pages/Topics.vue";
 import TopicDetails from "@/pages/TopicDetails.vue";
+import TopicDetails_Summary from "@/pages/TopicDetails_Summary.vue";
+import TopicDetails_Messages from "@/pages/TopicDetails_Messages.vue";
+import TopicDetails_Extra from "@/pages/TopicDetails_Extra.vue";
 import Nodes from "@/pages/Nodes.vue";
 import NodeDetails from "@/pages/NodeDetails.vue";
 import Staking from "@/pages/Staking.vue";
@@ -59,7 +62,7 @@ export const TOKEN_DETAILS_ROUTE: RouteRecordRaw = {
     component: TokenDetails,
     children: [
         {
-            path:'',
+            path: '',
             name: 'TokenDetails_Summary',
             component: TokenDetails_Summary,
             props: true,
@@ -68,7 +71,7 @@ export const TOKEN_DETAILS_ROUTE: RouteRecordRaw = {
             }
         },
         {
-            path:'holders',
+            path: 'holders',
             name: 'TokenDetails_Holders',
             component: TokenDetails_Holders,
             props: true,
@@ -77,7 +80,7 @@ export const TOKEN_DETAILS_ROUTE: RouteRecordRaw = {
             }
         },
         {
-            path:'metadata',
+            path: 'metadata',
             name: 'TokenDetails_Metadata',
             props: true,
             component: TokenDetails_Metadata,
@@ -86,7 +89,7 @@ export const TOKEN_DETAILS_ROUTE: RouteRecordRaw = {
             }
         },
         {
-            path:'extra',
+            path: 'extra',
             name: 'TokenDetails_Extra',
             props: true,
             component: TokenDetails_Extra,
@@ -98,6 +101,46 @@ export const TOKEN_DETAILS_ROUTE: RouteRecordRaw = {
     props: true,
     meta: {
         tabId: TabId.Tokens
+    }
+}
+
+export const TOPIC_DETAILS_ROUTE: RouteRecordRaw = {
+
+    path: '/:network/topic/:topicId',
+    name: 'TopicDetails',
+    component: TopicDetails,
+    children: [
+        {
+            path: '',
+            name: 'TopicDetails_Summary',
+            component: TopicDetails_Summary,
+            props: true,
+            meta: {
+                tabLabel: "Summary"
+            }
+        },
+        {
+            path: 'messages',
+            name: 'TopicDetails_Messages',
+            component: TopicDetails_Messages,
+            props: true,
+            meta: {
+                tabLabel: "Messages"
+            }
+        },
+        {
+            path: 'extra',
+            name: 'TopicDetails_Extra',
+            props: true,
+            component: TopicDetails_Extra,
+            meta: {
+                tabLabel: "Others"
+            }
+        },
+    ],
+    props: true,
+    meta: {
+        tabId: TabId.Topics
     }
 }
 
@@ -328,15 +371,7 @@ export const routes: Array<RouteRecordRaw> = [
             tabId: TabId.Topics
         }
     },
-    {
-        path: '/:network/topic/:topicId',
-        name: 'TopicDetails',
-        component: TopicDetails,
-        props: true,
-        meta: {
-            tabId: TabId.Topics
-        }
-    },
+    TOPIC_DETAILS_ROUTE,
     {
         path: '/:network/nodes',
         name: 'Nodes',
