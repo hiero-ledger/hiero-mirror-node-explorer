@@ -44,6 +44,7 @@ import ContractDetails_Summary from "@/pages/ContractDetails_Summary.vue";
 import ContractDetails_Assets from "@/pages/ContractDetails_Assets.vue";
 import ContractDetails_ByteCode from "@/pages/ContractDetails_ByteCode.vue";
 import ContractDetails_Others from "@/pages/ContractDetails_Others.vue";
+import ContractDetails_ABI from "@/pages/ContractDetails_ABI.vue";
 import Metrics from "@/pages/Metrics.vue";
 
 export enum TabId {
@@ -87,12 +88,21 @@ export const CONTRACT_DETAILS_ROUTE: RouteRecordRaw = {
             }
         },
         {
+            path:'abi',
+            name: 'ContractDetails_ABI',
+            component: ContractDetails_ABI,
+            props: true,
+            meta: {
+                tabLabel: "ABI"
+            }
+        },
+        {
             path:'bytecode',
             name: 'ContractDetails_ByteCode',
             component: ContractDetails_ByteCode,
             props: true,
             meta: {
-                tabLabel: "Bytecode"
+                tabLabel: "Code"
             }
         },
         {
