@@ -741,6 +741,16 @@ export class RouteOperator {
         }
         return result
     })
+
+    public filterTabIds(excludedTabIds: string | string[]): string[] {
+        const x = typeof excludedTabIds === "string" ? [excludedTabIds] : excludedTabIds
+        return this.tabIds.filter(tabId => !x.includes(tabId))
+    }
+
+    public tabLabel(tabId: string): string|null {
+        const tabIndex = this.tabIds.indexOf(tabId)
+        return tabIndex != -1 ? this.tabLabels[tabIndex] : null
+    }
 }
 
 
