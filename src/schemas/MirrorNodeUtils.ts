@@ -59,7 +59,7 @@ export function makeEthAddressForToken(token: TokenInfo): string | null {
     return result
 }
 
-export function makeTokenName(token: TokenInfo | null, maxLength: number = 40): string {
+export function makeTokenName(token: TokenInfo | Token | null, maxLength: number = 40): string {
     let result = token?.name ?? '?'
     if (result.length > maxLength) {
         result = result.slice(0, maxLength) + '…'
@@ -67,7 +67,7 @@ export function makeTokenName(token: TokenInfo | null, maxLength: number = 40): 
     return result
 }
 
-export function makeTokenSymbol(token: TokenInfo | null, maxLength: number = 11): string {
+export function makeTokenSymbol(token: TokenInfo | Token | null, maxLength: number = 11): string {
     let result = token?.symbol ?? '?'
     if (result.length > maxLength) {
         result = result.slice(0, maxLength) + '…'

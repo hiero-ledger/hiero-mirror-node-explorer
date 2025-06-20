@@ -117,6 +117,7 @@ describe("TokensSection.vue", () => {
             "api/v1/tokens/" + SAMPLE_PENDING_AIRDROPS.airdrops[2].token_id + "/nfts/1",
             "api/v1/tokens/" + SAMPLE_NONFUNGIBLE.token_id + "/nfts/2",
             "api/v1/tokens/" + SAMPLE_NONFUNGIBLE.token_id,
+            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/tokens?token.id=" + SAMPLE_NONFUNGIBLE.token_id + "&limit=1",
             "api/v1/tokens/" + SAMPLE_NONFUNGIBLE.token_id + "/nfts/1",
             "api/v1/tokens/" + SAMPLE_NONFUNGIBLE.token_id + "/nfts/342",
 
@@ -126,6 +127,7 @@ describe("TokensSection.vue", () => {
             "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/airdrops/pending",
             "api/v1/tokens/" + SAMPLE_NONFUNGIBLE.token_id + "/nfts/2",
             "api/v1/tokens/" + SAMPLE_NONFUNGIBLE.token_id,
+            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/tokens?token.id=" + SAMPLE_NONFUNGIBLE.token_id + "&limit=1",
             "api/v1/tokens/" + SAMPLE_NONFUNGIBLE.token_id + "/nfts/1",
             "api/v1/tokens/" + SAMPLE_NONFUNGIBLE.token_id + "/nfts/342",
             "api/v1/tokens/" + SAMPLE_ASSOCIATED_TOKEN.token_id,
@@ -234,7 +236,9 @@ describe("TokensSection.vue", () => {
         await flushPromises()
 
         const nftsTable = tokensSection.get("#nftsTable")
-        expect(nftsTable.find('thead').text()).toBe("IMAGE TOKEN ID SERIAL # COLLECTION NAME SYMBOL NFT NAME CREATOR")
+        expect(nftsTable.find('thead').text()).toBe(
+            "IMAGE TOKEN ID SERIAL # COLLECTION NAME SYMBOL NFT NAME CREATOR FREEZE STATUS"
+        )
         expect(nftsTable.find('tbody').text()).toBe(
             "NFT0.0.7483832Ħ Frens KingdomĦFRENSKINGD…" +
             "NFT0.0.7483831Ħ Frens KingdomĦFRENSKINGD…" +
@@ -265,10 +269,10 @@ describe("TokensSection.vue", () => {
         await flushPromises()
 
         const associationsTable = tokensSection.get("#fungibleTable")
-        expect(associationsTable.find('thead').text()).toBe("TOKEN ID NAME SYMBOL BALANCE")
+        expect(associationsTable.find('thead').text()).toBe("TOKEN ID NAME SYMBOL BALANCE FREEZE STATUS")
         expect(associationsTable.find('tbody').text()).toBe(
-            "0.0.34332104" + "HSUITE" + "HSuite" + "234,264.7909" +
-            "0.0.49292859" + "Token SymbolA7" + "TokenA7" + "0.31669471"
+            "0.0.34332104" + "HSUITE" + "HSuite" + "234,264.7909" + "UNFROZEN" +
+            "0.0.49292859" + "Token SymbolA7" + "TokenA7" + "0.31669471" + "FROZEN"
         )
 
         wrapper.unmount()

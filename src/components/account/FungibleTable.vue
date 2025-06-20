@@ -32,11 +32,11 @@
     </o-table-column>
 
     <o-table-column v-slot="{ row }" field="name" label="NAME">
-      {{ row.name }}
+      {{ makeTokenName(row) }}
     </o-table-column>
 
     <o-table-column v-slot="{ row }" field="symbol" label="SYMBOL">
-      {{ row.symbol }}
+      {{ makeTokenSymbol(row) }}
     </o-table-column>
 
     <o-table-column v-slot="{ row }" field="balance" label="BALANCE">
@@ -44,6 +44,13 @@
           :account-id="props.controller.accountId.value"
           :token-id="row.token_id"
           :property="TokenCellItem.tokenBalance"
+      />
+    </o-table-column>
+
+    <o-table-column v-slot="{ row }" field="freeze-status" label="FREEZE STATUS">
+      <FreezeStatusView
+          :account-id="props.controller.accountId.value"
+          :token-id="row.token_id"
       />
     </o-table-column>
 
@@ -85,6 +92,8 @@ import TablePageSize from "@/components/transaction/TablePageSize.vue";
 import {FungibleTableController} from "@/components/account/FungibleTableController";
 import TokenIOL from "@/components/values/link/TokenIOL.vue";
 import {routeManager} from "@/utils/RouteManager.ts";
+import FreezeStatusView from "@/components/token/FreezeStatusView.vue";
+import {makeTokenName, makeTokenSymbol} from "@/schemas/MirrorNodeUtils.ts";
 
 const props = defineProps({
   controller: {

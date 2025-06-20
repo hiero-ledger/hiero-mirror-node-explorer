@@ -2584,7 +2584,7 @@ export const SAMPLE_TOKEN_RELATIONSHIP_2 = {
     "automatic_association": false,
     "balance": 31669471,
     "created_timestamp": "1671648712.150557003",
-    "freeze_status": "UNFROZEN",
+    "freeze_status": "FROZEN",
     "kyc_status": "NOT_APPLICABLE",
     "token_id": SAMPLE_ASSOCIATED_TOKEN_2.token_id
 }

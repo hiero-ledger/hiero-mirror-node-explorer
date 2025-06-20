@@ -60,6 +60,10 @@
       <NftCell :token-id="row.token_id" :serial-number="row.serial_number" :property="NftCellItem.creator"/>
     </o-table-column>
 
+    <o-table-column v-slot="{ row }" field="freeze-status" label="FREEZE STATUS">
+      <FreezeStatusView :account-id="accountId" :token-id="row.token_id"/>
+    </o-table-column>
+
     <template v-slot:bottom-left>
       <TablePageSize
           v-if="props.fullPage"
@@ -99,6 +103,7 @@ import TablePageSize from "@/components/transaction/TablePageSize.vue";
 import TokenIOL from "@/components/values/link/TokenIOL.vue";
 import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
 import {routeManager} from "@/utils/RouteManager.ts";
+import FreezeStatusView from "@/components/token/FreezeStatusView.vue";
 
 const props = defineProps({
   controller: {
@@ -129,6 +134,8 @@ const handleClick = (nft: Token | Nft, c: unknown, i: number, ci: number, event:
     routeManager.routeToSerial(nft.token_id, nft.serial_number, event);
   }
 };
+
+const accountId = props.controller.accountId
 
 </script>
 
