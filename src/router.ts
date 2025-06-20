@@ -29,7 +29,7 @@ import Topics from "@/pages/Topics.vue";
 import TopicDetails from "@/pages/TopicDetails.vue";
 import TopicDetails_Summary from "@/pages/TopicDetails_Summary.vue";
 import TopicDetails_Messages from "@/pages/TopicDetails_Messages.vue";
-import TopicDetailsOthers from "@/pages/TopicDetails_Others.vue";
+import TopicDetails_Others from "@/pages/TopicDetails_Others.vue";
 import Nodes from "@/pages/Nodes.vue";
 import NodeDetails from "@/pages/NodeDetails.vue";
 import Staking from "@/pages/Staking.vue";
@@ -39,7 +39,7 @@ import SearchHelp from "@/pages/SearchHelp.vue";
 import TokenDetails_Summary from "@/pages/TokenDetails_Summary.vue";
 import TokenDetails_Holders from "@/pages/TokenDetails_Holders.vue";
 import TokenDetails_Metadata from "@/pages/TokenDetails_Metadata.vue";
-import TokenDetailsOthers from "@/pages/TokenDetails_Others.vue";
+import TokenDetails_Others from "@/pages/TokenDetails_Others.vue";
 import Metrics from "@/pages/Metrics.vue";
 
 export enum TabId {
@@ -90,9 +90,9 @@ export const TOKEN_DETAILS_ROUTE: RouteRecordRaw = {
         },
         {
             path: 'others',
-            name: 'TokenDetailsOthers',
+            name: 'TokenDetails_Others',
             props: true,
-            component: TokenDetailsOthers,
+            component: TokenDetails_Others,
             meta: {
                 tabLabel: "Others"
             }
@@ -130,9 +130,9 @@ export const TOPIC_DETAILS_ROUTE: RouteRecordRaw = {
         },
         {
             path: 'others',
-            name: 'TopicDetailsOthers',
+            name: 'TopicDetails_Others',
             props: true,
-            component: TopicDetailsOthers,
+            component: TopicDetails_Others,
             meta: {
                 tabLabel: "Others"
             }
