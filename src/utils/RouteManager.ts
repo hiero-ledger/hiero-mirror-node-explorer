@@ -19,7 +19,7 @@ import {TransactionID} from "@/utils/TransactionID.ts";
 import {CoreConfig} from "@/config/CoreConfig";
 import {NetworkConfig, NetworkEntry} from "@/config/NetworkConfig";
 import {WalletManagerV4} from "@/utils/wallet/WalletManagerV4.ts";
-import {routes, TOKEN_DETAILS_ROUTE} from "@/router.ts";
+import {routes, TOKEN_DETAILS_ROUTE, TOPIC_DETAILS_ROUTE} from "@/router.ts";
 
 export class RouteManager {
 
@@ -391,18 +391,23 @@ export class RouteManager {
     // Topic
     //
 
-    public makeRouteToTopic(topicId: string): RouteLocationRaw {
-        return {name: 'TopicDetails', params: {topicId: topicId, network: this.currentNetwork.value}}
+    public readonly topicDetailsOperator = new RouteOperator(TOPIC_DETAILS_ROUTE, this)
+
+    public makeRouteToTopic(topicId: string, tabId: string|null = null): RouteLocationRaw {
+        const targetTabId = tabId ?? this.topicDetailsOperator.defaultTabId
+        return {name: targetTabId, params: {topicId: topicId, network: this.currentNetwork.value}}
     }
 
-    public routeToTopic(topicId: string, event: Event): Promise<NavigationFailure | void | undefined> {
+    public routeToTopic(topicId: string, event: Event | null, tabId: string|null = null, replace = false): Promise<NavigationFailure | void | undefined> {
         let result: Promise<NavigationFailure | void | undefined>
         if (this.shouldOpenNewWindow(event)) {
-            const routeData = this.router.resolve(this.makeRouteToTopic(topicId));
+            const routeData = this.router.resolve(this.makeRouteToTopic(topicId, tabId));
             window.open(routeData.href, '_blank');
             result = Promise.resolve()
+        } else if (replace) {
+            result = this.router.replace(this.makeRouteToTopic(topicId, tabId))
         } else {
-            result = this.router.push(this.makeRouteToTopic(topicId))
+            result = this.router.push(this.makeRouteToTopic(topicId, tabId))
         }
         return result
     }
