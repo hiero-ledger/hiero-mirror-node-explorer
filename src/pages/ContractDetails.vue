@@ -20,7 +20,15 @@
           :tab-labels="tabLabels"
           :selected-tab="selectedTabId"
           @update:selected-tab="onUpdate($event)"
-      />
+      >
+        <template #extra>
+          <ArrowLink
+              v-if="contractId && accountRoute"
+              :route="accountRoute" id="showAccountLink"
+              text="Associated account"
+          />
+        </template>
+      </Tabs>
     </template>
 
     <template #right-toolbar>
@@ -65,6 +73,7 @@ import {ContractAnalyzer} from "@/utils/analyzer/ContractAnalyzer.ts";
 import {ContractLocParser} from "@/utils/parser/ContractLocParser";
 import {routeManager} from "@/utils/RouteManager.ts";
 import ContractVerificationDialog from "@/dialogs/verification/ContractVerificationDialog.vue";
+import ArrowLink from "@/components/ArrowLink.vue";
 
 const props = defineProps({
   contractId: {
@@ -115,8 +124,20 @@ const verifyDidComplete = () => {
   contractAnalyzer.verifyDidComplete()
 }
 
+//
+// Account route
+//
+
+const accountRoute = computed(() => {
+  return contractId.value !== null ? routeManager.makeRouteToAccount(contractId.value) : null
+})
+
 
 </script>
+
+<!-- --------------------------------------------------------------------------------------------------------------- -->
+<!--                                                       STYLE                                                     -->
+<!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <style scoped>
 
