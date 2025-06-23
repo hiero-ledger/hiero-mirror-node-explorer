@@ -169,13 +169,13 @@ export interface Transaction {
 }
 
 export interface NftTransactionTransfer {
-    consensus_timestamp: string | undefined
-    nonce: number | undefined
-    transaction_id: string | undefined
-    type: TransactionType | undefined
-    is_approval: false
-    receiver_account_id: string | null | undefined // account ID in the format of shard.realm.num
-    sender_account_id: string | null | undefined // account ID in the format of shard.realm.num
+    consensus_timestamp: string
+    nonce: number
+    transaction_id: string
+    type: TransactionType
+    is_approval: boolean
+    receiver_account_id: string | null // account ID in the format of shard.realm.num
+    sender_account_id: string | null // account ID in the format of shard.realm.num
 }
 
 export interface TransactionDetail extends Transaction {
