@@ -47,6 +47,14 @@ import {initialLoadingKey} from "@/AppKeys";
 import Tabs from "@/components/Tabs.vue";
 import {routeManager} from "@/utils/RouteManager.ts";
 
+const props = defineProps({
+  topicId: {
+    type: String,
+    required: true
+  },
+  network: String
+})
+
 const tabIds = routeManager.topicDetailsOperator.tabIds
 const tabLabels = routeManager.topicDetailsOperator.tabLabels
 const selectedTabId = routeManager.topicDetailsOperator.selectedTabId
@@ -56,14 +64,6 @@ const onUpdate = (tabId: string | null) => {
     routeManager.routeToTopic(props.topicId, null, tabId, true)
   }
 }
-
-const props = defineProps({
-  topicId: {
-    type: String,
-    required: true
-  },
-  network: String
-})
 
 const initialLoading = inject(initialLoadingKey, ref(false))
 
