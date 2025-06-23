@@ -19,6 +19,11 @@
       <slot name="banner"/>
     </div>
 
+    <div v-if="slots['left-toolbar'] || slots['right-toolbar']" class="h-page-toolbar">
+      <slot name="left-toolbar"/>
+      <slot name="right-toolbar"/>
+    </div>
+
     <div class="h-page-content">
       <slot/>
     </div>

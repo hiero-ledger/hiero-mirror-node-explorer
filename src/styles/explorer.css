@@ -223,6 +223,22 @@ ul {
     }
 }
 
+.h-page-toolbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 16px;
+    margin-right: 16px;
+}
+
+@media (min-width: 1080px) {
+    .h-page-toolbar {
+        margin-left: 32px;
+        margin-right: 32px;
+    }
+}
+
 .h-side-by-side-content {
     display: flex;
     flex-direction: column;
