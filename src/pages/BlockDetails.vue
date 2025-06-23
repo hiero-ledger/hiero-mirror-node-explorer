@@ -29,8 +29,6 @@
 
     <router-view/>
 
-    <MirrorLink :network="props.network" entityUrl="blocks" :loc="props.blockHon"/>
-
   </PageFrameV2>
 
 </template>
