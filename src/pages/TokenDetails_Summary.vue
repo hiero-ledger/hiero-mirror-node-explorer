@@ -18,14 +18,6 @@
       <PublicLabel v-if="label" :label-definition="label"/>
     </template>
 
-    <template #right-control>
-      <TokenActions
-          v-if="isWalletConnected"
-          :analyzer="tokenAnalyzer"
-          @completed="onActionCompleted"
-      />
-    </template>
-
     <template #content>
       <Property id="entityId" full-width>
         <template #name>Token ID</template>
@@ -186,20 +178,18 @@ import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import DurationValue from "@/components/values/DurationValue.vue";
 import EVMAddress from "@/components/values/EVMAddress.vue";
 import EntityIDView from "@/components/values/EntityIDView.vue";
+import MirrorLink from "@/components/MirrorLink.vue";
 import Property from "@/components/Property.vue";
 import PublicLabel from "@/components/values/PublicLabel.vue";
 import StringValue from "@/components/values/StringValue.vue";
 import TimestampValue from "@/components/values/TimestampValue.vue";
-import TokenActions from "@/components/token/TokenActions.vue";
 import TokenAmount from "@/components/values/TokenAmount.vue";
 import TransactionLink from "@/components/values/TransactionLink.vue";
 import {NetworkConfig} from "@/config/NetworkConfig.ts";
 import {PublicLabelsCache} from "@/utils/cache/PublicLabelsCache.ts";
-import {TokenInfoAnalyzer} from "@/components/token/TokenInfoAnalyzer.ts";
-import {WalletManagerStatus} from "@/utils/wallet/WalletManagerV4.ts";
-import {makeTokenName, makeTokenSymbol} from "@/schemas/MirrorNodeUtils.ts";
-import {walletManager} from "@/utils/RouteManager.ts";
-import MirrorLink from "@/components/MirrorLink.vue";
+import {TokenInfoCache} from "@/utils/cache/TokenInfoCache.ts";
+import {makeEthAddressForToken, makeTokenName, makeTokenSymbol} from "@/schemas/MirrorNodeUtils.ts";
+import {routeManager} from "@/utils/RouteManager.ts";
 
 
 const props = defineProps({
@@ -211,20 +201,24 @@ const props = defineProps({
 })
 
 
-//
-// Token analyzer
-//
 const tokenId = computed(() => props.tokenId ?? null)
-const networkConfig = NetworkConfig.inject()
-const tokenAnalyzer = new TokenInfoAnalyzer(tokenId, networkConfig)
-onMounted(() => tokenAnalyzer.mount())
-onBeforeUnmount(() => tokenAnalyzer.unmount())
-const tokenInfo = tokenAnalyzer.tokenInfo
-const tokenChecksum = tokenAnalyzer.tokenChecksum
-const ethereumAddress = tokenAnalyzer.ethereumAddress
+const tokenLookup = TokenInfoCache.instance.makeLookup(tokenId)
+onMounted(() => tokenLookup.mount())
+onBeforeUnmount(() => tokenLookup.unmount())
+const tokenInfo = tokenLookup.entity
 const displayName = computed(() => makeTokenName(tokenInfo.value, 80))
 const displaySymbol = computed(() => makeTokenSymbol(tokenInfo.value, 80))
 const validEntityId = computed(() => tokenId.value != null)
+
+const networkConfig = NetworkConfig.inject()
+const tokenChecksum = computed(() =>
+    tokenInfo.value?.token_id ? networkConfig.computeChecksum(
+        tokenInfo.value?.token_id,
+        routeManager.currentNetwork.value
+    ) : null)
+
+const ethereumAddress = computed(
+    () => tokenInfo.value !== null ? makeEthAddressForToken(tokenInfo.value) : null)
 
 //
 // Label
@@ -234,16 +228,6 @@ onMounted(() => indexLookup.mount())
 onBeforeUnmount(() => indexLookup.unmount())
 const index = indexLookup.entity
 const label = computed(() => tokenId.value ? index.value?.lookup(tokenId.value) ?? null : null)
-
-const isWalletConnected = computed(() => walletManager.status.value == WalletManagerStatus.connected)
-
-const onActionCompleted = () => {
-  // if (tokenAnalyzer.isNft.value) {
-  //   nftHolderTableController.refresh()
-  // } else {
-  //   tokenBalanceTableController.refresh()
-  // }
-}
 
 const parseBigIntString = (s: string | undefined): bigint | undefined => {
   let result: bigint | undefined
