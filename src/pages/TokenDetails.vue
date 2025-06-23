@@ -23,6 +23,14 @@
       />
     </template>
 
+    <template #right-toolbar>
+      <TokenActions
+          v-if="isWalletConnected"
+          :analyzer="tokenAnalyzer"
+          @completed="onActionCompleted"
+      />
+    </template>
+
     <template v-if="notification" #banner>
       <NotificationBanner :message="notification"/>
     </template>
@@ -43,9 +51,13 @@ import {computed, onBeforeUnmount, onMounted} from 'vue';
 import NotificationBanner from "@/components/NotificationBanner.vue";
 import PageFrameV2 from "@/components/page/PageFrameV2.vue";
 import Tabs from "@/components/Tabs.vue";
+import TokenActions from "@/components/token/TokenActions.vue";
 import {EntityID} from "@/utils/EntityID.ts";
+import {NetworkConfig} from "@/config/NetworkConfig.ts";
+import {TokenInfoAnalyzer} from "@/components/token/TokenInfoAnalyzer.ts";
 import {TokenInfoCache} from "@/utils/cache/TokenInfoCache.ts";
-import {routeManager} from "@/utils/RouteManager.ts";
+import {WalletManagerStatus} from "@/utils/wallet/WalletManagerV4.ts";
+import {routeManager, walletManager} from "@/utils/RouteManager.ts";
 
 const tabIds = routeManager.tokenDetailsOperator.tabIds
 const tabLabels = routeManager.tokenDetailsOperator.tabLabels
@@ -96,6 +108,22 @@ const notification = computed(() => {
   }
   return result
 })
+
+const isWalletConnected = computed(() => walletManager.status.value == WalletManagerStatus.connected)
+
+const onActionCompleted = () => {
+  // if (tokenAnalyzer.isNft.value) {
+  //   nftHolderTableController.refresh()
+  // } else {
+  //   tokenBalanceTableController.refresh()
+  // }
+}
+
+const tokenId = computed(() => props.tokenId ?? null)
+const networkConfig = NetworkConfig.inject()
+const tokenAnalyzer = new TokenInfoAnalyzer(tokenId, networkConfig)
+onMounted(() => tokenAnalyzer.mount())
+onBeforeUnmount(() => tokenAnalyzer.unmount())
 
 </script>
 
