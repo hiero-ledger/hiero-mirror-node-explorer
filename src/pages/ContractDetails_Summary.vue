@@ -190,6 +190,8 @@
 
   <ContractERCSection :erc-analyzer="ercAnalyzer"/>
 
+  <MirrorLink :network="props.network" entityUrl="contracts" :loc="contractId"/>
+
 </template>
 
 <!-- --------------------------------------------------------------------------------------------------------------- -->
@@ -224,6 +226,7 @@ import {labelForAutomaticTokenAssociation} from "@/schemas/MirrorNodeUtils.ts";
 import {routeManager} from "@/utils/RouteManager.ts";
 import {ERCAnalyzer} from "@/utils/analyzer/ERCAnalyzer.ts";
 import ContractERCSection from "@/components/contract/ContractERCSection.vue";
+import MirrorLink from "@/components/MirrorLink.vue";
 
 const props = defineProps({
   contractId: String,
