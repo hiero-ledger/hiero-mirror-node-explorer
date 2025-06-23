@@ -27,11 +27,6 @@
       </div>
       <DomainLabel v-if="domainName" :domain-name="domainName" :provider-name="domainProviderName"/>
       <PublicLabel v-if="label" :label-definition="label"/>
-      <ArrowLink
-          v-if="contract && accountRoute"
-          :route="accountRoute" id="showAccountLink"
-          text="Associated account"
-      />
     </template>
 
     <template #content>
@@ -202,7 +197,6 @@
 
 import {computed, onBeforeUnmount, onMounted} from "vue";
 import AccountLink from "@/components/values/link/AccountLink.vue";
-import ArrowLink from "@/components/ArrowLink.vue";
 import BlobValue from "@/components/values/BlobValue.vue";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import DomainLabel from "@/components/values/DomainLabel.vue";
@@ -318,14 +312,6 @@ const accountChecksum = computed(() =>
         contractId.value,
         routeManager.currentNetwork.value
     ) : null)
-
-//
-// Account route
-//
-
-const accountRoute = computed(() => {
-  return contractId.value !== null ? routeManager.makeRouteToAccount(contractId.value) : null
-})
 
 </script>
 
