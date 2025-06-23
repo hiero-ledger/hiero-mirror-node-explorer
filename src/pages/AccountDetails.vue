@@ -20,7 +20,16 @@
           :tab-labels="tabLabels"
           :selected-tab="selectedTabId"
           @update:selected-tab="onUpdate($event)"
-      />
+      >
+        <template #extra>
+          <ArrowLink
+              v-if="showContractVisible && contractRoute"
+              :route="contractRoute" id="showContractLink"
+              :is-contrasted="true"
+              text="Associated contract"
+          />
+        </template>
+      </Tabs>
     </template>
 
     <template v-if="notification" #banner>
@@ -46,6 +55,8 @@ import {AccountLocParser} from "@/utils/parser/AccountLocParser";
 import {NetworkConfig} from "@/config/NetworkConfig";
 import Tabs from "@/components/Tabs.vue";
 import {routeManager} from "@/utils/RouteManager.ts";
+import ArrowLink from "@/components/ArrowLink.vue";
+import {ContractByIdCache} from "@/utils/cache/ContractByIdCache.ts";
 
 const props = defineProps({
   accountId: {
@@ -73,11 +84,25 @@ const onUpdate = (tabId: string | null) => {
 const accountLocParser = new AccountLocParser(computed(() => props.accountId ?? null), networkConfig)
 onMounted(() => accountLocParser.mount())
 onBeforeUnmount(() => accountLocParser.unmount())
-const accountIdRef = accountLocParser.accountId
 
 const notification = accountLocParser.errorNotification
 const isInactiveEvmAddress = accountLocParser.isInactiveEvmAddress
 const normalizedAccountId = accountLocParser.accountId
+const contractRoute = computed(() => {
+  const accountId = accountLocParser.accountId.value
+  return accountId ? routeManager.makeRouteToContract(accountId) : ''
+})
+
+//
+// contract
+//
+const contractLookup = ContractByIdCache.instance.makeLookup(accountLocParser.accountId)
+onMounted(() => contractLookup.mount())
+onBeforeUnmount(() => contractLookup.unmount())
+const showContractVisible = computed(() => {
+  return contractLookup.entity.value != null
+})
+
 
 </script>
 
