@@ -25,6 +25,7 @@
           <ArrowLink
               v-if="contractId && accountRoute"
               :route="accountRoute" id="showAccountLink"
+              :is-contrasted="true"
               text="Associated account"
           />
         </template>
