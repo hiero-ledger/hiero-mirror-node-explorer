@@ -6,7 +6,12 @@
 
 <template>
   <router-link :to="props.route">
-    <div class="arrow-link">
+    <div
+        class="arrow-link"
+        :class="{
+          'is-contrasted': props.isContrasted
+        }"
+    >
       <span class="link-text">{{ props.text }}</span>
       <ArrowRight :size="16"/>
     </div>
@@ -31,6 +36,10 @@ const props = defineProps({
   route: {
     type: Object as PropType<RouteLocationRaw>,
     required: true
+  },
+  isContrasted: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -48,6 +57,10 @@ div.arrow-link {
   display: flex;
   gap: 2px;
   height: 18px;
+}
+
+div.arrow-link.is-contrasted {
+  color: var(--network-theme-color);
 }
 
 span.link-text {
