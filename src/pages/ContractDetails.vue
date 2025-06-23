@@ -29,8 +29,6 @@
 
     <router-view/>
 
-    <MirrorLink :network="props.network" entityUrl="contracts" :loc="contractId"/>
-
   </PageFrameV2>
 
 </template>
@@ -42,7 +40,6 @@
 <script setup lang="ts">
 
 import {computed, onBeforeUnmount, onMounted} from 'vue';
-import MirrorLink from "@/components/MirrorLink.vue";
 import NotificationBanner from "@/components/NotificationBanner.vue";
 import PageFrameV2 from "@/components/page/PageFrameV2.vue";
 import {ContractLocParser} from "@/utils/parser/ContractLocParser";

@@ -210,6 +210,8 @@
     </template>
   </DashboardCardV2>
 
+  <MirrorLink :network="network" entityUrl="accounts" :loc="accountIdRef ?? undefined"/>
+
   <UpdateAccountDialog
       v-model:show-dialog="showUpdateAccountDialog"
       @updated="onUpdateCompleted"
@@ -253,6 +255,7 @@ import DomainLabel from "@/components/values/DomainLabel.vue";
 import PublicLabel from "@/components/values/PublicLabel.vue";
 import {PublicLabelsCache} from "@/utils/cache/PublicLabelsCache.ts";
 import {routeManager, walletManager} from "@/utils/RouteManager.ts";
+import MirrorLink from "@/components/MirrorLink.vue";
 
 const props = defineProps({
   accountId: String,
