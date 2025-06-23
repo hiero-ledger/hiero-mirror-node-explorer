@@ -25,7 +25,8 @@ import {
     CONTRACT_DETAILS_ROUTE,
     routes,
     TOKEN_DETAILS_ROUTE,
-    TOPIC_DETAILS_ROUTE
+    TOPIC_DETAILS_ROUTE,
+    TRANSACTION_DETAILS_ROUTE
 } from "@/router.ts";
 
 export class RouteManager {
@@ -185,6 +186,8 @@ export class RouteManager {
     // Transaction
     //
 
+    public readonly transactionDetailsOperator = new RouteOperator(TRANSACTION_DETAILS_ROUTE, this)
+
     public routeToTransaction(t: Transaction, event: Event): Promise<NavigationFailure | void | undefined> {
         let result: Promise<NavigationFailure | void | undefined>
         if (this.shouldOpenNewWindow(event)) {
@@ -197,14 +200,16 @@ export class RouteManager {
         return result
     }
 
-    public routeToTransactionByTs(consensusTimestamp: string | undefined, event: Event): Promise<NavigationFailure | void | undefined> {
+    public routeToTransactionByTs(consensusTimestamp: string, event: Event | null, tabId: string | null = null, replace = false): Promise<NavigationFailure | void | undefined> {
         let result: Promise<NavigationFailure | void | undefined>
         if (this.shouldOpenNewWindow(event)) {
             const routeData = this.router.resolve(this.makeRouteToTransaction(consensusTimestamp));
             window.open(routeData.href, '_blank');
             result = Promise.resolve()
+        } else if (replace) {
+            result = this.router.replace(this.makeRouteToTransaction(consensusTimestamp, tabId))
         } else {
-            result = this.router.push(this.makeRouteToTransaction(consensusTimestamp))
+            result = this.router.push(this.makeRouteToTransaction(consensusTimestamp, tabId))
         }
         return result
     }
@@ -213,9 +218,10 @@ export class RouteManager {
         return this.makeRouteToTransaction(transaction.consensus_timestamp)
     }
 
-    public makeRouteToTransaction(transactionLoc: string | undefined): RouteLocationRaw {
+    public makeRouteToTransaction(transactionLoc: string, tabId: string | null = null): RouteLocationRaw {
+        const targetTabId = tabId ?? this.transactionDetailsOperator.defaultTabId
         return {
-            name: 'TransactionDetails',
+            name: targetTabId,
             params: {transactionLoc: transactionLoc, network: this.currentNetwork.value}
         }
     }
@@ -772,6 +778,12 @@ export class RouteOperator {
     public filterTabIds(excludedTabIds: string | string[]): string[] {
         const x = typeof excludedTabIds === "string" ? [excludedTabIds] : excludedTabIds
         return this.tabIds.filter(tabId => !x.includes(tabId))
+    }
+
+    public filterTabLabels(excludedTabIds: string | string[]): string[] {
+        const result: string[] = []
+        this.filterTabIds(excludedTabIds).forEach((id) => result.push(this.tabLabel(id)!))
+        return result
     }
 
     public tabLabel(tabId: string): string|null {
