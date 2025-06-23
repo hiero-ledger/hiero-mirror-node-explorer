@@ -6,7 +6,7 @@
 
 <template>
 
-  <DashboardCardV2 collapsible-key="contractDetails">
+  <DashboardCardV2>
     <template #title>
       Contract
       <div v-if="contractName" class="card-title-extra">

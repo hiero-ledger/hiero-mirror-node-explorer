@@ -6,7 +6,7 @@
 
 <template>
 
-  <DashboardCardV2 v-if="tokenInfo" collapsible-key="nftHolders">
+  <DashboardCardV2 v-if="tokenInfo">
 
     <template #title>
       {{ tokenInfo.type === 'NON_FUNGIBLE_UNIQUE' ? 'NFTs' : 'Balances' }}

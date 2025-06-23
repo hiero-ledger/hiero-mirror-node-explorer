@@ -6,7 +6,7 @@
 
 <template>
 
-  <DashboardCardV2 collapsible-key="blockDetails">
+  <DashboardCardV2>
     <template #title>
       Block Details
     </template>
