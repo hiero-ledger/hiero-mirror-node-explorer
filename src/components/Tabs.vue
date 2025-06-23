@@ -5,19 +5,22 @@
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <template>
-  <ul v-if="props.tabIds.length >= 1" style="padding: 0; margin: 0;">
-    <li
-        :class="{'is-active':selectedTab === tab,'sub-tab': props.subTabs}"
-        v-for="(tab, i) in props.tabIds"
-        :key="tab"
-        :id="'tab-' + tab"
-        @click="handleSelect(tab, true)"
-    >
-      <a>
-        {{ props.tabLabels[i] ?? tab }}
-      </a>
-    </li>
-  </ul>
+  <div>
+    <ul v-if="props.tabIds.length >= 1" style="padding: 0; margin: 0;">
+      <li
+          :class="{'is-active':selectedTab === tab,'sub-tab': props.subTabs}"
+          v-for="(tab, i) in props.tabIds"
+          :key="tab"
+          :id="'tab-' + tab"
+          @click="handleSelect(tab, true)"
+      >
+        <a>
+          {{ props.tabLabels[i] ?? tab }}
+        </a>
+      </li>
+    </ul>
+    <slot name="extra"/>
+  </div>
 </template>
 
 <!-- --------------------------------------------------------------------------------------------------------------- -->
@@ -78,6 +81,12 @@ watch(() => props.tabIds, adjustSelectedTab, {immediate: true})
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <style scoped>
+
+div {
+  align-items: baseline;
+  column-gap: 32px;
+  display: flex;
+}
 
 ul {
   align-items: center;
