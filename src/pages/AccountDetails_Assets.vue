@@ -6,30 +6,7 @@
 
 <template>
 
-  <PageFrameV2>
-    <template #page-title>
-      Account
-      <span style="white-space: nowrap; font-size: smaller">
-        {{ normalizedAccountId }}
-      </span>
-    </template>
-
-    <Tabs
-        :tab-ids="tabIds"
-        :tab-labels="tabLabels"
-        :selected-tab="selectedTabId"
-        @update:selected-tab="onUpdate($event)"
-    />
-
-    <template v-if="notification" #banner>
-      <NotificationBanner :message="notification" :is-error="!isInactiveEvmAddress"/>
-    </template>
-
-    <router-view/>
-
-    <MirrorLink :network="network" entityUrl="accounts" :loc="accountIdRef ?? undefined"/>
-
-  </PageFrameV2>
+  <TokensSection :account-id="normalizedAccountId" :full-page="false"/>
 
 </template>
 
@@ -39,34 +16,21 @@
 
 <script setup lang="ts">
 
-import {computed, onBeforeUnmount, onMounted} from 'vue';
-import PageFrameV2 from "@/components/page/PageFrameV2.vue";
-import NotificationBanner from "@/components/NotificationBanner.vue";
+import {computed, onBeforeUnmount, onMounted, ref, watch} from 'vue';
 import {AccountLocParser} from "@/utils/parser/AccountLocParser";
-import MirrorLink from "@/components/MirrorLink.vue";
+import {AppStorage} from "@/AppStorage";
+import TokensSection from "@/components/token/TokensSection.vue";
 import {NetworkConfig} from "@/config/NetworkConfig";
-import Tabs from "@/components/Tabs.vue";
-import {routeManager} from "@/utils/RouteManager.ts";
 
 const props = defineProps({
-  accountId: {
-    type: String,
-    required: true
-  },
+  accountId: String,
   network: String,
 })
 
 const networkConfig = NetworkConfig.inject()
 
-const tabIds = routeManager.accountDetailsOperator.tabIds
-const tabLabels = routeManager.accountDetailsOperator.tabLabels
-const selectedTabId = routeManager.accountDetailsOperator.selectedTabId
-
-const onUpdate = (tabId: string | null) => {
-  if (tabId !== null) {
-    routeManager.routeToAccount(props.accountId, null, tabId, true)
-  }
-}
+const minTinyBar = ref(AppStorage.getMinTinyBarTransfer() ?? 0)
+watch(minTinyBar, (newValue) => AppStorage.setMinTinyBarTransfer(newValue))
 
 //
 // account
@@ -74,10 +38,7 @@ const onUpdate = (tabId: string | null) => {
 const accountLocParser = new AccountLocParser(computed(() => props.accountId ?? null), networkConfig)
 onMounted(() => accountLocParser.mount())
 onBeforeUnmount(() => accountLocParser.unmount())
-const accountIdRef = accountLocParser.accountId
 
-const notification = accountLocParser.errorNotification
-const isInactiveEvmAddress = accountLocParser.isInactiveEvmAddress
 const normalizedAccountId = accountLocParser.accountId
 
 </script>
@@ -86,5 +47,7 @@ const normalizedAccountId = accountLocParser.accountId
 <!--                                                      STYLE                                                      -->
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
-<style/>
+<style scoped>
+
+</style>
 
