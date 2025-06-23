@@ -49,6 +49,8 @@ import AccountDetails_Summary from "@/pages/AccountDetails_Summary.vue";
 import AccountDetails_Assets from "@/pages/AccountDetails_Assets.vue";
 import AccountDetails_Operations from "@/pages/AccountDetails_Operations.vue";
 import AccountDetails_Allowances from "@/pages/AccountDetails_Allowances.vue";
+import BlockDetails_Summary from "@/pages/BlockDetails_Summary.vue";
+import BlockDetails_Transactions from "@/pages/BlockDetails_Transactions.vue";
 import Metrics from "@/pages/Metrics.vue";
 
 export enum TabId {
@@ -257,6 +259,36 @@ export const ACCOUNT_DETAILS_ROUTE: RouteRecordRaw = {
     meta: {
         tabId: TabId.Accounts
     }
+}
+
+export const BLOCK_DETAILS_ROUTE: RouteRecordRaw =     {
+    path: '/:network/block/:blockHon',
+    name: 'BlockDetails',
+    component: BlockDetails,
+    props: true,
+    meta: {
+        tabId: TabId.Blocks
+    },
+    children: [
+        {
+            path: '',
+            name: 'BlockDetails_Summary',
+            component: BlockDetails_Summary,
+            props: true,
+            meta: {
+                tabLabel: "Summary"
+            }
+        },
+        {
+            path: 'transactions',
+            name: 'BlockDetails_Transactions',
+            component: BlockDetails_Transactions,
+            props: true,
+            meta: {
+                tabLabel: "Transactions"
+            }
+        },
+    ]
 }
 
 export const routes: Array<RouteRecordRaw> = [
@@ -507,15 +539,7 @@ export const routes: Array<RouteRecordRaw> = [
             tabId: TabId.Blocks
         }
     },
-    {
-        path: '/:network/block/:blockHon',
-        name: 'BlockDetails',
-        component: BlockDetails,
-        props: true,
-        meta: {
-            tabId: TabId.Blocks
-        }
-    },
+    BLOCK_DETAILS_ROUTE,
     {
         path: '/:network/metrics',
         name: 'Metrics',
