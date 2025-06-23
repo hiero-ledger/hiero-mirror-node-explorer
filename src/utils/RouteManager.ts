@@ -19,7 +19,13 @@ import {TransactionID} from "@/utils/TransactionID.ts";
 import {CoreConfig} from "@/config/CoreConfig";
 import {NetworkConfig, NetworkEntry} from "@/config/NetworkConfig";
 import {WalletManagerV4} from "@/utils/wallet/WalletManagerV4.ts";
-import {CONTRACT_DETAILS_ROUTE, routes, TOKEN_DETAILS_ROUTE, TOPIC_DETAILS_ROUTE} from "@/router.ts";
+import {
+    ACCOUNT_DETAILS_ROUTE,
+    CONTRACT_DETAILS_ROUTE,
+    routes,
+    TOKEN_DETAILS_ROUTE,
+    TOPIC_DETAILS_ROUTE
+} from "@/router.ts";
 
 export class RouteManager {
 
@@ -49,7 +55,7 @@ export class RouteManager {
             currentNetworkDidChange()
             AppStorage.setLastNetwork(this.currentNetwork.value)
             CacheUtils.clearAll()
-        }) // watch({ immediate: true }) causes a infinite loop
+        }) // watch({ immediate: true }) causes an infinite loop
         currentNetworkDidChange()
 
         this.configure(CoreConfig.FALLBACK, NetworkConfig.FALLBACK)
@@ -236,21 +242,26 @@ export class RouteManager {
     // Account
     //
 
-    public makeRouteToAccount(accountId: string): RouteLocationRaw {
+    public readonly accountDetailsOperator = new RouteOperator(ACCOUNT_DETAILS_ROUTE, this)
+
+    public makeRouteToAccount(accountId: string, tabId: string | null = null): RouteLocationRaw {
+        const targetTabId = tabId ?? this.accountDetailsOperator.defaultTabId
         return {
-            name: 'AccountDetails',
+            name: targetTabId,
             params: {accountId: accountId, network: this.currentNetwork.value}
         }
     }
 
-    public routeToAccount(accountId: string, event: Event): Promise<NavigationFailure | void | undefined> {
+    public routeToAccount(accountId: string, event: Event | null, tabId: string | null = null, replace = false): Promise<NavigationFailure | void | undefined> {
         let result: Promise<NavigationFailure | void | undefined>
         if (this.shouldOpenNewWindow(event)) {
             const routeData = this.router.resolve(this.makeRouteToAccount(accountId));
             window.open(routeData.href, '_blank');
             result = Promise.resolve()
+        } else if (replace) {
+            result = this.router.replace(this.makeRouteToAccount(accountId, tabId))
         } else {
-            result = this.router.push(this.makeRouteToAccount(accountId))
+            result = this.router.push(this.makeRouteToAccount(accountId, tabId))
         }
         return result
     }
@@ -287,12 +298,12 @@ export class RouteManager {
 
     public readonly tokenDetailsOperator = new RouteOperator(TOKEN_DETAILS_ROUTE, this)
 
-    public makeRouteToToken(tokenId: string, tabId: string|null = null): RouteLocationRaw {
+    public makeRouteToToken(tokenId: string, tabId: string | null = null): RouteLocationRaw {
         const targetTabId = tabId ?? this.tokenDetailsOperator.defaultTabId
         return {name: targetTabId, params: {tokenId: tokenId, network: this.currentNetwork.value}}
     }
 
-    public routeToToken(tokenId: string, event: Event|null, tabId: string|null = null, replace = false): Promise<NavigationFailure | void | undefined> {
+    public routeToToken(tokenId: string, event: Event | null, tabId: string | null = null, replace = false): Promise<NavigationFailure | void | undefined> {
         let result: Promise<NavigationFailure | void | undefined>
         if (this.shouldOpenNewWindow(event)) {
             const routeData = this.router.resolve(this.makeRouteToToken(tokenId, tabId));
@@ -359,12 +370,12 @@ export class RouteManager {
 
     public readonly contractDetailsOperator = new RouteOperator(CONTRACT_DETAILS_ROUTE, this)
 
-    public makeRouteToContract(contractId: string, tabId: string|null = null): RouteLocationRaw {
+    public makeRouteToContract(contractId: string, tabId: string | null = null): RouteLocationRaw {
         const targetTabId = tabId ?? this.contractDetailsOperator.defaultTabId
         return {name: targetTabId, params: {contractId: contractId, network: this.currentNetwork.value}}
     }
 
-    public routeToContract(contractId: string, event: Event|null, tabId: string|null = null, replace = false): Promise<NavigationFailure | void | undefined> {
+    public routeToContract(contractId: string, event: Event | null, tabId: string | null = null, replace = false): Promise<NavigationFailure | void | undefined> {
         let result: Promise<NavigationFailure | void | undefined>
         if (this.shouldOpenNewWindow(event)) {
             const routeData = this.router.resolve(this.makeRouteToContract(contractId, tabId));
@@ -398,12 +409,12 @@ export class RouteManager {
 
     public readonly topicDetailsOperator = new RouteOperator(TOPIC_DETAILS_ROUTE, this)
 
-    public makeRouteToTopic(topicId: string, tabId: string|null = null): RouteLocationRaw {
+    public makeRouteToTopic(topicId: string, tabId: string | null = null): RouteLocationRaw {
         const targetTabId = tabId ?? this.topicDetailsOperator.defaultTabId
         return {name: targetTabId, params: {topicId: topicId, network: this.currentNetwork.value}}
     }
 
-    public routeToTopic(topicId: string, event: Event | null, tabId: string|null = null, replace = false): Promise<NavigationFailure | void | undefined> {
+    public routeToTopic(topicId: string, event: Event | null, tabId: string | null = null, replace = false): Promise<NavigationFailure | void | undefined> {
         let result: Promise<NavigationFailure | void | undefined>
         if (this.shouldOpenNewWindow(event)) {
             const routeData = this.router.resolve(this.makeRouteToTopic(topicId, tabId));
@@ -544,7 +555,7 @@ export class RouteManager {
     private readonly checkNetwork = (to: RouteLocationNormalized): boolean | string => {
         let result: boolean | string
 
-        if (this.getNetworkEntryFromRoute(to) === null) { // Unknown network)
+        if (this.getNetworkEntryFromRoute(to) === null) { // Unknown network
             result = "/page-not-found"
         } else {
             result = true
