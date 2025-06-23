@@ -12,6 +12,7 @@
       v-if="associateEnabled"
       :enabled="true"
       :size="buttonSize"
+      :for-toolbar="true"
       @action="showAssociateDialog=true"
   >ASSOCIATE
   </ButtonView>
@@ -20,6 +21,7 @@
       v-if="dissociateEnabled"
       :enabled="true"
       :size="buttonSize"
+      :for-toolbar="true"
       @action="showDissociateDialog=true"
   >DISSOCIATE
   </ButtonView>
@@ -28,6 +30,7 @@
       v-if="rejectEnabled"
       :enabled="true"
       :size="buttonSize"
+      :for-toolbar="true"
       @action="showRejectDialog=true"
   >REJECT
   </ButtonView>
@@ -36,6 +39,7 @@
       v-if="claimEnabled"
       :enabled="true"
       :size="buttonSize"
+      :for-toolbar="true"
       @action="showClaimDialog=true"
   >CLAIM
   </ButtonView>
@@ -44,6 +48,7 @@
       v-if="watchEnabled"
       :enabled="true"
       :size="buttonSize"
+      :for-toolbar="true"
       @action="showWatchDialog=true"
   >IMPORT
   </ButtonView>
