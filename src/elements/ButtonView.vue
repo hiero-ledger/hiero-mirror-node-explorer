@@ -12,7 +12,8 @@
         'is-medium': props.size === 'medium',
         'is-default': props.isDefault,
         'is-transparent': props.isTransparent,
-        'same-size': props.sameSize
+        'same-size': props.sameSize,
+        'for-toolbar': props.forToolbar
       }"
       :disabled="!props.enabled"
       @click="handleClick"
@@ -50,6 +51,10 @@ const props = defineProps({
     default: ButtonSize.normal
   },
   sameSize: {
+    type: Boolean,
+    default: false
+  },
+  forToolbar: {
     type: Boolean,
     default: false
   }
@@ -117,6 +122,10 @@ button.button-view.is-transparent {
 button.button-view.same-size {
   flex-basis: 0;
   flex-grow: 1;
+}
+
+button.button-view.for-toolbar {
+  background-color: var(--background-tertiary);
 }
 
 span.button-slot {
