@@ -21,11 +21,6 @@
       <span class="mr-1"/>
       <DomainLabel v-if="domainName" :domain-name="domainName" :provider-name="domainProviderName"/>
       <PublicLabel v-if="label" :label-definition="label"/>
-      <ArrowLink
-          v-if="showContractVisible && contractRoute"
-          :route="contractRoute" id="showContractLink"
-          text="Associated contract"
-      />
     </template>
 
     <template #right-control>
@@ -236,7 +231,6 @@ import Property from "@/components/Property.vue";
 import StringValue from "@/components/values/StringValue.vue";
 import AccountLink from "@/components/values/link/AccountLink.vue";
 import {AccountLocParser} from "@/utils/parser/AccountLocParser";
-import {ContractByIdCache} from "@/utils/cache/ContractByIdCache";
 import TransactionLink from "@/components/values/TransactionLink.vue";
 import {NodeAnalyzer} from "@/utils/analyzer/NodeAnalyzer";
 import EVMAddress from "@/components/values/EVMAddress.vue";
@@ -248,7 +242,6 @@ import UpdateAccountDialog from "@/dialogs/UpdateAccountDialog.vue";
 import {NetworkConfig} from "@/config/NetworkConfig";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import ButtonView from "@/elements/ButtonView.vue";
-import ArrowLink from "@/components/ArrowLink.vue";
 import {ButtonSize} from "@/dialogs/core/DialogUtils.ts";
 import EntityIDView from "@/components/values/EntityIDView.vue";
 import DomainLabel from "@/components/values/DomainLabel.vue";
@@ -293,26 +286,11 @@ onMounted(() => balanceAnalyzer.mount())
 onBeforeUnmount(() => balanceAnalyzer.unmount())
 
 //
-// contract
-//
-const contractLookup = ContractByIdCache.instance.makeLookup(accountLocParser.accountId)
-onMounted(() => contractLookup.mount())
-onBeforeUnmount(() => contractLookup.unmount())
-const showContractVisible = computed(() => {
-  return contractLookup.entity.value != null
-})
-
-//
 // staking
 //
 const stakedNodeAnalyzer = new NodeAnalyzer(accountLocParser.stakedNodeId)
 onMounted(() => stakedNodeAnalyzer.mount())
 onBeforeUnmount(() => stakedNodeAnalyzer.unmount())
-
-const contractRoute = computed(() => {
-  const accountId = accountLocParser.accountId.value
-  return accountId ? routeManager.makeRouteToContract(accountId) : ''
-})
 
 const stakedNodeRoute = computed(() => {
   const stakedNodeId = accountLocParser.stakedNodeId.value
