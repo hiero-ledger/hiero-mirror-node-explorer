@@ -6,7 +6,7 @@
 
 <template>
 
-  <DashboardCardV2 collapsible-key="contractBytecode">
+  <DashboardCardV2>
     <template #title>
       Contract Bytecode
       <div

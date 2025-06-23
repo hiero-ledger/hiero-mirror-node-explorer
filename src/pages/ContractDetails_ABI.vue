@@ -6,7 +6,7 @@
 
 <template>
 
-  <DashboardCardV2 collapsible-key="contractABI">
+  <DashboardCardV2>
 
     <template #title>
       Contract ABI
