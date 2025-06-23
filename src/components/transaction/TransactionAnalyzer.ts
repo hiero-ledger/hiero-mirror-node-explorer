@@ -103,6 +103,9 @@ export class TransactionAnalyzer {
         return result
     })
 
+    public readonly isSubmitMessage = computed(
+        () => this.transactionType.value === TransactionType.CONSENSUSSUBMITMESSAGE)
+
     public readonly isBatchTransaction = computed(
         () => this.transactionType.value === TransactionType.ATOMICBATCH)
 
