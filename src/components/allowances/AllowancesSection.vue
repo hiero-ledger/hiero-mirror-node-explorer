@@ -6,7 +6,7 @@
 
 <template>
 
-  <DashboardCardV2 v-if="accountId" collapsible-key="allowances">
+  <DashboardCardV2 v-if="accountId">
 
     <template #title>
       Allowances

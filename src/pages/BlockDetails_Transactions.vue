@@ -6,7 +6,7 @@
 
 <template>
 
-  <DashboardCardV2 id="blockTransactions" collapsible-key="blockTransactions">
+  <DashboardCardV2 id="blockTransactions">
     <template #title>
       Block Transactions
     </template>

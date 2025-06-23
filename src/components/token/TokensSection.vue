@@ -6,7 +6,7 @@
 
 <template>
 
-  <DashboardCardV2 v-if="accountId && showSection" id="tokensSection" collapsible-key="tokens">
+  <DashboardCardV2 v-if="accountId && showSection" id="tokensSection">
 
     <template #title>
       <div v-if="fullPage">

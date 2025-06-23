@@ -6,11 +6,7 @@
 
 <template>
 
-  <DashboardCardV2
-      id="metadata-section"
-      collapsible-key="metadataSection"
-      :collapsed="true"
-  >
+  <DashboardCardV2 id="metadata-section">
     <template #title>
       Metadata Details
     </template>

@@ -6,7 +6,7 @@
 
 <template>
 
-  <DashboardCardV2 collapsible-key="accountDetails">
+  <DashboardCardV2>
     <template #title>
         <span v-if="isInactiveEvmAddress">
           Inactive EVM Address
