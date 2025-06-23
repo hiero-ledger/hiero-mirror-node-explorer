@@ -15,12 +15,14 @@
       </span>
     </template>
 
-    <Tabs
-        :tab-ids="tabIds"
-        :tab-labels="tabLabels"
-        :selected-tab="selectedTabId"
-        @update:selected-tab="onUpdate($event)"
-    />
+    <template #left-toolbar>
+      <Tabs
+          :tab-ids="tabIds"
+          :tab-labels="tabLabels"
+          :selected-tab="selectedTabId"
+          @update:selected-tab="onUpdate($event)"
+      />
+    </template>
 
     <template v-if="!initialLoading && notification" #banner>
       <NotificationBanner :message="notification"/>
