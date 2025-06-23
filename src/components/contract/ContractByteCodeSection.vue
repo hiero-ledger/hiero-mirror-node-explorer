@@ -18,16 +18,6 @@
       </div>
     </template>
 
-    <template #right-control>
-      <ButtonView
-          v-if="isVerificationAvailable && !isVerified"
-          :size="ButtonSize.small"
-          @action="showVerifyDialog = true"
-      >
-        VERIFY
-      </ButtonView>
-    </template>
-
     <template #content>
       <Property v-if="isVerified" id="verificationStatus" :full-width="true">
         <template v-slot:name>Verification Status</template>
