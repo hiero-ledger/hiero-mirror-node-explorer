@@ -29,8 +29,6 @@
 
     <router-view/>
 
-    <MirrorLink :network="network" entityUrl="accounts" :loc="accountIdRef ?? undefined"/>
-
   </PageFrameV2>
 
 </template>
@@ -45,7 +43,6 @@ import {computed, onBeforeUnmount, onMounted} from 'vue';
 import PageFrameV2 from "@/components/page/PageFrameV2.vue";
 import NotificationBanner from "@/components/NotificationBanner.vue";
 import {AccountLocParser} from "@/utils/parser/AccountLocParser";
-import MirrorLink from "@/components/MirrorLink.vue";
 import {NetworkConfig} from "@/config/NetworkConfig";
 import Tabs from "@/components/Tabs.vue";
 import {routeManager} from "@/utils/RouteManager.ts";
