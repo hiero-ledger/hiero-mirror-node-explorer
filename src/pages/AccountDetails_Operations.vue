@@ -6,7 +6,7 @@
 
 <template>
 
-  <DashboardCardV2 v-if="!isInactiveEvmAddress" collapsible-key="recentTransactions">
+  <DashboardCardV2 v-if="!isInactiveEvmAddress">
     <template #title>
       <p id="recentTransactions">Recent Operations</p>
     </template>
