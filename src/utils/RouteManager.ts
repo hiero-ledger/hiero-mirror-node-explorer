@@ -21,6 +21,7 @@ import {NetworkConfig, NetworkEntry} from "@/config/NetworkConfig";
 import {WalletManagerV4} from "@/utils/wallet/WalletManagerV4.ts";
 import {
     ACCOUNT_DETAILS_ROUTE,
+    BLOCK_DETAILS_ROUTE,
     CONTRACT_DETAILS_ROUTE,
     routes,
     TOKEN_DETAILS_ROUTE,
@@ -432,18 +433,23 @@ export class RouteManager {
     // Block
     //
 
-    public makeRouteToBlock(blockHon: string | number): RouteLocationRaw {
-        return {name: 'BlockDetails', params: {blockHon: blockHon, network: this.currentNetwork.value}}
+    public readonly blockDetailsOperator = new RouteOperator(BLOCK_DETAILS_ROUTE, this)
+
+    public makeRouteToBlock(blockHon: string | number, tabId: string|null = null): RouteLocationRaw {
+        const targetTabId = tabId ?? this.blockDetailsOperator.defaultTabId
+        return {name: targetTabId, params: {blockHon: blockHon, network: this.currentNetwork.value}}
     }
 
-    public routeToBlock(blockHon: string | number, event: Event | null = null): Promise<NavigationFailure | void | undefined> {
+    public routeToBlock(blockHon: string | number, event: Event | null = null, tabId: string|null = null, replace = false): Promise<NavigationFailure | void | undefined> {
         let result: Promise<NavigationFailure | void | undefined>
         if (this.shouldOpenNewWindow(event)) {
-            const routeData = this.router.resolve(this.makeRouteToBlock(blockHon));
+            const routeData = this.router.resolve(this.makeRouteToBlock(blockHon, tabId));
             window.open(routeData.href, '_blank');
             result = Promise.resolve()
+        } else if (replace) {
+            result = this.router.replace(this.makeRouteToBlock(blockHon, tabId))
         } else {
-            result = this.router.push(this.makeRouteToBlock(blockHon))
+            result = this.router.push(this.makeRouteToBlock(blockHon, tabId))
         }
         return result
     }
