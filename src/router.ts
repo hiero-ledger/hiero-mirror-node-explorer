@@ -51,6 +51,9 @@ import AccountDetails_Operations from "@/pages/AccountDetails_Operations.vue";
 import AccountDetails_Allowances from "@/pages/AccountDetails_Allowances.vue";
 import BlockDetails_Summary from "@/pages/BlockDetails_Summary.vue";
 import BlockDetails_Transactions from "@/pages/BlockDetails_Transactions.vue";
+import TransactionDetails_Summary from "@/pages/TransactionDetails_Summary.vue";
+import TransactionDetails_Message from "@/pages/TransactionDetails_Message.vue";
+import TransactionDetails_Result from "@/pages/TransactionDetails_Result.vue";
 import Metrics from "@/pages/Metrics.vue";
 
 export enum TabId {
@@ -64,6 +67,45 @@ export enum TabId {
     Staking = "Staking",
     Blocks = "Blocks",
     Metrics = "Metrics",
+}
+
+export const TRANSACTION_DETAILS_ROUTE: RouteRecordRaw = {
+    path: '/:network/transaction/:transactionLoc',
+    name: 'TransactionDetails',
+    component: TransactionDetails,
+    props: true,
+    meta: {
+        tabId: TabId.Transactions
+    },
+    children: [
+        {
+            path: '',
+            name: 'TransactionDetails_Summary',
+            component: TransactionDetails_Summary,
+            props: true,
+            meta: {
+                tabLabel: "Summary"
+            }
+        },
+        {
+            path: 'message',
+            name: 'TransactionDetails_Message',
+            component: TransactionDetails_Message,
+            props: true,
+            meta: {
+                tabLabel: "Message"
+            }
+        },
+        {
+            path: 'result',
+            name: 'TransactionDetails_Result',
+            component: TransactionDetails_Result,
+            props: true,
+            meta: {
+                tabLabel: "Result"
+            }
+        },
+    ],
 }
 
 export const CONTRACT_DETAILS_ROUTE: RouteRecordRaw = {
@@ -354,15 +396,7 @@ export const routes: Array<RouteRecordRaw> = [
             tabId: TabId.Transactions
         }
     },
-    {
-        path: '/:network/transaction/:transactionLoc',
-        name: 'TransactionDetails',
-        component: TransactionDetails,
-        props: true,
-        meta: {
-            tabId: TabId.Transactions
-        }
-    },
+    TRANSACTION_DETAILS_ROUTE,
     {
         path: '/:network/schedule/:scheduleId',
         name: 'ScheduleDetails',
