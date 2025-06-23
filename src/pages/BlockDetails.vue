@@ -14,15 +14,17 @@
       </span>
     </template>
 
-    <Tabs
-        :tab-ids="tabIds"
-        :tab-labels="tabLabels"
-        :selected-tab="selectedTabId"
-        @update:selected-tab="onUpdate($event)"
-    />
-
     <template v-if="notification" #banner>
       <NotificationBanner :message="notification"/>
+    </template>
+
+    <template #left-toolbar>
+      <Tabs
+          :tab-ids="tabIds"
+          :tab-labels="tabLabels"
+          :selected-tab="selectedTabId"
+          @update:selected-tab="onUpdate($event)"
+      />
     </template>
 
     <router-view/>
