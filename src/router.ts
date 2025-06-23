@@ -45,6 +45,10 @@ import ContractDetails_Assets from "@/pages/ContractDetails_Assets.vue";
 import ContractDetails_ByteCode from "@/pages/ContractDetails_ByteCode.vue";
 import ContractDetails_Others from "@/pages/ContractDetails_Others.vue";
 import ContractDetails_ABI from "@/pages/ContractDetails_ABI.vue";
+import AccountDetails_Summary from "@/pages/AccountDetails_Summary.vue";
+import AccountDetails_Assets from "@/pages/AccountDetails_Assets.vue";
+import AccountDetails_Operations from "@/pages/AccountDetails_Operations.vue";
+import AccountDetails_Allowances from "@/pages/AccountDetails_Allowances.vue";
 import Metrics from "@/pages/Metrics.vue";
 
 export enum TabId {
@@ -206,6 +210,55 @@ export const TOPIC_DETAILS_ROUTE: RouteRecordRaw = {
     }
 }
 
+export const ACCOUNT_DETAILS_ROUTE: RouteRecordRaw = {
+
+    path: '/:network/account/:accountId',
+    name: 'AccountDetails',
+    component: AccountDetails,
+    children: [
+        {
+            path: '',
+            name: 'AccountDetails_Summary',
+            component: AccountDetails_Summary,
+            props: true,
+            meta: {
+                tabLabel: "Summary"
+            }
+        },
+        {
+            path: 'assets',
+            name: 'AccountDetails_Assets',
+            component: AccountDetails_Assets,
+            props: true,
+            meta: {
+                tabLabel: "Assets"
+            }
+        },
+        {
+            path: 'operations',
+            name: 'AccountDetails_Operations',
+            component: AccountDetails_Operations,
+            props: true,
+            meta: {
+                tabLabel: "Operations"
+            }
+        },
+        {
+            path: 'allowances',
+            name: 'AccountDetails_Allowances',
+            props: true,
+            component: AccountDetails_Allowances,
+            meta: {
+                tabLabel: "Allowances"
+            }
+        },
+    ],
+    props: true,
+    meta: {
+        tabId: TabId.Accounts
+    }
+}
+
 export const routes: Array<RouteRecordRaw> = [
     {
         path: '/',
@@ -305,15 +358,7 @@ export const routes: Array<RouteRecordRaw> = [
             tabId: TabId.Accounts
         }
     },
-    {
-        path: '/:network/account/:accountId',
-        name: 'AccountDetails',
-        component: AccountDetails,
-        props: true,
-        meta: {
-            tabId: TabId.Accounts
-        }
-    },
+    ACCOUNT_DETAILS_ROUTE,
     {
         path: '/:network/adminKey/:accountId',
         name: 'AdminKeyDetails',
