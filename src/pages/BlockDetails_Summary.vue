@@ -72,6 +72,8 @@
     </template>
   </DashboardCardV2>
 
+  <MirrorLink :network="props.network" entityUrl="blocks" :loc="props.blockHon"/>
+
 </template>
 
 <!-- --------------------------------------------------------------------------------------------------------------- -->
@@ -92,6 +94,7 @@ import {ArrowLeft, ArrowRight} from 'lucide-vue-next';
 import {BlockLocParser} from "@/utils/parser/BlockLocParser.ts";
 import {ButtonSize} from "@/dialogs/core/DialogUtils.ts";
 import {routeManager} from "@/utils/RouteManager.ts";
+import MirrorLink from "@/components/MirrorLink.vue";
 
 const props = defineProps({
   blockHon: String,
