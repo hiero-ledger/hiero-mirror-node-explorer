@@ -25,6 +25,9 @@ import ERC20ByName from "@/pages/ERC20ByName.vue";
 import ERC721ByName from "@/pages/ERC721ByName.vue";
 import Home from "@/pages/Home.vue";
 import NftDetails from "@/pages/NftDetails.vue";
+import NftDetails_Summary from "@/pages/NftDetails_Summary.vue";
+import NftDetails_Transactions from "@/pages/NftDetails_Transactions.vue";
+import NftDetails_Metadata from "@/pages/NftDetails_Metadata.vue";
 import NodeAdminKeyDetails from "@/pages/NodeAdminKeyDetails.vue";
 import NodeDetails from "@/pages/NodeDetails.vue";
 import Nodes from "@/pages/Nodes.vue";
@@ -147,7 +150,7 @@ export const CONTRACT_DETAILS_ROUTE: RouteRecordRaw = {
     },
     children: [
         {
-            path:'',
+            path: '',
             name: 'ContractDetails_Summary',
             component: ContractDetails_Summary,
             props: true,
@@ -165,7 +168,7 @@ export const CONTRACT_DETAILS_ROUTE: RouteRecordRaw = {
         //     }
         // },
         {
-            path:'abi',
+            path: 'abi',
             name: 'ContractDetails_ABI',
             component: ContractDetails_ABI,
             props: true,
@@ -174,7 +177,7 @@ export const CONTRACT_DETAILS_ROUTE: RouteRecordRaw = {
             }
         },
         {
-            path:'sources',
+            path: 'sources',
             name: 'ContractDetails_Source',
             component: ContractDetails_SourceCode,
             props: true,
@@ -183,7 +186,7 @@ export const CONTRACT_DETAILS_ROUTE: RouteRecordRaw = {
             }
         },
         {
-            path:'bytecode',
+            path: 'bytecode',
             name: 'ContractDetails_ByteCode',
             component: ContractDetails_ByteCode,
             props: true,
@@ -192,7 +195,7 @@ export const CONTRACT_DETAILS_ROUTE: RouteRecordRaw = {
             }
         },
         {
-            path:'events',
+            path: 'events',
             name: 'ContractDetails_Events',
             component: ContractDetails_Events,
             props: true,
@@ -201,7 +204,7 @@ export const CONTRACT_DETAILS_ROUTE: RouteRecordRaw = {
             }
         },
         {
-            path:'calls',
+            path: 'calls',
             name: 'ContractDetailsCalls',
             component: ContractDetailsCalls,
             props: true,
@@ -254,6 +257,55 @@ export const TOKEN_DETAILS_ROUTE: RouteRecordRaw = {
                 tabLabel: "Others"
             }
         },
+    ],
+    props: true,
+    meta: {
+        tabId: TabId.Tokens
+    }
+}
+
+export const NFT_DETAILS_ROUTE: RouteRecordRaw = {
+
+    path: '/:network/token/:tokenId/:serialNumber',
+    name: 'NftDetails',
+    component: NftDetails,
+    children: [
+        {
+            path: '',
+            name: 'NftDetails_Summary',
+            component: NftDetails_Summary,
+            props: true,
+            meta: {
+                tabLabel: "Summary"
+            }
+        },
+        {
+            path: 'metadata',
+            name: 'NftDetails_Metadata',
+            component: NftDetails_Metadata,
+            props: true,
+            meta: {
+                tabLabel: "Metadata"
+            }
+        },
+        {
+            path: 'transactions',
+            name: 'NftDetails_Transactions',
+            component: NftDetails_Transactions,
+            props: true,
+            meta: {
+                tabLabel: "Transactions"
+            }
+        },
+        // {
+        //     path: 'results',
+        //     name: 'NftDetails_Results',
+        //     component: NftDetails_Results,
+        //     props: true,
+        //     meta: {
+        //         tabLabel: "Results"
+        //     }
+        // },
     ],
     props: true,
     meta: {
@@ -350,7 +402,7 @@ export const ACCOUNT_DETAILS_ROUTE: RouteRecordRaw = {
     }
 }
 
-export const BLOCK_DETAILS_ROUTE: RouteRecordRaw =     {
+export const BLOCK_DETAILS_ROUTE: RouteRecordRaw = {
     path: '/:network/block/:blockHon',
     name: 'BlockDetails',
     component: BlockDetails,
@@ -510,15 +562,7 @@ export const routes: Array<RouteRecordRaw> = [
         }
     },
     TOKEN_DETAILS_ROUTE,
-    {
-        path: '/:network/token/:tokenId/:serialNumber',
-        name: 'NftDetails',
-        component: NftDetails,
-        props: true,
-        meta: {
-            tabId: TabId.Tokens
-        }
-    },
+    NFT_DETAILS_ROUTE,
     {
         path: '/:network/tokensByName/:name',
         name: 'TokensByName',
