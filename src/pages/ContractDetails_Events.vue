@@ -6,7 +6,7 @@
 
 <template>
 
-  <ContractResultsSection :contract-id="props.contractId"/>
+  <ContractResultLogs :logs="logs" :contract-id="props.contractId"/>
 
 </template>
 
@@ -17,7 +17,7 @@
 <script setup lang="ts">
 
 import {computed, onBeforeUnmount, onMounted} from "vue";
-import ContractResultsSection from "@/components/contract/ContractResultsSection.vue";
+import ContractResultLogs from "@/components/contract/ContractResultLogs.vue";
 import {ContractResultsLogsAnalyzer} from "@/utils/analyzer/ContractResultsLogsAnalyzer.ts";
 
 const props = defineProps({
@@ -25,11 +25,11 @@ const props = defineProps({
   network: String
 })
 
-const contractId = computed(() => props.contractId ?? null)
 
 //
 // contract results logs - event logs at contract level
 //
+const contractId = computed(() => props.contractId ?? null)
 const contractResultsLogsAnalyzer = new ContractResultsLogsAnalyzer(contractId)
 onMounted(() => contractResultsLogsAnalyzer.mount())
 onBeforeUnmount(() => contractResultsLogsAnalyzer.unmount())
@@ -38,9 +38,8 @@ const logs = contractResultsLogsAnalyzer.logs
 </script>
 
 <!-- --------------------------------------------------------------------------------------------------------------- -->
-<!--                                                       STYLE                                                     -->
+<!--                                                      STYLE                                                      -->
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <style scoped>
-
 </style>
