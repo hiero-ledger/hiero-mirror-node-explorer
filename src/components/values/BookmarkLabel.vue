@@ -66,7 +66,7 @@ const name = computed(() => props.entityBookmark?.name ?? null)
 const entityId = computed(() => props.entityBookmark?.entityId ?? null)
 const website = computed(() => props.entityBookmark?.website ?? null)
 const description = computed(() => props.entityBookmark?.description ?? null)
-const type = computed(() => props.entityBookmark?.type ?? null)
+const type = computed(() => props.entityBookmark?.bookmarkType ?? null)
 
 </script>
 

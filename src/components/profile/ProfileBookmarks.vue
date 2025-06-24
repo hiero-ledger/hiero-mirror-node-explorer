@@ -54,7 +54,7 @@
         </o-table-column>
 
         <o-table-column v-slot="props" field="type" label="TYPE">
-          <StringValue :string-value="props.row.type"/>
+          <StringValue :string-value="props.row.bookmarkType"/>
         </o-table-column>
 
         <o-table-column v-slot="props" field="description" label="DESCRIPTION">

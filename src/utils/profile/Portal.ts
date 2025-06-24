@@ -79,7 +79,7 @@ export namespace Portal {
 
     export interface NewEntityBookmark {
         name: string;
-        type: string | null;
+        bookmarkType: string | null;
         description: string | null;
         website: string | null;
 

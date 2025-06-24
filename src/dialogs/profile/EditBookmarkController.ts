@@ -79,7 +79,7 @@ export class EditBookmarkController extends TaskController {
 
         const newBookmark: Portal.NewEntityBookmark = {
             name: this.nameInputText.value,
-            type: this.typeInputText.value,
+            bookmarkType: this.typeInputText.value,
             description: this.descriptionInputText.value,
             website: this.websiteInputText.value,
             networkEpoch: epoch,
@@ -97,7 +97,7 @@ export class EditBookmarkController extends TaskController {
         const existing = this.oldEntityBookmark.value
         this.entityIdInputText.value = existing?.entityId ?? this.entityIdInputText.value
         this.nameInputText.value = existing?.name ?? "Nice bookmark"
-        this.typeInputText.value = existing?.type ?? ""
+        this.typeInputText.value = existing?.bookmarkType ?? ""
         this.descriptionInputText.value = existing?.description ?? ""
         this.websiteInputText.value = existing?.website ?? ""
 
@@ -249,7 +249,7 @@ export class EditBookmarkController extends TaskController {
 
     private readonly typeEdited = computed(
         () => this.oldEntityBookmark.value === null
-            || this.oldEntityBookmark.value.type != this.typeInputText.value)
+            || this.oldEntityBookmark.value.bookmarkType != this.typeInputText.value)
 
     private readonly typeFeedbackMessage = computed(() => {
         let result: string|null
