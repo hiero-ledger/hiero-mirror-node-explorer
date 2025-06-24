@@ -46,6 +46,7 @@ import {TransactionID} from "@/utils/TransactionID";
 import {routeManager} from "@/utils/RouteManager.ts";
 import Tabs from "@/components/Tabs.vue";
 import {ContractResultAnalyzer} from "@/utils/analyzer/ContractResultAnalyzer.ts";
+import {ContractActionsLoader} from "@/components/contract/ContractActionsLoader.ts";
 
 const props = defineProps({
   transactionLoc: String,
@@ -55,7 +56,22 @@ const props = defineProps({
 const excludedTabIds = computed(() => {
   const result = transactionAnalyzer.isSubmitMessage.value ? [] : ["TransactionDetails_Message"]
   if (contractResultAnalyzer.contractResult.value === null) {
-    result.push("TransactionDetails_Result")
+    result.push(...[
+      "TransactionDetails_Result",
+      "TransactionDetails_Trace",
+      "TransactionDetails_States",
+      "TransactionDetails_Events",
+    ])
+  } else {
+    if (actions.value.length === 0) {
+      result.push("TransactionDetails_Trace")
+    }
+    if (contractResultAnalyzer.contractResult.value.state_changes.length === 0) {
+      result.push("TransactionDetails_States")
+    }
+    if (contractResultAnalyzer.contractResult.value.logs.length === 0) {
+      result.push("TransactionDetails_Events")
+    }
   }
   return result
 })
@@ -99,6 +115,12 @@ const formattedTransactionId = computed(() =>
 const contractResultAnalyzer = new ContractResultAnalyzer(transactionAnalyzer.transaction)
 onMounted(() => contractResultAnalyzer.mount())
 onBeforeUnmount(() => contractResultAnalyzer.unmount())
+
+const txHash = computed(() => contractResultAnalyzer.contractResult.value?.hash ?? null)
+const contractActionsLoader = new ContractActionsLoader(txHash)
+onMounted(() => contractActionsLoader.mount())
+onBeforeUnmount(() => contractActionsLoader.unmount())
+const actions = computed(()  => contractActionsLoader.actions.value ?? [])
 
 const notification = transactionLocParser.errorNotification
 
