@@ -73,6 +73,13 @@ const excludedTabIds = computed(() => {
       result.push("TransactionDetails_Events")
     }
   }
+  // We never exclude currently selected tab id:
+  // => it's likely we are loading just after a back action
+  const selectedTabId = routeManager.transactionDetailsOperator.selectedTabId.value
+  const selectedTabIndex = selectedTabId !== null ? result.indexOf(selectedTabId) : -1
+  if (selectedTabIndex !== -1) {
+    result.splice(selectedTabIndex, 1)
+  }
   return result
 })
 
