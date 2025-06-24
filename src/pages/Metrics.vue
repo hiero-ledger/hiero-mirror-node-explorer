@@ -51,6 +51,18 @@
         <ChartView :controller="accountGrowthController" data-cy="chart-view"/>
       </div>
     </template>
+
+    <template v-else-if="selectedTab === 'nodes'">
+      <DashboardCardV2>
+        <template #title>
+          Map
+        </template>
+        <template #content>
+          <NodeMap :nodes="nodes"/>
+        </template>
+      </DashboardCardV2>
+    </template>
+
     <template v-else/>
 
   </PageFrameV2>
@@ -77,6 +89,9 @@ import {AvgTimeToConsensusController} from "@/charts/hgraph/AvgTimeToConsensusCo
 import {TPSController} from "@/charts/hgraph/TPSController.ts";
 import MetricsDashboard from "@/components/home/MetricsDashboard.vue";
 import Tabs from "@/components/Tabs.vue";
+import NodeMap from "@/components/node/NodeMap.vue";
+import {NetworkAnalyzer} from "@/utils/analyzer/NetworkAnalyzer.ts";
+import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 
 defineProps({
   network: String
@@ -84,8 +99,11 @@ defineProps({
 
 const themeController = ThemeController.inject()
 
-const tabIds = ['network', 'transactions', 'accounts']
-const tabLabels = ['Network', 'Transactions', 'Accounts']
+const tabIds = routeManager.currentNetwork.value === 'mainnet'
+    ? ['network', 'transactions', 'accounts', 'nodes']
+    : ['network', 'transactions', 'accounts']
+
+const tabLabels = ['Network', 'Transactions', 'Accounts', 'Nodes']
 const selectedTab = ref<string | null>(tabIds[0])
 const onUpdate = (tab: string | null) => {
   selectedTab.value = tab
@@ -118,6 +136,11 @@ onBeforeUnmount(() => avgTimeToConsensusController.unmount())
 const tpsController = new TPSController(themeController, routeManager)
 onMounted(() => tpsController.mount())
 onBeforeUnmount(() => tpsController.unmount())
+
+const networkNodeAnalyzer = new NetworkAnalyzer()
+onMounted(() => networkNodeAnalyzer.mount())
+onBeforeUnmount(() => networkNodeAnalyzer.unmount())
+const nodes = networkNodeAnalyzer.nodes
 
 </script>
 
