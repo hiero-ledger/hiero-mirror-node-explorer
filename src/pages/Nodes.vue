@@ -65,7 +65,7 @@
       </template>
     </DashboardCardV2>
 
-    <DashboardCardV2>
+    <DashboardCardV2 v-if="routeManager.currentNetwork.value === 'mainnet'">
       <template #title>
         Map
       </template>
