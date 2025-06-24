@@ -646,7 +646,7 @@ export interface ContractResult {
 }
 
 export interface ContractResultDetails extends ContractResult {
-    logs: ContractLog[] | undefined
+    logs: ContractLog[]
     state_changes: ContractResultStateChange[]
 }
 
