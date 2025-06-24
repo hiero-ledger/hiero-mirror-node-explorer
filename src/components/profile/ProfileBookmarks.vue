@@ -34,7 +34,7 @@
           pagination-order="centered"
           :per-page="perPage"
           :striped="true"
-          row-key="contract_id"
+          row-key="entityId"
       >
 
         <o-table-column v-slot="props" field="name" label="NAME">
@@ -53,8 +53,12 @@
           <StringValue :string-value="props.row.entityType"/>
         </o-table-column>
 
-        <o-table-column v-slot="props" field="entityType" label="TYPE">
+        <o-table-column v-slot="props" field="type" label="TYPE">
           <StringValue :string-value="props.row.type"/>
+        </o-table-column>
+
+        <o-table-column v-slot="props" field="description" label="DESCRIPTION">
+          <StringValue :string-value="props.row.description"/>
         </o-table-column>
 
         <o-table-column v-slot="props" field="website" label="WEB SITE">
