@@ -8,7 +8,8 @@
 
   <DashboardCardV2 v-if="props.logs?.length" collapsible-key="contractEvents">
     <template #title>
-      Events
+      <ContractSectionTitle v-if="props.contractId" :contract-id="props.contractId">Contract Events</ContractSectionTitle>
+      <span v-else>Events</span>
     </template>
 
     <template #right-control v-if="props.logs.length > 2">
@@ -60,6 +61,7 @@ import {ContractLog} from "@/schemas/MirrorNodeSchemas";
 import {AppStorage} from "@/AppStorage";
 import SelectView from "@/elements/SelectView.vue";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
+import ContractSectionTitle from "@/components/contract/ContractSectionTitle.vue";
 
 const DEFAULT_PAGE_SIZE = 3
 
@@ -69,6 +71,9 @@ const props = defineProps({
     type: Number,
   },
   transactionHash: {
+    type: String
+  },
+  contractId: {
     type: String
   }
 })
