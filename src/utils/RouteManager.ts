@@ -331,12 +331,12 @@ export class RouteManager {
         }
     }
 
-    public makeRouteToCollection(accountId: string, tokenId: string): RouteLocationRaw {
-        return {
-            name: 'AccountCollection',
-            params: {accountId: accountId, tokenId: tokenId, network: this.currentNetwork.value}
-        }
-    }
+    // public makeRouteToCollection(accountId: string, tokenId: string): RouteLocationRaw {
+    //     return {
+    //         name: 'AccountCollection',
+    //         params: {accountId: accountId, tokenId: tokenId, network: this.currentNetwork.value}
+    //     }
+    // }
 
     public routeToSerial(tokenId: string, serialNumber: number, event: Event): Promise<NavigationFailure | void | undefined> {
         let result: Promise<NavigationFailure | void | undefined>
