@@ -9,7 +9,7 @@
   <DashboardCardV2>
 
     <template #title>
-      Contract ABI
+      <ContractSectionTitle :contract-id="props.contractId">Contract ABI</ContractSectionTitle>
     </template>
 
     <template #right-control>
@@ -80,6 +80,7 @@ import SwitchView from "@/elements/SwitchView.vue";
 import {AppStorage} from "@/AppStorage.ts";
 import Property from "@/components/Property.vue";
 import AccountLink from "@/components/values/link/AccountLink.vue";
+import ContractSectionTitle from "@/components/contract/ContractSectionTitle.vue";
 
 const props = defineProps({
   contractId: String,
