@@ -1,63 +1,64 @@
 // SPDX-License-Identifier: Apache-2.0
 
-import {RouteRecordRaw} from "vue-router";
-import {AppStorage} from "@/AppStorage.ts";
-import PageNotFound from "@/pages/PageNotFound.vue";
-import Home from "@/pages/Home.vue";
-import RoutingSpec from "@/pages/RoutingSpec.vue";
-import Transactions from "@/pages/Transactions.vue";
-import TransactionsById from "@/pages/TransactionsById.vue";
-import TransactionDetails from "@/pages/TransactionDetails.vue";
-import ScheduleDetails from "@/pages/ScheduleDetails.vue";
+import AccountDetails from "@/pages/AccountDetails.vue";
+import AccountDetails_Allowances from "@/pages/AccountDetails_Allowances.vue";
+import AccountDetails_Assets from "@/pages/AccountDetails_Assets.vue";
+import AccountDetails_Operations from "@/pages/AccountDetails_Operations.vue";
+import AccountDetails_Summary from "@/pages/AccountDetails_Summary.vue";
 import Accounts from "@/pages/Accounts.vue";
 import AccountsWithKey from "@/pages/AccountsWithKey.vue";
-import AccountDetails from "@/pages/AccountDetails.vue";
-import AdminKeyDetails from "@/pages/AdminKeyDetails.vue";
-import NodeAdminKeyDetails from "@/pages/NodeAdminKeyDetails.vue";
 import AddressDetails from "@/pages/AddressDetails.vue";
-import Tokens from "@/pages/Tokens.vue";
-import TokenDetails from "@/pages/TokenDetails.vue";
-import NftDetails from "@/pages/NftDetails.vue";
-import TokensByName from "@/pages/TokensByName.vue";
-import TokensByPopularity from "@/pages/TokensByPopularity.vue";
-import TokensByAccount from "@/pages/TokensByAccount.vue";
+import AdminKeyDetails from "@/pages/AdminKeyDetails.vue";
+import BlockDetails from "@/pages/BlockDetails.vue";
+import BlockDetails_Summary from "@/pages/BlockDetails_Summary.vue";
+import BlockDetails_Transactions from "@/pages/BlockDetails_Transactions.vue";
+import Blocks from "@/pages/Blocks.vue";
+import ContractDetails from "@/pages/ContractDetails.vue";
+import ContractDetails_ABI from "@/pages/ContractDetails_ABI.vue";
+import ContractDetails_ByteCode from "@/pages/ContractDetails_ByteCode.vue";
+import ContractDetails_Events from "@/pages/ContractDetails_Events.vue";
+import ContractDetails_Others from "@/pages/ContractDetails_Others.vue";
+import ContractDetails_SourceCode from "@/pages/ContractDetails_SourceCode.vue";
+import ContractDetails_Summary from "@/pages/ContractDetails_Summary.vue";
 import Contracts from "@/pages/Contracts.vue";
 import ERC20ByName from "@/pages/ERC20ByName.vue";
 import ERC721ByName from "@/pages/ERC721ByName.vue";
-import ContractDetails from "@/pages/ContractDetails.vue";
-import Topics from "@/pages/Topics.vue";
-import TopicDetails from "@/pages/TopicDetails.vue";
-import TopicDetails_Summary from "@/pages/TopicDetails_Summary.vue";
-import TopicDetails_Messages from "@/pages/TopicDetails_Messages.vue";
-import TopicDetails_Others from "@/pages/TopicDetails_Others.vue";
-import Nodes from "@/pages/Nodes.vue";
+import Home from "@/pages/Home.vue";
+import Metrics from "@/pages/Metrics.vue";
+import NftDetails from "@/pages/NftDetails.vue";
+import NodeAdminKeyDetails from "@/pages/NodeAdminKeyDetails.vue";
 import NodeDetails from "@/pages/NodeDetails.vue";
-import Staking from "@/pages/Staking.vue";
-import Blocks from "@/pages/Blocks.vue";
-import BlockDetails from "@/pages/BlockDetails.vue";
+import Nodes from "@/pages/Nodes.vue";
+import PageNotFound from "@/pages/PageNotFound.vue";
+import RoutingSpec from "@/pages/RoutingSpec.vue";
+import ScheduleDetails from "@/pages/ScheduleDetails.vue";
 import SearchHelp from "@/pages/SearchHelp.vue";
-import TokenDetails_Summary from "@/pages/TokenDetails_Summary.vue";
+import Staking from "@/pages/Staking.vue";
+import TokenDetails from "@/pages/TokenDetails.vue";
 import TokenDetails_Holders from "@/pages/TokenDetails_Holders.vue";
 import TokenDetails_Metadata from "@/pages/TokenDetails_Metadata.vue";
 import TokenDetails_Others from "@/pages/TokenDetails_Others.vue";
-import ContractDetails_Summary from "@/pages/ContractDetails_Summary.vue";
-import ContractDetails_SourceCode from "@/pages/ContractDetails_SourceCode.vue";
-import ContractDetails_ByteCode from "@/pages/ContractDetails_ByteCode.vue";
-import ContractDetails_Others from "@/pages/ContractDetails_Others.vue";
-import ContractDetails_ABI from "@/pages/ContractDetails_ABI.vue";
-import AccountDetails_Summary from "@/pages/AccountDetails_Summary.vue";
-import AccountDetails_Assets from "@/pages/AccountDetails_Assets.vue";
-import AccountDetails_Operations from "@/pages/AccountDetails_Operations.vue";
-import AccountDetails_Allowances from "@/pages/AccountDetails_Allowances.vue";
-import BlockDetails_Summary from "@/pages/BlockDetails_Summary.vue";
-import BlockDetails_Transactions from "@/pages/BlockDetails_Transactions.vue";
-import TransactionDetails_Summary from "@/pages/TransactionDetails_Summary.vue";
+import TokenDetails_Summary from "@/pages/TokenDetails_Summary.vue";
+import Tokens from "@/pages/Tokens.vue";
+import TokensByAccount from "@/pages/TokensByAccount.vue";
+import TokensByName from "@/pages/TokensByName.vue";
+import TokensByPopularity from "@/pages/TokensByPopularity.vue";
+import TopicDetails from "@/pages/TopicDetails.vue";
+import TopicDetails_Messages from "@/pages/TopicDetails_Messages.vue";
+import TopicDetails_Others from "@/pages/TopicDetails_Others.vue";
+import TopicDetails_Summary from "@/pages/TopicDetails_Summary.vue";
+import Topics from "@/pages/Topics.vue";
+import TransactionDetails from "@/pages/TransactionDetails.vue";
+import TransactionDetails_Events from "@/pages/TransactionDetails_Events.vue";
 import TransactionDetails_Message from "@/pages/TransactionDetails_Message.vue";
 import TransactionDetails_Result from "@/pages/TransactionDetails_Result.vue";
-import TransactionDetails_Trace from "@/pages/TransactionDetails_Trace.vue";
 import TransactionDetails_States from "@/pages/TransactionDetails_States.vue";
-import TransactionDetails_Events from "@/pages/TransactionDetails_Events.vue";
-import Metrics from "@/pages/Metrics.vue";
+import TransactionDetails_Summary from "@/pages/TransactionDetails_Summary.vue";
+import TransactionDetails_Trace from "@/pages/TransactionDetails_Trace.vue";
+import Transactions from "@/pages/Transactions.vue";
+import TransactionsById from "@/pages/TransactionsById.vue";
+import {AppStorage} from "@/AppStorage.ts";
+import {RouteRecordRaw} from "vue-router";
 
 export enum TabId {
     Home = "Home",
@@ -190,6 +191,15 @@ export const CONTRACT_DETAILS_ROUTE: RouteRecordRaw = {
             props: true,
             meta: {
                 tabLabel: "Bytecode"
+            }
+        },
+        {
+            path:'events',
+            name: 'ContractDetails_Events',
+            component: ContractDetails_Events,
+            props: true,
+            meta: {
+                tabLabel: "Events"
             }
         },
         {
