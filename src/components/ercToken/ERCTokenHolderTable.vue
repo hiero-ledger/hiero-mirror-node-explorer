@@ -22,7 +22,7 @@
       :striped="true"
       :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
 
-      row-key="account"
+      row-key="address.hash"
   >
     <o-table-column v-slot="props" field="account" label="ACCOUNT">
       <EVMAddress :address="props.row.address.hash" :show-id="false" :enable-copy="false"/>

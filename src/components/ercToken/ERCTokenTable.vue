@@ -22,21 +22,21 @@
       :striped="true"
       :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
 
-      row-key="token_id"
+      row-key="address"
   >
     <o-table-column v-slot="props" field="token_id" label="TOKEN">
       <ERCTokenIOL :evm-address="props.row.address"/>
     </o-table-column>
 
-    <o-table-column v-slot="props" field="token_id" label="ERC TYPE">
+    <o-table-column v-slot="props" field="type" label="ERC TYPE">
       {{ props.row.type }}
     </o-table-column>
 
-    <o-table-column v-slot="props" field="token_id" label="SUPPORT">
+    <o-table-column v-slot="props" field="suppor" label="SUPPORT">
       <ERCTokenSupport :evm-address="props.row.address"/>
     </o-table-column>
 
-    <o-table-column v-slot="props" field="token_id" label="ADDRESS">
+    <o-table-column v-slot="props" field="address" label="ADDRESS">
       <EVMAddress :address="props.row.address"
                   :show-id="false"
                   compact/>
@@ -54,7 +54,7 @@
       </div>
     </o-table-column>
 
-    <o-table-column v-slot="props" field="symbol" label="HOLDERS">
+    <o-table-column v-slot="props" field="holders" label="HOLDERS">
       <div class="w250">
         {{ props.row.holders }}
       </div>
