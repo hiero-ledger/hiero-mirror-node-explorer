@@ -8,25 +8,7 @@
 
   <DashboardCardV2>
     <template #title>
-      Contract
-      <div v-if="contractName" class="card-title-extra">
-        {{ contractName }}
-      </div>
-      <span class="mr-1"/>
-      <div v-if="isVerified" class="h-has-pill h-chip-success">
-        VERIFIED
-      </div>
-      <div v-if="isErc20" class="h-has-pill">
-        ERC 20
-      </div>
-      <div v-if="isErc721" class="h-has-pill">
-        ERC 721
-      </div>
-      <div v-if="isErc1155" class="h-has-pill">
-        ERC 1155
-      </div>
-      <DomainLabel v-if="domainName" :domain-name="domainName" :provider-name="domainProviderName"/>
-      <PublicLabel v-if="label" :label-definition="label"/>
+      <ContractSectionTitle :contract-id="props.contractId">Contract</ContractSectionTitle>
     </template>
 
     <template #content>
@@ -114,17 +96,13 @@
 import {computed, onBeforeUnmount, onMounted, ref} from "vue";
 import AccountLink from "@/components/values/link/AccountLink.vue";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
-import DomainLabel from "@/components/values/DomainLabel.vue";
 import EVMAddress from "@/components/values/EVMAddress.vue";
 import EntityIDView from "@/components/values/EntityIDView.vue";
 import Property from "@/components/Property.vue";
-import PublicLabel from "@/components/values/PublicLabel.vue";
 import StringValue from "@/components/values/StringValue.vue";
 import {ContractAnalyzer} from "@/utils/analyzer/ContractAnalyzer.ts";
 import {ContractLocParser} from "@/utils/parser/ContractLocParser";
-import {NameQuery} from "@/utils/name_service/NameQuery.ts";
 import {NetworkConfig} from "@/config/NetworkConfig.ts";
-import {PublicLabelsCache} from "@/utils/cache/PublicLabelsCache.ts";
 import {routeManager} from "@/utils/RouteManager.ts";
 import {ERCAnalyzer} from "@/utils/analyzer/ERCAnalyzer.ts";
 import ContractERCSection from "@/components/contract/ContractERCSection.vue";
@@ -133,6 +111,7 @@ import InfoTooltip from "@/components/InfoTooltip.vue";
 import ButtonView from "@/elements/ButtonView.vue";
 import {ButtonSize} from "@/dialogs/core/DialogUtils.ts";
 import ContractVerificationDialog from "@/dialogs/verification/ContractVerificationDialog.vue";
+import ContractSectionTitle from "@/components/contract/ContractSectionTitle.vue";
 
 const props = defineProps({
   contractId: String,
@@ -175,29 +154,6 @@ const tooltipText = computed(() => isFullMatch.value ? FULL_MATCH_TOOLTIP : PART
 const ercAnalyzer = new ERCAnalyzer(contractId)
 onMounted(() => ercAnalyzer.mount())
 onBeforeUnmount(() => ercAnalyzer.unmount())
-const isErc20 = ercAnalyzer.isErc20
-const isErc721 = ercAnalyzer.isErc721
-const isErc1155 = ercAnalyzer.isErc1155
-
-//
-// Naming
-//
-const nameQuery = new NameQuery(contractId)
-onMounted(() => nameQuery.mount())
-onBeforeUnmount(() => nameQuery.unmount())
-const domainName = nameQuery.name
-const domainProviderName = nameQuery.providerName
-
-//
-// Label
-//
-const indexLookup = PublicLabelsCache.instance.makeLookup()
-onMounted(() => indexLookup.mount())
-onBeforeUnmount(() => indexLookup.unmount())
-const index = indexLookup.entity
-const label = computed(() =>
-    contractId.value ? index.value?.lookup(contractId.value) ?? null : null
-)
 
 
 //
