@@ -25,7 +25,7 @@
       <div class="metrics-content">
         <ChartView :controller="networkFeeController" data-cy="chart-view"/>
       </div>
-      <div class="metrics-content">
+      <div v-if="routeManager.currentNetwork.value === 'mainnet'" class="metrics-content">
         <ChartView :controller="avgTimeToConsensusController" data-cy="chart-view"/>
       </div>
     </template>
