@@ -41,7 +41,7 @@ import TokenDetails_Holders from "@/pages/TokenDetails_Holders.vue";
 import TokenDetails_Metadata from "@/pages/TokenDetails_Metadata.vue";
 import TokenDetails_Others from "@/pages/TokenDetails_Others.vue";
 import ContractDetails_Summary from "@/pages/ContractDetails_Summary.vue";
-import ContractDetails_Assets from "@/pages/ContractDetails_Assets.vue";
+import ContractDetails_SourceCode from "@/pages/ContractDetails_SourceCode.vue";
 import ContractDetails_ByteCode from "@/pages/ContractDetails_ByteCode.vue";
 import ContractDetails_Others from "@/pages/ContractDetails_Others.vue";
 import ContractDetails_ABI from "@/pages/ContractDetails_ABI.vue";
@@ -175,12 +175,21 @@ export const CONTRACT_DETAILS_ROUTE: RouteRecordRaw = {
             }
         },
         {
+            path:'sources',
+            name: 'ContractDetails_Source',
+            component: ContractDetails_SourceCode,
+            props: true,
+            meta: {
+                tabLabel: "Sources"
+            }
+        },
+        {
             path:'bytecode',
             name: 'ContractDetails_ByteCode',
             component: ContractDetails_ByteCode,
             props: true,
             meta: {
-                tabLabel: "Code"
+                tabLabel: "Bytecode"
             }
         },
         {
