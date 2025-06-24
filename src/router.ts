@@ -54,6 +54,9 @@ import BlockDetails_Transactions from "@/pages/BlockDetails_Transactions.vue";
 import TransactionDetails_Summary from "@/pages/TransactionDetails_Summary.vue";
 import TransactionDetails_Message from "@/pages/TransactionDetails_Message.vue";
 import TransactionDetails_Result from "@/pages/TransactionDetails_Result.vue";
+import TransactionDetails_Trace from "@/pages/TransactionDetails_Trace.vue";
+import TransactionDetails_States from "@/pages/TransactionDetails_States.vue";
+import TransactionDetails_Events from "@/pages/TransactionDetails_Events.vue";
 import Metrics from "@/pages/Metrics.vue";
 
 export enum TabId {
@@ -103,6 +106,33 @@ export const TRANSACTION_DETAILS_ROUTE: RouteRecordRaw = {
             props: true,
             meta: {
                 tabLabel: "Result"
+            }
+        },
+        {
+            path: 'trace',
+            name: 'TransactionDetails_Trace',
+            component: TransactionDetails_Trace,
+            props: true,
+            meta: {
+                tabLabel: "Trace"
+            }
+        },
+        {
+            path: 'states',
+            name: 'TransactionDetails_States',
+            component: TransactionDetails_States,
+            props: true,
+            meta: {
+                tabLabel: "States"
+            }
+        },
+        {
+            path: 'events',
+            name: 'TransactionDetails_Events',
+            component: TransactionDetails_Events,
+            props: true,
+            meta: {
+                tabLabel: "Events"
             }
         },
     ],
