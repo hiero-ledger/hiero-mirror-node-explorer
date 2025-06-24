@@ -9,7 +9,7 @@
   <DashboardCardV2>
 
     <template #title>
-      Contract Bytecode
+      <ContractSectionTitle :contract-id="props.contractId">Contract Bytecode</ContractSectionTitle>
     </template>
 
     <template #content>
@@ -46,6 +46,7 @@ import Property from "@/components/Property.vue";
 import StringValue from "@/components/values/StringValue.vue";
 import {AppStorage} from "@/AppStorage.ts";
 import {ContractAnalyzer} from "@/utils/analyzer/ContractAnalyzer.ts";
+import ContractSectionTitle from "@/components/contract/ContractSectionTitle.vue";
 
 const props = defineProps({
   contractId: String,

@@ -9,7 +9,7 @@
   <DashboardCardV2>
 
     <template #title>
-      Contract Sources
+      <ContractSectionTitle :contract-id="props.contractId">Contract Source</ContractSectionTitle>
     </template>
 
     <template #right-control>
@@ -51,6 +51,7 @@
 <script setup lang="ts">
 
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
+import ContractSectionTitle from "@/components/contract/ContractSectionTitle.vue";
 import ContractSourceValue from "@/components/values/ContractSourceValue.vue";
 import {computed, onBeforeUnmount, onMounted, ref, watch} from "vue";
 import {ContractAnalyzer} from "@/utils/analyzer/ContractAnalyzer.ts";
