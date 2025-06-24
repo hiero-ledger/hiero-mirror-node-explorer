@@ -6,24 +6,7 @@
 
 <template>
 
-  <PageFrameV2 page-title="NFT Details">
-
-    <template v-if="notification" #banner>
-      <NotificationBanner :message="notification"/>
-    </template>
-
-    <template #left-toolbar>
-      <Tabs
-          :tab-ids="tabIds"
-          :tab-labels="tabLabels"
-          :selected-tab="selectedTabId"
-          @update:selected-tab="onUpdate($event)"
-      />
-    </template>
-
-    <router-view/>
-
-  </PageFrameV2>
+  <MetadataSection :metadata-analyzer="metadataAnalyzer"/>
 
 </template>
 
@@ -33,15 +16,13 @@
 
 <script setup lang="ts">
 import {computed, onBeforeUnmount, onMounted, ref} from "vue"
-import PageFrameV2 from "@/components/page/PageFrameV2.vue";
 import {EntityID} from "@/utils/EntityID"
-import NotificationBanner from "@/components/NotificationBanner.vue"
 import {NftBySerialCache} from "@/utils/cache/NftBySerialCache"
 import {TokenInfoCache} from "@/utils/cache/TokenInfoCache";
+import MetadataSection from "@/components/token/MetadataSection.vue";
 import {TokenMetadataAnalyzer} from "@/components/token/TokenMetadataAnalyzer";
 import {CoreConfig} from "@/config/CoreConfig";
 import {routeManager} from "@/utils/RouteManager.ts";
-import Tabs from "@/components/Tabs.vue";
 
 const props = defineProps({
   tokenId: {
@@ -55,16 +36,6 @@ const props = defineProps({
   network: String,
 })
 
-const tabIds = routeManager.nftDetailsOperator.tabIds
-const tabLabels = routeManager.nftDetailsOperator.tabLabels
-const selectedTabId = routeManager.nftDetailsOperator.selectedTabId
-
-const onUpdate = (tabId: string | null) => {
-  if (tabId !== null && props.serialNumber) {
-    routeManager.routeToSerial(props.tokenId, Number(props.serialNumber), null, tabId, true)
-  }
-}
-
 const normalizedTokenId = computed(() => {
   const network = routeManager.currentNetworkEntry.value
   const result =
@@ -72,7 +43,6 @@ const normalizedTokenId = computed(() => {
       EntityID.fromAddress(props.tokenId, network.baseShard, network.baseRealm)
   return result !== null ? result.toString() : null
 })
-const validEntityId = computed(() => normalizedTokenId.value != null)
 
 const tokenLookup = TokenInfoCache.instance.makeLookup(normalizedTokenId)
 onMounted(() => tokenLookup.mount())
@@ -94,25 +64,6 @@ const metadata = computed(() => nftLookup.entity.value?.metadata ?? '')
 const metadataAnalyzer = new TokenMetadataAnalyzer(metadata, ipfsGatewayPrefix, arweaveServerURL)
 onMounted(() => metadataAnalyzer.mount())
 onBeforeUnmount(() => metadataAnalyzer.unmount())
-
-const notification = computed(() => {
-  let result
-  if (!validEntityId.value) {
-    result = "Invalid token ID: " + props.tokenId
-  } else if (nftLookup.entity.value == null) {
-    if (nftLookup.isLoaded.value) {
-      result =
-          "Token with ID " + props.tokenId + " was not found"
-    } else {
-      result = null
-    }
-  } else if (nftLookup.entity.value?.deleted) {
-    result = "Token is deleted"
-  } else {
-    result = null
-  }
-  return result
-})
 
 </script>
 
