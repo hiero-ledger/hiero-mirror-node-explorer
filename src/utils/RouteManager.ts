@@ -23,6 +23,7 @@ import {
     ACCOUNT_DETAILS_ROUTE,
     BLOCK_DETAILS_ROUTE,
     CONTRACT_DETAILS_ROUTE,
+    NFT_DETAILS_ROUTE,
     routes,
     TOKEN_DETAILS_ROUTE,
     TOPIC_DETAILS_ROUTE,
@@ -72,7 +73,7 @@ export class RouteManager {
 
     public readonly currentRouteLeafMatch = computed(() => {
         const matched = this.router.currentRoute.value.matched
-        return matched.length >= 1 ? matched[matched.length-1] : null
+        return matched.length >= 1 ? matched[matched.length - 1] : null
     })
 
     public readonly currentTabId = computed(() => {
@@ -203,7 +204,7 @@ export class RouteManager {
     public routeToTransactionByTs(consensusTimestamp: string, event: Event | null, tabId: string | null = null, replace = false): Promise<NavigationFailure | void | undefined> {
         let result: Promise<NavigationFailure | void | undefined>
         if (this.shouldOpenNewWindow(event)) {
-            const routeData = this.router.resolve(this.makeRouteToTransaction(consensusTimestamp));
+            const routeData = this.router.resolve(this.makeRouteToTransaction(consensusTimestamp, tabId));
             window.open(routeData.href, '_blank');
             result = Promise.resolve()
         } else if (replace) {
@@ -262,7 +263,7 @@ export class RouteManager {
     public routeToAccount(accountId: string, event: Event | null, tabId: string | null = null, replace = false): Promise<NavigationFailure | void | undefined> {
         let result: Promise<NavigationFailure | void | undefined>
         if (this.shouldOpenNewWindow(event)) {
-            const routeData = this.router.resolve(this.makeRouteToAccount(accountId));
+            const routeData = this.router.resolve(this.makeRouteToAccount(accountId, tabId));
             window.open(routeData.href, '_blank');
             result = Promise.resolve()
         } else if (replace) {
@@ -324,9 +325,12 @@ export class RouteManager {
         return result
     }
 
-    public makeRouteToSerial(tokenId: string, serialNumber: number): RouteLocationRaw {
+    public readonly nftDetailsOperator = new RouteOperator(NFT_DETAILS_ROUTE, this)
+
+    public makeRouteToSerial(tokenId: string, serialNumber: number, tabId: string | null = null): RouteLocationRaw {
+        const targetTabId = tabId ?? this.nftDetailsOperator.defaultTabId
         return {
-            name: 'NftDetails',
+            name: targetTabId,
             params: {tokenId: tokenId, serialNumber: serialNumber, network: this.currentNetwork.value}
         }
     }
@@ -338,14 +342,16 @@ export class RouteManager {
     //     }
     // }
 
-    public routeToSerial(tokenId: string, serialNumber: number, event: Event): Promise<NavigationFailure | void | undefined> {
+    public routeToSerial(tokenId: string, serialNumber: number, event: Event | null, tabId: string | null = null, replace = false): Promise<NavigationFailure | void | undefined> {
         let result: Promise<NavigationFailure | void | undefined>
         if (this.shouldOpenNewWindow(event)) {
-            const routeData = this.router.resolve(this.makeRouteToSerial(tokenId, serialNumber))
+            const routeData = this.router.resolve(this.makeRouteToSerial(tokenId, serialNumber, tabId))
             window.open(routeData.href, '_blank')
             result = Promise.resolve()
+        } else if (replace) {
+            result = this.router.replace(this.makeRouteToSerial(tokenId, serialNumber, tabId))
         } else {
-            result = this.router.push(this.makeRouteToSerial(tokenId, serialNumber))
+            result = this.router.push(this.makeRouteToSerial(tokenId, serialNumber, tabId))
         }
         return result
     }
@@ -441,12 +447,12 @@ export class RouteManager {
 
     public readonly blockDetailsOperator = new RouteOperator(BLOCK_DETAILS_ROUTE, this)
 
-    public makeRouteToBlock(blockHon: string | number, tabId: string|null = null): RouteLocationRaw {
+    public makeRouteToBlock(blockHon: string | number, tabId: string | null = null): RouteLocationRaw {
         const targetTabId = tabId ?? this.blockDetailsOperator.defaultTabId
         return {name: targetTabId, params: {blockHon: blockHon, network: this.currentNetwork.value}}
     }
 
-    public routeToBlock(blockHon: string | number, event: Event | null = null, tabId: string|null = null, replace = false): Promise<NavigationFailure | void | undefined> {
+    public routeToBlock(blockHon: string | number, event: Event | null = null, tabId: string | null = null, replace = false): Promise<NavigationFailure | void | undefined> {
         let result: Promise<NavigationFailure | void | undefined>
         if (this.shouldOpenNewWindow(event)) {
             const routeData = this.router.resolve(this.makeRouteToBlock(blockHon, tabId));
@@ -560,7 +566,7 @@ export class RouteManager {
     // Private
     //
 
-    private shouldOpenNewWindow(e: Event|null): boolean {
+    private shouldOpenNewWindow(e: Event | null): boolean {
         return e instanceof MouseEvent && (e.ctrlKey || e.metaKey || e.button === 1)
     }
 
@@ -764,7 +770,7 @@ export class RouteOperator {
     }
 
     public selectedTabId = computed(() => {
-        let result: string|null
+        let result: string | null
         const topMatch = this.routeManager.currentRouteRootMatch.value
         const leafMatch = this.routeManager.currentRouteLeafMatch.value
         if (topMatch !== null && leafMatch !== null && topMatch.name === this.routeRecord.name) {
@@ -786,7 +792,7 @@ export class RouteOperator {
         return result
     }
 
-    public tabLabel(tabId: string): string|null {
+    public tabLabel(tabId: string): string | null {
         const tabIndex = this.tabIds.indexOf(tabId)
         return tabIndex != -1 ? this.tabLabels[tabIndex] : null
     }
