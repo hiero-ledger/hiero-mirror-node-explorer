@@ -17,7 +17,7 @@ import ContractDetails from "@/pages/ContractDetails.vue";
 import ContractDetails_ABI from "@/pages/ContractDetails_ABI.vue";
 import ContractDetails_ByteCode from "@/pages/ContractDetails_ByteCode.vue";
 import ContractDetails_Events from "@/pages/ContractDetails_Events.vue";
-import ContractDetails_Others from "@/pages/ContractDetails_Others.vue";
+import ContractDetailsCalls from "@/pages/ContractDetails_Calls.vue";
 import ContractDetails_SourceCode from "@/pages/ContractDetails_SourceCode.vue";
 import ContractDetails_Summary from "@/pages/ContractDetails_Summary.vue";
 import Contracts from "@/pages/Contracts.vue";
@@ -203,12 +203,12 @@ export const CONTRACT_DETAILS_ROUTE: RouteRecordRaw = {
             }
         },
         {
-            path:'others',
-            name: 'ContractDetails_Others',
-            component: ContractDetails_Others,
+            path:'calls',
+            name: 'ContractDetailsCalls',
+            component: ContractDetailsCalls,
             props: true,
             meta: {
-                tabLabel: "Others"
+                tabLabel: "Calls"
             }
         },
     ],
