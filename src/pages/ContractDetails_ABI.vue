@@ -32,6 +32,23 @@
 
     <template #content>
       <template v-if="isVerified">
+        <template v-if="logicContractId">
+          <Property id="logicContract" :full-width="true">
+            <template v-slot:name>Proxying to Logic Contract</template>
+            <template v-slot:value>
+              <AccountLink v-bind:accountId="logicContractId"
+                           v-bind:show-extra="true"/>
+            </template>
+          </Property>
+          <Property id="adminContract" :full-width="true">
+            <template v-slot:name>Proxying with Admin Contract</template>
+            <template v-slot:value>
+              <AccountLink v-bind:accountId="adminContractId"
+                           v-bind:show-extra="true"/>
+            </template>
+          </Property>
+        </template>
+
         <ContractAbiValue :abiController="abiController" :fragment-collection="selectedCollection as FragmentCollection"/>
       </template>
       <template v-else>
@@ -61,6 +78,8 @@ import DownloadButton from "@/components/DownloadButton.vue";
 import SelectView from "@/elements/SelectView.vue";
 import SwitchView from "@/elements/SwitchView.vue";
 import {AppStorage} from "@/AppStorage.ts";
+import Property from "@/components/Property.vue";
+import AccountLink from "@/components/values/link/AccountLink.vue";
 
 const props = defineProps({
   contractId: String,
@@ -77,6 +96,13 @@ const isVerified = contractAnalyzer.isVerified
 const abiAnalyzer = new ABIAnalyzer(contractAnalyzer)
 onMounted(() => abiAnalyzer.mount())
 onBeforeUnmount(() => abiAnalyzer.unmount())
+const logicContractId = computed(() => {
+  return abiAnalyzer.logicContractId.value ?? undefined
+})
+
+const adminContractId = computed(() => {
+  return abiAnalyzer.adminContractId.value ?? undefined
+})
 
 const showLogicABI = ref(AppStorage.getShowLogicABI())
 watch(showLogicABI, () => {
