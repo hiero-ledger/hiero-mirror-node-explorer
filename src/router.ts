@@ -156,15 +156,15 @@ export const CONTRACT_DETAILS_ROUTE: RouteRecordRaw = {
                 tabLabel: "Summary"
             }
         },
-        {
-            path:'assets',
-            name: 'ContractDetails_Assets',
-            component: ContractDetails_Assets,
-            props: true,
-            meta: {
-                tabLabel: "Assets"
-            }
-        },
+        // {
+        //     path:'assets',
+        //     name: 'ContractDetails_Assets',
+        //     component: ContractDetails_Assets,
+        //     props: true,
+        //     meta: {
+        //         tabLabel: "Assets"
+        //     }
+        // },
         {
             path:'abi',
             name: 'ContractDetails_ABI',
