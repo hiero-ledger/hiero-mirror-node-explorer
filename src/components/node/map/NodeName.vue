@@ -33,7 +33,7 @@ const nodeName = computed(() => {
 })
 
 const nodeRoute = computed(() => {
-  return props.node?.node_id ? routeManager.makeRouteToNode(props.node.node_id) : null
+  return props.node !== null ? routeManager.makeRouteToNode(props.node.node_id) : null
 })
 
 </script>
