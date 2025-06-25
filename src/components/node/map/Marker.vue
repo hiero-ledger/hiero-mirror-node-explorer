@@ -18,7 +18,7 @@ import {computed} from "vue";
 
 const emits = defineEmits(["action"])
 
-const itemSize = 14
+const itemSize = 10
 const itemStyle = computed(() => {
   return {
     left: -itemSize / 2 + "px",
