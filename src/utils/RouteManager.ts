@@ -26,6 +26,7 @@ import {
     NFT_DETAILS_ROUTE,
     routes,
     TOKEN_DETAILS_ROUTE,
+    TOKENS_ROUTE,
     TOPIC_DETAILS_ROUTE,
     TRANSACTION_DETAILS_ROUTE
 } from "@/router.ts";
@@ -516,8 +517,21 @@ export class RouteManager {
         }
     }
 
-    public makeRouteToTokens(): RouteLocationRaw {
-        return {name: 'Tokens', params: {network: this.currentNetwork.value}}
+    public readonly tokensOperator = new RouteOperator(TOKENS_ROUTE, this)
+
+    public routeToTokens(tabId: string | null = null, replace = false): Promise<NavigationFailure | void | undefined> {
+        let result: Promise<NavigationFailure | void | undefined>
+        if (replace) {
+            result = this.router.replace(this.makeRouteToTokens(tabId))
+        } else {
+            result = this.router.push(this.makeRouteToTokens(tabId))
+        }
+        return result
+    }
+
+    public makeRouteToTokens(tabId: string | null = null): RouteLocationRaw {
+        const targetTabId = tabId ?? this.tokensOperator.defaultTabId
+        return {name: targetTabId, params: {network: this.currentNetwork.value}}
     }
 
     public makeRouteToTopics(): RouteLocationRaw {

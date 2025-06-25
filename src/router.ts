@@ -62,6 +62,8 @@ import Transactions from "@/pages/Transactions.vue";
 import TransactionsById from "@/pages/TransactionsById.vue";
 import {AppStorage} from "@/AppStorage.ts";
 import {RouteRecordRaw} from "vue-router";
+import Tokens_Fungible from "@/pages/Tokens_Fungible.vue";
+import Tokens_Nfts from "@/pages/Tokens_Nfts.vue";
 
 export enum TabId {
     Home = "Home",
@@ -215,6 +217,37 @@ export const CONTRACT_DETAILS_ROUTE: RouteRecordRaw = {
             }
         },
     ],
+}
+
+export const TOKENS_ROUTE: RouteRecordRaw = {
+
+    path: '/:network/tokens',
+    name: 'Tokens',
+    component: Tokens,
+    children: [
+        {
+            path: '',
+            name: 'Tokens_Fungible',
+            component: Tokens_Fungible,
+            props: true,
+            meta: {
+                tabLabel: "Fungible"
+            }
+        },
+        {
+            path: 'nfts',
+            name: 'Tokens_Nfts',
+            component: Tokens_Nfts,
+            props: true,
+            meta: {
+                tabLabel: "NFTs"
+            }
+        },
+    ],
+    props: true,
+    meta: {
+        tabId: TabId.Tokens
+    }
 }
 
 export const TOKEN_DETAILS_ROUTE: RouteRecordRaw = {
@@ -554,15 +587,7 @@ export const routes: Array<RouteRecordRaw> = [
             tabId: TabId.Accounts
         }
     },
-    {
-        path: '/:network/tokens',
-        name: 'Tokens',
-        component: Tokens,
-        props: true,
-        meta: {
-            tabId: TabId.Tokens
-        }
-    },
+    TOKENS_ROUTE,
     TOKEN_DETAILS_ROUTE,
     NFT_DETAILS_ROUTE,
     {
