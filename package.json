@@ -38,7 +38,7 @@
     "@oruga-ui/theme-oruga": "^0.7.0",
     "@vuepic/vue-datepicker": "^11.0.2",
     "@walletconnect/modal": "^2.7.0",
-    "@walletconnect/sign-client": "^2.21.3",
+    "@walletconnect/sign-client": "^2.21.4",
     "@walletconnect/types": "^2.21.4",
     "axios": "^1.10.0",
     "base32-decode": "^1.0.0",
