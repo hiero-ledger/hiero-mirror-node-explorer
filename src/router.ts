@@ -181,12 +181,12 @@ export const CONTRACT_DETAILS_ROUTE: RouteRecordRaw = {
             }
         },
         {
-            path: 'sources',
+            path: 'source',
             name: 'ContractDetails_Source',
             component: ContractDetails_SourceCode,
             props: true,
             meta: {
-                tabLabel: "Sources"
+                tabLabel: "Source"
             }
         },
         {
