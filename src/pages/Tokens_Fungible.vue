@@ -6,20 +6,17 @@
 
 <template>
 
-  <PageFrameV2 page-title="Tokens">
-
-    <template #left-toolbar>
-      <Tabs
-          :tab-ids="tabIds"
-          :tab-labels="tabLabels"
-          :selected-tab="selectedTabId"
-          @update:selected-tab="onUpdate($event)"
-      />
+  <DashboardCardV2>
+    <template #title>
+      <span>Recent Fungible Tokens</span>
     </template>
-
-    <router-view/>
-
-  </PageFrameV2>
+    <template #left-control>
+      <PlayPauseButton :controller="tokenTableController"/>
+    </template>
+    <template #content>
+      <TokenTable :controller="tokenTableController"/>
+    </template>
+  </DashboardCardV2>
 
 </template>
 
@@ -29,23 +26,31 @@
 
 <script setup lang="ts">
 
-import PageFrameV2 from "@/components/page/PageFrameV2.vue";
-import Tabs from "@/components/Tabs.vue";
-import {routeManager} from "@/utils/RouteManager.ts";
+import {inject, onBeforeUnmount, onMounted, ref} from 'vue';
+import TokenTable from "@/components/token/TokenTable.vue";
+import {TokenTableController} from "@/components/token/TokenTableController";
+import {useRouter} from "vue-router";
+import {TokenType} from "@/schemas/MirrorNodeSchemas";
+import DashboardCardV2 from "@/components/DashboardCardV2.vue";
+import PlayPauseButton from "@/components/PlayPauseButton.vue";
 
 defineProps({
   network: String
 })
 
-const tabIds = routeManager.tokensOperator.tabIds
-const tabLabels = routeManager.tokensOperator.tabLabels
-const selectedTabId = routeManager.tokensOperator.selectedTabId
+const isMediumScreen = inject('isMediumScreen', true)
 
-const onUpdate = (tabId: string | null) => {
-  if (tabId !== null) {
-    routeManager.routeToTokens(tabId, true)
-  }
-}
+//
+// TOKEN TableController
+//
+const defaultPageSize = isMediumScreen ? 15 : 10
+const tokenTableController = new TokenTableController(useRouter(), defaultPageSize, ref(TokenType.FUNGIBLE_COMMON), "p2", "k2")
+onMounted(() => {
+  tokenTableController.mount()
+})
+onBeforeUnmount(() => {
+  tokenTableController.unmount()
+})
 
 </script>
 
