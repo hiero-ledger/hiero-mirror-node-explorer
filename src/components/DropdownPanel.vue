@@ -126,12 +126,14 @@ const panelDX = computed(() => {
   return result
 })
 
+const gap = 6
+
 const panelDY = computed(() => {
   let result: number
   if (props.topAligned && buttonHeight.value !== null && panelHeight.value !== null) {
-    result = -(panelHeight.value - buttonHeight.value)
+    result = -(panelHeight.value - buttonHeight.value) - gap
   } else {
-    result = 0
+    result = gap
   }
   return result
 })
