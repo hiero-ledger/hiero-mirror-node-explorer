@@ -11,9 +11,10 @@
     <div v-if="deployed" style="position: relative">
       <div
           class="panelHolder"
-          style="position: absolute; z-index: 999; top:6px;"
+          style="position: absolute; z-index: 999;"
           :style="{
             left: panelDX + 'px',
+            top: panelDY + 'px',
             'box-shadow': boxShadow,
             'background-color': props.backgroundColor,
             'right': rightDX,
@@ -39,6 +40,10 @@ import {ThemeController} from "@/components/ThemeController.ts";
 
 const props = defineProps({
   rightAligned: {
+    type: Boolean,
+    default: false
+  },
+  topAligned: {
     type: Boolean,
     default: false
   },
@@ -79,12 +84,16 @@ const onMouseDown = (ev: MouseEvent) => {
 //
 
 const buttonWidth = ref<number | null>(null)
+const buttonHeight = ref<number | null>(null)
 const panelRef = ref<HTMLElement | null>(null)
 const panelWidth = ref<number | null>(null)
+const panelHeight = ref<number | null>(null)
 
 const resizeObserver = new ResizeObserver(() => {
   buttonWidth.value = rootRef.value?.offsetWidth ?? 0
+  buttonHeight.value = rootRef.value?.offsetHeight ?? 0
   panelWidth.value = panelRef.value?.offsetWidth ?? 0
+  panelHeight.value = panelRef.value?.offsetHeight ?? 0
 })
 
 watch(rootRef, (newValue, oldValue) => {
@@ -111,6 +120,16 @@ const panelDX = computed(() => {
   let result: number
   if (props.rightAligned && buttonWidth.value !== null && panelWidth.value !== null) {
     result = -(panelWidth.value - buttonWidth.value)
+  } else {
+    result = 0
+  }
+  return result
+})
+
+const panelDY = computed(() => {
+  let result: number
+  if (props.topAligned && buttonHeight.value !== null && panelHeight.value !== null) {
+    result = -(panelHeight.value - buttonHeight.value)
   } else {
     result = 0
   }
