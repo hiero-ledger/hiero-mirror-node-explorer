@@ -5,7 +5,7 @@
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <template>
-  <DropdownPanel v-model:deployed="showPanel" :right-aligned="false" compact>
+  <DropdownPanel v-model:deployed="showPanel" :right-aligned="rightAligned" compact>
     <template #button>
       <Marker @action="onClick"/>
     </template>
@@ -26,7 +26,7 @@
 
 <script setup lang="ts">
 
-import {ref} from "vue";
+import {computed, ref} from "vue";
 import DropdownPanel from "@/components/DropdownPanel.vue";
 import Marker from "@/components/node/map/Marker.vue";
 import NodeName from "@/components/node/map/NodeName.vue";
@@ -42,6 +42,10 @@ const showPanel = ref(false)
 const onClick = () => {
   showPanel.value = true
 }
+
+const rightAligned = computed(() => {
+  return props.place.lon > 0
+})
 
 </script>
 
