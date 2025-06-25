@@ -36,7 +36,8 @@
         <ContractSourceValue :source-files="solidityFiles" :filter="selectedSource"/>
       </template>
       <template v-else>
-        <div>Contract sources are available when contract is verified</div>
+        <p>The contract source code is available once the contract is verified.</p>
+        <p>If you have the contract solidity source and metadata files, you may click VERIFY and proceed with verification.</p>
       </template>
     </template>
 
