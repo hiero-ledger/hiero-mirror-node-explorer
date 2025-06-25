@@ -6,7 +6,7 @@
 
 <template>
   <router-link v-if="nodeRoute !== null && nodeName !== null"  :to="nodeRoute">
-    <span>{{ nodeName }}</span>
+    <span class="node-name">{{ nodeName }}</span>
   </router-link>
 </template>
 
@@ -44,7 +44,7 @@ const nodeRoute = computed(() => {
 
 <style scoped>
 
-div.node-name {
+span.node-name {
   color: var(--text-primary);
   font-size: 12px
 }
