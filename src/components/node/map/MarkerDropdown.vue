@@ -5,7 +5,7 @@
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <template>
-  <DropdownPanel v-model:deployed="showPanel" :right-aligned="rightAligned" compact>
+  <DropdownPanel v-model:deployed="showPanel" :right-aligned="rightAligned" :top-aligned="topAligned" compact>
     <template #button>
       <Marker @action="onClick"/>
     </template>
@@ -43,9 +43,9 @@ const onClick = () => {
   showPanel.value = true
 }
 
-const rightAligned = computed(() => {
-  return props.place.lon > 0
-})
+const rightAligned = computed(() => props.place.lon > 0)
+
+const topAligned = computed(() => props.place.lat < 0)
 
 </script>
 
