@@ -5,7 +5,7 @@
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <template>
-  <DropdownPanel v-model:deployed="showPanel" :right-aligned="false">
+  <DropdownPanel v-model:deployed="showPanel" :right-aligned="false" compact>
     <template #button>
       <Marker @action="onClick"/>
     </template>
