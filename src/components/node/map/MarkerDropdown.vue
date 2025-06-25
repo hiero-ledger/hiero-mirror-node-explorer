@@ -58,8 +58,9 @@ const topAligned = computed(() => props.place.lat < 0)
 div.container {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   row-gap: 6px;
+  white-space: nowrap;
 }
 
 div.place-name {
