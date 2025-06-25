@@ -52,7 +52,8 @@
         <ContractAbiValue :abiController="abiController" :fragment-collection="selectedCollection as FragmentCollection"/>
       </template>
       <template v-else>
-        <div>ABI is available when contract is verified</div>
+        <p>The contract ABI is available once the contract is verified.</p>
+        <p>If you have the contract solidity source and metadata files, you may click VERIFY and proceed with verification.</p>
       </template>
     </template>
 
