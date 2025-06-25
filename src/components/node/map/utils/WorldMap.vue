@@ -7,13 +7,7 @@
 <template>
   <div class="stack">
     <svg ref="svgRef" width="100%" :height="svgHeight"/>
-    <template v-for="(annotation, index) of annotations" :key="index">
-      <MarkerView
-          :xy="projectToXY(annotation.lat, annotation.lon)"
-          :title="annotation.title"
-          :placement="annotation.placement"
-      />
-    </template>
+    <slot/>
   </div>
 </template>
 
@@ -23,21 +17,12 @@
 
 <script setup lang="ts">
 
-import {computed, onMounted, PropType, ref, shallowRef, useTemplateRef, watch} from "vue";
+import {computed, onMounted, provide, ref, ShallowRef, shallowRef, useTemplateRef, watch} from "vue";
 import {useElementSize} from "@vueuse/core"
 import * as d3 from "d3"
 import * as d3geo from "d3-geo"
 import * as topojson from "topojson-client"
-import { Topology } from "topojson-specification"
-import {MapAnnotation} from "@/components/node/map/MapAnnotation.ts";
-import MarkerView from "@/components/node/map/MarkerView.vue";
-
-const props = defineProps({
-  annotations: {
-    type: Object as PropType<MapAnnotation[]>,
-    default: []
-  },
-})
+import {Topology} from "topojson-specification"
 
 const svgRef = useTemplateRef<HTMLImageElement>("svgRef")
 const svgSize = useElementSize(svgRef)
@@ -64,6 +49,7 @@ const updateMapProjection = () => {
     mapProjection.value = null
   }
 }
+provide<ShallowRef<d3.GeoProjection | null>>("mapProjection", mapProjection)
 
 const mapRatio = ref<number>(0.5)
 const updateSVG = async () => {
@@ -90,14 +76,6 @@ const updateSVG = async () => {
   }
 }
 
-const annotations = computed(() => {
-  return mapProjection.value !== null ? props.annotations : []
-})
-
-const projectToXY = (lat: number, lon: number): { x: number; y: number } => {
-  const p = mapProjection.value !== null ? mapProjection.value([lon, lat]) : null
-  return p !== null ? { x: p[0], y: p[1]} : {x: 0, y: 0}
-}
 
 </script>
 

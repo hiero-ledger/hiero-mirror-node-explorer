@@ -5,7 +5,13 @@
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <template>
-  <WorldMapV2 :annotations="annotations"/>
+  <WorldMap>
+    <template v-for="p in markerData">
+      <MapAnnotation :lat="p.lat" :lon="p.lon">
+        <MarkerDropdown :place="p" @action="onClick(p)"/>
+      </MapAnnotation>
+    </template>
+  </WorldMap>
 </template>
 
 <!-- --------------------------------------------------------------------------------------------------------------- -->
@@ -15,11 +21,12 @@
 <script setup lang="ts">
 
 import {onMounted, PropType, ref, watch} from "vue";
-import WorldMapV2 from "@/components/node/map/WorldMapV2.vue";
-import {NetworkNode} from "@/schemas/MirrorNodeSchemas.ts";
-import {MapAnnotation} from "@/components/node/map/MapAnnotation.ts";
-import {makeNodeOwnerName} from "@/schemas/MirrorNodeUtils.ts";
+import MapAnnotation from "@/components/node/map/utils/MapAnnotation.vue";
+import MarkerDropdown from "@/components/node/map/MarkerDropdown.vue";
+import WorldMap from "@/components/node/map/utils/WorldMap.vue";
 import {GeoLocationCache} from "@/utils/cache/GeoLocationCache.ts";
+import {MarkerData} from "@/components/node/map/MarkerData.ts";
+import {NetworkNode} from "@/schemas/MirrorNodeSchemas.ts";
 
 const props = defineProps({
   nodes: {
@@ -29,41 +36,28 @@ const props = defineProps({
   stakeTotal: Number
 })
 
-const updateAnnotations = async () => {
+const markerData = ref<MarkerData[]>([])
+onMounted(() => {
+  watch(() => props.nodes, updateMarkerData, {immediate: true})
+})
+const updateMarkerData = async () => {
 
   const geoLocationBook = await GeoLocationCache.instance.lookup()
 
-  const newAnnotations: MapAnnotation[] = []
+  const newData: MarkerData[] = []
   for (const p of geoLocationBook.places) {
     const nodeEntries = await findNodesAtPlace(p.name)
-    const nodeNames = nodeEntries.map((n) => makeNodeOwnerName(n)).sort()
-    if (nodeNames.length > 0) {
-      newAnnotations.push({
+    if (nodeEntries.length > 0) {
+      newData.push({
         lat: p.lat,
         lon: p.lon,
-        title: nodeNames,
-        placement: p.labelPlacement,
+        placeName: p.name,
+        nodes: nodeEntries
       })
     }
   }
 
-  // const newAnnotations: MapAnnotation[] = []
-  // for (const node of props.nodes) {
-  //   if (node.public_key !== null) {
-  //     const place = GeoLocationCache.instance.lookup(node.public_key)
-  //     const nl = nodeLocationMap.get(node.public_key)
-  //     if (nl) {
-  //       newAnnotations.push({
-  //         lat: nl.lat,
-  //         lon: nl.lon,
-  //         title: makeNodeOwnerDescription(node, true),
-  //         subTitle: ""
-  //       })
-  //     }
-  //   }
-  // }
-
-  annotations.value = newAnnotations
+  markerData.value = newData
 }
 
 const findNodesAtPlace = async (placeName: string): Promise<NetworkNode[]>  => {
@@ -80,10 +74,10 @@ const findNodesAtPlace = async (placeName: string): Promise<NetworkNode[]>  => {
   return Promise.resolve(result)
 }
 
-const annotations = ref<MapAnnotation[]>([])
-onMounted(() => {
-  watch(() => props.nodes, updateAnnotations, {immediate: true})
-})
+const onClick = (p: MarkerData): void => {
+  console.log("click" + JSON.stringify(p))
+}
+
 
 </script>
 
