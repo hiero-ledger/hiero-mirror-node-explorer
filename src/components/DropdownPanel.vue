@@ -12,7 +12,14 @@
       <div
           class="panelHolder"
           style="position: absolute; z-index: 999; top:6px;"
-          :style="{left: panelDX + 'px', 'box-shadow': boxShadow, 'background-color': props.backgroundColor, 'right': rightDX}"
+          :style="{
+            left: panelDX + 'px',
+            'box-shadow': boxShadow,
+            'background-color': props.backgroundColor,
+            'right': rightDX,
+            padding: paddingRadius,
+            'border-radius': paddingRadius
+          }"
           ref="panelRef">
         <slot name="panel"/>
       </div>
@@ -42,6 +49,10 @@ const props = defineProps({
   backgroundColor: {
     type: String,
     default: "var(--background-tertiary)"
+  },
+  compact: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -113,6 +124,12 @@ const panelDX = computed(() => {
 const rightDX = computed(() => props.stretched ? "0" : "auto")
 
 //
+// padding / radius
+//
+
+const paddingRadius = computed(() => props.compact ? "10px" : "16px")
+
+//
 // mount/unmount
 //
 
@@ -142,10 +159,8 @@ const boxShadow = computed(() => darkSelected.value ? darkShadow : lightShadow)
 
 div.panelHolder {
   border-color: var(--border-secondary);
-  border-radius: 16px;
   border-style: solid;
   border-width: 1px;
-  padding: 24px;
 }
 
 </style>
