@@ -206,11 +206,13 @@ ul {
     display: flex;
     flex-direction: column;
     gap: 16px;
+    min-height: 100vh;
 }
 
 .h-page-content {
     display: flex;
     flex-direction: column;
+    flex: 1;
     gap: 16px;
     margin-left: 16px;
     margin-right: 16px;
