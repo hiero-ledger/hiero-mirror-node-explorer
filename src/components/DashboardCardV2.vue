@@ -136,6 +136,7 @@ div.card-root {
   border-radius: 16px;
   display: flex;
   flex-direction: column;
+  flex: 1;
   gap: 16px;
   padding: 16px;
 }
