@@ -52,9 +52,11 @@
         </template>
       </Property>
     </template>
-  </DashboardCardV2>
 
-  <MirrorLink :network="props.network" entityUrl="blocks" :loc="props.blockHon"/>
+    <template #footer>
+      <MirrorLink :network="props.network" entityUrl="blocks" :loc="props.blockHon"/>
+    </template>
+  </DashboardCardV2>
 
 </template>
 
