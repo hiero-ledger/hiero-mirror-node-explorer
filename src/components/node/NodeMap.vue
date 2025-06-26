@@ -6,7 +6,7 @@
 
 <template>
   <WorldMap>
-    <template v-for="p in markerData">
+    <template v-for="p in markerData" :key="p.placeName">
       <MapAnnotation :lat="p.lat" :lon="p.lon">
         <MarkerDropdown :place="p" @action="onClick(p)"/>
       </MapAnnotation>
