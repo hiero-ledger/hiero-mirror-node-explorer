@@ -159,9 +159,11 @@
       </Property>
     </template>
 
-  </DashboardCardV2>
+    <template #footer>
+      <MirrorLink :network="network" entityUrl="tokens" :loc="tokenId"/>
+    </template>
 
-  <MirrorLink :network="network" entityUrl="tokens" :loc="tokenId"/>
+  </DashboardCardV2>
 
 </template>
 

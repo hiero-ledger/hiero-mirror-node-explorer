@@ -74,11 +74,13 @@
       </Property>
 
     </template>
+
+    <template #footer>
+      <MirrorLink :network="props.network" entityUrl="contracts" :loc="contractId"/>
+    </template>
   </DashboardCardV2>
 
   <ContractERCSection :erc-analyzer="ercAnalyzer"/>
-
-  <MirrorLink :network="props.network" entityUrl="contracts" :loc="contractId"/>
 
   <ContractVerificationDialog
       v-model:show-dialog="showVerifyDialog"
