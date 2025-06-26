@@ -6,7 +6,7 @@
 
 <template>
 
-  <DashboardCardV2 v-if="accountId && showSection" id="tokensSection">
+  <DashboardCardV2 v-if="accountId" id="tokensSection">
 
     <template #title>
       <span>HTS Tokens</span>
@@ -42,7 +42,17 @@
       <template v-else/>
     </template>
 
-    <template #content>
+    <template v-if="!showSection" #content>
+      <p>This section is empty because the account does not have any token, fungible or non fungible (NFT), associated with it, and does not have any pending token airdrop either.</p>
+      <p>Items will be displayed here when either of these occurs:</p>
+      <p>&bull; a fungible token or an NFT is associated to this account</p>
+      <p>&bull; an amount of fungible token is transferred to this account</p>
+      <p>&bull; a NFT is transferred to this account</p>
+      <p>&bull; a token airdrop is sent to this account</p>
+
+    </template>
+
+    <template v-else #content>
       <Tabs
           :selected-tab="selectedTab"
           :tab-ids="tabIds"
