@@ -11,7 +11,7 @@
     </template>
     <template #panel>
       <div class="container">
-        <div v-for="n in props.place.nodes">
+        <div v-for="n in props.place.nodes" :key="n.node_id">
           <NodeName :node="n"/>
         </div>
         <div class="place-name">{{ props.place.placeName }}</div>
