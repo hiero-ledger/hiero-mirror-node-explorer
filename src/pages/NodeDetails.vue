@@ -165,9 +165,11 @@
           </template>
         </Property>
       </template>
-    </DashboardCardV2>
 
-    <MirrorLink :network="props.network" entityUrl="network/nodes" :query="`node.id=${props.nodeId}`"/>
+      <template #footer>
+        <MirrorLink :network="props.network" entityUrl="network/nodes" :query="`node.id=${props.nodeId}`"/>
+      </template>
+    </DashboardCardV2>
 
   </PageFrameV2>
 
