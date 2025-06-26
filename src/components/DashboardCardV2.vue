@@ -26,7 +26,7 @@
       </div>
     </div>
 
-    <div v-if="!isCollapsed">
+    <template v-if="!isCollapsed">
 
       <div v-if="slots['notification']" style="padding-bottom: 16px;">
         <slot name="notification"/>
@@ -62,7 +62,12 @@
           <slot name="right-content"/>
         </div>
       </div>
-    </div>
+
+      <div v-if="slots['footer']" style="flex: 1; display: flex; flex-direction: column">
+        <slot name="footer"/>
+      </div>
+
+    </template>
   </div>
 </template>
 
