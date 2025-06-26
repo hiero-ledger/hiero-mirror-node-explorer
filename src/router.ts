@@ -43,7 +43,6 @@ import TokenDetails_Metadata from "@/pages/TokenDetails_Metadata.vue";
 import TokenDetails_Others from "@/pages/TokenDetails_Others.vue";
 import TokenDetails_Summary from "@/pages/TokenDetails_Summary.vue";
 import Tokens from "@/pages/Tokens.vue";
-import TokensByAccount from "@/pages/TokensByAccount.vue";
 import TokensByName from "@/pages/TokensByName.vue";
 import TokensByPopularity from "@/pages/TokensByPopularity.vue";
 import TopicDetails from "@/pages/TopicDetails.vue";
@@ -603,15 +602,6 @@ export const routes: Array<RouteRecordRaw> = [
         path: '/:network/tokensByPopularity/:name',
         name: 'TokensByPopularity',
         component: TokensByPopularity,
-        props: true,
-        meta: {
-            tabId: TabId.Tokens
-        }
-    },
-    {
-        path: '/:network/tokensByAccount/:accountId',
-        name: 'TokensByAccount',
-        component: TokensByAccount,
         props: true,
         meta: {
             tabId: TabId.Tokens

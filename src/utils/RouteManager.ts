@@ -370,14 +370,7 @@ export class RouteManager {
             params: {name: name, network: this.currentNetwork.value}
         }
     }
-
-    public makeRouteToTokensByAccount(accountId: string): RouteLocationRaw {
-        return {
-            name: 'TokensByAccount',
-            params: {accountId: accountId, network: this.currentNetwork.value}
-        }
-    }
-
+    
     //
     // Contract
     //
