@@ -65,7 +65,6 @@
             :controller="fungibleTableController"
             :check-enabled="rejectEnabled"
             v-model:checked-tokens="checkedTokens"
-            :full-page="props.fullPage"
         />
       </div>
 
@@ -74,7 +73,6 @@
             :controller="nftsTableController"
             :check-enabled="rejectEnabled"
             v-model:checked-nfts="checkedTokens"
-            :full-page="props.fullPage"
         />
       </div>
 
@@ -94,7 +92,6 @@
               :controller="nftsAirdropTableController"
               :check-enabled="claimEnabled"
               v-model:checked-airdrops="checkedAirdrops"
-              :full-page="props.fullPage"
           />
         </div>
         <div v-else id="pendingFungibleTable">
@@ -102,17 +99,9 @@
               :controller="fungibleAirdropTableController"
               :check-enabled="claimEnabled"
               v-model:checked-airdrops="checkedAirdrops"
-              :full-page="props.fullPage"
           />
         </div>
       </div>
-      <ArrowLink
-          v-if="showAllTokensLink"
-          id="all-tokens-link"
-          :route="routeManager.makeRouteToTokensByAccount(accountId)"
-          text="All tokens"
-          style="display: flex; justify-content: center;"
-      />
     </template>
 
   </DashboardCardV2>
@@ -155,19 +144,14 @@ import {tokenOrNftId} from "@/schemas/MirrorNodeUtils.ts";
 import PendingFungibleAirdropTable from "@/components/account/PendingFungibleAirdropTable.vue";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import ButtonView from "@/elements/ButtonView.vue";
-import ArrowLink from "@/components/ArrowLink.vue";
 import {ButtonSize} from "@/dialogs/core/DialogUtils.ts";
-import {routeManager, walletManager} from "@/utils/RouteManager.ts";
+import {walletManager} from "@/utils/RouteManager.ts";
 
 const props = defineProps({
   accountId: {
     type: String as PropType<string | null>,
     default: null
   },
-  fullPage: {
-    type: Boolean,
-    default: false
-  }
 })
 
 const showSection = computed(() =>
@@ -178,15 +162,7 @@ const showSection = computed(() =>
     || nftsAirdropTableController.totalRowCount.value >= 1
 )
 
-const showAllTokensLink = computed(() =>
-    !props.fullPage
-    && (fungibleTableController.totalRowCount.value >= defaultPageSize
-        || nftsTableController.totalRowCount.value >= defaultPageSize
-        || fungibleAirdropTableController.totalRowCount.value >= defaultPageSize
-        || nftsAirdropTableController.totalRowCount.value >= defaultPageSize)
-)
-
-const defaultPageSize = props.fullPage ? 15 : 6
+const defaultPageSize = 15
 
 const accountId = computed(() => props.accountId)
 

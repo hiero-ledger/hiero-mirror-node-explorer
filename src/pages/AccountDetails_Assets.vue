@@ -6,7 +6,7 @@
 
 <template>
 
-  <TokensSection :account-id="normalizedAccountId" :full-page="true"/>
+  <TokensSection :account-id="normalizedAccountId"/>
 
 </template>
 
