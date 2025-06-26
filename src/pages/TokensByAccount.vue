@@ -10,7 +10,6 @@
 
     <TokensSection
         :account-id="props.accountId"
-        :full-page="true"
     />
 
   </PageFrameV2>
