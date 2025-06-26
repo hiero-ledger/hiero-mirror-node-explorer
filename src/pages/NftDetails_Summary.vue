@@ -24,6 +24,7 @@
           :auto="false"
       />
     </template>
+
     <template #media-description>
       <Property v-if="name" id="name" custom-nb-col-class="is-one-quarter">
         <template #name>Name</template>
@@ -110,9 +111,10 @@
       </Property>
     </template>
 
+    <template #footer>
+      <MirrorLink :network="props.network" entityUrl="tokens" :loc="normalizedTokenId + '/nfts/' + serialNumber"/>
+    </template>
   </DashboardCardV2>
-
-  <MirrorLink :network="props.network" entityUrl="tokens" :loc="normalizedTokenId + '/nfts/' + serialNumber"/>
 
 </template>
 
