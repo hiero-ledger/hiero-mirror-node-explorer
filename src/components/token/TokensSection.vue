@@ -9,13 +9,7 @@
   <DashboardCardV2 v-if="accountId && showSection" id="tokensSection">
 
     <template #title>
-      <div v-if="fullPage">
-        <span>HTS Tokens of Account </span>
-        <router-link :to="routeManager.makeRouteToAccount(accountId)">
-          <span>{{ accountId }}</span>
-        </router-link>
-      </div>
-      <span v-else>HTS Tokens</span>
+      <span>HTS Tokens</span>
     </template>
 
     <template #right-control>
