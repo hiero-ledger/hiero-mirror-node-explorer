@@ -6,7 +6,9 @@
 
 <template>
   <a v-if="isMediumScreen"
-     :href="`${endpointURL}`" target="_blank">
+     :href="`${endpointURL}`" target="_blank"
+     style="margin-top: auto;"
+  >
     <div class="mirror-link">
       <span class="link-text">Raw data</span>
       <ArrowRight :size="16"/>
