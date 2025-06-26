@@ -80,11 +80,13 @@
       </Property>
 
     </template>
+
+    <template #footer>
+      <MirrorLink :network="network" entityUrl="topics" :loc="topicId"/>
+    </template>
   </DashboardCardV2>
 
   <HCSContentSection v-if="isHcs1Topic" :topic-memo="hcs1Memo" :hcs1-asset="hcs1Asset"/>
-
-  <MirrorLink :network="network" entityUrl="topics" :loc="topicId"/>
 
 </template>
 

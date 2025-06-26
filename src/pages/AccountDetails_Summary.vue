@@ -203,9 +203,11 @@
         </template>
       </Property>
     </template>
-  </DashboardCardV2>
 
-  <MirrorLink :network="network" entityUrl="accounts" :loc="accountIdRef ?? undefined"/>
+    <template #footer>
+      <MirrorLink :network="network" entityUrl="accounts" :loc="accountIdRef ?? undefined"/>
+    </template>
+  </DashboardCardV2>
 
   <UpdateAccountDialog
       v-model:show-dialog="showUpdateAccountDialog"

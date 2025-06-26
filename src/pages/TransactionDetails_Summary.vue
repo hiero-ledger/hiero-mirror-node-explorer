@@ -273,6 +273,11 @@
         </template>
       </Property>
     </template>
+
+    <template #footer>
+      <MirrorLink :network="props.network" entityUrl="transactions" :loc="transactionId!"/>
+    </template>
+
   </DashboardCardV2>
 
   <DashboardCardV2 v-if="displayTransfers" collapsible-key="transfers">
@@ -285,8 +290,6 @@
       </div>
     </template>
   </DashboardCardV2>
-
-  <MirrorLink :network="props.network" entityUrl="transactions" :loc="transactionId!"/>
 
 </template>
 

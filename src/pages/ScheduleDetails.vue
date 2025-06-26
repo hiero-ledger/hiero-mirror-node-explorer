@@ -120,9 +120,11 @@
         </template>
       </template>
 
-    </DashboardCardV2>
+      <template #footer>
+        <MirrorLink :network="props.network" entityUrl="schedules" :loc="scheduleId"/>
+      </template>
 
-    <MirrorLink :network="props.network" entityUrl="schedules" :loc="scheduleId"/>
+    </DashboardCardV2>
 
   </PageFrameV2>
 
