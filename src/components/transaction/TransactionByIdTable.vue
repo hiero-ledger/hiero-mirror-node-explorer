@@ -112,10 +112,12 @@ const makeRelationshipLabel = (row: Transaction): string => {
   } else if (row.scheduled) {
     result = "Scheduled"
   } else if (hasChild.value) {
-    if (row.nonce && row.nonce > 0) {
+    if (row.nonce !== null && row.nonce > 0 && row.parent_consensus_timestamp) {
       result = "Child"
-    } else {
+    } else if (row.nonce !== null && row.nonce === 0) {
       result = "Parent"
+    } else {
+      result = "n/a"
     }
   } else {
     result = ""

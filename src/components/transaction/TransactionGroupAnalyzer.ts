@@ -48,6 +48,7 @@ export class TransactionGroupAnalyzer {
                 }
             }
         }
+        result = this.childTransactions.value.length > 0 ? result : null // can't be a parent without children
         return result
     })
 

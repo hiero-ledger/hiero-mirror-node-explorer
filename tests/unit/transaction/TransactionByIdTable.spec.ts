@@ -4,6 +4,7 @@ import {describe, expect, it} from 'vitest'
 import {flushPromises, mount} from "@vue/test-utils"
 import {
     SAMPLE_DUDE_WITH_KEYS,
+    SAMPLE_PARENT_CHILD_AND_UNRELATED_TRANSACTIONS,
     SAMPLE_PARENT_CHILD_TRANSACTIONS,
     SAMPLE_SAME_ID_NOT_PARENT_TRANSACTIONS,
     SAMPLE_SCHEDULING_SCHEDULED_TRANSACTIONS,
@@ -135,6 +136,36 @@ describe("TransactionByIdTable.vue", () => {
         expect(cells[1].text()).toBe("CONTRACT DELETE")
         expect(cells[3].text()).toBe("2")
 
+        wrapper.unmount()
+        await flushPromises()
+    });
+
+    it("Should list transactions as parent, child, and unrelated", async () => {
+
+        const mock = new MockAdapter(axios as any);
+
+        const wrapper = mount(TransactionByIdTable, {
+            global: {
+                plugins: [router, Oruga]
+            },
+            props: {
+                narrowed: true,
+                nbItems: 42,
+                transactions: SAMPLE_PARENT_CHILD_AND_UNRELATED_TRANSACTIONS.transactions,
+            },
+        });
+
+        await flushPromises()
+        // console.log(wrapper.text())
+
+        expect(wrapper.find('thead').text()).toBe("Time Type Content Relationship Nonce".toUpperCase())
+        expect(wrapper.find('tbody').text()).toBe(
+            "8:43:12.3706 PMJul 30, 2024, UTC" + "UPDATE ACCOUNT" + "Account:0.0.4452547" + "n/a" + "1" +
+            "8:43:12.3706 PMJul 30, 2024, UTC" + "ETHEREUM TRANSACTION" + "Account:0.0.4640464" + "Parent" + "0" +
+            "8:43:12.3706 PMJul 30, 2024, UTC" + "CONTRACT CREATE" + "Contract:0.0.4640464" + "Child" + "2"
+        )
+
+        mock.restore()
         wrapper.unmount()
         await flushPromises()
     });

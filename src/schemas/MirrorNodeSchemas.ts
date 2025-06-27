@@ -164,7 +164,7 @@ export interface Transaction {
     transaction_hash: string
     transaction_id: string
     transfers: Transfer[]
-    valid_duration_seconds: string
+    valid_duration_seconds: string | null // can be null according to our observation
     valid_start_timestamp: string
 }
 

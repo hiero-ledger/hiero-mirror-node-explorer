@@ -29,6 +29,7 @@ import {
     SAMPLE_NETWORK_EXCHANGERATE,
     SAMPLE_NETWORK_NODES,
     SAMPLE_NONFUNGIBLE,
+    SAMPLE_PARENT_CHILD_AND_UNRELATED_TRANSACTIONS,
     SAMPLE_PARENT_CHILD_TRANSACTIONS,
     SAMPLE_SAME_ID_NOT_PARENT_TRANSACTIONS,
     SAMPLE_SCHEDULE,
@@ -1090,8 +1091,8 @@ describe("TransactionDetails.vue", () => {
             "api/v1/contracts/" + PARENT.node,
             "api/v1/contracts/results",
             "api/v1/network/fees",
-            "api/v1/contracts/" + PARENT.transfers[1].account,
             "api/v1/tokens/" + CHILD1.entity_id,
+            "api/v1/contracts/" + PARENT.transfers[1].account,
             "api/v1/contracts/" + PARENT.transfers[0].account,
             "api/v1/contracts/results/" + SAMPLE_PARENT_CHILD_TRANSACTIONS.transactions![0].transaction_id,
             "api/v1/accounts/",
@@ -1172,6 +1173,65 @@ describe("TransactionDetails.vue", () => {
             "api/v1/contracts/results",
             "api/v1/network/fees",
             "api/v1/contracts/" + SAMPLE_SAME_ID_NOT_PARENT_TRANSACTIONS.transactions[0].transfers[2].account,
+        ])
+
+        expect(wrapper.text()).toMatch(RegExp("Transaction " + TransactionID.normalizeForDisplay(NONCE_1.transaction_id)))
+
+        expect(wrapper.find("#batchTransaction").exists()).toBe(false)
+        expect(wrapper.find("#innerTransactions").exists()).toBe(false)
+        expect(wrapper.find("#scheduledTransaction").exists()).toBe(false)
+        expect(wrapper.find("#scheduleCreateTransaction").exists()).toBe(false)
+        expect(wrapper.find("#parentTransaction").exists()).toBe(false)
+        expect(wrapper.find("#childTransactions").exists()).toBe(false)
+
+        wrapper.unmount()
+        await flushPromises()
+        mock.restore()
+    });
+
+    it("Should NOT display a link to the parent transaction -- either", async () => {
+
+        await router.push("/") // To avoid "missing required param 'network'" error
+
+        const mock = new MockAdapter(axios as any)
+        const NONCE_1 = SAMPLE_PARENT_CHILD_AND_UNRELATED_TRANSACTIONS.transactions![0]
+        const matcher1 = "/api/v1/transactions"
+        mock.onGet(matcher1).reply(((config: AxiosRequestConfig) => {
+            if (config.params.timestamp == NONCE_1.consensus_timestamp) {
+                return [200, {transactions: [NONCE_1]}]
+            } else {
+                return [404]
+            }
+        }) as any);
+        const matcher11 = "/api/v1/transactions/" + NONCE_1.transaction_id
+        mock.onGet(matcher11).reply(200, SAMPLE_PARENT_CHILD_AND_UNRELATED_TRANSACTIONS);
+
+        const wrapper = mount(TransactionDetails, {
+            global: {
+                plugins: [router, Oruga],
+                provide: {"isMediumScreen": false}
+            },
+            props: {
+                transactionLoc: NONCE_1.consensus_timestamp,
+            },
+        });
+
+        await flushPromises()
+        // console.log(wrapper.html())
+        // console.log(wrapper.text())
+
+        expect(fetchGetURLs(mock)).toStrictEqual([
+            "api/v1/network/nodes",
+            "api/v1/transactions",
+            "api/v1/topics/messages/",
+            "api/v1/network/exchangerate",
+            "api/v1/transactions/" + SAMPLE_PARENT_CHILD_AND_UNRELATED_TRANSACTIONS.transactions![0].transaction_id,
+            "api/v1/blocks",
+            "api/v1/contracts/results",
+            "api/v1/network/fees",
+            "api/v1/contracts/" + SAMPLE_PARENT_CHILD_AND_UNRELATED_TRANSACTIONS.transactions![1].transfers[3].account,
+            "api/v1/contracts/" + SAMPLE_PARENT_CHILD_AND_UNRELATED_TRANSACTIONS.transactions![1].transfers[4].account,
+
         ])
 
         expect(wrapper.text()).toMatch(RegExp("Transaction " + TransactionID.normalizeForDisplay(NONCE_1.transaction_id)))
@@ -1583,8 +1643,8 @@ describe("TransactionDetails.vue", () => {
             "api/v1/contracts/" + SAMPLE_ETHEREUM_TRANSACTIONS_ASSOCIATING_TOKEN.transactions[0].node,
             "api/v1/contracts/results",
             "api/v1/network/fees",
-            "api/v1/contracts/" + SAMPLE_ETHEREUM_TRANSACTIONS_ASSOCIATING_TOKEN.transactions[0].transfers[2].account,
             "api/v1/tokens/" + SAMPLE_ETHEREUM_TRANSACTIONS_ASSOCIATING_TOKEN.transactions[0].transfers[3].account,
+            "api/v1/contracts/" + SAMPLE_ETHEREUM_TRANSACTIONS_ASSOCIATING_TOKEN.transactions[0].transfers[2].account,
             "api/v1/contracts/" + SAMPLE_ETHEREUM_TRANSACTIONS_ASSOCIATING_TOKEN.transactions[0].transfers[3].account,
             "api/v1/contracts/" + SAMPLE_ETHEREUM_TRANSACTIONS_ASSOCIATING_TOKEN.transactions[0].transfers[1].account,
             "api/v1/contracts/results/" + SAMPLE_ETHEREUM_TRANSACTIONS_ASSOCIATING_TOKEN.transactions[0].transaction_id,
