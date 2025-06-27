@@ -220,7 +220,7 @@
         <Property id="duration">
           <template #name>Valid Duration</template>
           <template #value>
-            <DurationValue :string-value="transaction?.valid_duration_seconds" :show-none="true"/>
+            <DurationValue :string-value="transaction?.valid_duration_seconds ?? undefined" :show-none="true"/>
           </template>
         </Property>
         <Property id="nonce">
