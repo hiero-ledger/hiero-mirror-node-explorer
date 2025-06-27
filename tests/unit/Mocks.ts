@@ -10,6 +10,7 @@ import {
     KeyType,
     Schedule,
     SignatureType,
+    TransactionByIdResponse,
     TransactionResponse,
     TransactionType
 } from "@/schemas/MirrorNodeSchemas.ts";
@@ -2145,6 +2146,108 @@ export const SAMPLE_PARENT_CHILD_TRANSACTIONS: TransactionResponse = {
     "links": {
         next: null
     }
+}
+
+export const SAMPLE_PARENT_CHILD_AND_UNRELATED_TRANSACTIONS: TransactionByIdResponse = {
+    "transactions": [
+        {
+            "assessed_custom_fees": [],
+            "batch_key": null,
+            "bytes": null,
+            "charged_tx_fee": 0,
+            "consensus_timestamp": "1722372192.370623549",
+            "entity_id": "0.0.4452547",
+            "max_fee": "0",
+            "memo_base64": "",
+            "name": TransactionType.CRYPTOUPDATEACCOUNT,
+            "nft_transfers": [],
+            "node": null,
+            "nonce": 1,
+            "parent_consensus_timestamp": null,
+            "result": "SUCCESS",
+            "scheduled": false,
+            "staking_reward_transfers": [],
+            "token_transfers": [],
+            "transaction_hash": "/c3U0kPPoDY87SnNCaWyBrPyXiicAjWADoamMcUacBNuY7BQCPGsdH6ggT2De3lK",
+            "transaction_id": "0.0.4419734-1722372182-141436565",
+            "transfers": [],
+            "valid_duration_seconds": null,
+            "valid_start_timestamp": "1722372182.141436565"
+        },
+        {
+            "assessed_custom_fees": [],
+            "batch_key": null,
+            "bytes": null,
+            "charged_tx_fee": 112677928,
+            "consensus_timestamp": "1722372192.370623550",
+            "entity_id": "0.0.4640464",
+            "max_fee": "1950000000",
+            "memo_base64": "",
+            "name": TransactionType.ETHEREUMTRANSACTION,
+            "nft_transfers": [],
+            "node": "0.0.6",
+            "nonce": 0,
+            "parent_consensus_timestamp": null,
+            "result": "SUCCESS",
+            "scheduled": false,
+            "staking_reward_transfers": [],
+            "token_transfers": [],
+            "transaction_hash": "gNyZLJBAIEr5BL705NcMi+25MOBxvLqwo00hVs/IMN/KknsY1PzP464sgxVDcuqP",
+            "transaction_id": "0.0.4419734-1722372182-141436565",
+            "transfers": [
+                {
+                    "account": "0.0.6",
+                    "amount": 2878739,
+                    "is_approval": false
+                },
+                {
+                    "account": "0.0.98",
+                    "amount": 101947895,
+                    "is_approval": false
+                },
+                {
+                    "account": "0.0.800",
+                    "amount": 7851294,
+                    "is_approval": false
+                },
+                {
+                    "account": "0.0.4419734",
+                    "amount": -81391687,
+                    "is_approval": false
+                },
+                {
+                    "account": "0.0.4452547",
+                    "amount": -31286241,
+                    "is_approval": false
+                }
+            ],
+            "valid_duration_seconds": "120",
+            "valid_start_timestamp": "1722372182.141436565"
+        },
+        {
+            "assessed_custom_fees": [],
+            "batch_key": null,
+            "bytes": null,
+            "charged_tx_fee": 0,
+            "consensus_timestamp": "1722372192.370623551",
+            "entity_id": "0.0.4640464",
+            "max_fee": "0",
+            "memo_base64": "",
+            "name": TransactionType.CONTRACTCREATEINSTANCE,
+            "nft_transfers": [],
+            "node": null,
+            "nonce": 2,
+            "parent_consensus_timestamp": "1722372192.370623550",
+            "result": "SUCCESS",
+            "scheduled": false,
+            "staking_reward_transfers": [],
+            "token_transfers": [],
+            "transaction_hash": "htcj5Lk6MSzAutJQSeBGedj8HXyN89PmJAoFI/sbevAvunv5Imy8Du7o/HoGaMos",
+            "transaction_id": "0.0.4419734-1722372182-141436565",
+            "transfers": [],
+            "valid_duration_seconds": null,
+            "valid_start_timestamp": "1722372182.141436565"
+        }]
 }
 
 //
