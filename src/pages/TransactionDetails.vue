@@ -220,7 +220,7 @@
         <Property id="duration">
           <template #name>Valid Duration</template>
           <template #value>
-            <DurationValue :string-value="transaction?.valid_duration_seconds" :show-none="true"/>
+            <DurationValue :string-value="transaction?.valid_duration_seconds ?? undefined" :show-none="true"/>
           </template>
         </Property>
         <Property id="nonce">
@@ -255,35 +255,37 @@
             </template>
           </Property>
         </template>
-        <Property v-if="parentTransaction" id="parentTransaction">
-          <template #name>Parent Transaction</template>
-          <template #value>
-            <router-link :to="routeManager.makeRouteToTransactionObj(parentTransaction)">
-              {{ makeTypeLabel(parentTransaction.name) }}
-            </router-link>
-          </template>
-        </Property>
-        <Property v-if="childTransactions.length" id="childTransactions">
-          <template #name>Child Transactions</template>
-          <template #value>
-            <div v-for="tx in childTransactions.slice(0, MAX_INLINE_CHILDREN)" :key="tx.nonce">
-              <router-link :to="routeManager.makeRouteToTransactionObj(tx)">
-                <span class="h-is-numeric">{{ '#' + tx.nonce }}</span>
-                <span class="ml-2">{{ makeTypeLabel(tx.name) }}</span>
+        <template v-else>
+          <Property v-if="parentTransaction" id="parentTransaction">
+            <template #name>Parent Transaction</template>
+            <template #value>
+              <router-link :to="routeManager.makeRouteToTransactionObj(parentTransaction)">
+                {{ makeTypeLabel(parentTransaction.name) }}
               </router-link>
-              <span v-for="id in getTargetedTokens(tx, 5)" :key="id" class="ml-2">
+            </template>
+          </Property>
+          <Property v-if="childTransactions.length" id="childTransactions">
+            <template #name>Child Transactions</template>
+            <template #value>
+              <div v-for="tx in childTransactions.slice(0, MAX_INLINE_CHILDREN)" :key="tx.nonce">
+                <router-link :to="routeManager.makeRouteToTransactionObj(tx)">
+                  <span class="h-is-numeric">{{ '#' + tx.nonce }}</span>
+                  <span class="ml-2">{{ makeTypeLabel(tx.name) }}</span>
+                </router-link>
+                <span v-for="id in getTargetedTokens(tx, 5)" :key="id" class="ml-2">
                 <TokenExtra :token-id="id" :use-anchor="true"/>
               </span>
-            </div>
-            <ArrowLink
-                style="text-align: left"
-                v-if="displayAllChildrenLink"
-                id="allChildrenLink"
-                :route="routeManager.makeRouteToTransactionsById(transactionId ?? '')"
-                :text="'All ' + childTransactions.length + ' child transactions'"
-            />
-          </template>
-        </Property>
+              </div>
+              <ArrowLink
+                  style="text-align: left"
+                  v-if="displayAllChildrenLink"
+                  id="allChildrenLink"
+                  :route="routeManager.makeRouteToTransactionsById(transactionId ?? '')"
+                  :text="'All ' + childTransactions.length + ' child transactions'"
+              />
+            </template>
+          </Property>
+        </template>
       </template>
     </DashboardCardV2>
 
@@ -442,7 +444,7 @@ const parentTransaction = computed(() => {
   let result: TransactionDetail | null
   const t = transactionLocParser.transaction.value
   const p = transactionGroupAnalyzer.parentTransaction.value
-  if (t !== null && p !== null && t.consensus_timestamp !== p.consensus_timestamp) {
+  if (t !== null && p !== null && t.parent_consensus_timestamp === p.consensus_timestamp) {
     result = p
   } else {
     result = null
