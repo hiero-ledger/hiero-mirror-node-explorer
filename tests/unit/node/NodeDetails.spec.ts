@@ -83,7 +83,7 @@ describe("NodeDetails.vue", () => {
         expect(wrapper.get("#fileValue").text()).toBe("0.0.102")
         expect(wrapper.get("#rangeFromValue").text()).toBe("4:10:06.0411 PMJun 6, 2022, UTC")
         expect(wrapper.get("#rangeToValue").text()).toBe("None")
-        expect(wrapper.get("#nodeCertHashValue").text()).toBe("0xd316b5ef57b76daf37e3bebbe3b69e6f67b669ce1dd1ed75e5c69a69bf75f36d376f475f7b571d79a6f8e37e37f1f736f3d69b73c6daf1ae9a7dff3775be5fd5bdf7e34e3a75af3c73Copy")
+        expect(wrapper.get("#nodeCertHashValue").text()).toBe("0xa171e3ba83476747aeb2e2ac4d0e115caaab918203b0dfe1cdeab443438fc289abc8ba8a6aff83db5f1b334046da88c8Copy")
         expect(wrapper.get("#serviceEndpointsValue").text()).toBe(
             "www.example.com:50211(3.211.248.172)" +
             "www.example.com:50212" +
@@ -141,7 +141,7 @@ describe("NodeDetails.vue", () => {
         expect(wrapper.get("#nodeAccountValue").text()).toBe("0.0.3")
         expect(wrapper.get("#descriptionValue").text()).toBe("Hosted by Hedera | East Coast, USA")
         expect(wrapper.get("#declineRewardValue").text()).toBe("false")
-        expect(wrapper.get("#nodeCertHashValue").text()).toBe("0xd316b5ef57b76daf37e3bebbe3b69e6f67b669ce1dd1ed75e5c69a69bf75f36d376f475f7b571d79a6f8e37e37f1f736f3d69b73c6daf1ae9a7dff3775be5fd5bdf7e34e3a75af3c73Copy")
+        expect(wrapper.get("#nodeCertHashValue").text()).toBe("0xa171e3ba83476747aeb2e2ac4d0e115caaab918203b0dfe1cdeab443438fc289abc8ba8a6aff83db5f1b334046da88c8Copy")
 
         mock.resetHistory()
         node = 1
@@ -160,7 +160,7 @@ describe("NodeDetails.vue", () => {
         expect(wrapper.get("#nodeAccountValue").text()).toBe("0.0.4")
         expect(wrapper.get("#descriptionValue").text()).toBe("Hosted by Hedera | East Coast, USA")
         expect(wrapper.get("#declineRewardValue").text()).toBe("true")
-        expect(wrapper.get("#nodeCertHashValue").text()).toBe("0xd31ef8d3d75e7367b8f786fadbb79ee3d73af5bdbde1b7b571e69e6dc6b77dd71a7f7ebbf3d7bcf1f73b7796f479e7f9e7ad5fe766fcd9ddf9d7dd5adfd7367db79deb4dbbdbaef5ebCopy")
+        expect(wrapper.get("#nodeCertHashValue").text()).toBe("0x7409dec2e494b627ee49c69b294be1ceaebca3fdcaf36789e88fc7d5b0eef5561f52b82d35191a39c2fbed6027267166Copy")
 
         mock.restore()
         wrapper.unmount()
