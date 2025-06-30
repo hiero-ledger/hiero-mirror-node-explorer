@@ -4,7 +4,6 @@ import {computed, ComputedRef, Ref} from "vue";
 import {Key, makeShortNodeDescription, NetworkNode} from "@/schemas/MirrorNodeSchemas";
 import {NetworkAnalyzer} from "@/utils/analyzer/NetworkAnalyzer";
 import {makeAnnualizedRate, makeNodeDescription, makeRewardRate} from "@/schemas/MirrorNodeUtils.ts";
-import {base64Decode, byteToHex} from "@/utils/B64Utils";
 
 export class NodeAnalyzer {
 
@@ -52,8 +51,7 @@ export class NodeAnalyzer {
     })
 
     public certificateHash = computed(() => {
-        const hash = this.node.value?.node_cert_hash ?? null
-        return hash ? byteToHex(base64Decode(hash)) : null
+        return this.node.value?.node_cert_hash ?? null
     })
 
     public readonly nodeDescription: ComputedRef<string | null> = computed(
