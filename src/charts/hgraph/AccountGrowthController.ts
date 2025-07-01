@@ -21,9 +21,10 @@ export class AccountGrowthController extends GenericMetricController {
     // ChartController
     //
 
+     
     protected makeChartConfig(metrics: EcosystemMetric[],
-                              range: ChartRange,
-                              context: CanvasRenderingContext2D): ChartConfiguration {
-        return this.makeBarChartConfig(metrics, range, false, "# of accounts", context)
+                              range: ChartRange/*,
+                              context: CanvasRenderingContext2D*/): ChartConfiguration {
+        return this.makeBarChartConfig(metrics, range, false, "# of accounts")
     }
 }
