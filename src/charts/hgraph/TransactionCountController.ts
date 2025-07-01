@@ -22,8 +22,8 @@ export class TransactionCountController extends GenericMetricController {
     // ChartController
     //
 
-    protected makeChartConfig(metrics: EcosystemMetric[], range: ChartRange,
-                              context: CanvasRenderingContext2D): ChartConfiguration {
-        return this.makeBarChartConfig(metrics, range, false, "# of transactions", context)
+    protected makeChartConfig(metrics: EcosystemMetric[], range: ChartRange/*,
+                              context: CanvasRenderingContext2D*/): ChartConfiguration {
+        return this.makeBarChartConfig(metrics, range, false, "# of transactions")
     }
 }
