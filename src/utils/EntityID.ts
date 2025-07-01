@@ -78,8 +78,6 @@ export class EntityID {
         const buffer = new Uint8Array(20);
         const view = new DataView(buffer.buffer, 0, 20);
 
-        view.setInt32(0, this.shard);
-        view.setBigInt64(4, BigInt(this.realm));
         view.setBigInt64(12, BigInt(this.num));
 
         return byteToHex(buffer)
