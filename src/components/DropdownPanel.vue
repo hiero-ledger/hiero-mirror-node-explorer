@@ -11,8 +11,16 @@
     <div v-if="deployed" style="position: relative">
       <div
           class="panelHolder"
-          style="position: absolute; z-index: 999; top:6px;"
-          :style="{left: panelDX + 'px', 'box-shadow': boxShadow, 'background-color': props.backgroundColor, 'right': rightDX}"
+          style="position: absolute; z-index: 999;"
+          :style="{
+            left: panelDX + 'px',
+            top: panelDY + 'px',
+            'box-shadow': boxShadow,
+            'background-color': props.backgroundColor,
+            'right': rightDX,
+            padding: paddingRadius,
+            'border-radius': paddingRadius
+          }"
           ref="panelRef">
         <slot name="panel"/>
       </div>
@@ -35,6 +43,10 @@ const props = defineProps({
     type: Boolean,
     default: false
   },
+  topAligned: {
+    type: Boolean,
+    default: false
+  },
   stretched: {
     type: Boolean,
     default: false
@@ -42,6 +54,10 @@ const props = defineProps({
   backgroundColor: {
     type: String,
     default: "var(--background-tertiary)"
+  },
+  compact: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -68,12 +84,16 @@ const onMouseDown = (ev: MouseEvent) => {
 //
 
 const buttonWidth = ref<number | null>(null)
+const buttonHeight = ref<number | null>(null)
 const panelRef = ref<HTMLElement | null>(null)
 const panelWidth = ref<number | null>(null)
+const panelHeight = ref<number | null>(null)
 
 const resizeObserver = new ResizeObserver(() => {
   buttonWidth.value = rootRef.value?.offsetWidth ?? 0
+  buttonHeight.value = rootRef.value?.offsetHeight ?? 0
   panelWidth.value = panelRef.value?.offsetWidth ?? 0
+  panelHeight.value = panelRef.value?.offsetHeight ?? 0
 })
 
 watch(rootRef, (newValue, oldValue) => {
@@ -106,11 +126,29 @@ const panelDX = computed(() => {
   return result
 })
 
+const gap = 6
+
+const panelDY = computed(() => {
+  let result: number
+  if (props.topAligned && buttonHeight.value !== null && panelHeight.value !== null) {
+    result = -(panelHeight.value - buttonHeight.value) - gap
+  } else {
+    result = gap
+  }
+  return result
+})
+
 //
 // rightDX
 //
 
 const rightDX = computed(() => props.stretched ? "0" : "auto")
+
+//
+// padding / radius
+//
+
+const paddingRadius = computed(() => props.compact ? "10px" : "16px")
 
 //
 // mount/unmount
@@ -142,10 +180,8 @@ const boxShadow = computed(() => darkSelected.value ? darkShadow : lightShadow)
 
 div.panelHolder {
   border-color: var(--border-secondary);
-  border-radius: 16px;
   border-style: solid;
   border-width: 1px;
-  padding: 24px;
 }
 
 </style>
