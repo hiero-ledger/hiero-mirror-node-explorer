@@ -23,6 +23,7 @@ import {
     ACCOUNT_DETAILS_ROUTE,
     BLOCK_DETAILS_ROUTE,
     CONTRACT_DETAILS_ROUTE,
+    NODES_ROUTE,
     NFT_DETAILS_ROUTE,
     routes,
     TOKEN_DETAILS_ROUTE,
@@ -370,7 +371,7 @@ export class RouteManager {
             params: {name: name, network: this.currentNetwork.value}
         }
     }
-    
+
     //
     // Contract
     //
@@ -539,8 +540,21 @@ export class RouteManager {
         return {name: 'Accounts', params: {network: this.currentNetwork.value}}
     }
 
-    public makeRouteToNodes(): RouteLocationRaw {
-        return {name: 'Nodes', params: {network: this.currentNetwork.value}}
+    public readonly nodesOperator = new RouteOperator(NODES_ROUTE, this)
+
+    public routeToNodes(tabId: string | null = null, replace = false): Promise<NavigationFailure | void | undefined> {
+        let result: Promise<NavigationFailure | void | undefined>
+        if (replace) {
+            result = this.router.replace(this.makeRouteToNodes(tabId))
+        } else {
+            result = this.router.push(this.makeRouteToNodes(tabId))
+        }
+        return result
+    }
+
+    public makeRouteToNodes(tabId: string | null = null): RouteLocationRaw {
+        const targetTabId = tabId ?? this.nodesOperator.defaultTabId
+        return {name: targetTabId, params: {network: this.currentNetwork.value}}
     }
 
     public makeRouteToStaking(): RouteLocationRaw {

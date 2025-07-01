@@ -6,21 +6,14 @@
 
 <template>
 
-  <PageFrameV2 page-title="Nodes">
-
-    <template #left-toolbar>
-      <Tabs
-          :tab-ids="tabIds"
-          :tab-labels="tabLabels"
-          :selected-tab="selectedTabId"
-          @update:selected-tab="onUpdate($event)"
-      />
+  <DashboardCardV2>
+    <template #title>
+      <span>{{ `${nodes.length}  Nodes` }}</span>
     </template>
-
-    <router-view/>
-
-
-  </PageFrameV2>
+    <template #content>
+      <NodeTable :nodes="nodes" :stake-total="totalStakeForConsensus"/>
+    </template>
+  </DashboardCardV2>
 
 </template>
 
@@ -30,38 +23,20 @@
 
 <script setup lang="ts">
 
-import {computed} from 'vue';
-import PageFrameV2 from "@/components/page/PageFrameV2.vue";
-import Tabs from "@/components/Tabs.vue";
-import {routeManager} from "@/utils/RouteManager.ts";
+import DashboardCardV2 from "@/components/DashboardCardV2.vue";
+import NodeTable from "@/components/node/NodeTable.vue";
+import {NetworkAnalyzer} from "@/utils/analyzer/NetworkAnalyzer.ts";
+import {onBeforeUnmount, onMounted} from "vue";
 
 defineProps({
   network: String
 })
 
-const excludedTabIds = computed(() =>
-    (routeManager.enableStaking.value || routeManager.currentNetwork.value === 'mainnet')
-        ? []
-        : ["Nodes_Network"]
-)
-
-const tabIds = computed(() =>
-    {
-      console.log("excludedTabIds=", JSON.stringify(excludedTabIds.value))
-      return routeManager.nodesOperator.filterTabIds(excludedTabIds.value)
-    }
-)
-
-const tabLabels = computed(() =>
-    routeManager.nodesOperator.filterTabLabels(excludedTabIds.value)
-)
-const selectedTabId = routeManager.nodesOperator.selectedTabId
-
-const onUpdate = (tabId: string | null) => {
-  if (tabId !== null) {
-    routeManager.routeToNodes(tabId, true)
-  }
-}
+const networkNodeAnalyzer = new NetworkAnalyzer()
+onMounted(() => networkNodeAnalyzer.mount())
+onBeforeUnmount(() => networkNodeAnalyzer.unmount())
+const nodes = networkNodeAnalyzer.nodes
+const totalStakeForConsensus = networkNodeAnalyzer.totalStakeForConsensus
 
 </script>
 
