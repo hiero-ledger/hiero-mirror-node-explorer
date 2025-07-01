@@ -6,30 +6,14 @@
 
 <template>
 
-  <div class="h-page-frame">
-    <PageHeader
-        :page-title="props.pageTitle"
-    >
-      <template v-if="slots['page-title']" #page-title>
-        <slot name="page-title"/>
-      </template>
-    </PageHeader>
-
-    <div v-if="slots.banner" class="h-page-banner">
-      <slot name="banner"/>
-    </div>
-
-    <div v-if="slots['left-toolbar'] || slots['right-toolbar']" class="h-page-toolbar">
-      <slot name="left-toolbar"/>
-      <slot name="right-toolbar"/>
-    </div>
-
-    <div class="h-page-content">
-      <slot/>
-    </div>
-
-    <Footer/>
-  </div>
+  <DashboardCardV2>
+    <template #title>
+      Map
+    </template>
+    <template #content>
+      <NodeMap :nodes="nodes"/>
+    </template>
+  </DashboardCardV2>
 
 </template>
 
@@ -39,22 +23,19 @@
 
 <script setup lang="ts">
 
-import Footer from "@/components/page/Footer.vue";
-import PageHeader from "@/components/page/header/PageHeader.vue";
-import {PropType, useSlots} from "vue";
+import {onBeforeUnmount, onMounted} from "vue";
+import NodeMap from "@/components/node/NodeMap.vue";
+import {NetworkAnalyzer} from "@/utils/analyzer/NetworkAnalyzer.ts";
+import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 
-const props = defineProps({
-  pageTitle: {
-    type: String as PropType<string | null>,
-    default: null,
-  },
-  notification: {
-    type: String as PropType<string | null>,
-    default: null,
-  }
+defineProps({
+  network: String
 })
 
-const slots = useSlots()
+const networkNodeAnalyzer = new NetworkAnalyzer()
+onMounted(() => networkNodeAnalyzer.mount())
+onBeforeUnmount(() => networkNodeAnalyzer.unmount())
+const nodes = networkNodeAnalyzer.nodes
 
 </script>
 
@@ -63,15 +44,5 @@ const slots = useSlots()
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <style scoped>
-
-.h-page-banner {
-  margin: 16px 16px;
-}
-
-@media (min-width: 1080px) {
-  .h-page-banner {
-    margin: 16px 32px;
-  }
-}
 
 </style>
