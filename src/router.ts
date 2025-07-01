@@ -32,6 +32,8 @@ import NftDetails_Metadata from "@/pages/NftDetails_Metadata.vue";
 import NodeAdminKeyDetails from "@/pages/NodeAdminKeyDetails.vue";
 import NodeDetails from "@/pages/NodeDetails.vue";
 import Nodes from "@/pages/Nodes.vue";
+import Nodes_Network from "@/pages/Nodes_Network.vue";
+import Nodes_NodeTable from "@/pages/Nodes_NodeTable.vue";
 import PageNotFound from "@/pages/PageNotFound.vue";
 import RoutingSpec from "@/pages/RoutingSpec.vue";
 import ScheduleDetails from "@/pages/ScheduleDetails.vue";
@@ -466,6 +468,36 @@ export const BLOCK_DETAILS_ROUTE: RouteRecordRaw = {
     ]
 }
 
+export const NODES_ROUTE: RouteRecordRaw =     {
+    path: '/:network/nodes',
+    name: 'Nodes',
+    component: Nodes,
+    props: true,
+    meta: {
+        tabId: TabId.Nodes
+    },
+    children: [
+        {
+            path: '',
+            name: 'Nodes_Network',
+            component: Nodes_Network,
+            props: true,
+            meta: {
+                tabLabel: "Network"
+            }
+        },
+        {
+            path: 'table',
+            name: 'Nodes_NodeTable',
+            component: Nodes_NodeTable,
+            props: true,
+            meta: {
+                tabLabel: "Node Table"
+            }
+        },
+    ],
+}
+
 export const routes: Array<RouteRecordRaw> = [
     {
         path: '/',
@@ -645,15 +677,7 @@ export const routes: Array<RouteRecordRaw> = [
         }
     },
     TOPIC_DETAILS_ROUTE,
-    {
-        path: '/:network/nodes',
-        name: 'Nodes',
-        component: Nodes,
-        props: true,
-        meta: {
-            tabId: TabId.Nodes
-        }
-    },
+    NODES_ROUTE,
     {
         path: '/:network/node/:nodeId',
         name: 'NodeDetails',
