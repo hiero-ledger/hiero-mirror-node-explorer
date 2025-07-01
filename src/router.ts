@@ -24,6 +24,7 @@ import Contracts from "@/pages/Contracts.vue";
 import ERC20ByName from "@/pages/ERC20ByName.vue";
 import ERC721ByName from "@/pages/ERC721ByName.vue";
 import Home from "@/pages/Home.vue";
+import Metrics from "@/pages/Metrics.vue";
 import NftDetails from "@/pages/NftDetails.vue";
 import NftDetails_Summary from "@/pages/NftDetails_Summary.vue";
 import NftDetails_Transactions from "@/pages/NftDetails_Transactions.vue";
@@ -73,6 +74,7 @@ export enum TabId {
     Nodes = "Nodes",
     Staking = "Staking",
     Blocks = "Blocks",
+    Metrics = "Metrics",
 }
 
 export const TRANSACTION_DETAILS_ROUTE: RouteRecordRaw = {
@@ -680,6 +682,15 @@ export const routes: Array<RouteRecordRaw> = [
         }
     },
     BLOCK_DETAILS_ROUTE,
+    {
+        path: '/:network/metrics',
+        name: 'Metrics',
+        component: Metrics,
+        props: true,
+        meta: {
+            tabId: TabId.Metrics
+        }
+    },
     {
         // EIP 3091 Support
         path: '/:network/tx/:transactionLoc',
