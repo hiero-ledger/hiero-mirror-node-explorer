@@ -65,6 +65,10 @@ import {AppStorage} from "@/AppStorage.ts";
 import {RouteRecordRaw} from "vue-router";
 import Tokens_Fungible from "@/pages/Tokens_Fungible.vue";
 import Tokens_Nfts from "@/pages/Tokens_Nfts.vue";
+import Metrics_Network from "@/pages/Metrics_Network.vue";
+import Metrics_Transactions from "@/pages/Metrics_Transactions.vue";
+import Metrics_Accounts from "@/pages/Metrics_Accounts.vue";
+import Metrics_Nodes from "@/pages/Metrics_Nodes.vue";
 
 export enum TabId {
     Home = "Home",
@@ -498,6 +502,64 @@ export const NODES_ROUTE: RouteRecordRaw =     {
     ],
 }
 
+// {
+//     path: '/:network/metrics',
+//         name: 'Metrics',
+//     component: Metrics,
+//     props: true,
+//     meta: {
+//     tabId: TabId.Metrics
+// }
+// },
+
+export const METRICS_ROUTE: RouteRecordRaw = {
+    path: '/:network/metrics',
+    name: 'Metrics',
+    component: Metrics,
+    props: true,
+    meta: {
+        tabId: TabId.Metrics
+    },
+    children: [
+        {
+            path: '',
+            name: 'Metrics_Network',
+            component: Metrics_Network,
+            props: true,
+            meta: {
+                tabLabel: "Network"
+            }
+        },
+        {
+            path: 'transactions',
+            name: 'Metrics_Transactions',
+            component: Metrics_Transactions,
+            props: true,
+            meta: {
+                tabLabel: "Transactions"
+            }
+        },
+        {
+            path: 'accounts',
+            name: 'Metrics_Accounts',
+            component: Metrics_Accounts,
+            props: true,
+            meta: {
+                tabLabel: "Accounts"
+            }
+        },
+        {
+            path: 'nodes',
+            name: 'Metrics_Nodes',
+            component: Metrics_Nodes,
+            props: true,
+            meta: {
+                tabLabel: "Nodes"
+            }
+        },
+    ]
+}
+
 export const routes: Array<RouteRecordRaw> = [
     {
         path: '/',
@@ -706,15 +768,7 @@ export const routes: Array<RouteRecordRaw> = [
         }
     },
     BLOCK_DETAILS_ROUTE,
-    {
-        path: '/:network/metrics',
-        name: 'Metrics',
-        component: Metrics,
-        props: true,
-        meta: {
-            tabId: TabId.Metrics
-        }
-    },
+    METRICS_ROUTE,
     {
         // EIP 3091 Support
         path: '/:network/tx/:transactionLoc',

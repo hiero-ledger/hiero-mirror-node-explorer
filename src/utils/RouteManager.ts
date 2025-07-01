@@ -23,8 +23,9 @@ import {
     ACCOUNT_DETAILS_ROUTE,
     BLOCK_DETAILS_ROUTE,
     CONTRACT_DETAILS_ROUTE,
-    NODES_ROUTE,
+    METRICS_ROUTE,
     NFT_DETAILS_ROUTE,
+    NODES_ROUTE,
     routes,
     TOKEN_DETAILS_ROUTE,
     TOKENS_ROUTE,
@@ -565,8 +566,21 @@ export class RouteManager {
         return {name: 'Blocks', params: {network: this.currentNetwork.value}}
     }
 
-    public makeRouteToMetrics(): RouteLocationRaw {
-        return {name: 'Metrics', params: {network: this.currentNetwork.value}}
+    public readonly metricsOperator = new RouteOperator(METRICS_ROUTE, this)
+
+    public routeToMetrics(tabId: string | null = null, replace = false): Promise<NavigationFailure | void | undefined> {
+        let result: Promise<NavigationFailure | void | undefined>
+        if (replace) {
+            result = this.router.replace(this.makeRouteToMetrics(tabId))
+        } else {
+            result = this.router.push(this.makeRouteToMetrics(tabId))
+        }
+        return result
+    }
+
+    public makeRouteToMetrics(tabId: string | null = null): RouteLocationRaw {
+        const targetTabId = tabId ?? this.metricsOperator.defaultTabId
+        return {name: targetTabId, params: {network: this.currentNetwork.value}}
     }
 
     public makeRouteToPageNotFound(): RouteLocationRaw {
