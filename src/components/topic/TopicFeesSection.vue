@@ -6,7 +6,7 @@
 
 <template>
 
-  <DashboardCardV2 collapsible-key="customFees">
+  <DashboardCardV2>
 
     <template #title>
       Custom Fees
