@@ -13,6 +13,7 @@ import NodeTable from "@/components/node/NodeTable.vue";
 import NetworkDashboardItemV2 from "@/components/node/NetworkDashboardItemV2.vue";
 import {fetchGetURLs} from "../MockUtils";
 import router from "@/utils/RouteManager.ts";
+import Nodes_NodeTable from "@/pages/Nodes_NodeTable.vue";
 
 /*
     Bookmarks
@@ -61,13 +62,13 @@ describe("Nodes.vue", () => {
             }
         });
 
+        await flushPromises()
+        // console.log(wrapper.text())
+
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/network/nodes",
             "api/v1/network/stake",
         ])
-
-        await flushPromises()
-        // console.log(wrapper.text())
 
         const cards = wrapper.findAllComponents(DashboardCardV2)
         expect(cards.length).toBe(2)
@@ -85,11 +86,23 @@ describe("Nodes.vue", () => {
         expect(items[7].text()).toMatch("MAXIMUM REWARD RATE 0%")
         expect(items[8].text()).toMatch("CURRENT REWARD RATE 0%")
 
-        expect(cards[1].text()).toMatch("3  Nodes")
-        const table = cards[1].findComponent(NodeTable)
+        mock.resetHistory()
+        const wrapper2 = mount(Nodes_NodeTable, {
+            global: {
+                plugins: [router, Oruga]
+            }
+        });
+
+        await flushPromises()
+        // console.log(wrapper2.text())
+
+        expect(fetchGetURLs(mock)).toStrictEqual([])
+
+        expect(wrapper2.text()).toMatch("3  Nodes")
+        const table = wrapper2.findComponent(NodeTable)
         expect(table.exists()).toBe(true)
         expect(table.get('thead').text()).toBe("NODE ID DESCRIPTION STAKE FOR CONSENSUS % STAKE RANGE REWARD RATE")
-        expect(wrapper.get('tbody').text()).toBe(
+        expect(wrapper2.get('tbody').text()).toBe(
             "0" +
             "Hosted by Hedera | East Coast, USA" +
             "6,000,000ℏ" + tooltipStake +
@@ -119,6 +132,7 @@ describe("Nodes.vue", () => {
 
         mock.restore()
         wrapper.unmount()
+        wrapper2.unmount()
         await flushPromises()
     });
 
