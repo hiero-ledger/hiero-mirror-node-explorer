@@ -22,7 +22,7 @@ describe('Search Bar', () => {
             searchAccount,
             '/mainnet/account/' + searchAccount,
             'Account ' + searchAccount,
-            true)
+            false)
     })
 
     it('should find the transaction ID', () => {
@@ -115,7 +115,7 @@ describe('Search Bar', () => {
             searchNFT,
             '/mainnet/token/' + searchNFT,
             'Token ' + searchNFT,
-            true)
+            false)
     })
 
     it('should find the token ID', () => {
@@ -123,7 +123,7 @@ describe('Search Bar', () => {
         testBodyV2(searchToken,
             '/mainnet/token/' + searchToken,
             'Token ' + searchToken,
-            true)
+            false)
     })
 
     it('should find the topic ID', () => {
@@ -132,7 +132,7 @@ describe('Search Bar', () => {
             searchTopic,
             '/mainnet/topic/' + searchTopic,
             'Topic ' + searchTopic,
-            true)
+            false)
     })
 
     it('should find the contract ID', () => {
@@ -140,7 +140,7 @@ describe('Search Bar', () => {
         testBodyV2(searchContract,
             '/mainnet/contract/' + searchContract,
             'Contract ' + searchContract,
-            true)
+            false)
     })
 
     it('should find the account by public key', () => {
