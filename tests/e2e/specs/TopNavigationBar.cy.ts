@@ -47,8 +47,8 @@ describe('Top Navigation Bar', () => {
         cy.contains('Recent Transactions')
 
         cy.contains('Tokens').click()
-        cy.contains('Recent NFTs')
-        cy.contains('Recent Fungible Tokens')
+        cy.contains('Fungible')
+        cy.contains('NFTs')
 
         cy.contains('Topics').click()
         cy.contains('Recent Topics')
@@ -61,7 +61,7 @@ describe('Top Navigation Bar', () => {
 
         cy.contains('Nodes').click()
         cy.contains('Network')
-        cy.contains('Nodes')
+        cy.contains('Node Table')
 
         cy.contains('Staking').click()
         cy.contains('My Staking')
