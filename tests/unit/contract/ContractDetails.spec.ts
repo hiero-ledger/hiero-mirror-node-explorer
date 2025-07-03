@@ -167,7 +167,6 @@ describe("ContractDetails.vue", () => {
 
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/contracts/" + SAMPLE_CONTRACT.contract_id + "/results",
-            "api/v1/contracts/" + SAMPLE_CONTRACT.contract_id + "/results/logs",
             "api/v1/contracts/0.0.1260",
             "api/v1/contracts/" + SAMPLE_CONTRACT_RESULTS.results[0].from,
             "api/v1/tokens/0.0.1260",
@@ -299,7 +298,6 @@ describe("ContractDetails.vue", () => {
 
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/contracts/" + SAMPLE_CONTRACT.evm_address + "/results",
-            "api/v1/contracts/" + SAMPLE_CONTRACT.evm_address + "/results/logs",
             "api/v1/contracts/0.0.1260",
             "api/v1/contracts/" + SAMPLE_CONTRACT_RESULTS.results[0].from,
             "api/v1/tokens/0.0.1260",
@@ -346,7 +344,6 @@ describe("ContractDetails.vue", () => {
 
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/contracts/" + SAMPLE_CONTRACT.contract_id + "/results",
-            "api/v1/contracts/" + SAMPLE_CONTRACT.contract_id + "/results/logs",
             "api/v1/contracts/0.0.1260",
             "api/v1/contracts/" + SAMPLE_CONTRACT_RESULTS.results[0].from,
             "api/v1/tokens/0.0.1260",
