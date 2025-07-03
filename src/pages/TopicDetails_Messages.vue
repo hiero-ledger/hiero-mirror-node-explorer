@@ -63,7 +63,6 @@ const normalizedTopicId = computed(() =>
 const topicLookup = TopicByIdCache.instance.makeLookup(normalizedTopicId)
 onMounted(() => topicLookup.mount())
 onBeforeUnmount(() => topicLookup.unmount())
-const topic = topicLookup.entity
 
 //
 // messageTableController
