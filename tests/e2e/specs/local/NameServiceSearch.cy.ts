@@ -16,13 +16,13 @@ describe('Name Service Search', () => {
             searchName,
             '/mainnet/account/' + searchAccount,
             'Account ' + searchAccount,
-            true
+            false
         )
         testBodyV2(
             searchName.toUpperCase(),
             '/mainnet/account/' + searchAccount,
             'Account ' + searchAccount,
-            true
+            false
         )
     })
 
