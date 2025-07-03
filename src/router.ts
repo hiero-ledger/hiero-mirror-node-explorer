@@ -187,7 +187,7 @@ export const CONTRACT_DETAILS_ROUTE: RouteRecordRaw = {
         },
         {
             path: 'source',
-            name: 'ContractDetails_Source',
+            name: 'ContractDetails_SourceCode',
             component: ContractDetails_SourceCode,
             props: true,
             meta: {
