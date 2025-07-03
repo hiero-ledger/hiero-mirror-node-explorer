@@ -161,6 +161,9 @@ describe('Token Navigation', () => {
         cy.contains('Fungible Token')
         cy.get('title').contains('Token ' + proxiedTokenId)
 
+        cy.get('#tab-TokenDetails_Others')
+            .click()
+
         cy.get('#contract-results-table')
             .find('tbody tr')
             .should('be.visible')
