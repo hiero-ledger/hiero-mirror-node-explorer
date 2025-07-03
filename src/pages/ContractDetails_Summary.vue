@@ -17,7 +17,7 @@
           Contract ID
         </template>
         <template #value>
-          <EntityIDView :id="contractId" :checksum="accountChecksum"/>
+          <EntityIDView :id="parsedContractId" :checksum="accountChecksum"/>
         </template>
       </Property>
       <Property id="evmAddress" full-width>
@@ -76,7 +76,7 @@
     </template>
 
     <template #footer>
-      <MirrorLink :network="props.network" entityUrl="contracts" :loc="contractId"/>
+      <MirrorLink :network="props.network" entityUrl="contracts" :loc="parsedContractId"/>
     </template>
   </DashboardCardV2>
 
@@ -84,7 +84,7 @@
 
   <ContractVerificationDialog
       v-model:show-dialog="showVerifyDialog"
-      :contract-id="contractId"
+      :contract-id="parsedContractId"
       v-on:verify-did-complete="verifyDidComplete"/>
 
 </template>
@@ -126,7 +126,7 @@ const props = defineProps({
 const contractLocParser = new ContractLocParser(computed(() => props.contractId ?? null))
 onMounted(() => contractLocParser.mount())
 onBeforeUnmount(() => contractLocParser.unmount())
-const contractId = contractLocParser.contractId
+const parsedContractId = contractLocParser.contractId
 const contractAddress = contractLocParser.ethereumAddress
 const contract = contractLocParser.entity
 const proxyAccountId = computed(() => {
@@ -139,7 +139,7 @@ const obtainerId = computed(() => {
 //
 // ContractAnalyzer
 //
-const contractAnalyzer = new ContractAnalyzer(contractId)
+const contractAnalyzer = new ContractAnalyzer(parsedContractId)
 onMounted(() => contractAnalyzer.mount())
 onBeforeUnmount(() => contractAnalyzer.unmount())
 const contractName = contractAnalyzer.contractName
@@ -153,7 +153,7 @@ const tooltipText = computed(() => isFullMatch.value ? FULL_MATCH_TOOLTIP : PART
 //
 // ERCAnalyzer
 //
-const ercAnalyzer = new ERCAnalyzer(contractId)
+const ercAnalyzer = new ERCAnalyzer(parsedContractId)
 onMounted(() => ercAnalyzer.mount())
 onBeforeUnmount(() => ercAnalyzer.unmount())
 
@@ -164,8 +164,8 @@ onBeforeUnmount(() => ercAnalyzer.unmount())
 
 const networkConfig = NetworkConfig.inject()
 const accountChecksum = computed(() =>
-    contractId.value ? networkConfig.computeChecksum(
-        contractId.value,
+    parsedContractId.value ? networkConfig.computeChecksum(
+        parsedContractId.value,
         routeManager.currentNetwork.value
     ) : null)
 
