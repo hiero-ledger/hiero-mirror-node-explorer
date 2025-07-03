@@ -19,6 +19,10 @@ describe('ContractResultDetails', () => {
 
         cy.get('#transactionTypeValue').should('have.text', 'CONTRACT CALL')
         cy.get('#entityIdValue').should('have.text', '0.0.1186129')
+
+        cy.get('#tab-TransactionDetails_Result')
+            .click()
+
         cy.contains('Contract Result')
         cy.get('#resultValue').should('have.text', 'SUCCESS')
         cy.get('#fromValue').should('have.text', '0x00000000000000000000000000000000000cf475Copy(0.0.849013)')
@@ -36,6 +40,10 @@ describe('ContractResultDetails', () => {
 
         cy.get('#transactionTypeValue').should('have.text', 'CONTRACT CALL')
         cy.get('#entityIdValue').should('have.text', 'Hedera Token Service System Contract')
+
+        cy.get('#tab-TransactionDetails_Result')
+            .click()
+
         cy.contains('Contract Result')
         cy.get('#resultValue').should('have.text', 'SUCCESS')
         cy.get('#fromValue').should('have.text', '0xb6d4c5a61a0c104b6c9222630fac403178725f7fCopy(0.0.1463739)')
@@ -53,6 +61,10 @@ describe('ContractResultDetails', () => {
 
         cy.get('#transactionTypeValue').should('have.text', 'TOKEN BURN')
         cy.get('#entityIdValue').should('have.text', '0.0.1456986')
+
+        cy.get('#tab-TransactionDetails_Result')
+            .click()
+
         cy.contains('Contract Result')
         cy.get('#resultValue').should('have.text', 'SUCCESS')
         cy.get('#fromValue').should('have.text', '0x0000000000000000000000000000000000163b59Copy(0.0.1456985)')
@@ -70,6 +82,10 @@ describe('ContractResultDetails', () => {
 
         cy.get('#transactionTypeValue').should('have.text', 'CRYPTO TRANSFER')
         cy.get('#entityIdValue').should('not.exist')
+
+        cy.get('#tab-TransactionDetails_Result')
+            .click()
+
         cy.contains('Contract Result')
         cy.get('#resultValue').should('have.text', 'SUCCESS')
         cy.get('#fromValue').should('have.text', '0x0000000000000000000000000000000000163b59Copy(0.0.1456985)')
