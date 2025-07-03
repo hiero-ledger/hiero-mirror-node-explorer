@@ -36,6 +36,9 @@ import {networkConfigKey} from "@/AppKeys.ts";
 import PageHeader from "@/components/page/header/PageHeader.vue";
 import NotificationBanner from "@/components/NotificationBanner.vue";
 import router, {routeManager} from "@/utils/RouteManager.ts";
+import TokenDetails_Holders from "@/pages/TokenDetails_Holders.vue";
+import TokenDetails_Others from "@/pages/TokenDetails_Others.vue";
+import TokenDetails_Summary from "@/pages/TokenDetails_Summary.vue";
 
 /*
     Bookmarks
@@ -66,6 +69,10 @@ describe("TokenDetails.vue", () => {
         const matcher4 = "/api/v1/transactions"
         mock.onGet(matcher4).reply(200, SAMPLE_TRANSACTIONS);
 
+        //
+        // TokenDetails / TokenDetails_Summary
+        //
+
         const wrapper = mount(TokenDetails, {
             global: {
                 plugins: [router, Oruga],
@@ -79,30 +86,21 @@ describe("TokenDetails.vue", () => {
         // console.log(wrapper.text())
 
         expect(fetchGetURLs(mock)).toStrictEqual([
-            "api/v1/network/nodes",
+            "api/v1/network/exchangerate",
             "api/v1/tokens/" + SAMPLE_TOKEN.token_id,
-            "api/v1/contracts/" + SAMPLE_TOKEN.token_id + "/results",
+            "api/v1/network/nodes",
             "api/v1/transactions",
             "api/v1/contracts/" + SAMPLE_TOKEN.auto_renew_account,
             "api/v1/contracts/" + SAMPLE_TOKEN.treasury_account_id,
             "api/v1/contracts/" + SAMPLE_TOKEN.token_id,
-            "api/v1/contracts/" + SAMPLE_TOKEN.custom_fees.fixed_fees[0].collector_account_id,
-            "api/v1/contracts/" + SAMPLE_TOKEN.custom_fees.fixed_fees[1].collector_account_id,
-            "api/v1/contracts/" + SAMPLE_TOKEN.custom_fees.fixed_fees[2].collector_account_id,
-            "api/v1/network/exchangerate",
             "api/v1/contracts/0x0000000000000000000000000000000001c49eec",
             "api/v1/accounts/0x0000000000000000000000000000000001c49eec",
-            "api/v1/tokens/" + SAMPLE_TOKEN.token_id + "/balances",
         ])
-
-        expect((wrapper.vm as any).tokenBalanceTableController.mounted.value).toBe(true)
-        expect((wrapper.vm as any).nftHolderTableController.mounted.value).toBe(true)
 
         expect(wrapper.text()).toContain("Fungible Token" + testTokenName + ' (' + testTokenSymbol + ')' + 'Token ID' + testTokenId)
 
         expect(wrapper.get("#nameValue").text()).toBe("QmVGABnvpbPwLcfG4iuW2JSzY8MLkALhd54bdPAbJxoEkB")
         expect(wrapper.get("#symbolValue").text()).toBe("23423")
-        expect(wrapper.find("#adminKey").text()).toBe("Admin KeyNoneToken is immutable")
         expect(wrapper.get("#memoValue").text()).toBe("Predator")
         expect(wrapper.get("#expiresAtValue").text()).toBe("None")
         expect(wrapper.get("#autoRenewPeriodValue").text()).toBe("90 days")
@@ -123,16 +121,63 @@ describe("TokenDetails.vue", () => {
 
         expect(wrapper.get("#createTransactionValue").text()).toBe(TransactionID.normalizeForDisplay(SAMPLE_TRANSACTION.transaction_id))
 
-        expect(wrapper.text()).toMatch("Balances")
-        expect(wrapper.findComponent(TokenBalanceTable).exists()).toBe(true)
-        expect(wrapper.findComponent(NftHolderTable).exists()).toBe(false)
+        //
+        // TokenDetails_Holders
+        //
+
+        mock.resetHistory()
+        const wrapper2 = mount(TokenDetails_Holders, {
+            global: {
+                plugins: [router, Oruga],
+                provide: {"isMediumScreen": false}
+            },
+            props: {
+                tokenId: testTokenId
+            },
+        });
+        await flushPromises()
+        // console.log(wrapper2.text())
+
+        expect(fetchGetURLs(mock)).toStrictEqual([
+            "api/v1/tokens/" + SAMPLE_TOKEN.token_id + "/balances",
+        ])
+
+        expect(wrapper2.text()).toMatch("Balances")
+        expect(wrapper2.findComponent(TokenBalanceTable).exists()).toBe(true)
+        expect(wrapper2.findComponent(NftHolderTable).exists()).toBe(false)
+
+
+        //
+        // TokenDetails_Others
+        //
+
+        mock.resetHistory()
+        const wrapper3 = mount(TokenDetails_Others, {
+            global: {
+                plugins: [router, Oruga],
+                provide: {"isMediumScreen": false}
+            },
+            props: {
+                tokenId: testTokenId
+            },
+        });
+        await flushPromises()
+        // console.log(wrapper3.text())
+
+        expect(fetchGetURLs(mock)).toStrictEqual([
+            "api/v1/contracts/" + SAMPLE_TOKEN.token_id + "/results",
+            "api/v1/contracts/" + SAMPLE_TOKEN.custom_fees.fixed_fees[0].collector_account_id,
+            "api/v1/contracts/" + SAMPLE_TOKEN.custom_fees.fixed_fees[1].collector_account_id,
+            "api/v1/contracts/" + SAMPLE_TOKEN.custom_fees.fixed_fees[2].collector_account_id,
+            "api/v1/network/exchangerate",
+        ])
+
+        expect(wrapper3.get("#adminKey").text()).toBe("Admin KeyNoneToken is immutable")
 
         mock.restore()
         wrapper.unmount()
+        wrapper2.unmount()
         await flushPromises()
-
-        expect((wrapper.vm as any).tokenBalanceTableController.mounted.value).toBe(false)
-        expect((wrapper.vm as any).nftHolderTableController.mounted.value).toBe(false)
     });
 
     it("Should display details of non fungible token", async () => {
@@ -164,31 +209,20 @@ describe("TokenDetails.vue", () => {
         // console.log(wrapper.text())
 
         expect(fetchGetURLs(mock)).toStrictEqual([
-            "api/v1/network/nodes",
+            "api/v1/network/exchangerate",
             "api/v1/tokens/" + SAMPLE_NONFUNGIBLE_DUDE.token_id,
-            "api/v1/contracts/" + SAMPLE_NONFUNGIBLE_DUDE.token_id + "/results",
+            "api/v1/network/nodes",
             "api/v1/transactions",
             "api/v1/contracts/" + SAMPLE_NONFUNGIBLE_DUDE.treasury_account_id,
             "api/v1/contracts/" + SAMPLE_NONFUNGIBLE_DUDE.token_id,
-            "api/v1/contracts/" + SAMPLE_NONFUNGIBLE_DUDE.custom_fees.royalty_fees[0].collector_account_id,
             "api/v1/contracts/0x00000000000000000000000000000000000b6b60",
             "api/v1/accounts/0x00000000000000000000000000000000000b6b60",
-            "api/v1/tokens/" + SAMPLE_NONFUNGIBLE_DUDE.token_id + "/nfts",
-            "api/v1/tokens/" + SAMPLE_NFTS.nfts[0].token_id + "/nfts/2",
-            "api/v1/tokens/" + SAMPLE_NFTS.nfts[1].token_id + "/nfts/1",
-            "api/v1/tokens/" + SAMPLE_NFTS.nfts[2].token_id + "/nfts/342",
         ])
-
-        expect((wrapper.vm as any).tokenBalanceTableController.mounted.value).toBe(true)
-        expect((wrapper.vm as any).nftHolderTableController.mounted.value).toBe(true)
 
         expect(wrapper.text()).toContain("NFT Collection" + testTokenName + ' (' + testTokenSymbol + ')' + 'Token ID' + testTokenId)
 
         expect(wrapper.get("#nameValue").text()).toBe("Ħ Frens Kingdom Dude")
         expect(wrapper.get("#symbolValue").text()).toBe("ĦFRENSKINGDOM")
-        expect(wrapper.find("#adminKey").text()).toBe(
-            "Admin Key0xc1a8c8c5b446ce053b6eff4fe4f0192f76535ea9ed6b2b91981177ba237f4b5dCopyED25519"
-        )
         expect(wrapper.get("#memoValue").text()).toBe("None")
         expect(wrapper.get("#expiresAtValue").text()).toBe("None")
         expect(wrapper.get("#autoRenewPeriodValue").text()).toBe("90 days")
@@ -201,16 +235,65 @@ describe("TokenDetails.vue", () => {
         expect(wrapper.get("#decimalsValue").text()).toBe("0")
         expect(wrapper.get("#metadataValue").text()).toBe("None")
 
-        expect(wrapper.text()).toMatch("NFTs")
-        expect(wrapper.findComponent(NftHolderTable).exists()).toBe(true)
-        expect(wrapper.findComponent(TokenBalanceTable).exists()).toBe(false)
+        //
+        // TokenDetails_Holders
+        //
+
+        mock.resetHistory()
+        const wrapper2 = mount(TokenDetails_Holders, {
+            global: {
+                plugins: [router, Oruga],
+                provide: {"isMediumScreen": false}
+            },
+            props: {
+                tokenId: testTokenId
+            },
+        });
+        await flushPromises()
+        // console.log(wrapper2.text())
+
+        expect(fetchGetURLs(mock)).toStrictEqual([
+            "api/v1/tokens/" + SAMPLE_NONFUNGIBLE_DUDE.token_id + "/nfts",
+            "api/v1/tokens/" + SAMPLE_NFTS.nfts[0].token_id + "/nfts/2",
+            "api/v1/tokens/" + SAMPLE_NFTS.nfts[1].token_id + "/nfts/1",
+            "api/v1/tokens/" + SAMPLE_NFTS.nfts[2].token_id + "/nfts/342",
+        ])
+
+        expect(wrapper2.text()).toMatch("NFTs")
+        expect(wrapper2.findComponent(NftHolderTable).exists()).toBe(true)
+        expect(wrapper2.findComponent(TokenBalanceTable).exists()).toBe(false)
+
+        //
+        // TokenDetails_Others
+        //
+
+        mock.resetHistory()
+        const wrapper3 = mount(TokenDetails_Others, {
+            global: {
+                plugins: [router, Oruga],
+                provide: {"isMediumScreen": false}
+            },
+            props: {
+                tokenId: testTokenId
+            },
+        });
+        await flushPromises()
+        // console.log(wrapper3.text())
+
+        expect(fetchGetURLs(mock)).toStrictEqual([
+            "api/v1/contracts/" + SAMPLE_NONFUNGIBLE_DUDE.token_id + "/results",
+            "api/v1/contracts/" + SAMPLE_NONFUNGIBLE_DUDE.custom_fees.royalty_fees[0].collector_account_id,
+        ])
+
+        expect(wrapper3.find("#adminKey").text()).toBe(
+            "Admin Key0xc1a8c8c5b446ce053b6eff4fe4f0192f76535ea9ed6b2b91981177ba237f4b5dCopyED25519"
+        )
 
         mock.restore()
         wrapper.unmount()
+        wrapper2.unmount()
+        wrapper3.unmount()
         await flushPromises()
-
-        expect((wrapper.vm as any).tokenBalanceTableController.mounted.value).toBe(false)
-        expect((wrapper.vm as any).nftHolderTableController.mounted.value).toBe(false)
     });
 
     it("Should update when token id changes", async () => {
@@ -229,7 +312,7 @@ describe("TokenDetails.vue", () => {
         let matcher3 = "/api/v1/contracts/" + testTokenId + "/results"
         mock.onGet(matcher3).reply(200, []);
 
-        const wrapper = mount(TokenDetails, {
+        const wrapper = mount(TokenDetails_Summary, {
             global: {
                 plugins: [router, Oruga],
                 provide: {"isMediumScreen": false}
@@ -244,28 +327,16 @@ describe("TokenDetails.vue", () => {
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/network/nodes",
             "api/v1/tokens/" + SAMPLE_NONFUNGIBLE_DUDE.token_id,
-            "api/v1/contracts/" + SAMPLE_NONFUNGIBLE_DUDE.token_id + "/results",
             "api/v1/transactions",
             "api/v1/contracts/" + SAMPLE_NONFUNGIBLE_DUDE.treasury_account_id,
             "api/v1/contracts/" + SAMPLE_NONFUNGIBLE_DUDE.token_id,
-            "api/v1/contracts/" + SAMPLE_NONFUNGIBLE_DUDE.custom_fees.royalty_fees[0].collector_account_id,
             "api/v1/contracts/0x00000000000000000000000000000000000b6b60",
             "api/v1/accounts/0x00000000000000000000000000000000000b6b60",
-            "api/v1/tokens/" + SAMPLE_NONFUNGIBLE_DUDE.token_id + "/nfts",
-            "api/v1/tokens/" + SAMPLE_NFTS.nfts[0].token_id + "/nfts/2",
-            "api/v1/tokens/" + SAMPLE_NFTS.nfts[1].token_id + "/nfts/1",
-            "api/v1/tokens/" + SAMPLE_NFTS.nfts[2].token_id + "/nfts/342",
         ])
-
-        expect((wrapper.vm as any).tokenBalanceTableController.mounted.value).toBe(true)
-        expect((wrapper.vm as any).nftHolderTableController.mounted.value).toBe(true)
 
         expect(wrapper.text()).toContain("NFT Collection" + testTokenName + ' (' + testTokenSymbol + ')' + 'Token ID' + testTokenId)
         expect(wrapper.get("#nameValue").text()).toBe("Ħ Frens Kingdom Dude")
         expect(wrapper.get("#symbolValue").text()).toBe("ĦFRENSKINGDOM")
-        expect(wrapper.text()).toMatch("NFTs")
-        expect(wrapper.findComponent(NftHolderTable).exists()).toBe(true)
-        expect(wrapper.findComponent(TokenBalanceTable).exists()).toBe(false)
 
         testTokenId = SAMPLE_TOKEN.token_id
         testTokenName = SAMPLE_TOKEN.name
@@ -280,7 +351,6 @@ describe("TokenDetails.vue", () => {
         mock.onGet(matcher4).reply(200, SAMPLE_NFTS);
 
         mock.resetHistory()
-
         await wrapper.setProps({
             tokenId: testTokenId
         })
@@ -289,32 +359,21 @@ describe("TokenDetails.vue", () => {
 
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/tokens/" + SAMPLE_TOKEN.token_id,
-            "api/v1/contracts/" + SAMPLE_TOKEN.token_id,
             "api/v1/transactions",
             "api/v1/contracts/" + SAMPLE_TOKEN.auto_renew_account,
             "api/v1/contracts/" + SAMPLE_TOKEN.treasury_account_id,
-            "api/v1/contracts/0.0.617889", // ?
-            "api/v1/contracts/0.0.617890", // ?
-            "api/v1/network/exchangerate",
+            "api/v1/contracts/" + SAMPLE_TOKEN.token_id,
             "api/v1/contracts/0x0000000000000000000000000000000001c49eec",
             "api/v1/accounts/0x0000000000000000000000000000000001c49eec",
-            "api/v1/tokens/" + SAMPLE_TOKEN.token_id + "/balances",
-            "api/v1/contracts/" + SAMPLE_TOKEN.token_id + "/results",
         ])
 
-        expect(wrapper.text()).toContain("Fungible Token" + testTokenName + ' (' + testTokenSymbol + ')' + 'Token ID' + testTokenId)
-        expect(wrapper.get("#nameValue").text()).toBe("QmVGABnvpbPwLcfG4iuW2JSzY8MLkALhd54bdPAbJxoEkB")
-        expect(wrapper.get("#symbolValue").text()).toBe("23423")
-        expect(wrapper.text()).toMatch("Balances")
-        expect(wrapper.findComponent(NftHolderTable).exists()).toBe(false)
-        expect(wrapper.findComponent(TokenBalanceTable).exists()).toBe(true)
+        expect(wrapper.text()).toContain('Token ID' + testTokenId)
+        expect(wrapper.get("#nameValue").text()).toBe(testTokenName)
+        expect(wrapper.get("#symbolValue").text()).toBe(testTokenSymbol)
 
         mock.restore()
         wrapper.unmount()
         await flushPromises()
-
-        expect((wrapper.vm as any).tokenBalanceTableController.mounted.value).toBe(false)
-        expect((wrapper.vm as any).nftHolderTableController.mounted.value).toBe(false)
     });
 
     it("Should detect invalid token ID", async () => {
@@ -338,6 +397,8 @@ describe("TokenDetails.vue", () => {
         // console.log(wrapper.text())
 
         expect(fetchGetURLs(mock)).toStrictEqual([
+            "api/v1/network/exchangerate",
+            "api/v1/tokens/" + invalidTokenId,
             "api/v1/network/nodes",
         ])
 
@@ -363,6 +424,10 @@ describe("TokenDetails.vue", () => {
         const matcher3 = "/api/v1/contracts/" + testTokenId + "/results"
         mock.onGet(matcher3).reply(200, []);
 
+        //
+        // TokenDetails
+        //
+
         const wrapper = mount(TokenDetails, {
             global: {
                 plugins: [router, Oruga],
@@ -376,23 +441,16 @@ describe("TokenDetails.vue", () => {
         // console.log(wrapper.text())
 
         expect(fetchGetURLs(mock)).toStrictEqual([
-            "api/v1/network/nodes",
+            "api/v1/network/exchangerate",
             "api/v1/tokens/" + SAMPLE_TOKEN_WITH_KEYS.token_id,
-            "api/v1/contracts/" + SAMPLE_TOKEN_WITH_KEYS.token_id + "/results",
+            "api/v1/network/nodes",
             "api/v1/transactions",
             "api/v1/contracts/" + SAMPLE_TOKEN_WITH_KEYS.auto_renew_account,
             "api/v1/contracts/" + SAMPLE_TOKEN_WITH_KEYS.treasury_account_id,
             "api/v1/contracts/" + SAMPLE_TOKEN_WITH_KEYS.token_id,
             "api/v1/contracts/0x0000000000000000000000000000000000016739",
             "api/v1/accounts/0x0000000000000000000000000000000000016739",
-            "api/v1/tokens/" + SAMPLE_TOKEN_WITH_KEYS.token_id + "/nfts",
-            "api/v1/tokens/" + SAMPLE_NFTS.nfts[0].token_id + "/nfts/2",
-            "api/v1/tokens/" + SAMPLE_NFTS.nfts[1].token_id + "/nfts/1",
-            "api/v1/tokens/" + SAMPLE_NFTS.nfts[2].token_id + "/nfts/342",
         ])
-
-        expect((wrapper.vm as any).tokenBalanceTableController.mounted.value).toBe(true)
-        expect((wrapper.vm as any).nftHolderTableController.mounted.value).toBe(true)
 
         expect(wrapper.getComponent(PageHeader).text()).toMatch("Token " + testTokenId)
 
@@ -402,22 +460,41 @@ describe("TokenDetails.vue", () => {
 
         expect(wrapper.text()).toContain("NFT Collection" + testTokenName + ' (' + testTokenSymbol + ')' + 'Token ID' + testTokenId)
 
-        expect(wrapper.text()).toMatch("Token Keys")
-        expect(wrapper.find("#adminKey").text()).toBe("Admin Key0xc539536f9599daefeeb777677aa1aeea2242dfc7cca92348c228a5187a0faf2bCopyED25519")
-        expect(wrapper.find("#kycKey").text()).toBe("KYC Key0xc539536f9599daefeeb777677aa1aeea2242dfc7cca92348c228a5187a0faf2bCopyED25519")
-        expect(wrapper.find("#freezeKey").text()).toBe("Freeze Key0xc539536f9599daefeeb777677aa1aeea2242dfc7cca92348c228a5187a0faf2bCopyED25519")
-        expect(wrapper.find("#wipeKey").text()).toBe("Wipe Key0xc539536f9599daefeeb777677aa1aeea2242dfc7cca92348c228a5187a0faf2bCopyED25519")
-        expect(wrapper.find("#supplyKey").text()).toBe("Supply Key0xc539536f9599daefeeb777677aa1aeea2242dfc7cca92348c228a5187a0faf2bCopyED25519")
-        expect(wrapper.find("#feeScheduleKey").text()).toBe("Fee Schedule Key0xc539536f9599daefeeb777677aa1aeea2242dfc7cca92348c228a5187a0faf2bCopyED25519")
-        expect(wrapper.find("#pauseKey").text()).toBe("Pause Key0xc539536f9599daefeeb777677aa1aeea2242dfc7cca92348c228a5187a0faf2bCopyED25519")
-        expect(wrapper.find("#metadataKey").text()).toBe("Metadata Key0xc539536f9599daefeeb777677aa1aeea2242dfc7cca92348c228a5187a0faf2bCopyED25519")
+        //
+        // TokenDetails_Others
+        //
+
+        mock.resetHistory()
+        const wrapper2 = mount(TokenDetails_Others, {
+            global: {
+                plugins: [router, Oruga],
+                provide: {"isMediumScreen": false}
+            },
+            props: {
+                tokenId: testTokenId
+            },
+        });
+        await flushPromises()
+        // console.log(wrapper2.text())
+
+        expect(fetchGetURLs(mock)).toStrictEqual([
+            "api/v1/contracts/" + SAMPLE_TOKEN_WITH_KEYS.token_id + "/results",
+        ])
+
+        expect(wrapper2.text()).toMatch("Token Keys")
+        expect(wrapper2.find("#adminKey").text()).toBe("Admin Key0xc539536f9599daefeeb777677aa1aeea2242dfc7cca92348c228a5187a0faf2bCopyED25519")
+        expect(wrapper2.find("#kycKey").text()).toBe("KYC Key0xc539536f9599daefeeb777677aa1aeea2242dfc7cca92348c228a5187a0faf2bCopyED25519")
+        expect(wrapper2.find("#freezeKey").text()).toBe("Freeze Key0xc539536f9599daefeeb777677aa1aeea2242dfc7cca92348c228a5187a0faf2bCopyED25519")
+        expect(wrapper2.find("#wipeKey").text()).toBe("Wipe Key0xc539536f9599daefeeb777677aa1aeea2242dfc7cca92348c228a5187a0faf2bCopyED25519")
+        expect(wrapper2.find("#supplyKey").text()).toBe("Supply Key0xc539536f9599daefeeb777677aa1aeea2242dfc7cca92348c228a5187a0faf2bCopyED25519")
+        expect(wrapper2.find("#feeScheduleKey").text()).toBe("Fee Schedule Key0xc539536f9599daefeeb777677aa1aeea2242dfc7cca92348c228a5187a0faf2bCopyED25519")
+        expect(wrapper2.find("#pauseKey").text()).toBe("Pause Key0xc539536f9599daefeeb777677aa1aeea2242dfc7cca92348c228a5187a0faf2bCopyED25519")
+        expect(wrapper2.find("#metadataKey").text()).toBe("Metadata Key0xc539536f9599daefeeb777677aa1aeea2242dfc7cca92348c228a5187a0faf2bCopyED25519")
 
         mock.restore()
         wrapper.unmount()
+        wrapper2.unmount()
         await flushPromises()
-
-        expect((wrapper.vm as any).tokenBalanceTableController.mounted.value).toBe(false)
-        expect((wrapper.vm as any).nftHolderTableController.mounted.value).toBe(false)
     });
 
     it("Should display no token keys", async () => {
@@ -436,6 +513,10 @@ describe("TokenDetails.vue", () => {
         const matcher3 = "/api/v1/contracts/" + testTokenId + "/results"
         mock.onGet(matcher3).reply(200, []);
 
+        //
+        // TokenDetails / TokenDetails_Summary
+        //
+
         const wrapper = mount(TokenDetails, {
             global: {
                 plugins: [router, Oruga],
@@ -449,23 +530,16 @@ describe("TokenDetails.vue", () => {
         // console.log(wrapper.text())
 
         expect(fetchGetURLs(mock)).toStrictEqual([
-            "api/v1/network/nodes",
+            "api/v1/network/exchangerate",
             "api/v1/tokens/" + SAMPLE_TOKEN_WITHOUT_KEYS.token_id,
-            "api/v1/contracts/" + SAMPLE_TOKEN_WITHOUT_KEYS.token_id + "/results",
+            "api/v1/network/nodes",
             "api/v1/transactions",
             "api/v1/contracts/" + SAMPLE_TOKEN_WITHOUT_KEYS.auto_renew_account,
             "api/v1/contracts/" + SAMPLE_TOKEN_WITHOUT_KEYS.treasury_account_id,
             "api/v1/contracts/" + SAMPLE_TOKEN_WITHOUT_KEYS.token_id,
             "api/v1/contracts/0x0000000000000000000000000000000000016739",
             "api/v1/accounts/0x0000000000000000000000000000000000016739",
-            "api/v1/tokens/" + SAMPLE_TOKEN_WITHOUT_KEYS.token_id + "/nfts",
-            "api/v1/tokens/" + SAMPLE_NFTS.nfts[0].token_id + "/nfts/2",
-            "api/v1/tokens/" + SAMPLE_NFTS.nfts[1].token_id + "/nfts/1",
-            "api/v1/tokens/" + SAMPLE_NFTS.nfts[2].token_id + "/nfts/342",
         ])
-
-        expect((wrapper.vm as any).tokenBalanceTableController.mounted.value).toBe(true)
-        expect((wrapper.vm as any).nftHolderTableController.mounted.value).toBe(true)
 
         expect(wrapper.getComponent(PageHeader).text()).toMatch("Token " + testTokenId)
 
@@ -475,22 +549,42 @@ describe("TokenDetails.vue", () => {
 
         expect(wrapper.text()).toContain("NFT Collection" + testTokenName + ' (' + testTokenSymbol + ')' + 'Token ID' + testTokenId)
 
-        expect(wrapper.text()).toMatch("Token Keys")
-        expect(wrapper.find("#adminKey").text()).toBe("Admin KeyNoneToken is immutable")
-        expect(wrapper.find("#kycKey").text()).toBe("KYC KeyNoneKYC is not required")
-        expect(wrapper.find("#freezeKey").text()).toBe("Freeze KeyNoneToken cannot be frozen")
-        expect(wrapper.find("#wipeKey").text()).toBe("Wipe KeyNoneToken cannot be wiped")
-        expect(wrapper.find("#supplyKey").text()).toBe("Supply KeyNoneToken cannot be minted or burnt")
-        expect(wrapper.find("#feeScheduleKey").text()).toBe("Fee Schedule KeyNoneCustom fee schedule is immutable")
-        expect(wrapper.find("#pauseKey").text()).toBe("Pause KeyNoneToken cannot be paused")
-        expect(wrapper.find("#metadataKey").text()).toBe("Metadata KeyNoneToken metadata is immutable")
+
+        //
+        // TokenDetails_Others
+        //
+
+        mock.resetHistory()
+        const wrapper2 = mount(TokenDetails_Others, {
+            global: {
+                plugins: [router, Oruga],
+                provide: {"isMediumScreen": false}
+            },
+            props: {
+                tokenId: testTokenId
+            },
+        });
+        await flushPromises()
+        // console.log(wrapper2.text())
+
+        expect(fetchGetURLs(mock)).toStrictEqual([
+            "api/v1/contracts/" + SAMPLE_TOKEN_WITHOUT_KEYS.token_id + "/results",
+        ])
+
+        expect(wrapper2.text()).toMatch("Token Keys")
+        expect(wrapper2.find("#adminKey").text()).toBe("Admin KeyNoneToken is immutable")
+        expect(wrapper2.find("#kycKey").text()).toBe("KYC KeyNoneKYC is not required")
+        expect(wrapper2.find("#freezeKey").text()).toBe("Freeze KeyNoneToken cannot be frozen")
+        expect(wrapper2.find("#wipeKey").text()).toBe("Wipe KeyNoneToken cannot be wiped")
+        expect(wrapper2.find("#supplyKey").text()).toBe("Supply KeyNoneToken cannot be minted or burnt")
+        expect(wrapper2.find("#feeScheduleKey").text()).toBe("Fee Schedule KeyNoneCustom fee schedule is immutable")
+        expect(wrapper2.find("#pauseKey").text()).toBe("Pause KeyNoneToken cannot be paused")
+        expect(wrapper2.find("#metadataKey").text()).toBe("Metadata KeyNoneToken metadata is immutable")
 
         mock.restore()
         wrapper.unmount()
+        wrapper2.unmount()
         await flushPromises()
-
-        expect((wrapper.vm as any).tokenBalanceTableController.mounted.value).toBe(false)
-        expect((wrapper.vm as any).nftHolderTableController.mounted.value).toBe(false)
     });
 
     it("Should display 'Token deleted' banner", async () => {
@@ -524,19 +618,15 @@ describe("TokenDetails.vue", () => {
         // console.log(wrapper.text())
 
         expect(fetchGetURLs(mock)).toStrictEqual([
-            "api/v1/network/nodes",
+            "api/v1/network/exchangerate",
             "api/v1/tokens/" + SAMPLE_TOKEN_WITHOUT_KEYS.token_id,
-            "api/v1/contracts/" + SAMPLE_TOKEN_WITHOUT_KEYS.token_id + "/results",
+            "api/v1/network/nodes",
             "api/v1/transactions",
             "api/v1/contracts/" + SAMPLE_TOKEN_WITHOUT_KEYS.auto_renew_account,
             "api/v1/contracts/" + SAMPLE_TOKEN_WITHOUT_KEYS.treasury_account_id,
             "api/v1/contracts/" + SAMPLE_TOKEN_WITHOUT_KEYS.token_id,
             "api/v1/contracts/0x0000000000000000000000000000000000016739",
             "api/v1/accounts/0x0000000000000000000000000000000000016739",
-            "api/v1/tokens/" + SAMPLE_TOKEN_WITHOUT_KEYS.token_id + "/nfts",
-            "api/v1/tokens/" + SAMPLE_NFTS.nfts[0].token_id + "/nfts/2",
-            "api/v1/tokens/" + SAMPLE_NFTS.nfts[1].token_id + "/nfts/1",
-            "api/v1/tokens/" + SAMPLE_NFTS.nfts[2].token_id + "/nfts/342",
         ])
 
         expect(wrapper.getComponent(PageHeader).text()).toMatch("Token " + testTokenId)
@@ -574,6 +664,10 @@ describe("TokenDetails.vue", () => {
         const matcher4 = "/api/v1/network/exchangerate"
         mock.onGet(matcher4).reply(200, SAMPLE_NETWORK_EXCHANGERATE);
 
+        //
+        // TokenDetails + TokenDetails_Summary
+        //
+
         const wrapper = mount(TokenDetails, {
             global: {
                 plugins: [router, Oruga],
@@ -587,25 +681,48 @@ describe("TokenDetails.vue", () => {
         // console.log(wrapper.text())
 
         expect(fetchGetURLs(mock)).toStrictEqual([
-            "api/v1/network/nodes",
+            "api/v1/network/exchangerate",
             "api/v1/tokens/" + SAMPLE_TOKEN.token_id,
-            "api/v1/contracts/" + SAMPLE_TOKEN.token_id + "/results",
+            "api/v1/network/exchangerate",
+            "api/v1/network/supply",
+            "api/v1/network/nodes",
             "api/v1/transactions",
             "api/v1/contracts/" + SAMPLE_TOKEN.auto_renew_account,
             "api/v1/contracts/" + SAMPLE_TOKEN.treasury_account_id,
             "api/v1/contracts/" + SAMPLE_TOKEN.token_id,
-            "api/v1/contracts/" + SAMPLE_TOKEN.custom_fees.fixed_fees[0].collector_account_id,
-            "api/v1/contracts/" + SAMPLE_TOKEN.custom_fees.fixed_fees[1].collector_account_id,
-            "api/v1/contracts/" + SAMPLE_TOKEN.custom_fees.fixed_fees[2].collector_account_id,
-            "api/v1/network/exchangerate",
             "api/v1/contracts/0x0000000000000000000000000000000001c49eec",
             "api/v1/accounts/0x0000000000000000000000000000000001c49eec",
-            "api/v1/tokens/" + SAMPLE_TOKEN.token_id + "/balances",
         ])
 
         expect(wrapper.text()).toContain("Fungible Token" + testTokenName + ' (' + testTokenSymbol + ')' + 'Token ID' + testTokenId)
 
-        const customFees = wrapper.findComponent(TokenFeesSection)
+
+        //
+        // TokenDetails_Others
+        //
+
+        mock.resetHistory()
+        const wrapper2 = mount(TokenDetails_Others, {
+            global: {
+                plugins: [router, Oruga],
+                provide: {"isMediumScreen": false}
+            },
+            props: {
+                tokenId: testTokenId
+            },
+        });
+        await flushPromises()
+        // console.log(wrapper.text())
+
+        expect(fetchGetURLs(mock)).toStrictEqual([
+            "api/v1/contracts/" + SAMPLE_TOKEN.token_id + "/results",
+            "api/v1/contracts/" + SAMPLE_TOKEN.custom_fees.fixed_fees[0].collector_account_id,
+            "api/v1/contracts/" + SAMPLE_TOKEN.custom_fees.fixed_fees[1].collector_account_id,
+            "api/v1/contracts/" + SAMPLE_TOKEN.custom_fees.fixed_fees[2].collector_account_id,
+            "api/v1/network/exchangerate",
+        ])
+
+        const customFees = wrapper2.findComponent(TokenFeesSection)
         expect(customFees.exists()).toBe(true)
 
         const fixedFee = customFees.findComponent(FixedFeeTable)
@@ -629,6 +746,7 @@ describe("TokenDetails.vue", () => {
 
         mock.restore()
         wrapper.unmount()
+        wrapper2.unmount()
         await flushPromises()
     });
 
@@ -650,6 +768,10 @@ describe("TokenDetails.vue", () => {
         const matcher4 = "/api/v1/network/exchangerate"
         mock.onGet(matcher4).reply(200, SAMPLE_NETWORK_EXCHANGERATE);
 
+        //
+        // TokenDetails + TokenDetails_Summary
+        //
+
         const wrapper = mount(TokenDetails, {
             global: {
                 plugins: [router, Oruga],
@@ -664,27 +786,48 @@ describe("TokenDetails.vue", () => {
         // console.log(wrapper.text())
 
         expect(fetchGetURLs(mock)).toStrictEqual([
-            "api/v1/network/nodes",
+            "api/v1/network/exchangerate",
             "api/v1/tokens/" + SAMPLE_NONFUNGIBLE.token_id,
-            "api/v1/contracts/" + SAMPLE_NONFUNGIBLE.token_id + "/results",
+            "api/v1/network/exchangerate",
+            "api/v1/network/supply",
+            "api/v1/network/nodes",
             "api/v1/transactions",
             "api/v1/contracts/" + SAMPLE_NONFUNGIBLE.treasury_account_id,
             "api/v1/contracts/" + SAMPLE_NONFUNGIBLE.token_id,
-            "api/v1/contracts/" + SAMPLE_NONFUNGIBLE.custom_fees.fixed_fees[0].collector_account_id,
-            "api/v1/contracts/" + SAMPLE_NONFUNGIBLE.custom_fees.fixed_fees[1].collector_account_id,
-            "api/v1/contracts/" + SAMPLE_NONFUNGIBLE.custom_fees.fixed_fees[2].collector_account_id,
-            "api/v1/network/exchangerate",
             "api/v1/contracts/0x00000000000000000000000000000000000b6b5f",
             "api/v1/accounts/0x00000000000000000000000000000000000b6b5f",
-            "api/v1/tokens/" + SAMPLE_NONFUNGIBLE.token_id + "/nfts",
-            "api/v1/tokens/" + SAMPLE_NFTS.nfts[0].token_id + "/nfts/2",
-            "api/v1/tokens/" + SAMPLE_NFTS.nfts[1].token_id + "/nfts/1",
-            "api/v1/tokens/" + SAMPLE_NFTS.nfts[2].token_id + "/nfts/342",
         ])
 
         expect(wrapper.text()).toContain("NFT Collection" + testTokenName + ' (' + testTokenSymbol + ')' + 'Token ID' + testTokenId)
 
-        const customFees = wrapper.findComponent(TokenFeesSection)
+
+        //
+        // TokenDetails_Others
+        //
+
+        mock.resetHistory()
+        const wrapper2 = mount(TokenDetails_Others, {
+            global: {
+                plugins: [router, Oruga],
+                provide: {"isMediumScreen": false}
+            },
+            props: {
+                tokenId: testTokenId
+            },
+        });
+        await flushPromises()
+        // console.log(wrapper.html())
+        // console.log(wrapper.text())
+
+        expect(fetchGetURLs(mock)).toStrictEqual([
+            "api/v1/contracts/" + SAMPLE_NONFUNGIBLE.token_id + "/results",
+            "api/v1/contracts/" + SAMPLE_NONFUNGIBLE.custom_fees.fixed_fees[0].collector_account_id,
+            "api/v1/contracts/" + SAMPLE_NONFUNGIBLE.custom_fees.fixed_fees[1].collector_account_id,
+            "api/v1/contracts/" + SAMPLE_NONFUNGIBLE.custom_fees.fixed_fees[2].collector_account_id,
+            "api/v1/network/exchangerate",
+        ])
+
+        const customFees = wrapper2.findComponent(TokenFeesSection)
         expect(customFees.exists()).toBe(true)
 
         const fixedFee = customFees.findComponent(FixedFeeTable)
@@ -708,6 +851,7 @@ describe("TokenDetails.vue", () => {
 
         mock.restore()
         wrapper.unmount()
+        wrapper2.unmount()
         await flushPromises()
     });
 
@@ -740,19 +884,15 @@ describe("TokenDetails.vue", () => {
         // console.log(wrapper.text())
 
         expect(fetchGetURLs(mock)).toStrictEqual([
-            "api/v1/network/nodes",
+            "api/v1/network/exchangerate",
             "api/v1/tokens/" + SAMPLE_TOKEN_WITHOUT_KEYS.token_id,
-            "api/v1/contracts/" + SAMPLE_TOKEN_WITHOUT_KEYS.token_id + "/results",
+            "api/v1/network/nodes",
             "api/v1/transactions",
             "api/v1/contracts/" + SAMPLE_TOKEN_WITHOUT_KEYS.auto_renew_account,
             "api/v1/contracts/" + SAMPLE_TOKEN_WITHOUT_KEYS.treasury_account_id,
             "api/v1/contracts/" + SAMPLE_TOKEN_WITHOUT_KEYS.token_id,
             "api/v1/contracts/0x0000000000000000000000000000000000016739",
             "api/v1/accounts/0x0000000000000000000000000000000000016739",
-            "api/v1/tokens/" + SAMPLE_TOKEN_WITHOUT_KEYS.token_id + "/nfts",
-            "api/v1/tokens/" + SAMPLE_NFTS.nfts[0].token_id + "/nfts/2",
-            "api/v1/tokens/" + SAMPLE_NFTS.nfts[1].token_id + "/nfts/1",
-            "api/v1/tokens/" + SAMPLE_NFTS.nfts[2].token_id + "/nfts/342",
         ])
 
         expect(wrapper.getComponent(PageHeader).text()).toMatch("Token " + testTokenId)
@@ -774,6 +914,8 @@ describe("TokenDetails.vue", () => {
     });
 
     it("Should display details of fungible token with public label", async () => {
+
+        await router.push("/") // To avoid "missing required param 'network'" error
 
         const mock = new MockAdapter(axios as any);
 
@@ -806,21 +948,16 @@ describe("TokenDetails.vue", () => {
         // console.log(wrapper.text())
 
         expect(fetchGetURLs(mock)).toStrictEqual([
+            "api/v1/network/exchangerate",
+            "api/v1/tokens/" + SAMPLE_TOKEN.token_id,
             SAMPLE_PUBLIC_LABELS_URL,
             "api/v1/network/nodes",
-            "api/v1/tokens/" + SAMPLE_TOKEN.token_id,
-            "api/v1/contracts/" + SAMPLE_TOKEN.token_id + "/results",
             "api/v1/transactions",
             "api/v1/contracts/" + SAMPLE_TOKEN.auto_renew_account,
             "api/v1/contracts/" + SAMPLE_TOKEN.treasury_account_id,
             "api/v1/contracts/" + SAMPLE_TOKEN.token_id,
-            "api/v1/contracts/" + SAMPLE_TOKEN.custom_fees.fixed_fees[0].collector_account_id,
-            "api/v1/contracts/" + SAMPLE_TOKEN.custom_fees.fixed_fees[1].collector_account_id,
-            "api/v1/contracts/" + SAMPLE_TOKEN.custom_fees.fixed_fees[2].collector_account_id,
-            "api/v1/network/exchangerate",
             "api/v1/contracts/0x0000000000000000000000000000000001c49eec",
             "api/v1/accounts/0x0000000000000000000000000000000001c49eec",
-            "api/v1/tokens/" + SAMPLE_TOKEN.token_id + "/balances",
         ])
 
         expect(wrapper.text()).toMatch("Sample Token LabelPublic Label for ID 0.0.29662956 [Sample Type]Sample Token Descriptionhttps://token-example.comToken ID0.0.29662956")
