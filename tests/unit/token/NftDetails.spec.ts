@@ -9,6 +9,8 @@ import Oruga from "@oruga-ui/oruga-next";
 import {HMSF} from "@/utils/HMSF.ts";
 import NftDetails from "@/pages/NftDetails.vue";
 import router from "@/utils/RouteManager.ts";
+import NftDetails_Metadata from "@/pages/NftDetails_Metadata.vue";
+import NftDetails_Transactions from "@/pages/NftDetails_Transactions.vue";
 
 /*
     Bookmarks
@@ -39,6 +41,9 @@ describe("NftDetails.vue", () => {
         const matcher4 = "api/v1/contracts/" + nftId + "/results"
         mock.onGet(matcher4).reply(200, [])
 
+        //
+        // NftDetails
+        //
         const wrapper = mount(NftDetails, {
             global: {
                 plugins: [router, Oruga],
@@ -68,22 +73,56 @@ describe("NftDetails.vue", () => {
         expect(wrapper.get("#spenderIdValue").text()).toBe('None')
         expect(wrapper.get("#delegatingSpenderValue").text()).toBe('None')
 
-        expect(wrapper.findComponent('MetadataSection').exists()).toBe(false)
+        //
+        // NftDetails_Metadata
+        //
+        const wrapper2 = mount(NftDetails_Metadata, {
+            global: {
+                plugins: [router, Oruga],
+                provide: {"isMediumScreen": false}
+            },
+            props: {
+                tokenId: nftId,
+                serialNumber: serial.toString()
+            },
+        });
+        await flushPromises()
+        // console.log(wrapper2.html())
+        // console.log(wrapper2.text())
 
-        const selectors = wrapper.findAll("select")
-        expect(selectors.length).toBe(2)
-        const selector = selectors[1]
+        expect(wrapper2.get("#raw-metadata-property").text()).toBe("Raw Metadata Unusable Metadata")
+
+        //
+        // NftDetails_Transactions
+        //
+        const wrapper3 = mount(NftDetails_Transactions, {
+            global: {
+                plugins: [router, Oruga],
+                provide: {"isMediumScreen": false}
+            },
+            props: {
+                tokenId: nftId,
+                serialNumber: serial.toString()
+            },
+        });
+        await flushPromises()
+        // console.log(wrapper3.html())
+        // console.log(wrapper3.text())
+
+        const selectors = wrapper3.findAll("select")
+        expect(selectors.length).toBe(1)
+        const selector = selectors[0]
         expect(selector.text()).toBe(
             'TYPES: ALLAPPROVE ALLOWANCECANCEL AIRDROPCLAIM AIRDROPCRYPTO TRANSFERDELETE ALLOWANCETOKEN AIRDROPTOKEN BURN' +
             'TOKEN DELETETOKEN MINTTOKEN REJECTTOKEN WIPE')
 
-        expect(wrapper.findComponent('ContractResultsSection').exists()).toBe(false)
+        expect(wrapper3.findComponent('ContractResultsSection').exists()).toBe(false)
 
         mock.restore()
         wrapper.unmount()
+        wrapper2.unmount()
+        wrapper3.unmount()
         await flushPromises()
-
-        expect((wrapper.vm as any).transactionTableController.mounted.value).toBe(false)
     });
 
     it("Should display NFT with image and metadata", async () => {
@@ -106,6 +145,10 @@ describe("NftDetails.vue", () => {
         mock.onGet(matcher4).reply(200, [])
         mock.onGet(IPFS_METADATA_CONTENT_URL).reply(200, IPFS_METADATA_CONTENT)
 
+        //
+        // NftDetails / NftDetails_Summary
+        //
+
         const wrapper = mount(NftDetails, {
             global: {
                 plugins: [router, Oruga],
@@ -119,8 +162,6 @@ describe("NftDetails.vue", () => {
         await flushPromises()
         // console.log(wrapper.html())
 
-        // expect((wrapper.vm as any).tokenBalanceTableController.mounted.value).toBe(true)
-        expect((wrapper.vm as any).transactionTableController.mounted.value).toBe(true)
 
         expect(wrapper.text()).toMatch(RegExp('Non Fungible Token'))
 
@@ -134,14 +175,35 @@ describe("NftDetails.vue", () => {
         expect(wrapper.get("#accountIdValue").text()).toBe(nft.account_id)
         expect(wrapper.find("#creatorValue").text()).toBe(IPFS_METADATA_CONTENT.creator)
 
-        expect(wrapper.find('#metadata-section').exists()).toBe(true)
-        const metadata = wrapper.get('#metadata-section')
-        expect(metadata.text()).toBe('Metadata Details')
+        //
+        // NftDetails_Metadata
+        //
+
+        const wrapper2 = mount(NftDetails_Metadata, {
+            global: {
+                plugins: [router, Oruga],
+                provide: {"isMediumScreen": false}
+            },
+            props: {
+                tokenId: nftId,
+                serialNumber: serial.toString()
+            },
+        });
+        await flushPromises()
+        // console.log(wrapper2.html())
+
+        expect(wrapper2.find('#metadata-section').exists()).toBe(true)
+        const metadata = wrapper2.get('#metadata-section')
+        expect(metadata.get("#raw-metadata-propertyValue").text()).toBe('aXBmczovL1FtUEo4Z20xSDhWN2JvUkdSYld2clpaMUpDMnlxc2ozaGJCSnlCYUxQZ0huUTg=')
+        expect(metadata.get("#metadata-locationValue").text()).toBe('ipfs://QmPJ8gm1H8V7boRGRbWvrZZ1JC2yqsj3hbBJyBaLPgHnQ8')
+        expect(metadata.get("#formatValue").text()).toBe('HIP412@2.0.0')
+        expect(metadata.get("#imageValue").text()).toBe('ipfs://QmXhGcYgJPgVmdDzkUuiK1RVy6fW7NVaJLLxir2iKLKRZU/0292-Shrak.png')
+        expect(metadata.get("#typeValue").text()).toBe('image/png')
 
         mock.restore()
         wrapper.unmount()
+        wrapper2.unmount()
         await flushPromises()
 
-        expect((wrapper.vm as any).transactionTableController.mounted.value).toBe(false)
     });
 });
