@@ -16,24 +16,12 @@
 
 <script setup lang="ts">
 
-import {computed, onBeforeUnmount, onMounted} from "vue";
 import ContractResultsSection from "@/components/contract/ContractResultsSection.vue";
-import {ContractResultsLogsAnalyzer} from "@/utils/analyzer/ContractResultsLogsAnalyzer.ts";
 
 const props = defineProps({
   contractId: String,
   network: String
 })
-
-const contractId = computed(() => props.contractId ?? null)
-
-//
-// contract results logs - event logs at contract level
-//
-const contractResultsLogsAnalyzer = new ContractResultsLogsAnalyzer(contractId)
-onMounted(() => contractResultsLogsAnalyzer.mount())
-onBeforeUnmount(() => contractResultsLogsAnalyzer.unmount())
-const logs = contractResultsLogsAnalyzer.logs
 
 </script>
 
