@@ -97,9 +97,6 @@ describe("ContractDetails.vue", () => {
         expect(wrapper.get("#entityIdValue").text()).toBe(SAMPLE_CONTRACT.contract_id + "Copy-cqohr")
         expect(wrapper.get("#obtainerValue").text()).toBe("None")
         expect(wrapper.get("#proxyAccountValue").text()).toBe("None")
-        // expect(wrapper.get("#validFromValue").text()).toBe("3:09:15.9474 PMMar 7, 2022, UTC")
-        // expect(wrapper.get("#validUntilValue").text()).toBe("None")
-        // expect(wrapper.get("#nonceValue").text()).toBe("1")
         expect(wrapper.get("#fileValue").text()).toBe("0.0.749773")
         expect(wrapper.get("#evmAddress").text()).toBe("EVM Address 0x00000000000000000000000000000000000b70cfCopy")
 
