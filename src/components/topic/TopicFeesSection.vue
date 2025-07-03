@@ -71,7 +71,7 @@ const props = defineProps({
   },
   exemptKeyList: {
     type: Array as PropType<Key[]>,
-    default: []
+    default: () => []
   }
 })
 
