@@ -10,7 +10,7 @@
     <template #page-title>
       Contract
       <span style="white-space: nowrap; font-size: smaller">
-        {{ contractId }}
+        {{ parsedContractId }}
       </span>
     </template>
 
@@ -23,7 +23,7 @@
       >
         <template #extra>
           <ArrowLink
-              v-if="contractId && accountRoute"
+              v-if="parsedContractId && accountRoute"
               :route="accountRoute" id="showAccountLink"
               :is-contrasted="true"
               text="Associated account"
@@ -53,7 +53,7 @@
 
   <ContractVerificationDialog
       v-model:show-dialog="showVerifyDialog"
-      :contract-id="contractId"
+      :contract-id="parsedContractId"
       v-on:verify-did-complete="verifyDidComplete"/>
 
 </template>
@@ -100,13 +100,13 @@ const onUpdate = (tabId: string | null) => {
 const contractLocParser = new ContractLocParser(computed(() => props.contractId ?? null))
 onMounted(() => contractLocParser.mount())
 onBeforeUnmount(() => contractLocParser.unmount())
-const contractId = contractLocParser.contractId
+const parsedContractId = contractLocParser.contractId
 const notification = contractLocParser.errorNotification
 
 //
 //  ContractAnalyzer
 //
-const contractAnalyzer = new ContractAnalyzer(contractId)
+const contractAnalyzer = new ContractAnalyzer(parsedContractId)
 onMounted(() => contractAnalyzer.mount())
 onBeforeUnmount(() => contractAnalyzer.unmount())
 const isVerified = contractAnalyzer.isVerified
@@ -130,7 +130,7 @@ const verifyDidComplete = () => {
 //
 
 const accountRoute = computed(() => {
-  return contractId.value !== null ? routeManager.makeRouteToAccount(contractId.value) : null
+  return parsedContractId.value !== null ? routeManager.makeRouteToAccount(parsedContractId.value) : null
 })
 
 
