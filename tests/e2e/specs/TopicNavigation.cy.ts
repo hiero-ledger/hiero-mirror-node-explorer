@@ -38,6 +38,9 @@ describe('Topic Navigation', () => {
                 cy.url().should('include', '/mainnet/topic/' + $topicId.text())
                 cy.contains('Topic ' + $topicId.text())
 
+                cy.get('#tab-TopicDetails_Messages')
+                    .click()
+
                 cy.get('table')
                     .find('tbody tr')
                     .should('have.length.at.least', 2)
@@ -48,6 +51,8 @@ describe('Topic Navigation', () => {
                     .then(($seqNumber) => {
                         cy.url().should('include', '/mainnet/transaction/')
                         cy.contains('Topic ID' + $topicId.text())
+                        cy.get('#tab-TransactionDetails_Message')
+                            .click()
                         cy.contains('Message Submitted')
                         cy.contains('Sequence Number' + $seqNumber.text())
                     })
