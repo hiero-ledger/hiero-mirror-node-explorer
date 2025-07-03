@@ -276,7 +276,6 @@ describe("BlockDetails.vue", () => {
 
         // Change Block Number
         const NEW_BLOCK = SAMPLE_BLOCKSRESPONSE.blocks[1]
-        const NEW_BLOCK_NUMBER = NEW_BLOCK.number.toString()
         const NEW_BLOCK_HASH = NEW_BLOCK.hash
 
         normalizedBlockHash = PathParam.parseBlockLoc(NEW_BLOCK_HASH)
