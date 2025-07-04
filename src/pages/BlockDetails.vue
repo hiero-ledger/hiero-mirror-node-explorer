@@ -6,7 +6,7 @@
 
 <template>
 
-  <PageFrameV2>
+  <PageFrameV2 :page-title="pageTitle">
     <template #page-title>
       Block
       <span style="white-space: nowrap; font-size: smaller">
@@ -81,6 +81,9 @@ const props = defineProps({
 
 const isSmallScreen = inject('isSmallScreen', true)
 
+//
+// Tabs
+//
 const tabIds = routeManager.blockDetailsOperator.tabIds
 const tabLabels = routeManager.blockDetailsOperator.tabLabels
 const selectedTabId = routeManager.blockDetailsOperator.selectedTabId
@@ -100,6 +103,9 @@ onBeforeUnmount(() => blockLocParser.unmount())
 
 const block = blockLocParser.block
 const notification = blockLocParser.errorNotification
+const pageTitle = computed(() =>
+    block.value !== null ? "Block " + block.value.number : null
+)
 
 const disablePreviousButton = computed(() => {
   return (blockLocParser.errorNotification.value != null) || (blockLocParser.block.value?.previous_hash === nullHash)

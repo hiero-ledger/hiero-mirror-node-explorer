@@ -45,7 +45,7 @@ describe('Search Bar', () => {
         testBodyV2(
             searchTransaction,
             '/mainnet/transactionsById/' + makeExchangeFormat(searchTransaction),
-            'Transactions with ID ' + searchTransaction,
+            'Transactions by ID',
         )
         cy.get('table')
             .find('tbody tr')
@@ -67,7 +67,7 @@ describe('Search Bar', () => {
         testBodyV2(
             searchTransaction,
             '/mainnet/transactionsById/' + makeExchangeFormat(searchTransaction),
-            'Transactions with ID ' + searchTransaction,
+            'Transactions by ID',
         )
         cy.get('table')
             .find('tbody tr')

@@ -39,9 +39,10 @@
 
 <script setup lang="ts">
 
+import {computed, PropType, useSlots, watch} from "vue";
 import Footer from "@/components/page/Footer.vue";
 import PageHeader from "@/components/page/header/PageHeader.vue";
-import {PropType, useSlots} from "vue";
+import {CoreConfig} from "@/config/CoreConfig.ts";
 
 const props = defineProps({
   pageTitle: {
@@ -55,6 +56,23 @@ const props = defineProps({
 })
 
 const slots = useSlots()
+const coreConfig = CoreConfig.inject()
+
+const documentTitle = computed(() => {
+  let result: string | null
+  if (props.pageTitle) {
+    const envTitlePrefix = coreConfig.documentTitlePrefix
+    const titlePrefix = envTitlePrefix !== "" ? envTitlePrefix + " " : ""
+    result = titlePrefix + props.pageTitle
+  } else {
+    result = null
+  }
+  return result
+})
+
+watch(documentTitle, (newValue: string|null) => {
+  document.title = newValue ?? ""
+}, {immediate: true})
 
 </script>
 

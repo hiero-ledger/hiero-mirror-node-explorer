@@ -6,7 +6,7 @@
 
 <template>
 
-  <PageFrameV2 page-title="Page not found">
+  <PageFrameV2 page-title="Page Not Found">
 
     <div class="page-not-found">
       <p>No page matches the specified URL.</p>
