@@ -6,7 +6,7 @@
 
 <template>
 
-  <PageFrameV2 page-title="Schedule Details">
+  <PageFrameV2 :page-title="pageTitle">
     <template v-if="notification" #banner>
       <NotificationBanner :message="notification"/>
     </template>
@@ -194,6 +194,10 @@ const scheduleLookup = ScheduleByIdCache.instance.makeLookup(scheduleId)
 const schedule = scheduleLookup.entity
 onMounted(() => scheduleLookup.mount())
 onBeforeUnmount(() => scheduleLookup.unmount())
+
+const pageTitle = computed(() =>
+    scheduleId.value !== null ? "Schedule " + scheduleId.value : null
+)
 
 const scheduledTxTimestamp = computed(() => schedule.value?.executed_timestamp ?? null)
 const scheduledTxLookup = TransactionByTsCache.instance.makeLookup(scheduledTxTimestamp)

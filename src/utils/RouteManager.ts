@@ -15,7 +15,6 @@ import {AppStorage} from "@/AppStorage";
 import axios from "axios";
 import {Transaction, TransactionType} from "@/schemas/MirrorNodeSchemas";
 import {CacheUtils} from "@/utils/cache/CacheUtils";
-import {TransactionID} from "@/utils/TransactionID.ts";
 import {CoreConfig} from "@/config/CoreConfig";
 import {NetworkConfig, NetworkEntry} from "@/config/NetworkConfig";
 import {WalletManagerV4} from "@/utils/wallet/WalletManagerV4.ts";
@@ -51,7 +50,7 @@ export class RouteManager {
         })
 
         this.router.beforeEach(this.checkNetwork)
-        this.router.beforeEach(this.setupTitleAndHeaders)
+        this.router.beforeEach(this.addMetaTags)
 
         const currentNetworkDidChange = () => {
             axios.defaults.baseURL = this.currentNetworkEntry.value.url
@@ -616,112 +615,6 @@ export class RouteManager {
         return result
     }
 
-    private readonly setupTitleAndHeaders = (to: RouteLocationNormalized): void => {
-        const envTitlePrefix = this.coreConfig.value.documentTitlePrefix
-        const titlePrefix = envTitlePrefix !== "" ? envTitlePrefix + " " : ""
-
-        switch (to.name as string) {
-            case "Home":
-                document.title = titlePrefix + "Home"
-                break;
-            case "TransactionsById":
-                document.title = titlePrefix + "Transactions with ID " + TransactionID.normalizeForDisplay(to.params.transactionId as string)
-                break;
-            case "TransactionDetails":
-            case "TransactionDetails_Events":
-            case "TransactionDetails_Message":
-            case "TransactionDetails_Result":
-            case "TransactionDetails_States":
-            case "TransactionDetails_Summary":
-            case "TransactionDetails_Trace":
-                document.title = titlePrefix + "Transaction " + (to.query.tid ?? to.params.transactionLoc)
-                break;
-            case "TransactionDetails3091":
-                document.title = titlePrefix + "Transaction " + to.params.transactionLoc
-                break;
-            case "ScheduleDetails":
-                document.title = titlePrefix + "Schedule " + to.params.scheduleId
-                break;
-            case "TokenDetails":
-            case "TokenDetails_Holders":
-            case "TokenDetails_Metadata":
-            case "TokenDetails_Others":
-            case "TokenDetails_Summary":
-                document.title = titlePrefix + "Token " + to.params.tokenId
-                break;
-            case "TopicDetails":
-            case "TopicDetails_Messages":
-            case "TopicDetails_Others":
-            case "TopicDetails_Summary":
-                document.title = titlePrefix + "Topic " + to.params.topicId
-                break;
-            case "ContractDetails":
-            case "ContractDetails_ABI":
-            case "ContractDetails_Assets":
-            case "ContractDetails_ByteCode":
-            case "ContractDetailsCalls":
-            case "ContractDetails_Events":
-            case "ContractDetails_SourceCode":
-            case "ContractDetails_Summary":
-                document.title = titlePrefix + "Contract " + to.params.contractId
-                break;
-            case "AccountDetails":
-            case "AccountDetails_Allowances":
-            case "AccountDetails_Assets":
-            case "AccountDetails_Operations":
-            case "AccountDetails_Summary":
-                document.title = titlePrefix + "Account " + to.params.accountId
-                break;
-            case "AdminKeyDetails":
-                document.title = titlePrefix + "Admin Key for Account " + to.params.accountId
-                break;
-            case "NodeAdminKeyDetails":
-                document.title = titlePrefix + "Admin Key for Node" + to.params.nodeId
-                break;
-            case "NodeDetails":
-                document.title = titlePrefix + "Node " + to.params.nodeId
-                break;
-            case "BlockDetails":
-            case "BlockDetails_Summary":
-            case "BlockDetails_Transactions":
-                document.title = titlePrefix + "Block " + to.params.blockHon
-                break;
-            case "NftDetails":
-            case "NftDetails_Metadata":
-            case "NftDetails_Summary":
-            case "NftDetails_Results":
-            case "NftDetails_Transactions":
-                document.title = titlePrefix + "NFT " + to.params.tokenId + "/" + to.params.serialNumber
-                break
-            case "Metrics_Accounts":
-            case "Metrics_Network":
-            case "Metrics_Nodes":
-            case "Metrics_Transactions":
-                document.title = titlePrefix + "Metrics"
-                break
-            case "Nodes":
-            case "Nodes_Network":
-            case "Nodes_NodeTable":
-                document.title = titlePrefix + "Nodes"
-                break
-            case "Tokens":
-            case "Tokens_Fungible":
-            case "Tokens_Nfts":
-                document.title = titlePrefix + "Tokens"
-                break
-            case "SearchHelp":
-                document.title = "Search Results"
-                break;
-            case "PageNotFound":
-                document.title = "Page Not Found"
-                break;
-            default:
-                document.title = titlePrefix + (to.name as string)
-        }
-
-        this.addMetaTags()
-    }
-
     private getNetworkEntryFromRoute(r: RouteLocationNormalized): NetworkEntry | null {
 
         let networkName: string | null
@@ -739,7 +632,7 @@ export class RouteManager {
     // Private (addMetaTags)
     //
 
-    private addMetaTags(): void {
+    private readonly addMetaTags = (): void => {
 
         const title = document.title
         const productName = this.coreConfig.value.productName

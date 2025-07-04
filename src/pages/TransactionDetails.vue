@@ -6,7 +6,7 @@
 
 <template>
 
-  <PageFrameV2>
+  <PageFrameV2 :page-title="pageTitle">
     <template #page-title>
       Transaction
       <span style="white-space: nowrap; font-size: smaller">
@@ -117,6 +117,11 @@ onBeforeUnmount(() => transactionAnalyzer.unmount())
 
 const formattedTransactionId = computed(() =>
     transactionAnalyzer.formattedTransactionId.value
+)
+const pageTitle = computed(() =>
+    transactionAnalyzer.consensusTimestamp.value !== null
+        ? "Transaction " + transactionAnalyzer.consensusTimestamp.value
+        : null
 )
 
 const contractResultAnalyzer = new ContractResultAnalyzer(transactionAnalyzer.transaction)

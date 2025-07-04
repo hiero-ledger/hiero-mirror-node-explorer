@@ -6,7 +6,7 @@
 
 <template>
 
-  <PageFrameV2>
+  <PageFrameV2 :pageTitle="pageTitle">
     <template #page-title>
       Contract
       <span style="white-space: nowrap; font-size: smaller">
@@ -102,6 +102,9 @@ onMounted(() => contractLocParser.mount())
 onBeforeUnmount(() => contractLocParser.unmount())
 const parsedContractId = contractLocParser.contractId
 const notification = contractLocParser.errorNotification
+const pageTitle = computed(() =>
+    parsedContractId.value !== null ? "Contract " + parsedContractId.value : null
+)
 
 //
 //  ContractAnalyzer
