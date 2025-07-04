@@ -6,7 +6,9 @@
 
 <template>
 
-  <PageFrameV2 page-title="NFT Details">
+  <PageFrameV2 :page-title="pageTitle">
+
+    <template #page-title>NFT Details</template>
 
     <template v-if="notification" #banner>
       <NotificationBanner :message="notification"/>
@@ -32,7 +34,7 @@
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <script setup lang="ts">
-import {computed, onBeforeUnmount, onMounted, ref} from "vue"
+import {computed, onBeforeUnmount, onMounted} from "vue"
 import PageFrameV2 from "@/components/page/PageFrameV2.vue";
 import {EntityID} from "@/utils/EntityID"
 import NotificationBanner from "@/components/NotificationBanner.vue"
@@ -78,7 +80,7 @@ const tokenLookup = TokenInfoCache.instance.makeLookup(normalizedTokenId)
 onMounted(() => tokenLookup.mount())
 onBeforeUnmount(() => tokenLookup.unmount())
 
-const serialNumber = ref(props.serialNumber)
+const serialNumber = computed(() => props.serialNumber)
 const nftLookup = NftBySerialCache.instance.makeNftLookup(
     normalizedTokenId,
     serialNumber,
@@ -113,6 +115,12 @@ const notification = computed(() => {
   }
   return result
 })
+
+const pageTitle = computed(() =>
+    normalizedTokenId.value !== null && serialNumber.value !== null
+        ? "NFT " + normalizedTokenId.value + "/" + serialNumber.value
+        : null
+)
 
 </script>
 

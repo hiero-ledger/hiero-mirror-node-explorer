@@ -6,7 +6,7 @@
 
 <template>
 
-  <PageFrameV2>
+  <PageFrameV2 :page-title="pageTitle">
     <template #page-title>
       Token
       <span style="white-space: nowrap; font-size: smaller">
@@ -84,6 +84,7 @@ const normalizedTokenId = computed(() => {
       ?? EntityID.fromAddress(props.tokenId, network.baseShard, network.baseRealm)
   return result !== null ? result.toString() : null
 })
+const pageTitle = computed(() => normalizedTokenId.value !== null ? "Token " + normalizedTokenId.value : null)
 
 const validEntityId = computed(() => normalizedTokenId.value != null)
 

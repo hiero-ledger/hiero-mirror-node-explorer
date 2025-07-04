@@ -6,7 +6,7 @@
 
 <template>
 
-  <PageFrameV2 page-title="Admin Key Details">
+  <PageFrameV2 :page-title="pageTitle">
 
     <template v-if="notification" #banner>
       <NotificationBanner :message="notification"/>
@@ -74,6 +74,9 @@ const normalizedAccountId = accountLocParser.accountId
 const accountChecksum = accountLocParser.accountChecksum
 const key = accountLocParser.key
 
+const pageTitle = computed(() =>
+    normalizedAccountId.value !== null ? "Admin Key for Account " + normalizedAccountId.value : null
+)
 </script>
 
 <style/>

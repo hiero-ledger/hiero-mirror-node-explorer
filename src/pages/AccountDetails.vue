@@ -6,7 +6,7 @@
 
 <template>
 
-  <PageFrameV2>
+  <PageFrameV2 :page-title="pageTitle">
     <template #page-title>
       Account
       <span style="white-space: nowrap; font-size: smaller">
@@ -68,6 +68,10 @@ const props = defineProps({
 
 const networkConfig = NetworkConfig.inject()
 
+//
+// Tabs
+//
+
 const tabIds = routeManager.accountDetailsOperator.tabIds
 const tabLabels = routeManager.accountDetailsOperator.tabLabels
 const selectedTabId = routeManager.accountDetailsOperator.selectedTabId
@@ -92,6 +96,9 @@ const contractRoute = computed(() => {
   const accountId = accountLocParser.accountId.value
   return accountId ? routeManager.makeRouteToContract(accountId) : ''
 })
+const pageTitle = computed(
+    () => normalizedAccountId.value !== null ? "Account " + normalizedAccountId.value : null
+)
 
 //
 // contract

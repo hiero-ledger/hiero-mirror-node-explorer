@@ -6,7 +6,7 @@
 
 <template>
 
-  <PageFrameV2 page-title="Admin Key Details">
+  <PageFrameV2 :page-title="pageTitle">
 
     <DashboardCardV2>
       <template #title>
@@ -76,6 +76,10 @@ onBeforeUnmount(() => nodeAnalyzer.unmount())
 
 const nodeKey = nodeAnalyzer.adminKey
 const nodeDescription = nodeAnalyzer.shortNodeDescription
+
+const pageTitle = computed(() =>
+    nodeId.value !== null ? "Admin Key for Node " + nodeId.value : null
+)
 
 </script>
 

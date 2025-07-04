@@ -7,7 +7,7 @@
 <template>
 
 
-  <PageFrameV2>
+  <PageFrameV2 :page-title="pageTitle">
     <template #page-title>
       Topic
       <span style="white-space: nowrap; font-size: smaller">
@@ -74,6 +74,9 @@ const validEntityId = computed(() =>
 )
 const normalizedTopicId = computed(() =>
     props.topicId ? EntityID.normalize(props.topicId) : props.topicId
+)
+const pageTitle = computed(() =>
+    normalizedTopicId.value !== null ? "Topic " + normalizedTopicId.value : null
 )
 
 const notification = computed(() => {
