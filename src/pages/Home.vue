@@ -66,6 +66,7 @@ import {ActiveAccountController} from "@/charts/hgraph/ActiveAccountController.t
 import {ThemeController} from "@/components/ThemeController.ts";
 
 import {routeManager} from "@/utils/RouteManager.ts";
+import {CoreConfig} from "@/config/CoreConfig.ts";
 
 defineProps({
   network: String
@@ -86,6 +87,11 @@ onBeforeUnmount(() => networkFeeController.unmount())
 const activeAccountsController = new ActiveAccountController(themeController, routeManager)
 onMounted(() => activeAccountsController.mount())
 onBeforeUnmount(() => activeAccountsController.unmount())
+
+const coreConfig = CoreConfig.inject()
+const envTitlePrefix = coreConfig.documentTitlePrefix
+const titlePrefix = envTitlePrefix !== "" ? envTitlePrefix + " " : ""
+document.title = titlePrefix + "Home"
 
 </script>
 
