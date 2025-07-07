@@ -8,7 +8,7 @@
   <WorldMap>
     <template v-for="p in markerData" :key="p.placeName">
       <MapAnnotation :lat="p.lat" :lon="p.lon">
-        <MarkerDropdown :place="p" @action="onClick(p)"/>
+        <MarkerDropdown :place="p"/>
       </MapAnnotation>
     </template>
   </WorldMap>
@@ -72,10 +72,6 @@ const findNodesAtPlace = async (placeName: string): Promise<NetworkNode[]>  => {
     }
   }
   return Promise.resolve(result)
-}
-
-const onClick = (p: MarkerData): void => {
-  console.log("click" + JSON.stringify(p))
 }
 
 
