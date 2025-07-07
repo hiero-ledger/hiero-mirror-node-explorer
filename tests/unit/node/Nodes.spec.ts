@@ -71,7 +71,7 @@ describe("Nodes.vue", () => {
         ])
 
         const cards = wrapper.findAllComponents(DashboardCardV2)
-        expect(cards.length).toBe(3)
+        expect(cards.length).toBe(2)
 
         expect(cards[0].text()).toMatch(RegExp("^Network"))
         const items = cards[0].findAllComponents(NetworkDashboardItemV2)
