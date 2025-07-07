@@ -90,11 +90,21 @@ const panelWidth = ref<number | null>(null)
 const panelHeight = ref<number | null>(null)
 
 const resizeObserver = new ResizeObserver(() => {
-  buttonWidth.value = rootRef.value?.offsetWidth ?? 0
-  buttonHeight.value = rootRef.value?.offsetHeight ?? 0
-  panelWidth.value = panelRef.value?.offsetWidth ?? 0
-  panelHeight.value = panelRef.value?.offsetHeight ?? 0
-})
+  if (rootRef.value !== null) {
+    buttonWidth.value = rootRef.value.offsetWidth
+    buttonHeight.value = rootRef.value.offsetHeight
+  } else {
+    buttonWidth.value = 0
+    buttonHeight.value = 0
+  }
+  if (panelRef.value !== null) {
+    panelWidth.value = panelRef.value.offsetWidth
+    panelHeight.value = panelRef.value.offsetHeight
+  } else {
+    panelWidth.value = 0
+    panelHeight.value = 0
+  }
+ })
 
 watch(rootRef, (newValue, oldValue) => {
   if (newValue !== null) {
