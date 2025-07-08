@@ -631,3 +631,46 @@ export function countTransactions(blocks: Block[]): number {
 export function cryptoRateToPrice(rate: ExchangeRate): number {
     return Math.round(rate.cent_equivalent / rate.hbar_equivalent * 100) / 10000
 }
+
+export function labelForEthPrecompiledContract(evmAddress: string): string|null {
+    let result: string|null
+
+    // https://www.evm.codes/precompiled
+    switch(evmAddress) {
+        case "0x0000000000000000000000000000000000000001":
+            result = "ecRecover"
+            break
+        case "0x0000000000000000000000000000000000000002":
+            result = "sha256"
+            break
+        case "0x0000000000000000000000000000000000000003":
+            result = "ripemd160"
+            break
+        case "0x0000000000000000000000000000000000000004":
+            result = "identity"
+            break
+        case "0x0000000000000000000000000000000000000005":
+            result = "modexp"
+            break
+        case "0x0000000000000000000000000000000000000006":
+            result = "ecAdd"
+            break
+        case "0x0000000000000000000000000000000000000007":
+            result = "ecMul"
+            break
+        case "0x0000000000000000000000000000000000000008":
+            result = "ecPairing"
+            break
+        case "0x0000000000000000000000000000000000000009":
+            result = "black2f"
+            break
+        case "0x000000000000000000000000000000000000000a":
+            result = "point evaluation"
+            break
+        default:
+            result = null
+            break
+    }
+
+    return result
+}
