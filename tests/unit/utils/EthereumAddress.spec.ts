@@ -9,6 +9,7 @@ describe("EthereumAddress", () => {
 
         const longZeroAddress = "0x000000000000000000000000000000000010400e"
         const compactAddress = "0x00…10400e"
+        const squeezedAddress = "0x10400e"
         const entityId = "0.0.1064974"
 
         const address = EthereumAddress.parse(longZeroAddress)
@@ -16,6 +17,7 @@ describe("EthereumAddress", () => {
         expect(address?.isLongZeroForm()).toBe(true)
         expect(address?.toString()).toBe(longZeroAddress)
         expect(address?.toCompactString()).toBe(compactAddress)
+        expect(address?.toSqueezedString()).toBe(squeezedAddress)
         expect(address?.toEntityID()?.toString()).toBe(entityId)
     })
 
@@ -29,6 +31,7 @@ describe("EthereumAddress", () => {
         expect(address?.isLongZeroForm()).toBe(false)
         expect(address?.toString()).toBe(nativeEvmAddress)
         expect(address?.toCompactString()).toBe(compactAddress)
+        expect(address?.toSqueezedString()).toBe(nativeEvmAddress)
         expect(address?.toEntityID()).toBe(null)
     })
 
@@ -69,6 +72,7 @@ describe("EthereumAddress", () => {
 
         const longZeroAddress = "0x000000000000000000000000000000000010400e"
         const compactAddress = "0x00…10400e"
+        const squeezedAddress = "0x10400e"
         const entityId = "1.2.1064974"
         const baseShard = 1
         const baseRealm = 2
@@ -78,6 +82,7 @@ describe("EthereumAddress", () => {
         expect(address?.isLongZeroForm()).toBe(true)
         expect(address?.toString()).toBe(longZeroAddress)
         expect(address?.toCompactString()).toBe(compactAddress)
+        expect(address?.toSqueezedString()).toBe(squeezedAddress)
         expect(address?.toEntityID(baseShard, baseRealm)?.toString()).toBe(entityId)
     })
 })

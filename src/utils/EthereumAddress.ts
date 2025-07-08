@@ -33,6 +33,12 @@ export class EthereumAddress {
             + "…" + byteToHex(this.bytes.slice(-digitKept / 2))
     }
 
+    public toSqueezedString(): string {
+        const i = this.bytes.findIndex((value) => value !== 0)
+        const squeezedBytes = i ? this.bytes.slice(i) : this.bytes
+        return "0x" + byteToHex(squeezedBytes)
+    }
+
     public toEntityID(baseShard = 0, baseRealm = 0): EntityID | null {
         let result: EntityID | null
         if (this.isLongZeroForm()) {
