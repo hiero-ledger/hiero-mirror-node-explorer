@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "@bokuweb/zstd-wasm": "^0.0.27",
-    "@ethereum-sourcify/bytecode-utils": "^1.3.8",
+    "@ethereum-sourcify/bytecode-utils": "^1.3.9",
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
     "@fortawesome/free-brands-svg-icons": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
