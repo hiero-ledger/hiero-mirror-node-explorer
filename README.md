@@ -1,4 +1,4 @@
-[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/hiero-ledger/hiero-mirror-node-explorer/badge)](https://api.scorecard.dev/projects/github.com/hiero-ledger/hiero-mirror-node-explorer)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/hiero-ledger/hiero-mirror-node-explorer/badge)](https://scorecard.dev/viewer/?uri=github.com/hiero-ledger/hiero-mirror-node-explorer)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/10697/badge)](https://bestpractices.coreinfrastructure.org/projects/10697)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
