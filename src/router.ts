@@ -33,6 +33,7 @@ import Staking from "@/pages/Staking.vue";
 import Blocks from "@/pages/Blocks.vue";
 import BlockDetails from "@/pages/BlockDetails.vue";
 import SearchHelp from "@/pages/SearchHelp.vue";
+import Metrics from "@/pages/Metrics.vue";
 
 export enum TabId {
     Home = "Home",
@@ -44,6 +45,7 @@ export enum TabId {
     Nodes = "Nodes",
     Staking = "Staking",
     Blocks = "Blocks",
+    Metrics = "Metrics",
 }
 
 export const routes: Array<RouteRecordRaw> = [
@@ -333,6 +335,15 @@ export const routes: Array<RouteRecordRaw> = [
         props: true,
         meta: {
             tabId: TabId.Blocks
+        }
+    },
+    {
+        path: '/:network/metrics',
+        name: 'Metrics',
+        component: Metrics,
+        props: true,
+        meta: {
+            tabId: TabId.Metrics
         }
     },
     {
