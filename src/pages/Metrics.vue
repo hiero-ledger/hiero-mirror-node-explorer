@@ -25,9 +25,11 @@
       <div class="metrics-content">
         <ChartView :controller="networkFeeController" data-cy="chart-view"/>
       </div>
-      <div v-if="routeManager.currentNetwork.value === 'mainnet'" class="metrics-content">
-        <ChartView :controller="avgTimeToConsensusController" data-cy="chart-view"/>
-      </div>
+      <template v-if="false">
+        <div v-if="routeManager.currentNetwork.value === 'mainnet'" class="metrics-content">
+          <ChartView :controller="avgTimeToConsensusController" data-cy="chart-view"/>
+        </div>
+      </template>
     </template>
 
     <template v-else-if="selectedTab === 'transactions'">
