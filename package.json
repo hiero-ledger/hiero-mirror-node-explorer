@@ -83,7 +83,7 @@
     "typescript-eslint": "^8.36.0",
     "vite": "^7.0.4",
     "vitest": "^3.2.3",
-    "vue-tsc": "^2.2.10"
+    "vue-tsc": "^3.0.1"
   },
   "overrides": {
     "elliptic": "^6.6.1"
