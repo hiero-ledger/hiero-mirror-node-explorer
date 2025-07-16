@@ -34,6 +34,7 @@
         <div class="home-content">
           <ChartView :controller="activeAccountsController" data-cy="chart-view"/>
         </div>
+
       </div>
 
       <Footer/>
