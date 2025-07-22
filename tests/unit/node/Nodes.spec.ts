@@ -61,16 +61,16 @@ describe("Nodes.vue", () => {
             }
         });
 
+        await flushPromises()
+        // console.log(wrapper.text())
+
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/network/nodes",
             "api/v1/network/stake",
         ])
 
-        await flushPromises()
-        // console.log(wrapper.text())
-
         const cards = wrapper.findAllComponents(DashboardCardV2)
-        expect(cards.length).toBe(2)
+        expect(cards.length).toBe(3)
 
         expect(cards[0].text()).toMatch(RegExp("^Network"))
         const items = cards[0].findAllComponents(NetworkDashboardItemV2)
@@ -85,8 +85,10 @@ describe("Nodes.vue", () => {
         expect(items[7].text()).toMatch("MAXIMUM REWARD RATE 0%")
         expect(items[8].text()).toMatch("CURRENT REWARD RATE 0%")
 
-        expect(cards[1].text()).toMatch("3  Nodes")
-        const table = cards[1].findComponent(NodeTable)
+        expect(cards[1].text()).toMatch("Map")
+
+        expect(cards[2].text()).toMatch("3  Nodes")
+        const table = cards[2].findComponent(NodeTable)
         expect(table.exists()).toBe(true)
         expect(table.get('thead').text()).toBe("NODE ID DESCRIPTION STAKE FOR CONSENSUS % STAKE RANGE REWARD RATE")
         expect(wrapper.get('tbody').text()).toBe(

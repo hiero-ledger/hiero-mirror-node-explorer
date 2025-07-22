@@ -7,24 +7,23 @@ import {EcosystemMetric} from "@/charts/hgraph/EcosystemMetric.ts";
 import {ChartRange} from "@/charts/core/ChartRange.ts";
 import {ChartConfiguration} from "chart.js/auto";
 
-export class ActiveAccountController extends GenericMetricController {
+export class TransactionCountController extends GenericMetricController {
 
     //
     // Public
     //
 
     public constructor(themeController: ThemeController, routeManager: RouteManager) {
-        super("Active Accounts", "active_accounts", themeController, routeManager,
-            [ChartRange.month, ChartRange.all, ChartRange.year, ChartRange.day])
+        super("Transactions Over Time", "transactions", themeController, routeManager,
+            [ChartRange.day, ChartRange.all, ChartRange.year, ChartRange.month])
     }
 
     //
     // ChartController
     //
 
-    protected makeChartConfig(metrics: EcosystemMetric[],
-                              range: ChartRange/*,
+    protected makeChartConfig(metrics: EcosystemMetric[], range: ChartRange/*,
                               context: CanvasRenderingContext2D*/): ChartConfiguration {
-        return this.makeBarChartConfig(metrics, range, false, "# of accounts")
+        return this.makeBarChartConfig(metrics, range, false, "# of transactions")
     }
 }

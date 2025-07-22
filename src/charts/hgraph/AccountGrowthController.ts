@@ -7,14 +7,14 @@ import {EcosystemMetric} from "@/charts/hgraph/EcosystemMetric.ts";
 import {ChartRange} from "@/charts/core/ChartRange.ts";
 import {ChartConfiguration} from "chart.js/auto";
 
-export class ActiveAccountController extends GenericMetricController {
+export class AccountGrowthController extends GenericMetricController {
 
     //
     // Public
     //
 
     public constructor(themeController: ThemeController, routeManager: RouteManager) {
-        super("Active Accounts", "active_accounts", themeController, routeManager,
+        super("Accounts Created Over Time", "account_growth", themeController, routeManager,
             [ChartRange.month, ChartRange.all, ChartRange.year, ChartRange.day])
     }
 

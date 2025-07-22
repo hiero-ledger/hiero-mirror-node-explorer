@@ -26,6 +26,9 @@
              :target-route="routeManager.makeRouteToStaking()"/>
     <TabItem :tabId="TabId.Blocks"
              :target-route="routeManager.makeRouteToBlocks()"/>
+    <TabItem v-if="showMetrics"
+             :tabId="TabId.Metrics"
+             :target-route="routeManager.makeRouteToMetrics()"/>
   </div>
 </template>
 
@@ -38,6 +41,7 @@
 import {TabId} from "@/router.ts";
 import {routeManager} from "@/utils/RouteManager.ts"
 import TabItem from "@/components/page/header/TabItem.vue";
+import {computed} from "vue";
 
 const props = defineProps({
   vertical: {
@@ -47,6 +51,7 @@ const props = defineProps({
 })
 
 const enableStaking = routeManager.enableStaking
+const showMetrics = computed(() => routeManager.hgraphURL.value !== null)
 
 </script>
 
