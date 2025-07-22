@@ -35,7 +35,7 @@
     "@hedera-name-service/hns-resolution-sdk": "^2.0.15",
     "@kabuto-sh/ns": "^0.14.2",
     "@oruga-ui/oruga-next": "^0.11.2",
-    "@oruga-ui/theme-oruga": "^0.7.0",
+    "@oruga-ui/theme-oruga": "^0.7.1",
     "@vuepic/vue-datepicker": "^11.0.2",
     "@vueuse/core": "^13.3.0",
     "@walletconnect/modal": "^2.7.0",
