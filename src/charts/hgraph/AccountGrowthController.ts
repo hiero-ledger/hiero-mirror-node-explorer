@@ -14,14 +14,14 @@ export class AccountGrowthController extends GenericMetricController {
     //
 
     public constructor(themeController: ThemeController, routeManager: RouteManager) {
-        super("Accounts Created Over Time", "account_growth", themeController, routeManager)
+        super("Accounts Created Over Time", "account_growth", themeController, routeManager,
+            [ChartRange.month, ChartRange.all, ChartRange.year, ChartRange.day])
     }
 
     //
     // ChartController
     //
 
-     
     protected makeChartConfig(metrics: EcosystemMetric[],
                               range: ChartRange/*,
                               context: CanvasRenderingContext2D*/): ChartConfiguration {
