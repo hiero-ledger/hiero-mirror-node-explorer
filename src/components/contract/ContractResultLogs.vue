@@ -6,9 +6,11 @@
 
 <template>
 
-  <DashboardCardV2 v-if="props.logs?.length" collapsible-key="contractEvents">
+  <DashboardCardV2 v-if="props.logs" collapsible-key="contractEvents">
     <template #title>
-      <ContractSectionTitle v-if="props.contractId" :contract-id="props.contractId">Contract Events</ContractSectionTitle>
+      <ContractSectionTitle v-if="props.contractId" :contract-id="props.contractId">
+        Contract Events
+      </ContractSectionTitle>
       <span v-else>Events</span>
     </template>
 
@@ -21,27 +23,34 @@
     </template>
 
     <template #content>
-      <template v-for="l in nbLogDisplayed" :key="l">
-        <ContractResultLogEntry
-            :log="props.logs[logCursor + l - 1]"
-            :block-number="props.blockNumber"
-            :transaction-hash="props.transactionHash"
-        />
-        <hr class="table-separator"/>
+      <template v-if="nbLogDisplayed">
+        <template v-for="l in nbLogDisplayed" :key="l">
+          <ContractResultLogEntry
+              :log="props.logs[logCursor + l - 1]"
+              :block-number="props.blockNumber"
+              :transaction-hash="props.transactionHash"
+          />
+          <hr class="table-separator"/>
+        </template>
+
+        <div v-if="isPaginated" class="pagination">
+          <o-pagination
+              :total="props.logs.length"
+              v-model:current="currentPage"
+              order="centered"
+              :range-before="1"
+              :range-after="1"
+              :per-page="pageSize"
+          >
+          </o-pagination>
+        </div>
       </template>
 
-      <div v-if="isPaginated" class="pagination">
-        <o-pagination
-            :total="props.logs.length"
-            v-model:current="currentPage"
-            order="centered"
-            :range-before="1"
-            :range-after="1"
-            :per-page="pageSize"
-        >
-        </o-pagination>
-      </div>
-
+      <template v-else>
+        <p>The contract has not logged any event.</p>
+        <p>This might be because its execution did not happen to log events or simply because the contract has never
+          been called so far.</p>
+      </template>
     </template>
 
   </DashboardCardV2>
