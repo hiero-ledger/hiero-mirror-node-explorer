@@ -22,7 +22,6 @@ export class AccountGrowthController extends GenericMetricController {
     // ChartController
     //
 
-     
     protected makeChartConfig(metrics: EcosystemMetric[],
                               range: ChartRange/*,
                               context: CanvasRenderingContext2D*/): ChartConfiguration {
