@@ -14,7 +14,8 @@ export class NetworkFeeController extends GenericMetricController {
     //
 
     public constructor(themeController: ThemeController, routeManager: RouteManager) {
-        super("Network Fees", "network_fee", themeController, routeManager)
+        super("Network Fees", "network_fee", themeController, routeManager,
+            [ChartRange.month, ChartRange.day, ChartRange.year, ChartRange.all])
     }
 
     //
