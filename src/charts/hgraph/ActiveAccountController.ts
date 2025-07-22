@@ -14,7 +14,8 @@ export class ActiveAccountController extends GenericMetricController {
     //
 
     public constructor(themeController: ThemeController, routeManager: RouteManager) {
-        super("Active Accounts", "active_accounts", themeController, routeManager)
+        super("Active Accounts", "active_accounts", themeController, routeManager,
+            [ChartRange.month, ChartRange.all, ChartRange.year, ChartRange.day])
     }
 
     //
