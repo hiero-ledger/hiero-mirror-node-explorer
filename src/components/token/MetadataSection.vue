@@ -19,117 +19,135 @@
     </template>
 
     <template #content>
-      <Property id="raw-metadata-property" full-width>
-        <template #name>
-          Raw Metadata
-        </template>
-        <template #value>
-          <BlobValue :blob-value="rawMetadata" :show-none="true"/>
-        </template>
-      </Property>
-      <Property v-if="rawMetadata" id="metadata-location" full-width>
-        <template #name>Decoded Metadata</template>
-        <template #value>
-          <BlobValue
-              class="is-inline-block"
-              :blob-value="metadata"
-              :show-none="true"
-          />
-          <InfoTooltip
-              v-if="metadataWarning || metadataInfo"
-              :warning-label="metadataWarning"
-              :label="metadataInfo"
-              class="ml-2"
-          />
-        </template>
-      </Property>
-
-      <template v-if="showRawMetadata">
-        <Property id="raw-content" full-width>
+      <template v-if="rawMetadata.length > 0">
+        <Property id="raw-metadata-property" full-width>
           <template #name>
-            Content
+            Raw Metadata
           </template>
           <template #value>
+            <BlobValue :blob-value="rawMetadata" :show-none="true"/>
+          </template>
+        </Property>
+        <Property v-if="rawMetadata" id="metadata-location" full-width>
+          <template #name>Decoded Metadata</template>
+          <template #value>
             <BlobValue
-                :blob-value="metadataString"
-                :pretty="true"
+                class="is-inline-block"
+                :blob-value="metadata"
+                :show-none="true"
+            />
+            <InfoTooltip
+                v-if="metadataWarning || metadataInfo"
+                :warning-label="metadataWarning"
+                :label="metadataInfo"
+                class="ml-2"
             />
           </template>
         </Property>
-      </template>
 
-      <template v-else>
-        <Property v-if="format" id="format" full-width>
-          <template #name>
-            Format
-          </template>
-          <template #value>
-            <BlobValue :blob-value="format" :show-none="true"/>
-          </template>
-        </Property>
-        <Property v-if="image" id="image" full-width>
-          <template #name>
-            Image
-          </template>
-          <template #value>
-            <BlobValue :blob-value="image" :show-none="true"/>
-          </template>
-        </Property>
-        <Property v-if="type" id="type" full-width>
-          <template #name>
-            Type
-          </template>
-          <template #value>
-            <BlobValue :blob-value="type" :show-none="true"/>
-          </template>
-        </Property>
-        <Property v-if="checksum" id="checksum" full-width>
-          <template #name>
-            Checksum
-          </template>
-          <template #value>
-            <BlobValue :blob-value="checksum" :show-none="true"/>
-          </template>
-        </Property>
-        <Property v-if="creatorDID" id="creator-did" full-width>
-          <template #name>
-            Creator DID
-          </template>
-          <template #value>
-            <BlobValue :blob-value="creatorDID" :show-none="true"/>
-          </template>
-        </Property>
-        <Property v-if="properties" id="properties" full-width>
-          <template #name>
-            Properties
-          </template>
-          <template #value>
-            <BlobValue :blob-value="properties" :pretty="true" :show-none="true"/>
-          </template>
-        </Property>
-
-        <template v-if="attributes.length">
-          <template v-for="attr in attributes" :key="attr.trait_type">
-            <NftAttribute :attribute="attr"/>
-          </template>
-        </template>
-
-        <template v-if="files.length">
-          <Property full-width>
-            <template #name>Files</template>
+        <template v-if="showRawMetadata">
+          <Property id="raw-content" full-width>
+            <template #name>
+              Content
+            </template>
             <template #value>
-              <div id="file-container-area" class="file-container">
-                <NftFile
-                    v-for="(file) in files" :key="file.uri"
-                    class="file-container-item mt-1"
-                    :type="file.type"
-                    :url="file.url"
-                    :size="200"
-                />
-              </div>
+              <BlobValue
+                  :blob-value="metadataString"
+                  :pretty="true"
+              />
             </template>
           </Property>
         </template>
+
+        <template v-else>
+          <Property v-if="format" id="format" full-width>
+            <template #name>
+              Format
+            </template>
+            <template #value>
+              <BlobValue :blob-value="format" :show-none="true"/>
+            </template>
+          </Property>
+          <Property v-if="image" id="image" full-width>
+            <template #name>
+              Image
+            </template>
+            <template #value>
+              <BlobValue :blob-value="image" :show-none="true"/>
+            </template>
+          </Property>
+          <Property v-if="type" id="type" full-width>
+            <template #name>
+              Type
+            </template>
+            <template #value>
+              <BlobValue :blob-value="type" :show-none="true"/>
+            </template>
+          </Property>
+          <Property v-if="checksum" id="checksum" full-width>
+            <template #name>
+              Checksum
+            </template>
+            <template #value>
+              <BlobValue :blob-value="checksum" :show-none="true"/>
+            </template>
+          </Property>
+          <Property v-if="creatorDID" id="creator-did" full-width>
+            <template #name>
+              Creator DID
+            </template>
+            <template #value>
+              <BlobValue :blob-value="creatorDID" :show-none="true"/>
+            </template>
+          </Property>
+          <Property v-if="properties" id="properties" full-width>
+            <template #name>
+              Properties
+            </template>
+            <template #value>
+              <BlobValue :blob-value="properties" :pretty="true" :show-none="true"/>
+            </template>
+          </Property>
+
+          <template v-if="attributes.length">
+            <template v-for="attr in attributes" :key="attr.trait_type">
+              <NftAttribute :attribute="attr"/>
+            </template>
+          </template>
+
+          <template v-if="files.length">
+            <Property full-width>
+              <template #name>Files</template>
+              <template #value>
+                <div id="file-container-area" class="file-container">
+                  <NftFile
+                      v-for="(file) in files" :key="file.uri"
+                      class="file-container-item mt-1"
+                      :type="file.type"
+                      :url="file.url"
+                      :size="200"
+                  />
+                </div>
+              </template>
+            </Property>
+          </template>
+        </template>
+      </template>
+
+      <template v-else>  <!-- rawMetadata.length === 0 -->
+        <div class="doc-snippet">
+          <p>No metadata is defined for this token or NFT collection.</p>
+          <p>Note: While individual NFTs typically include metadata, collections and fungible tokens often do not -- though they can!.</p>
+          <p>
+            <span>Learn how </span>
+            <a
+                href="https://docs.hedera.com/hedera/tutorials/token/structure-your-token-metadata-using-json-schema-v2"
+                target="_blank"
+                class="h-is-extra-text"
+            >here</a>
+            <span>.</span>
+          </p>
+        </div>
       </template>
     </template>
   </DashboardCardV2>
