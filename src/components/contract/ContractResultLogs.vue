@@ -47,9 +47,19 @@
       </template>
 
       <template v-else>
-        <p>The contract has not logged any event.</p>
-        <p>This might be because its execution did not happen to log events or simply because the contract has never
-          been called so far.</p>
+        <div class="doc-snippet">
+          <p>No events have been logged for this contract.</p>
+          <p>This may be due to it not being called or its executions did not emit any events.</p>
+          <p>
+            <span>See how to access event data </span>
+            <a
+                href="https://hedera.com/blog/how-to-get-event-information-from-hedera-smart-contracts"
+                target="_blank"
+                class="h-is-extra-text"
+            >here</a>
+            <span>.</span>
+          </p>
+        </div>
       </template>
     </template>
 
