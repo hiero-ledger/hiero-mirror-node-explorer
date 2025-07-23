@@ -7,7 +7,7 @@
 <template>
 
   <ContractResultLogs
-      :logs="contractResult?.logs"
+      :logs="logs"
       :block-number="blockNumber ?? undefined"
       :transaction-hash="transaction?.transaction_hash"
   />
@@ -79,6 +79,8 @@ onBeforeUnmount(() => feeLookup.unmount())
 
 const contractResult = contractResultAnalyzer.contractResult
 const blockNumber = transactionAnalyzer.blockNumber
+
+const logs = computed(() => contractResult.value?.logs ?? [])
 
 </script>
 

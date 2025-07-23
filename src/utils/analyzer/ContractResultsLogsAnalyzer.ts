@@ -25,5 +25,7 @@ export class ContractResultsLogsAnalyzer {
         this.contractResultsLookup.unmount()
     }
 
-    public readonly logs = computed(() => this.contractResultsLookup.entity.value ?? undefined)
+    public readonly logs = computed(() =>
+        this.contractResultsLookup.entity.value ?? []
+    )
 }
