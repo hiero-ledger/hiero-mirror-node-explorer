@@ -35,9 +35,20 @@
       <template v-if="isVerified">
         <ContractSourceValue :source-files="solidityFiles" :filter="selectedSource"/>
       </template>
+
       <template v-else>
-        <p>The contract source code is available once the contract is verified.</p>
-        <p>If you have the contract solidity source and metadata files, you may click VERIFY and proceed with verification.</p>
+        <div class="doc-snippet">
+          <p>The contract source code will be available once the contract is verified.</p>
+          <p>
+            <span>See how to verify a contract </span>
+            <a
+                href="https://docs.hedera.com/hedera/core-concepts/smart-contracts/verifying-smart-contracts-beta"
+                target="_blank"
+                class="h-is-extra-text"
+            >here</a>
+            <span>.</span>
+          </p>
+        </div>
       </template>
     </template>
 
