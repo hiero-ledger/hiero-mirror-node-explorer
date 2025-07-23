@@ -42,66 +42,64 @@
       <template v-else/>
     </template>
 
-    <template v-if="!showSection" #content>
-      <p>This section is empty because the account does not have any token, fungible or non fungible (NFT), associated with it, and does not have any pending token airdrop either.</p>
-      <p>Items will be displayed here when either of these occurs:</p>
-      <p>&bull; a fungible token or an NFT is associated to this account</p>
-      <p>&bull; an amount of fungible token is transferred to this account</p>
-      <p>&bull; a NFT is transferred to this account</p>
-      <p>&bull; a token airdrop is sent to this account</p>
-
-    </template>
-
-    <template v-else #content>
-      <Tabs
-          :selected-tab="selectedTab"
-          :tab-ids="tabIds"
-          :tabLabels="tabLabels"
-          @update:selected-tab="onSelectTab($event)"
-      />
-
-      <div v-if="selectedTab === 'fungible'" id="fungibleTable">
-        <FungibleTable
-            :controller="fungibleTableController"
-            :check-enabled="rejectEnabled"
-            v-model:checked-tokens="checkedTokens"
-        />
-      </div>
-
-      <div v-else-if="selectedTab === 'nfts'" id="nftsTable">
-        <NftsTable
-            :controller="nftsTableController"
-            :check-enabled="rejectEnabled"
-            v-model:checked-nfts="checkedTokens"
-        />
-      </div>
-
-      <div
-          v-else-if="selectedTab === 'pendingAirdrop'" id="pendingAirdropTable"
-          class="pending-airdrops-container"
-      >
+    <template #content>
+      <template v-if="hasContent">
         <Tabs
-            :selected-tab="airdropSelectedTab"
-            :tab-ids="airdropTabIds"
-            :tabLabels="airdropTabLabels"
-            :sub-tabs="true"
-            @update:selectedTab="onAirdropSelectTab"
+            :selected-tab="selectedTab"
+            :tab-ids="tabIds"
+            :tabLabels="tabLabels"
+            @update:selected-tab="onSelectTab($event)"
         />
-        <div v-if="airdropSelectedTab === 'nfts'" id="pendingNftsTable">
-          <PendingNftAirdropTable
-              :controller="nftsAirdropTableController"
-              :check-enabled="claimEnabled"
-              v-model:checked-airdrops="checkedAirdrops"
+
+        <div v-if="selectedTab === 'fungible'" id="fungibleTable">
+          <FungibleTable
+              :controller="fungibleTableController"
+              :check-enabled="rejectEnabled"
+              v-model:checked-tokens="checkedTokens"
           />
         </div>
-        <div v-else id="pendingFungibleTable">
-          <PendingFungibleAirdropTable
-              :controller="fungibleAirdropTableController"
-              :check-enabled="claimEnabled"
-              v-model:checked-airdrops="checkedAirdrops"
+
+        <div v-else-if="selectedTab === 'nfts'" id="nftsTable">
+          <NftsTable
+              :controller="nftsTableController"
+              :check-enabled="rejectEnabled"
+              v-model:checked-nfts="checkedTokens"
           />
         </div>
-      </div>
+
+        <div
+            v-else-if="selectedTab === 'pendingAirdrop'" id="pendingAirdropTable"
+            class="pending-airdrops-container"
+        >
+          <Tabs
+              :selected-tab="airdropSelectedTab"
+              :tab-ids="airdropTabIds"
+              :tabLabels="airdropTabLabels"
+              :sub-tabs="true"
+              @update:selectedTab="onAirdropSelectTab"
+          />
+          <div v-if="airdropSelectedTab === 'nfts'" id="pendingNftsTable">
+            <PendingNftAirdropTable
+                :controller="nftsAirdropTableController"
+                :check-enabled="claimEnabled"
+                v-model:checked-airdrops="checkedAirdrops"
+            />
+          </div>
+          <div v-else id="pendingFungibleTable">
+            <PendingFungibleAirdropTable
+                :controller="fungibleAirdropTableController"
+                :check-enabled="claimEnabled"
+                v-model:checked-airdrops="checkedAirdrops"
+            />
+          </div>
+        </div>
+      </template>
+
+      <template v-else>
+        <div class="doc-snippet">
+          <p>This account currently holds no fungible tokens, NFTs, or pending token airdrops.</p>
+        </div>
+      </template>
     </template>
 
   </DashboardCardV2>
@@ -154,7 +152,7 @@ const props = defineProps({
   },
 })
 
-const showSection = computed(() =>
+const hasContent = computed(() =>
     props.accountId === walletManager.accountId.value
     || fungibleTableController.totalRowCount.value >= 1
     || nftsTableController.totalRowCount.value >= 1
