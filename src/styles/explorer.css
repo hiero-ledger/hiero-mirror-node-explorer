@@ -445,6 +445,17 @@ a.h-banner-link:hover {
     }
 }
 
+.doc-snippet {
+    background: url('@/assets/header-background.svg') top center no-repeat;
+    border: 1px solid var(--border-secondary);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    height: 195px;
+    justify-content: center;
+    text-align: center;
+}
+
 /*  ============================================================================
     Maintain code which is still using BULMA classes
 */
