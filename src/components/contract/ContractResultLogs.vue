@@ -6,7 +6,7 @@
 
 <template>
 
-  <DashboardCardV2 v-if="props.logs" collapsible-key="contractEvents">
+  <DashboardCardV2>
     <template #title>
       <ContractSectionTitle v-if="props.contractId" :contract-id="props.contractId">
         Contract Events
@@ -85,7 +85,10 @@ import ContractSectionTitle from "@/components/contract/ContractSectionTitle.vue
 const DEFAULT_PAGE_SIZE = 3
 
 const props = defineProps({
-  logs: Object as PropType<Array<ContractLog> | undefined>,
+  logs: {
+    type: Object as PropType<Array<ContractLog>>,
+    default: []
+  },
   blockNumber: {
     type: Number,
   },
