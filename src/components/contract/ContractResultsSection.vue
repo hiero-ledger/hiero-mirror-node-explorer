@@ -6,19 +6,36 @@
 
 <template>
 
-  <DashboardCardV2 v-if="showContractResults" collapsible-key="contractCalls">
+  <DashboardCardV2 collapsible-key="contractCalls">
     <template #title>
       Recent Contract Calls
     </template>
 
-    <template #left-control>
+    <template v-if="hasContractResults" #left-control>
       <PlayPauseButton :controller="resultTableController"/>
     </template>
 
     <template #content>
-      <div id="contract-results-table">
-        <ContractResultTable v-if="props.contractId" :controller="resultTableController"/>
-      </div>
+      <template v-if="hasContractResults">
+        <div id="contract-results-table">
+          <ContractResultTable v-if="props.contractId" :controller="resultTableController"/>
+        </div>
+      </template>
+
+      <template v-else>
+        <div class="doc-snippet">
+          <p>The contract has not been called yet.</p>
+          <p>
+            <span>See how to call a smart contract function </span>
+            <a
+                href="https://docs.hedera.com/hedera/sdks-and-apis/sdks/smart-contracts/call-a-smart-contract-function"
+                target="_blank"
+                class="h-is-extra-text"
+            >here</a>
+            <span>.</span>
+          </p>
+        </div>
+      </template>
     </template>
   </DashboardCardV2>
 
@@ -46,7 +63,7 @@ const isMediumScreen = inject('isMediumScreen', true)
 const computedContractId = computed(() => props.contractId ?? null)
 const defaultPageSize = isMediumScreen ? 10 : 5
 
-const showContractResults = computed(() => resultTableController.rows.value.length)
+const hasContractResults = computed(() => resultTableController.rows.value.length)
 
 //
 // resultTableController
