@@ -55,7 +55,7 @@
     "multiformats": "^13.3.7",
     "prismjs": "^1.30.0",
     "topojson-client": "^3.1.0",
-    "vue": "^3.5.17",
+    "vue": "^3.5.18",
     "vue-router": "^4.5.1"
   },
   "devDependencies": {
