@@ -6,7 +6,7 @@
 
 <template>
 
-  <DashboardCardV2 collapsible-key="topicMessages">
+  <DashboardCardV2>
 
     <template #title>
       Topic Messages

@@ -6,7 +6,7 @@
 
 <template>
 
-  <DashboardCardV2 collapsible-key="topicDetails">
+  <DashboardCardV2>
     <template #title>
       Topic
       <div v-if="isHcs1Topic" class="h-has-pill" style="margin-top: 2px">
