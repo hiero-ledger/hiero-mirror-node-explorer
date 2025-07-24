@@ -10,7 +10,9 @@
 
   <TokenFeesSection v-if="hasCustomFees" :analyzer="tokenAnalyzer"/>
 
+<!--
   <ContractResultsSection :contract-id="tokenId ?? undefined"/>
+-->
 
 </template>
 
@@ -20,7 +22,6 @@
 
 <script setup lang="ts">
 
-import ContractResultsSection from "@/components/contract/ContractResultsSection.vue";
 import TokenFeesSection from "@/components/token/TokenFeesSection.vue";
 import TokenKeysSection from "@/components/token/TokenKeysSection.vue";
 import {computed, onBeforeUnmount, onMounted} from "vue";
