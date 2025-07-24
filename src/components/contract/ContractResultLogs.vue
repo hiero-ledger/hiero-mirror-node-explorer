@@ -87,7 +87,7 @@ const DEFAULT_PAGE_SIZE = 3
 const props = defineProps({
   logs: {
     type: Object as PropType<Array<ContractLog>>,
-    default: []
+    required: true
   },
   blockNumber: {
     type: Number,
