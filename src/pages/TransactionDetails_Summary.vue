@@ -6,7 +6,7 @@
 
 <template>
 
-  <DashboardCardV2 collapsible-key="transactionDetails">
+  <DashboardCardV2 :collapsible-key="displayTransfers ? 'transactionDetails': ''">
     <template #title>
       Transaction
       <template v-if="transaction">

@@ -63,7 +63,7 @@
     </template>
   </DashboardCardV2>
 
-  <DashboardCardV2 v-if="isMapVisible">
+  <DashboardCardV2 v-if="isMapVisible" collapsible-key="nodeMap">
     <template #title>
       Map
     </template>
