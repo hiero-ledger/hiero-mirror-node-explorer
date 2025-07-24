@@ -6,7 +6,7 @@
 
 <template>
 
-  <DashboardCardV2 collapsible-key="contractCalls">
+  <DashboardCardV2>
     <template #title>
       Recent Contract Calls
     </template>
