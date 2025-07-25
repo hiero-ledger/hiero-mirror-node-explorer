@@ -47,19 +47,13 @@
       </template>
 
       <template v-else>
-        <div class="doc-snippet">
+        <DocSnippet
+            doc-hint="See how to access event data"
+            doc-url="https://hedera.com/blog/how-to-get-event-information-from-hedera-smart-contracts"
+        >
           <p>No events have been logged for this contract.</p>
           <p>This may be due to it not being called or its executions did not emit any events.</p>
-          <p>
-            <span>See how to access event data </span>
-            <a
-                href="https://hedera.com/blog/how-to-get-event-information-from-hedera-smart-contracts"
-                target="_blank"
-                class="h-is-extra-text"
-            >here</a>
-            <span>.</span>
-          </p>
-        </div>
+        </DocSnippet>
       </template>
     </template>
 
@@ -81,6 +75,7 @@ import {AppStorage} from "@/AppStorage";
 import SelectView from "@/elements/SelectView.vue";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import ContractSectionTitle from "@/components/contract/ContractSectionTitle.vue";
+import DocSnippet from "@/components/DocSnippet.vue";
 
 const DEFAULT_PAGE_SIZE = 3
 
