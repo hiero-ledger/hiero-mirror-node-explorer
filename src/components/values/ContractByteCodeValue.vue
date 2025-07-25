@@ -6,33 +6,44 @@
 
 <!--suppress HtmlWrongAttributeValue -->
 <template>
-  <div :class="{'split-bytecode-container':isMediumScreen,'bytecode-container':!isMediumScreen}">
 
-    <div id="bytecode" class="code-pane" :class="{'split-padding': isMediumScreen}">
-      <div class="property-name">Runtime Bytecode</div>
-      <ByteCodeValue
-          class="h-code-box h-code-source"
-          :byte-code="props.byteCode ?? undefined"
-          :scroll-bar="false"
+  <div class="bytecode-root">
+
+    <div class="assembly-header">
+      <Tabs
+          :tab-ids=tabIds
+          :tab-labels=tabLabels
+          :selected-tab="selectedTab"
+          @update:selected-tab="handleTabUpdate($event)"
       />
-    </div>
 
-    <div id="assembly-code" class="code-pane" :class="{'split-separator': isMediumScreen}">
-      <div class="assembly-header">
-        <div class="property-name">Assembly Bytecode</div>
-        <div class="show-hexa-opcode-checkbox">
-          <input type="checkbox" v-model="showHexaOpcode" id="show-hexa-opcode" name="show-hexa-opcode"/>
-          <label for="show-hexa-opcode">Show hexa opcode</label>
-        </div>
+      <div v-if="selectedTab === 'assembly'" class="show-hexa-opcode-checkbox">
+        <input type="checkbox" v-model="showHexaOpcode" id="show-hexa-opcode" name="show-hexa-opcode"/>
+        <label for="show-hexa-opcode">Show hexa opcode</label>
       </div>
-
-      <DisassembledCodeValue
-          class="h-code-box h-code-source"
-          :byte-code="props.byteCode ?? undefined"
-          :show-hexa-opcode="showHexaOpcode"
-      />
     </div>
+
+    <template v-if="selectedTab === 'runtime'">
+      <div id="bytecode" class="code-pane">
+        <ByteCodeValue
+            class="h-code-box h-code-source"
+            :byte-code="props.byteCode ?? undefined"
+            :scroll-bar="false"
+        />
+      </div>
+    </template>
+
+    <template v-else>
+      <div id="assembly-code" class="code-pane">
+        <DisassembledCodeValue
+            class="h-code-box h-code-source"
+            :byte-code="props.byteCode ?? undefined"
+            :show-hexa-opcode="showHexaOpcode"
+        />
+      </div>
+    </template>
   </div>
+
 </template>
 
 <!-- --------------------------------------------------------------------------------------------------------------- -->
@@ -41,7 +52,7 @@
 
 <script setup lang="ts">
 
-import {inject, PropType} from 'vue';
+import {PropType, ref} from 'vue';
 import "prismjs/prism";
 import "prismjs/themes/prism-tomorrow.css"
 import "prismjs/prism.js";
@@ -49,6 +60,8 @@ import "prismjs/components/prism-clike.js";
 import "prismjs/components/prism-solidity.js";
 import ByteCodeValue from "@/components/values/ByteCodeValue.vue";
 import DisassembledCodeValue from "@/components/values/DisassembledCodeValue.vue";
+import Tabs from "@/components/Tabs.vue";
+import {AppStorage} from "@/AppStorage.ts";
 
 const props = defineProps({
   byteCode: {
@@ -62,7 +75,13 @@ const showHexaOpcode = defineModel("showHexaOpcode", {
   default: false
 })
 
-const isMediumScreen = inject('isMediumScreen', true)
+const tabIds = ['runtime', 'assembly']
+const tabLabels = ['Runtime Bytecode', 'Assembly Bytecode']
+const selectedTab = ref<string | null>(AppStorage.getContractByteCodeTab() ?? tabIds[0])
+const handleTabUpdate = (tab: string | null) => {
+  selectedTab.value = tab
+  AppStorage.setContractByteCodeTab(tab)
+}
 
 </script>
 
@@ -72,16 +91,12 @@ const isMediumScreen = inject('isMediumScreen', true)
 
 <style scoped>
 
-div.split-bytecode-container {
-  display: flex;
-  align-items: flex-start;
-}
-
-div.bytecode-container {
+div.bytecode-root {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 24px;
+  row-gap: 16px;
+  flex: 1;
+  min-height: 0; /* CRITICAL */
 }
 
 div.code-pane {
@@ -89,32 +104,17 @@ div.code-pane {
   flex-direction: column;
   gap: 16px;
   width: 100%;
+  flex: 1;
+  min-height: 0; /* CRITICAL */
 }
 
 div.assembly-header {
   align-items: center;
   display: flex;
   flex-direction: row;
-  gap: 16px;
+  flex-wrap: wrap;
+  row-gap: 8px;
   justify-content: space-between;
-  height: 16px
-}
-
-div.property-name {
-  color: var(--text-secondary);
-  font-size: 12px;
-  font-weight: 500;
-  height: 16px;
-  text-transform: uppercase;
-}
-
-div.split-separator {
-  border-left: 1px solid var(--border-secondary);
-  padding-left: 32px;
-}
-
-div.split-padding {
-  padding-right: 31px;
 }
 
 div.show-hexa-opcode-checkbox {
@@ -122,6 +122,7 @@ div.show-hexa-opcode-checkbox {
   display: flex;
   gap: 8px;
   justify-content: flex-end;
+  margin-left: 8px;
 
   label {
     color: var(--text-primary);
