@@ -52,7 +52,7 @@ describe("Accounts.vue", () => {
 
         const table = card.findComponent(AccountTable)
         expect(table.exists()).toBe(true)
-        expect(table.get('thead').text()).toBe("ID CREATED TOKENS MEMO BALANCE")
+        expect(table.get('thead').text()).toBe("IDCREATEDTOKENSMEMOBALANCE")
         expect(table.get('tbody').text()).toBe(
             "0.0.730631" +
             "5:12:31.6676 AMFeb 28, 2022, UTC" +

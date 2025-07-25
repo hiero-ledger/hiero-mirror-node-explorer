@@ -86,7 +86,7 @@ describe("HbarAllowanceTable.vue", () => {
         controller.mount()
         await flushPromises()
 
-        expect(wrapper.find('thead').text()).toBe("SPENDER TOKEN ID TIME")
+        expect(wrapper.find('thead').text()).toBe("SPENDERTOKEN IDTIME")
         expect(wrapper.find('tbody').text()).toBe(
             "0.0.1500" + "0.0.4457902" + "?" + "3:03:19.2987 PMJul 2, 2024, UTC" +
             "0.0.1584" + "0.0.4457902" + "?" + "3:04:15.9256 PMJul 2, 2024, UTC" +

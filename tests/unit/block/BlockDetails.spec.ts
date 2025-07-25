@@ -83,7 +83,7 @@ describe("BlockDetails.vue", () => {
         expect(wrapper.get("#blockTransactions").text()).toMatch(RegExp("^Block Transactions"))
         const table = wrapper.findComponent(BlockTransactionTable)
         expect(table.exists()).toBe(true)
-        expect(table.get('thead').text()).toBe("ID TYPE CONTENT TIME")
+        expect(table.get('thead').text()).toBe("IDTYPECONTENTTIME")
         expect(table.get('tbody').text()).toBe("0.0.29624024@1646025139.152901498CRYPTO TRANSFER0.0.29624024\n" + "\n" +
             "123423\n" + "\n" +
             "0.0.296939115:12:31.6676 AMFeb 28, 2022, UTC")
@@ -144,7 +144,7 @@ describe("BlockDetails.vue", () => {
         expect(wrapper.get("#blockTransactions").text()).toMatch(RegExp("^Block Transactions"))
         const table = wrapper.findComponent(BlockTransactionTable)
         expect(table.exists()).toBe(true)
-        expect(table.get('thead').text()).toBe("ID TYPE CONTENT TIME")
+        expect(table.get('thead').text()).toBe("IDTYPECONTENTTIME")
         expect(table.get('tbody').text()).toBe("0.0.29624024@1646025139.152901498CRYPTO TRANSFER0.0.29624024\n" + "\n" +
             "123423\n" + "\n" +
             "0.0.296939115:12:31.6676 AMFeb 28, 2022, UTC")
@@ -206,7 +206,7 @@ describe("BlockDetails.vue", () => {
         expect(wrapper.get("#blockTransactions").text()).toMatch(RegExp("^Block Transactions"))
         let table = wrapper.findComponent(BlockTransactionTable)
         expect(table.exists()).toBe(true)
-        expect(table.get('thead').text()).toBe("ID TYPE CONTENT TIME")
+        expect(table.get('thead').text()).toBe("IDTYPECONTENTTIME")
         expect(table.get('tbody').text()).toBe("0.0.29624024@1646025139.152901498CRYPTO TRANSFER0.0.29624024\n" + "\n" +
             "123423\n" + "\n" +
             "0.0.296939115:12:31.6676 AMFeb 28, 2022, UTC")
@@ -255,7 +255,7 @@ describe("BlockDetails.vue", () => {
         expect(wrapper.get("#blockTransactions").text()).toMatch(RegExp("^Block Transactions"))
         table = wrapper.findComponent(BlockTransactionTable)
         expect(table.exists()).toBe(true)
-        expect(table.get('thead').text()).toBe("ID TYPE CONTENT TIME")
+        expect(table.get('thead').text()).toBe("IDTYPECONTENTTIME")
         expect(table.get('tbody').text()).toBe(
             "0.0.950@1646665756.235554077" +
             "CONTRACT CALL" +
@@ -304,7 +304,7 @@ describe("BlockDetails.vue", () => {
         expect(wrapper.get("#blockTransactions").text()).toMatch(RegExp("^Block Transactions"))
         const table = wrapper.findComponent(BlockTransactionTable)
         expect(table.exists()).toBe(true)
-        expect(table.get('thead').text()).toBe("ID TYPE CONTENT TIME")
+        expect(table.get('thead').text()).toBe("IDTYPECONTENTTIME")
         expect(table.get('tbody').text()).toBe("")
 
         wrapper.unmount()
@@ -344,7 +344,7 @@ describe("BlockDetails.vue", () => {
         expect(wrapper.get("#blockTransactions").text()).toMatch(RegExp("^Block Transactions"))
         const table = wrapper.findComponent(BlockTransactionTable)
         expect(table.exists()).toBe(true)
-        expect(table.get('thead').text()).toBe("ID TYPE CONTENT TIME")
+        expect(table.get('thead').text()).toBe("IDTYPECONTENTTIME")
         expect(table.get('tbody').text()).toBe("")
 
         wrapper.unmount()
@@ -388,7 +388,7 @@ describe("BlockDetails.vue", () => {
         expect(wrapper.get("#blockTransactions").text()).toMatch(RegExp("^Block Transactions"))
         const table = wrapper.findComponent(BlockTransactionTable)
         expect(table.exists()).toBe(true)
-        expect(table.get('thead').text()).toBe("ID TYPE CONTENT TIME")
+        expect(table.get('thead').text()).toBe("IDTYPECONTENTTIME")
         expect(table.get('tbody').text()).toBe("")
 
         mock.restore()
@@ -433,7 +433,7 @@ describe("BlockDetails.vue", () => {
         expect(wrapper.get("#blockTransactions").text()).toMatch(RegExp("^Block Transactions"))
         const table = wrapper.findComponent(BlockTransactionTable)
         expect(table.exists()).toBe(true)
-        expect(table.get('thead').text()).toBe("ID TYPE CONTENT TIME")
+        expect(table.get('thead').text()).toBe("IDTYPECONTENTTIME")
         expect(table.get('tbody').text()).toBe("")
 
         mock.restore()

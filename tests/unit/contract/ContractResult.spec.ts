@@ -232,7 +232,7 @@ describe("ContractResult.vue", () => {
 
         const actionsTable = stackTrace.findComponent(ContractActionsTable)
         expect(actionsTable.exists()).toBe(true)
-        expect(actionsTable.find('thead').text()).toBe("CALL TYPE FROM AMOUNT TO GAS LIMIT")
+        expect(actionsTable.find('thead').text()).toBe("CALL TYPEFROMAMOUNTTOGAS LIMIT")
 
         const actions = actionsTable.find('tbody').findAll('tr')
         expect(actions.length).toBe(3)
