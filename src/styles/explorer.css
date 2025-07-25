@@ -226,12 +226,23 @@ ul {
 }
 
 .h-page-toolbar {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
     align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     margin-left: 16px;
     margin-right: 16px;
+    row-gap: 4px;
+}
+
+@media (min-width: 768px) {
+    .h-page-toolbar {
+        align-items: center;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-left: 16px;
+        margin-right: 16px;
+    }
 }
 
 @media (min-width: 1080px) {
