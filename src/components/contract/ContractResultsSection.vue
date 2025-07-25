@@ -23,18 +23,12 @@
       </template>
 
       <template v-else>
-        <div class="doc-snippet">
+        <DocSnippet
+            doc-hint="See how to call a smart contract function"
+            doc-url="https://docs.hedera.com/hedera/sdks-and-apis/sdks/smart-contracts/call-a-smart-contract-function"
+        >
           <p>The contract has not been called yet.</p>
-          <p>
-            <span>See how to call a smart contract function </span>
-            <a
-                href="https://docs.hedera.com/hedera/sdks-and-apis/sdks/smart-contracts/call-a-smart-contract-function"
-                target="_blank"
-                class="h-is-extra-text"
-            >here</a>
-            <span>.</span>
-          </p>
-        </div>
+        </DocSnippet>
       </template>
     </template>
   </DashboardCardV2>
@@ -53,6 +47,7 @@ import ContractResultTable from "@/components/contract/ContractResultTable.vue";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import PlayPauseButton from "@/components/PlayPauseButton.vue";
 import router from "@/utils/RouteManager.ts";
+import DocSnippet from "@/components/DocSnippet.vue";
 
 const props = defineProps({
   contractId: String,
