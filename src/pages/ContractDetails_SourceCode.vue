@@ -37,18 +37,12 @@
       </template>
 
       <template v-else>
-        <div class="doc-snippet">
+        <DocSnippet
+            doc-hint="See how to verify a contract"
+            doc-url="https://docs.hedera.com/hedera/core-concepts/smart-contracts/verifying-smart-contracts-beta"
+        >
           <p>The contract source code will be available once the contract is verified.</p>
-          <p>
-            <span>See how to verify a contract </span>
-            <a
-                href="https://docs.hedera.com/hedera/core-concepts/smart-contracts/verifying-smart-contracts-beta"
-                target="_blank"
-                class="h-is-extra-text"
-            >here</a>
-            <span>.</span>
-          </p>
-        </div>
+        </DocSnippet>
       </template>
     </template>
 
@@ -72,6 +66,7 @@ import SelectView from "@/elements/SelectView.vue";
 import JSZip from "jszip";
 import {saveAs} from "file-saver";
 import {SourcifyResponseItem} from "@/utils/cache/SourcifyCache.ts";
+import DocSnippet from "@/components/DocSnippet.vue";
 
 const props = defineProps({
   contractId: String,
