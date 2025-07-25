@@ -95,8 +95,6 @@ div.bytecode-root {
   display: flex;
   flex-direction: column;
   row-gap: 16px;
-  flex: 1;
-  min-height: 0; /* CRITICAL */
 }
 
 div.code-pane {
@@ -104,8 +102,6 @@ div.code-pane {
   flex-direction: column;
   gap: 16px;
   width: 100%;
-  flex: 1;
-  min-height: 0; /* CRITICAL */
 }
 
 div.assembly-header {
