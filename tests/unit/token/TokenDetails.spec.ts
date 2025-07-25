@@ -610,7 +610,7 @@ describe("TokenDetails.vue", () => {
 
         const fixedFee = customFees.findComponent(FixedFeeTable)
         expect(fixedFee.exists()).toBe(true)
-        expect(fixedFee.get('thead').text()).toBe("FIXED FEE FEE CURRENCY COLLECTOR ACCOUNT")
+        expect(fixedFee.get('thead').text()).toBe("FIXED FEEFEE CURRENCYCOLLECTOR ACCOUNT")
         expect(fixedFee.get('tbody').text()).toBe(
             "5" + "0.0.2966295623423" + "0.0.617888" +
             "1" + "0.0.2966295623423" + "0.0.617889" +
@@ -619,7 +619,7 @@ describe("TokenDetails.vue", () => {
 
         const fractionalFee = customFees.findComponent(FractionalFeeTable)
         expect(fractionalFee.exists()).toBe(true)
-        expect(fractionalFee.get('thead').text()).toBe("FRACTIONAL FEE FEE CURRENCY COLLECTOR ACCOUNT MIN MAX NET")
+        expect(fractionalFee.get('thead').text()).toBe("FRACTIONAL FEEFEE CURRENCYCOLLECTOR ACCOUNTMINMAXNET")
         expect(fractionalFee.get('tbody').text()).toBe(
             "0.5%" + "0.0.2966295623423" + "0.0.617888" + "0.01" + "2" + "✓" +
             "0.1%" + "0.0.2966295623423" + "0.0.617889" + "0.01" + "2" +
@@ -689,7 +689,7 @@ describe("TokenDetails.vue", () => {
 
         const fixedFee = customFees.findComponent(FixedFeeTable)
         expect(fixedFee.exists()).toBe(true)
-        expect(fixedFee.get('thead').text()).toBe("FIXED FEE FEE CURRENCY COLLECTOR ACCOUNT")
+        expect(fixedFee.get('thead').text()).toBe("FIXED FEEFEE CURRENCYCOLLECTOR ACCOUNT")
         expect(fixedFee.get('tbody').text()).toBe(
             "5" + "0.0.748383" + testTokenSymbol + "0.0.617888" +
             "1" + "0.0.748383" + testTokenSymbol + "0.0.617889" +
@@ -700,7 +700,7 @@ describe("TokenDetails.vue", () => {
 
         const royalteeFee = customFees.findComponent(RoyaltyFeeTable)
         expect(royalteeFee.exists()).toBe(true)
-        expect(royalteeFee.get('thead').text()).toBe("PERCENTAGE FEE COLLECTOR ACCOUNT FALLBACK FEE FEE CURRENCY")
+        expect(royalteeFee.get('thead').text()).toBe("PERCENTAGE FEECOLLECTOR ACCOUNTFALLBACK FEEFEE CURRENCY")
         expect(royalteeFee.get('tbody').text()).toBe(
             "0.5%" + "0.0.617888" + "500" + "0.0.748383" + testTokenSymbol +
             "0.1%" + "0.0.617889" + "100" + "0.0.748383" + testTokenSymbol +

@@ -89,7 +89,7 @@ describe("HbarAllowanceTable.vue", () => {
         await flushPromises()
         // console.log(wrapper.text())
 
-        expect(wrapper.find('thead').text()).toBe("TOKEN ID SERIAL # SPENDER TIME")
+        expect(wrapper.find('thead').text()).toBe("TOKEN IDSERIAL #SPENDERTIME")
         expect(wrapper.find('tbody').text()).toBe(
             "0.0.4458222" + "?" + "1" + "0.0.1584" + "9:09:43.2674 AMJul 1, 2024, UTC" +
             "0.0.4457902" + "?" + "12" + "0.0.1789" + "7:59:26.4548 AMJul 12, 2024, UTC" +

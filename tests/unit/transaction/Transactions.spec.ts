@@ -76,7 +76,7 @@ describe("Transactions.vue", () => {
 
         const table = card.findComponent(TransactionTable)
         expect(table.exists()).toBe(true)
-        expect(table.get('thead').text()).toBe("ID TYPE CONTENT TIME")
+        expect(table.get('thead').text()).toBe("IDTYPECONTENTTIME")
         expect(table.get('tbody').text()).toBe(
             "0.0.29624024@1646025139.152901498CRYPTO TRANSFER0.0.29624024\n\n" +
             "123423\n\n" +

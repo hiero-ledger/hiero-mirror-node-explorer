@@ -54,7 +54,7 @@ describe("NodeTable.vue", () => {
             "api/v1/network/nodes",
         ])
 
-        expect(wrapper.get('thead').text()).toBe("NODE ID DESCRIPTION STAKE FOR CONSENSUS % STAKE RANGE REWARD RATE")
+        expect(wrapper.get('thead').text()).toBe("NODE IDDESCRIPTIONSTAKE FOR CONSENSUS%STAKE RANGEREWARD RATE")
         expect(wrapper.get('tbody').findAll('tr').length).toBe(3)
         expect(wrapper.get('tbody').text()).toBe(
             "0" +

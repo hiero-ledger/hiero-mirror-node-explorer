@@ -55,7 +55,7 @@ describe("Blocks.vue", () => {
 
         const table = card.findComponent(BlockTable)
         expect(table.exists()).toBe(true)
-        expect(table.get('thead').text()).toBe("NUMBER START TIME NO. TRANSACTIONS GAS USED")
+        expect(table.get('thead').text()).toBe("NUMBERSTART TIMENO. TRANSACTIONSGAS USED")
         expect(table.get('tbody').text()).toBe(
             "25175998" + "6:58:31.3281 AMSep 23, 2022, UTC" + "3" + "0" +
             "25175997" + "6:58:28.2114 AMSep 23, 2022, UTC" + "5" + "0"
