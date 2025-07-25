@@ -206,7 +206,8 @@ ul {
     display: flex;
     flex-direction: column;
     gap: 16px;
-    min-height: 100vh;
+    min-height: 100vh; /* Fill full viewport height */
+    max-height: 100%;
 }
 
 .h-page-content {
