@@ -49,22 +49,17 @@
           </Property>
         </template>
 
-        <ContractAbiValue :abiController="abiController" :fragment-collection="selectedCollection as FragmentCollection"/>
+        <ContractAbiValue :abiController="abiController"
+                          :fragment-collection="selectedCollection as FragmentCollection"/>
       </template>
 
       <template v-else>
-        <div class="doc-snippet">
+        <DocSnippet
+            doc-hint="See how to verify a contract"
+            doc-url="https://docs.hedera.com/hedera/core-concepts/smart-contracts/verifying-smart-contracts-beta"
+        >
           <p>The contract ABI will be available once the contract is verified.</p>
-          <p>
-            <span>See how to verify a contract </span>
-            <a
-                href="https://docs.hedera.com/hedera/core-concepts/smart-contracts/verifying-smart-contracts-beta"
-                target="_blank"
-                class="h-is-extra-text"
-            >here</a>
-            <span>.</span>
-          </p>
-        </div>
+        </DocSnippet>
       </template>
     </template>
 
@@ -93,6 +88,7 @@ import {AppStorage} from "@/AppStorage.ts";
 import Property from "@/components/Property.vue";
 import AccountLink from "@/components/values/link/AccountLink.vue";
 import ContractSectionTitle from "@/components/contract/ContractSectionTitle.vue";
+import DocSnippet from "@/components/DocSnippet.vue";
 
 const props = defineProps({
   contractId: String,
