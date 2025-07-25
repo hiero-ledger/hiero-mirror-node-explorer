@@ -169,13 +169,9 @@ describe('Token Navigation', () => {
             .find('td')
             .eq(0)
             .click()
-            .then(() => {
-                // cy.log('Selected account Id: ' + $id.text())
-                cy.url().should('include', '/mainnet/transaction/')
-                cy.contains('CONTRACT CALL')
-                cy.contains('Token ID' + proxiedTokenId)
-            })
 
+        cy.url().should('include', '/mainnet/transaction/')
+        cy.contains('CONTRACT CALL')
+        cy.contains('Token ID' + proxiedTokenId)
     })
-
 })
