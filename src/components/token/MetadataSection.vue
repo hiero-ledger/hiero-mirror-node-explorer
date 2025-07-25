@@ -135,19 +135,14 @@
       </template>
 
       <template v-else>  <!-- rawMetadata.length === 0 -->
-        <div class="doc-snippet">
+        <DocSnippet
+            doc-hint="Learn how"
+            doc-url="https://docs.hedera.com/hedera/tutorials/token/structure-your-token-metadata-using-json-schema-v2"
+        >
           <p>No metadata is defined for this token or NFT collection.</p>
-          <p>Note: While individual NFTs typically include metadata, collections and fungible tokens often do not -- though they can!.</p>
-          <p>
-            <span>Learn how </span>
-            <a
-                href="https://docs.hedera.com/hedera/tutorials/token/structure-your-token-metadata-using-json-schema-v2"
-                target="_blank"
-                class="h-is-extra-text"
-            >here</a>
-            <span>.</span>
-          </p>
-        </div>
+          <p>Note: While individual NFTs typically include metadata, collections and fungible tokens often do not --
+            though they can!</p>
+        </DocSnippet>
       </template>
     </template>
   </DashboardCardV2>
@@ -167,6 +162,7 @@ import NftAttribute from "@/components/token/NftAttribute.vue";
 import InfoTooltip from "@/components/InfoTooltip.vue";
 import NftFile from "@/components/token/NftFile.vue";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
+import DocSnippet from "@/components/DocSnippet.vue";
 
 const props = defineProps({
   metadataAnalyzer: {
