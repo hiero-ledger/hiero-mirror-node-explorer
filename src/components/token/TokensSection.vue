@@ -96,9 +96,9 @@
       </template>
 
       <template v-else>
-        <div class="doc-snippet">
+        <DocSnippet>
           <p>This account currently holds no fungible tokens, NFTs, or pending token airdrops.</p>
-        </div>
+        </DocSnippet>
       </template>
     </template>
 
@@ -144,6 +144,7 @@ import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import ButtonView from "@/elements/ButtonView.vue";
 import {ButtonSize} from "@/dialogs/core/DialogUtils.ts";
 import {walletManager} from "@/utils/RouteManager.ts";
+import DocSnippet from "@/components/DocSnippet.vue";
 
 const props = defineProps({
   accountId: {
