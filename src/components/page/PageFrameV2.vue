@@ -92,4 +92,22 @@ watch(documentTitle, (newValue: string|null) => {
   }
 }
 
+.h-page-toolbar {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-left: 16px;
+  margin-right: 16px;
+  row-gap: 4px;
+}
+
+@media (min-width: 1080px) {
+  .h-page-toolbar {
+    margin-left: 32px;
+    margin-right: 32px;
+  }
+}
+
 </style>

@@ -226,33 +226,6 @@ ul {
     }
 }
 
-.h-page-toolbar {
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    margin-left: 16px;
-    margin-right: 16px;
-    row-gap: 4px;
-}
-
-@media (min-width: 768px) {
-    .h-page-toolbar {
-        align-items: center;
-        flex-direction: row;
-        justify-content: space-between;
-        margin-left: 16px;
-        margin-right: 16px;
-    }
-}
-
-@media (min-width: 1080px) {
-    .h-page-toolbar {
-        margin-left: 32px;
-        margin-right: 32px;
-    }
-}
-
 .h-side-by-side-content {
     display: flex;
     flex-direction: column;
