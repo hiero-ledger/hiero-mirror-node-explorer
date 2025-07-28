@@ -50,7 +50,7 @@ const props = defineProps({
 <style scoped>
 
 .snippet-root {
-  align-self: flex-start;
+  align-self: center;
   align-items: center;
   border: 1px solid var(--border-secondary);
   border-radius: 8px;
@@ -64,20 +64,13 @@ const props = defineProps({
 
 @media (min-width: 768px) {
   .snippet-root {
-    flex-direction: row;
-    padding-right: 24px;
+    padding: 12px 24px 24px;
   }
 }
 
 .snippet-logo {
   height: 100px;
   width: 100px;
-}
-@media (min-width: 768px) {
-  .snippet-logo {
-    height: 200px;
-    width: 200px;
-  }
 }
 
 .snippet-text {
@@ -88,9 +81,4 @@ const props = defineProps({
   text-align: center;
 }
 
-@media (min-width: 768px) {
-  .snippet-text {
-    text-align: left;
-  }
-}
 </style>
