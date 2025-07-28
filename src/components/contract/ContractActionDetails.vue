@@ -16,8 +16,15 @@
     <Property id="actionDetailTo" :custom-nb-col-class="propertySizeClass">
       <template v-slot:name>To</template>
       <template v-slot:value>
-        <EVMAddress :id="action?.recipient" :address="action?.to" :entity-type="action?.recipient_type"
-                    :show-type="true" :compact="!isSmallScreen"/>
+        <EthPrecompileAddress v-if="props.action?.to && props.action?.call_type == 'PRECOMPILE'"
+            :evm-address="props.action.to"
+            :show-type="true"/>
+        <EVMAddress v-else
+                    :id="action?.recipient"
+                    :address="action?.to"
+                    :entity-type="action?.recipient_type"
+                    :show-type="true"
+                    :compact="!isSmallScreen"/>
       </template>
     </Property>
     <Property id="actionDetailValue" :custom-nb-col-class="propertySizeClass">
@@ -60,6 +67,7 @@ import FunctionResult from "@/components/values/FunctionResult.vue";
 import FunctionError from "@/components/values/FunctionError.vue";
 import HbarAmount from "@/components/values/HbarAmount.vue";
 import {ContractActionAnalyzer} from "@/utils/analyzer/ContractActionAnalyzer";
+import EthPrecompileAddress from "@/components/contract/EthPrecompileAddress.vue";
 
 const props = defineProps({
   action: Object as PropType<ContractAction>
