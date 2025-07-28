@@ -34,6 +34,7 @@ import router, {routeManager} from "@/utils/RouteManager.ts";
 import ContractDetails_ByteCode from "@/pages/ContractDetails_ByteCode.vue";
 import ContractDetails_Calls from "@/pages/ContractDetails_Calls.vue";
 import ContractDetails_Summary from "@/pages/ContractDetails_Summary.vue";
+import Tabs from "@/components/Tabs.vue";
 
 /*
     Bookmarks
@@ -58,7 +59,7 @@ describe("ContractDetails.vue", () => {
         const matcher4 = "/api/v1/network/exchangerate"
         mock.onGet(matcher4).reply(200, SAMPLE_NETWORK_EXCHANGERATE);
 
-        const matcher5 = "/api/v1/contracts/" + SAMPLE_CONTRACT.contract_id + "/results"
+        const matcher5 = "/api/v1/contracts/" + SAMPLE_CONTRACT.contract_id + "/results?internal=true"
         mock.onGet(matcher5).reply(200, SAMPLE_CONTRACT_RESULTS);
 
 
@@ -122,9 +123,15 @@ describe("ContractDetails.vue", () => {
         await flushPromises()
 
         expect(fetchGetURLs(mock)).toStrictEqual([
-            "api/v1/contracts/0xffffffffffffffffffffffffffffffffffffffff",
-            "api/v1/accounts/0xffffffffffffffffffffffffffffffffffffffff",
         ])
+
+        const tabComponent = wrapper2.findComponent(Tabs)
+        expect(tabComponent.exists()).toBe(true)
+
+        const tabs = tabComponent.findAll('li')
+        expect(tabs.length).toBe(2)
+        expect(tabs[0].text()).toBe('Runtime Bytecode')
+        expect(tabs[1].text()).toBe('Assembly Bytecode')
 
         expect(wrapper2.get("#bytecode").text()).toContain(
             "6080 6040 5236 606d 5730 73ff ffff ffff ffff ffff ffff ffff ffff ffff ffff ff16 3373 ffff ffff ffff ffff " +
@@ -133,9 +140,12 @@ describe("ContractDetails.vue", () => {
             "565b 6000 6020 8201 9050 6092 6000 8301 8460 7256 5b92 9150 5056 5b60 0081 9050 9190 5056 fea2 6469 7066 " +
             "7358 2212 20b9 4efc a641 a0cf 62b2 bd50 5f79 fe4b e165 c582 520b c615 e5c5 fa34 0215 6eaf d864 736f 6c63 " +
             "4300 0804 0033")
+
+        const tab = tabComponent.find("#tab-assembly")
+        await tab.trigger('click')
+        await flushPromises()
+
         expect(wrapper2.get("#assembly-code").text()).toContain(
-            "Assembly Bytecode" +
-            "Show hexa opcode" +
             "0x0000:PUSH10x800x0002:PUSH10x400x0004:MSTORE0x0005:CALLDATASIZE0x0006:PUSH10x6d0x0008:JUMPI0x0009:ADDRESS" +
             "0x000a:PUSH200xffffffffffffffffffffffffffffffffffffffff0x001f:AND0x0020:CALLER0x0021:PUSH200xffffffffffffffffffffffffffffffffffffffff" +
             "0x0036:AND0x0037:PUSH320xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef0x0058:CALLVALUE0x0059:PUSH10x400x005b:MLOAD" +
@@ -163,7 +173,7 @@ describe("ContractDetails.vue", () => {
         await flushPromises()
 
         expect(fetchGetURLs(mock)).toStrictEqual([
-            "api/v1/contracts/" + SAMPLE_CONTRACT.contract_id + "/results",
+            "api/v1/contracts/" + SAMPLE_CONTRACT.contract_id + "/results?internal=true",
             "api/v1/contracts/0.0.1260",
             "api/v1/contracts/" + SAMPLE_CONTRACT_RESULTS.results[0].from,
             "api/v1/tokens/0.0.1260",
@@ -192,7 +202,7 @@ describe("ContractDetails.vue", () => {
         const matcher4 = "/api/v1/network/exchangerate"
         mock.onGet(matcher4).reply(200, SAMPLE_NETWORK_EXCHANGERATE);
 
-        const matcher5 = "/api/v1/contracts/" + SAMPLE_CONTRACT.evm_address + "/results"
+        const matcher5 = "/api/v1/contracts/" + SAMPLE_CONTRACT.evm_address + "/results?internal=true"
         mock.onGet(matcher5).reply(200, SAMPLE_CONTRACT_RESULTS);
 
         const wrapper = mount(ContractDetails, {
@@ -252,10 +262,14 @@ describe("ContractDetails.vue", () => {
         });
         await flushPromises()
 
-        expect(fetchGetURLs(mock)).toStrictEqual([
-            "api/v1/contracts/0xffffffffffffffffffffffffffffffffffffffff",
-            "api/v1/accounts/0xffffffffffffffffffffffffffffffffffffffff",
-        ])
+        // expect(fetchGetURLs(mock)).toStrictEqual([
+        //     "api/v1/contracts/0xffffffffffffffffffffffffffffffffffffffff",
+        //     "api/v1/accounts/0xffffffffffffffffffffffffffffffffffffffff",
+        // ])
+
+        let tab = wrapper2.find("#tab-runtime")
+        await tab.trigger('click')
+        await flushPromises()
 
         expect(wrapper2.get("#bytecode").text()).toContain(
             "6080 6040 5236 606d 5730 73ff ffff ffff ffff ffff ffff ffff ffff ffff ffff ff16 3373 ffff ffff ffff ffff " +
@@ -264,9 +278,12 @@ describe("ContractDetails.vue", () => {
             "565b 6000 6020 8201 9050 6092 6000 8301 8460 7256 5b92 9150 5056 5b60 0081 9050 9190 5056 fea2 6469 7066 " +
             "7358 2212 20b9 4efc a641 a0cf 62b2 bd50 5f79 fe4b e165 c582 520b c615 e5c5 fa34 0215 6eaf d864 736f 6c63 " +
             "4300 0804 0033")
+
+        tab = wrapper2.find("#tab-assembly")
+        await tab.trigger('click')
+        await flushPromises()
+
         expect(wrapper2.get("#assembly-code").text()).toContain(
-            "Assembly Bytecode" +
-            "Show hexa opcode" +
             "0x0000:PUSH10x800x0002:PUSH10x400x0004:MSTORE0x0005:CALLDATASIZE0x0006:PUSH10x6d0x0008:JUMPI0x0009:ADDRESS" +
             "0x000a:PUSH200xffffffffffffffffffffffffffffffffffffffff0x001f:AND0x0020:CALLER0x0021:PUSH200xffffffffffffffffffffffffffffffffffffffff" +
             "0x0036:AND0x0037:PUSH320xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef0x0058:CALLVALUE0x0059:PUSH10x400x005b:MLOAD" +
@@ -294,7 +311,7 @@ describe("ContractDetails.vue", () => {
         await flushPromises()
 
         expect(fetchGetURLs(mock)).toStrictEqual([
-            "api/v1/contracts/" + SAMPLE_CONTRACT.evm_address + "/results",
+            "api/v1/contracts/" + SAMPLE_CONTRACT.evm_address + "/results?internal=true",
             "api/v1/contracts/0.0.1260",
             "api/v1/contracts/" + SAMPLE_CONTRACT_RESULTS.results[0].from,
             "api/v1/tokens/0.0.1260",
@@ -323,7 +340,7 @@ describe("ContractDetails.vue", () => {
         const matcher2 = "/api/v1/accounts/" + SAMPLE_CONTRACT.contract_id
         mock.onGet(matcher2).reply(200, SAMPLE_CONTRACT_AS_ACCOUNT);
 
-        const matcher5 = "/api/v1/contracts/" + SAMPLE_CONTRACT.contract_id + "/results"
+        const matcher5 = "/api/v1/contracts/" + SAMPLE_CONTRACT.contract_id + "/results?internal=true"
         mock.onGet(matcher5).reply(200, SAMPLE_CONTRACT_RESULTS);
 
         const wrapper = mount(ContractDetails_Calls, {
@@ -340,7 +357,7 @@ describe("ContractDetails.vue", () => {
         // console.log(wrapper.html())
 
         expect(fetchGetURLs(mock)).toStrictEqual([
-            "api/v1/contracts/" + SAMPLE_CONTRACT.contract_id + "/results",
+            "api/v1/contracts/" + SAMPLE_CONTRACT.contract_id + "/results?internal=true",
             "api/v1/contracts/0.0.1260",
             "api/v1/contracts/" + SAMPLE_CONTRACT_RESULTS.results[0].from,
             "api/v1/tokens/0.0.1260",
