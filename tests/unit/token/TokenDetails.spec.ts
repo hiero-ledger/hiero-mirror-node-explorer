@@ -165,7 +165,6 @@ describe("TokenDetails.vue", () => {
         // console.log(wrapper3.text())
 
         expect(fetchGetURLs(mock)).toStrictEqual([
-            "api/v1/contracts/" + SAMPLE_TOKEN.token_id + "/results",
             "api/v1/contracts/" + SAMPLE_TOKEN.custom_fees.fixed_fees[0].collector_account_id,
             "api/v1/contracts/" + SAMPLE_TOKEN.custom_fees.fixed_fees[1].collector_account_id,
             "api/v1/contracts/" + SAMPLE_TOKEN.custom_fees.fixed_fees[2].collector_account_id,
@@ -281,7 +280,6 @@ describe("TokenDetails.vue", () => {
         // console.log(wrapper3.text())
 
         expect(fetchGetURLs(mock)).toStrictEqual([
-            "api/v1/contracts/" + SAMPLE_NONFUNGIBLE_DUDE.token_id + "/results",
             "api/v1/contracts/" + SAMPLE_NONFUNGIBLE_DUDE.custom_fees.royalty_fees[0].collector_account_id,
         ])
 
@@ -478,7 +476,6 @@ describe("TokenDetails.vue", () => {
         // console.log(wrapper2.text())
 
         expect(fetchGetURLs(mock)).toStrictEqual([
-            "api/v1/contracts/" + SAMPLE_TOKEN_WITH_KEYS.token_id + "/results",
         ])
 
         expect(wrapper2.text()).toMatch("Token Keys")
@@ -568,7 +565,6 @@ describe("TokenDetails.vue", () => {
         // console.log(wrapper2.text())
 
         expect(fetchGetURLs(mock)).toStrictEqual([
-            "api/v1/contracts/" + SAMPLE_TOKEN_WITHOUT_KEYS.token_id + "/results",
         ])
 
         expect(wrapper2.text()).toMatch("Token Keys")
@@ -715,7 +711,6 @@ describe("TokenDetails.vue", () => {
         // console.log(wrapper.text())
 
         expect(fetchGetURLs(mock)).toStrictEqual([
-            "api/v1/contracts/" + SAMPLE_TOKEN.token_id + "/results",
             "api/v1/contracts/" + SAMPLE_TOKEN.custom_fees.fixed_fees[0].collector_account_id,
             "api/v1/contracts/" + SAMPLE_TOKEN.custom_fees.fixed_fees[1].collector_account_id,
             "api/v1/contracts/" + SAMPLE_TOKEN.custom_fees.fixed_fees[2].collector_account_id,
@@ -820,7 +815,6 @@ describe("TokenDetails.vue", () => {
         // console.log(wrapper.text())
 
         expect(fetchGetURLs(mock)).toStrictEqual([
-            "api/v1/contracts/" + SAMPLE_NONFUNGIBLE.token_id + "/results",
             "api/v1/contracts/" + SAMPLE_NONFUNGIBLE.custom_fees.fixed_fees[0].collector_account_id,
             "api/v1/contracts/" + SAMPLE_NONFUNGIBLE.custom_fees.fixed_fees[1].collector_account_id,
             "api/v1/contracts/" + SAMPLE_NONFUNGIBLE.custom_fees.fixed_fees[2].collector_account_id,
