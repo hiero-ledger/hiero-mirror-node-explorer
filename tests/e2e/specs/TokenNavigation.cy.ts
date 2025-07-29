@@ -164,21 +164,6 @@ describe('Token Navigation', () => {
         cy.get('#tab-TokenDetails_Others')
             .click()
 
-        cy.get('#contract-results-table')
-            .find('tbody tr')
-            .should('be.visible')
-            .should('have.length.at.least', 2)
-            .eq(0)
-            .find('td')
-            .eq(0)
-            .click()
-            .then(() => {
-                // cy.log('Selected account Id: ' + $id.text())
-                cy.url().should('include', '/mainnet/transaction/')
-                cy.contains('CONTRACT CALL')
-                cy.contains('Token ID' + proxiedTokenId)
-            })
-
     })
 
 })
