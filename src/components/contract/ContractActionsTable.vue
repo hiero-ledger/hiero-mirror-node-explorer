@@ -53,10 +53,14 @@
       </o-table-column>
 
       <o-table-column v-slot="props" field="to" label="TO">
-        <EVMAddress :address="props.row.action.to"
-                    :id="props.row.action.recipient??''"
-                    :entity-type="props.row.action.recipient_type"
-                    compact/>
+        <EthPrecompileAddress v-if="props.row.action.call_type === 'PRECOMPILE'"
+            :evm-address="props.row.action.to"
+            :show-none="false"/>
+        <EVMAddress v-else
+            :address="props.row.action.to"
+            :id="props.row.action.recipient??''"
+            :entity-type="props.row.action.recipient_type"
+            compact/>
       </o-table-column>
 
       <o-table-column v-slot="props" field="gas_limit" label="GAS LIMIT">
@@ -97,6 +101,7 @@ import ContractActionDetails from "@/components/contract/ContractActionDetails.v
 import EVMAddress from "@/components/values/EVMAddress.vue";
 import {ContractActionWithPath} from "@/components/contract/ContractActionsLoader";
 import {FunctionCallAnalyzer} from "@/utils/analyzer/FunctionCallAnalyzer";
+import EthPrecompileAddress from "@/components/contract/EthPrecompileAddress.vue";
 
 const NB_ACTIONS_PER_PAGE = 10
 

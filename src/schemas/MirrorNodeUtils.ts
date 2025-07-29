@@ -637,3 +637,21 @@ export function countTransactions(blocks: Block[]): number {
 export function cryptoRateToPrice(rate: ExchangeRate): number {
     return Math.round(rate.cent_equivalent / rate.hbar_equivalent * 100) / 10000
 }
+
+const precompiledContractLabels = new Map<string, string>([
+    // https://www.evm.codes/precompiled
+    ["0x0000000000000000000000000000000000000001", "ecRecover"],
+    ["0x0000000000000000000000000000000000000002", "sha256"],
+    ["0x0000000000000000000000000000000000000003", "ripemd160"],
+    ["0x0000000000000000000000000000000000000004", "identity"],
+    ["0x0000000000000000000000000000000000000005", "modexp"],
+    ["0x0000000000000000000000000000000000000006", "ecAdd"],
+    ["0x0000000000000000000000000000000000000007", "ecMul"],
+    ["0x0000000000000000000000000000000000000008", "ecPairing"],
+    ["0x0000000000000000000000000000000000000009", "black2f"],
+    ["0x000000000000000000000000000000000000000a", "point evaluation"],
+])
+
+export function labelForEthPrecompiledContract(evmAddress: string): string|null {
+    return precompiledContractLabels.get(evmAddress) ?? null
+}

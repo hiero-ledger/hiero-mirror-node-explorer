@@ -7,7 +7,7 @@
 <template>
   <div v-if="evmAddress">
     <div class="evm-address">
-      <Copyable :content-to-copy="evmAddress ?? ''" :enable-copy="enableCopy">
+      <Copyable :content-to-copy="evmAddress" :enable-copy="enableCopy">
         <template v-slot:content>
           <div class="h-is-low-contrast h-is-monospace" style="display: inline">
             {{ (props.compact || !isSmallScreen) ? nonSignificantCompact : nonSignificantFull }}
@@ -23,11 +23,7 @@
                      class="h-is-extra-text">
           {{ contractName }}
         </router-link>
-        <router-link v-else-if="systemContract !== null" :to="routeManager.makeRouteToContract(entityId)"
-                     class="h-is-extra-text">
-          {{ displayId }}
-        </router-link>
-        <ContractLink v-else-if="entityLinkType === ExtendedEntityType.CONTRACT" :contract-id="entityId"/>
+        <ContractLink v-else-if="entityLinkType === ExtendedEntityType.CONTRACT && systemContract === null" :contract-id="entityId"/>
         <AccountLink v-else-if="entityLinkType === ExtendedEntityType.ACCOUNT" :account-id="entityId"/>
         <TokenLink v-else-if="entityLinkType === ExtendedEntityType.TOKEN" :token-id="entityId"/>
         <span v-else>
