@@ -45,7 +45,6 @@ const showDialog = defineModel("showDialog", {
 })
 
 const props = defineProps({
-  iconClass: String,
   width: {
     type: Number,
     default: 400
