@@ -768,13 +768,13 @@ describe("HbarTransferLayout.vue", () => {
         expect(compactLayout.sources.length).toBe(1)
         expect(compactLayout.destinations.length).toBe(1)
 
-        const cs0 = fullLayout.sources[0]
+        const cs0 = compactLayout.sources[0]
         expect(cs0.transfer.account).toBe("0.0.1859883")
         expect(cs0.transfer.amount).toBe(-9100185749)
         expect(cs0.description).toBe(null)
         expect(cs0.payload).toBe(true)
 
-        const cd0 = fullLayout.destinations[0]
+        const cd0 = compactLayout.destinations[0]
         expect(cd0.transfer.account).toBe("0.0.2105083")
         expect(cd0.transfer.amount).toBe(+9100000000)
         expect(cd0.description).toBe("Transfer")
