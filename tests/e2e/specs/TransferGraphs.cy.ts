@@ -112,48 +112,76 @@ describe('Transfer Graphs Navigation', () => {
 
         cy.go('back')
 
+        /*
+                cy.get('[data-cy=tokenTransfers]')
+                    .find('[data-cy="tokenExtra"]')
+                    .eq(0)
+                    .then(($token) => {
+                        cy.wrap($token)
+                            .find('a')
+                            .click({force: true})
+                            .then(($name) => {
+                                cy.url().should('include', '/mainnet/token/')
+                                cy.contains('Token ')
+                                cy.contains($name.text())
+                            })
+                    })
+        */
+
         cy.get('[data-cy=tokenTransfers]')
             .find('[data-cy="tokenExtra"]')
             .eq(0)
-            .then(($token) => {
-                cy.wrap($token)
-                    .find('a')
-                    .click({force: true})
-                    .then(($name) => {
-                        cy.url().should('include', '/mainnet/token/')
-                        cy.contains('Token ')
-                        cy.contains($name.text())
-                    })
+            .find('a')
+            .then(($name) => {
+                cy.wrap($name).as('targetToken')
+                const text = $name.text().trim()
+                cy.wrap(text).as('text')
             })
+
+        cy.get('@targetToken').click({force: true})
+
+        cy.url().should('include', '/mainnet/token/')
+        cy.contains('Token ')
+        cy.get('@text').then((text) => {
+            cy.contains(`${text}`)
+        })
 
         cy.go('back')
 
         cy.get('[data-cy=tokenTransfers]')
             .find('[data-cy="tokenExtra"]')
             .eq(1)
-            .then(($token) => {
-                cy.wrap($token)
-                    .find('a')
-                    .click({force: true})
-                    .then(($name) => {
-                        cy.url().should('include', '/mainnet/token/')
-                        cy.contains('Token ')
-                        cy.contains($name.text())
-                    })
+            .find('a')
+            .then(($name) => {
+                cy.wrap($name).as('targetToken')
+                const text = $name.text().trim()
+                cy.wrap(text).as('text')
             })
+
+        cy.get('@targetToken').click({force: true})
+
+        cy.url().should('include', '/mainnet/token/')
+        cy.contains('Token ')
+        cy.get('@text').then((text) => {
+            cy.contains(`${text}`)
+        })
 
         cy.go('back')
 
         cy.get('[data-cy=tokenTransfers]')
             .find('[data-cy=destinationAccount]')
+            .find('a')
             .then(($account) => {
-                cy.wrap($account)
-                    .find('a')
-                    .click({force: true})
-                cy.url().should('include', '/mainnet/account/' + $account.text())
-                cy.get('title').contains('Account ' + $account.text())
+                cy.wrap($account).as('targetAccount')
+                const text = $account.text().trim()
+                cy.wrap(text).as('text')
             })
 
-    })
+        cy.get('@targetAccount').click({force: true})
 
+        cy.get('@text').then((text) => {
+            cy.url().should('include', '/mainnet/account/' + text)
+            cy.get('title').contains('Account ' + text)
+        })
+    })
 })

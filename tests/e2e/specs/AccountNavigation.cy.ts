@@ -15,15 +15,20 @@ describe('Account Navigation', () => {
             .eq(0)
             .find('td')
             .eq(0)
-            .click()
             .then(($id) => {
-                // cy.log('Selected account Id: ' + $id.text())
-                cy.url().should('include', '/testnet/account/' + $id.text())
-                cy.contains('Account ID ' + $id.text())
+                cy.wrap($id).as('targetId')
+                const text = $id.text().trim()
+                cy.wrap(text).as('text')
             })
+
+        cy.get('@targetId').click()
+        cy.get('@text').then((text) => {
+            cy.url().should('include', '/testnet/account/' + text)
+            cy.contains('Account ID ' + text)
+        })
     })
 
-    it('should follow links to HTS tokens', () => {
+    it('should follow links to HTS fungible', () => {
         const accountId1 = "0.0.592746"
 
         cy.visit('mainnet/account/' + accountId1)
@@ -39,18 +44,31 @@ describe('Account Navigation', () => {
             .eq(0)
             .find('td')
             .eq(0)
-            .click()
             .then(($id) => {
-                cy.url().should('include', `/mainnet/token/${$id.text()}`)
-                cy.contains('Fungible Token')
-                cy.contains(`${$id.text()}`)
+                cy.wrap($id).as('targetId')
+                const text = $id.text().trim()
+                cy.wrap(text).as('text')
             })
 
-        cy.go('back')
+        cy.get('@targetId').click()
+        cy.get('@text').then((text) => {
+            cy.url().should('include', `/mainnet/token/${text}`)
+            cy.contains('Fungible Token')
+            cy.contains(`${text}`)
+        })
+    })
+
+    it('should follow links to HTS NFT', () => {
+        const accountId1 = "0.0.592746"
+
+        cy.visit('mainnet/account/' + accountId1)
         cy.url().should('include', '/mainnet/account/')
         cy.contains('Account ' + accountId1)
 
+        cy.get('#tab-AccountDetails_Assets').click()
+
         cy.get('#tab-nfts').click()
+
         cy.get('#nftsTable')
             .find('tbody tr')
             .should('be.visible')
@@ -58,14 +76,20 @@ describe('Account Navigation', () => {
             .eq(0)
             .find('td')
             .eq(1)
-            .click()
             .then(($id) => {
-                cy.url().should('include', `/mainnet/token/${$id.text()}`)
-                cy.contains('NFT Details')
-                cy.contains('Non Fungible Token')
-                cy.contains('NFT Collection')
-                cy.contains(`${$id.text()}`)
+                cy.wrap($id).as('targetId')
+                const text = $id.text().trim()
+                cy.wrap(text).as('text')
             })
+
+        cy.get('@targetId').click()
+        cy.get('@text').then((text) => {
+            cy.url().should('include', `/mainnet/token/${text}`)
+            cy.contains('NFT Details')
+            cy.contains('Non Fungible Token')
+            cy.contains('NFT Collection')
+            cy.contains(`${text}`)
+        })
 
         cy.go('back')
         cy.url().should('include', '/mainnet/account/')
@@ -87,12 +111,17 @@ describe('Account Navigation', () => {
             .eq(0)
             .find('td')
             .eq(0)
-            .click()
             .then(($id) => {
-                // cy.log('Selected transaction Id: ' + $id.text())
-                cy.url().should('include', '/testnet/transaction/')
-                cy.contains('Transaction ' + $id.text())
+                cy.wrap($id).as('targetId')
+                const text = $id.text().trim()
+                cy.wrap(text).as('text')
             })
+
+        cy.get('@targetId').click()
+        cy.get('@text').then((text) => {
+            cy.url().should('include', '/testnet/transaction/')
+            cy.contains('Transaction ' + text)
+        })
     })
 
     it('should follow link to recent created contract', () => {
@@ -114,12 +143,17 @@ describe('Account Navigation', () => {
             .eq(0)
             .find('td')
             .eq(0)
-            .click()
             .then(($id) => {
-                cy.url().should('include', '/testnet/contract/' + $id.text())
-                cy.contains('Contract ' + $id.text())
-                cy.contains($id.text())
+                cy.wrap($id).as('targetId')
+                const text = $id.text().trim()
+                cy.wrap(text).as('text')
             })
+
+        cy.get('@targetId').click()
+        cy.get('@text').then((text) => {
+            cy.url().should('include', '/testnet/contract/' + text)
+            cy.contains('Contract ' + text)
+        })
     })
 
     it.skip('should follow link to recent reward transaction', () => {

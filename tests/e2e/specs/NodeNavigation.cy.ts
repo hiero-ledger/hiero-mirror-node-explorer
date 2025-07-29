@@ -19,12 +19,17 @@ describe('Node Navigation', () => {
             .eq(0)
             .find('td')
             .eq(0)
-            .click()
             .then(($id) => {
-                // cy.log('Selected node Id: ' + $id.text())
-                cy.url().should('include', '/testnet/node/' + $id.text())
-                cy.contains('Node ' + $id.text())
+                cy.wrap($id).as('targetId')
+                const text = $id.text().trim()
+                cy.wrap(text).as('text')
             })
+
+        cy.get('@targetId').click()
+        cy.get('@text').then((text) => {
+            cy.url().should('include', '/testnet/node/' + text)
+            cy.contains('Node ' + text)
+        })
     })
 
     it('should follow links from node to account', () => {

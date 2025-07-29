@@ -15,12 +15,17 @@ describe('Block Navigation', () => {
             .eq(0)
             .find('td')
             .eq(0)
-            .click()
             .then(($id) => {
-                // cy.log('Selected block number: ' + $id.text())
-                cy.url().should('include', '/testnet/block/' + $id.text())
-                cy.contains('Block ' + $id.text())
+                cy.wrap($id).as('targetId')
+                const text = $id.text().trim()
+                cy.wrap(text).as('text')
             })
+
+        cy.get('@targetId').click()
+        cy.get('@text').then((text) => {
+            cy.url().should('include', '/testnet/block/' + text)
+            cy.contains('Block ' + text)
+        })
     })
 
     it('should navigate from block details to previous block details', () => {
@@ -50,17 +55,24 @@ describe('Block Navigation', () => {
             .click()
 
         cy.get('table')
-            .contains('td', '@').click()
+            .contains('td', '@')
             .then(($id) => {
-                // cy.log('Selected transaction ID: ' + $id.text())
-                cy.url().should('include', '/testnet/transaction/')
-                cy.contains('Transaction ' + $id.text())
-                cy.get('#blockNumberValue')
-                    .contains(blockNumber)
-                    .click()
-                    .url().should('include', '/testnet/block/' + blockNumber)
-                cy.contains('Block ' + blockNumber)
+                cy.wrap($id).as('targetId')
+                const text = $id.text().trim()
+                cy.wrap(text).as('text')
             })
-    })
 
+        cy.get('@targetId').click()
+        cy.get('@text').then((text) => {
+            cy.url().should('include', '/testnet/transaction/')
+            cy.contains('Transaction ' + text)
+        })
+
+        cy.get('#blockNumberValue')
+            .contains(blockNumber)
+            .click()
+
+        cy.url().should('include', '/testnet/block/' + blockNumber)
+        cy.contains('Block ' + blockNumber)
+    })
 })
