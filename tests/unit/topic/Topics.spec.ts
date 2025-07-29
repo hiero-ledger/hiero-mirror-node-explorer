@@ -46,7 +46,7 @@ describe("Topics.vue", () => {
 
         const table = card.findComponent(TopicTable)
         expect(table.exists()).toBe(true)
-        expect(table.get('thead').text()).toBe("TOPIC CREATED MEMO")
+        expect(table.get('thead').text()).toBe("TOPICCREATEDMEMO")
         expect(table.get('tbody').text()).toBe(
             "0.0.750040" +
             "6:14:56.3105 PMMar 7, 2022, UTC" +

@@ -53,7 +53,7 @@ describe("Tokens.vue", () => {
         const fungibleTab = wrapper.getComponent(Tokens_Fungible)
         expect(fungibleTab.text()).toMatch(RegExp("^Recent Fungible Token"))
         const table1 = fungibleTab.getComponent(TokenTable)
-        expect(table1.get('thead').text()).toBe("TOKEN NAME SYMBOL")
+        expect(table1.get('thead').text()).toBe("TOKENNAMESYMBOL")
         expect(table1.get('tbody').text()).toBe(
             SAMPLE_TOKENS.tokens[0].token_id +
             SAMPLE_TOKENS.tokens[0].name +
@@ -76,7 +76,7 @@ describe("Tokens.vue", () => {
         const nftsTab = wrapper2.getComponent(Tokens_Nfts)
         expect(nftsTab.text()).toMatch(RegExp("^Recent NFTs"))
         const table2 = nftsTab.getComponent(TokenTable)
-        expect(table2.get('thead').text()).toBe("TOKEN NAME SYMBOL")
+        expect(table2.get('thead').text()).toBe("TOKENNAMESYMBOL")
         expect(table2.get('tbody').text()).toBe(
             SAMPLE_TOKENS.tokens[0].token_id +
             SAMPLE_TOKENS.tokens[0].name +

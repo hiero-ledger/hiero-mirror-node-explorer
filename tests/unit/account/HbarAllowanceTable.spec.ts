@@ -77,7 +77,7 @@ describe("HbarAllowanceTable.vue", () => {
         await flushPromises()
         // console.log(wrapper.text())
 
-        expect(wrapper.find('thead').text()).toBe("SPENDER TIME AMOUNT REMAINING AMOUNT GRANTED")
+        expect(wrapper.find('thead').text()).toBe("SPENDERTIMEAMOUNT REMAININGAMOUNT GRANTED")
         expect(wrapper.find('tbody').text()).toBe(
             "0.0.1584" + "10:55:30.2660 PMFeb 11, 2025, UTC" + "100.00000000ℏ" + "100.00000000ℏ" +
             "0.0.1515" + "12:30:27.1747 PMJun 21, 2024, UTC" + "15.00000000ℏ" + "15.00000000ℏ" +

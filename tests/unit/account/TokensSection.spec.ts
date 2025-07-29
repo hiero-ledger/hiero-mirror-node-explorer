@@ -237,7 +237,7 @@ describe("TokensSection.vue", () => {
 
         const nftsTable = tokensSection.get("#nftsTable")
         expect(nftsTable.find('thead').text()).toBe(
-            "IMAGE TOKEN ID SERIAL # COLLECTION NAME SYMBOL NFT NAME CREATOR FREEZE STATUS"
+            "IMAGETOKEN IDSERIAL #COLLECTION NAMESYMBOLNFT NAMECREATORFREEZE STATUS"
         )
         expect(nftsTable.find('tbody').text()).toBe(
             "NFT0.0.7483832Ħ Frens KingdomĦFRENSKINGD…" +
@@ -269,7 +269,7 @@ describe("TokensSection.vue", () => {
         await flushPromises()
 
         const associationsTable = tokensSection.get("#fungibleTable")
-        expect(associationsTable.find('thead').text()).toBe("TOKEN ID NAME SYMBOL BALANCE FREEZE STATUS")
+        expect(associationsTable.find('thead').text()).toBe("TOKEN IDNAMESYMBOLBALANCEFREEZE STATUS")
         expect(associationsTable.find('tbody').text()).toBe(
             "0.0.34332104" + "HSUITE" + "HSuite" + "234,264.7909" + "UNFROZEN" +
             "0.0.49292859" + "Token SymbolA7" + "TokenA7" + "0.31669471" + "FROZEN"
@@ -305,7 +305,7 @@ describe("TokensSection.vue", () => {
         await flushPromises()
 
         const pendingNfts = table.get("#pendingNftsTable")
-        expect(pendingNfts.find('thead').text()).toBe("IMAGE TOKEN ID SERIAL # COLLECTION NAME SYMBOL SENDER AIRDROP TIME")
+        expect(pendingNfts.find('thead').text()).toBe("IMAGETOKEN IDSERIAL #COLLECTION NAMESYMBOLSENDERAIRDROP TIME")
         expect(pendingNfts.find('tbody').text()).toBe(
             "NFT" + "0.0.4901646" + "2" + "Token SymbolA7" + "TokenA7" + "0.0.1437" + "9:29:10.6225 AMOct 3, 2024, UTC" +
             "NFT" + "0.0.4901646" + "1" + "Token SymbolA7" + "TokenA7" + "0.0.1437" + "9:28:57.7817 AMOct 3, 2024, UTC"
@@ -316,7 +316,7 @@ describe("TokensSection.vue", () => {
         await flushPromises()
 
         const pendingFungible = table.get("#pendingFungibleTable")
-        expect(pendingFungible.find('thead').text()).toBe("TOKEN ID NAME SYMBOL AMOUNT SENDER  AIRDROP TIME")
+        expect(pendingFungible.find('thead').text()).toBe("TOKEN IDNAMESYMBOLAMOUNTSENDER AIRDROP TIME")
         expect(pendingFungible.find('tbody').text()).toBe(
             "0.0.4943664" + "Ħ Frens Kingdom" + "ĦFRENSKINGD…" + "84" + "0.0.1437" + "2:21:33.5553 PMOct 10, 2024, UTC" +
             "0.0.2255333" + "Ħ Frens Kingdom Dude" + "ĦFRENSKINGD…4,200" + "0.0.1437" + "2:27:26.2113 PMOct 10, 2024, UTC"

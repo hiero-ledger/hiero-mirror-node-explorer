@@ -101,7 +101,7 @@ describe("Nodes.vue", () => {
         expect(wrapper2.text()).toMatch("3  Nodes")
         const table = wrapper2.findComponent(NodeTable)
         expect(table.exists()).toBe(true)
-        expect(table.get('thead').text()).toBe("NODE ID DESCRIPTION STAKE FOR CONSENSUS % STAKE RANGE REWARD RATE")
+        expect(table.get('thead').text()).toBe("NODE IDDESCRIPTIONSTAKE FOR CONSENSUS%STAKE RANGEREWARD RATE")
         expect(wrapper2.get('tbody').text()).toBe(
             "0" +
             "Hosted by Hedera | East Coast, USA" +

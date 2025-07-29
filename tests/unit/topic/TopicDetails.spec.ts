@@ -209,7 +209,7 @@ describe("TopicDetails.vue", () => {
         expect(table.exists()).toBe(true)
         const rows = table.findAll('tr')
         expect(rows.length).toBe(3)
-        expect (rows[0].text()).toMatch("FIXED FEE FEE CURRENCY COLLECTOR ACCOUNT")
+        expect (rows[0].text()).toMatch("FIXED FEEFEE CURRENCYCOLLECTOR ACCOUNT")
         expect (rows[1].text()).toMatch("3" + "0.0.5707212" + "?" + "0.0.4736212")
         expect (rows[2].text()).toMatch("4" + "0.0.5707213" + "?" + "0.0.4736212")
 

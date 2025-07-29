@@ -49,7 +49,7 @@ describe("TransactionByIdTable.vue", () => {
         await flushPromises()
         // console.log(wrapper.text())
 
-        expect(wrapper.find('thead').text()).toBe("Time Type Content Relationship Nonce".toUpperCase())
+        expect(wrapper.find('thead').text()).toBe("TIMETYPECONTENTRELATIONSHIPNONCE")
         expect(wrapper.find('tbody').text()).toBe(
             "1:29:17.0144 PMSep 6, 2022, UTC" + "CONTRACT CALL" + "0.0.48113503\n\n" + "50.00000000ℏ\n\n" + "0.0.48193749" + "Parent" + "0" +
             "1:29:17.0144 PMSep 6, 2022, UTC" + "TOKEN MINT" + "MINT\n\n" + "0.0.48193741" + "RSSE\n\n" + "0.0.48113503" + "Child" + "1" +
@@ -85,7 +85,7 @@ describe("TransactionByIdTable.vue", () => {
         await flushPromises()
         // console.log(wrapper.text())
 
-        expect(wrapper.find('thead').text()).toBe("Time Type Content Relationship".toUpperCase())
+        expect(wrapper.find('thead').text()).toBe("TIMETYPECONTENTRELATIONSHIP")
         const rows = wrapper.find('tbody').findAll('tr')
 
         let cells = rows[0].findAll('td')
@@ -121,7 +121,7 @@ describe("TransactionByIdTable.vue", () => {
         await flushPromises()
         // console.log(wrapper.text())
 
-        expect(wrapper.find('thead').text()).toBe("Time Type Content Nonce".toUpperCase())
+        expect(wrapper.find('thead').text()).toBe("TIMETYPECONTENTNONCE")
         const rows = wrapper.find('tbody').findAll('tr')
 
         let cells = rows[0].findAll('td')
@@ -158,7 +158,7 @@ describe("TransactionByIdTable.vue", () => {
         await flushPromises()
         // console.log(wrapper.text())
 
-        expect(wrapper.find('thead').text()).toBe("Time Type Content Relationship Nonce".toUpperCase())
+        expect(wrapper.find('thead').text()).toBe("TIMETYPECONTENTRELATIONSHIPNONCE")
         expect(wrapper.find('tbody').text()).toBe(
             "8:43:12.3706 PMJul 30, 2024, UTC" + "UPDATE ACCOUNT" + "Account:0.0.4452547" + "n/a" + "1" +
             "8:43:12.3706 PMJul 30, 2024, UTC" + "ETHEREUM TRANSACTION" + "Account:0.0.4640464" + "Parent" + "0" +
