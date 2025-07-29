@@ -47,7 +47,6 @@ const excludedTabIds = computed(() =>
 
 const tabIds = computed(() =>
     {
-      console.log("excludedTabIds=", JSON.stringify(excludedTabIds.value))
       return routeManager.nodesOperator.filterTabIds(excludedTabIds.value)
     }
 )
