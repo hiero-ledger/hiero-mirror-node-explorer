@@ -156,7 +156,6 @@ const tooltipText = computed(() => isFullMatch.value ? FULL_MATCH_TOOLTIP : PART
 const ercAnalyzer = new ERCAnalyzer(parsedContractId)
 onMounted(() => ercAnalyzer.mount())
 onBeforeUnmount(() => ercAnalyzer.unmount())
-const showERCSection = computed(() => ercAnalyzer.isErc20.value || ercAnalyzer.isErc721.value)
 
 
 //

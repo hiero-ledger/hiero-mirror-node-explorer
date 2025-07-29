@@ -15,12 +15,17 @@ describe('Contract Navigation', () => {
             .eq(0)
             .find('td')
             .eq(0)
-            .click()
             .then(($id) => {
-                // cy.log('Selected account Id: ' + $id.text())
-                cy.url().should('include', '/testnet/contract/' + $id.text())
-                cy.contains('Contract ID ' + $id.text())
+                cy.wrap($id).as('targetId')
+                const text = $id.text().trim()
+                cy.wrap(text).as('text')
             })
+
+        cy.get('@targetId').click()
+        cy.get('@text').then((text) => {
+            cy.url().should('include', '/testnet/contract/' + text)
+            cy.contains('Contract ID ' + text)
+        })
     })
 
     it('should follow links from contract details', () => {
@@ -42,12 +47,17 @@ describe('Contract Navigation', () => {
 
         cy.get('#blockNumber')
             .find('a')
-            .click()
-            .then(($number) => {
-                cy.log('Selected block number: ' + $number.text())
-                cy.url().should('include', '/mainnet/block/' + $number.text())
-                cy.contains('Block ' + $number.text())
+            .then(($id) => {
+                cy.wrap($id).as('targetId')
+                const text = $id.text().trim()
+                cy.wrap(text).as('text')
             })
+
+        cy.get('@targetId').click()
+        cy.get('@text').then((text) => {
+            cy.url().should('include', '/mainnet/block/' + text)
+            cy.contains('Block ' + text)
+        })
     })
 
     it('should display contract details using contract ID', () => {

@@ -163,7 +163,5 @@ describe('Token Navigation', () => {
 
         cy.get('#tab-TokenDetails_Others')
             .click()
-
     })
-
 })

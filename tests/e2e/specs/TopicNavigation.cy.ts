@@ -15,12 +15,17 @@ describe('Topic Navigation', () => {
             .eq(0)
             .find('td')
             .eq(0)
-            .click()
             .then(($id) => {
-                // cy.log('Selected topic Id: ' + $id.text())
-                cy.url().should('include', '/testnet/topic/' + $id.text())
-                cy.contains('Topic ' + $id.text())
+                cy.wrap($id).as('targetId')
+                const text = $id.text().trim()
+                cy.wrap(text).as('text')
             })
+
+        cy.get('@targetId').click()
+        cy.get('@text').then((text) => {
+            cy.url().should('include', '/testnet/topic/' + text)
+            cy.contains('Topic ' + text)
+        })
     })
 
     it('should navigate from transaction details to topic message table back to transaction', () => {
@@ -33,29 +38,45 @@ describe('Topic Navigation', () => {
 
         cy.get('#entityId')
             .find('a')
-            .click()
-            .then(($topicId) => {
-                cy.url().should('include', '/mainnet/topic/' + $topicId.text())
-                cy.contains('Topic ' + $topicId.text())
-
-                cy.get('#tab-TopicDetails_Messages')
-                    .click()
-
-                cy.get('table')
-                    .find('tbody tr')
-                    .should('have.length.at.least', 2)
-                    .eq(0)
-                    .find('td')
-                    .eq(0)
-                    .click()
-                    .then(($seqNumber) => {
-                        cy.url().should('include', '/mainnet/transaction/')
-                        cy.contains('Topic ID' + $topicId.text())
-                        cy.get('#tab-TransactionDetails_Message')
-                            .click()
-                        cy.contains('Message Submitted')
-                        cy.contains('Sequence Number' + $seqNumber.text())
-                    })
+            .then(($id) => {
+                cy.wrap($id).as('topicId')
+                const text = $id.text().trim()
+                cy.wrap(text).as('topicText')
             })
+
+        cy.get('@topicId').click()
+        cy.get('@topicText').then((text) => {
+            cy.url().should('include', '/mainnet/topic/' + text)
+            cy.contains('Topic ' + text)
+        })
+
+        cy.get('#tab-TopicDetails_Messages')
+            .click()
+
+        cy.get('table')
+            .find('tbody tr')
+            .should('have.length.at.least', 2)
+            .eq(0)
+            .find('td')
+            .eq(0)
+            .then(($seqNumber) => {
+                cy.wrap($seqNumber).as('seqNumber')
+                const text = $seqNumber.text().trim()
+                cy.wrap(text).as('seqNumberText')
+            })
+
+        cy.get('@seqNumber').click()
+        cy.url().should('include', '/mainnet/transaction/')
+
+        cy.get('@topicText').then((text) => {
+            cy.contains('Topic ID' + text)
+        })
+
+        cy.get('#tab-TransactionDetails_Message')
+            .click()
+        cy.contains('Message Submitted')
+        cy.get('@seqNumberText').then((text) => {
+            cy.contains('Sequence Number' + text)
+        })
     })
 })

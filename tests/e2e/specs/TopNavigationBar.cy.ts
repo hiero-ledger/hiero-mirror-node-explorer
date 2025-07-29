@@ -19,6 +19,7 @@ describe('Top Navigation Bar', () => {
 
         cy.get('[data-cy="network-selector"]')
             .select('MAINNET')
+        cy.get('[data-cy="network-selector"]')
             .should('have.value', 'mainnet')
 
         cy.url().should('include', '/mainnet/home')
@@ -28,7 +29,7 @@ describe('Top Navigation Bar', () => {
 
         cy.get('[data-cy="network-selector"]')
             .select('TESTNET')
-            .should('have.value', 'testnet')
+        cy.should('have.value', 'testnet')
 
         cy.url().should('include', '/testnet/home')
         cy.contains('Transactions Over Time')
@@ -37,6 +38,7 @@ describe('Top Navigation Bar', () => {
 
         cy.get('[data-cy="network-selector"]')
             .select('PREVIEWNET')
+        cy.get('[data-cy="network-selector"]')
             .should('have.value', 'previewnet')
 
         cy.url().should('include', '/previewnet/home')

@@ -134,8 +134,6 @@ const remainingMin = networkNodeAnalyzer.remainingMin
 
 const isMapVisible = computed(() => routeManager.currentNetwork.value === 'mainnet')
 
-const bothSectionVisible = computed(() => enableStaking && isMapVisible.value)
-
 </script>
 
 <!-- --------------------------------------------------------------------------------------------------------------- -->
