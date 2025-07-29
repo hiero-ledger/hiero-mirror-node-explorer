@@ -6,7 +6,7 @@
 
 <template>
 
-  <DashboardCardV2 :collapsible-key="displayTransfers ? 'transactionDetails': ''">
+  <DashboardCardV2>
     <template #title>
       Transaction
       <template v-if="transaction">
@@ -282,7 +282,7 @@
 
   </DashboardCardV2>
 
-  <DashboardCardV2 v-if="displayTransfers" collapsible-key="transfers">
+  <DashboardCardV2 v-if="displayTransfers">
     <template #title>
       <span>Transfers</span>
     </template>

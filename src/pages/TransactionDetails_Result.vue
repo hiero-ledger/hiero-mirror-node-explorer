@@ -6,7 +6,7 @@
 
 <template>
 
-  <DashboardCardV2 collapsible-key="contractResult">
+  <DashboardCardV2>
     <template #title>
       <span>Contract Result</span>
     </template>

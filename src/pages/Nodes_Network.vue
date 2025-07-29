@@ -6,7 +6,7 @@
 
 <template>
 
-  <DashboardCardV2 v-if="enableStaking" :collapsible-key="bothSectionVisible ? 'networkDetails' : undefined">
+  <DashboardCardV2 v-if="enableStaking">
     <template #title>
       <span>Network</span>
     </template>
@@ -63,7 +63,7 @@
     </template>
   </DashboardCardV2>
 
-  <DashboardCardV2 v-if="isMapVisible" collapsible-key="nodeMap">
+  <DashboardCardV2 v-if="isMapVisible">
     <template #title>
       Map
     </template>

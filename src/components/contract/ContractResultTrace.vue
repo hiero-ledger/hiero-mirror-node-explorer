@@ -6,7 +6,7 @@
 
 <template>
 
-  <DashboardCardV2 v-if="actions?.length" collapsible-key="callTrace">
+  <DashboardCardV2 v-if="actions?.length">
     <template #title>
       <span>Call Trace</span>
     </template>

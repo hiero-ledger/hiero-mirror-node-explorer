@@ -11,7 +11,7 @@
       <NotificationBanner :message="notification"/>
     </template>
 
-    <DashboardCardV2 collapsible-key="scheduleDetails">
+    <DashboardCardV2>
 
       <template #title>
         Schedule {{ scheduleId }}

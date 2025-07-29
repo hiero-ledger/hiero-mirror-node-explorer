@@ -6,7 +6,7 @@
 
 <template>
 
-  <TokenKeysSection :token-info="tokenInfo" :collapsible="hasCustomFees"/>
+  <TokenKeysSection :token-info="tokenInfo"/>
 
   <TokenFeesSection v-if="hasCustomFees" :analyzer="tokenAnalyzer"/>
 

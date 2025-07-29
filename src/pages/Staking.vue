@@ -22,7 +22,7 @@
                        :account-id="accountId"
                        v-on:staking-changed="stakingChanged"/>
 
-    <DashboardCardV2 v-if="enableWallet" collapsible-key="stakingDetails">
+    <DashboardCardV2 v-if="enableWallet">
       <template #title>
         <span>My Staking </span>
         <template v-if="accountId">

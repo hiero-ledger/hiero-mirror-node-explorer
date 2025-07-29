@@ -6,7 +6,7 @@
 
 <template>
 
-  <DashboardCardV2 v-if="nftInfo" id="recentTransactions" collapsible-key="recentNftTransactions">
+  <DashboardCardV2 v-if="nftInfo" id="recentTransactions">
     <template #title>
       Recent Transactions
     </template>

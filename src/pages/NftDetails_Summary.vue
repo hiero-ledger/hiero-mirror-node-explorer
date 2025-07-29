@@ -6,7 +6,7 @@
 
 <template>
 
-  <DashboardCardV2 collapsible-key="nftDetails">
+  <DashboardCardV2>
     <template #title>
       <div class="title-extra">
         {{ `${displayName} (${displaySymbol})` }}

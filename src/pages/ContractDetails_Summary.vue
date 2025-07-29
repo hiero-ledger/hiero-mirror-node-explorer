@@ -6,7 +6,7 @@
 
 <template>
 
-  <DashboardCardV2 :collapsible-key="showERCSection ? 'contractDetails' : ''">
+  <DashboardCardV2>
     <template #title>
       <ContractSectionTitle :contract-id="props.contractId">Contract</ContractSectionTitle>
     </template>
