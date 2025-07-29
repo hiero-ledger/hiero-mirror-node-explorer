@@ -3,6 +3,7 @@
 import {StakingRewardTransfer, Transaction, TransactionType, Transfer} from "@/schemas/MirrorNodeSchemas";
 import {TransactionID} from "@/utils/TransactionID";
 
+// eslint-disable-next-line max-lines-per-function, complexity
 export function makeEntityType(row: Transaction): string | null {
     let result: string | null
 
@@ -65,6 +66,7 @@ export function makeEntityType(row: Transaction): string | null {
     return result
 }
 
+// eslint-disable-next-line max-lines-per-function, complexity
 export function makeTypeLabel(type: TransactionType | undefined): string {
     let result: string
     switch (type) {
@@ -291,6 +293,7 @@ export function computeNetAmount(transfers: Transfer[] | undefined, transactionF
     return result
 }
 
+// eslint-disable-next-line complexity
 export function makeNetOfRewards(transfers: Transfer[] | undefined, rewards: StakingRewardTransfer[] | undefined): Transfer[] {
     let result = Array<Transfer>()
     let totalRewardAmount = 0
