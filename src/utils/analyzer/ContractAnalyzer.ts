@@ -290,6 +290,7 @@ export class ContractAnalyzer {
         let sourcifyRecord: SourcifyRecord|null
         try {
             sourcifyRecord = await SourcifyCache.instance.lookup(contractId)
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error) {
             sourcifyRecord = null
         }
