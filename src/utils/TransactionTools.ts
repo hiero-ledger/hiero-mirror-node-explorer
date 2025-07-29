@@ -312,11 +312,13 @@ export function makeNetOfRewards(transfers: Transfer[] | undefined, rewards: Sta
                     }
                 }
             }
-            result.push({
-                amount: netAmount,
-                account: t.account,
-                is_approval: t.is_approval
-            })
+            if (netAmount != 0) {
+                result.push({
+                    amount: netAmount,
+                    account: t.account,
+                    is_approval: t.is_approval
+                })
+            }
         }
     } else {
         result = transfers ?? []
