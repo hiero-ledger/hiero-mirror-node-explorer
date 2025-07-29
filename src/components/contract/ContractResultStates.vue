@@ -6,7 +6,7 @@
 
 <template>
 
-  <DashboardCardV2 v-if="stateChanges?.length && isSmallScreen" collapsible-key="stateChanges">
+  <DashboardCardV2 v-if="stateChanges?.length && isSmallScreen">
     <template #title>
       Contract States Accessed & Changed
     </template>
@@ -56,7 +56,7 @@
 
   </DashboardCardV2>
 
-  <DashboardCardV2 v-else-if="stateChanges?.length" collapsible-key="stateChanges">
+  <DashboardCardV2 v-else-if="stateChanges?.length">
     <template #title>
       Contract States Accessed & Changed
     </template>

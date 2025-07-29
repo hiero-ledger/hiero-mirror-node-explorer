@@ -45,8 +45,8 @@ const props = defineProps({
 <style>
 
 div.notification-banner {
-  padding-top: 9px;
-  padding-bottom: 11px;
+  border-radius: 16px;
+  padding: 16px;
 }
 
 .notification-error {

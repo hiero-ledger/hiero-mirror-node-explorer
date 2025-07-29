@@ -6,7 +6,7 @@
 
 <template>
 
-  <DashboardCardV2 v-if="erc20 || erc721" collapsible-key="contractERCProperties">
+  <DashboardCardV2 v-if="erc20 || erc721">
     <template #title>
       ERC Token
     </template>

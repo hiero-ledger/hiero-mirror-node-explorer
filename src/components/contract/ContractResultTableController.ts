@@ -3,7 +3,7 @@
 import {KeyOperator, SortOrder, TableController} from "@/utils/table/TableController";
 import {ContractResult, ContractResultsResponse} from "@/schemas/MirrorNodeSchemas";
 import {Ref} from "vue";
-import axios, {AxiosResponse} from "axios";
+import axios from "axios";
 import {Router} from "vue-router";
 import {AppStorage} from "@/AppStorage.ts";
 
@@ -39,10 +39,10 @@ export class ContractResultTableController extends TableController<ContractResul
 
     public async load(consensusTimestamp: string | null, operator: KeyOperator,
                       order: SortOrder, limit: number): Promise<ContractResult[] | null> {
-        let result: Promise<ContractResult[] | null>
+        let result: ContractResult[] | null
 
         if (this.contractId.value === null) {
-            result = Promise.resolve(null)
+            result = null
         } else {
             const params = {} as {
                 limit: number
@@ -54,15 +54,12 @@ export class ContractResultTableController extends TableController<ContractResul
             if (consensusTimestamp !== null) {
                 params.timestamp = operator + ":" + consensusTimestamp
             }
-            const cb = (r: AxiosResponse<ContractResultsResponse>): Promise<ContractResult[] | null> => {
-                return Promise.resolve(r.data.results ?? [])
-            }
-            result = axios.get<ContractResultsResponse>(
-                "api/v1/contracts/" + this.contractId.value + "/results", {params: params})
-                .then(cb)
+            const url = "api/v1/contracts/" + this.contractId.value + "/results?internal=true"
+            const r = await axios.get<ContractResultsResponse>(url, {params: params})
+            result = r.data.results ?? []
         }
 
-        return result
+        return Promise.resolve(result)
     }
 
     public keyFor(row: ContractResult): string {

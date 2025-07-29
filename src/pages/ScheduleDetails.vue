@@ -6,12 +6,12 @@
 
 <template>
 
-  <PageFrameV2 page-title="Schedule Details">
+  <PageFrameV2 :page-title="pageTitle">
     <template v-if="notification" #banner>
       <NotificationBanner :message="notification"/>
     </template>
 
-    <DashboardCardV2 collapsible-key="scheduleDetails">
+    <DashboardCardV2>
 
       <template #title>
         Schedule {{ scheduleId }}
@@ -120,9 +120,11 @@
         </template>
       </template>
 
-    </DashboardCardV2>
+      <template #footer>
+        <MirrorLink :network="props.network" entityUrl="schedules" :loc="scheduleId"/>
+      </template>
 
-    <MirrorLink :network="props.network" entityUrl="schedules" :loc="scheduleId"/>
+    </DashboardCardV2>
 
   </PageFrameV2>
 
@@ -192,6 +194,10 @@ const scheduleLookup = ScheduleByIdCache.instance.makeLookup(scheduleId)
 const schedule = scheduleLookup.entity
 onMounted(() => scheduleLookup.mount())
 onBeforeUnmount(() => scheduleLookup.unmount())
+
+const pageTitle = computed(() =>
+    scheduleId.value !== null ? "Schedule " + scheduleId.value : null
+)
 
 const scheduledTxTimestamp = computed(() => schedule.value?.executed_timestamp ?? null)
 const scheduledTxLookup = TransactionByTsCache.instance.makeLookup(scheduledTxTimestamp)

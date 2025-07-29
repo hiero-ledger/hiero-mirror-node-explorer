@@ -12,7 +12,7 @@
       :account-id="accountId"
   />
 
-  <DashboardCardV2 v-if="accountId" collapsible-key="myRecentRewards">
+  <DashboardCardV2 v-if="accountId">
     <template #title>
       <span>Recent Staking Rewards</span>
     </template>

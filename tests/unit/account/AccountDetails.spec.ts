@@ -14,7 +14,6 @@ import {
     SAMPLE_ACCOUNT_HBAR_BALANCE,
     SAMPLE_ACCOUNT_STAKING_ACCOUNT,
     SAMPLE_ACCOUNT_STAKING_NODE,
-    SAMPLE_FAILED_TRANSACTION,
     SAMPLE_FAILED_TRANSACTIONS,
     SAMPLE_NETWORK_CONFIG,
     SAMPLE_NETWORK_EXCHANGERATE,
@@ -40,6 +39,8 @@ import {networkConfigKey} from "@/AppKeys.ts";
 import {fetchGetURLs} from "../MockUtils";
 import PageHeader from "@/components/page/header/PageHeader.vue";
 import router, {routeManager} from "@/utils/RouteManager.ts";
+import AccountDetails_Operations from "@/pages/AccountDetails_Operations.vue";
+import AccountDetails_Summary from "@/pages/AccountDetails_Summary.vue";
 
 /*
     Bookmarks
@@ -52,7 +53,7 @@ HMSF.forceUTC = true
 
 describe("AccountDetails.vue", () => {
 
-    it("Should display account details", async () => {
+    it("AccountDetails should display account details", async () => {
         await router.push("/") // To avoid "missing required param 'network'" error
 
         const mock = new MockAdapter(axios as any);
@@ -80,28 +81,74 @@ describe("AccountDetails.vue", () => {
         const matcher7 = "/api/v1/transactions?timestamp=" + SAMPLE_ACCOUNT.created_timestamp
         mock.onGet(matcher7).reply(200, SAMPLE_TRANSACTIONS);
 
+        const wrapper = mount(AccountDetails, {
+            global: {
+                plugins: [router, Oruga],
+                provide: {"isMediumScreen": false}
+            },
+            props: {
+                accountId: SAMPLE_ACCOUNT.account ?? undefined
+            },
+        });
+
+        await flushPromises()
+        // console.log(wrapper.html())
+
+        expect(fetchGetURLs(mock)).toStrictEqual([
+            "api/v1/network/exchangerate",
+            "api/v1/accounts/" + SAMPLE_ACCOUNT.account,
+            "api/v1/network/nodes",
+            "api/v1/network/exchangerate",
+            "api/v1/network/supply",
+            "api/v1/contracts/" + SAMPLE_ACCOUNT.account,
+            "api/v1/balances",
+            "api/v1/transactions",
+            "api/v1/contracts/" + SAMPLE_ACCOUNT.evm_address,
+            "api/v1/tokens/" + SAMPLE_ACCOUNT.account,
+            "api/v1/network/exchangerate",
+        ])
+
+        expect(wrapper.getComponent(PageHeader).text()).toMatch("Account " + SAMPLE_ACCOUNT.account)
+
+        expect(wrapper.text()).toMatch("Account  Account ID " + SAMPLE_ACCOUNT.account)
+        expect(wrapper.get("#balanceValue").text()).toContain("23.42647909ℏ$5.76369")
+        expect(wrapper.get("#keyValue").text()).toBe("0x" + SAMPLE_ACCOUNT.key.key + "CopyED25519")
+
+        expect(wrapper.get("#memoValue").text()).toBe("None")
+        expect(wrapper.get("#createTransactionValue").text()).toBe(TransactionID.normalizeForDisplay(SAMPLE_TRANSACTION.transaction_id))
+
+        expect(wrapper.get("#expiresAtValue").text()).toBe("None")
+        expect(wrapper.get("#autoRenewPeriodValue").text()).toBe("90 days")
+        expect(wrapper.get("#maxAutoAssociationValue").text()).toBe("No Auto Association")
+        expect(wrapper.get("#receiverSigRequiredValue").text()).toBe("false")
+
+        expect(wrapper.get("#evmAddress").text()).toBe(
+            "EVM Address 0x00000000000000000000000000000000000b2607Copy")
+        expect(wrapper.get("#ethereumNonceValue").text()).toBe("0")
+
+        expect(wrapper.get("#stakedToName").text()).toBe("Staked to")
+        expect(wrapper.get("#stakedToValue").text()).toBe("None")
+
+        mock.restore()
+        wrapper.unmount()
+        await flushPromises()
+    });
+
+    it("AccountDetails_Operations should display recent transactions", async () => {
+        await router.push("/") // To avoid "missing required param 'network'" error
+
+        const mock = new MockAdapter(axios as any);
+
+        const matcher1 = "/api/v1/accounts/" + SAMPLE_ACCOUNT.account
+        mock.onGet(matcher1).reply(200, SAMPLE_ACCOUNT);
+
+        const matcher2 = "/api/v1/transactions"
+        mock.onGet(matcher2).reply(200, SAMPLE_TRANSACTIONS);
+
         const matcher8 = "/api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/rewards"
         mock.onGet(matcher8).reply(200, {rewards: []})
 
-        const matcher9 = "/api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/allowances/crypto"
-        mock.onGet(matcher9).reply(200, {rewards: []})
-
-        const matcher10 = "/api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/allowances/tokens"
-        mock.onGet(matcher10).reply(200, {rewards: []})
-
-        const matcher11 = "/api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/allowances/nfts"
-        mock.onGet(matcher11).reply(200, {nfts: []})
-
-        const matcher12 = "api/v1/tokens"
-        mock.onGet(matcher12).reply(200, {tokens: []});
-
-        const matcher13 = "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/nfts"
-        mock.onGet(matcher13).reply(200, {nfts: []});
-
-        const matcher14 = "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/airdrops/pending"
-        mock.onGet(matcher14).reply(200, {airdrops: []});
-
-        const wrapper = mount(AccountDetails, {
+        const wrapper = mount(AccountDetails_Operations, {
             global: {
                 plugins: [router, Oruga],
                 provide: {"isMediumScreen": false}
@@ -118,54 +165,10 @@ describe("AccountDetails.vue", () => {
             "api/v1/accounts/" + SAMPLE_ACCOUNT.account,
             "api/v1/network/nodes",
             "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/rewards?limit=1",
-            "api/v1/balances",
-            "api/v1/contracts/" + SAMPLE_ACCOUNT.account,
             "api/v1/transactions",
-            "api/v1/transactions",
-            "api/v1/contracts/" + SAMPLE_ACCOUNT.evm_address,
-            "api/v1/tokens/" + SAMPLE_ACCOUNT.account,
-            "api/v1/network/exchangerate",
+            "api/v1/tokens/" + SAMPLE_TRANSACTION.token_transfers[0].token_id,
             "api/v1/blocks",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/nfts",
-            "api/v1/tokens",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/airdrops/pending",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/airdrops/pending",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/allowances/crypto",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/allowances/tokens",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/nfts",
-            "api/v1/tokens/" + SAMPLE_TOKEN.token_id,
-            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/nfts",
-            "api/v1/tokens",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/airdrops/pending",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/airdrops/pending",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/allowances/crypto",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/allowances/tokens",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/nfts",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/allowances/nfts",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/allowances/nfts",
         ])
-
-        expect(wrapper.getComponent(PageHeader).text()).toMatch("Account " + SAMPLE_ACCOUNT.account)
-
-        expect(wrapper.text()).toMatch("Account  Account ID " + SAMPLE_ACCOUNT.account)
-        expect(wrapper.get("#balanceValue").text()).toContain("23.42647909ℏ$5.76369")
-        expect(wrapper.get("#keyValue").text()).toBe(
-            "0xaa2f7b3e759f4531ec2e7941afa449e6a6e610efb52adae89e9cd8e9d40ddcbfCopyED25519")
-
-        expect(wrapper.get("#memoValue").text()).toBe("None")
-        expect(wrapper.get("#createTransactionValue").text()).toBe(TransactionID.normalizeForDisplay(SAMPLE_TRANSACTION.transaction_id))
-
-        expect(wrapper.get("#expiresAtValue").text()).toBe("None")
-        expect(wrapper.get("#autoRenewPeriodValue").text()).toBe("90 days")
-        expect(wrapper.get("#maxAutoAssociationValue").text()).toBe("No Auto Association")
-        expect(wrapper.get("#receiverSigRequiredValue").text()).toBe("false")
-
-        expect(wrapper.get("#evmAddress").text()).toBe(
-            "EVM Address 0x00000000000000000000000000000000000b2607Copy")
-        expect(wrapper.get("#ethereumNonceValue").text()).toBe("0")
-
-        expect(wrapper.get("#stakedToName").text()).toBe("Staked to")
-        expect(wrapper.get("#stakedToValue").text()).toBe("None")
 
         const select = wrapper.findComponent(TransactionFilterSelect)
         expect(select.exists()).toBe(true)
@@ -185,9 +188,10 @@ describe("AccountDetails.vue", () => {
         mock.restore()
         wrapper.unmount()
         await flushPromises()
+
     });
 
-    it("Should display a node account details", async () => {
+    it("AccountDetails should display a node account details", async () => {
         await router.push("/") // To avoid "missing required param 'network'" error
 
         const mock = new MockAdapter(axios as any);
@@ -200,25 +204,6 @@ describe("AccountDetails.vue", () => {
 
         const matcher2 = "api/v1/network/nodes"
         mock.onGet(matcher2).reply(200, SAMPLE_NETWORK_NODES);
-
-        mock.onGet("/api/v1/transactions").reply(200, []);
-
-        mock.onGet("api/v1/tokens").reply(200, []);
-
-        const matcher8 = "api/v1/accounts/" + accountId + "/nfts"
-        mock.onGet(matcher8).reply(200, {nfts: []});
-
-        const matcher9 = "/api/v1/accounts/" + accountId + "/allowances/crypto"
-        mock.onGet(matcher9).reply(200, {allowances: []})
-
-        const matcher10 = "/api/v1/accounts/" + accountId + "/allowances/tokens"
-        mock.onGet(matcher10).reply(200, {allowances: []})
-
-        const matcher11 = "/api/v1/accounts/" + accountId + "/allowances/nfts"
-        mock.onGet(matcher11).reply(200, {allowances: []})
-
-        const matcher14 = "api/v1/accounts/" + accountId + "/airdrops/pending"
-        mock.onGet(matcher14).reply(200, {airdrops: []});
 
         const wrapper = mount(AccountDetails, {
             global: {
@@ -234,30 +219,13 @@ describe("AccountDetails.vue", () => {
         // console.log(wrapper.html())
 
         expect(fetchGetURLs(mock)).toStrictEqual([
+            "api/v1/network/exchangerate",
             "api/v1/accounts/" + accountId,
             "api/v1/network/nodes",
-            "api/v1/accounts/0.0.3/rewards?limit=1",
-            "api/v1/balances",
             "api/v1/contracts/" + accountId,
+            "api/v1/balances",
             "api/v1/transactions",
             "api/v1/network/exchangerate",
-            "api/v1/transactions",
-            "api/v1/accounts/" + accountId + "/nfts",
-            "api/v1/tokens",
-            "api/v1/accounts/" + accountId + "/airdrops/pending",
-            "api/v1/accounts/" + accountId + "/airdrops/pending",
-            "api/v1/accounts/" + accountId + "/allowances/crypto",
-            "api/v1/accounts/" + accountId + "/allowances/tokens",
-            "api/v1/accounts/" + accountId + "/nfts",
-            "api/v1/accounts/" + accountId + "/nfts",
-            "api/v1/tokens",
-            "api/v1/accounts/" + accountId + "/airdrops/pending",
-            "api/v1/accounts/" + accountId + "/airdrops/pending",
-            "api/v1/accounts/" + accountId + "/allowances/crypto",
-            "api/v1/accounts/" + accountId + "/allowances/tokens",
-            "api/v1/accounts/" + accountId + "/nfts",
-            "api/v1/accounts/" + accountId + "/allowances/nfts",
-            "api/v1/accounts/" + accountId + "/allowances/nfts",
         ])
 
         expect(wrapper.text()).toMatch("Account  Account ID " + accountId)
@@ -272,7 +240,7 @@ describe("AccountDetails.vue", () => {
         await flushPromises()
     });
 
-    it("Should update when account id changes", async () => {
+    it("AccountDetails_Summary should update when account id changes", async () => {
 
         await router.push("/") // To avoid "missing required param 'network'" error
 
@@ -296,28 +264,7 @@ describe("AccountDetails.vue", () => {
         const matcher5 = "/api/v1/balances"
         mock.onGet(matcher5).reply(200, SAMPLE_ACCOUNT_BALANCES);
 
-        let matcher8 = "/api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/rewards"
-        mock.onGet(matcher8).reply(200, {rewards: []})
-
-        let matcher9 = "/api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/allowances/crypto"
-        mock.onGet(matcher9).reply(200, {rewards: []})
-
-        let matcher10 = "/api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/allowances/tokens"
-        mock.onGet(matcher10).reply(200, {rewards: []})
-
-        let matcher11 = "/api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/allowances/nfts"
-        mock.onGet(matcher11).reply(200, {nfts: []})
-
-        const matcher12 = "api/v1/tokens"
-        mock.onGet(matcher12).reply(200, {tokens: []});
-
-        let matcher13 = "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/nfts"
-        mock.onGet(matcher13).reply(200, {nfts: []});
-
-        let matcher14 = "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/airdrops/pending"
-        mock.onGet(matcher14).reply(200, {airdrops: []});
-
-        const wrapper = mount(AccountDetails, {
+        const wrapper = mount(AccountDetails_Summary, {
             global: {
                 plugins: [router, Oruga],
                 provide: {"isMediumScreen": false}
@@ -333,32 +280,12 @@ describe("AccountDetails.vue", () => {
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/accounts/" + SAMPLE_ACCOUNT.account,
             "api/v1/network/nodes",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/rewards?limit=1",
             "api/v1/balances",
             "api/v1/contracts/" + SAMPLE_ACCOUNT.account,
-            "api/v1/transactions",
             "api/v1/transactions",
             "api/v1/contracts/" + SAMPLE_ACCOUNT.evm_address,
             "api/v1/tokens/" + SAMPLE_ACCOUNT.account,
             "api/v1/network/exchangerate",
-            "api/v1/blocks",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/nfts",
-            "api/v1/tokens",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/airdrops/pending",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/airdrops/pending",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/allowances/crypto",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/allowances/tokens",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/nfts",
-            "api/v1/tokens/" + SAMPLE_TOKEN.token_id,
-            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/nfts",
-            "api/v1/tokens",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/airdrops/pending",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/airdrops/pending",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/allowances/crypto",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/allowances/tokens",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/nfts",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/allowances/nfts",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/allowances/nfts",
         ])
 
         expect(wrapper.text()).toMatch("Account  Account ID " + SAMPLE_ACCOUNT.account)
@@ -373,24 +300,6 @@ describe("AccountDetails.vue", () => {
         matcher3 = "/api/v1/tokens/" + token2.token_id
         mock.onGet(matcher3).reply(200, token2);
 
-        matcher8 = "/api/v1/accounts/" + SAMPLE_ACCOUNT_DUDE.account + "/rewards"
-        mock.onGet(matcher8).reply(200, {rewards: []})
-
-        matcher9 = "/api/v1/accounts/" + SAMPLE_ACCOUNT_DUDE.account + "/allowances/crypto"
-        mock.onGet(matcher9).reply(200, {rewards: []})
-
-        matcher10 = "/api/v1/accounts/" + SAMPLE_ACCOUNT_DUDE.account + "/allowances/tokens"
-        mock.onGet(matcher10).reply(200, {rewards: []})
-
-        matcher11 = "/api/v1/accounts/" + SAMPLE_ACCOUNT_DUDE.account + "/allowances/nfts"
-        mock.onGet(matcher11).reply(200, {nfts: []})
-
-        matcher13 = "api/v1/accounts/" + SAMPLE_ACCOUNT_DUDE.account + "/nfts"
-        mock.onGet(matcher13).reply(200, {nfts: []});
-
-        matcher14 = "api/v1/accounts/" + SAMPLE_ACCOUNT_DUDE.account + "/airdrops/pending"
-        mock.onGet(matcher14).reply(200, {airdrops: []});
-
         mock.resetHistory()
 
         await wrapper.setProps({
@@ -402,33 +311,14 @@ describe("AccountDetails.vue", () => {
 
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/accounts/" + SAMPLE_ACCOUNT_DUDE.account,
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_DUDE.account + "/rewards?limit=1",
             "api/v1/balances",
             "api/v1/contracts/" + SAMPLE_ACCOUNT_DUDE.account,
             "api/v1/contracts/0x00000000000000000000000000000000000b2608",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_DUDE.account + "/allowances/nfts",
             "api/v1/tokens/" + SAMPLE_ACCOUNT_DUDE.account,
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_DUDE.account + "/nfts",
-            "api/v1/tokens",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_DUDE.account + "/airdrops/pending",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_DUDE.account + "/airdrops/pending",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_DUDE.account + "/allowances/crypto",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_DUDE.account + "/allowances/tokens",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_DUDE.account + "/nfts",
-            "api/v1/transactions",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_DUDE.account + "/nfts",
-            "api/v1/tokens",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_DUDE.account + "/airdrops/pending",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_DUDE.account + "/airdrops/pending",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_DUDE.account + "/allowances/crypto",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_DUDE.account + "/allowances/tokens",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_DUDE.account + "/nfts",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_DUDE.account + "/allowances/nfts",
         ])
 
         expect(wrapper.text()).toMatch("Account  Account ID " + SAMPLE_ACCOUNT_DUDE.account)
-        expect(wrapper.get("#keyValue").text()).toBe(
-            "0x38f1ea460e95d97eea13aefac760eaf990154b80a3608ab01d4a264944d68746CopyED25519")
+        expect(wrapper.get("#keyValue").text()).toBe("0x" + SAMPLE_ACCOUNT_DUDE.key.key + "CopyED25519")
         expect(wrapper.get("#memoValue").text()).toBe("Account Dude Memo in clear")
         expect(wrapper.find("#aliasValue").exists()).toBe(false)
         expect(wrapper.get("#expiresAtValue").text()).toBe("3:33:21.4109 AMApr 11, 2022, UTC")
@@ -443,7 +333,7 @@ describe("AccountDetails.vue", () => {
         expect((wrapper.vm as any).balanceAnalyzer.mounted.value).toBe(false)
     });
 
-    it("Should detect invalid account ID", async () => {
+    it("AccountDetails should detect invalid account ID", async () => {
 
         await router.push("/") // To avoid "missing required param 'network'" error
 
@@ -464,6 +354,7 @@ describe("AccountDetails.vue", () => {
         // console.log(wrapper.text())
 
         expect(fetchGetURLs(mock)).toStrictEqual([
+            "api/v1/network/exchangerate",
             "api/v1/network/nodes",
         ])
 
@@ -473,7 +364,7 @@ describe("AccountDetails.vue", () => {
         await flushPromises()
     });
 
-    it("Should display notification of deleted account", async () => {
+    it("AccountDetails should display notification of deleted account", async () => {
 
         await router.push("/") // To avoid "missing required param 'network'" error
 
@@ -497,27 +388,6 @@ describe("AccountDetails.vue", () => {
         const matcher5 = "/api/v1/balances"
         mock.onGet(matcher5).reply(200, SAMPLE_ACCOUNT_BALANCES);
 
-        const matcher8 = "/api/v1/accounts/" + SAMPLE_ACCOUNT_DELETED.account + "/rewards"
-        mock.onGet(matcher8).reply(200, {rewards: []})
-
-        const matcher9 = "/api/v1/accounts/" + SAMPLE_ACCOUNT_DELETED.account + "/allowances/crypto"
-        mock.onGet(matcher9).reply(200, {rewards: []})
-
-        const matcher10 = "/api/v1/accounts/" + SAMPLE_ACCOUNT_DELETED.account + "/allowances/tokens"
-        mock.onGet(matcher10).reply(200, {rewards: []})
-
-        const matcher11 = "/api/v1/accounts/" + SAMPLE_ACCOUNT_DELETED.account + "/allowances/nfts"
-        mock.onGet(matcher11).reply(200, {nfts: []})
-
-        const matcher12 = "api/v1/tokens"
-        mock.onGet(matcher12).reply(200, {tokens: []});
-
-        const matcher13 = "api/v1/accounts/" + SAMPLE_ACCOUNT_DELETED.account + "/nfts"
-        mock.onGet(matcher13).reply(200, {nfts: []});
-
-        const matcher14 = "api/v1/accounts/" + SAMPLE_ACCOUNT_DELETED.account + "/airdrops/pending"
-        mock.onGet(matcher14).reply(200, {airdrops: []});
-
         const wrapper = mount(AccountDetails, {
             global: {
                 plugins: [router, Oruga],
@@ -532,33 +402,14 @@ describe("AccountDetails.vue", () => {
         // console.log(wrapper.text())
 
         expect(fetchGetURLs(mock)).toStrictEqual([
+            "api/v1/network/exchangerate",
             "api/v1/accounts/" + SAMPLE_ACCOUNT_DELETED.account,
             "api/v1/network/nodes",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_DELETED.account + "/rewards?limit=1",
-            "api/v1/balances",
             "api/v1/contracts/" + SAMPLE_ACCOUNT_DELETED.account,
-            "api/v1/transactions",
+            "api/v1/balances",
             "api/v1/contracts/0x00000000000000000000000000000000000b2608",
             "api/v1/tokens/" + SAMPLE_ACCOUNT_DELETED.account,
             "api/v1/network/exchangerate",
-            "api/v1/blocks",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_DELETED.account + "/nfts",
-            "api/v1/tokens",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_DELETED.account + "/airdrops/pending",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_DELETED.account + "/airdrops/pending",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_DELETED.account + "/allowances/crypto",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_DELETED.account + "/allowances/tokens",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_DELETED.account + "/nfts",
-            "api/v1/tokens/" + SAMPLE_TOKEN.token_id,
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_DELETED.account + "/nfts",
-            "api/v1/tokens",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_DELETED.account + "/airdrops/pending",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_DELETED.account + "/airdrops/pending",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_DELETED.account + "/allowances/crypto",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_DELETED.account + "/allowances/tokens",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_DELETED.account + "/nfts",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_DELETED.account + "/allowances/nfts",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_DELETED.account + "/allowances/nfts",
         ])
 
         expect(wrapper.getComponent(PageHeader).text()).toMatch("Account " + deletedAccount.account)
@@ -572,7 +423,7 @@ describe("AccountDetails.vue", () => {
         await flushPromises()
     });
 
-    it("Should display account staking to node", async () => {
+    it("AccountDetails should display account staking to node", async () => {
 
         await router.push("/") // To avoid "missing required param 'network'" error
 
@@ -593,27 +444,6 @@ describe("AccountDetails.vue", () => {
         const matcher5 = "/api/v1/network/exchangerate"
         mock.onGet(matcher5).reply(200, SAMPLE_NETWORK_EXCHANGERATE);
 
-        const matcher8 = "/api/v1/accounts/" + SAMPLE_ACCOUNT_STAKING_NODE.account + "/rewards"
-        mock.onGet(matcher8).reply(200, {rewards: []})
-
-        const matcher9 = "/api/v1/accounts/" + SAMPLE_ACCOUNT_STAKING_NODE.account + "/allowances/crypto"
-        mock.onGet(matcher9).reply(200, {rewards: []})
-
-        const matcher10 = "/api/v1/accounts/" + SAMPLE_ACCOUNT_STAKING_NODE.account + "/allowances/tokens"
-        mock.onGet(matcher10).reply(200, {rewards: []})
-
-        const matcher11 = "/api/v1/accounts/" + SAMPLE_ACCOUNT_STAKING_NODE.account + "/allowances/nfts"
-        mock.onGet(matcher11).reply(200, {nfts: []})
-
-        const matcher12 = "api/v1/tokens"
-        mock.onGet(matcher12).reply(200, {tokens: []});
-
-        const matcher13 = "api/v1/accounts/" + SAMPLE_ACCOUNT_STAKING_NODE.account + "/nfts"
-        mock.onGet(matcher13).reply(200, {nfts: []});
-
-        const matcher14 = "api/v1/accounts/" + SAMPLE_ACCOUNT_STAKING_NODE.account + "/airdrops/pending"
-        mock.onGet(matcher14).reply(200, {airdrops: []});
-
         const wrapper = mount(AccountDetails, {
             global: {
                 plugins: [router, Oruga],
@@ -628,35 +458,16 @@ describe("AccountDetails.vue", () => {
         // console.log(wrapper.html())
 
         expect(fetchGetURLs(mock)).toStrictEqual([
+            "api/v1/network/exchangerate",
             "api/v1/accounts/" + SAMPLE_ACCOUNT_STAKING_NODE.account,
             "api/v1/network/nodes",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_STAKING_NODE.account + "/rewards?limit=1",
-            "api/v1/balances",
-            "api/v1/contracts/" + SAMPLE_ACCOUNT_STAKING_NODE.account,
             "api/v1/network/exchangerate",
-            "api/v1/transactions",
+            "api/v1/network/supply",
+            "api/v1/contracts/" + SAMPLE_ACCOUNT_STAKING_NODE.account,
+            "api/v1/balances",
+            "api/v1/network/exchangerate",
             "api/v1/contracts/0x00000000000000000000000000000000000b2608",
             "api/v1/tokens/" + SAMPLE_ACCOUNT_STAKING_NODE.account,
-            "api/v1/contracts/" + SAMPLE_FAILED_TRANSACTION.entity_id,
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_STAKING_NODE.account + "/nfts",
-            "api/v1/tokens",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_STAKING_NODE.account + "/airdrops/pending",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_STAKING_NODE.account + "/airdrops/pending",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_STAKING_NODE.account + "/allowances/crypto",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_STAKING_NODE.account + "/allowances/tokens",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_STAKING_NODE.account + "/nfts",
-            "api/v1/contracts/results/" + SAMPLE_FAILED_TRANSACTION.transaction_id,
-            "api/v1/accounts/",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_STAKING_NODE.account + "/nfts",
-            "api/v1/tokens",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_STAKING_NODE.account + "/airdrops/pending",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_STAKING_NODE.account + "/airdrops/pending",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_STAKING_NODE.account + "/allowances/crypto",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_STAKING_NODE.account + "/allowances/tokens",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_STAKING_NODE.account + "/nfts",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_STAKING_NODE.account + "/allowances/nfts",
-            "api/v1/blocks",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_STAKING_NODE.account + "/allowances/nfts",
         ])
 
         expect(wrapper.get("#stakedToName").text()).toBe("Staked to")
@@ -669,7 +480,7 @@ describe("AccountDetails.vue", () => {
         await flushPromises()
     });
 
-    it("Should display account staking to account", async () => {
+    it("AccountDetails should display account staking to account", async () => {
 
         await router.push("/") // To avoid "missing required param 'network'" error
 
@@ -705,27 +516,6 @@ describe("AccountDetails.vue", () => {
         const matcher5 = "/api/v1/network/exchangerate"
         mock.onGet(matcher5).reply(200, SAMPLE_NETWORK_EXCHANGERATE);
 
-        const matcher8 = "/api/v1/accounts/" + SAMPLE_ACCOUNT_STAKING_ACCOUNT.account + "/rewards"
-        mock.onGet(matcher8).reply(200, {rewards: []})
-
-        const matcher9 = "/api/v1/accounts/" + SAMPLE_ACCOUNT_STAKING_ACCOUNT.account + "/allowances/crypto"
-        mock.onGet(matcher9).reply(200, {rewards: []})
-
-        const matcher10 = "/api/v1/accounts/" + SAMPLE_ACCOUNT_STAKING_ACCOUNT.account + "/allowances/tokens"
-        mock.onGet(matcher10).reply(200, {rewards: []})
-
-        const matcher11 = "/api/v1/accounts/" + SAMPLE_ACCOUNT_STAKING_ACCOUNT.account + "/allowances/nfts"
-        mock.onGet(matcher11).reply(200, {nfts: []})
-
-        const matcher12 = "api/v1/tokens"
-        mock.onGet(matcher12).reply(200, {tokens: []});
-
-        const matcher13 = "api/v1/accounts/" + SAMPLE_ACCOUNT_STAKING_ACCOUNT.account + "/nfts"
-        mock.onGet(matcher13).reply(200, {nfts: []});
-
-        const matcher14 = "api/v1/accounts/" + SAMPLE_ACCOUNT_STAKING_ACCOUNT.account + "/airdrops/pending"
-        mock.onGet(matcher14).reply(200, {airdrops: []});
-
         const wrapper = mount(AccountDetails, {
             global: {
                 plugins: [router, Oruga],
@@ -741,36 +531,17 @@ describe("AccountDetails.vue", () => {
         // console.log(wrapper.html())
 
         expect(fetchGetURLs(mock)).toStrictEqual([
+            "api/v1/network/exchangerate",
             "api/v1/accounts/" + SAMPLE_ACCOUNT_STAKING_ACCOUNT.account,
             "api/v1/network/nodes",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_STAKING_ACCOUNT.account + "/rewards?limit=1",
-            "api/v1/balances",
+            "api/v1/network/exchangerate",
+            "api/v1/network/supply",
             "api/v1/contracts/" + SAMPLE_ACCOUNT_STAKING_ACCOUNT.account,
+            "api/v1/balances",
             "api/v1/contracts/" + SAMPLE_ACCOUNT_STAKING_ACCOUNT.staked_account_id,
             "api/v1/network/exchangerate",
-            "api/v1/transactions",
             "api/v1/contracts/0x00000000000000000000000000000000000b2608",
             "api/v1/tokens/" + SAMPLE_ACCOUNT_STAKING_ACCOUNT.account,
-            "api/v1/contracts/" + SAMPLE_FAILED_TRANSACTION.entity_id,
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_STAKING_ACCOUNT.account + "/nfts",
-            "api/v1/tokens",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_STAKING_ACCOUNT.account + "/airdrops/pending",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_STAKING_ACCOUNT.account + "/airdrops/pending",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_STAKING_ACCOUNT.account + "/allowances/crypto",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_STAKING_ACCOUNT.account + "/allowances/tokens",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_STAKING_ACCOUNT.account + "/nfts",
-            "api/v1/contracts/results/" + SAMPLE_FAILED_TRANSACTION.transaction_id,
-            "api/v1/accounts/",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_STAKING_ACCOUNT.account + "/nfts",
-            "api/v1/tokens",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_STAKING_ACCOUNT.account + "/airdrops/pending",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_STAKING_ACCOUNT.account + "/airdrops/pending",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_STAKING_ACCOUNT.account + "/allowances/crypto",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_STAKING_ACCOUNT.account + "/allowances/tokens",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_STAKING_ACCOUNT.account + "/nfts",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_STAKING_ACCOUNT.account + "/allowances/nfts",
-            "api/v1/blocks",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT_STAKING_ACCOUNT.account + "/allowances/nfts",
         ])
 
         expect(wrapper.get("#stakedToName").text()).toBe("Staked to")
@@ -783,7 +554,7 @@ describe("AccountDetails.vue", () => {
         await flushPromises()
     });
 
-    it("Should display account with a public label", async () => {
+    it("AccountDetails should display account with a public label", async () => {
         await router.push("/") // To avoid "missing required param 'network'" error
 
         const mock = new MockAdapter(axios as any);
@@ -811,27 +582,6 @@ describe("AccountDetails.vue", () => {
         const matcher7 = "/api/v1/transactions?timestamp=" + SAMPLE_ACCOUNT.created_timestamp
         mock.onGet(matcher7).reply(200, SAMPLE_TRANSACTIONS);
 
-        const matcher8 = "/api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/rewards"
-        mock.onGet(matcher8).reply(200, {rewards: []})
-
-        const matcher9 = "/api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/allowances/crypto"
-        mock.onGet(matcher9).reply(200, {rewards: []})
-
-        const matcher10 = "/api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/allowances/tokens"
-        mock.onGet(matcher10).reply(200, {rewards: []})
-
-        const matcher11 = "/api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/allowances/nfts"
-        mock.onGet(matcher11).reply(200, {nfts: []})
-
-        const matcher12 = "api/v1/tokens"
-        mock.onGet(matcher12).reply(200, {tokens: []});
-
-        const matcher13 = "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/nfts"
-        mock.onGet(matcher13).reply(200, {nfts: []});
-
-        const matcher14 = "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/airdrops/pending"
-        mock.onGet(matcher14).reply(200, {airdrops: []});
-
         mock.onGet(SAMPLE_PUBLIC_LABELS_URL).reply(200, SAMPLE_PUBLIC_LABELS_JSON);
 
         routeManager.configure(routeManager.coreConfig.value, SAMPLE_NETWORK_CONFIG) // global.provide is not enough
@@ -852,35 +602,18 @@ describe("AccountDetails.vue", () => {
         // console.log(wrapper.html())
 
         expect(fetchGetURLs(mock)).toStrictEqual([
+            "api/v1/network/exchangerate",
             "api/v1/accounts/" + SAMPLE_ACCOUNT.account,
             "api/v1/network/nodes",
-            SAMPLE_PUBLIC_LABELS_URL,
-            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/rewards?limit=1",
-            "api/v1/balances",
+            "api/v1/network/exchangerate",
+            "api/v1/network/supply",
             "api/v1/contracts/" + SAMPLE_ACCOUNT.account,
-            "api/v1/transactions",
+            SAMPLE_PUBLIC_LABELS_URL,
+            "api/v1/balances",
             "api/v1/transactions",
             "api/v1/contracts/" + SAMPLE_ACCOUNT.evm_address,
             "api/v1/tokens/" + SAMPLE_ACCOUNT.account,
             "api/v1/network/exchangerate",
-            "api/v1/blocks",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/nfts",
-            "api/v1/tokens",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/airdrops/pending",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/airdrops/pending",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/allowances/crypto",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/allowances/tokens",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/nfts",
-            "api/v1/tokens/" + SAMPLE_TOKEN.token_id,
-            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/nfts",
-            "api/v1/tokens",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/airdrops/pending",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/airdrops/pending",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/allowances/crypto",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/allowances/tokens",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/nfts",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/allowances/nfts",
-            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/allowances/nfts",
         ])
 
         expect(wrapper.text()).toMatch("Sample Account LabelPublic Label for ID 0.0.730631 [Exchange]Sample Account Descriptionhttps://example.com Account ID 0.0.730631")

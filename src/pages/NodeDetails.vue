@@ -6,7 +6,7 @@
 
 <template>
 
-  <PageFrameV2>
+  <PageFrameV2 :page-title="pageTitle">
     <template #page-title>
       Node
       <span style="white-space: nowrap; font-size: smaller">
@@ -165,9 +165,11 @@
           </template>
         </Property>
       </template>
-    </DashboardCardV2>
 
-    <MirrorLink :network="props.network" entityUrl="network/nodes" :query="`node.id=${props.nodeId}`"/>
+      <template #footer>
+        <MirrorLink :network="props.network" entityUrl="network/nodes" :query="`node.id=${props.nodeId}`"/>
+      </template>
+    </DashboardCardV2>
 
   </PageFrameV2>
 
@@ -215,6 +217,8 @@ const cryptoName = CoreConfig.inject().cryptoName
 const loading = inject(loadingKey, ref(false))
 
 const nodeIdNb = computed(() => PathParam.parseNodeId(props.nodeId))
+const pageTitle = computed(() => nodeIdNb.value !== null ? "Node " + nodeIdNb.value : null)
+
 const nodeAnalyzer = new NodeAnalyzer(nodeIdNb)
 onMounted(() => nodeAnalyzer.mount())
 onBeforeUnmount(() => nodeAnalyzer.unmount())

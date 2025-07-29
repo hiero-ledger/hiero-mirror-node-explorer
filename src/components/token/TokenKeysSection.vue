@@ -6,7 +6,7 @@
 
 <template>
 
-  <DashboardCardV2 v-if="props.tokenInfo" collapsible-key="tokenKeys">
+  <DashboardCardV2 v-if="props.tokenInfo">
 
     <template #title>
       Token Keys
@@ -110,7 +110,7 @@ const props = defineProps({
   tokenInfo: {
     type: Object as PropType<TokenInfo | null>,
     default: null
-  }
+  },
 })
 
 </script>

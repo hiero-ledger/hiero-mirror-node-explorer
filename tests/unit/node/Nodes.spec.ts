@@ -13,6 +13,7 @@ import NodeTable from "@/components/node/NodeTable.vue";
 import NetworkDashboardItemV2 from "@/components/node/NetworkDashboardItemV2.vue";
 import {fetchGetURLs} from "../MockUtils";
 import router from "@/utils/RouteManager.ts";
+import Nodes_NodeTable from "@/pages/Nodes_NodeTable.vue";
 
 /*
     Bookmarks
@@ -70,7 +71,7 @@ describe("Nodes.vue", () => {
         ])
 
         const cards = wrapper.findAllComponents(DashboardCardV2)
-        expect(cards.length).toBe(3)
+        expect(cards.length).toBe(2)
 
         expect(cards[0].text()).toMatch(RegExp("^Network"))
         const items = cards[0].findAllComponents(NetworkDashboardItemV2)
@@ -85,13 +86,23 @@ describe("Nodes.vue", () => {
         expect(items[7].text()).toMatch("MAXIMUM REWARD RATE 0%")
         expect(items[8].text()).toMatch("CURRENT REWARD RATE 0%")
 
-        expect(cards[1].text()).toMatch("Map")
+        mock.resetHistory()
+        const wrapper2 = mount(Nodes_NodeTable, {
+            global: {
+                plugins: [router, Oruga]
+            }
+        });
 
-        expect(cards[2].text()).toMatch("3  Nodes")
-        const table = cards[2].findComponent(NodeTable)
+        await flushPromises()
+        // console.log(wrapper2.text())
+
+        expect(fetchGetURLs(mock)).toStrictEqual([])
+
+        expect(wrapper2.text()).toMatch("3  Nodes")
+        const table = wrapper2.findComponent(NodeTable)
         expect(table.exists()).toBe(true)
         expect(table.get('thead').text()).toBe("NODE ID DESCRIPTION STAKE FOR CONSENSUS % STAKE RANGE REWARD RATE")
-        expect(wrapper.get('tbody').text()).toBe(
+        expect(wrapper2.get('tbody').text()).toBe(
             "0" +
             "Hosted by Hedera | East Coast, USA" +
             "6,000,000ℏ" + tooltipStake +
@@ -121,6 +132,7 @@ describe("Nodes.vue", () => {
 
         mock.restore()
         wrapper.unmount()
+        wrapper2.unmount()
         await flushPromises()
     });
 

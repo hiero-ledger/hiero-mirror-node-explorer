@@ -9,7 +9,7 @@
   <o-table
       :data="props.controller.rows.value"
       :loading="props.controller.loading.value"
-      :paginated="props.controller.paginated.value && props.fullPage"
+      :paginated="props.controller.paginated.value"
       backend-pagination
       pagination-order="centered"
       :total="props.controller.totalRowCount.value"
@@ -56,7 +56,6 @@
 
     <template v-slot:bottom-left>
       <TablePageSize
-          v-if="props.fullPage"
           v-model:size="props.controller.pageSize.value"
       />
     </template>
@@ -66,8 +65,7 @@
   <TablePageSize
       v-if="!props.controller.paginated.value
       && props.controller.showPageSizeSelector.value
-      && !props.checkEnabled
-      && props.fullPage"
+      && !props.checkEnabled"
       v-model:size="props.controller.pageSize.value"
       style="width: 102px; margin-left: 4px"
   />
@@ -104,10 +102,6 @@ const props = defineProps({
     type: Boolean,
     required: true
   },
-  fullPage: {
-    type: Boolean,
-    default: false
-  },
 })
 
 const checkedRows = defineModel("checkedTokens", {
@@ -119,7 +113,7 @@ watch([props.controller.rows, () => props.checkEnabled], () =>
     checkedRows.value.splice(0)
 )
 
-const handleClick = (balance: Token|Nft, c: unknown, i: number, ci: number, event: Event) => {
+const handleClick = (balance: Token | Nft, c: unknown, i: number, ci: number, event: Event) => {
   if (balance.token_id) {
     routeManager.routeToToken(balance.token_id, event)
   }

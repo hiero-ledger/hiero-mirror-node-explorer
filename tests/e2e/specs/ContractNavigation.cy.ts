@@ -30,6 +30,9 @@ describe('Contract Navigation', () => {
         cy.url().should('include', '/mainnet/contract/' + contractId)
         cy.contains('Contract ID ' + contractId)
 
+        cy.get('#tab-ContractDetailsCalls')
+            .click()
+
         cy.get('#contract-results-table').contains('td', '0x')
             .click()
         cy.url().should('include', '/mainnet/transaction/')

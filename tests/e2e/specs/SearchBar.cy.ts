@@ -19,7 +19,7 @@ describe('Search Bar', () => {
             searchAccount,
             '/mainnet/account/' + searchAccount,
             'Account ' + searchAccount,
-            true)
+            false)
 
         cy.visit('mainnet/account/0.0.4')
         cy.url().should('include', '/mainnet/account/0.0.4')
@@ -27,7 +27,7 @@ describe('Search Bar', () => {
             searchAccount,
             '/mainnet/account/' + searchAccount,
             'Account ' + searchAccount,
-            true)
+            false)
     })
 
     it('should find the transaction ID', () => {
@@ -45,7 +45,7 @@ describe('Search Bar', () => {
         testBodyV2(
             searchTransaction,
             '/mainnet/transactionsById/' + makeExchangeFormat(searchTransaction),
-            'Transactions with ID ' + searchTransaction,
+            'Transactions by ID',
         )
         cy.get('table')
             .find('tbody tr')
@@ -67,7 +67,7 @@ describe('Search Bar', () => {
         testBodyV2(
             searchTransaction,
             '/mainnet/transactionsById/' + makeExchangeFormat(searchTransaction),
-            'Transactions with ID ' + searchTransaction,
+            'Transactions by ID',
         )
         cy.get('table')
             .find('tbody tr')
@@ -130,14 +130,14 @@ describe('Search Bar', () => {
             searchNFT,
             '/mainnet/token/' + searchNFT,
             'Token ' + searchNFT,
-            true)
+            false)
 
         cy.visit('mainnet/token/0.0.1751171')
         cy.url().should('include', '/mainnet/token/0.0.1751171')
         testBodyV2(searchNFT,
             '/mainnet/token/' + searchNFT,
             'Token ' + searchNFT,
-            true)
+            false)
     })
 
     it('should find the token ID', () => {
@@ -146,7 +146,7 @@ describe('Search Bar', () => {
             searchToken,
             '/mainnet/token/' + searchToken,
             'Token ' + searchToken,
-            true)
+            false)
 
         cy.visit('mainnet/token/0.0.1738807')
         cy.url().should('include', '/mainnet/token/0.0.1738807')
@@ -154,7 +154,7 @@ describe('Search Bar', () => {
             searchToken,
             '/mainnet/token/' + searchToken,
             'Token ' + searchToken,
-            true)
+            false)
     })
 
     it('should find the topic ID', () => {
@@ -163,7 +163,7 @@ describe('Search Bar', () => {
             searchTopic,
             '/mainnet/topic/' + searchTopic,
             'Topic ' + searchTopic,
-            true)
+            false)
 
         cy.visit('mainnet/topic/0.0.1744769')
         cy.url().should('include', '/mainnet/topic/0.0.1744769')
@@ -171,7 +171,7 @@ describe('Search Bar', () => {
             searchTopic,
             '/mainnet/topic/' + searchTopic,
             'Topic ' + searchTopic,
-            true)
+            false)
     })
 
     it('should find the contract ID', () => {
@@ -180,7 +180,7 @@ describe('Search Bar', () => {
             searchContract,
             '/mainnet/contract/' + searchContract,
             'Contract ' + searchContract,
-            true)
+            false)
 
         cy.visit('mainnet/contract/0.0.1742018')
         cy.url().should('include', '/mainnet/contract/0.0.1742018')
@@ -188,7 +188,7 @@ describe('Search Bar', () => {
             searchContract,
             '/mainnet/contract/' + searchContract,
             'Contract ' + searchContract,
-            true)
+            false)
     })
 
     it('should find the account by public key', () => {
@@ -261,7 +261,7 @@ describe('Search Bar', () => {
             searchAccount,
             '/mainnet/account/' + searchAccount,
             'Account ' + searchAccount,
-            true)
+            false)
 
         cy.visit('mainnet/account/0.0.4')
         cy.url().should('include', '/mainnet/account/0.0.4')
@@ -269,7 +269,7 @@ describe('Search Bar', () => {
             searchAccount,
             '/mainnet/account/' + searchAccount,
             'Account ' + searchAccount,
-            true)
+            false)
     })
 })
 

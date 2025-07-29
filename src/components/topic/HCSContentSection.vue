@@ -6,7 +6,7 @@
 
 <template>
 
-  <DashboardCardV2 v-if="props.topicMemo" collapsible-key="hcs1Content">
+  <DashboardCardV2 v-if="props.topicMemo">
 
     <template #title>
       HCS-1 Content

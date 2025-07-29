@@ -6,7 +6,7 @@
 
 <template>
 
-  <DashboardCardV2 collapsible-key="contractBytecode">
+  <DashboardCardV2>
     <template #title>
       Contract Bytecode
       <div
@@ -16,16 +16,6 @@
           style="margin-top: 2px">
         {{ isVerified ? 'VERIFIED' : 'NOT VERIFIED' }}
       </div>
-    </template>
-
-    <template #right-control>
-      <ButtonView
-          v-if="isVerificationAvailable && !isVerified"
-          :size="ButtonSize.small"
-          @action="showVerifyDialog = true"
-      >
-        VERIFY
-      </ButtonView>
     </template>
 
     <template #content>
@@ -105,21 +95,6 @@
               </optgroup>
             </SelectView>
           </div>
-          <div v-else-if="selectedOption==='abi'" class="contract-code-controls">
-            <template v-if="logicModeAvailable">
-              <p>Show Logic Contract ABI</p>
-              <SwitchView v-model="showLogicABI"/>
-            </template>
-            <DownloadButton @click="handleDownloadABI"/>
-            <SelectView v-model="selectedCollection" :small="true">
-              <option :value="FragmentCollection.ALL">All definitions</option>
-              <option :value="FragmentCollection.READONLY">Read-only functions</option>
-              <option :value="FragmentCollection.READWRITE">Read-write functions</option>
-              <option :value="FragmentCollection.EVENTS">Events</option>
-              <option :value="FragmentCollection.ERRORS">Errors</option>
-              <option :value="FragmentCollection.OTHER">Other definitions</option>
-            </SelectView>
-          </div>
         </div>
 
         <template v-if="selectedOption==='source'">
@@ -128,10 +103,6 @@
 
         <template v-else-if="selectedOption==='bytecode'">
           <ContractByteCodeValue :byte-code="byteCode" :show-hexa-opcode="showHexaOpcode"/>
-        </template>
-
-        <template v-else>
-          <ContractAbiValue :abiController="abiController" :fragment-collection="selectedCollection as FragmentCollection"/>
         </template>
       </template>
       <template v-else>
@@ -153,7 +124,7 @@
 
 <script setup lang="ts">
 
-import {computed, ComputedRef, onBeforeUnmount, onMounted, PropType, ref, watch} from 'vue';
+import {computed, onBeforeUnmount, onMounted, PropType, ref, watch} from 'vue';
 import StringValue from "@/components/values/StringValue.vue";
 import Property from "@/components/Property.vue";
 import {ContractAnalyzer} from "@/utils/analyzer/ContractAnalyzer";
@@ -161,7 +132,6 @@ import InfoTooltip from "@/components/InfoTooltip.vue";
 import ContractVerificationDialog from "@/dialogs/verification/ContractVerificationDialog.vue";
 import {AppStorage} from "@/AppStorage";
 import ContractSourceValue from "@/components/values/ContractSourceValue.vue";
-import ContractAbiValue from "@/dialogs/abi/ContractAbiValue.vue";
 import {FragmentCollection} from "@/dialogs/abi/FragmentCollection.ts";
 import {SourcifyResponseItem} from "@/utils/cache/SourcifyCache";
 import DownloadButton from "@/components/DownloadButton.vue";
@@ -169,10 +139,8 @@ import JSZip from "jszip";
 import {saveAs} from "file-saver";
 import Tabs from "@/components/Tabs.vue";
 import AccountLink from "@/components/values/link/AccountLink.vue";
-import {ABIController, ABIMode} from "@/components/contract/ABIController";
 import {ABIAnalyzer} from "@/utils/analyzer/ABIAnalyzer";
 import SelectView from "@/elements/SelectView.vue";
-import SwitchView from "@/elements/SwitchView.vue";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import ButtonView from "@/elements/ButtonView.vue";
 import ContractByteCodeValue from "@/components/values/ContractByteCodeValue.vue";
@@ -213,8 +181,8 @@ const showHexaOpcode = ref(false)
 onMounted(() => showHexaOpcode.value = AppStorage.getShowHexaOpcode())
 watch(showHexaOpcode, () => AppStorage.setShowHexaOpcode(showHexaOpcode.value ? showHexaOpcode.value : null))
 
-const tabIds = ['abi', 'source', 'bytecode']
-const tabLabels = ['ABI', 'Source', 'Bytecode']
+const tabIds = ['source', 'bytecode']
+const tabLabels = ['Source', 'Bytecode']
 const selectedOption = ref<string | null>(AppStorage.getContractByteCodeTab() ?? tabIds[0])
 const handleTabUpdate = (tab: string | null) => {
   selectedOption.value = tab
@@ -274,28 +242,6 @@ onMounted(() => {
 })
 watch(selectedCollection, () => AppStorage.setFragmentCollection(selectedCollection.value))
 
-const abiBlob = computed(() => {
-  let result: Blob | null
-  const itf = abiController.targetInterface.value
-  if (itf !== null) {
-    result = new Blob([itf.formatJson()], {type: "text/json"})
-  } else {
-    result = null
-  }
-  return result
-})
-
-const handleDownloadABI = () => {
-  if (abiBlob.value !== null) {
-    const url = window.URL.createObjectURL(abiBlob.value)
-    const outputName = abiController.targetContractName.value + ".json"
-    const a = document.createElement('a')
-    a.setAttribute('href', url)
-    a.setAttribute('download', outputName);
-    a.click()
-  }
-}
-
 const abiAnalyzer = new ABIAnalyzer(props.contractAnalyzer)
 onMounted(() => abiAnalyzer.mount())
 onBeforeUnmount(() => abiAnalyzer.unmount())
@@ -313,18 +259,12 @@ watch(showLogicABI, () => {
   AppStorage.setShowLogicABI(showLogicABI.value)
 })
 
-const mode: ComputedRef<ABIMode> = computed(() => {
-  return showLogicABI.value && abiController.logicModeAvailable.value ? ABIMode.Logic : ABIMode.Normal
-})
-const abiController = new ABIController(abiAnalyzer, mode)
-
 const byteCode = props.contractAnalyzer.byteCode
 const solcVersion = props.contractAnalyzer.solcVersion
 const contractId = props.contractAnalyzer.contractId
 const solidityFiles = props.contractAnalyzer.solidityFiles
 const sourceFileName = props.contractAnalyzer.sourceFileName
 const contractFileName = props.contractAnalyzer.contractFileName
-const logicModeAvailable = abiController.logicModeAvailable
 
 </script>
 

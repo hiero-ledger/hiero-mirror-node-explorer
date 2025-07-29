@@ -6,7 +6,7 @@
 
 <template>
 
-  <DashboardCardV2 v-if="props.message" collapsible-key="messageSubmitted">
+  <DashboardCardV2 v-if="props.message">
     <template #title>
       <span>Message Submitted</span>
     </template>

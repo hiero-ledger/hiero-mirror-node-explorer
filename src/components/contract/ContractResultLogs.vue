@@ -6,9 +6,12 @@
 
 <template>
 
-  <DashboardCardV2 v-if="props.logs?.length" collapsible-key="contractEvents">
+  <DashboardCardV2>
     <template #title>
-      Events
+      <ContractSectionTitle v-if="props.contractId" :contract-id="props.contractId">
+        Contract Events
+      </ContractSectionTitle>
+      <span v-else>Events</span>
     </template>
 
     <template #right-control v-if="props.logs.length > 2">
@@ -20,27 +23,38 @@
     </template>
 
     <template #content>
-      <template v-for="l in nbLogDisplayed" :key="l">
-        <ContractResultLogEntry
-            :log="props.logs[logCursor + l - 1]"
-            :block-number="props.blockNumber"
-            :transaction-hash="props.transactionHash"
-        />
-        <hr class="table-separator"/>
+      <template v-if="nbLogDisplayed">
+        <template v-for="l in nbLogDisplayed" :key="l">
+          <ContractResultLogEntry
+              :log="props.logs[logCursor + l - 1]"
+              :block-number="props.blockNumber"
+              :transaction-hash="props.transactionHash"
+          />
+          <hr class="table-separator"/>
+        </template>
+
+        <div v-if="isPaginated" class="pagination">
+          <o-pagination
+              :total="props.logs.length"
+              v-model:current="currentPage"
+              order="centered"
+              :range-before="1"
+              :range-after="1"
+              :per-page="pageSize"
+          >
+          </o-pagination>
+        </div>
       </template>
 
-      <div v-if="isPaginated" class="pagination">
-        <o-pagination
-            :total="props.logs.length"
-            v-model:current="currentPage"
-            order="centered"
-            :range-before="1"
-            :range-after="1"
-            :per-page="pageSize"
+      <template v-else>
+        <DocSnippet
+            doc-hint="See how to access event data"
+            doc-url="https://hedera.com/blog/how-to-get-event-information-from-hedera-smart-contracts"
         >
-        </o-pagination>
-      </div>
-
+          <p>No events have been logged for this contract.</p>
+          <p>This may be due to it not being called or its executions did not emit any events.</p>
+        </DocSnippet>
+      </template>
     </template>
 
   </DashboardCardV2>
@@ -60,15 +74,23 @@ import {ContractLog} from "@/schemas/MirrorNodeSchemas";
 import {AppStorage} from "@/AppStorage";
 import SelectView from "@/elements/SelectView.vue";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
+import ContractSectionTitle from "@/components/contract/ContractSectionTitle.vue";
+import DocSnippet from "@/components/DocSnippet.vue";
 
 const DEFAULT_PAGE_SIZE = 3
 
 const props = defineProps({
-  logs: Object as PropType<Array<ContractLog> | undefined>,
+  logs: {
+    type: Object as PropType<Array<ContractLog>>,
+    required: true
+  },
   blockNumber: {
     type: Number,
   },
   transactionHash: {
+    type: String
+  },
+  contractId: {
     type: String
   }
 })

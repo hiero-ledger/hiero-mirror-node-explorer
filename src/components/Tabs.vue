@@ -5,19 +5,24 @@
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <template>
-  <ul v-if="props.tabIds.length >= 1" style="padding: 0; margin: 0;">
-    <li
-        :class="{'is-active':selectedTab === tab,'sub-tab': props.subTabs}"
-        v-for="(tab, i) in props.tabIds"
-        :key="tab"
-        :id="'tab-' + tab"
-        @click="handleSelect(tab, true)"
-    >
-      <a>
-        {{ props.tabLabels[i] ?? tab }}
-      </a>
-    </li>
-  </ul>
+  <div class="tab-root">
+    <ul v-if="props.tabIds.length >= 1" style="padding: 0; margin: 0;">
+      <li
+          :class="{'is-active':selectedTab === tab,'sub-tab': props.subTabs}"
+          v-for="(tab, i) in props.tabIds"
+          :key="tab"
+          :id="'tab-' + tab"
+          @click="handleSelect(tab, true)"
+      >
+        <a>
+          {{ props.tabLabels[i] ?? tab }}
+        </a>
+      </li>
+    </ul>
+    <div style="padding: 8px 8px;">
+      <slot name="extra"/>
+    </div>
+  </div>
 </template>
 
 <!-- --------------------------------------------------------------------------------------------------------------- -->
@@ -79,10 +84,19 @@ watch(() => props.tabIds, adjustSelectedTab, {immediate: true})
 
 <style scoped>
 
+div.tab-root {
+  align-items: baseline;
+  column-gap: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
 ul {
   align-items: center;
   column-gap: 16px;
   display: flex;
+  flex-wrap: wrap;
 }
 
 li {

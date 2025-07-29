@@ -5,7 +5,7 @@
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <template>
-  <div class="card-root">
+  <div class="card-root" :class="{'collapsed': isCollapsed}">
     <div
         style="display: flex; flex-direction: column; gap: 8px;  padding-bottom: 16px;  border-bottom: 1px solid var(--network-theme-color);">
       <div class="card-header">
@@ -26,7 +26,7 @@
       </div>
     </div>
 
-    <div v-if="!isCollapsed">
+    <template v-if="!isCollapsed">
 
       <div v-if="slots['notification']" style="padding-bottom: 16px;">
         <slot name="notification"/>
@@ -62,7 +62,12 @@
           <slot name="right-content"/>
         </div>
       </div>
-    </div>
+
+      <div v-if="slots['footer']" style="flex: 1; display: flex; flex-direction: column">
+        <slot name="footer"/>
+      </div>
+
+    </template>
   </div>
 </template>
 
@@ -136,8 +141,13 @@ div.card-root {
   border-radius: 16px;
   display: flex;
   flex-direction: column;
+  flex: 1;
   gap: 16px;
   padding: 16px;
+}
+
+div.card-root.collapsed {
+  flex: 0 0 auto;
 }
 
 @media (min-width: 1080px) {

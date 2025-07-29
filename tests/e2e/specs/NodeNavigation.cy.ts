@@ -10,6 +10,8 @@ describe('Node Navigation', () => {
         cy.contains('Network')
         cy.contains('Nodes')
 
+        cy.get('#tab-Nodes_NodeTable').click()
+
         cy.get('table')
             .find('tbody tr')
             .should('be.visible')

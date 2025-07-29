@@ -65,6 +65,7 @@ describe("AdminKeyDetails.vue", () => {
         });
 
         expect(fetchGetURLs(mock)).toStrictEqual([
+            "api/v1/network/exchangerate",
             "api/v1/accounts/" + SAMPLE_ACCOUNT_PROTOBUF_KEY.account,
             "api/v1/network/nodes",
         ])

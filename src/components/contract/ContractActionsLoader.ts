@@ -68,12 +68,14 @@ export class ContractActionsLoader extends EntityLoader<ContractActionsResponse>
 
     protected async load(): Promise<ContractActionsResponse | null> {
         let result: ContractActionsResponse | null = null
-        let url: string | null = "api/v1/contracts/results/" + this.transactionIdOrHash.value + "/actions?limit=100"
-        while (url !== null) {
-            const response: AxiosResponse<ContractActionsResponse> = await axios.get(url)
-            const next = response.data
-            result = result !== null ? this.mergeResponses(result, next) : next
-            url = next.links?.next ?? null
+        if (this.transactionIdOrHash.value) {
+            let url: string | null = "api/v1/contracts/results/" + this.transactionIdOrHash.value + "/actions?limit=100"
+            while (url !== null) {
+                const response: AxiosResponse<ContractActionsResponse> = await axios.get(url)
+                const next = response.data
+                result = result !== null ? this.mergeResponses(result, next) : next
+                url = next.links?.next ?? null
+            }
         }
         return Promise.resolve(result)
     }

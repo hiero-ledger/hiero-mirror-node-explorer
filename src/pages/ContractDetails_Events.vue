@@ -6,14 +6,7 @@
 
 <template>
 
-  <PageFrameV2 page-title="Tokens by Account">
-
-    <TokensSection
-        :account-id="props.accountId"
-        :full-page="true"
-    />
-
-  </PageFrameV2>
+  <ContractResultLogs :logs="logs" :contract-id="props.contractId"/>
 
 </template>
 
@@ -23,25 +16,30 @@
 
 <script setup lang="ts">
 
-import {PropType} from 'vue';
-import PageFrameV2 from "@/components/page/PageFrameV2.vue";
-import TokensSection from "@/components/token/TokensSection.vue";
+import {computed, onBeforeUnmount, onMounted} from "vue";
+import ContractResultLogs from "@/components/contract/ContractResultLogs.vue";
+import {ContractResultsLogsAnalyzer} from "@/utils/analyzer/ContractResultsLogsAnalyzer.ts";
 
 const props = defineProps({
-  network: String,
-  accountId: {
-    type: String as PropType<string | null>,
-    default: null
-  }
+  contractId: String,
+  network: String
 })
+
+
+//
+// contract results logs - event logs at contract level
+//
+const contractId = computed(() => props.contractId ?? null)
+const contractResultsLogsAnalyzer = new ContractResultsLogsAnalyzer(contractId)
+onMounted(() => contractResultsLogsAnalyzer.mount())
+onBeforeUnmount(() => contractResultsLogsAnalyzer.unmount())
+const logs = contractResultsLogsAnalyzer.logs
 
 </script>
 
 <!-- --------------------------------------------------------------------------------------------------------------- -->
-<!--                                                       STYLE                                                     -->
+<!--                                                      STYLE                                                      -->
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <style scoped>
-
 </style>
-

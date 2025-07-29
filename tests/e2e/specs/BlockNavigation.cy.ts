@@ -46,6 +46,9 @@ describe('Block Navigation', () => {
         cy.url().should('include', '/testnet/block/' + blockNumber)
         cy.contains('Block ' + blockNumber)
 
+        cy.get('#tab-BlockDetails_Transactions')
+            .click()
+
         cy.get('table')
             .contains('td', '@').click()
             .then(($id) => {

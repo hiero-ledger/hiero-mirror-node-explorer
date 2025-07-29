@@ -287,7 +287,12 @@ export class ContractAnalyzer {
 
     private static async analyzeRegularContract(contractId: string, contractInfo: ContractResponse): Promise<ContractAnalyzerReport> {
 
-        const sourcifyRecord = await SourcifyCache.instance.lookup(contractId)
+        let sourcifyRecord: SourcifyRecord|null
+        try {
+            sourcifyRecord = await SourcifyCache.instance.lookup(contractId)
+        } catch (error) {
+            sourcifyRecord = null
+        }
         const metadata = sourcifyRecord !== null ? SourcifyCache.fetchMetadata(sourcifyRecord.response) : null
         const abi = metadata?.output.abi ?? null
 

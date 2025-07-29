@@ -15,8 +15,13 @@
       </template>
     </PageHeader>
 
-    <div v-if="slots.banner">
+    <div v-if="slots.banner" class="h-page-banner">
       <slot name="banner"/>
+    </div>
+
+    <div v-if="slots['left-toolbar'] || slots['right-toolbar']" class="h-page-toolbar">
+      <slot name="left-toolbar"/>
+      <slot name="right-toolbar"/>
     </div>
 
     <div class="h-page-content">
@@ -34,9 +39,10 @@
 
 <script setup lang="ts">
 
+import {computed, PropType, useSlots, watch} from "vue";
 import Footer from "@/components/page/Footer.vue";
 import PageHeader from "@/components/page/header/PageHeader.vue";
-import {PropType, useSlots} from "vue";
+import {CoreConfig} from "@/config/CoreConfig.ts";
 
 const props = defineProps({
   pageTitle: {
@@ -50,6 +56,23 @@ const props = defineProps({
 })
 
 const slots = useSlots()
+const coreConfig = CoreConfig.inject()
+
+const documentTitle = computed(() => {
+  let result: string | null
+  if (props.pageTitle) {
+    const envTitlePrefix = coreConfig.documentTitlePrefix
+    const titlePrefix = envTitlePrefix !== "" ? envTitlePrefix + " " : ""
+    result = titlePrefix + props.pageTitle
+  } else {
+    result = null
+  }
+  return result
+})
+
+watch(documentTitle, (newValue: string|null) => {
+  document.title = newValue ?? ""
+}, {immediate: true})
 
 </script>
 
@@ -57,4 +80,34 @@ const slots = useSlots()
 <!--                                                       STYLE                                                     -->
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
-<style/>
+<style scoped>
+
+.h-page-banner {
+  margin: 16px 16px;
+}
+
+@media (min-width: 1080px) {
+  .h-page-banner {
+    margin: 16px 32px;
+  }
+}
+
+.h-page-toolbar {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-left: 16px;
+  margin-right: 16px;
+  row-gap: 4px;
+}
+
+@media (min-width: 1080px) {
+  .h-page-toolbar {
+    margin-left: 32px;
+    margin-right: 32px;
+  }
+}
+
+</style>

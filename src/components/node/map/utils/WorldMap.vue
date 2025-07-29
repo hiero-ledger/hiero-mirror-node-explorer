@@ -22,7 +22,7 @@ import {useElementSize} from "@vueuse/core"
 import * as d3 from "d3"
 import * as d3geo from "d3-geo"
 import * as topojson from "topojson-client"
-import {Topology} from "topojson-specification"
+import type {Topology} from "topojson-specification"
 
 const svgRef = useTemplateRef<HTMLImageElement>("svgRef")
 const svgSize = useElementSize(svgRef)
