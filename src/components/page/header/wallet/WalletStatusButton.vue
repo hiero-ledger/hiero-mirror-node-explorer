@@ -20,8 +20,8 @@
           {{ accountId !== null ? accountId : "No account" }}
         </div>
         <div class="right">
-          <i v-if="!showWalletOptions" class="fas fa-solid fa-angle-down"/>
-          <i v-else class="fas fa-solid fa-angle-up"/>
+          <ChevronDown v-if="!showWalletOptions" :size="18"/>
+          <ChevronUp v-else :size="18" />
         </div>
       </ButtonView>
     </template>
@@ -42,6 +42,7 @@ import {ref} from "vue";
 import DropdownPanel from "@/components/DropdownPanel.vue";
 import ButtonView from "@/elements/ButtonView.vue";
 import {ButtonSize} from "@/dialogs/core/DialogUtils.ts";
+import {ChevronDown, ChevronUp} from "lucide-vue-next"
 import WalletOptions from "@/components/page/header/wallet/WalletOptions.vue";
 import {walletManager} from "@/utils/RouteManager.ts";
 
