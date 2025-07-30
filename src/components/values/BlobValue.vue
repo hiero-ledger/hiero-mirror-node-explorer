@@ -29,7 +29,7 @@
 
       <template v-else>
         <div v-if="decodedValue.length > 1024"
-             class="json-formatting h-code-box is-inline-block h-should-wrap">
+             class="scrollable-content h-code-box is-inline-block h-should-wrap">
           <span id="blob-main">
             {{ (b64EncodingFound && showBase64AsExtra) ? blobValue : decodedValue }}
           </span>
@@ -172,7 +172,11 @@ const decodedValue = computed(() => {
 
 div.json-formatting {
   white-space: pre-wrap;
-  max-height: 200px;
+}
+
+div.scrollable-content {
+  max-height: 50px;
+  overflow: auto;
 }
 
 </style>
