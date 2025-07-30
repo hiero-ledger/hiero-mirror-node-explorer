@@ -43,7 +43,11 @@
     </o-table-column>
 
     <o-table-column v-if="isWalletConnected" v-slot="props" field="action" position="right">
-      <i class="far fa-trash-alt" @click="emit('deleteAllowance', props.row)"/>
+      <Trash2
+          class="icon-in-table"
+          :size="16"
+          @click="emit('deleteAllowance', props.row)"
+      />
     </o-table-column>
 
     <template v-slot:bottom-left>
@@ -80,6 +84,7 @@ import TokenLink from "@/components/values/link/TokenLink.vue";
 import {NftAllowanceTableController} from "@/components/allowances/NftAllowanceTableController";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
 import {walletManager} from "@/utils/RouteManager.ts";
+import {Trash2} from 'lucide-vue-next';
 
 const emit = defineEmits(["deleteAllowance"])
 
