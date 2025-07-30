@@ -14,9 +14,11 @@
       :no-anchor="props.noAnchor"
   >
     <template #placeHolder>
-      <File :size="50"/>
-      <div class="place-holder-text">
-        {{ props.type }}
+      <div class="place-holder-content">
+        <File :size="50"/>
+        <div class="place-holder-text">
+          {{ props.type }}
+        </div>
       </div>
     </template>
   </MediaContent>
@@ -59,6 +61,12 @@ const props = defineProps({
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <style scoped>
+
+div.place-holder-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
 div.place-holder-text {
   font-size: 10px;
