@@ -37,7 +37,12 @@
     </o-table-column>
 
     <o-table-column v-if="isWalletConnected" v-slot="props" field="action" position="right">
-      <i v-if="props.row.isEditable" class="far fa-trash-alt" @click="emit('deleteAllowance', props.row)"/>
+      <Trash2
+          v-if="props.row.isEditable"
+          class="icon-in-table"
+          :size="16"
+          @click="emit('deleteAllowance', props.row)"
+      />
       <InfoTooltip
           v-else
           label="The allowance cannot be modified because the NFT collection is no longer associated with this account."
@@ -81,6 +86,7 @@ import {NftAllSerialsAllowanceTableController} from "@/components/allowances/Nft
 import {isValidAssociation} from "@/schemas/MirrorNodeUtils.ts";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
 import {walletManager} from "@/utils/RouteManager.ts";
+import {Trash2} from 'lucide-vue-next';
 
 interface DisplayedNftAllowance extends NftAllowance {
   isEditable: boolean
