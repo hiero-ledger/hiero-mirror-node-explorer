@@ -430,6 +430,11 @@ a.h-banner-link:hover {
     }
 }
 
+.icon-in-table {
+    display: block;
+    float: right;
+}
+
 /*  ============================================================================
     Maintain code which is still using BULMA classes
 */
