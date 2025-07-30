@@ -14,9 +14,7 @@
       :no-anchor="noAnchor"
   >
     <template #placeHolder>
-      <div class="icon mt-4" style="font-size: 50px">
-        <i class="fas fa-file"></i>
-      </div>
+      <File :size="50"/>
       <div class="place-holder-text">
         {{ type }}
       </div>
@@ -32,11 +30,12 @@
 <script lang="ts">
 
 import {defineComponent, PropType} from "vue";
+import {File} from "lucide-vue-next";
 import MediaContent from "@/components/MediaContent.vue";
 
 export default defineComponent({
   name: "NftFile",
-  components: {MediaContent},
+  components: {MediaContent, File},
 
   props: {
     url: {
