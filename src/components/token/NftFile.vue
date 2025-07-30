@@ -7,16 +7,16 @@
 <template>
 
   <MediaContent
-      :url="url"
-      :type="type"
-      :size="size"
+      :url="props.url"
+      :type="props.type"
+      :size="props.size"
       :auto="false"
-      :no-anchor="noAnchor"
+      :no-anchor="props.noAnchor"
   >
     <template #placeHolder>
       <File :size="50"/>
       <div class="place-holder-text">
-        {{ type }}
+        {{ props.type }}
       </div>
     </template>
   </MediaContent>
@@ -27,33 +27,28 @@
 <!--                                                      SCRIPT                                                     -->
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
-<script lang="ts">
+<script setup lang="ts">
 
-import {defineComponent, PropType} from "vue";
+import {PropType} from "vue";
 import {File} from "lucide-vue-next";
 import MediaContent from "@/components/MediaContent.vue";
 
-export default defineComponent({
-  name: "NftFile",
-  components: {MediaContent, File},
-
-  props: {
-    url: {
-      type: String as PropType<string | null>,
-      default: null
-    },
-    type: {
-      type: String as PropType<string | null>,
-      default: null
-    },
-    size: {
-      type: Number,
-      default: 50
-    },
-    noAnchor: {
-      type: Boolean,
-      default: false
-    },
+const props = defineProps({
+  url: {
+    type: String as PropType<string | null>,
+    default: null
+  },
+  type: {
+    type: String as PropType<string | null>,
+    default: null
+  },
+  size: {
+    type: Number,
+    default: 50
+  },
+  noAnchor: {
+    type: Boolean,
+    default: false
   },
 })
 
