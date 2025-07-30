@@ -29,7 +29,7 @@
       <template v-slot:value>
         <ByteCodeValue :byte-code="output ?? undefined"/>
         <div v-if="outputDecodingStatus" class="h-is-extra-text">
-          <span class="icon fas fa-exclamation-circle h-is-low-contrast is-small mt-1 mr-1"/>
+          <CircleAlert class="h-is-low-contrast mr-1" :size="16" style="vertical-align: text-top"/>
           <span>{{ outputDecodingStatus }}</span>
         </div>
       </template>
