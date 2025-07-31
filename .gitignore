@@ -17,8 +17,8 @@ dist-ssr
 coverage
 *.local
 
-/cypress/videos/
-/cypress/screenshots/
+/_frontend/cypress/videos/
+/_frontend/cypress/screenshots/
 
 # Editor directories and files
 .vscode/*
@@ -33,7 +33,7 @@ coverage
 # FROM EXPLORER
 # =============
 
-/dist
+/_frontend/dist
 
 # local env and configuration files
 .env.local
@@ -44,20 +44,18 @@ networks-config.json
 .vscode
 
 # Coverage data
-/.nyc_output
-/tests/coverage
+/_frontend/.nyc_output
+/_frontend/tests/coverage
 
 # Cypress
-/cypress
-/tests/e2e/videos
-/tests/e2e/screenshots
+/_frontend/cypress
+/_frontend/tests/e2e/videos
+/_frontend/tests/e2e/screenshots
 
 # Branding customization
-/branding
-/src/assets/branding
-/src/assets/styles
-/public
+/_frontend/src/styles
+/_frontend/public
 
 # Sourcify setup
-/sourcify-setup/data
-/sourcify-setup/nginx/certificate
+/_frontend/sourcify-setup/data
+/_frontend/sourcify-setup/nginx/certificate
