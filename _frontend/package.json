@@ -15,7 +15,7 @@
     "test:e2e:dev": "START_SERVER_AND_TEST_INSECURE=1 start-server-and-test 'vite dev --port 5173' https://localhost:5173 'cypress open --e2e'",
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-pattern .gitignore",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-pattern ../.gitignore",
     "docker:build": "npm run build && docker build . --tag ghcr.io/hiero-ledger/hiero-mirror-node-explorer/hiero-explorer:latest",
     "docker:start": "docker-compose up -d",
     "docker:stop": "docker-compose down",

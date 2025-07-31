@@ -1,9 +1,9 @@
-import { fileURLToPath, URL } from 'node:url'
+import {fileURLToPath, URL} from 'node:url'
 
-import { defineConfig } from 'vite'
+import {defineConfig} from 'vite'
 import vue from '@vitejs/plugin-vue'
 import pluginRewriteAll from 'vite-plugin-rewrite-all'
-import { nodePolyfills } from 'vite-plugin-node-polyfills'
+import {nodePolyfills} from 'vite-plugin-node-polyfills'
 import * as child from "child_process"
 
 const commitHash = child.execSync("git rev-parse --short HEAD").toString() //i.e., 706e821
