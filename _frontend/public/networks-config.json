@@ -1,0 +1,69 @@
+[
+  {
+    "name": "mainnet",
+    "displayName": "MAINNET",
+    "url": "https://mainnet-public.mirrornode.hedera.com/",
+    "ledgerID": "00",
+    "baseRealm": 0,
+    "baseShard": 0,
+    "enableWallet": true,
+    "enableStaking": true,
+    "enableExpiry": true,
+    "enableMarket": true,
+    "popularTokenIndexURL": "popular-tokens.json",
+    "erc20IndexURL": "mainnet/erc-20.json",
+    "erc721IndexURL": "mainnet/erc-721.json",
+    "erc1155IndexURL": "mainnet/erc-1155.json",
+    "publicLabelsURL": null,
+    "sourcifySetup": {
+      "activate": true,
+      "repoURL": "https://repository.local/contracts/",
+      "serverURL": "https://localhost/server/",
+      "chainID": 295
+    }
+  },
+  {
+    "name": "testnet",
+    "displayName": "TESTNET",
+    "url": "https://testnet.mirrornode.hedera.com/",
+    "ledgerID": "01",
+    "baseRealm": 0,
+    "baseShard": 0,
+    "enableWallet": true,
+    "enableStaking": true,
+    "enableExpiry": false,
+    "enableMarket": false,
+    "erc20IndexURL": "testnet/erc-20.json",
+    "erc721IndexURL": "testnet/erc-721.json",
+    "erc1155IndexURL": "testnet/erc-1155.json",
+    "publicLabelsURL": null,
+    "sourcifySetup": {
+      "activate": true,
+      "repoURL": "https://repository.local/contracts/",
+      "serverURL": "https://localhost/server/",
+      "chainID": 296
+    }
+  },
+  {
+    "name": "previewnet",
+    "displayName": "PREVIEWNET",
+    "url": "https://previewnet.mirrornode.hedera.com/",
+    "ledgerID": "02",
+    "baseRealm": 0,
+    "baseShard": 0,
+    "enableWallet": false,
+    "enableStaking": false,
+    "enableExpiry": false,
+    "enableMarket": false,
+    "erc20IndexURL": null,
+    "erc721IndexURL": "previewnet/erc-721.json",
+    "erc1155IndexURL": null,
+    "publicLabelsURL": null,
+    "sourcifySetup": {
+      "activate": true,
+      "repoURL": "https://repository.local/contracts/",
+      "serverURL": "https://localhost/server/",
+      "chainID": 297
+    }
+  }
+]
