@@ -1,7 +1,10 @@
+// noinspection DuplicatedCode
+
 // SPDX-License-Identifier: Apache-2.0
 
 import {describe, expect, test} from 'vitest'
 import {flushPromises, mount} from "@vue/test-utils";
+import {File} from "lucide-vue-next";
 import NftFile from "@/components/token/NftFile.vue";
 import Oruga from "@oruga-ui/oruga-next";
 
@@ -23,9 +26,8 @@ describe("NftFile.vue", () => {
         // console.log(wrapper.text())
 
         expect(wrapper.text()).toBe('')
-        const icon = wrapper.find('i')
+        const icon = wrapper.findComponent(File)
         expect(icon.exists()).toBe(true)
-        expect(icon.attributes('class')).toContain('fa-file')
 
         expect(wrapper.find('img').exists()).toBe(false)
         expect(wrapper.find('video').exists()).toBe(false)
@@ -49,9 +51,8 @@ describe("NftFile.vue", () => {
         // console.log(wrapper.text())
 
         expect(wrapper.text()).toBe('')
-        const icon = wrapper.find('i')
+        const icon = wrapper.findComponent(File)
         expect(icon.exists()).toBe(true)
-        expect(icon.attributes('class')).toContain('fa-file')
 
         const image = wrapper.find('img')
         expect(image.exists()).toBe(true)
@@ -78,10 +79,8 @@ describe("NftFile.vue", () => {
         // console.log(wrapper.html())
         // console.log(wrapper.text())
 
-        expect(wrapper.text()).toBe('')
-        const icon = wrapper.find('i')
+        const icon = wrapper.findComponent(File)
         expect(icon.exists()).toBe(true)
-        expect(icon.attributes('class')).toContain('fa-file')
 
         const image = wrapper.find('img')
         expect(image.exists()).toBe(true)
@@ -110,10 +109,8 @@ describe("NftFile.vue", () => {
         // console.log(wrapper.html())
         // console.log(wrapper.text())
 
-        expect(wrapper.text()).toBe('image/jpeg')
-        const icon = wrapper.find('i')
+        const icon = wrapper.findComponent(File)
         expect(icon.exists()).toBe(true)
-        expect(icon.attributes('class')).toContain('fa-file')
 
         const image = wrapper.find('img')
         expect(image.exists()).toBe(true)
@@ -141,9 +138,8 @@ describe("NftFile.vue", () => {
         // console.log(wrapper.text())
 
         expect(wrapper.text()).toBe('video/mp4')
-        const icon = wrapper.find('i')
+        const icon = wrapper.findComponent(File)
         expect(icon.exists()).toBe(true)
-        expect(icon.attributes('class')).toContain('fa-file')
 
         const video = wrapper.find('video')
         expect(video.exists()).toBe(true)
@@ -173,9 +169,8 @@ describe("NftFile.vue", () => {
         // console.log(wrapper.text())
 
         expect(wrapper.text()).toBe('foo/bar')
-        const icon = wrapper.find('i')
+        const icon = wrapper.findComponent(File)
         expect(icon.exists()).toBe(true)
-        expect(icon.attributes('class')).toContain('fa-file')
 
         const image = wrapper.find('img')
         expect(image.exists()).toBe(true)

@@ -24,9 +24,7 @@
     <template v-else>
       <span class="icon-text">
         <span class="h-is-numeric">{{ timestamp }}</span>
-        <span class="icon h-is-low-contrast-light">
-          <i class="fas fa-exclamation-triangle"></i>
-        </span>
+        <TriangleAlert :size="16" style="vertical-align: text-top"/>
       </span>
     </template>
   </span>
@@ -47,9 +45,11 @@ import {computed, defineComponent, inject, PropType, ref} from "vue";
 import {HMSF} from "@/utils/HMSF";
 import {initialLoadingKey} from "@/AppKeys";
 import {infiniteDuration} from "@/schemas/MirrorNodeSchemas";
+import { TriangleAlert } from 'lucide-vue-next';
 
 export default defineComponent({
   name: "TimestampValue",
+  components: {TriangleAlert},
 
   props: {
     timestamp: {

@@ -38,7 +38,7 @@
         <template #value>
           <ByteCodeValue :byte-code="inputArgsOnly ?? undefined"/>
           <div v-if="inputDecodingStatus" class="h-is-extra-text">
-            <span class="icon fas fa-exclamation-circle h-is-low-contrast is-small mt-1 mr-1"/>
+            <CircleAlert class="h-is-low-contrast mr-1" :size="16" style="vertical-align: text-top"/>
             <span>{{ inputDecodingStatus }}</span>
           </div>
         </template>
@@ -54,7 +54,7 @@
       <template #value>
         <ByteCodeValue :byte-code="input ?? undefined"/>
         <div v-if="functionDecodingStatus" class="h-is-extra-text">
-          <span class="icon fas fa-exclamation-circle h-is-low-contrast is-small mt-1 mr-1"/>
+          <CircleAlert class="h-is-low-contrast mr-1" :size="16" style="vertical-align: text-top"/>
           <span>{{ functionDecodingStatus }}</span>
         </div>
       </template>
@@ -69,7 +69,8 @@
 
 <script setup lang="ts">
 
-import {PropType} from 'vue';
+import {computed, PropType} from 'vue';
+import {CircleAlert} from 'lucide-vue-next';
 import {FunctionCallAnalyzer} from "@/utils/analyzer/FunctionCallAnalyzer";
 import Property from "@/components/Property.vue";
 import FunctionValue from "@/components/values/FunctionValue.vue";

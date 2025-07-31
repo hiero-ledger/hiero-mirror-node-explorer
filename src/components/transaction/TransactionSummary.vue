@@ -13,15 +13,15 @@
         :compact="true"
     />
 
-    <div v-else-if="isTokenAssociation" class="h-should-wrap">
+    <div v-else-if="isTokenAssociation" class="h-should-wrap tx-summary">
       <EntityIOL :entity-id="entityId"/>
-      <span v-if="tokens.length">
-        <i class="fas fa-link mr-1 h-is-low-contrast"></i>
+      <template v-if="tokens.length">
+        <Link :size="16" :stroke-width="2.5" class="h-is-low-contrast"/>
         <TokenExtra :token-id="tokens[0]"/>
         <span v-if="additionalTokensNumber" class="h-is-smaller h-is-extra-text h-should-wrap">
-          {{ ' ( + ' + additionalTokensNumber + ' more )' }}
+          {{ ' (+' + additionalTokensNumber + ' more)' }}
         </span>
-      </span>
+      </template>
     </div>
 
     <div v-else-if="displayMemo" class="h-should-wrap">
@@ -50,6 +50,7 @@ import TransferGraphSection from "@/components/transfer_graphs/TransferGraphSect
 import {TransactionAnalyzer} from "@/components/transaction/TransactionAnalyzer";
 import TokenExtra from "@/components/values/link/TokenExtra.vue";
 import EntityIOL from "@/components/values/link/EntityIOL.vue";
+import {Link} from "lucide-vue-next";
 
 const GRAPH_TRANSACTION_TYPES = [
   TransactionType.CRYPTOTRANSFER,

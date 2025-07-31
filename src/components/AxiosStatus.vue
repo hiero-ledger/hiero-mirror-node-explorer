@@ -31,7 +31,7 @@
         @click="showErrorDialog = true"
     />
   </template>
-  <ModalDialog v-model:show-dialog="showErrorDialog" iconClass="fa fa-2x fa-exclamation-triangle has-text-danger">
+  <ModalDialog v-model:show-dialog="showErrorDialog">
     <template #modalDialogContent>
       <TaskPanel :mode="TaskPanelMode.error">
         <template #taskPanelMessage>{{ explanation }}</template>

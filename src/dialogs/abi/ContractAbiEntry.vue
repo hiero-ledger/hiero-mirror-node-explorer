@@ -4,7 +4,7 @@
 <!--                                                     TEMPLATE                                                    -->
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
-<!-- TODO: remove BULMA styling, use Lucide icons, redo chips,...-->
+<!-- TODO: remove BULMA styling, redo chips,...-->
 
 <template>
   <div class="entry-container">
@@ -13,7 +13,8 @@
         data-cy="execFunction"
         class="exec-button"
         v-on:click="handleClick()">
-      <i :class="{ 'fa-play': !isGetter, 'fa-redo': isGetter}" class="fas fa-xs"/>
+      <RotateCw v-if="isGetter" :size="12" :stroke-width="3" style="vertical-align: text-top"/>
+      <Play v-else :size="12" :stroke-width="3" style="vertical-align: text-top"/>
     </button>
     <div class="entry-content">
       <div class="entry-index">
@@ -33,7 +34,7 @@
     <!-- Row 1 -->
     <div/>
     <div v-if="hasResult">
-      <span class="icon h-is-low-contrast"><i class="fas fa-long-arrow-alt-right"/></span>
+      <MoveRight :size="14" :stroke-width="3" style="display: inline; vertical-align: text-top" class="h-is-low-contrast"/>
       <span class="ml-1">
         {{ callOutput }}
       </span>
@@ -61,6 +62,7 @@ import "prismjs/components/prism-solidity.js";
 import SolidityCode from "@/components/SolidityCode.vue";
 import ContractAbiDialog from "@/dialogs/abi/ContractAbiDialog.vue";
 import {ContractCallBuilder} from "@/dialogs/abi/ContractCallBuilder.ts";
+import {MoveRight, Play, RotateCw} from 'lucide-vue-next';
 
 const props = defineProps({
   contractCallBuilder: {
@@ -139,6 +141,7 @@ button.exec-button {
   background-color: transparent;
   border: 0;
   border-radius: 0;
+  cursor: pointer;
 }
 
 div.entry-content {
@@ -152,7 +155,7 @@ div.entry-index {
 
 .source-code {
   background-color: var(--background-secondary);
-  padding: 0px 4px;
+  padding: 0 4px;
 }
 
 </style>

@@ -41,7 +41,7 @@
         <template v-else>
           <HexaDumpValue :byte-string="error" :show-none="true"/>
           <div v-if="errorDecodingStatus" class="h-is-extra-text">
-            <span class="icon fas fa-exclamation-circle h-is-low-contrast is-small mt-1 mr-1"/>
+            <CircleAlert class="h-is-low-contrast mr-1" :size="16" style="vertical-align: text-top"/>
             <span>{{ errorDecodingStatus }}</span>
           </div>
         </template>
@@ -58,6 +58,7 @@
 <script setup lang="ts">
 
 import {computed, PropType} from 'vue';
+import {CircleAlert} from "lucide-vue-next";
 import HexaDumpValue from "@/components/values/HexaDumpValue.vue";
 import {FunctionCallAnalyzer} from "@/utils/analyzer/FunctionCallAnalyzer";
 import Property from "@/components/Property.vue";

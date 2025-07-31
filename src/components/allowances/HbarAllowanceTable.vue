@@ -41,7 +41,11 @@
     </o-table-column>
 
     <o-table-column v-if="isWalletConnected" v-slot="props" position="right">
-      <i class="fa fa-pen" @click="emit('editAllowance', props.row)"/>
+      <Pencil
+          class="icon-in-table"
+          :size="16"
+          @click="emit('editAllowance', props.row)"
+      />
     </o-table-column>
 
     <template v-slot:bottom-left>
@@ -77,6 +81,7 @@ import AccountLink from "@/components/values/link/AccountLink.vue";
 import HbarAmount from "@/components/values/HbarAmount.vue";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
 import {walletManager} from "@/utils/RouteManager.ts";
+import {Pencil} from "lucide-vue-next";
 
 const emit = defineEmits(["editAllowance"])
 
