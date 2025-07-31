@@ -39,7 +39,7 @@
     >
 
       <o-table-column v-slot="props" field="type_and_name">
-        <div class="table-row ">
+        <div class="table-row">
 
           <div v-if="isMetadata(props.row)">
             <FileJson :size="20"/>
@@ -61,12 +61,13 @@
             {{ props.row.path }}
           </div>
 
-          <div v-if="!isMetadata(props.row) && props.row.target"
-               class="icon ml-1 h-is-low-contrast"
-               style="font-size: 14px"
-          >
-            <i class="fa fa-arrow-left"></i>
-          </div>
+          <ArrowLeft
+              v-if="!isMetadata(props.row) && props.row.target"
+              :size="18"
+              :stroke-width="2.5"
+              class="icon-in-table h-is-low-contrast"
+          />
+
         </div>
       </o-table-column>
 
@@ -83,7 +84,7 @@
 import {computed, PropType, ref} from "vue";
 import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
 import {ContractSourceAnalyzerItem} from "@/utils/analyzer/ContractSourceAnalyzer.ts";
-import {FileJson} from 'lucide-vue-next';
+import {ArrowLeft, FileJson} from 'lucide-vue-next';
 
 const props = defineProps({
   auditItems: {
