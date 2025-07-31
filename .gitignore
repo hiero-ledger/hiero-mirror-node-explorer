@@ -38,7 +38,6 @@ coverage
 # local env and configuration files
 .env.local
 .env.*.local
-networks-config.json
 
 # Editor directories and files
 .vscode
