@@ -76,7 +76,7 @@ jobs:
 
       - name: Set fallback version for debug
         id: set_fallback_version
-        if: ${{ inputs.dry-run-enabled != true }}
+        if: ${{ inputs.dry-run-enabled == true }}
         run: |
           VERSION="12.0.0"
           echo "FALLBACK VERSION=$VERSION"
