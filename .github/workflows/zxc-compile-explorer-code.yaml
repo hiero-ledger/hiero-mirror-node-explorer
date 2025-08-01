@@ -55,6 +55,9 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Print working directory
+        run: pwd
+
       - name: Setup NodeJS
         uses: actions/setup-node@cdca7365b2dadb8aad0a33bc7601856ffabcc48e # v4.3.0
         with:
@@ -81,6 +84,9 @@ jobs:
           curl -LO https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
           sudo apt-get install -y ./google-chrome-stable_current_amd64.deb
           rm google-chrome-stable_current_amd64.deb
+
+      - name: Print working directory
+        run: pwd
 
       - name: Install Dependencies
         run: npm ci
