@@ -20,8 +20,8 @@
 
 import {computed} from "vue";
 import {ThemeController} from "@/components/ThemeController.ts";
-import moonURL from "../assets/moon.svg"
-import sunURL from "../assets/sun.svg"
+import moonURL from "@/assets/moon.svg"
+import sunURL from "@/assets/sun.svg"
 
 const darkSelected = ThemeController.inject().darkSelected
 const imageURL = computed(() => darkSelected.value ? moonURL : sunURL)
