@@ -96,12 +96,8 @@ jobs:
       - name: Report Unit Test Coverage
         uses: step-security/vitest-coverage-report-action@7a6fbb006cdcfb6ceb153c4a849ce3c5b6bf1147 # v2.8.3
         if: ${{ inputs.enable-unit-tests && !cancelled() }}
-
-      - name: Print working directory
-        run: pwd
-
-      - name: List contents
-        run: ls -la
+        with:
+          working-directory: ./_frontend
 
       - name: Cypress run
         uses: cypress-io/github-action@b8ba51a856ba5f4c15cf39007636d4ab04f23e3c # v6.10.2
