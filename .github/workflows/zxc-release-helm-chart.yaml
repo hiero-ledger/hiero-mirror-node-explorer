@@ -73,7 +73,7 @@ jobs:
         env:
           relver: ${{ steps.set_new_version.outputs.version }}
         with:
-          cmd: yq '.version = strenv(relver) | .appVersion = strenv(relver)' -i chart/Chart.yaml
+          cmd: yq '.version = strenv(relver) | .appVersion = strenv(relver)' -i _frontend/chart/Chart.yaml
 
       - name: Show Helm Chart Manifest
         run: cat chart/Chart.yaml
