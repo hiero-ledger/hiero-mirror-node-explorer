@@ -5,7 +5,8 @@ on:
       new-version:
         description: "New Release Version (ie. 0.30.0):"
         type: string
-        required: true
+        required: false
+        default: '42.0.0'
       dry-run-enabled:
         description: "Perform Dry Run"
         type: boolean
@@ -31,6 +32,9 @@ jobs:
       run:
         working-directory: ./_frontend
     steps:
+      - name: new-version
+        run: echo "New version is ${{ inputs.new-version }}"
+
       - name: Harden Runner
         uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
         with:
