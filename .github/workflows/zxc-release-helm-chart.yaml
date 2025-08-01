@@ -28,6 +28,9 @@ jobs:
   chart:
     name: Chart
     runs-on: hiero-mirror-node-linux-medium
+    defaults:
+      run:
+        working-directory: ./_frontend
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
@@ -49,12 +52,28 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ github.token }}
 
+      - name: Set fallback version for debug
+        id: set_fallback_version
+        if: ${{ inputs.dry-run-enabled == true }}
+        run: |
+          VERSION="12.0.0"
+          echo "FALLBACK VERSION=$VERSION"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Set new version
+        id: set_new_version
+        run: |
+          VERSION="${{ inputs.new-version }}"
+          VERSION=${VERSION:-${{ steps.set_fallback_version.outputs.version }}}
+          echo "VERSION=$VERSION"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
       - name: Update Helm Chart Version
         uses: mikefarah/yq@1187c954ec44c3a0e62c13ca7dc9dadc1ca80ae7 # v4.46.1
         env:
-          relver: ${{ inputs.new-version }}
+          relver: ${{ steps.set_new_version.outputs.version }}
         with:
-          cmd: yq '.version = strenv(relver) | .appVersion = strenv(relver)' -i chart/Chart.yaml
+          cmd: yq '.version = strenv(relver) | .appVersion = strenv(relver)' -i _frontend/chart/Chart.yaml
 
       - name: Show Helm Chart Manifest
         run: cat chart/Chart.yaml
@@ -67,4 +86,4 @@ jobs:
 
       - name: Push Helm Chart
         if: ${{ inputs.dry-run-enabled != true }}
-        run: helm push hiero-explorer-chart-${{ inputs.new-version }}.tgz oci://ghcr.io/hiero-ledger/hiero-mirror-node-explorer
+        run: helm push hiero-explorer-chart-${{ steps.set_new_version.outputs.version }}.tgz oci://ghcr.io/hiero-ledger/hiero-mirror-node-explorer
