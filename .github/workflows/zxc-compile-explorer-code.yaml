@@ -40,6 +40,9 @@ jobs:
   compile:
     name: ${{ inputs.custom-job-label || 'Compiles' }}
     runs-on: hiero-mirror-node-linux-large
+    defaults:
+      run:
+        working-directory: ./_frontend
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
@@ -56,6 +59,7 @@ jobs:
         with:
           node-version: 20
           cache: npm
+          cache-dependency-path: _frontend/package-lock.json
 
       - name: Setup Xvfb
         if: ${{ inputs.enable-e2e-tests && !cancelled() }}
@@ -91,11 +95,14 @@ jobs:
       - name: Report Unit Test Coverage
         uses: step-security/vitest-coverage-report-action@7a6fbb006cdcfb6ceb153c4a849ce3c5b6bf1147 # v2.8.3
         if: ${{ inputs.enable-unit-tests && !cancelled() }}
+        with:
+          working-directory: ./_frontend
 
       - name: Cypress run
         uses: cypress-io/github-action@b8ba51a856ba5f4c15cf39007636d4ab04f23e3c # v6.10.2
         if: ${{ inputs.enable-e2e-tests && !cancelled() }}
         with:
+          working-directory: ./_frontend
           install-command: npm install
           browser: chrome
           start: npm run dev
