@@ -27,6 +27,9 @@ jobs:
   container:
     name: Container
     runs-on: hiero-mirror-node-linux-medium
+    defaults:
+      run:
+        working-directory: ./_frontend
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
@@ -85,6 +88,7 @@ jobs:
         with:
           node-version: 22
           cache: npm
+          cache-dependency-path: _frontend/package-lock.json
 
       - name: Setup Docker Buildx QEMU
         uses: docker/setup-qemu-action@29109295f81e9208d7d86ff1c6c12d2833863392 # v3.6.0
@@ -117,7 +121,8 @@ jobs:
         env:
           SOURCE_DATE_EPOCH: ${{ steps.commit.outputs.source-date }}
         with:
-          context: ${{ github.workspace }}
+          context: ./_frontend
+          file: ./_frontend/Dockerfile
           push: ${{ inputs.dry-run-enabled != true }}
           no-cache: true
           build-args: |

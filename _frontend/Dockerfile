@@ -49,5 +49,4 @@ LABEL maintainer="NGINX Docker Maintainers <docker-maint@nginx.com>"
 EXPOSE 8080
 
 STOPSIGNAL SIGQUIT
-ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["nginx", "-g", "daemon off;"]

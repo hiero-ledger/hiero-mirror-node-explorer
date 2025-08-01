@@ -1,4 +1,3 @@
-version: "3.7"
 services:
   explorer:
     container_name:  hiero-explorer
