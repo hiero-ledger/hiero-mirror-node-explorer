@@ -1,5 +1,6 @@
 name: "ZXC: Compile Explorer Code"
 on:
+  workflow_dispatch:
   workflow_call:
     inputs:
       enable-unit-tests:
