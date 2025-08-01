@@ -27,6 +27,9 @@ jobs:
   container:
     name: Container
     runs-on: hiero-mirror-node-linux-medium
+    defaults:
+      run:
+        working-directory: ./_frontend
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
@@ -71,10 +74,26 @@ jobs:
           echo "sha-abbrev=$(git rev-parse HEAD | tr -d '[:space:]' | cut -c1-8)" >> "${GITHUB_OUTPUT}"
           echo "source-date=$(git log -1 --pretty=%ct)" >> "${GITHUB_OUTPUT}"
 
+      - name: Set fallback version for debug
+        id: set_fallback_version
+        if: ${{ inputs.dry-run-enabled == true }}
+        run: |
+          VERSION="12.0.0"
+          echo "FALLBACK VERSION=$VERSION"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Set new version
+        id: set_new_version
+        run: |
+          VERSION="${{ inputs.new-version }}"
+          VERSION=${VERSION:-${{ steps.set_fallback_version.outputs.version }}}
+          echo "VERSION=$VERSION"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
       - name: Update Application Version
         run: |
           cat package.json | \
-            jq --arg version "${{ inputs.new-version }}" '.version = $version' | \
+            jq --arg version "${{ steps.set_new_version.outputs.version }}" '.version = $version' | \
             tee package.json
 
       - name: Show Package Configuration
@@ -85,6 +104,7 @@ jobs:
         with:
           node-version: 22
           cache: npm
+          cache-dependency-path: _frontend/package-lock.json
 
       - name: Setup Docker Buildx QEMU
         uses: docker/setup-qemu-action@29109295f81e9208d7d86ff1c6c12d2833863392 # v3.6.0
@@ -117,7 +137,8 @@ jobs:
         env:
           SOURCE_DATE_EPOCH: ${{ steps.commit.outputs.source-date }}
         with:
-          context: ${{ github.workspace }}
+          context: ./_frontend
+          file: ./_frontend/Dockerfile
           push: ${{ inputs.dry-run-enabled != true }}
           no-cache: true
           build-args: |
@@ -126,7 +147,7 @@ jobs:
             linux/arm64
             linux/amd64
           tags: |
-            ghcr.io/hiero-ledger/hiero-mirror-node-explorer/hiero-explorer:${{ inputs.new-version }}
+            ghcr.io/hiero-ledger/hiero-mirror-node-explorer/hiero-explorer:${{ steps.set_new_version.outputs.version }}
             ghcr.io/hiero-ledger/hiero-mirror-node-explorer/hiero-explorer:latest
 
       - name: Render Job Summary
@@ -137,7 +158,7 @@ jobs:
           
           printf "| %s | %s | %s | %s |\n" \
             "ghcr.io/hiero-ledger/hiero-mirror-node-explorer/hiero-explorer" \
-            "${{ inputs.new-version }}" \
+            "${{ steps.set_new_version.outputs.version }}" \
             "[Github Console](https://github.com/hiero-ledger/hiero-mirror-node-explorer/pkgs/container/hiero-mirror-node-explorer%2Fhiero-explorer)" \
             "linux/amd64, linux/arm64" >> "${GITHUB_STEP_SUMMARY}"          
           
