@@ -5,8 +5,7 @@ on:
       new-version:
         description: "New Release Version (ie. 0.30.0):"
         type: string
-        required: false
-        default: '42.0.0'
+        required: true
       dry-run-enabled:
         description: "Perform Dry Run"
         type: boolean
@@ -32,9 +31,6 @@ jobs:
       run:
         working-directory: ./_frontend
     steps:
-      - name: new-version
-        run: echo "New version is ${{ inputs.new-version }}"
-
       - name: Harden Runner
         uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
         with:
@@ -78,10 +74,26 @@ jobs:
           echo "sha-abbrev=$(git rev-parse HEAD | tr -d '[:space:]' | cut -c1-8)" >> "${GITHUB_OUTPUT}"
           echo "source-date=$(git log -1 --pretty=%ct)" >> "${GITHUB_OUTPUT}"
 
+      - name: Set fallback version for debug
+        id: set_fallback_version
+        if: ${{ inputs.dry-run-enabled != true }}
+        run: |
+          VERSION="12.0.0"
+          echo "FALLBACK VERSION=$VERSION"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Set new version
+        id: set_new_version
+        run: |
+          VERSION="${{ inputs.new-version }}"
+          VERSION=${VERSION:-${{ steps.set_fallback_version.outputs.version }}}
+          echo "VERSION=$VERSION"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
       - name: Update Application Version
         run: |
           cat package.json | \
-            jq --arg version "${{ inputs.new-version }}" '.version = $version' | \
+            jq --arg version "${{ steps.set_new_version.outputs.version }}" '.version = $version' | \
             tee package.json
 
       - name: Show Package Configuration
@@ -134,7 +146,7 @@ jobs:
             linux/arm64
             linux/amd64
           tags: |
-            ghcr.io/hiero-ledger/hiero-mirror-node-explorer/hiero-explorer:${{ inputs.new-version }}
+            ghcr.io/hiero-ledger/hiero-mirror-node-explorer/hiero-explorer:${{ steps.set_new_version.outputs.version }}
             ghcr.io/hiero-ledger/hiero-mirror-node-explorer/hiero-explorer:latest
 
       - name: Render Job Summary
@@ -145,7 +157,7 @@ jobs:
           
           printf "| %s | %s | %s | %s |\n" \
             "ghcr.io/hiero-ledger/hiero-mirror-node-explorer/hiero-explorer" \
-            "${{ inputs.new-version }}" \
+            "${{ steps.set_new_version.outputs.version }}" \
             "[Github Console](https://github.com/hiero-ledger/hiero-mirror-node-explorer/pkgs/container/hiero-mirror-node-explorer%2Fhiero-explorer)" \
             "linux/amd64, linux/arm64" >> "${GITHUB_STEP_SUMMARY}"          
           
