@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+
 import { beforeEach, describe, it } from 'node:test';
 import assert from 'node:assert';
 import { Test, TestingModule } from '@nestjs/testing';

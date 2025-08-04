@@ -1,3 +1,5 @@
+-- SPDX-License-Identifier: Apache-2.0
+
 CREATE TABLE "user"
 (
     user_id           uuid PRIMARY KEY                          DEFAULT uuid_generate_v1mc(),
