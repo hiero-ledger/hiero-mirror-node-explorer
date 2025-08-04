@@ -31,6 +31,6 @@ import {PG_OPTIONS, PG_POOL} from "./pg.constants";
             useFactory: (options: pg.PoolConfig) => new pg.Pool(options),
         }
     ],
-    exports: ['PG_POOL'],
+    exports: [PG_POOL],
 })
 export class PgModule {}
