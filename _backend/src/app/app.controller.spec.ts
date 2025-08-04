@@ -3,12 +3,14 @@ import assert from 'node:assert';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import {PgModule} from "../pg/pg.module";
 
 describe('AppController', () => {
   let appController: AppController;
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
+      imports: [PgModule],
       controllers: [AppController],
       providers: [AppService],
     }).compile();
@@ -17,8 +19,8 @@ describe('AppController', () => {
   });
 
   describe('root', () => {
-    it('should return "Hello World!"', () => {
-      assert.equal(appController.getHello(), 'Hello World!');
+    it('should return "Hello World!"', async () => {
+      assert.match(await appController.getHello(), /PostgreSQL/);
     });
   });
 });
