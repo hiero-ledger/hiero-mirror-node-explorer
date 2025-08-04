@@ -1,7 +1,8 @@
-import { Module } from '@nestjs/common';
+import {Module} from '@nestjs/common';
 import {ConfigModule, ConfigService} from '@nestjs/config';
 import pg from "pg";
 import {PG_OPTIONS, PG_POOL} from "./pg.constants";
+import {migrate} from "postgres-migrations";
 
 @Module({
     imports: [ConfigModule],
@@ -28,7 +29,11 @@ import {PG_OPTIONS, PG_POOL} from "./pg.constants";
         {
             provide: PG_POOL,
             inject: [PG_OPTIONS],
-            useFactory: (options: pg.PoolConfig) => new pg.Pool(options),
+            useFactory: async (poolConfig: pg.PoolConfig): Promise<pg.Pool> => {
+                const result = new pg.Pool(poolConfig)
+                await migrate({ client: result }, "./migrations")
+                return Promise.resolve(result)
+            },
         }
     ],
     exports: [PG_POOL],
