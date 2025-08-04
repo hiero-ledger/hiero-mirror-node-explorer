@@ -129,7 +129,8 @@ async function asyncReadEntries(e: FileSystemDirectoryEntry): Promise<FileSystem
 function hasExtension(fileName: string, extension: string): boolean {
     const n = fileName.toLowerCase()
     const x = extension.toLowerCase()
-    return n.lastIndexOf(x) == n.length - x.length
+    const index = n.lastIndexOf(x)
+    return index !== -1 && index === n.length - x.length
 }
 
 function isJsonText(content: string): boolean {
