@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+
 import {Inject, Injectable} from '@nestjs/common';
 import {PG_POOL} from "../pg/pg.constants";
 import pg from "pg";
