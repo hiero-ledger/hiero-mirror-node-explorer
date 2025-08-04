@@ -1,3 +1,5 @@
+-- SPDX-License-Identifier: Apache-2.0
+
 -- provides uuid_generate_v1mc
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
