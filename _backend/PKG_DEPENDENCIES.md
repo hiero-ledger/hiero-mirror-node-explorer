@@ -31,4 +31,5 @@
 |                            |                          |
 | **Postgresql**             |                          |
 | `pg`                       | `@types/pg`              |
+| `postgres-migrations`      |                          |
 
