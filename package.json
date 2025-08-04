@@ -51,7 +51,7 @@
     "ethers": "^6.15.0",
     "file-saver": "^2.0.5",
     "jszip": "^3.10.1",
-    "lucide-vue-next": "^0.535.0",
+    "lucide-vue-next": "^0.536.0",
     "multiformats": "^13.3.7",
     "prismjs": "^1.30.0",
     "topojson-client": "^3.1.0",
