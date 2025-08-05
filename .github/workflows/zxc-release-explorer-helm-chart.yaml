@@ -28,6 +28,9 @@ jobs:
   chart:
     name: Chart
     runs-on: hiero-mirror-node-linux-medium
+    defaults:
+      run:
+        working-directory: ./_frontend
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@ec9f2d5744a09debf3a187a3f4f675c53b671911 # v2.13.0
@@ -54,7 +57,7 @@ jobs:
         env:
           relver: ${{ inputs.new-version }}
         with:
-          cmd: yq '.version = strenv(relver) | .appVersion = strenv(relver)' -i chart/Chart.yaml
+          cmd: yq '.version = strenv(relver) | .appVersion = strenv(relver)' -i _frontend/chart/Chart.yaml
 
       - name: Show Helm Chart Manifest
         run: cat chart/Chart.yaml

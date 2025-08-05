@@ -59,7 +59,7 @@ jobs:
 
   publish-container:
     name: Publish
-    uses: ./.github/workflows/zxc-release-docker-container.yaml
+    uses: ./.github/workflows/zxc-release-explorer-docker-container.yaml
     needs:
       - prepare-release
     with:
@@ -68,7 +68,7 @@ jobs:
 
   publish-chart:
     name: Publish
-    uses: ./.github/workflows/zxc-release-helm-chart.yaml
+    uses: ./.github/workflows/zxc-release-explorer-helm-chart.yaml
     needs:
       - prepare-release
     with:
