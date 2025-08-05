@@ -15,6 +15,10 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": false,
-    "lib": ["ESNext"]
-  }
+    "lib": ["ESNext"],
+  },
+  "include": [
+    "**/*",
+    "../_common/**/*.ts"
+  ]
 }
