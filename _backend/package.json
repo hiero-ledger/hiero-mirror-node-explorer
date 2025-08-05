@@ -13,7 +13,7 @@
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "test": "node -r tsconfig-paths/register -r ts-node/register --test \"tests/**/*.test.ts\" \"src/**/*.spec.ts\" \"src/**/*.spec.ts\"",
+    "test": "node -r tsconfig-paths/register -r ts-node/register --test \"tests/**/*.test.ts\" \"src/**/*.spec.ts\"",
     "test:watch": "node -r tsconfig-paths/register -r ts-node/register --test --watch \"tests/**/*.test.ts\" \"src/**/*.spec.ts\"",
     "test:cov": "node -r tsconfig-paths/register -r ts-node/register --test --experimental-test-coverage \"tests/**/*.test.ts\" \"src/**/*.spec.ts\"",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register --test  \"tests/**/*.test.ts\" \"src/**/*.spec.ts\""
