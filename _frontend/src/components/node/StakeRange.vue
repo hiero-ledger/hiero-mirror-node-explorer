@@ -44,7 +44,7 @@ import {computed, PropType} from "vue";
 import {NetworkNode} from "@/schemas/MirrorNodeSchemas";
 import {NetworkAnalyzer} from "@/utils/analyzer/NetworkAnalyzer";
 
-const progressSize = 250 // size (width) of progress in pixels
+const progressSize = 180 // size (width) of progress in pixels
 
 const props = defineProps({
   node: Object as PropType<NetworkNode | undefined>,
