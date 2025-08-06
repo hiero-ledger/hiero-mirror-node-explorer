@@ -24,7 +24,7 @@
         </div>
       </o-table-column>
 
-      <o-table-column v-if="!enableStaking" v-slot="props" field="node_account_id" label="ACCOUNT">
+      <o-table-column v-slot="props" field="node_account_id" label="ACCOUNT">
         <div class="h-is-numeric regular-node-column">
           {{ props.row.node_account_id }}
         </div>
