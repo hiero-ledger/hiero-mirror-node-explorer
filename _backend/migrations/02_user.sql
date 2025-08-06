@@ -11,9 +11,9 @@ CREATE TABLE "user"
 
     email             text COLLATE case_insensitive NOT NULL    UNIQUE,
 
-    email_verified_at timestamptz,
-
-    password_hash     text
+    password_hash     text                          NOT NULL,
+    verification_code text                          NOT NULL,
+    email_verified_at timestamptz                   -- NULL <=> unverified
 );
 
 SELECT trigger_updated_at('"user"');

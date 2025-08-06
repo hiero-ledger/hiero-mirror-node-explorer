@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 
-export class SignUpBody {
+export interface SignUpBody {
 
-    public constructor(public readonly email: string) {
-    }
+    email: string
+    password: string
 
 }
