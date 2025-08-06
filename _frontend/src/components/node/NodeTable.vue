@@ -172,8 +172,7 @@ const handleClick = (node: NetworkNode, c: unknown, i: number, ci: number, event
 }
 
 #node-table table.o-table > tbody > tr > td {
-  padding-top: 0;
-  padding-bottom: 0;
+  padding: 0 8px;
 }
 
 .regular-node-column {
