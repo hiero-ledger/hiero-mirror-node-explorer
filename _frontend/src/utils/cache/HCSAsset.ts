@@ -10,7 +10,7 @@ import {getDataURLType} from "@/utils/URLUtils.ts";
 export class HCSAsset {
     protected constructor(
         public readonly type: string | null,            // MIME type
-        public readonly content: ArrayBuffer | null,
+        public readonly content: Uint8Array | null,
         public readonly hash: string | null,            // SHA-256 in hexa
     ) {
     }
@@ -19,7 +19,7 @@ export class HCSAsset {
         let result: string | null
         if (this.type !== null && this.content !== null) {
             const dataPrefix = `data:${this.type};base64,`
-            const urlContent = base64Encode(new Uint8Array<ArrayBufferLike>(this.content))
+            const urlContent = base64Encode(this.content)
             result = dataPrefix + urlContent
         } else {
             result = null
@@ -70,7 +70,7 @@ export class HCSAsset {
                             assetContent = decompress(compressedContent)
                     }
 
-                    const assetHash = await window.crypto.subtle.digest("SHA-256", assetContent);
+                    const assetHash = await window.crypto.subtle.digest("SHA-256", assetContent as BufferSource);
                     result = new HCSAsset(assetType, assetContent, byteToHex(new Uint8Array(assetHash)))
                 } else { // asset is incomplete
                     result = new HCSAsset(assetType, null, null)
