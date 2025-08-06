@@ -18,7 +18,7 @@
         @cell-click="handleClick"
     >
 
-      <o-table-column v-slot="props" field="node_id" label="NODE ID">
+      <o-table-column v-slot="props" field="node_id" label="ID">
         <div class="regular-node-column node_id">
           {{ props.row.node_id }}
         </div>
