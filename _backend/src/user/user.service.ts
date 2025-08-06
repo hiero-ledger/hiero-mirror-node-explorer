@@ -3,32 +3,55 @@
 import { Inject, Injectable } from "@nestjs/common"
 import { PG_POOL } from "../pg/pg.constants"
 import pg from "pg"
+import argon2 from "argon2"
+import { generateVerificationCode } from "../utils"
 
 @Injectable()
 export class UserService {
   constructor(@Inject(PG_POOL) private readonly pgPool: pg.Pool) {}
 
-  async createEmptyUser(email: string) {
+  async createUnverifiedUser(
+    email: string,
+    password: string,
+  ): Promise<string | null> {
+    let result: string | null
+    const passwordHash = await argon2.hash(password)
+    const verificationCode = await generateVerificationCode()
     const r = await this.pgPool.query<string[]>({
       name: "user-create-empty",
       text: `
-                WITH inserted as (
-                    INSERT INTO "user" (email)
-                        VALUES ($1)
-                        ON CONFLICT (email) DO NOTHING
-                        RETURNING user_id)
-                SELECT user_id
-                FROM inserted
-                UNION
-                SELECT user_id
-                FROM "user"
-                WHERE email = $1
-                LIMIT 1
-            `,
+        INSERT INTO "user" (email, password_hash, verification_code)
+        VALUES ($1, $2, $3)
+        ON CONFLICT (email)
+          DO UPDATE
+          SET password_hash     = $2,
+              verification_code = $3
+        WHERE "user".email = $1
+          AND "user".email_verified_at IS NULL
+        RETURNING verification_code
+      `,
+      values: [email, passwordHash, verificationCode],
+      rowMode: "array",
+    })
+    if (r.rowCount == 1 && r.rows.length == 1 && r.rows[0].length == 1) {
+      result = r.rows[0][0]
+    } else {
+      result = null
+    }
+    return Promise.resolve(result)
+  }
+
+  async deleteUser(email: string): Promise<boolean> {
+    const r = await this.pgPool.query({
+      name: "user-delete",
+      text: `
+        DELETE
+        FROM "user"
+        WHERE email = $1
+      `,
       values: [email],
       rowMode: "array",
     })
-
-    return r.rows[0][0]
+    return Promise.resolve(r.rowCount == 1)
   }
 }
