@@ -436,6 +436,20 @@ a.h-banner-link:hover {
     float: right;
 }
 
+.compound-value {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 4px;
+    justify-content: flex-end;
+}
+
+@media (min-width: 768px) {
+    .compound-value {
+        justify-content: flex-start;
+    }
+}
+
 /*  ============================================================================
     Maintain code which is still using BULMA classes
 */
