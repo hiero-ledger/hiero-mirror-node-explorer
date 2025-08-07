@@ -31,17 +31,16 @@
         <Property v-if="rawMetadata" id="metadata-location" full-width>
           <template #name>Decoded Metadata</template>
           <template #value>
-            <BlobValue
-                class="is-inline-block"
-                :blob-value="metadata"
-                :show-none="true"
-            />
-            <InfoTooltip
-                v-if="metadataWarning || metadataInfo"
-                :warning-label="metadataWarning"
-                :label="metadataInfo"
-                class="ml-2"
-            />
+            <div class="compound-value">
+              <BlobValue
+                  :blob-value="metadata"
+                  :show-none="true"
+              />
+              <InfoTooltip
+                  :warning-label="metadataWarning"
+                  :label="metadataInfo"
+              />
+            </div>
           </template>
         </Property>
 
