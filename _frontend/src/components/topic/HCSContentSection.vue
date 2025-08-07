@@ -71,6 +71,7 @@
               :show-none="true"
               :base64="true"
               :pretty="true"
+              :expand="true"
           />
         </template>
       </Property>
