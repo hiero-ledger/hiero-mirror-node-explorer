@@ -11,13 +11,13 @@
       <slot name="name"/>
     </template>
     <template #value>
-      <div class="property-value">
+      <div class="compound-value">
         <slot name="value"/>
         <Pencil
             v-if="editable"
             :size="16"
             @click="onEdit"
-            style="margin-left: 8px; color: var(--network-text-accent-color);"
+            style="color: var(--network-text-accent-color);"
         />
       </div>
     </template>
@@ -58,18 +58,4 @@ const onEdit = () => emit('edit')
 <!--                                                      STYLE                                                      -->
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
-<style scoped>
-
-div.property-value {
-  align-items: center;
-  display: flex;
-  justify-content: flex-end;
-}
-
-@media (min-width: 768px) {
-  div.property-value {
-    justify-content: flex-start;
-  }
-}
-
-</style>
+<style/>
