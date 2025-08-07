@@ -18,13 +18,13 @@
         @cell-click="handleClick"
     >
 
-      <o-table-column v-slot="props" field="node_id" label="NODE ID">
+      <o-table-column v-slot="props" field="node_id" label="ID">
         <div class="regular-node-column node_id">
           {{ props.row.node_id }}
         </div>
       </o-table-column>
 
-      <o-table-column v-if="!enableStaking" v-slot="props" field="node_account_id" label="ACCOUNT">
+      <o-table-column v-slot="props" field="node_account_id" label="ACCOUNT">
         <div class="h-is-numeric regular-node-column">
           {{ props.row.node_account_id }}
         </div>
@@ -39,14 +39,18 @@
       </o-table-column>
 
       <o-table-column v-if="enableStaking" v-slot="props" field="stake" label="STAKE FOR CONSENSUS" position="right">
-        <Tooltip :text="tooltipStake">
+        <Tooltip>
+          <template #content>
+            <div>{{ tooltipStake }}</div>
+            <div>{{ tooltipPercentage(props.row) }}</div>
+          </template>
           <div class="regular-node-column">
             <HbarAmount :amount="props.row.stake" :decimals="0"/>
           </div>
         </Tooltip>
       </o-table-column>
 
-      <o-table-column v-if="enableStaking" v-slot="props" field="percentage" label="%" position="right">
+      <o-table-column v-if="false" v-slot="props" field="percentage" label="%" position="right">
         <Tooltip :text="tooltipPercentage">
           <div class="regular-node-column">
             <StringValue :string-value="makeWeightPercentage(props.row)"/>
@@ -140,7 +144,11 @@ const props = defineProps({
 })
 
 const tooltipStake = "Total amount of HBAR staked to this specific validator for consensus."
-const tooltipPercentage = "Total amount of HBAR staked to this validator for consensus / total amount of HBAR staked to all validators for consensus."
+
+const tooltipPercentage = (node: NetworkNode) => {
+  return `(${makeWeightPercentage(node)} of the total of all validators)`
+}
+
 const tooltipRewardRate = "Approximate annual reward rate based on the reward earned during the last 24h period."
 
 const enableStaking = routeManager.enableStaking
@@ -150,7 +158,7 @@ onMounted(() => networkAnalyzer.mount())
 onBeforeUnmount(() => networkAnalyzer.unmount())
 
 const makeWeightPercentage = (node: NetworkNode) => {
-  return node.stake && props.stakeTotal ? makeStakePercentage(node, props.stakeTotal) : "0"
+  return node.stake && props.stakeTotal ? makeStakePercentage(node, props.stakeTotal) : "0%"
 }
 
 const handleClick = (node: NetworkNode, c: unknown, i: number, ci: number, event: Event) => {
@@ -172,8 +180,7 @@ const handleClick = (node: NetworkNode, c: unknown, i: number, ci: number, event
 }
 
 #node-table table.o-table > tbody > tr > td {
-  padding-top: 0;
-  padding-bottom: 0;
+  padding: 0 8px;
 }
 
 .regular-node-column {

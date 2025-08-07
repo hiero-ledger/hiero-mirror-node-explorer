@@ -27,7 +27,6 @@ HMSF.forceUTC = true
 describe("Nodes.vue", () => {
 
     const tooltipStake = "Total amount of HBAR staked to this specific validator for consensus."
-    const tooltipPercentage = "Total amount of HBAR staked to this validator for consensus / total amount of HBAR staked to all validators for consensus."
     const tooltipRewardRate = "Approximate annual reward rate based on the reward earned during the " +
         "last 24h period."
 
@@ -101,28 +100,26 @@ describe("Nodes.vue", () => {
         expect(wrapper2.text()).toMatch("3  Nodes")
         const table = wrapper2.findComponent(NodeTable)
         expect(table.exists()).toBe(true)
-        expect(table.get('thead').text()).toBe("NODE IDDESCRIPTIONSTAKE FOR CONSENSUS%STAKE RANGEREWARD RATE")
+        expect(table.get('thead').text()).toBe("IDACCOUNTDESCRIPTIONSTAKE FOR CONSENSUSSTAKE RANGEREWARD RATE")
         expect(wrapper2.get('tbody').text()).toBe(
             "0" +
+            "0.0.3" +
             "Hosted by Hedera | East Coast, USA" +
-            "6,000,000ℏ" + tooltipStake +
-            "25.00%" + tooltipPercentage +
+            "6,000,000ℏ" + tooltipStake + "(25.00% of the total of all validators)" +
             " min  max " +
             "Rewarded:5,000,000ℏNot Rewarded:1,000,000ℏMin:1,000,000ℏMax:30,000,000ℏ" +
             "1%" + tooltipRewardRate +
             "1" +
+            "0.0.4" +
             "Hosted by Hedera | East Coast, USA" +
-            "9,000,000ℏ" + tooltipStake +
-            "37.50%" +
-            tooltipPercentage +
+            "9,000,000ℏ" + tooltipStake + "(37.50% of the total of all validators)" +
             " min  max " +
             "Rewarded:7,000,000ℏNot Rewarded:2,000,000ℏMin:1,000,000ℏMax:30,000,000ℏ" +
             "2%" + tooltipRewardRate +
             "2" +
+            "0.0.5" +
             "Hosted by Hedera | Central, USA" +
-            "9,000,000ℏ" + tooltipStake +
-            "37.50%" +
-            tooltipPercentage +
+            "9,000,000ℏ" + tooltipStake + "(37.50% of the total of all validators)" +
             " min  max " +
             "Rewarded:7,000,000ℏ" +
             "Not Rewarded:2,000,000ℏMin:1,000,000ℏMax:30,000,000ℏ" +
