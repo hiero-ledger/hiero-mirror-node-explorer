@@ -5,7 +5,10 @@
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <template>
-  <div class="h-should-wrap">
+  <div
+      class="h-should-wrap"
+      :class="{'formatted-text': props.pretty}"
+  >
 
     <template v-if="decodedValue">
 
@@ -15,8 +18,7 @@
       </template>
 
       <template v-else-if="jsonValue && isNaN(jsonValue)">
-        <div class="json-formatting h-code-box is-inline-block h-should-wrap"
-        >
+        <div class="h-code-box">
           {{ jsonValue }}
         </div>
       </template>
@@ -28,20 +30,12 @@
       </template>
 
       <template v-else>
-        <div v-if="decodedValue.length > 1024"
-             class="scrollable-content h-code-box is-inline-block h-should-wrap">
-          <span id="blob-main">
-            {{ (b64EncodingFound && showBase64AsExtra) ? blobValue : decodedValue }}
-          </span>
+        <div id="blob-main" :class="{'scrollable': decodedValue.length > 1024 && !expand}">
+          {{ (b64EncodingFound && showBase64AsExtra) ? blobValue : decodedValue }}
         </div>
-        <div v-else style="word-break: break-word">
-          <span id="blob-main">
-            {{ (b64EncodingFound && showBase64AsExtra) ? blobValue : decodedValue }}
-          </span>
-          <div v-if="b64EncodingFound && showBase64AsExtra" class="h-is-extra-text">
-            <span class="h-is-low-contrast">Base64:</span>
-            <span id="blob-extra">{{ decodedValue }}</span>
-          </div>
+        <div v-if="b64EncodingFound && showBase64AsExtra" class="h-is-extra-text">
+          <span class="h-is-low-contrast">Base64:</span>
+          <span id="blob-extra">{{ decodedValue }}</span>
         </div>
       </template>
 
@@ -91,6 +85,10 @@ const props = defineProps({
     default: false
   },
   noAnchor: {
+    type: Boolean,
+    default: false
+  },
+  expand: {
     type: Boolean,
     default: false
   }
@@ -170,12 +168,13 @@ const decodedValue = computed(() => {
 
 <style scoped>
 
-div.json-formatting {
+div.formatted-text {
   white-space: pre-wrap;
+  text-align: left;
 }
 
-div.scrollable-content {
-  max-height: 50px;
+div.scrollable {
+  max-height: 200px;
   overflow: auto;
 }
 
