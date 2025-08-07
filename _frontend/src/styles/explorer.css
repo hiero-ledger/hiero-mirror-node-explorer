@@ -310,7 +310,8 @@ ul {
 
 
 .h-should-wrap {
-    word-break: break-word;
+    overflow-wrap: anywhere;
+    word-break: normal;
 }
 
 hr.horizontal-line {
