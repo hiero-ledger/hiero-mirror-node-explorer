@@ -245,8 +245,4 @@ div.split-separator {
   padding-left: 24px;
 }
 
-hr.horizontal-line {
-  margin: 24px 0;
-}
-
 </style>
