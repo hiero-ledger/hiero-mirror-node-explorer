@@ -21,6 +21,7 @@
       <span class="mr-1"/>
       <DomainLabel v-if="domainName" :domain-name="domainName" :provider-name="domainProviderName"/>
       <PublicLabel v-if="label" :label-definition="label"/>
+      <MerckleScienceLabel v-if="merckleTag" :id="normalizedAccountId" :tag-definition="merckleTag"/>
     </template>
 
     <template #right-control>
@@ -251,6 +252,8 @@ import PublicLabel from "@/components/values/PublicLabel.vue";
 import {PublicLabelsCache} from "@/utils/cache/PublicLabelsCache.ts";
 import {routeManager, walletManager} from "@/utils/RouteManager.ts";
 import MirrorLink from "@/components/MirrorLink.vue";
+import {MerckleScienceInfoCache, MerckleScienceTag} from "@/utils/cache/MerckleScienceInfoCache.ts";
+import MerckleScienceLabel from "@/components/values/MerckleScienceLabel.vue";
 
 const props = defineProps({
   accountId: String,
@@ -325,6 +328,20 @@ const index = indexLookup.entity
 const label = computed(() =>
     accountLocParser.accountId.value ? index.value?.lookup(accountLocParser.accountId.value) ?? null : null
 )
+
+//
+// MerckleScience info
+//
+
+const merckleLookup = MerckleScienceInfoCache.instance.makeLookup(accountLocParser.accountId)
+onMounted(() => merckleLookup.mount())
+onBeforeUnmount(() => merckleLookup.unmount())
+const merckleTag = computed(() => {
+  let result: MerckleScienceTag | null
+  const merckleInfo = merckleLookup.entity.value
+  result = merckleInfo?.tags.owner ?? null
+  return result
+})
 
 //
 // Account Update
