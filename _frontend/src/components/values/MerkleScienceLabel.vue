@@ -7,13 +7,31 @@
 <template>
   <EntityLabel :label="name" :compact="props.compact">
     <template #icon>
-      <Tag :size="14" :class="{'low-contrast':props.compact}"/>
+      <Circle :size="14" :class="{'low-contrast':props.compact}"/>
     </template>
 
     <template #tooltip>
-      <p>{{ `Merckel Science Tag for ID ${entityId}` }}</p>
-      <p>{{ `Type: ${type}` }}</p>
-      <p>{{ `Sub-type: ${subType}` }}</p>
+      <div style="display: flex; flex-direction: column; align-items: flex-start; row-gap: 8px; text-align: left;">
+        <p style="font-weight: 700">{{ `Data from Merkel Science` }}</p>
+        <div>
+          <p>
+            <span style="font-weight: 300">Name: </span>
+            <span style="font-weight: 500">{{ `${name}` }}</span>
+          </p>
+          <p>
+            <span style="font-weight: 300">ID: </span>
+            <span style="font-weight: 500">{{ `${entityId}` }}</span>
+          </p>
+          <p>
+            <span style="font-weight: 300">Type: </span>
+            <span style="font-weight: 500">{{ `${type}` }}</span>
+          </p>
+          <p>
+            <span style="font-weight: 300">Sub-type: </span>
+            <span style="font-weight: 500">{{ `${subType}` }}</span>
+          </p>
+        </div>
+      </div>
     </template>
   </EntityLabel>
 </template>
@@ -26,8 +44,8 @@
 
 import {computed, PropType} from "vue";
 import EntityLabel from "@/components/values/EntityLabel.vue";
-import {Tag} from 'lucide-vue-next';
-import {MerckleScienceTag} from "@/utils/cache/MerckleScienceInfoCache.ts";
+import {Circle} from 'lucide-vue-next';
+import {MerkleScienceTag} from "@/utils/cache/MerkleScienceAddressCache.ts";
 
 const props = defineProps({
   id: {
@@ -35,7 +53,7 @@ const props = defineProps({
     default: null
   },
   tagDefinition: {
-    type: Object as PropType<MerckleScienceTag | null>,
+    type: Object as PropType<MerkleScienceTag | null>,
     default: null
   },
   compact: {

@@ -21,7 +21,6 @@
       <span class="mr-1"/>
       <DomainLabel v-if="domainName" :domain-name="domainName" :provider-name="domainProviderName"/>
       <PublicLabel v-if="label" :label-definition="label"/>
-      <MerckleScienceLabel v-if="merckleTag" :id="normalizedAccountId" :tag-definition="merckleTag"/>
     </template>
 
     <template #right-control>
@@ -67,6 +66,14 @@
           <EVMAddress
               :show-id="false"
               :address="isInactiveEvmAddress ? accountIdRef : ethereumAddress"/>
+        </template>
+      </Property>
+      <Property id="entityId" full-width>
+        <template #name>
+          Tags
+        </template>
+        <template #value>
+          <MerkleScienceLabel v-if="merkleTag" :id="normalizedAccountId" :tag-definition="merkleTag"/>
         </template>
       </Property>
     </template>
@@ -252,8 +259,8 @@ import PublicLabel from "@/components/values/PublicLabel.vue";
 import {PublicLabelsCache} from "@/utils/cache/PublicLabelsCache.ts";
 import {routeManager, walletManager} from "@/utils/RouteManager.ts";
 import MirrorLink from "@/components/MirrorLink.vue";
-import {MerckleScienceInfoCache, MerckleScienceTag} from "@/utils/cache/MerckleScienceInfoCache.ts";
-import MerckleScienceLabel from "@/components/values/MerckleScienceLabel.vue";
+import {MerkleScienceAddressCache, MerkleScienceTag} from "@/utils/cache/MerkleScienceAddressCache.ts";
+import MerkleScienceLabel from "@/components/values/MerkleScienceLabel.vue";
 
 const props = defineProps({
   accountId: String,
@@ -330,16 +337,16 @@ const label = computed(() =>
 )
 
 //
-// MerckleScience info
+// MerkleScience info
 //
 
-const merckleLookup = MerckleScienceInfoCache.instance.makeLookup(accountLocParser.accountId)
-onMounted(() => merckleLookup.mount())
-onBeforeUnmount(() => merckleLookup.unmount())
-const merckleTag = computed(() => {
-  let result: MerckleScienceTag | null
-  const merckleInfo = merckleLookup.entity.value
-  result = merckleInfo?.tags.owner ?? null
+const merkleLookup = MerkleScienceAddressCache.instance.makeLookup(accountLocParser.accountId)
+onMounted(() => merkleLookup.mount())
+onBeforeUnmount(() => merkleLookup.unmount())
+const merkleTag = computed(() => {
+  let result: MerkleScienceTag | null
+  const merkleAddress = merkleLookup.entity.value
+  result = merkleAddress?.tags.owner ?? null
   return result
 })
 
