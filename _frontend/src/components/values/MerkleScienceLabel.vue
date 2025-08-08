@@ -13,7 +13,7 @@
     <template #tooltip>
       <p style="font-weight: 700">{{ `Data from Merkel Science` }}</p>
       <hr class="horizontal-line" style="margin: 8px 0; height: 0.5px"/>
-      <div style="display: flex; flex-direction: column; align-items: flex-start; row-gap: 8px; text-align: left;">
+      <div style="display: flex; flex-direction: column; align-items: center; row-gap: 8px; text-align: left;">
         <div>
           <p>
             <span style="font-weight: 300">Name: </span>
