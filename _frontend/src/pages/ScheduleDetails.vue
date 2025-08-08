@@ -16,9 +16,9 @@
       <template #title>
         Schedule {{ scheduleId }}
         <div v-if="schedule"
-            class="h-has-pill h-chip-default"
-            :class="{'h-chip-success':schedule?.executed_timestamp, 'h-chip-default':!schedule?.executed_timestamp}"
-            style="margin-top: 2px">
+             class="h-has-pill h-chip-default"
+             :class="{'h-chip-success':schedule?.executed_timestamp, 'h-chip-default':!schedule?.executed_timestamp}"
+             style="margin-top: 2px">
           {{ schedule?.executed_timestamp ? 'EXECUTED' : 'NOT EXECUTED' }}
         </div>
       </template>
@@ -47,9 +47,7 @@
         <Property v-if="schedule?.consensus_timestamp" id="create-transaction" :full-width="true">
           <template #name>Schedule Create Transaction</template>
           <template #value>
-            <router-link :to="routeManager.makeRouteToTransaction(schedule.consensus_timestamp)">
-              <TransactionLink :transactionLoc="schedule.consensus_timestamp"/>
-            </router-link>
+            <TransactionLink :transactionLoc="schedule.consensus_timestamp"/>
           </template>
         </Property>
         <Property id="creator-id" :full-width="true">

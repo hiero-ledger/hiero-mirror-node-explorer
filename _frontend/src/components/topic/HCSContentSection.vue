@@ -16,7 +16,7 @@
       <Property id="hash" full-width>
         <template #name>Hash</template>
         <template #value>
-          <div style="display: flex; gap:8px">
+          <div class="compound-value">
             <HexaValue :byte-string="props.topicMemo?.hash"/>
             <Check
                 v-if="hashMatch"
@@ -34,7 +34,7 @@
       <Property id="compression" full-width>
         <template #name>Compression</template>
         <template #value>
-          <div style="display: flex; gap:8px">
+          <div class="compound-value">
             <StringValue :string-value="props.topicMemo?.algo"/>
             <InfoTooltip
                 v-if="!isCompressionAlgoSupported"
@@ -71,6 +71,7 @@
               :show-none="true"
               :base64="true"
               :pretty="true"
+              :expand="true"
           />
         </template>
       </Property>

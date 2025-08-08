@@ -310,7 +310,8 @@ ul {
 
 
 .h-should-wrap {
-    word-break: break-word;
+    overflow-wrap: anywhere;
+    word-break: normal;
 }
 
 hr.horizontal-line {
@@ -433,6 +434,20 @@ a.h-banner-link:hover {
 .icon-in-table {
     display: block;
     float: right;
+}
+
+.compound-value {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 4px;
+    justify-content: flex-end;
+}
+
+@media (min-width: 768px) {
+    .compound-value {
+        justify-content: flex-start;
+    }
 }
 
 /*  ============================================================================

@@ -23,7 +23,6 @@
     </div>
     <div
         class="property-value"
-        :style="{'text-align': isSmallScreen ? 'left' : 'right'}"
         :id="valueId"
     >
       <slot name="value"/>
@@ -124,7 +123,15 @@ div.property-value {
   font-size: 14px;
   font-weight: 400;
   line-height: 18px;
-  width: 100%;
+  text-align: right;
+  flex: 1;
+  min-width: 0;  /* Mandatory for flex:1 to work as expected */
+}
+
+@media (min-width: 768px) {
+  div.property-value {
+    text-align: left;
+  }
 }
 
 </style>

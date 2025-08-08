@@ -69,7 +69,7 @@
       <Property v-if="scheduledTransaction" id="scheduledTransaction">
         <template #name>Scheduled Transaction</template>
         <template #value>
-          <div class="multi-item-property-value">
+          <div class="compound-value">
             <TransactionLink :transactionLoc="scheduledTransaction?.consensus_timestamp ?? undefined"/>
             <div class="h-has-pill h-chip-default" style="line-height: 15px">
               {{ schedule?.executed_timestamp ? 'EXECUTED' : 'NOT EXECUTED' }}
@@ -514,20 +514,4 @@ const innerTransactions = transactionGroupAnalyzer.innerTransactions
 <!--                                                       STYLE                                                     -->
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
-<style scoped>
-
-div.multi-item-property-value {
-  align-items: center;
-  display: flex;
-  flex-wrap: wrap;
-  column-gap: 8px;
-  justify-content: flex-end;
-}
-
-@media (min-width: 768px) {
-  div.multi-item-property-value {
-    justify-content: flex-start;
-  }
-}
-
-</style>
+<style/>
