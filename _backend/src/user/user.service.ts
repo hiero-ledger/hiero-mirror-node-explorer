@@ -41,7 +41,10 @@ export class UserService {
     return Promise.resolve(result)
   }
 
-  async verifyUser(email: string, verificationCode: string): Promise<boolean> {
+  async verifyUser(
+    email: string,
+    verificationCode: string,
+  ): Promise<string | null> {
     const r = await this.pgPool.query<string[]>({
       name: "user-verify",
       text: `
@@ -50,11 +53,18 @@ export class UserService {
         WHERE email = $1
           AND email_verified_at IS NULL
           AND verification_code = $2
+        RETURNING user_id
       `,
       values: [email, verificationCode],
       rowMode: "array",
     })
-    return Promise.resolve(r.rowCount === 1)
+    let result: string | null
+    if (r.rowCount == 1 && r.rows.length == 1 && r.rows[0].length == 1) {
+      result = r.rows[0][0]
+    } else {
+      result = null
+    }
+    return Promise.resolve(result)
   }
 
   async deleteUser(email: string): Promise<boolean> {
