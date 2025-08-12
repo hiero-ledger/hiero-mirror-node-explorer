@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
-import { beforeEach, describe, it } from "node:test"
+import { afterEach, beforeEach, describe, it } from "node:test"
 import assert from "node:assert"
 import { Test, TestingModule } from "@nestjs/testing"
 import { AppController } from "./app.controller"
@@ -18,6 +18,10 @@ describe("AppController", () => {
     }).compile()
 
     appController = app.get<AppController>(AppController)
+  })
+
+  afterEach(async () => {
+    await appController.end()
   })
 
   describe("root", () => {

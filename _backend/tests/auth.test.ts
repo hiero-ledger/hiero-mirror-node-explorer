@@ -1,12 +1,15 @@
+// noinspection DuplicatedCode
+
 // SPDX-License-Identifier: Apache-2.0
 
-import { beforeEach, describe, it } from "node:test"
+import {afterEach, beforeEach, describe, it} from "node:test"
 import { HttpStatus, INestApplication } from "@nestjs/common"
 import { App } from "supertest/types"
 import { Test, TestingModule } from "@nestjs/testing"
 import request from "supertest"
 import { AppModule } from "../src/app/app.module"
 import { SignUpBody } from "../../_common/auth/SignUpBody"
+import {AppController} from "../src/app/app.controller";
 
 describe("AuthController (e2e)", () => {
   let app: INestApplication<App>
@@ -18,6 +21,11 @@ describe("AuthController (e2e)", () => {
 
     app = moduleFixture.createNestApplication()
     await app.init()
+  })
+
+  afterEach(async () => {
+    const controller = app.get<AppController>(AppController)
+    await controller.end()
   })
 
   it("/signUp (POST) - bad request", async () => {

@@ -109,4 +109,9 @@ export class UserService {
 
     return Promise.resolve(result)
   }
+
+  // For testing purpose
+  async end() {
+    await this.pgPool.end()
+  }
 }

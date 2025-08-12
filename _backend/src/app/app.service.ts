@@ -12,6 +12,11 @@ export class AppService {
     return await this.selectVersion()
   }
 
+  // For testing purpose
+  async end() {
+    await this.pgPool.end()
+  }
+
   private async selectVersion(): Promise<string> {
     const text = "select version()"
     const r = await this.pgPool.query<{ version: string }>(text)

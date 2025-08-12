@@ -11,4 +11,9 @@ export class AppController {
   async getHello(): Promise<string> {
     return this.appService.getHello()
   }
+
+  // For testing purpose
+  async end() {
+    await this.appService.end()
+  }
 }

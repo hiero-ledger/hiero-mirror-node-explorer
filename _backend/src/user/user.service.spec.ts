@@ -18,7 +18,9 @@ describe("UserService", () => {
     service = module.get<UserService>(UserService)
   })
 
-  afterEach(async () => {})
+  afterEach(async () => {
+    await service.end()
+  })
 
   it("should be defined", () => {
     assert.notEqual(service, undefined)

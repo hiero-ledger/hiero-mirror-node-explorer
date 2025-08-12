@@ -1,6 +1,6 @@
 import { Test, TestingModule } from "@nestjs/testing"
 import { AuthService } from "./auth.service"
-import { beforeEach, describe, it } from "node:test"
+import { afterEach, beforeEach, describe, it } from "node:test"
 import assert from "node:assert"
 import { UserModule } from "../user/user.module"
 import { JwtModule } from "@nestjs/jwt"
@@ -15,6 +15,10 @@ describe("AuthService", () => {
     }).compile()
 
     service = module.get<AuthService>(AuthService)
+  })
+
+  afterEach(async () => {
+    await service.end()
   })
 
   it("should be defined", () => {
