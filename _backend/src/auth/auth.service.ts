@@ -74,4 +74,9 @@ export class AuthService {
     }
     return this.jwtService.signAsync(tokenPayload)
   }
+
+  // For testing purpose
+  async end() {
+    await this.userService.end()
+  }
 }

@@ -51,4 +51,9 @@ export class AuthController {
     }
     return Promise.resolve(result)
   }
+
+  // For testing purpose
+  async end() {
+    await this.authService.end()
+  }
 }

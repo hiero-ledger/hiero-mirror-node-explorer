@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
-import { beforeEach, describe, it } from "node:test"
+import { afterEach, beforeEach, describe, it } from "node:test"
 import assert from "node:assert"
 import { Test, TestingModule } from "@nestjs/testing"
 import { AuthController } from "./auth.controller"
@@ -19,6 +19,10 @@ describe("AuthController", () => {
     }).compile()
 
     controller = module.get<AuthController>(AuthController)
+  })
+
+  afterEach(async () => {
+    await controller.end()
   })
 
   it("should be defined", () => {
