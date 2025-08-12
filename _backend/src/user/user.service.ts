@@ -18,7 +18,7 @@ export class UserService {
     const passwordHash = await argon2.hash(password)
     const verificationCode = await generateVerificationCode()
     const r = await this.pgPool.query<string[]>({
-      name: "user-create-empty",
+      name: "user-create-unverified",
       text: `
         INSERT INTO "user" (email, password_hash, verification_code)
         VALUES ($1, $2, $3)
@@ -39,6 +39,22 @@ export class UserService {
       result = null
     }
     return Promise.resolve(result)
+  }
+
+  async verifyUser(email: string, verificationCode: string): Promise<boolean> {
+    const r = await this.pgPool.query<string[]>({
+      name: "user-verify",
+      text: `
+        UPDATE "user"
+        SET email_verified_at = now()
+        WHERE email = $1
+          AND email_verified_at IS NULL
+          AND verification_code = $2
+      `,
+      values: [email, verificationCode],
+      rowMode: "array",
+    })
+    return Promise.resolve(r.rowCount === 1)
   }
 
   async deleteUser(email: string): Promise<boolean> {
