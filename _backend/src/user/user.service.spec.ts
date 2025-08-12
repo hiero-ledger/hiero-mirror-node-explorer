@@ -46,21 +46,21 @@ describe("UserService", () => {
     assert.strictEqual(await service.checkUserPassword(email, password), null)
 
     // 3) verifies user with wrong verification code
-    const verified = await service.verifyUser(email, verificationCode)
-    assert.strictEqual(verified, false)
+    const userId = await service.verifyUser(email, verificationCode)
+    assert.strictEqual(userId, null)
     assert.strictEqual(await service.checkUserPassword(email, password), null)
 
     // 3) verifies user with good verification code
-    const verified2 = await service.verifyUser(email, verificationCode2)
-    assert.strictEqual(verified2, true)
+    const userId2 = await service.verifyUser(email, verificationCode2)
+    assert.notStrictEqual(userId2, null)
     assert.notStrictEqual(
       await service.checkUserPassword(email, password),
       null,
     )
 
     // 4) tries to verify again => rejected
-    const verified3 = await service.verifyUser(email, verificationCode)
-    assert.strictEqual(verified3, false)
+    const userId3 = await service.verifyUser(email, verificationCode)
+    assert.strictEqual(userId3, null)
     assert.notStrictEqual(
       await service.checkUserPassword(email, password),
       null,
