@@ -70,4 +70,33 @@ export class UserService {
     })
     return Promise.resolve(r.rowCount == 1)
   }
+
+  async checkUserPassword(
+    email: string,
+    password: string,
+  ): Promise<string | null> {
+    const r = await this.pgPool.query<string[]>({
+      name: "user-check-password",
+      text: `
+        SELECT user_id, password_hash
+        FROM "user"
+        WHERE email = $1
+          AND email_verified_at IS NOT NULL
+      `,
+      values: [email],
+      rowMode: "array",
+    })
+
+    let result: string | null
+    if (r.rows.length == 1 && r.rows[0].length == 2) {
+      const userId = r.rows[0][0]
+      const passwordHash = r.rows[0][1]
+      const ok = await argon2.verify(passwordHash, password)
+      result = ok ? userId : null
+    } else {
+      result = null
+    }
+
+    return Promise.resolve(result)
+  }
 }
