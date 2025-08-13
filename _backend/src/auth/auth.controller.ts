@@ -82,7 +82,6 @@ export class AuthController {
     }
   }
 
-  @Public()
   @Post("signOut")
   async signOut(@Res({ passthrough: true }) response: Response): Promise<void> {
     // await this.authService.signOut()
