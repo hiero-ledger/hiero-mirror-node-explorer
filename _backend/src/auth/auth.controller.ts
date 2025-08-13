@@ -15,7 +15,7 @@ import {
 import { Response } from "express"
 import { Public } from "./auth.decorators"
 import { AuthService } from "./auth.service"
-import { ConfirmSignUpBody } from "../../../_common/auth/ConfirmSignUpBody"
+import { ConfirmSignUpBodyDTO } from "./dto/ConfirmSignUpBodyDTO"
 import { SignUpBodyDTO } from "./dto/SignUpBodyDTO"
 import { SESSION_COOKIE, SESSION_COOKIE_OPTIONS } from "./auth.constants"
 import { JwtService } from "@nestjs/jwt"
@@ -49,7 +49,7 @@ export class AuthController {
   @Public()
   @Post("confirmSignUp")
   async confirmSignUp(
-    @Body() confirmSignUpBody: ConfirmSignUpBody,
+    @Body(new ValidationPipe()) confirmSignUpBody: ConfirmSignUpBodyDTO,
     @Res({ passthrough: true }) response: Response,
   ): Promise<void> {
     const jwt = await this.authService.confirmSignUp(
