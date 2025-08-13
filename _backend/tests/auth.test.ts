@@ -15,6 +15,7 @@ import { ConfirmSignUpBody } from "../../_common/auth/ConfirmSignUpBody"
 import assert from "node:assert"
 import { SESSION_COOKIE } from "../src/auth/auth.constants"
 import * as cookie from "cookie"
+import { SignInBody } from "../../_common/auth/SignInBody"
 
 describe("AuthController (e2e)", () => {
   let app: INestApplication<App>
@@ -62,7 +63,7 @@ describe("AuthController (e2e)", () => {
       .expect(HttpStatus.BAD_REQUEST)
   })
 
-  it("/signUp (POST)", async () => {
+  it("full signing cycle", async () => {
     const email = "alice@example.com"
     const password = "secret"
 
@@ -111,5 +112,31 @@ describe("AuthController (e2e)", () => {
     const signOutCookieHeader = signOutResponse.headers["set-cookie"][0]
     const signOutCookies = cookie.parse(signOutCookieHeader)
     assert.strictEqual(signOutCookies[SESSION_COOKIE], "")
+
+    // 5) Sign in
+    const signInBody: SignInBody = {
+      email: email,
+      password: password,
+    }
+    const signInResponse = await request(app.getHttpServer())
+      .post("/auth/signIn")
+      .send(signInBody)
+      .expect(HttpStatus.CREATED)
+    const signInCookieHeader = signInResponse.headers["set-cookie"][0]
+    const signInCookies = cookie.parse(signInCookieHeader)
+    assert.ok(SESSION_COOKIE in signInCookies)
+    assert.ok(confirmSignUpCookies["Path"] === "/")
+    assert.ok("Max-Age" in signInCookies)
+    assert.ok("Expires" in signInCookies)
+    assert.ok("SameSite" in signInCookies)
+
+    // 6) Sign out
+    const signOutResponse2 = await request(app.getHttpServer())
+      .post("/auth/signOut")
+      .expect(HttpStatus.CREATED)
+    const signOutCookieHeader2 = signOutResponse2.headers["set-cookie"][0]
+    const signOutCookies2 = cookie.parse(signOutCookieHeader2)
+    assert.strictEqual(signOutCookies2[SESSION_COOKIE], "")
+
   })
 })

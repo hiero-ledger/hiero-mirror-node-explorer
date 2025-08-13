@@ -22,6 +22,7 @@ import { JwtService } from "@nestjs/jwt"
 import { JwtPayload } from "jsonwebtoken"
 import { ConfigService } from "@nestjs/config"
 import { CookieOptions } from "express-serve-static-core"
+import { SignInBody } from "../../../_common/auth/SignInBody"
 
 @Controller("auth")
 export class AuthController {
@@ -59,7 +60,25 @@ export class AuthController {
     if (jwt !== null) {
       this.setupCookie(response, jwt)
     } else {
-      throw new UnauthorizedException("Unauthorized")
+      throw new UnauthorizedException()
+    }
+  }
+
+  @Public()
+  @Post("signIn")
+  async signIn(
+    @Body() signInBody: SignInBody,
+    @Res({ passthrough: true }) response: Response,
+  ): Promise<void> {
+    const jwt = await this.authService.signIn(
+      signInBody.email,
+      signInBody.password,
+    )
+
+    if (jwt !== null) {
+      this.setupCookie(response, jwt)
+    } else {
+      throw new UnauthorizedException()
     }
   }
 
