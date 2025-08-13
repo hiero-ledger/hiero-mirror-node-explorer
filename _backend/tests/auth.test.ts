@@ -16,6 +16,7 @@ import assert from "node:assert"
 import { SESSION_COOKIE } from "../src/auth/auth.constants"
 import * as cookie from "cookie"
 import { SignInBody } from "../../_common/auth/SignInBody"
+import { ConfigModule } from "@nestjs/config"
 
 describe("AuthController (e2e)", () => {
   let app: INestApplication<App>
@@ -23,7 +24,12 @@ describe("AuthController (e2e)", () => {
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [
+        AppModule,
+        ConfigModule.forFeature(async () => ({
+          JWT_SECRET_KEY: "not-very-secret",
+        })),
+      ],
     }).compile()
 
     app = moduleFixture.createNestApplication()
