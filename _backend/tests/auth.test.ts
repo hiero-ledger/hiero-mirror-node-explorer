@@ -151,6 +151,7 @@ describe("AuthController (e2e)", () => {
     // 4) Sign out
     const signOutResponse = await request(app.getHttpServer())
       .post("/auth/signOut")
+      .set("Cookie", [confirmSignUpCookieHeader])
       .expect(HttpStatus.CREATED)
     const signOutCookieHeader = signOutResponse.headers["set-cookie"][0]
     const signOutCookies = cookie.parse(signOutCookieHeader)
@@ -176,6 +177,7 @@ describe("AuthController (e2e)", () => {
     // 6) Sign out
     const signOutResponse2 = await request(app.getHttpServer())
       .post("/auth/signOut")
+      .set("Cookie", [signInCookieHeader])
       .expect(HttpStatus.CREATED)
     const signOutCookieHeader2 = signOutResponse2.headers["set-cookie"][0]
     const signOutCookies2 = cookie.parse(signOutCookieHeader2)
