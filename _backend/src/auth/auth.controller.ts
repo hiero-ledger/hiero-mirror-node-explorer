@@ -63,6 +63,13 @@ export class AuthController {
     }
   }
 
+  @Public()
+  @Post("signOut")
+  async signOut(@Res({ passthrough: true }) response: Response): Promise<void> {
+    // await this.authService.signOut()
+    this.clearCookie(response)
+  }
+
   // For testing purpose
   async end() {
     await this.authService.end()
@@ -82,6 +89,10 @@ export class AuthController {
       ...SESSION_COOKIE_OPTIONS,
     }
     response.cookie(SESSION_COOKIE, jwt, cookieOptions)
+  }
+
+  private clearCookie(response: Response): void {
+    response.clearCookie(SESSION_COOKIE, SESSION_COOKIE_OPTIONS)
   }
 
   private fetchJwtExp(jwtToken: string): number {
