@@ -12,6 +12,7 @@ import { IS_PUBLIC_KEY } from "./auth.decorators"
 import { ConfigService } from "@nestjs/config"
 import { JwtPayload } from "jsonwebtoken"
 import { Request } from "express"
+import { SESSION_COOKIE } from "./auth.constants"
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -32,8 +33,8 @@ export class AuthGuard implements CanActivate {
     }
 
     const request = context.switchToHttp().getRequest<Request>()
-    const token = this.extractTokenFromHeader(request)
-    if (token) {
+    const token = request.cookies[SESSION_COOKIE]
+    if (typeof token === "string") {
       const secret =
         this.configService.get<string>("JWT_SECRET_KEY") ?? "secret"
       if (secret) {
@@ -53,10 +54,5 @@ export class AuthGuard implements CanActivate {
     }
 
     return true
-  }
-
-  private extractTokenFromHeader(request: Request): string | undefined {
-    const [type, token] = request.headers.authorization?.split(" ") ?? []
-    return type === "Bearer" ? token : undefined
   }
 }
