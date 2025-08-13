@@ -3,6 +3,7 @@
 import { Injectable, Logger } from "@nestjs/common"
 import { UserService } from "../user/user.service"
 import { JwtService } from "@nestjs/jwt"
+import { ConfigService } from "@nestjs/config"
 
 // https://datatracker.ietf.org/doc/html/rfc7519#section-4.1
 interface JwtPayload {
@@ -22,8 +23,9 @@ export class AuthService {
   private readonly logger = new Logger(AuthService.name)
 
   constructor(
-    private userService: UserService,
-    private jwtService: JwtService,
+    private readonly configService: ConfigService,
+    private readonly userService: UserService,
+    private readonly jwtService: JwtService,
   ) {}
 
   async signUp(email: string, password: string): Promise<boolean> {
@@ -67,12 +69,19 @@ export class AuthService {
     const ONE_WEEK = 7 * 60 * 60 * 24
     const now = Date.now() / 1000
 
+    const secret = this.configService.get<string>("JWT_SECRET_KEY")
+    if (!secret) {
+      throw Error("JWT_SECRET_KEY is not set")
+    }
+    const sessionDuration =
+      this.configService.get<number>("SESSION_DURATION_SECONDS") ?? ONE_WEEK
+
     // https://datatracker.ietf.org/doc/html/rfc7519#section-4.1
     const tokenPayload: JwtPayload = {
       sub: userId,
-      exp: now + ONE_WEEK,
+      exp: now + sessionDuration,
     }
-    return this.jwtService.signAsync(tokenPayload)
+    return this.jwtService.signAsync(tokenPayload, { secret })
   }
 
   // For testing purpose

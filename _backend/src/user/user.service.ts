@@ -111,6 +111,27 @@ export class UserService {
   }
 
   // For testing purpose
+  async fetchVerificationCode(email: string): Promise<string | null> {
+    const r = await this.pgPool.query<string[]>({
+      name: "user-verification-code-fetch",
+      text: `
+        SELECT verification_code
+        FROM "user"
+        WHERE email = $1
+      `,
+      values: [email],
+      rowMode: "array",
+    })
+    let result: string | null
+    if (r.rows.length == 1 && r.rows[0].length == 1) {
+      result = r.rows[0][0]
+    } else {
+      result = null
+    }
+    return Promise.resolve(result)
+  }
+
+  // For testing purpose
   async end() {
     await this.pgPool.end()
   }
