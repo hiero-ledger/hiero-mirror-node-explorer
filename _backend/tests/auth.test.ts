@@ -17,6 +17,7 @@ import { SESSION_COOKIE } from "../src/auth/auth.constants"
 import * as cookie from "cookie"
 import { SignInBody } from "../../_common/auth/SignInBody"
 import { ConfigModule } from "@nestjs/config"
+import { mainConfig } from "../src/main.config"
 
 describe("AuthController (e2e)", () => {
   let app: INestApplication<App>
@@ -33,6 +34,7 @@ describe("AuthController (e2e)", () => {
     }).compile()
 
     app = moduleFixture.createNestApplication()
+    mainConfig(app)
     await app.init()
 
     userService = moduleFixture.get(UserService)

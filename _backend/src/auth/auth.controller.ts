@@ -10,7 +10,6 @@ import {
   Post,
   Res,
   UnauthorizedException,
-  ValidationPipe,
 } from "@nestjs/common"
 import { Response } from "express"
 import { Public } from "./auth.decorators"
@@ -35,7 +34,7 @@ export class AuthController {
   @Public()
   @HttpCode(HttpStatus.OK)
   @Post("signUp")
-  async signUp(@Body(new ValidationPipe()) signUpBody: SignUpBodyDTO) {
+  async signUp(@Body() signUpBody: SignUpBodyDTO) {
     const accepted = await this.authService.signUp(
       signUpBody.email,
       signUpBody.password,
@@ -49,7 +48,7 @@ export class AuthController {
   @Public()
   @Post("confirmSignUp")
   async confirmSignUp(
-    @Body(new ValidationPipe()) confirmSignUpBody: ConfirmSignUpBodyDTO,
+    @Body() confirmSignUpBody: ConfirmSignUpBodyDTO,
     @Res({ passthrough: true }) response: Response,
   ): Promise<void> {
     const jwt = await this.authService.confirmSignUp(
