@@ -63,6 +63,40 @@ describe("AuthController (e2e)", () => {
       .expect(HttpStatus.BAD_REQUEST)
   })
 
+  it("/confirmSignUp (POST) - bad request", async () => {
+    await request(app.getHttpServer())
+      .post("/auth/confirmSignUp")
+      .expect(HttpStatus.BAD_REQUEST)
+
+    await request(app.getHttpServer())
+      .post("/auth/confirmSignUp")
+      .send({})
+      .expect(HttpStatus.BAD_REQUEST)
+
+    await request(app.getHttpServer())
+      .post("/auth/confirmSignUp")
+      .send("dummy request body")
+      .expect(HttpStatus.BAD_REQUEST)
+
+    await request(app.getHttpServer())
+      .post("/auth/confirmSignUp")
+      .send({ email: "wrong-email", verificationCode: "01234567" })
+      .expect(HttpStatus.BAD_REQUEST)
+
+    const email = "alice@example.com"
+    await userService.deleteUser(email)
+
+    await request(app.getHttpServer())
+      .post("/auth/confirmSignUp")
+      .send({ email: email, verificationCode: "0123456701234567" })
+      .expect(HttpStatus.BAD_REQUEST)
+
+    await request(app.getHttpServer())
+      .post("/auth/confirmSignUp")
+      .send({ email: email, verificationCode: "0123456;" })
+      .expect(HttpStatus.BAD_REQUEST)
+  })
+
   it("full signing cycle", async () => {
     const email = "alice@example.com"
     const password = "secret"
@@ -91,7 +125,8 @@ describe("AuthController (e2e)", () => {
       .post("/auth/confirmSignUp")
       .send(confirmSignBody)
       .expect(HttpStatus.CREATED)
-    const confirmSignUpCookieHeader = confirmSignUpResponse.headers["set-cookie"][0]
+    const confirmSignUpCookieHeader =
+      confirmSignUpResponse.headers["set-cookie"][0]
     const confirmSignUpCookies = cookie.parse(confirmSignUpCookieHeader)
     assert.ok(SESSION_COOKIE in confirmSignUpCookies)
     assert.ok(confirmSignUpCookies["Path"] === "/")
@@ -137,6 +172,5 @@ describe("AuthController (e2e)", () => {
     const signOutCookieHeader2 = signOutResponse2.headers["set-cookie"][0]
     const signOutCookies2 = cookie.parse(signOutCookieHeader2)
     assert.strictEqual(signOutCookies2[SESSION_COOKIE], "")
-
   })
 })
