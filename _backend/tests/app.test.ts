@@ -9,16 +9,24 @@ import request from "supertest"
 import { App } from "supertest/types"
 import { AppModule } from "../src/app/app.module"
 import { AppController } from "../src/app/app.controller"
+import { ConfigModule } from "@nestjs/config"
+import { mainConfig } from "../src/main.config"
 
 describe("AppController (e2e)", () => {
   let app: INestApplication<App>
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [
+        AppModule,
+        ConfigModule.forFeature(async () => ({
+          JWT_SECRET_KEY: "not-very-secret",
+        })),
+      ],
     }).compile()
 
     app = moduleFixture.createNestApplication()
+    mainConfig(app)
     await app.init()
   })
 
