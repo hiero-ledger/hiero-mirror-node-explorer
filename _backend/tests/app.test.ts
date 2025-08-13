@@ -2,13 +2,13 @@
 
 // SPDX-License-Identifier: Apache-2.0
 
-import {afterEach, beforeEach, describe, it} from "node:test"
+import { afterEach, beforeEach, describe, it } from "node:test"
 import { Test, TestingModule } from "@nestjs/testing"
 import { INestApplication } from "@nestjs/common"
 import request from "supertest"
 import { App } from "supertest/types"
 import { AppModule } from "../src/app/app.module"
-import {AppController} from "../src/app/app.controller";
+import { AppController } from "../src/app/app.controller"
 
 describe("AppController (e2e)", () => {
   let app: INestApplication<App>
