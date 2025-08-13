@@ -65,7 +65,13 @@ export class AuthService {
     return Promise.resolve(result)
   }
 
-  async makeToken(userId: string): Promise<string> {
+  async signOut(email: string): Promise<void> {}
+
+  //
+  // Private
+  //
+
+  private async makeToken(userId: string): Promise<string> {
     const ONE_WEEK = 7 * 60 * 60 * 24
     const now = Date.now() / 1000
 

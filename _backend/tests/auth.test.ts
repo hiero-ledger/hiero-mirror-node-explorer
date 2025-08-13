@@ -86,22 +86,30 @@ describe("AuthController (e2e)", () => {
       email: email,
       verificationCode: verificationCode!,
     }
-    const response = await request(app.getHttpServer())
+    const confirmSignUpResponse = await request(app.getHttpServer())
       .post("/auth/confirmSignUp")
       .send(confirmSignBody)
       .expect(HttpStatus.CREATED)
-    const setCookies = response.headers["set-cookie"][0]
-    const cookies = cookie.parse(setCookies)
-    assert.ok(SESSION_COOKIE in cookies)
-    assert.ok(cookies["Path"] === "/")
-    assert.ok("Max-Age" in cookies)
-    assert.ok("Expires" in cookies)
-    assert.ok("SameSite" in cookies)
+    const confirmSignUpCookieHeader = confirmSignUpResponse.headers["set-cookie"][0]
+    const confirmSignUpCookies = cookie.parse(confirmSignUpCookieHeader)
+    assert.ok(SESSION_COOKIE in confirmSignUpCookies)
+    assert.ok(confirmSignUpCookies["Path"] === "/")
+    assert.ok("Max-Age" in confirmSignUpCookies)
+    assert.ok("Expires" in confirmSignUpCookies)
+    assert.ok("SameSite" in confirmSignUpCookies)
 
     // 3) Try to sign-up again
     await request(app.getHttpServer())
       .post("/auth/signUp")
       .send(signUpBody)
       .expect(HttpStatus.CONFLICT)
+
+    // 4) Sign out
+    const signOutResponse = await request(app.getHttpServer())
+      .post("/auth/signOut")
+      .expect(HttpStatus.CREATED)
+    const signOutCookieHeader = signOutResponse.headers["set-cookie"][0]
+    const signOutCookies = cookie.parse(signOutCookieHeader)
+    assert.strictEqual(signOutCookies[SESSION_COOKIE], "")
   })
 })
