@@ -49,11 +49,12 @@ export class AuthService {
   async confirmSignUp(
     email: string,
     verificationCode: string,
-  ): Promise<string | null> {
-    let result: string | null
-    const userId = await this.userService.verifyUser(email, verificationCode)
-    if (userId !== null) {
-      result = await this.makeToken(userId)
+  ): Promise<UserAndToken | null> {
+    let result: UserAndToken | null
+    const user = await this.userService.verifyUser(email, verificationCode)
+    if (user !== null) {
+      const token = await this.makeToken(user.userId)
+      result = { user, token }
     } else {
       result = null
     }

@@ -51,17 +51,19 @@ export class AuthController {
   async confirmSignUp(
     @Body() confirmSignUpBody: ConfirmSignUpBodyDTO,
     @Res({ passthrough: true }) response: Response,
-  ): Promise<void> {
-    const jwt = await this.authService.confirmSignUp(
+  ): Promise<User> {
+    const userAndToken = await this.authService.confirmSignUp(
       confirmSignUpBody.email,
       confirmSignUpBody.verificationCode,
     )
 
-    if (jwt !== null) {
-      this.setupCookie(response, jwt)
+    if (userAndToken !== null) {
+      this.setupCookie(response, userAndToken.token)
     } else {
       throw new UnauthorizedException()
     }
+
+    return Promise.resolve(userAndToken.user)
   }
 
   @Public()

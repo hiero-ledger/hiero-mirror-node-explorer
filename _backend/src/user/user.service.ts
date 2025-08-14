@@ -45,7 +45,7 @@ export class UserService {
   async verifyUser(
     email: string,
     verificationCode: string,
-  ): Promise<string | null> {
+  ): Promise<User | null> {
     const r = await this.pgPool.query<string[]>({
       name: "user-verify",
       text: `
@@ -59,9 +59,10 @@ export class UserService {
       values: [email, verificationCode],
       rowMode: "array",
     })
-    let result: string | null
+    let result: User | null
     if (r.rowCount == 1 && r.rows.length == 1 && r.rows[0].length == 1) {
-      result = r.rows[0][0]
+      const userId = r.rows[0][0]
+      result = { userId, email, profile: null }
     } else {
       result = null
     }

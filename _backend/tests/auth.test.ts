@@ -141,6 +141,8 @@ describe("AuthController (e2e)", () => {
     assert.ok("Max-Age" in confirmSignUpCookies)
     assert.ok("Expires" in confirmSignUpCookies)
     assert.ok("SameSite" in confirmSignUpCookies)
+    assert.strictEqual(typeof confirmSignUpResponse.body.userId, "string")
+    assert.strictEqual(confirmSignUpResponse.body.email, email)
 
     // 3) Try to sign-up again
     await request(app.getHttpServer())
