@@ -45,49 +45,49 @@ describe("AuthController (e2e)", () => {
     await controller.end()
   })
 
-  it("/signUp (POST) - bad request", async () => {
+  it("api/v1/auth/signUp (POST) - bad request", async () => {
     await request(app.getHttpServer())
-      .post("/auth/signUp")
+      .post("/api/v1/auth/signUp")
       .expect(HttpStatus.BAD_REQUEST)
 
     await request(app.getHttpServer())
-      .post("/auth/signUp")
+      .post("/api/v1/auth/signUp")
       .send({})
       .expect(HttpStatus.BAD_REQUEST)
 
     await request(app.getHttpServer())
-      .post("/auth/signUp")
+      .post("/api/v1/auth/signUp")
       .send("dummy request body")
       .expect(HttpStatus.BAD_REQUEST)
 
     await request(app.getHttpServer())
-      .post("/auth/signUp")
+      .post("/api/v1/auth/signUp")
       .send({ email: "wrong-email", password: "secret" })
       .expect(HttpStatus.BAD_REQUEST)
 
     await request(app.getHttpServer())
-      .post("/auth/signUp")
+      .post("/api/v1/auth/signUp")
       .send({ email: "alice@example.com", password: "" })
       .expect(HttpStatus.BAD_REQUEST)
   })
 
-  it("/confirmSignUp (POST) - bad request", async () => {
+  it("api/v1/auth/confirmSignUp (POST) - bad request", async () => {
     await request(app.getHttpServer())
-      .post("/auth/confirmSignUp")
+      .post("/api/v1/auth/confirmSignUp")
       .expect(HttpStatus.BAD_REQUEST)
 
     await request(app.getHttpServer())
-      .post("/auth/confirmSignUp")
+      .post("/api/v1/auth/confirmSignUp")
       .send({})
       .expect(HttpStatus.BAD_REQUEST)
 
     await request(app.getHttpServer())
-      .post("/auth/confirmSignUp")
+      .post("/api/v1/auth/confirmSignUp")
       .send("dummy request body")
       .expect(HttpStatus.BAD_REQUEST)
 
     await request(app.getHttpServer())
-      .post("/auth/confirmSignUp")
+      .post("/api/v1/auth/confirmSignUp")
       .send({ email: "wrong-email", verificationCode: "01234567" })
       .expect(HttpStatus.BAD_REQUEST)
 
@@ -95,12 +95,12 @@ describe("AuthController (e2e)", () => {
     await userService.deleteUser(email)
 
     await request(app.getHttpServer())
-      .post("/auth/confirmSignUp")
+      .post("/api/v1/auth/confirmSignUp")
       .send({ email: email, verificationCode: "0123456701234567" })
       .expect(HttpStatus.BAD_REQUEST)
 
     await request(app.getHttpServer())
-      .post("/auth/confirmSignUp")
+      .post("/api/v1/auth/confirmSignUp")
       .send({ email: email, verificationCode: "0123456;" })
       .expect(HttpStatus.BAD_REQUEST)
   })
@@ -118,7 +118,7 @@ describe("AuthController (e2e)", () => {
       password: password,
     }
     await request(app.getHttpServer())
-      .post("/auth/signUp")
+      .post("/api/v1/auth/signUp")
       .send(signUpBody)
       .expect(HttpStatus.OK, "")
     const verificationCode = await userService.fetchVerificationCode(email)
@@ -130,7 +130,7 @@ describe("AuthController (e2e)", () => {
       verificationCode: verificationCode!,
     }
     const confirmSignUpResponse = await request(app.getHttpServer())
-      .post("/auth/confirmSignUp")
+      .post("/api/v1/auth/confirmSignUp")
       .send(confirmSignBody)
       .expect(HttpStatus.CREATED)
     const confirmSignUpCookieHeader =
@@ -144,13 +144,13 @@ describe("AuthController (e2e)", () => {
 
     // 3) Try to sign-up again
     await request(app.getHttpServer())
-      .post("/auth/signUp")
+      .post("/api/v1/auth/signUp")
       .send(signUpBody)
       .expect(HttpStatus.CONFLICT)
 
     // 4) Sign out
     const signOutResponse = await request(app.getHttpServer())
-      .post("/auth/signOut")
+      .post("/api/v1/auth/signOut")
       .set("Cookie", [confirmSignUpCookieHeader])
       .expect(HttpStatus.CREATED)
     const signOutCookieHeader = signOutResponse.headers["set-cookie"][0]
@@ -163,7 +163,7 @@ describe("AuthController (e2e)", () => {
       password: password,
     }
     const signInResponse = await request(app.getHttpServer())
-      .post("/auth/signIn")
+      .post("/api/v1/auth/signIn")
       .send(signInBody)
       .expect(HttpStatus.CREATED)
     const signInCookieHeader = signInResponse.headers["set-cookie"][0]
@@ -176,7 +176,7 @@ describe("AuthController (e2e)", () => {
 
     // 6) Sign out
     const signOutResponse2 = await request(app.getHttpServer())
-      .post("/auth/signOut")
+      .post("/api/v1/auth/signOut")
       .set("Cookie", [signInCookieHeader])
       .expect(HttpStatus.CREATED)
     const signOutCookieHeader2 = signOutResponse2.headers["set-cookie"][0]

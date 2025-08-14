@@ -35,7 +35,9 @@ describe("AppController (e2e)", () => {
     await controller.end()
   })
 
-  it("/ (GET)", async () => {
-    await request(app.getHttpServer()).get("/").expect(HttpStatus.UNAUTHORIZED)
+  it("/api/v1 (GET)", async () => {
+    await request(app.getHttpServer())
+      .get("/api/v1")
+      .expect(HttpStatus.UNAUTHORIZED)
   })
 })
