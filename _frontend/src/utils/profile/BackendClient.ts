@@ -2,7 +2,7 @@
 
 import axios from "axios";
 
-import {User} from "../../../../_common/user/User.ts";
+import {User} from "@common/user/User.ts";
 
 export class BackendClient {
 
@@ -19,14 +19,14 @@ export class BackendClient {
     public async fetchCurrentUser() : Promise<User> {
         const r = await this.privateAxios.get<User>(
             this.backendURL + "api/v1/user/current",
-            {withCredentials: true});
-        return r.data;
+            {withCredentials: true})
+        return Promise.resolve(r.data)
     }
 
     public async signIn(email: string, password: string): Promise<User> {
         let result: User
         try {
-            const r = await this.privateAxios.post(
+            const r = await this.privateAxios.post<User>(
                 this.backendURL + "api/v1/auth/signIn",
                 { email, password }
             )
@@ -39,7 +39,7 @@ export class BackendClient {
             }
         }
 
-        return result
+        return Promise.resolve(result)
     }
 
     public async signOff(): Promise<void> {
