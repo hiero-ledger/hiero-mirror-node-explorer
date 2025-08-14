@@ -8,4 +8,5 @@ export const suggestionKey = Symbol()
 export const coreConfigKey = Symbol()
 export const networkConfigKey = Symbol()
 export const themeControllerKey = Symbol()
+export const profileControllerKey = Symbol()
 
