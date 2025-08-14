@@ -5,6 +5,7 @@ import { PG_POOL } from "../pg/pg.constants"
 import pg from "pg"
 import argon2 from "argon2"
 import { generateVerificationCode } from "../utils"
+import { User } from "../../../_common/user/User"
 
 @Injectable()
 export class UserService {
@@ -107,6 +108,30 @@ export class UserService {
       result = null
     }
 
+    return Promise.resolve(result)
+  }
+
+  async fetchUser(userId: string): Promise<User | null> {
+    const r = await this.pgPool.query<string[]>({
+      name: "user-fetch",
+      text: `
+        SELECT email
+        FROM "user"
+        WHERE user_id = $1
+      `,
+      values: [userId],
+      rowMode: "array",
+    })
+    let result: User | null
+    if (r.rows.length == 1 && r.rows[0].length == 1) {
+      result = {
+        userId: userId,
+        email: r.rows[0][0],
+        profile: null,
+      }
+    } else {
+      result = null
+    }
     return Promise.resolve(result)
   }
 

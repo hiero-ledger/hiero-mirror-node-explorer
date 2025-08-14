@@ -174,7 +174,15 @@ describe("AuthController (e2e)", () => {
     assert.ok("Expires" in signInCookies)
     assert.ok("SameSite" in signInCookies)
 
-    // 6) Sign out
+    // 6) fetch current user
+    const currentUserResponse = await request(app.getHttpServer())
+      .get("/api/v1/user/current")
+      .set("Cookie", [signInCookieHeader])
+      .expect(HttpStatus.OK)
+    assert.notStrictEqual(currentUserResponse.body.userId, undefined)
+    assert.strictEqual(currentUserResponse.body.email, email)
+
+    // 7) Sign out
     const signOutResponse2 = await request(app.getHttpServer())
       .post("/api/v1/auth/signOut")
       .set("Cookie", [signInCookieHeader])
@@ -182,5 +190,11 @@ describe("AuthController (e2e)", () => {
     const signOutCookieHeader2 = signOutResponse2.headers["set-cookie"][0]
     const signOutCookies2 = cookie.parse(signOutCookieHeader2)
     assert.strictEqual(signOutCookies2[SESSION_COOKIE], "")
+
+    // 8) Try to fetch current user again => unauthorized
+    await request(app.getHttpServer())
+      .get("/api/v1/user/current")
+      // .set("Cookie", [signInCookieHeader])
+      .expect(HttpStatus.UNAUTHORIZED)
   })
 })
