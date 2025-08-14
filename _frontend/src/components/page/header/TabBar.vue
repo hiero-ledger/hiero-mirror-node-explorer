@@ -29,6 +29,9 @@
     <TabItem v-if="showMetrics"
              :tabId="TabId.Metrics"
              :target-route="routeManager.makeRouteToMetrics()"/>
+    <ProfileTabItem v-if="profileVisible"/>
+    <SignInButton v-else/>
+
   </div>
 </template>
 
@@ -42,6 +45,9 @@ import {TabId} from "@/router.ts";
 import {routeManager} from "@/utils/RouteManager.ts"
 import TabItem from "@/components/page/header/TabItem.vue";
 import {computed} from "vue";
+import {ProfileConnectionStatus, ProfileController} from "@/utils/profile/ProfileController.ts";
+import ProfileTabItem from "@/components/page/header/ProfileTabItem.vue";
+import SignInButton from "@/components/profile/SignInButton.vue";
 
 const props = defineProps({
   vertical: {
@@ -50,8 +56,11 @@ const props = defineProps({
   }
 })
 
+const profileController = ProfileController.inject()
+
 const enableStaking = routeManager.enableStaking
 const showMetrics = computed(() => routeManager.hgraphURL.value !== null)
+const profileVisible = computed(() => profileController.connectionStatus.value === ProfileConnectionStatus.Connected)
 
 </script>
 

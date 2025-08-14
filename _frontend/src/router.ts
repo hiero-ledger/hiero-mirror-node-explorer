@@ -69,6 +69,9 @@ import Metrics_Network from "@/pages/Metrics_Network.vue";
 import Metrics_Transactions from "@/pages/Metrics_Transactions.vue";
 import Metrics_Accounts from "@/pages/Metrics_Accounts.vue";
 import Metrics_Nodes from "@/pages/Metrics_Nodes.vue";
+import Profile from "@/pages/Profile.vue";
+import Profile_Labels from "@/pages/Profile_Labels.vue";
+import Profile_Overview from "@/pages/Profile_Overview.vue";
 
 export enum TabId {
     Home = "Home",
@@ -81,6 +84,7 @@ export enum TabId {
     Staking = "Staking",
     Blocks = "Blocks",
     Metrics = "Metrics",
+    Profile = "Profile"
 }
 
 export const TRANSACTION_DETAILS_ROUTE: RouteRecordRaw = {
@@ -560,6 +564,36 @@ export const METRICS_ROUTE: RouteRecordRaw = {
     ]
 }
 
+export const PROFILE_ROUTE: RouteRecordRaw = {
+    path: '/:network/profile',
+    name: 'Profile',
+    component: Profile,
+    props: true,
+    meta: {
+        tabId: TabId.Profile
+    },
+    children: [
+        {
+            path: '',
+            name: 'Profile_Labels',
+            component: Profile_Labels,
+            props: true,
+            meta: {
+                tabLabel: "Personal Labels"
+            }
+        },
+        {
+            path: 'overview',
+            name: 'Profile_Overview',
+            component: Profile_Overview,
+            props: true,
+            meta: {
+                tabLabel: "Profile Overview"
+            }
+        },
+    ],
+}
+
 export const routes: Array<RouteRecordRaw> = [
     {
         path: '/',
@@ -670,6 +704,7 @@ export const routes: Array<RouteRecordRaw> = [
             tabId: TabId.Nodes
         }
     },
+    PROFILE_ROUTE,
     {
         // EIP 3091 Support
         path: '/:network/address/:accountAddress',

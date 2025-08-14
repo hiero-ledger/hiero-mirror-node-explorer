@@ -25,6 +25,7 @@ import {
     METRICS_ROUTE,
     NFT_DETAILS_ROUTE,
     NODES_ROUTE,
+    PROFILE_ROUTE,
     routes,
     TOKEN_DETAILS_ROUTE,
     TOKENS_ROUTE,
@@ -579,6 +580,23 @@ export class RouteManager {
 
     public makeRouteToMetrics(tabId: string | null = null): RouteLocationRaw {
         const targetTabId = tabId ?? this.metricsOperator.defaultTabId
+        return {name: targetTabId, params: {network: this.currentNetwork.value}}
+    }
+
+    public readonly profileOperator = new RouteOperator(PROFILE_ROUTE, this)
+
+    public routeToProfile(tabId: string | null = null, replace = false): Promise<NavigationFailure | void | undefined> {
+        let result: Promise<NavigationFailure | void | undefined>
+        if (replace) {
+            result = this.router.replace(this.makeRouteToProfile(tabId))
+        } else {
+            result = this.router.push(this.makeRouteToProfile(tabId))
+        }
+        return result
+    }
+
+    public makeRouteToProfile(tabId: string | null = null): RouteLocationRaw {
+        const targetTabId = tabId ?? this.profileOperator.defaultTabId
         return {name: targetTabId, params: {network: this.currentNetwork.value}}
     }
 

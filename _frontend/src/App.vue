@@ -21,6 +21,7 @@ import {
   initialLoadingKey,
   loadingKey,
   networkConfigKey,
+  profileControllerKey,
   suggestionKey,
   themeControllerKey
 } from "@/AppKeys"
@@ -32,6 +33,7 @@ import {CoreConfig} from "@/config/CoreConfig";
 import {NetworkConfig} from "@/config/NetworkConfig";
 import {ThemeController} from "@/components/ThemeController.ts";
 import {walletManager} from "@/utils/RouteManager.ts";
+import {ProfileController} from "@/utils/profile/ProfileController.ts";
 
 const props = defineProps({
   "coreConfig": {
@@ -89,6 +91,10 @@ provide(networkConfigKey, props.networkConfig)
 const themeController = new ThemeController(props.coreConfig)
 provide(themeControllerKey, themeController)
 onMounted(() => themeController.mount())
+
+const profileController = new ProfileController(props.coreConfig)
+provide(profileControllerKey, profileController)
+onMounted(() => profileController.restoreCurrentUser())
 
 const showCookiesDialog = ref(false)
 
