@@ -85,7 +85,7 @@ export class UserService {
   async checkUserPassword(
     email: string,
     password: string,
-  ): Promise<string | null> {
+  ): Promise<User | null> {
     const r = await this.pgPool.query<string[]>({
       name: "user-check-password",
       text: `
@@ -98,12 +98,16 @@ export class UserService {
       rowMode: "array",
     })
 
-    let result: string | null
+    let result: User | null
     if (r.rows.length == 1 && r.rows[0].length == 2) {
       const userId = r.rows[0][0]
       const passwordHash = r.rows[0][1]
       const ok = await argon2.verify(passwordHash, password)
-      result = ok ? userId : null
+      if (ok) {
+        result = { userId, email, profile: null }
+      } else {
+        result = null
+      }
     } else {
       result = null
     }

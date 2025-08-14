@@ -4,6 +4,12 @@ import { Injectable, Logger } from "@nestjs/common"
 import { UserService } from "../user/user.service"
 import { JwtService } from "@nestjs/jwt"
 import { ConfigService } from "@nestjs/config"
+import { User } from "../../../_common/user/User"
+
+export interface UserAndToken {
+  user: User
+  token: string
+}
 
 // https://datatracker.ietf.org/doc/html/rfc7519#section-4.1
 interface JwtPayload {
@@ -54,11 +60,12 @@ export class AuthService {
     return Promise.resolve(result)
   }
 
-  async signIn(email: string, password: string): Promise<string | null> {
-    let result: string | null
-    const userId = await this.userService.checkUserPassword(email, password)
-    if (userId !== null) {
-      result = await this.makeToken(userId)
+  async signIn(email: string, password: string): Promise<UserAndToken | null> {
+    let result: UserAndToken | null
+    const user = await this.userService.checkUserPassword(email, password)
+    if (user !== null) {
+      const token = await this.makeToken(user.userId)
+      result = { user, token }
     } else {
       result = null
     }

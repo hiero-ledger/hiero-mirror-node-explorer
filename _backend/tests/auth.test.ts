@@ -173,6 +173,8 @@ describe("AuthController (e2e)", () => {
     assert.ok("Max-Age" in signInCookies)
     assert.ok("Expires" in signInCookies)
     assert.ok("SameSite" in signInCookies)
+    assert.strictEqual(typeof signInResponse.body.userId, "string")
+    assert.strictEqual(signInResponse.body.email, email)
 
     // 6) fetch current user
     const currentUserResponse = await request(app.getHttpServer())
