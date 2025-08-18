@@ -8,7 +8,7 @@ import {
   UnauthorizedException,
 } from "@nestjs/common"
 import { UserService } from "./user.service"
-import { User } from "../../../_common/user/User"
+import { User } from "./dto/User"
 import { JwtPayload } from "jsonwebtoken"
 import { Request } from "express"
 
