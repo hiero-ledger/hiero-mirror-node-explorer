@@ -367,6 +367,20 @@ export class AppStorage {
     }
 
     //
+    // sign in email
+    //
+
+    private static readonly SIGN_IN_EMAIL_KEY = "signInEmail"
+
+    public static getSignInEmail(): string | null {
+        return this.getLocalStorageItem(this.SIGN_IN_EMAIL_KEY)
+    }
+
+    public static setSignInEmail(newValue: string | null): void {
+        this.setLocalStorageItem(this.SIGN_IN_EMAIL_KEY, newValue)
+    }
+
+    //
     // Private
     //
 

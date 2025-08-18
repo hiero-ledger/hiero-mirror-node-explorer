@@ -7,6 +7,7 @@ import {ProfileController} from "@/utils/profile/ProfileController.ts";
 import {EmailTextFieldController, EmailTextFieldState} from "@/dialogs/common/EmailTextFieldController.ts";
 import {BaseTextFieldController} from "@/dialogs/common/BaseTextFieldController.ts";
 import {RouteManager} from "@/utils/RouteManager.ts";
+import {AppStorage} from "@/AppStorage.ts";
 
 export class SignInController extends TaskController {
 
@@ -21,6 +22,9 @@ export class SignInController extends TaskController {
                        private readonly profileController: ProfileController,
                        private readonly routeManager: RouteManager) {
         super(showDialog)
+
+        const lastEmail = AppStorage.getSignInEmail()
+        this.emailController.inputText.value = lastEmail ?? ""
     }
 
     //
@@ -38,6 +42,7 @@ export class SignInController extends TaskController {
         if (email !== null) {
             await this.profileController.connect(email, password)
             await this.routeManager.routeToProfile(null)
+            AppStorage.setSignInEmail(email)
         }
     }
 
