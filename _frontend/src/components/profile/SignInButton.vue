@@ -6,6 +6,10 @@
 
 <template>
   <button @click="handleSignIn">Sign In</button>
+
+  <SignInDialog
+      v-model:show-dialog="showSignInDialog"
+  />
 </template>
 
 <!-- --------------------------------------------------------------------------------------------------------------- -->
@@ -14,14 +18,13 @@
 
 <script setup lang="ts">
 
-import {ProfileController} from "@/utils/profile/ProfileController.ts";
-import {routeManager} from "@/utils/RouteManager.ts";
+import SignInDialog from "@/dialogs/profile/SignInDialog.vue";
+import {ref} from "vue";
 
-const profileController = ProfileController.inject()
+const showSignInDialog = ref(false)
 
 const handleSignIn = async () => {
-  await profileController.connect("victor.hugo@laposte.net", "secret")
-  await routeManager.routeToProfile(null)
+  showSignInDialog.value = true
 }
 
 </script>

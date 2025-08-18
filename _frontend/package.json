@@ -55,6 +55,7 @@
     "multiformats": "^13.4.0",
     "prismjs": "^1.30.0",
     "topojson-client": "^3.1.0",
+    "validator": "^13.15.15",
     "vue": "^3.5.18",
     "vue-router": "^4.5.1"
   },
@@ -69,6 +70,7 @@
     "@types/prismjs": "^1.26.5",
     "@types/topojson-client": "^3.1.5",
     "@types/topojson-specification": "^1.0.5",
+    "@types/validator": "^13.15.2",
     "@vitejs/plugin-basic-ssl": "^2.1.0",
     "@vitejs/plugin-vue": "^6.0.1",
     "@vitest/coverage-v8": "^3.2.4",
