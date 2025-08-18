@@ -42,8 +42,16 @@ export class BackendClient {
         return Promise.resolve(result)
     }
 
-    public async signOff(): Promise<void> {
-        await this.privateAxios.delete(this.backendURL + "api/v1/auth/signOff")
+    public async signOut(): Promise<void> {
+        try {
+            await this.privateAxios.post(this.backendURL + "api/v1/auth/signOut")
+        } finally {
+            try {
+                await this.fetchCurrentUser() // This removes session cookie
+            } catch {
+                // We ignore expected unauthorized exception
+            }
+        }
     }
 
     //

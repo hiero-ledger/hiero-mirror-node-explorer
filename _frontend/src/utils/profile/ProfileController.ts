@@ -4,7 +4,7 @@ import {computed, inject, ref} from "vue";
 import {CoreConfig} from "@/config/CoreConfig.ts";
 import {BackendClient} from "@/utils/profile/BackendClient.ts";
 import {profileControllerKey} from "@/AppKeys.ts";
-import {User} from "../../../../_common/user/User.ts";
+import {User} from "@common/user/User.ts";
 
 export class ProfileController {
 
@@ -78,7 +78,7 @@ export class ProfileController {
         if (this.backendClient !== null) {
             this.disconnecting.value = true
             try {
-                await this.backendClient.signOff()
+                await this.backendClient.signOut()
             } finally {
                 this.currentUser.value = null // => clears this.accounts and this.bookmarks
                 this.disconnecting.value = false
