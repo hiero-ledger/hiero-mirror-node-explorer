@@ -7,7 +7,7 @@
 <template>
   <router-link :to="targetRoute" custom v-slot="{href, navigate}">
     <a :href="href" @click="navigate" :class="{ 'is-rimmed': isRimmed }">
-      <CircleUserRound :size="12" />
+      <CircleUserRound :size="18" style="vertical-align: text-bottom"/>
     </a>
   </router-link>
 </template>
@@ -38,8 +38,6 @@ a {
   align-items: center;
   color: var(--text-secondary);
   column-gap: 2px;
-  display: flex;
-  vertical-align: text-top;
 }
 
 a.is-rimmed {
