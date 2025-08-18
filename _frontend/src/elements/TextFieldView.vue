@@ -5,7 +5,7 @@
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <template>
-  <input type="text" v-model="text"
+  <input :type="inputType" v-model="text"
          :placeholder="props.placeholder"
          :class="{ 'small': props.small }"/>
 </template>
@@ -15,6 +15,8 @@
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <script setup lang="ts">
+
+import {computed} from "vue";
 
 const text = defineModel()
 
@@ -26,8 +28,14 @@ const props = defineProps({
   small: {
     type: Boolean,
     default: false
+  },
+  password: {
+    type: Boolean,
+    default: false
   }
 })
+
+const inputType = computed(() => props.password ? "password" : "text")
 
 </script>
 
