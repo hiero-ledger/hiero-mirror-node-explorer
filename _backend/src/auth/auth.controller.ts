@@ -101,7 +101,7 @@ export class AuthController {
   // Private
   //
 
-  private setupCookie(response: Response, jwt: string|null): void {
+  private setupCookie(response: Response, jwt: string | null): void {
     const cookieOptions = SESSION_COOKIE_OPTIONS
 
     // No SPARKPOST_TOKEN means dev mode
