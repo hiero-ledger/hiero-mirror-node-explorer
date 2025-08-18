@@ -89,7 +89,7 @@ export class AuthController {
   @Post("signOut")
   async signOut(@Res({ passthrough: true }) response: Response): Promise<void> {
     // await this.authService.signOut()
-    this.clearCookie(response)
+    this.setupCookie(response, null) // Clear cookie
   }
 
   // For testing purpose
@@ -101,20 +101,21 @@ export class AuthController {
   // Private
   //
 
-  private setupCookie(response: Response, jwt: string): void {
-    const sparkpostKey = this.configService.get<string>("SPARKPOST_SECRET_KEY")
-    const cookieOptions: CookieOptions = {
-      maxAge: this.fetchJwtExp(jwt) * 1000,
-      sameSite: sparkpostKey ? "strict" : "none",
-      // No SPARKPOST_TOKEN means dev mode
-      // => sameSite = "none" enables dev Explorer to access dev Explorer Backend
-      ...SESSION_COOKIE_OPTIONS,
-    }
-    response.cookie(SESSION_COOKIE, jwt, cookieOptions)
-  }
+  private setupCookie(response: Response, jwt: string|null): void {
+    const cookieOptions = SESSION_COOKIE_OPTIONS
 
-  private clearCookie(response: Response): void {
-    response.clearCookie(SESSION_COOKIE, SESSION_COOKIE_OPTIONS)
+    // No SPARKPOST_TOKEN means dev mode
+    // => sameSite = "none" enables dev Explorer to access dev Explorer Backend
+    const sparkpostKey = this.configService.get<string>("SPARKPOST_SECRET_KEY")
+    cookieOptions.sameSite = sparkpostKey ? "strict" : "none"
+
+    if (jwt !== null) {
+      cookieOptions.maxAge = this.fetchJwtExp(jwt) * 1000
+      response.cookie(SESSION_COOKIE, jwt, cookieOptions)
+    } else {
+      // We clear cookie
+      response.clearCookie(SESSION_COOKIE, cookieOptions)
+    }
   }
 
   private fetchJwtExp(jwtToken: string): number {
