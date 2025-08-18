@@ -15,11 +15,13 @@
 <script setup lang="ts">
 
 import {ProfileController} from "@/utils/profile/ProfileController.ts";
+import {routeManager} from "@/utils/RouteManager.ts";
 
 const profileController = ProfileController.inject()
 
-const handleSignIn = () => {
-  profileController.connect("victor.hugo@laposte.net", "secret").then()
+const handleSignIn = async () => {
+  await profileController.connect("victor.hugo@laposte.net", "secret")
+  await routeManager.routeToProfile(null)
 }
 
 </script>

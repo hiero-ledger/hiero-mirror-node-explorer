@@ -39,7 +39,7 @@ import {routeManager} from "@/utils/RouteManager.ts";
 const profileController = ProfileController.inject()
 
 const handleSignOut = async () => {
-  await routeManager.routeToHome(null)
+  await routeManager.routeToHome(null, true)
   await profileController.disconnect()
 }
 

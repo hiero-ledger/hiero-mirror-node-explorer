@@ -500,8 +500,14 @@ export class RouteManager {
         return {name: 'Home', params: {network: network ?? this.currentNetwork.value}}
     }
 
-    public routeToHome(network: string | null = null): Promise<NavigationFailure | void | undefined> {
-        return this.router.push(this.makeRouteToHome(network))
+    public routeToHome(network: string | null = null, replace = false): Promise<NavigationFailure | void | undefined> {
+        let result: Promise<NavigationFailure | void | undefined>
+        if (replace) {
+            result = this.router.replace(this.makeRouteToHome(network))
+        } else {
+            result = this.router.push(this.makeRouteToHome(network))
+        }
+        return result
     }
 
     public makeRouteToTransactions(type: TransactionType | null = null): RouteLocationRaw {
