@@ -27,6 +27,18 @@
           />
         </template>
       </ContentCell>
+
+      <!-- Password -->
+      <ContentCell>
+        <template #cellTitle>Password</template>
+        <template #cellContent>
+          <TextFieldView v-model="passwordInputText"
+                         :password="true"
+                         style="width: 100%"
+          />
+        </template>
+      </ContentCell>
+
     </template>
 
   </TaskDialog>
@@ -54,6 +66,7 @@ const profileController = ProfileController.inject()
 
 const controller = new SignInController(showDialog, profileController, routeManager)
 const emailInputText = controller.emailController.inputText
+const passwordInputText = controller.passwordController.inputText
 
 </script>
 

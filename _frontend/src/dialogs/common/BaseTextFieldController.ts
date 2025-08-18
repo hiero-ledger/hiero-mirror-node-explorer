@@ -14,7 +14,7 @@ export class BaseTextFieldController {
     // Public
     //
 
-    public constructor(oldText: Ref<string | null>) {
+    public constructor(oldText: Ref<string | null> = computed(() => null)) {
         this.oldText = oldText
         watch(this.inputText, this.inputTextDidChange, {immediate: true})
     }

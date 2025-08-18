@@ -5,11 +5,13 @@ import {Ref} from "vue";
 import {TaskController} from "@/dialogs/core/task/TaskController.ts";
 import {ProfileController} from "@/utils/profile/ProfileController.ts";
 import {EmailTextFieldController, EmailTextFieldState} from "@/dialogs/common/EmailTextFieldController.ts";
+import {BaseTextFieldController} from "@/dialogs/common/BaseTextFieldController.ts";
 import {RouteManager} from "@/utils/RouteManager.ts";
 
 export class SignInController extends TaskController {
 
-    public readonly emailController: EmailTextFieldController
+    public readonly emailController = new EmailTextFieldController()
+    public readonly passwordController = new BaseTextFieldController()
 
     //
     // Public
@@ -19,7 +21,6 @@ export class SignInController extends TaskController {
                        private readonly profileController: ProfileController,
                        private readonly routeManager: RouteManager) {
         super(showDialog)
-        this.emailController = new EmailTextFieldController()
     }
 
     //
@@ -28,12 +29,14 @@ export class SignInController extends TaskController {
 
     public canBeExecuted(): boolean {
         return this.emailController.state.value === EmailTextFieldState.ok
+            && this.passwordController.newText.value.length > 0
     }
 
     public async execute(): Promise<void> {
         const email = this.emailController.newEmail.value
+        const password = this.passwordController.newText.value
         if (email !== null) {
-            await this.profileController.connect(email, "secret")
+            await this.profileController.connect(email, password)
             await this.routeManager.routeToProfile(null)
         }
     }
