@@ -143,6 +143,9 @@ describe("AuthController (e2e)", () => {
     assert.ok("SameSite" in confirmSignUpCookies)
     assert.strictEqual(typeof confirmSignUpResponse.body.userId, "string")
     assert.strictEqual(confirmSignUpResponse.body.email, email)
+    assert.strictEqual(confirmSignUpResponse.body.firstName, "")
+    assert.strictEqual(confirmSignUpResponse.body.lastName, "")
+    assert.strictEqual(confirmSignUpResponse.body.role, undefined)
 
     // 3) Try to sign-up again
     await request(app.getHttpServer())
@@ -177,6 +180,9 @@ describe("AuthController (e2e)", () => {
     assert.ok("SameSite" in signInCookies)
     assert.strictEqual(typeof signInResponse.body.userId, "string")
     assert.strictEqual(signInResponse.body.email, email)
+    assert.strictEqual(signInResponse.body.firstName, "")
+    assert.strictEqual(signInResponse.body.lastName, "")
+    assert.strictEqual(signInResponse.body.role, undefined)
 
     // 6) fetch current user
     const currentUserResponse = await request(app.getHttpServer())
@@ -185,6 +191,9 @@ describe("AuthController (e2e)", () => {
       .expect(HttpStatus.OK)
     assert.notStrictEqual(currentUserResponse.body.userId, undefined)
     assert.strictEqual(currentUserResponse.body.email, email)
+    assert.strictEqual(currentUserResponse.body.firstName, "")
+    assert.strictEqual(currentUserResponse.body.lastName, "")
+    assert.strictEqual(currentUserResponse.body.role, undefined)
 
     // 7) Sign out
     const signOutResponse2 = await request(app.getHttpServer())

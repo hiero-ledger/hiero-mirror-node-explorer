@@ -5,7 +5,7 @@ import { PG_POOL } from "../pg/pg.constants"
 import pg from "pg"
 import argon2 from "argon2"
 import { generateVerificationCode } from "../utils"
-import { User } from "./dto/User"
+import { User, UserRole } from "./dto/User"
 
 @Injectable()
 export class UserService {
@@ -54,15 +54,19 @@ export class UserService {
         WHERE email = $1
           AND email_verified_at IS NULL
           AND verification_code = $2
-        RETURNING user_id
+        RETURNING user_id, first_name, last_name, "role"
       `,
       values: [email, verificationCode],
       rowMode: "array",
     })
     let result: User | null
-    if (r.rowCount == 1 && r.rows.length == 1 && r.rows[0].length == 1) {
-      const userId = r.rows[0][0]
-      result = { userId, email, profile: null }
+    if (r.rowCount == 1 && r.rows.length == 1 && r.rows[0].length == 4) {
+      const row0 = r.rows[0]
+      const userId = row0[0]
+      const firstName = row0[1]
+      const lastName = row0[2]
+      const role = userRoleFromSqlValue(row0[3])
+      result = { userId, email, firstName, lastName, role }
     } else {
       result = null
     }
@@ -90,7 +94,7 @@ export class UserService {
     const r = await this.pgPool.query<string[]>({
       name: "user-check-password",
       text: `
-        SELECT user_id, password_hash
+        SELECT user_id, password_hash, first_name, last_name, "role"
         FROM "user"
         WHERE email = $1
           AND email_verified_at IS NOT NULL
@@ -100,12 +104,16 @@ export class UserService {
     })
 
     let result: User | null
-    if (r.rows.length == 1 && r.rows[0].length == 2) {
-      const userId = r.rows[0][0]
-      const passwordHash = r.rows[0][1]
+    if (r.rows.length == 1 && r.rows[0].length == 5) {
+      const row0 = r.rows[0]
+      const userId = row0[0]
+      const passwordHash = row0[1]
+      const firstName = row0[2]
+      const lastName = row0[3]
+      const role = userRoleFromSqlValue(row0[4])
       const ok = await argon2.verify(passwordHash, password)
       if (ok) {
-        result = { userId, email, profile: null }
+        result = { userId, email, firstName, lastName, role }
       } else {
         result = null
       }
@@ -120,7 +128,7 @@ export class UserService {
     const r = await this.pgPool.query<string[]>({
       name: "user-fetch",
       text: `
-        SELECT email
+        SELECT email, first_name, last_name, "role"
         FROM "user"
         WHERE user_id = $1
       `,
@@ -128,12 +136,13 @@ export class UserService {
       rowMode: "array",
     })
     let result: User | null
-    if (r.rows.length == 1 && r.rows[0].length == 1) {
-      result = {
-        userId: userId,
-        email: r.rows[0][0],
-        profile: null,
-      }
+    if (r.rows.length == 1 && r.rows[0].length == 4) {
+      const row0 = r.rows[0]
+      const email = row0[0]
+      const firstName = row0[1]
+      const lastName = row0[2]
+      const role = userRoleFromSqlValue(row0[3])
+      result = { userId, email, firstName, lastName, role }
     } else {
       result = null
     }
@@ -165,4 +174,44 @@ export class UserService {
   async end() {
     await this.pgPool.end()
   }
+}
+
+// function userRoleToSqlValue(userRole: UserRole): string {
+//   let result: string
+//   switch (userRole) {
+//     default:
+//     case UserRole.Developer:
+//       result = "developer"
+//       break
+//     case UserRole.Partner:
+//       result = "partner"
+//       break
+//     case UserRole.CouncilMember:
+//       result = "council_member"
+//       break
+//   }
+//   return result
+// }
+
+function userRoleFromSqlValue(value: string|null): UserRole|undefined {
+  let result: UserRole | undefined
+  switch (value) {
+    case null:
+      result = undefined
+      break
+    case "developer":
+      result = UserRole.Developer
+      break
+    case "partner":
+      result = UserRole.Partner
+      break
+    case "council_member":
+      result = UserRole.CouncilMember
+      break
+    default:
+      throw new Error(
+        "Value " + value + " cannot be converted to UserRole enum",
+      )
+  }
+  return result
 }
