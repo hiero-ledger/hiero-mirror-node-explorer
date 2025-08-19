@@ -40,7 +40,7 @@ import Tabs from "@/components/Tabs.vue";
 import {routeManager} from "@/utils/RouteManager.ts";
 
 const greeting = computed(() =>
-    profileController.currentUser.value?.profile?.firstName ?? profileController.currentUser.value?.email ?? null
+    profileController.currentUser.value?.firstName ?? profileController.currentUser.value?.email ?? null
 )
 
 const profileController = ProfileController.inject()
