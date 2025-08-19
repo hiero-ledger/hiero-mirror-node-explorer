@@ -10,6 +10,9 @@ import { AuthService } from "../auth/auth.service"
 import { PgModule } from "../pg/pg.module"
 import { UserModule } from "../user/user.module"
 import { JwtModule } from "@nestjs/jwt"
+import { EntityLabelModule } from "../entity-label/entity-label.module"
+import { EntityLabelController } from "../entity-label/entity-label.controller"
+import { EntityLabelService } from "../entity-label/entity-label.service"
 
 @Module({
   imports: [
@@ -18,8 +21,9 @@ import { JwtModule } from "@nestjs/jwt"
     UserModule,
     AuthModule,
     JwtModule,
+    EntityLabelModule,
   ],
-  controllers: [AppController, AuthController],
-  providers: [AppService, AuthService],
+  controllers: [AppController, AuthController, EntityLabelController],
+  providers: [AppService, AuthService, EntityLabelService],
 })
 export class AppModule {}
