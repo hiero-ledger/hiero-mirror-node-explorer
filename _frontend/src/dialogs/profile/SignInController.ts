@@ -3,7 +3,7 @@
 
 import {Ref} from "vue";
 import {TaskController} from "@/dialogs/core/task/TaskController.ts";
-import {ProfileController} from "@/utils/profile/ProfileController.ts";
+import {ProfileConnectionStatus, ProfileController} from "@/utils/profile/ProfileController.ts";
 import {EmailTextFieldController, EmailTextFieldState} from "@/dialogs/common/EmailTextFieldController.ts";
 import {BaseTextFieldController} from "@/dialogs/common/BaseTextFieldController.ts";
 import {RouteManager} from "@/utils/RouteManager.ts";
@@ -41,8 +41,12 @@ export class SignInController extends TaskController {
         const password = this.passwordController.newText.value
         if (email !== null) {
             await this.profileController.connect(email, password)
-            await this.routeManager.routeToProfile(null)
-            AppStorage.setSignInEmail(email)
+            if (this.profileController.connectionStatus.value == ProfileConnectionStatus.Connected) {
+                await this.routeManager.routeToProfile(null)
+                AppStorage.setSignInEmail(email)
+            } else {
+                throw new Error("Invalid email or password")
+            }
         }
     }
 

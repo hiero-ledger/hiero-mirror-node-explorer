@@ -41,6 +41,14 @@
 
     </template>
 
+    <!-- error -->
+    <template #taskDialogError>
+      <TaskPanel :mode="TaskPanelMode.error">
+        <template #taskPanelMessage>Authentication failed</template>
+        <template #taskPanelExtra1>Check you email or password</template>
+      </TaskPanel>
+    </template>
+
   </TaskDialog>
 
 </template>
@@ -57,6 +65,8 @@ import ContentCell from "@/dialogs/core/ContentCell.vue";
 import {SignInController} from "@/dialogs/profile/SignInController.ts";
 import {ProfileController} from "@/utils/profile/ProfileController.ts";
 import {routeManager} from "@/utils/RouteManager.ts";
+import {TaskPanelMode} from "@/dialogs/core/DialogUtils.ts";
+import TaskPanel from "@/dialogs/core/task/TaskPanel.vue";
 
 const showDialog = defineModel("showDialog", {
   type: Boolean,
