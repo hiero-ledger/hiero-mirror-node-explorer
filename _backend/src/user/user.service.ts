@@ -193,7 +193,7 @@ export class UserService {
 //   return result
 // }
 
-function userRoleFromSqlValue(value: string|null): UserRole|undefined {
+function userRoleFromSqlValue(value: string | null): UserRole | undefined {
   let result: UserRole | undefined
   switch (value) {
     case null:
