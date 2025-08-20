@@ -7,7 +7,7 @@ import { Test, TestingModule } from "@nestjs/testing"
 import { EntityLabelService } from "./entity-label.service"
 import { PgModule } from "../pg/pg.module"
 import { UserService } from "../user/user.service"
-import { EntityType, NewEntityLabel } from "./dto/EntityLabel"
+import { EntityType, NewEntityLabel } from "../4frontend/EntityLabel"
 
 describe("EntityLabelService", () => {
   let module: TestingModule

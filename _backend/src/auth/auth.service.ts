@@ -4,7 +4,7 @@ import { Injectable, Logger } from "@nestjs/common"
 import { UserService } from "../user/user.service"
 import { JwtService } from "@nestjs/jwt"
 import { ConfigService } from "@nestjs/config"
-import { User } from "../user/dto/User"
+import { User } from "../4frontend/User"
 
 export interface UserAndToken {
   user: User

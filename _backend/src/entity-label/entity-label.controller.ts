@@ -13,7 +13,7 @@ import {
   UnauthorizedException,
 } from "@nestjs/common"
 import { EntityLabelService } from "./entity-label.service"
-import { EntityLabel } from "./dto/EntityLabel"
+import { EntityLabel } from "../4frontend/EntityLabel"
 import { Request } from "express"
 import { JwtPayload } from "jsonwebtoken"
 import { NewEntityLabelDTO } from "./dto/EntityLabelDTO"

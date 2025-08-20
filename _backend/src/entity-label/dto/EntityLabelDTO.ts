@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { Length } from "class-validator"
-import { EntityType, NewEntityLabel } from "./EntityLabel"
+import { EntityType, NewEntityLabel } from "../../4frontend/EntityLabel"
 
 export class NewEntityLabelDTO implements NewEntityLabel {
   @Length(0, 35)

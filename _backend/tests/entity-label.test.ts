@@ -13,7 +13,7 @@ import { AppController } from "../src/app/app.controller"
 import request from "supertest"
 import assert from "node:assert"
 import { ConfirmSignUpBody } from "../../_common/auth/ConfirmSignUpBody"
-import { EntityType } from "../src/entity-label/dto/EntityLabel"
+import { EntityType } from "../src/4frontend/EntityLabel"
 import { NewEntityLabelDTO } from "../src/entity-label/dto/EntityLabelDTO"
 
 describe("EntityLabelController (e2e)", () => {

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
-import { SignUpBody } from "./SignUpBody"
+import { SignUpBody } from "../../4frontend/SignUpBody"
 import { IsEmail, IsNotEmpty } from "class-validator"
 
 export class SignUpBodyDTO implements SignUpBody {

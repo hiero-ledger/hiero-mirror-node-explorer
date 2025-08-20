@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { Inject, Injectable } from "@nestjs/common"
-import { EntityLabel, EntityType, NewEntityLabel } from "./dto/EntityLabel"
+import { EntityLabel, EntityType, NewEntityLabel } from "../4frontend/EntityLabel"
 import { AccountId } from "@hashgraph/sdk"
 import { PG_POOL } from "../pg/pg.constants"
 import pg from "pg"

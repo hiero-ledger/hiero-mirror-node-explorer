@@ -5,7 +5,7 @@ import { PG_POOL } from "../pg/pg.constants"
 import pg from "pg"
 import argon2 from "argon2"
 import { generateVerificationCode } from "../utils"
-import { User, UserRole } from "./dto/User"
+import { User, UserRole } from "../4frontend/User"
 
 @Injectable()
 export class UserService {

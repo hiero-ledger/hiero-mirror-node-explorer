@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { IsAlphanumeric, IsEmail, Length } from "class-validator"
-import { ConfirmSignUpBody } from "./ConfirmSignUpBody"
+import { ConfirmSignUpBody } from "../../4frontend/ConfirmSignUpBody"
 
 export class ConfirmSignUpBodyDTO implements ConfirmSignUpBody {
   @IsEmail()

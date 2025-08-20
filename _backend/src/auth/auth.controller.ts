@@ -21,8 +21,8 @@ import { JwtService } from "@nestjs/jwt"
 import { JwtPayload } from "jsonwebtoken"
 import { ConfigService } from "@nestjs/config"
 import { CookieOptions } from "express-serve-static-core"
-import { SignInBody } from "./dto/SignInBody"
-import { User } from "../user/dto/User"
+import { SignInBody } from "../4frontend/SignInBody"
+import { User } from "../4frontend/User"
 
 @Controller("auth")
 export class AuthController {
