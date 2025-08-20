@@ -20,7 +20,6 @@ import { SESSION_COOKIE, SESSION_COOKIE_OPTIONS } from "./auth.constants"
 import { JwtService } from "@nestjs/jwt"
 import { JwtPayload } from "jsonwebtoken"
 import { ConfigService } from "@nestjs/config"
-import { CookieOptions } from "express-serve-static-core"
 import { SignInBody } from "../4frontend/SignInBody"
 import { User } from "../4frontend/User"
 
