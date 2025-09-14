@@ -41,7 +41,7 @@
     "@walletconnect/modal": "^2.7.0",
     "@walletconnect/sign-client": "^2.21.8",
     "@walletconnect/types": "^2.21.6",
-    "axios": "^1.11.0",
+    "axios": "^1.12.1",
     "base32-decode": "^1.0.0",
     "base32-encode": "^2.0.0",
     "brotli-compress": "^1.3.3",
