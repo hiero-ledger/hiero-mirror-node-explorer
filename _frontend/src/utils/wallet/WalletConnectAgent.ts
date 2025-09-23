@@ -67,8 +67,9 @@ export class WalletConnectAgent {
                 // https://walletguide.walletconnect.network
                 "a29498d225fa4b13468ff4d6cf4ae0ea4adcbd95f07ce8a843a1dee10b632f3f", // HashPack
                 "a9104b630bac1929ad9ac2a73a17ed4beead1889341f307bff502f89b46c8501", // Blade
-                "c57ca95b47569778a828d19178114f4db188b89b763c899ba0be274e97267d96", // Metamask
-                "fd20dc426fb37566d803205b19bbc1d4096b248ac04548e3cfb6b3a38bd033aa", // Coinbase
+                // WalletConnect + EIP155 disabled for now
+                // "c57ca95b47569778a828d19178114f4db188b89b763c899ba0be274e97267d96", // Metamask
+                // "fd20dc426fb37566d803205b19bbc1d4096b248ac04548e3cfb6b3a38bd033aa", // Coinbase
             ]
         })
         const session = await this.waitForApprovalOrModalClose(uri, approval, connectModal)
@@ -192,13 +193,14 @@ export class WalletConnectAgent {
 
     private static makeNamespaces(networks: [string]): ProposalTypes.OptionalNamespaces {
         const hederaChains: string[] = []
-        const eip155Chains: string[] = []
+        // const eip155Chains: string[] = []
         for (const network of networks) {
             hederaChains.push(this.makeCaChainForHedera(network))
-            const eip155Chain = this.makeCaChainForEIP155(network)
-            if (eip155Chain !== null) {
-                eip155Chains.push(eip155Chain)
-            }
+            // WalletConnect + EIP155 disabled for now
+            // const eip155Chain = this.makeCaChainForEIP155(network)
+            // if (eip155Chain !== null) {
+            //     eip155Chains.push(eip155Chain)
+            // }
         }
         return {
             hedera: {
@@ -216,16 +218,17 @@ export class WalletConnectAgent {
                     'accountsChanged'
                 ]
             },
-            eip155: {
-                chains: eip155Chains,
-                methods: [
-                    'eth_sendRawTransaction',
-                ],
-                events: [
-                    'chainChanged',
-                    'accountsChanged'
-                ]
-            },
+            // WalletConnect + EIP155 disabled for now
+            // eip155: {
+            //     chains: eip155Chains,
+            //     methods: [
+            //         'eth_sendRawTransaction',
+            //     ],
+            //     events: [
+            //         'chainChanged',
+            //         'accountsChanged'
+            //     ]
+            // },
         }
     }
 
@@ -233,16 +236,17 @@ export class WalletConnectAgent {
         return new CAChainId(CAChainId.NAMESPACE_HEDERA, network).toString()
     }
 
-    private static makeCaChainForEIP155(network: string): string | null {
-        let result: string | null
-        const chainId = routeManager.findChainID(network)
-        if (chainId !== null) {
-            result = new CAChainId(CAChainId.NAMESPACE_EIP155, chainId.toString()).toString()
-        } else {
-            result = null
-        }
-        return result
-    }
+    // WalletConnect + EIP155 disabled for now
+    // private static makeCaChainForEIP155(network: string): string | null {
+    //     let result: string | null
+    //     const chainId = routeManager.findChainID(network)
+    //     if (chainId !== null) {
+    //         result = new CAChainId(CAChainId.NAMESPACE_EIP155, chainId.toString()).toString()
+    //     } else {
+    //         result = null
+    //     }
+    //     return result
+    // }
 
     private async waitForApprovalOrModalClose(
         uri: string | undefined,
