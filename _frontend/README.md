@@ -34,7 +34,7 @@ Explorer to start:
 - `/public/core-config.json`
 - `/public/networks-config.json`
 
-Details for these configuration files can be found in [CONFIGURATION.md](https://github.com/hashgraph/hedera-mirror-node-explorer/blob/main/CONFIGURATION.md).
+Details for these configuration files can be found in [CONFIGURATION.md](https://github.com/hiero-ledger/hiero-mirror-node-explorer/blob/main/_frontend/CONFIGURATION.md).
 
 ## Run in Docker
 
