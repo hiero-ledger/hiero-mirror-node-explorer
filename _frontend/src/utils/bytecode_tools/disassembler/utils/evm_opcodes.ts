@@ -8,8 +8,8 @@ export interface EvmOpcode {
 
 /**
  * @dev A mapping of EVM OPCODE IDs with their corresponding mnemonics and operand lengths.
- * @evm_version SHANGHAI
- * @notice This list contains the latest OPCODEs introduced in SHANGHAI. Modifications to this list can cover future EVM releases.
+ * @evm_version CANCUN
+ * @notice This list contains the latest OPCODEs introduced in CANCUN (https://www.evm.codes/?fork=cancun).
  */
 export const EVM_OPCODES = new Map<string, EvmOpcode>([
     ['00', {mnemonic: 'STOP', operand: 0}],
@@ -64,6 +64,8 @@ export const EVM_OPCODES = new Map<string, EvmOpcode>([
     ['46', {mnemonic: 'CHAINID', operand: 0}],
     ['47', {mnemonic: 'SELFBALANCE', operand: 0}],
     ['48', {mnemonic: 'BASEFEE', operand: 0}],
+    ['49', {mnemonic: 'BLOBHASH', operand: 0}],
+    ['4A', {mnemonic: 'BLOBBASEFEE', operand: 0}],
     ['50', {mnemonic: 'POP', operand: 0}],
     ['51', {mnemonic: 'MLOAD', operand: 0}],
     ['52', {mnemonic: 'MSTORE', operand: 0}],
@@ -76,6 +78,9 @@ export const EVM_OPCODES = new Map<string, EvmOpcode>([
     ['59', {mnemonic: 'MSIZE', operand: 0}],
     ['5a', {mnemonic: 'GAS', operand: 0}],
     ['5b', {mnemonic: 'JUMPDEST', operand: 0}],
+    ['5c', {mnemonic: 'TLOAD', operand: 0}],
+    ['5d', {mnemonic: 'TSTORE', operand: 0}],
+    ['5e', {mnemonic: 'MCOPY', operand: 0}],
     ['5f', {mnemonic: 'PUSH0', operand: 0}],
     ['60', {mnemonic: 'PUSH1', operand: 1}],
     ['61', {mnemonic: 'PUSH2', operand: 2}],
