@@ -34,7 +34,7 @@ Explorer to start:
 - `/public/core-config.json`
 - `/public/networks-config.json`
 
-Details for these configuration files can be found in [CONFIGURATION.md](https://github.com/hashgraph/hedera-mirror-node-explorer/blob/main/CONFIGURATION.md).
+Details for these configuration files can be found in [CONFIGURATION.md](https://github.com/hiero-ledger/hiero-mirror-node-explorer/blob/main/_frontend/CONFIGURATION.md).
 
 ## Run in Docker
 
@@ -65,7 +65,7 @@ can be used for a local Kubernetes cluster.
 ### Configure custom networks 
 
 Core configuration and network configuration need to be provided to the Explorer in the `values.yaml` file 
-(see [CONFIGURATION.md](https://github.com/hashgraph/hedera-mirror-node-explorer/blob/main/CONFIGURATION.md) for details on configuration parameters).
+(see [CONFIGURATION.md](https://github.com/hiero-ledger/hiero-mirror-node-explorer/blob/main/_frontend/CONFIGURATION.md) for details on configuration parameters).
 
 The network configuration needs to provide at least the description on one supported networks.
 
@@ -96,7 +96,7 @@ Use the following commands to use sourcify locally:
 `npm run sourcify:stop`: Stop sourcify service
 
 Please see
-[sourcify-setup/README.md](https://github.com/hashgraph/hedera-mirror-node-explorer/blob/main/sourcify-setup/README.md) for more details. 
+[sourcify-setup/README.md](https://github.com/hashgraph/hedera-mirror-node-explorer/blob/main/_frontend/sourcify-setup/README.md) for more details. 
 
 ## Contributing
 
