@@ -65,7 +65,7 @@ export const EVM_OPCODES = new Map<string, EvmOpcode>([
     ['47', {mnemonic: 'SELFBALANCE', operand: 0}],
     ['48', {mnemonic: 'BASEFEE', operand: 0}],
     ['49', {mnemonic: 'BLOBHASH', operand: 0}],
-    ['4A', {mnemonic: 'BLOBBASEFEE', operand: 0}],
+    ['4a', {mnemonic: 'BLOBBASEFEE', operand: 0}],
     ['50', {mnemonic: 'POP', operand: 0}],
     ['51', {mnemonic: 'MLOAD', operand: 0}],
     ['52', {mnemonic: 'MSTORE', operand: 0}],
