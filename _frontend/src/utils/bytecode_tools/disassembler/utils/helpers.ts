@@ -78,7 +78,7 @@ export class Helpers {
     public static parseBytecode(bytecode: string, hex: string, index: number) {
         const index16 = `0x${(index / 2).toString(16).padStart(4, '0')}`;
 
-        const opcode = EVM_OPCODES.get(hex);
+        const opcode = EVM_OPCODES.get(hex.toLowerCase());
 
         if (!opcode) {
             return {

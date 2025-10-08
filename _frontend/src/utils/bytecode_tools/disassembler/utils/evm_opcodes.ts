@@ -11,7 +11,7 @@ export interface EvmOpcode {
  * @evm_version CANCUN
  * @notice This list contains the latest OPCODEs introduced in CANCUN (https://www.evm.codes/?fork=cancun).
  */
-export const EVM_OPCODES = new Map<string, EvmOpcode>([
+export const EVM_OPCODES = new Map<string, EvmOpcode>(([
     ['00', {mnemonic: 'STOP', operand: 0}],
     ['01', {mnemonic: 'ADD', operand: 0}],
     ['02', {mnemonic: 'MUL', operand: 0}],
@@ -65,7 +65,7 @@ export const EVM_OPCODES = new Map<string, EvmOpcode>([
     ['47', {mnemonic: 'SELFBALANCE', operand: 0}],
     ['48', {mnemonic: 'BASEFEE', operand: 0}],
     ['49', {mnemonic: 'BLOBHASH', operand: 0}],
-    ['4A', {mnemonic: 'BLOBBASEFEE', operand: 0}],
+    ['4a', {mnemonic: 'BLOBBASEFEE', operand: 0}],
     ['50', {mnemonic: 'POP', operand: 0}],
     ['51', {mnemonic: 'MLOAD', operand: 0}],
     ['52', {mnemonic: 'MSTORE', operand: 0}],
@@ -160,5 +160,5 @@ export const EVM_OPCODES = new Map<string, EvmOpcode>([
     ['fa', {mnemonic: 'STATICCALL', operand: 0}],
     ['fd', {mnemonic: 'REVERT', operand: 0}],
     ['fe', {mnemonic: 'INVALID', operand: 0}],
-    ['ff', {mnemonic: 'SELFDESTRUCT', operand: 0}],
-]);
+    ['ff', {mnemonic: 'SELFDESTRUCT', operand: 0}]
+] as [string, EvmOpcode][]).map(([key, value]) => [key.toLowerCase(), value]));
