@@ -3,6 +3,7 @@
 import AccountDetails from "@/pages/AccountDetails.vue";
 import AccountDetails_Allowances from "@/pages/AccountDetails_Allowances.vue";
 import AccountDetails_Assets from "@/pages/AccountDetails_Assets.vue";
+import AccountDetails_Hooks from "@/pages/AccountDetails_Hooks.vue";
 import AccountDetails_Operations from "@/pages/AccountDetails_Operations.vue";
 import AccountDetails_Summary from "@/pages/AccountDetails_Summary.vue";
 import Accounts from "@/pages/Accounts.vue";
@@ -433,6 +434,15 @@ export const ACCOUNT_DETAILS_ROUTE: RouteRecordRaw = {
             component: AccountDetails_Allowances,
             meta: {
                 tabLabel: "Allowances"
+            }
+        },
+        {
+            path: 'hooks',
+            name: 'AccountDetails_Hooks',
+            props: true,
+            component: AccountDetails_Hooks,
+            meta: {
+                tabLabel: "Hooks"
             }
         },
     ],
