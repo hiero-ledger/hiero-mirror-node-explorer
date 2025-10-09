@@ -230,6 +230,20 @@ export class AppStorage {
     }
 
     //
+    // preferred tabs in account hooks section
+    //
+
+    private static readonly ACCOUNT_HOOKS_TAB_KEY = 'accountHooksTab'
+
+    static getAccountHooksTab() {
+        return this.getLocalStorageItem(this.ACCOUNT_HOOKS_TAB_KEY)
+    }
+
+    static setAccountHooksTab(newValue: string | null) {
+        this.setLocalStorageItem(this.ACCOUNT_HOOKS_TAB_KEY, newValue)
+    }
+
+    //
     // preferred tab in contract bytecode section
     //
 

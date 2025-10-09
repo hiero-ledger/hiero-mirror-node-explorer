@@ -202,6 +202,41 @@
           <StringValue :string-value="account?.ethereum_nonce?.toString()"/>
         </template>
       </Property>
+      <!--
+            Show only if there are hooks, which might be indicated either by new properties of the accounts endpoint
+            or (more likely) by calling the new hooks endpoint.
+      -->
+      <Property id="numOfHooks">
+        <template #name>Nb. of Hooks</template>
+        <template #value>
+          <div style="display: flex; align-items: baseline; gap: 16px;">
+            <StringValue :string-value="'2'"/>
+            <ArrowLink
+                v-if="normalizedAccountId"
+                id="showHooksList"
+                :is-contrasted="true"
+                :route="routeManager.makeRouteToAccount(normalizedAccountId, 'AccountDetails_Hooks', 'hooks')"
+                text="Hooks list"
+            />
+          </div>
+        </template>
+      </Property>
+      <Property id="numOfStorage">
+        <template #name>Nb. of Storage Slots</template>
+        <template #value>
+          <div style="display: flex; align-items: baseline; gap: 16px;">
+            <StringValue :string-value="'4'"/>
+            <ArrowLink
+                v-if="normalizedAccountId"
+                id="showHooksStorageTable"
+                :is-contrasted="true"
+                :route="routeManager.makeRouteToAccount(normalizedAccountId, 'AccountDetails_Hooks', 'storage')"
+                text="Hooks storage"
+            />
+          </div>
+        </template>
+      </Property>
+
     </template>
 
     <template #footer>
@@ -251,6 +286,7 @@ import PublicLabel from "@/components/values/PublicLabel.vue";
 import {PublicLabelsCache} from "@/utils/cache/PublicLabelsCache.ts";
 import {routeManager, walletManager} from "@/utils/RouteManager.ts";
 import MirrorLink from "@/components/MirrorLink.vue";
+import ArrowLink from "@/components/ArrowLink.vue";
 
 const props = defineProps({
   accountId: String,
@@ -338,8 +374,7 @@ const onUpdateCompleted = () => accountLocParser.remount()
 const isMyAccount = computed(() => walletManager.accountId.value === props.accountId)
 const walletIconURL = computed(() => (isMyAccount.value) ? walletManager.walletIconURL.value || "" : "")
 const isHieroWallet = computed(() => walletManager.isHieroWallet.value)
-const isAccountEditable = computed(() => isMyAccount.value && isHieroWallet.value
-)
+const isAccountEditable = computed(() => isMyAccount.value && isHieroWallet.value)
 
 const hbarBalance = balanceAnalyzer.hbarBalance
 const isInactiveEvmAddress = accountLocParser.isInactiveEvmAddress
