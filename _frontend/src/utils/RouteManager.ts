@@ -249,11 +249,13 @@ export class RouteManager {
 
     public readonly accountDetailsOperator = new RouteOperator(ACCOUNT_DETAILS_ROUTE, this)
 
-    public makeRouteToAccount(accountId: string, tabId: string | null = null): RouteLocationRaw {
+    public makeRouteToAccount(accountId: string, tabId: string | null = null, subTab: string | null = null): RouteLocationRaw {
         const targetTabId = tabId ?? this.accountDetailsOperator.defaultTabId
+        const query = subTab !== null ? {'subtab': subTab} : undefined
         return {
             name: targetTabId,
-            params: {accountId: accountId, network: this.currentNetwork.value}
+            params: {accountId: accountId, network: this.currentNetwork.value},
+            query: query
         }
     }
 
