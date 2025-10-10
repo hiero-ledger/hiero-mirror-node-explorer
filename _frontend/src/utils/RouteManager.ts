@@ -121,18 +121,13 @@ export class RouteManager {
 
     public readonly hgraphURL = computed(() => {
         let result: string | null
-        const hgraphKey = this.hgraphKey.value
         switch (this.currentNetworkEntry.value.url) {
             case "https://mainnet-public.mirrornode.hedera.com/":
             case "https://mainnet.mirrornode.hedera.com/":
-                result = hgraphKey !== null
-                    ? "https://mainnet.hedera.api.hgraph.io/v1/graphql"
-                    : "https://mainnet.hedera.api.hgraph.dev/v1/graphql"
+                result = "https://mainnet.hedera.api.hgraph.io/v1/graphql"
                 break
             case "https://testnet.mirrornode.hedera.com/":
-                result = hgraphKey !== null
-                    ? "https://testnet.hedera.api.hgraph.io/v1/graphql"
-                    : "https://testnet.hedera.api.hgraph.dev/v1/graphql"
+                result = "https://testnet.hedera.api.hgraph.io/v1/graphql"
                 break
             default:
                 result = null
