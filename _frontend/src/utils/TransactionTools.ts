@@ -146,6 +146,10 @@ export function makeTypeLabel(type: TransactionType | undefined): string {
             result = "Freeze";
             break;
 
+        case TransactionType.LAMBDASSTORE:
+            result = "LambdaSStore";
+            break;
+
         case TransactionType.NODECREATE:
             result = "Node Create";
             break;
