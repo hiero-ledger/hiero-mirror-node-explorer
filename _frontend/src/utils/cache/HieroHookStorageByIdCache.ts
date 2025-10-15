@@ -20,6 +20,7 @@ export class HieroHookStorageByIdCache extends EntityCache<string, HieroHookStor
     //
     // Cache
     //
+    // eslint-disable-next-line max-lines-per-function
     protected async load(key: string): Promise<HieroHookStorage[] | null> {
         console.log("HieroHookStorageByIdCache.load", key)
         const accountAndHookId = key.split("---")
