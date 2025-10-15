@@ -203,7 +203,7 @@
       </Property>
       <template v-if="nbOfHooks">
         <Property id="numOfHooks">
-          <template #name>Nb. of Hooks</template>
+          <template #name>Number of Hooks</template>
           <template #value>
             <div style="display: flex; align-items: baseline; gap: 16px;">
               <PlainAmount :amount="nbOfHooks"/>
@@ -218,7 +218,7 @@
           </template>
         </Property>
         <Property id="numOfStorage">
-          <template #name>Nb. of Storage Slots</template>
+          <template #name>Number of Storage Slots</template>
           <template #value>
             <div style="display: flex; align-items: baseline; gap: 16px;">
               <PlainAmount :amount="nbOfSlots"/>
