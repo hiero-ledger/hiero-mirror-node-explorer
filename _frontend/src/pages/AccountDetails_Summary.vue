@@ -71,7 +71,6 @@
     </template>
 
     <template #left-content>
-
       <Property id="balance">
         <template #name>
           Balance
@@ -202,41 +201,38 @@
           <StringValue :string-value="account?.ethereum_nonce?.toString()"/>
         </template>
       </Property>
-      <!--
-            Show only if there are hooks, which might be indicated either by new properties of the accounts endpoint
-            or (more likely) by calling the new hooks endpoint.
-      -->
-      <Property id="numOfHooks">
-        <template #name>Nb. of Hooks</template>
-        <template #value>
-          <div style="display: flex; align-items: baseline; gap: 16px;">
-            <PlainAmount :amount="nbOfHooks"/>
-            <ArrowLink
-                v-if="normalizedAccountId"
-                id="showHooksList"
-                :is-contrasted="true"
-                :route="routeManager.makeRouteToAccount(normalizedAccountId, 'AccountDetails_Hooks', 'hooks')"
-                text="Hooks list"
-            />
-          </div>
-        </template>
-      </Property>
-      <Property id="numOfStorage">
-        <template #name>Nb. of Storage Slots</template>
-        <template #value>
-          <div style="display: flex; align-items: baseline; gap: 16px;">
-            <PlainAmount :amount="nbOfSlots"/>
-            <ArrowLink
-                v-if="normalizedAccountId"
-                id="showHooksStorageTable"
-                :is-contrasted="true"
-                :route="routeManager.makeRouteToAccount(normalizedAccountId, 'AccountDetails_Hooks', 'storage')"
-                text="Hooks storage"
-            />
-          </div>
-        </template>
-      </Property>
-
+      <template v-if="nbOfHooks">
+        <Property id="numOfHooks">
+          <template #name>Nb. of Hooks</template>
+          <template #value>
+            <div style="display: flex; align-items: baseline; gap: 16px;">
+              <PlainAmount :amount="nbOfHooks"/>
+              <ArrowLink
+                  v-if="normalizedAccountId"
+                  id="showHooksList"
+                  :is-contrasted="true"
+                  :route="routeManager.makeRouteToAccount(normalizedAccountId, 'AccountDetails_Hooks', 'hooks')"
+                  text="Hooks list"
+              />
+            </div>
+          </template>
+        </Property>
+        <Property id="numOfStorage">
+          <template #name>Nb. of Storage Slots</template>
+          <template #value>
+            <div style="display: flex; align-items: baseline; gap: 16px;">
+              <PlainAmount :amount="nbOfSlots"/>
+              <ArrowLink
+                  v-if="normalizedAccountId"
+                  id="showHooksStorageTable"
+                  :is-contrasted="true"
+                  :route="routeManager.makeRouteToAccount(normalizedAccountId, 'AccountDetails_Hooks', 'storage')"
+                  text="Hooks storage"
+              />
+            </div>
+          </template>
+        </Property>
+      </template>
     </template>
 
     <template #footer>
