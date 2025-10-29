@@ -292,7 +292,7 @@ describe("TopicDetails.vue", () => {
         // console.log(wrapper.html())
         // console.log(wrapper.text())
 
-        expect(wrapper.get("#notificationBanner").text()).toBe("Invalid topic ID: " + invalidTopicId)
+        expect(wrapper.get("#notificationBanner").text()).toBe("Invalid topic ID")
 
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/network/exchangerate",

@@ -82,7 +82,7 @@ const pageTitle = computed(() =>
 const notification = computed(() => {
   let result
   if (!validEntityId.value) {
-    result = "Invalid topic ID: " + props.topicId
+    result = "Invalid topic ID"
   } else if (topicLookup.entity.value === null) {
     if (topicLookup.isLoaded.value) {
       result = "Topic with ID " + props.topicId + " was not found"
