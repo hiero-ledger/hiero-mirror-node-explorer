@@ -60,7 +60,7 @@ export class BlockLocParser {
                     }
                 }
             } else {
-                result = "Invalid block number or hash: " + l
+                result = "Invalid block number or hash"
             }
         } else {
             result = null

@@ -409,14 +409,14 @@ describe("BlockLocParser.ts", () => {
         expect(parser.blockNumber.value).toBeNull()
         expect(parser.blockCount.value).toBeNull()
         expect(parser.toTimestamp.value).toBeNull()
-        expect(parser.errorNotification.value).toBe("Invalid block number or hash: dummy block loc")
+        expect(parser.errorNotification.value).toBe("Invalid block number or hash")
         await flushPromises()
         expect(parser.blockLoc.value).toBe(DUMMY_LOC)
         expect(parser.block.value).toBeNull()
         expect(parser.blockNumber.value).toBeNull()
         expect(parser.blockCount.value).toBeNull()
         expect(parser.toTimestamp.value).toBeNull()
-        expect(parser.errorNotification.value).toBe("Invalid block number or hash: dummy block loc")
+        expect(parser.errorNotification.value).toBe("Invalid block number or hash")
 
         // 3) Unsets
         blockLoc.value = null

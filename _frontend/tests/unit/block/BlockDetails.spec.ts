@@ -333,7 +333,7 @@ describe("BlockDetails.vue", () => {
         ])
 
         const banner = wrapper.findComponent(NotificationBanner)
-        expect(banner.text()).toBe("Invalid block number or hash: " + INVALID_BLOCK_NUMBER)
+        expect(banner.text()).toBe("Invalid block number or hash")
 
         expect(wrapper.get("#countValue").text()).toBe("None")
         expect(wrapper.get("#blockHashValue").text()).toBe("None")
@@ -371,7 +371,7 @@ describe("BlockDetails.vue", () => {
         ])
 
         const banner = wrapper.findComponent(NotificationBanner)
-        expect(banner.text()).toBe("Invalid block number or hash: " + INVALID_BLOCK_HASH)
+        expect(banner.text()).toBe("Invalid block number or hash")
 
         expect(wrapper.get("#countValue").text()).toBe("None")
         expect(wrapper.get("#blockHashValue").text()).toBe("None")
