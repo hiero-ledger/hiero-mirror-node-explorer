@@ -69,7 +69,7 @@ export class ContractLocParser {
                     result = null
                 }
             } else {
-                result = "Invalid contract ID or address: " + l
+                result = "Invalid contract ID or address"
             }
         } else {
             result = null

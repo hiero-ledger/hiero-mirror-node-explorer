@@ -661,7 +661,7 @@ describe("ContractDetails.vue", () => {
             "api/v1/tokens/" + invalidContractId,
         ])
 
-        expect(wrapper.get("#notificationBanner").text()).toBe("Invalid contract ID or address: " + invalidContractId)
+        expect(wrapper.get("#notificationBanner").text()).toBe("Invalid contract ID or address")
 
         wrapper.unmount()
         await flushPromises()

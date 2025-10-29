@@ -378,13 +378,13 @@ describe("ContractLocParser.ts", () => {
         expect(parser.contractResponse.value).toBeNull()
         expect(parser.contractId.value).toBeNull()
         expect(parser.ethereumAddress.value).toBeNull()
-        expect(parser.errorNotification.value).toBe("Invalid contract ID or address: " + DUMMY_LOC)
+        expect(parser.errorNotification.value).toBe("Invalid contract ID or address")
         await flushPromises()
         expect(parser.contractLoc.value).toBe(DUMMY_LOC)
         expect(parser.contractResponse.value).toBeNull()
         expect(parser.contractId.value).toBeNull()
         expect(parser.ethereumAddress.value).toBeNull()
-        expect(parser.errorNotification.value).toBe("Invalid contract ID or address: " + DUMMY_LOC)
+        expect(parser.errorNotification.value).toBe("Invalid contract ID or address")
 
         // 3) Unsets
         contractLoc.value = null
