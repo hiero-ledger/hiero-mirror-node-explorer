@@ -248,7 +248,7 @@ const stakeUnrewardedPercentage = computed(() =>
 const notification = computed(() => {
   let result: string | null
   if (!loading.value && node.value === null) {
-    result = "Node with ID " + props.nodeId + " was not found"
+    result = "Invalid Node ID"
   } else {
     result = null
   }
