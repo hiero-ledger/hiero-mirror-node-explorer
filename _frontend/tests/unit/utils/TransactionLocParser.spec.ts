@@ -742,14 +742,14 @@ describe("TransactionLocParser.ts", () => {
         expect(parser.transactionId.value).toBeNull()
         expect(parser.consensusTimestamp.value).toBeNull()
         expect(parser.transactionHash.value).toBeNull()
-        expect(parser.errorNotification.value).toBe("Invalid transaction id, timestamp or hash: " + DUMMY_LOC)
+        expect(parser.errorNotification.value).toBe("Invalid transaction id, timestamp or hash")
         await flushPromises()
         expect(parser.transactionLoc.value).toBe(DUMMY_LOC)
         expect(parser.transaction.value).toBeNull()
         expect(parser.transactionId.value).toBeNull()
         expect(parser.consensusTimestamp.value).toBeNull()
         expect(parser.transactionHash.value).toBeNull()
-        expect(parser.errorNotification.value).toBe("Invalid transaction id, timestamp or hash: " + DUMMY_LOC)
+        expect(parser.errorNotification.value).toBe("Invalid transaction id, timestamp or hash")
 
         // 3) Unsets
         transactionLoc.value = null

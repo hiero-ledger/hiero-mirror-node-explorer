@@ -238,7 +238,7 @@ describe("NodeDetails.vue", () => {
             "api/v1/network/stake",
         ])
 
-        expect(wrapper.text()).toMatch(RegExp("Node with ID " + UNKNOWN_ID + " was not found"))
+        expect(wrapper.text()).toMatch(RegExp("Invalid Node ID"))
         expect(wrapper.get("#adminKeyValue").text()).toBe("None")
         expect(wrapper.get("#nodeAccountValue").text()).toBe("None")
         expect(wrapper.get("#descriptionValue").text()).toBe("None")

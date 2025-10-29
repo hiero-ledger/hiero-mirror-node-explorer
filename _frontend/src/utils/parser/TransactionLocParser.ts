@@ -81,7 +81,7 @@ export class TransactionLocParser {
                     result = null
                 }
             } else {
-                result = "Invalid transaction id, timestamp or hash: " + this.transactionLoc.value
+                result = "Invalid transaction id, timestamp or hash"
             }
         } else {
             result = null

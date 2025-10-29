@@ -100,7 +100,7 @@ onBeforeUnmount(() => metadataAnalyzer.unmount())
 const notification = computed(() => {
   let result
   if (!validEntityId.value) {
-    result = "Invalid token ID: " + props.tokenId
+    result = "Invalid token ID"
   } else if (nftLookup.entity.value == null) {
     if (nftLookup.isLoaded.value) {
       result =
