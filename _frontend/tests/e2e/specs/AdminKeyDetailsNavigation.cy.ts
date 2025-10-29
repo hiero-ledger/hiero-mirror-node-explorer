@@ -45,6 +45,6 @@ describe('AdminKeyDetails Navigation', () => {
 
         cy.get('[id=notificationBanner]')
             .find('div')
-            .contains('Invalid account ID, address or alias: ' + invalidID)
+            .contains('Invalid account ID, address or alias')
     })
 })

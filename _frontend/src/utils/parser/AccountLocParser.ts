@@ -155,7 +155,7 @@ export class AccountLocParser {
                     result = null
                 }
             } else {
-                result = "Invalid account ID, address or alias: " + l
+                result = "Invalid account ID, address or alias"
             }
         } else {
             result = null

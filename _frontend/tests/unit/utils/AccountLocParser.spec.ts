@@ -1272,7 +1272,7 @@ describe("AccountLocParser.ts", () => {
         expect(parser.accountDescription.value).toBeNull()
         expect(parser.nodeId.value).toBeNull()
         expect(parser.ethereumAddress.value).toBeNull()
-        expect(parser.errorNotification.value).toBe("Invalid account ID, address or alias: dummy loc")
+        expect(parser.errorNotification.value).toBe("Invalid account ID, address or alias")
         await flushPromises()
         expect(parser.accountLoc.value).toBe(DUMMY_LOC)
         expect(parser.accountInfo.value).toBeNull()
@@ -1289,7 +1289,7 @@ describe("AccountLocParser.ts", () => {
         expect(parser.accountDescription.value).toBeNull()
         expect(parser.nodeId.value).toBeNull()
         expect(parser.ethereumAddress.value).toBeNull()
-        expect(parser.errorNotification.value).toBe("Invalid account ID, address or alias: dummy loc")
+        expect(parser.errorNotification.value).toBe("Invalid account ID, address or alias")
 
         // 3) Unsets
         accountLoc.value = null

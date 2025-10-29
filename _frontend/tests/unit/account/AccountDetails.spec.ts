@@ -358,7 +358,7 @@ describe("AccountDetails.vue", () => {
             "api/v1/network/nodes",
         ])
 
-        expect(wrapper.get("#notificationBanner").text()).toBe("Invalid account ID, address or alias: " + invalidAccountId)
+        expect(wrapper.get("#notificationBanner").text()).toBe("Invalid account ID, address or alias")
 
         wrapper.unmount()
         await flushPromises()
