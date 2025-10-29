@@ -400,7 +400,7 @@ describe("TokenDetails.vue", () => {
             "api/v1/network/nodes",
         ])
 
-        expect(wrapper.get("#notificationBanner").text()).toBe("Invalid token ID: " + invalidTokenId)
+        expect(wrapper.get("#notificationBanner").text()).toBe("Invalid token ID")
 
         wrapper.unmount()
         await flushPromises()

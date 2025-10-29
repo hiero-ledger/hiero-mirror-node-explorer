@@ -95,7 +95,7 @@ onBeforeUnmount(() => tokenLookup.unmount())
 const notification = computed(() => {
   let result
   if (!validEntityId.value) {
-    result = "Invalid token ID: " + props.tokenId
+    result = "Invalid token ID"
   } else if (tokenLookup.entity.value == null) {
     if (tokenLookup.isLoaded.value) {
       result = "Token with ID " + props.tokenId + " was not found"
