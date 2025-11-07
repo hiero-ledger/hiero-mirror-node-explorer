@@ -33,6 +33,16 @@
       </div>
     </template>
 
+    <template v-else-if="selectedTab === 'creation'">
+      <div id="creation-bytecode" class="code-pane">
+        <ByteCodeValue
+            class="h-code-box h-code-source"
+            :byte-code="props.creationByteCode ?? undefined"
+            :scroll-bar="false"
+        />
+      </div>
+    </template>
+
     <template v-else>
       <div id="assembly-code" class="code-pane">
         <DisassembledCodeValue
@@ -52,7 +62,7 @@
 
 <script setup lang="ts">
 
-import {PropType, ref} from 'vue';
+import {onMounted, PropType, ref, watch} from 'vue';
 import "prismjs/prism";
 import "prismjs/themes/prism-tomorrow.css"
 import "prismjs/prism.js";
@@ -67,16 +77,19 @@ const props = defineProps({
   byteCode: {
     type: String as PropType<string | null>,
     default: null
+  },
+  creationByteCode: {
+    type: String as PropType<string | null>,
+    default: null
   }
 })
 
-const showHexaOpcode = defineModel("showHexaOpcode", {
-  type: Boolean,
-  default: false
-})
+const showHexaOpcode = ref(false)
+onMounted(() => showHexaOpcode.value = AppStorage.getShowHexaOpcode())
+watch(showHexaOpcode, () => AppStorage.setShowHexaOpcode(showHexaOpcode.value ? showHexaOpcode.value : null))
 
-const tabIds = ['runtime', 'assembly']
-const tabLabels = ['Runtime Bytecode', 'Assembly Bytecode']
+const tabIds = ['runtime', 'creation', 'assembly']
+const tabLabels = ['Runtime Bytecode', 'Creation Bytecode', 'Assembly Bytecode']
 const selectedTab = ref<string | null>(AppStorage.getContractByteCodeTab() ?? tabIds[0])
 const handleTabUpdate = (tab: string | null) => {
   selectedTab.value = tab

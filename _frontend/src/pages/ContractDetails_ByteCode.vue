@@ -26,7 +26,7 @@
         </template>
       </Property>
       <hr class="horizontal-line">
-      <ContractByteCodeValue :byte-code="byteCode" :show-hexa-opcode="showHexaOpcode"/>
+      <ContractByteCodeValue :byte-code="byteCode" :creation-byte-code="creationByteCode"/>
     </template>
 
   </DashboardCardV2>
@@ -39,12 +39,11 @@
 
 <script setup lang="ts">
 
-import {computed, onBeforeUnmount, onMounted, ref, watch} from "vue";
+import {computed, onBeforeUnmount, onMounted} from "vue";
 import ContractByteCodeValue from "@/components/values/ContractByteCodeValue.vue";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import Property from "@/components/Property.vue";
 import StringValue from "@/components/values/StringValue.vue";
-import {AppStorage} from "@/AppStorage.ts";
 import {ContractAnalyzer} from "@/utils/analyzer/ContractAnalyzer.ts";
 import ContractSectionTitle from "@/components/contract/ContractSectionTitle.vue";
 
@@ -58,13 +57,10 @@ const contractAnalyzer = new ContractAnalyzer(contractId)
 onMounted(() => contractAnalyzer.mount())
 onBeforeUnmount(() => contractAnalyzer.unmount())
 const byteCode = contractAnalyzer.byteCode
+const creationByteCode = contractAnalyzer.creationByteCode
 const isVerified = contractAnalyzer.isVerified
 const solcVersion = contractAnalyzer.solcVersion
 const evmVersion = contractAnalyzer.evmVersion
-
-const showHexaOpcode = ref(false)
-onMounted(() => showHexaOpcode.value = AppStorage.getShowHexaOpcode())
-watch(showHexaOpcode, () => AppStorage.setShowHexaOpcode(showHexaOpcode.value ? showHexaOpcode.value : null))
 
 </script>
 
