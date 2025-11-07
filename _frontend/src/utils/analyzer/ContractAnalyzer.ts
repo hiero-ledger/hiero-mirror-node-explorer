@@ -201,6 +201,10 @@ export class ContractAnalyzer {
         return this.report.value?.contractInfo?.runtime_bytecode ?? null
     })
 
+    public readonly creationByteCode: ComputedRef<string | null> = computed(() => {
+        return this.report.value?.contractInfo?.bytecode ?? null
+    })
+
     //
     // Public (null if contractId is not on Sourcify)
     //
