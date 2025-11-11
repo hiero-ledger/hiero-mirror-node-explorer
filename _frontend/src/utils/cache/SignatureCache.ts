@@ -63,7 +63,7 @@ export interface SignatureRecord {
     bytes_signature: string
 }
 
-export function sortSignatureRecordById(r1: SignatureRecord, r2: SignatureRecord): number {
+export const sortSignatureRecordById = (r1: SignatureRecord, r2: SignatureRecord): number => {
     let result: number
     if (r1.id < r2.id) {
         result = -1
