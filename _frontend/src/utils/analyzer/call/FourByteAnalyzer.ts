@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import {Ref, shallowRef, watch, WatchStopHandle} from "vue";
-import {SignatureCache, SignatureRecord} from "@/utils/cache/SignatureCache.ts";
+import {SignatureCache, SignatureRecord, sortSignatureRecordById} from "@/utils/cache/SignatureCache.ts";
 import {ethers} from "ethers";
 
 export class FourByteAnalyzer {
@@ -73,7 +73,7 @@ export class FourByteAnalyzer {
         // We select the first signature which enables to decode inputArgs.
         //
         let result: SignatureRecord | null = null
-        for (const r of records) {
+        for (const r of records.sort(sortSignatureRecordById)) {
             try {
                 const ff = ethers.FunctionFragment.from(r.text_signature)
                 const decodedArgs = ethers.AbiCoder.defaultAbiCoder().decode(ff.inputs, callParams)
