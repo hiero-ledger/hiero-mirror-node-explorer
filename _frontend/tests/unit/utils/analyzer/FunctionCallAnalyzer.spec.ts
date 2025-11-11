@@ -605,6 +605,109 @@ describe("FunctionCallAnalyzer.spec.ts", () => {
 
     })
 
+    test("Call with signature declared on 4bytes.directory (v2)", async () => {
+
+        SignatureCache.instance.clear()
+
+        const functionHash = "0x095ea7b3"
+        const mock = new MockAdapter(axios as any);
+        const matcher1 = "https://www.4byte.directory/api/v1/signatures/?format=json&hex_signature=" + functionHash
+        mock.onGet(matcher1).reply(200, BYTES4_RESPONSE_V2)
+
+        // 1) new
+        const input: Ref<string | null> = ref(null)
+        const output: Ref<string | null> = ref(null)
+        const error: Ref<string | null> = ref(null)
+        const revertReason: Ref<string | null> = ref(null)
+        const contractId: Ref<string | null> = ref(null)
+        const functionCallAnalyzer = new FunctionCallAnalyzer(input, output, error, revertReason, contractId)
+        await flushPromises()
+        expect(fetchGetURLs(mock)).toStrictEqual([])
+        expect(functionCallAnalyzer.functionHash.value).toBeNull()
+        expect(functionCallAnalyzer.signature.value).toBeNull()
+        expect(functionCallAnalyzer.inputs.value).toStrictEqual([])
+        expect(functionCallAnalyzer.outputs.value).toStrictEqual([])
+        expect(functionCallAnalyzer.errorHash.value).toBeNull()
+        expect(functionCallAnalyzer.errorSignature.value).toBeNull()
+        expect(functionCallAnalyzer.errorInputs.value).toStrictEqual([])
+        expect(functionCallAnalyzer.inputDecodingStatus.value).toBeNull()
+        expect(functionCallAnalyzer.outputDecodingStatus.value).toBeNull()
+        expect(functionCallAnalyzer.errorDecodingStatus.value).toBeNull()
+        expect(functionCallAnalyzer.inputArgsOnly.value).toBeNull()
+        expect(functionCallAnalyzer.is4byteSignature.value).toBe(false)
+
+        // 2) mount
+        functionCallAnalyzer.mount()
+        await flushPromises()
+        expect(fetchGetURLs(mock)).toStrictEqual([])
+        expect(functionCallAnalyzer.functionHash.value).toBeNull()
+        expect(functionCallAnalyzer.signature.value).toBeNull()
+        expect(functionCallAnalyzer.inputs.value).toStrictEqual([])
+        expect(functionCallAnalyzer.outputs.value).toStrictEqual([])
+        expect(functionCallAnalyzer.errorHash.value).toBeNull()
+        expect(functionCallAnalyzer.errorSignature.value).toBeNull()
+        expect(functionCallAnalyzer.errorInputs.value).toStrictEqual([])
+        expect(functionCallAnalyzer.inputDecodingStatus.value).toBeNull()
+        expect(functionCallAnalyzer.outputDecodingStatus.value).toBeNull()
+        expect(functionCallAnalyzer.errorDecodingStatus.value).toBeNull()
+        expect(functionCallAnalyzer.inputArgsOnly.value).toBeNull()
+        expect(functionCallAnalyzer.is4byteSignature.value).toBe(false)
+
+        // 3) setup
+        input.value = "0x095ea7b3000000000000000000000000113a5b705ffb98b333d6096d510fac6ba2192612000000000000000000000000000000000000000000000000000000000000000e"
+        output.value = "0x"
+        error.value = "0x7e273289000000000000000000000000000000000000000000000000000000000000000e"
+        contractId.value = "0.0.7232275"
+        await flushPromises()
+        expect(fetchGetURLs(mock)).toStrictEqual([
+            "api/v1/contracts/0.0.7232275",
+            "api/v1/tokens/0.0.7232275",
+            "https://www.4byte.directory/api/v1/signatures/?format=json&hex_signature=0x095ea7b3",
+        ])
+        expect(functionCallAnalyzer.functionHash.value).toBe("0x095ea7b3")
+        expect(functionCallAnalyzer.signature.value).toBe("function approve(address, uint256)")
+        expect(functionCallAnalyzer.inputs.value).toStrictEqual([
+            new NameTypeValue("", "address", "0x113a5b705FFb98b333D6096D510fAC6bA2192612", null, null),
+            new NameTypeValue("", "uint256", 14n, null, null),
+        ])
+
+        expect(functionCallAnalyzer.outputs.value).toStrictEqual([])
+        expect(functionCallAnalyzer.errorHash.value).toBeNull()
+        expect(functionCallAnalyzer.errorSignature.value).toBeNull()
+        expect(functionCallAnalyzer.errorInputs.value).toStrictEqual([])
+        expect(functionCallAnalyzer.inputDecodingStatus.value).toBeNull()
+        expect(functionCallAnalyzer.outputDecodingStatus.value).toBeNull()
+        expect(functionCallAnalyzer.errorDecodingStatus.value).toBeNull()
+        expect(functionCallAnalyzer.inputArgsOnly.value).toBe("0x000000000000000000000000113a5b705ffb98b333d6096d510fac6ba2192612000000000000000000000000000000000000000000000000000000000000000e")
+        expect(functionCallAnalyzer.is4byteSignature.value).toBe(true)
+
+
+        // 4) unmount
+        functionCallAnalyzer.unmount()
+        await flushPromises()
+        expect(fetchGetURLs(mock)).toStrictEqual([
+            "api/v1/contracts/0.0.7232275",
+            "api/v1/tokens/0.0.7232275",
+            "https://www.4byte.directory/api/v1/signatures/?format=json&hex_signature=0x095ea7b3",
+        ])
+        expect(functionCallAnalyzer.functionHash.value).toBe("0x095ea7b3")
+        expect(functionCallAnalyzer.signature.value).toBeNull()
+        expect(functionCallAnalyzer.inputs.value).toStrictEqual([])
+        expect(functionCallAnalyzer.outputs.value).toStrictEqual([])
+        expect(functionCallAnalyzer.errorHash.value).toBeNull()
+        expect(functionCallAnalyzer.errorSignature.value).toBeNull()
+        expect(functionCallAnalyzer.errorInputs.value).toStrictEqual([])
+        expect(functionCallAnalyzer.inputDecodingStatus.value).toBeNull()
+        expect(functionCallAnalyzer.outputDecodingStatus.value).toBeNull()
+        expect(functionCallAnalyzer.errorDecodingStatus.value).toBeNull()
+        expect(functionCallAnalyzer.inputArgsOnly.value).toBe("0x000000000000000000000000113a5b705ffb98b333d6096d510fac6ba2192612000000000000000000000000000000000000000000000000000000000000000e")
+        expect(functionCallAnalyzer.is4byteSignature.value).toBe(false)
+
+        mock.restore()
+
+
+    })
+
     test("Call with redirectForToken()", async () => {
 
         const mock = new MockAdapter(axios as any)
@@ -957,6 +1060,42 @@ const BYTES4_RESPONSE = {
             "text_signature": "addLiquidityETH(address,uint256,uint256,uint256,address,uint256)",
             "hex_signature": "0xf305d719",
             "bytes_signature": "ó\u0005×\u0019"
+        }
+    ]
+}
+
+const BYTES4_RESPONSE_V2 = {
+    "count": 4,
+    "next": null,
+    "previous": null,
+    "results": [
+        {
+            "id": 1065300,
+            "created_at": "2023-06-17T14:00:15.313418Z",
+            "text_signature": "_SIMONdotBLACK_(int8[],int224[],int256,int64,uint248[])",
+            "hex_signature": "0x095ea7b3",
+            "bytes_signature": "\t^§³"
+        },
+        {
+            "id": 844301,
+            "created_at": "2022-08-26T12:23:08.868372Z",
+            "text_signature": "watch_tg_invmru_2f69f1b(address,address)",
+            "hex_signature": "0x095ea7b3",
+            "bytes_signature": "\t^§³"
+        },
+        {
+            "id": 165138,
+            "created_at": "2019-09-10T17:02:48.483924Z",
+            "text_signature": "sign_szabo_bytecode(bytes16,uint128)",
+            "hex_signature": "0x095ea7b3",
+            "bytes_signature": "\t^§³"
+        },
+        {
+            "id": 149,
+            "created_at": "2016-07-09T03:58:29.617584Z",
+            "text_signature": "approve(address,uint256)",
+            "hex_signature": "0x095ea7b3",
+            "bytes_signature": "\t^§³"
         }
     ]
 }
