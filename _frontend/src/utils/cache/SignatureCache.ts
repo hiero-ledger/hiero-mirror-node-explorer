@@ -62,3 +62,15 @@ export interface SignatureRecord {
     hex_signature: string,
     bytes_signature: string
 }
+
+export const sortSignatureRecordById = (r1: SignatureRecord, r2: SignatureRecord): number => {
+    let result: number
+    if (r1.id < r2.id) {
+        result = -1
+    } else if (r1.id > r2.id) {
+        result = +1
+    } else {
+        result = 0
+    }
+    return result
+}
