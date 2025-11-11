@@ -710,6 +710,8 @@ describe("FunctionCallAnalyzer.spec.ts", () => {
 
     test("Call with redirectForToken()", async () => {
 
+        SignatureCache.instance.clear()
+
         const mock = new MockAdapter(axios as any)
 
         // 1) new
@@ -767,7 +769,7 @@ describe("FunctionCallAnalyzer.spec.ts", () => {
         expect(functionCallAnalyzer.signature.value).toBe("function redirectForToken(address token, bytes encodedFunctionSelector) returns (int64 responseCode, bytes response)")
         expect(functionCallAnalyzer.inputs.value).toStrictEqual([
             new NameTypeValue("token", "address", "0x0000000000000000000000000000000000163b5a", null, null),
-            new NameTypeValue("encodedFunctionSelector", "bytes", "0x095ea7b300000000000000000000000000000000000000000000000000000000003c437a0000000000000000000000000000000000000000000000008ac7230489e80000", null, null)
+            new NameTypeValue("encodedFunctionSelector", "bytes", "0x095ea7b300000000000000000000000000000000000000000000000000000000003c437a0000000000000000000000000000000000000000000000008ac7230489e80000", null, null),
         ])
         expect(functionCallAnalyzer.outputs.value).toStrictEqual([])
         expect(functionCallAnalyzer.errorHash.value).toBeNull()
