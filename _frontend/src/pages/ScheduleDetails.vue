@@ -153,6 +153,7 @@ import HexaValue from "@/components/values/HexaValue.vue";
 import {proto} from "@hashgraph/proto";
 import {loadingKey} from "@/AppKeys.ts";
 import {routeManager} from "@/utils/RouteManager.ts";
+import {EntityID} from "@/utils/EntityID.ts";
 
 const props = defineProps({
   scheduleId: String,
@@ -163,8 +164,10 @@ const loading = inject(loadingKey, ref(false))
 
 const notification = computed(() => {
   let result: string | null
-  if (!loading.value && schedule.value === null) {
-    result = "Schedule with ID " + props.scheduleId + " was not found"
+  if (!loading.value && scheduleId.value === null) {
+      result = "Invalid schedule ID"
+  } else if (!loading.value && schedule.value === null) {
+    result = "Schedule with ID " + scheduleId.value + " was not found"
   } else {
     result = null
   }
@@ -187,7 +190,10 @@ const hexaFormat = (b64encoding: string) => {
   return b64encoding ? byteToHex(base64Decode(b64encoding)) : null
 }
 
-const scheduleId = computed(() => props.scheduleId ?? null);
+const scheduleId = computed(() => {
+  const entityId =  EntityID.parse(props.scheduleId ?? '')
+  return entityId ? entityId.toString() : null
+});
 const scheduleLookup = ScheduleByIdCache.instance.makeLookup(scheduleId)
 const schedule = scheduleLookup.entity
 onMounted(() => scheduleLookup.mount())
