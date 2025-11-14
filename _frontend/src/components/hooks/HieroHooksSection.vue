@@ -64,8 +64,6 @@ const onUpdate = (tab: string | null) => {
 
 onBeforeMount(() => {
   const tabQuery = route.query.subtab; // Access the `tab` query parameter
-  console.log(`HieroHooksSection: tabQuery: ${JSON.stringify(tabQuery)}`)
-  console.log(`HieroHooksSection: tabQuery: ${typeof tabQuery}`)
 
   if (tabQuery && typeof tabQuery === 'string') {
     onUpdate(tabQuery)

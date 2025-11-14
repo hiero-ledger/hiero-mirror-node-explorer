@@ -77,15 +77,15 @@
 
 import {inject, PropType} from "vue";
 import Property from "@/components/Property.vue";
-import {HieroHook} from "@/utils/cache/HieroHooksByAccountIdCache.ts";
 import KeyValue from "@/components/values/KeyValue.vue";
 import TimestampValue from "@/components/values/TimestampValue.vue";
 import ContractLink from "@/components/values/link/ContractLink.vue";
 import AccountLink from "@/components/values/link/AccountLink.vue";
+import {Hook} from "@/schemas/MirrorNodeSchemas.ts";
 
 const props = defineProps({
   hook: {
-    type: Object as PropType<HieroHook | null>,
+    type: Object as PropType<Hook | null>,
     default: null
   },
 })
