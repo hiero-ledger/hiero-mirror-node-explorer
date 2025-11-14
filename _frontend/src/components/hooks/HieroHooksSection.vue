@@ -13,20 +13,33 @@
     </template>
 
     <template #content>
-      <Tabs
-          :selected-tab="selectedTab"
-          :tab-ids="tabIds"
-          :tabLabels="tabLabels"
-          @update:selected-tab="onUpdate($event)"
-      />
+      <template v-if="nbHooks > 0">
+        <Tabs
+            :selected-tab="selectedTab"
+            :tab-ids="tabIds"
+            :tabLabels="tabLabels"
+            @update:selected-tab="onUpdate($event)"
+        />
 
-      <div v-if="selectedTab === 'hooks'" id="hooks-table">
-        <HieroHooksList :account-id="props.accountId"/>
-      </div>
+        <div v-if="selectedTab === 'hooks'" id="hooks-table">
+          <HieroHooksList
+              v-model:nb-hooks="nbHooks"
+              :account-id="props.accountId"
+          />
+        </div>
 
-      <div v-else-if="selectedTab === 'storage'" id="hooks-storage-table">
-        <HieroHookStorage :account-id="props.accountId"/>
-      </div>
+        <div v-else-if="selectedTab === 'storage'" id="hooks-storage-table">
+          <HieroHookStorage :account-id="props.accountId"/>
+        </div>
+      </template>
+      <template v-else>
+        <DocSnippet
+            doc-hint="See how to create and use hooks in the Hedera documentation"
+            doc-url="https://docs.hedera.com/hedera/core-concepts"
+        >
+          <p>No hooks have been configured for this account.</p>
+        </DocSnippet>
+      </template>
     </template>
 
   </DashboardCardV2>
@@ -45,6 +58,7 @@ import HieroHooksList from "@/components/hooks/HieroHooksList.vue";
 import {useRoute, useRouter} from "vue-router";
 import {AppStorage} from "@/AppStorage.ts";
 import HieroHookStorage from "@/components/hooks/HieroHookStorage.vue";
+import DocSnippet from "@/components/DocSnippet.vue";
 
 const props = defineProps({
   accountId: String,
@@ -56,6 +70,8 @@ const router = useRouter(); // Router instance for navigation
 const tabIds = ['hooks', 'storage']
 const tabLabels = ['Hooks', 'Storage']
 const selectedTab = ref<string | null>(AppStorage.getAccountHooksTab() ?? tabIds[0])
+
+const nbHooks = ref(0)
 
 const onUpdate = (tab: string | null) => {
   selectedTab.value = tab

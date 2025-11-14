@@ -20,21 +20,26 @@
 
 <script lang="ts" setup>
 
-import {computed, onBeforeUnmount, onMounted} from "vue";
+import {computed, onBeforeUnmount, onMounted, watch} from "vue";
 import {HieroHooksByAccountIdCache} from "@/utils/cache/HieroHooksByAccountIdCache.ts";
 import HieroHookEntry from "@/components/hooks/HieroHookEntry.vue";
 
 const props = defineProps({
-  accountId: {
-    type: String
-  }
+  accountId: String,
+  nbHooks: Number,
 })
+
+const emit = defineEmits(['update:nbHooks'])
+
 
 const accountId = computed(() => props.accountId ?? null)
 const hooksLookup = HieroHooksByAccountIdCache.instance.makeLookup(accountId)
 onMounted(() => hooksLookup.mount())
 onBeforeUnmount(() => hooksLookup.unmount())
 const hooks = computed(() => hooksLookup.entity.value || [])
+watch(hooks, () => {
+  emit('update:nbHooks', hooks.value.length)
+}, {immediate: true})
 
 </script>
 
