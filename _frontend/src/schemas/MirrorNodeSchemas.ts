@@ -110,6 +110,44 @@ export interface NftAllowancesResponse {
     links: Links
 }
 
+export enum ExtensionPoint {
+    ACCOUNT_ALLOWANCE_HOOK = "ACCOUNT_ALLOWANCE_HOOK",
+}
+
+export enum HookType {
+    LAMBDA = "LAMBDA",
+}
+
+export interface Hook {
+    admin_key: Key | null,
+    contract_id: string | null,             // The contract entity that contains the hook's executing bytecode
+    created_timestamp: string | null,       // The consensus timestamp when the hook was created
+    deleted: boolean,                       // Whether the hook has been deleted
+    extension_point: ExtensionPoint,        // The extension point this hook implements
+    hook_id: number,                        // The unique identifier for the hook within the owner's scope
+    owner_id: string | null,                // The entity that owns the hook
+    timestamp_range: TimestampRange | null  // Timestamp range the hook is valid for
+    type: HookType,                         // The type of the hook implementation
+}
+
+export interface HooksResponse {
+    hooks: Array<Hook>,
+    links: Links
+}
+
+export interface HookStorage {
+    key: string,
+    value: string | null,
+    timestamp: string,
+}
+
+export interface HooksStorageResponse {
+    hook_id: number,            // The unique identifier for the hook within the owner's scope
+    owner_id: string | null,    // The entity that owns the hook
+    storage: Array<HookStorage>,
+    links: Links,
+}
+
 // ---------------------------------------------------------------------------------------------------------------------
 //                                                   Balance
 // ---------------------------------------------------------------------------------------------------------------------
