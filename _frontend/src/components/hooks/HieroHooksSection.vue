@@ -1,0 +1,100 @@
+// SPDX-License-Identifier: Apache-2.0
+
+<!-- --------------------------------------------------------------------------------------------------------------- -->
+<!--                                                     TEMPLATE                                                    -->
+<!-- --------------------------------------------------------------------------------------------------------------- -->
+
+<template>
+
+  <DashboardCardV2 v-if="accountId">
+
+    <template #title>
+      Hiero Hooks
+    </template>
+
+    <template #content>
+      <template v-if="nbHooks > 0">
+        <Tabs
+            :selected-tab="selectedTab"
+            :tab-ids="tabIds"
+            :tabLabels="tabLabels"
+            @update:selected-tab="onUpdate($event)"
+        />
+
+        <div v-if="selectedTab === 'hooks'" id="hooks-table">
+          <HieroHooksList
+              v-model:nb-hooks="nbHooks"
+              :account-id="props.accountId"
+          />
+        </div>
+
+        <div v-else-if="selectedTab === 'storage'" id="hooks-storage-table">
+          <HieroHookStorage :account-id="props.accountId"/>
+        </div>
+      </template>
+      <template v-else>
+        <DocSnippet
+            doc-hint="See how to create and use hooks in the Hedera documentation"
+            doc-url="https://docs.hedera.com/hedera/core-concepts"
+        >
+          <p>No hooks have been configured for this account.</p>
+        </DocSnippet>
+      </template>
+    </template>
+
+  </DashboardCardV2>
+</template>
+
+<!-- --------------------------------------------------------------------------------------------------------------- -->
+<!--                                                      SCRIPT                                                     -->
+<!-- --------------------------------------------------------------------------------------------------------------- -->
+
+<script lang="ts" setup>
+
+import {onBeforeMount, ref} from 'vue';
+import Tabs from "@/components/Tabs.vue";
+import DashboardCardV2 from "@/components/DashboardCardV2.vue";
+import HieroHooksList from "@/components/hooks/HieroHooksList.vue";
+import {useRoute, useRouter} from "vue-router";
+import {AppStorage} from "@/AppStorage.ts";
+import HieroHookStorage from "@/components/hooks/HieroHookStorage.vue";
+import DocSnippet from "@/components/DocSnippet.vue";
+
+const props = defineProps({
+  accountId: String,
+})
+
+const route = useRoute(); // Get the current route object
+const router = useRouter(); // Router instance for navigation
+
+const tabIds = ['hooks', 'storage']
+const tabLabels = ['Hooks', 'Storage']
+const selectedTab = ref<string | null>(AppStorage.getAccountHooksTab() ?? tabIds[0])
+
+const nbHooks = ref(0)
+
+const onUpdate = (tab: string | null) => {
+  selectedTab.value = tab
+  AppStorage.setAccountHooksTab(tab)
+}
+
+onBeforeMount(() => {
+  const tabQuery = route.query.subtab; // Access the `tab` query parameter
+
+  if (tabQuery && typeof tabQuery === 'string') {
+    onUpdate(tabQuery)
+  }
+  router.replace({
+    path: route.path,
+    query: {...route.query, tab: undefined}, // Remove 'tab' from the query parameters
+  });
+});
+</script>
+
+<!-- --------------------------------------------------------------------------------------------------------------- -->
+<!--                                                       STYLE                                                     -->
+<!-- --------------------------------------------------------------------------------------------------------------- -->
+
+<style scoped>
+
+</style>
