@@ -17,9 +17,10 @@
           @update:selected-tab="handleTabUpdate($event)"
       />
 
-      <div v-if="selectedTab === 'assembly'" class="show-hexa-opcode-checkbox">
-        <input type="checkbox" v-model="showHexaOpcode" id="show-hexa-opcode" name="show-hexa-opcode"/>
-        <label for="show-hexa-opcode">Show hexa opcode</label>
+      <div v-if="selectedTab === 'assembly'" class="show-creation-bytecode-checkbox">
+        <input id="show-creation-bytecode" v-model="showCreationBytecode" name="show-creation-bytecode"
+               type="checkbox"/>
+        <label for="show-creation-bytecode">Show creation bytecode</label>
       </div>
     </div>
 
@@ -47,8 +48,8 @@
       <div id="assembly-code" class="code-pane">
         <DisassembledCodeValue
             class="h-code-box h-code-source"
-            :byte-code="props.byteCode ?? undefined"
-            :show-hexa-opcode="showHexaOpcode"
+            :byte-code="(showCreationBytecode ? props.creationByteCode  : props.byteCode) ?? undefined"
+            :show-hexa-opcode="true"
         />
       </div>
     </template>
@@ -84,9 +85,9 @@ const props = defineProps({
   }
 })
 
-const showHexaOpcode = ref(false)
-onMounted(() => showHexaOpcode.value = AppStorage.getShowHexaOpcode())
-watch(showHexaOpcode, () => AppStorage.setShowHexaOpcode(showHexaOpcode.value ? showHexaOpcode.value : null))
+const showCreationBytecode = ref(false)
+onMounted(() => showCreationBytecode.value = AppStorage.getShowCreationBytecode())
+watch(showCreationBytecode, () => AppStorage.setShowCreationBytecode(showCreationBytecode.value ? showCreationBytecode.value : null))
 
 const tabIds = ['runtime', 'creation', 'assembly']
 const tabLabels = ['Runtime Bytecode', 'Creation Bytecode', 'Assembly Bytecode']
@@ -126,7 +127,7 @@ div.assembly-header {
   justify-content: space-between;
 }
 
-div.show-hexa-opcode-checkbox {
+div.show-creation-bytecode-checkbox {
   align-items: center;
   display: flex;
   gap: 8px;

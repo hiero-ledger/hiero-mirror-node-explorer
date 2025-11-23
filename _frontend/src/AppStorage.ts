@@ -141,11 +141,11 @@ export class AppStorage {
 
     private static readonly SHOW_HEXA_OPCODE_KEY = 'hexaOpcode'
 
-    public static getShowHexaOpcode(): boolean {
+    public static getShowCreationBytecode(): boolean {
         return this.getLocalStorageItem(this.SHOW_HEXA_OPCODE_KEY) != null
     }
 
-    public static setShowHexaOpcode(newValue: boolean | null): void {
+    public static setShowCreationBytecode(newValue: boolean | null): void {
         this.setLocalStorageItem(this.SHOW_HEXA_OPCODE_KEY, newValue ? "true" : null)
     }
 
