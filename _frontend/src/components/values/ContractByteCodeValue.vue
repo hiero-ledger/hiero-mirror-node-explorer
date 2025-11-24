@@ -17,16 +17,23 @@
           @update:selected-tab="handleTabUpdate($event)"
       />
 
-      <div v-if="selectedTab === 'assembly'" class="show-creation-bytecode-checkbox">
-        <input id="show-creation-bytecode" v-model="showCreationBytecode" name="show-creation-bytecode"
+      <div class="show-assembly-checkbox">
+        <input id="show-assembly-bytecode" v-model="showAssemblyBytecode" name="show-assembly-bytecode"
                type="checkbox"/>
-        <label for="show-creation-bytecode">Show creation bytecode</label>
+        <label for="show-assembly-bytecode">Show assembly bytecode</label>
       </div>
     </div>
 
     <template v-if="selectedTab === 'runtime'">
       <div id="bytecode" class="code-pane">
+        <DisassembledCodeValue
+            v-if="showAssemblyBytecode"
+            class="h-code-box h-code-source"
+            :byte-code="props.byteCode ?? undefined"
+            :show-hexa-opcode="true"
+        />
         <ByteCodeValue
+            v-else
             class="h-code-box h-code-source"
             :byte-code="props.byteCode ?? undefined"
             :scroll-bar="false"
@@ -36,7 +43,14 @@
 
     <template v-else-if="selectedTab === 'creation'">
       <div id="creation-bytecode" class="code-pane">
+        <DisassembledCodeValue
+            v-if="showAssemblyBytecode"
+            class="h-code-box h-code-source"
+            :byte-code="props.creationByteCode ?? undefined"
+            :show-hexa-opcode="true"
+        />
         <ByteCodeValue
+            v-else
             class="h-code-box h-code-source"
             :byte-code="props.creationByteCode ?? undefined"
             :scroll-bar="false"
@@ -44,15 +58,8 @@
       </div>
     </template>
 
-    <template v-else>
-      <div id="assembly-code" class="code-pane">
-        <DisassembledCodeValue
-            class="h-code-box h-code-source"
-            :byte-code="(showCreationBytecode ? props.creationByteCode  : props.byteCode) ?? undefined"
-            :show-hexa-opcode="true"
-        />
-      </div>
-    </template>
+    <template v-else/>
+
   </div>
 
 </template>
@@ -85,12 +92,12 @@ const props = defineProps({
   }
 })
 
-const showCreationBytecode = ref(false)
-onMounted(() => showCreationBytecode.value = AppStorage.getShowCreationBytecode())
-watch(showCreationBytecode, () => AppStorage.setShowCreationBytecode(showCreationBytecode.value ? showCreationBytecode.value : null))
+const showAssemblyBytecode = ref(false)
+onMounted(() => showAssemblyBytecode.value = AppStorage.getShowAssemblyBytecode())
+watch(showAssemblyBytecode, () => AppStorage.setShowAssemblyBytecode(showAssemblyBytecode.value ? showAssemblyBytecode.value : null))
 
-const tabIds = ['runtime', 'creation', 'assembly']
-const tabLabels = ['Runtime Bytecode', 'Creation Bytecode', 'Assembly Bytecode']
+const tabIds = ['runtime', 'creation']
+const tabLabels = ['Runtime Bytecode', 'Creation Bytecode']
 const selectedTab = ref<string | null>(AppStorage.getContractByteCodeTab() ?? tabIds[0])
 const handleTabUpdate = (tab: string | null) => {
   selectedTab.value = tab
@@ -127,7 +134,7 @@ div.assembly-header {
   justify-content: space-between;
 }
 
-div.show-creation-bytecode-checkbox {
+div.show-assembly-checkbox {
   align-items: center;
   display: flex;
   gap: 8px;
