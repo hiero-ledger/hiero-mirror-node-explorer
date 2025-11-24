@@ -26,6 +26,11 @@
         <ContractLink v-else-if="entityLinkType === ExtendedEntityType.CONTRACT && systemContract === null" :contract-id="entityId"/>
         <AccountLink v-else-if="entityLinkType === ExtendedEntityType.ACCOUNT" :account-id="entityId"/>
         <TokenLink v-else-if="entityLinkType === ExtendedEntityType.TOKEN" :token-id="entityId"/>
+        <span v-else-if="systemContract !== null">
+          <a :href="systemContract.sourceURL" target="_blank" rel="noopener noreferrer">
+            {{ displayId }}
+          </a>
+        </span>
         <span v-else>
           {{ displayId }}
         </span>
