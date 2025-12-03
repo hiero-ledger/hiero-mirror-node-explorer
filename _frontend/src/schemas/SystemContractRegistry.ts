@@ -9,8 +9,8 @@ export class SystemContractRegistry {
     private readonly entries = new Map<string, SystemContractEntry>()
 
     constructor() {
-        this.addEntry("0.0.359", "Hedera Token Service System Contract", "IHederaTokenService")
-        this.addEntry("0.0.360", "Hedera Exchange Rate System Contract", "IExchangeRate")
+        this.addEntry("0.0.359", "Hedera Token Service System Contract", "IHederaTokenService", "https://github.com/hashgraph/hedera-smart-contracts/blob/main/contracts/system-contracts/hedera-token-service/HederaTokenService.sol")
+        this.addEntry("0.0.360", "Hedera Exchange Rate System Contract", "IExchangeRate", "https://github.com/hashgraph/hedera-smart-contracts/blob/main/contracts/system-contracts/exchange-rate/ExchangeRateSystemContract.sol")
     }
 
     public lookup(contractId: string): SystemContractEntry | null {
@@ -23,9 +23,9 @@ export class SystemContractRegistry {
         return entityID != null ? this.lookup(entityID.toString()) : null
     }
 
-    private addEntry(contractId: string, description: string, abiFileName: string) {
+    private addEntry(contractId: string, description: string, abiFileName: string, sourceURL: string) {
         if (!this.entries.get(contractId)) {
-            this.entries.set(contractId, new SystemContractEntry(contractId, description, abiFileName))
+            this.entries.set(contractId, new SystemContractEntry(contractId, description, abiFileName, sourceURL))
         }
     }
 }
@@ -35,11 +35,13 @@ export class SystemContractEntry {
     public readonly contractId: string
     public readonly description: string
     public readonly abiFileName: string
+    public readonly sourceURL: string
 
-    constructor(contractId: string, description: string, abiFileName: string) {
+    constructor(contractId: string, description: string, abiFileName: string, sourceURL: string) {
         this.contractId = contractId
         this.description = description
         this.abiFileName = abiFileName
+        this.sourceURL = sourceURL
     }
 
     async loadABI(): Promise<ethers.Fragment[] | null> {
