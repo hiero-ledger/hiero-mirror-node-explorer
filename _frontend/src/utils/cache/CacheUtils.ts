@@ -48,9 +48,12 @@ import {VerifiedContractsCache} from "@/utils/cache/VerifiedContractsCache";
 import {ScheduleByIdCache} from "@/utils/cache/ScheduleByIdCache.ts";
 import {ERC1155Cache} from "@/utils/cache/ERC1155Cache.ts";
 import {PublicLabelsCache} from "@/utils/cache/PublicLabelsCache.ts";
+import {HieroHooksByAccountIdCache} from "@/utils/cache/HieroHooksByAccountIdCache.ts";
+import {HieroHookStorageByIdCache} from "@/utils/cache/HieroHookStorageByIdCache.ts";
 
 export class CacheUtils {
 
+    // eslint-disable-next-line max-lines-per-function
     public static clearAll(): void {
         AccountByAddressCache.instance.clear()
         AccountByAliasCache.instance.clear()
@@ -74,6 +77,8 @@ export class CacheUtils {
         ERC1155Cache.instance.clear()
         HCSAssetCache.instance.clear()
         HbarPriceCache.instance.clear()
+        HieroHooksByAccountIdCache.instance.clear()
+        HieroHookStorageByIdCache.instance.clear()
         LastTopicMessageByIdCache.instance.clear()
         LogicContractCache.instance.clear()
         // IPFSCache.instance => no clear: we preserve it because IPFS content is valid for all networks
