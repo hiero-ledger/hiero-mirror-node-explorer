@@ -53,9 +53,9 @@
 <script lang="ts" setup>
 
 import {computed, onBeforeUnmount, onMounted, ref} from "vue";
-import {HieroHooksByAccountIdCache} from "@/utils/cache/HieroHooksByAccountIdCache.ts";
+import {HooksByAccountIdCache} from "@/utils/cache/HooksByAccountIdCache.ts";
 import SelectView from "@/elements/SelectView.vue";
-import {HieroHookStorageByIdCache} from "@/utils/cache/HieroHookStorageByIdCache.ts";
+import {HookStorageByIdCache} from "@/utils/cache/HookStorageByIdCache.ts";
 import HexaDumpValue from "@/components/values/HexaDumpValue.vue";
 import TimestampValue from "@/components/values/TimestampValue.vue";
 import EmptyTable from "@/components/EmptyTable.vue";
@@ -67,7 +67,7 @@ const props = defineProps({
 })
 
 const accountId = computed(() => props.accountId ?? null)
-const hooksLookup = HieroHooksByAccountIdCache.instance.makeLookup(accountId)
+const hooksLookup = HooksByAccountIdCache.instance.makeLookup(accountId)
 onMounted(() => hooksLookup.mount())
 onBeforeUnmount(() => hooksLookup.unmount())
 const hooks = computed(() => hooksLookup.entity.value || [])
@@ -75,10 +75,10 @@ const hookId = ref<number>(hooks.value[0]?.hook_id ?? 1)
 
 const storageLookupKey = computed(() => {
   return accountId.value
-      ? HieroHookStorageByIdCache.makeKey(accountId.value, hookId.value)
+      ? HookStorageByIdCache.makeKey(accountId.value, hookId.value)
       : ''
 })
-const storageLookup = HieroHookStorageByIdCache.instance.makeLookup(storageLookupKey)
+const storageLookup = HookStorageByIdCache.instance.makeLookup(storageLookupKey)
 onMounted(() => storageLookup.mount())
 onBeforeUnmount(() => storageLookup.unmount())
 const slots = computed(() => storageLookup.entity.value || [])

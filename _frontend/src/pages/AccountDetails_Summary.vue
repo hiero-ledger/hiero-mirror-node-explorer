@@ -283,8 +283,8 @@ import {PublicLabelsCache} from "@/utils/cache/PublicLabelsCache.ts";
 import {routeManager, walletManager} from "@/utils/RouteManager.ts";
 import MirrorLink from "@/components/MirrorLink.vue";
 import ArrowLink from "@/components/ArrowLink.vue";
-import {HieroHooksByAccountIdCache} from "@/utils/cache/HieroHooksByAccountIdCache.ts";
-import {HieroHookStorageByIdCache} from "@/utils/cache/HieroHookStorageByIdCache.ts";
+import {HooksByAccountIdCache} from "@/utils/cache/HooksByAccountIdCache.ts";
+import {HookStorageByIdCache} from "@/utils/cache/HookStorageByIdCache.ts";
 import PlainAmount from "@/components/values/PlainAmount.vue";
 
 const props = defineProps({
@@ -377,7 +377,7 @@ const isAccountEditable = computed(() => isMyAccount.value && isHieroWallet.valu
 // Hooks
 //
 const normalizedAccountId = accountLocParser.accountId
-const hooksLookup = HieroHooksByAccountIdCache.instance.makeLookup(normalizedAccountId)
+const hooksLookup = HooksByAccountIdCache.instance.makeLookup(normalizedAccountId)
 onMounted(() => hooksLookup.mount())
 onBeforeUnmount(() => hooksLookup.unmount())
 const hooks = computed(() => hooksLookup.entity.value || [])
@@ -387,8 +387,8 @@ const nbOfSlots = ref(0)
 watch(hooks, async () => {
   let slots = 0
   for (const hook of hooks.value) {
-    const key = HieroHookStorageByIdCache.makeKey(normalizedAccountId.value!, hook.hook_id)
-    const result = await HieroHookStorageByIdCache.instance.lookup(key)
+    const key = HookStorageByIdCache.makeKey(normalizedAccountId.value!, hook.hook_id)
+    const result = await HookStorageByIdCache.instance.lookup(key)
     if (result === null) {
       console.error(`Could not find hook storage for hook ${hook.hook_id} of account ${normalizedAccountId.value}`)
     } else {

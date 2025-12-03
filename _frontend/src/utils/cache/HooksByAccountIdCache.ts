@@ -4,15 +4,14 @@ import axios from 'axios';
 import {EntityCache} from './base/EntityCache';
 import {Hook, HooksResponse} from '@/schemas/MirrorNodeSchemas.ts';
 
-export class HieroHooksByAccountIdCache extends EntityCache<string, Hook[] | null> {
+export class HooksByAccountIdCache extends EntityCache<string, Hook[] | null> {
 
-    public static readonly instance = new HieroHooksByAccountIdCache()
+    public static readonly instance = new HooksByAccountIdCache()
 
     //
     // Cache
     //
     protected async load(accountId: string): Promise<Hook[] | null> {
-        console.log("HieroHooksByAccountIdCache.load", accountId,)
         let result: Hook[] | null
         const params = {
             limit: 100,

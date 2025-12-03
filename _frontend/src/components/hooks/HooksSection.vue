@@ -22,11 +22,11 @@
         />
 
         <div v-if="selectedTab === 'hooks'" id="hooks-table">
-          <HieroHooksList :account-id="props.accountId"/>
+          <HookList :account-id="props.accountId"/>
         </div>
 
         <div v-else-if="selectedTab === 'storage'" id="hooks-storage-table">
-          <HieroHookStorage :account-id="props.accountId"/>
+          <HookStorage :account-id="props.accountId"/>
         </div>
       </template>
       <template v-else>
@@ -51,12 +51,12 @@
 import {computed, onBeforeMount, onBeforeUnmount, onMounted, ref} from 'vue';
 import Tabs from "@/components/Tabs.vue";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
-import HieroHooksList from "@/components/hooks/HieroHooksList.vue";
+import HookList from "@/components/hooks/HookList.vue";
 import {useRoute, useRouter} from "vue-router";
 import {AppStorage} from "@/AppStorage.ts";
-import HieroHookStorage from "@/components/hooks/HieroHookStorage.vue";
+import HookStorage from "@/components/hooks/HookStorage.vue";
 import DocSnippet from "@/components/DocSnippet.vue";
-import {HieroHooksByAccountIdCache} from "@/utils/cache/HieroHooksByAccountIdCache.ts";
+import {HooksByAccountIdCache} from "@/utils/cache/HooksByAccountIdCache.ts";
 
 const props = defineProps({
   accountId: String,
@@ -70,7 +70,7 @@ const tabLabels = ['Hooks', 'Storage']
 const selectedTab = ref<string | null>(AppStorage.getAccountHooksTab() ?? tabIds[0])
 
 const accountId = computed(() => props.accountId ?? null)
-const hooksLookup = HieroHooksByAccountIdCache.instance.makeLookup(accountId)
+const hooksLookup = HooksByAccountIdCache.instance.makeLookup(accountId)
 onMounted(() => hooksLookup.mount())
 onBeforeUnmount(() => hooksLookup.unmount())
 const nbHooks = computed(() => hooksLookup.entity.value?.length ?? 0)

@@ -6,7 +6,7 @@
 
 <template>
 
-  <HieroHooksSection :account-id="normalizedAccountId ?? undefined"/>
+  <HooksSection :account-id="normalizedAccountId ?? undefined"/>
 
 </template>
 
@@ -19,7 +19,7 @@
 import {computed, onBeforeUnmount, onMounted} from 'vue';
 import {AccountLocParser} from "@/utils/parser/AccountLocParser";
 import {NetworkConfig} from "@/config/NetworkConfig";
-import HieroHooksSection from "@/components/hooks/HieroHooksSection.vue";
+import HooksSection from "@/components/hooks/HooksSection.vue";
 
 const props = defineProps({
   accountId: String,

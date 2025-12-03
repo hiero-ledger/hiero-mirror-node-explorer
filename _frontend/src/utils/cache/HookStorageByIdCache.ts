@@ -4,9 +4,9 @@ import axios from 'axios';
 import {EntityCache} from './base/EntityCache';
 import {HooksStorageResponse, HookStorage} from "@/schemas/MirrorNodeSchemas.ts";
 
-export class HieroHookStorageByIdCache extends EntityCache<string, HookStorage[] | null> {
+export class HookStorageByIdCache extends EntityCache<string, HookStorage[] | null> {
 
-    public static readonly instance = new HieroHookStorageByIdCache()
+    public static readonly instance = new HookStorageByIdCache()
 
     public static makeKey(accountId: string, hookId: number): string {
         return `${accountId}---${hookId}`
@@ -16,11 +16,10 @@ export class HieroHookStorageByIdCache extends EntityCache<string, HookStorage[]
     // Cache
     //
     protected async load(key: string): Promise<HookStorage[] | null> {
-        console.log("HieroHookStorageByIdCache.load", key)
         const accountAndHookId = key.split("---")
         const accountId = accountAndHookId[0]
         const hookId = Number(accountAndHookId[1])
-        console.log("HieroHookStorageByIdCache.load", accountId, hookId)
+
         let result: HookStorage[] | null
         const params = {
             limit: 100,
