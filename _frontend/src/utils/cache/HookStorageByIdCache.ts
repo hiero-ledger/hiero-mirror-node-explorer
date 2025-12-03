@@ -23,7 +23,7 @@ export class HookStorageByIdCache extends EntityCache<string, HookStorage[] | nu
         let result: HookStorage[] | null
         const params = {
             limit: 100,
-            order: "desc",
+            order: "asc",
         }
 
         try {
