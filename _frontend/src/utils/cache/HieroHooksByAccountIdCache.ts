@@ -21,9 +21,7 @@ export class HieroHooksByAccountIdCache extends EntityCache<string, Hook[] | nul
 
         try {
             const response = await axios.get<HooksResponse>(`api/v1/accounts/${accountId}/hooks`, {params});
-            // TODO Provide drainAccountHooks() and use it here to get all available hooks at once
-            // result = await drainAccountHooks(response.data, params.limit)
-            result = response.data.hooks
+            result = response.data.hooks ?? null
         } catch (error) {
             if (axios.isAxiosError(error) && error.response?.status == 404) {
                 result = null
