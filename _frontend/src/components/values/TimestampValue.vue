@@ -45,7 +45,7 @@ import {computed, defineComponent, inject, PropType, ref} from "vue";
 import {HMSF} from "@/utils/HMSF";
 import {initialLoadingKey} from "@/AppKeys";
 import {infiniteDuration} from "@/schemas/MirrorNodeSchemas";
-import { TriangleAlert } from 'lucide-vue-next';
+import {TriangleAlert} from 'lucide-vue-next';
 
 export default defineComponent({
   name: "TimestampValue",

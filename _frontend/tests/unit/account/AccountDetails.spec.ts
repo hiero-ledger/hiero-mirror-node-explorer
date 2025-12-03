@@ -102,6 +102,7 @@ describe("AccountDetails.vue", () => {
             "api/v1/network/supply",
             "api/v1/contracts/" + SAMPLE_ACCOUNT.account,
             "api/v1/balances",
+            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/hooks",
             "api/v1/transactions",
             "api/v1/contracts/" + SAMPLE_ACCOUNT.evm_address,
             "api/v1/tokens/" + SAMPLE_ACCOUNT.account,
@@ -172,15 +173,14 @@ describe("AccountDetails.vue", () => {
 
         const select = wrapper.findComponent(TransactionFilterSelect)
         expect(select.exists()).toBe(true)
-        expect(select.text()).toBe(
-            "TYPES: ALLADD LIVE HASHAPPROVE ALLOWANCEATOMIC BATCHCANCEL AIRDROPCLAIM AIRDROPCONTRACT CALLCONTRACT " +
-            "CREATECONTRACT DELETECONTRACT UPDATECREATE ACCOUNTCREATE TOPICCRYPTO TRANSFERDELETE ACCOUNT" +
-            "DELETE ALLOWANCEDELETE LIVE HASHDELETE TOPICETHEREUM TRANSACTIONFILE APPENDFILE CREATEFILE DELETEFILE " +
-            "UPDATEFREEZENODE CREATENODE DELETENODE STAKE UPDATENODE UPDATEPSEUDORANDOM NUMBER GENERATESCHEDULE " +
-            "CREATESCHEDULE DELETESCHEDULE SIGNSUBMIT MESSAGESYSTEM DELETESYSTEM UNDELETETOKEN AIRDROP" +
-            "TOKEN ASSOCIATETOKEN BURNTOKEN CREATETOKEN DELETETOKEN DISSOCIATETOKEN FEE SCHEDULE UPDATE" +
-            "TOKEN FREEZETOKEN KYC GRANTTOKEN KYC REVOKETOKEN MINTTOKEN PAUSETOKEN REJECTTOKEN UNFREEZE" +
-            "TOKEN UNPAUSETOKEN UPDATETOKEN WIPEUNCHECKED SUBMITUPDATE ACCOUNTUPDATE NFTSUPDATE TOPIC")
+        expect(select.text()).toBe("TYPES: ALLADD LIVE HASHAPPROVE ALLOWANCEATOMIC BATCHCANCEL AIRDROPCLAIM " +
+            "AIRDROPCONTRACT CALLCONTRACT CREATECONTRACT DELETECONTRACT UPDATECREATE ACCOUNTCREATE TOPICCRYPTO T" +
+            "RANSFERDELETE ACCOUNTDELETE ALLOWANCEDELETE LIVE HASHDELETE TOPICETHEREUM TRANSACTIONFILE APPENDFILE " +
+            "CREATEFILE DELETEFILE UPDATEFREEZELAMBDASSTORENODE CREATENODE DELETENODE STAKE UPDATENODE " +
+            "UPDATEPSEUDORANDOM NUMBER GENERATESCHEDULE CREATESCHEDULE DELETESCHEDULE SIGNSUBMIT MESSAGESYSTEM " +
+            "DELETESYSTEM UNDELETETOKEN AIRDROPTOKEN ASSOCIATETOKEN BURNTOKEN CREATETOKEN DELETETOKEN DISSOCIATETOKEN " +
+            "FEE SCHEDULE UPDATETOKEN FREEZETOKEN KYC GRANTTOKEN KYC REVOKETOKEN MINTTOKEN PAUSETOKEN REJECTTOKEN " +
+            "UNFREEZETOKEN UNPAUSETOKEN UPDATETOKEN WIPEUNCHECKED SUBMITUPDATE ACCOUNTUPDATE NFTSUPDATE TOPIC")
 
         expect(wrapper.find("#recentTransactions").exists()).toBe(true)
         expect(wrapper.findComponent(TransactionTable).exists()).toBe(true)
@@ -224,6 +224,7 @@ describe("AccountDetails.vue", () => {
             "api/v1/network/nodes",
             "api/v1/contracts/" + accountId,
             "api/v1/balances",
+            "api/v1/accounts/" + accountId + "/hooks",
             "api/v1/transactions",
             "api/v1/network/exchangerate",
         ])
@@ -281,6 +282,7 @@ describe("AccountDetails.vue", () => {
             "api/v1/accounts/" + SAMPLE_ACCOUNT.account,
             "api/v1/network/nodes",
             "api/v1/balances",
+            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/hooks",
             "api/v1/contracts/" + SAMPLE_ACCOUNT.account,
             "api/v1/transactions",
             "api/v1/contracts/" + SAMPLE_ACCOUNT.evm_address,
@@ -312,6 +314,7 @@ describe("AccountDetails.vue", () => {
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/accounts/" + SAMPLE_ACCOUNT_DUDE.account,
             "api/v1/balances",
+            "api/v1/accounts/" + SAMPLE_ACCOUNT_DUDE.account + "/hooks",
             "api/v1/contracts/" + SAMPLE_ACCOUNT_DUDE.account,
             "api/v1/contracts/0x00000000000000000000000000000000000b2608",
             "api/v1/tokens/" + SAMPLE_ACCOUNT_DUDE.account,
@@ -407,6 +410,7 @@ describe("AccountDetails.vue", () => {
             "api/v1/network/nodes",
             "api/v1/contracts/" + SAMPLE_ACCOUNT_DELETED.account,
             "api/v1/balances",
+            "api/v1/accounts/" + SAMPLE_ACCOUNT_DELETED.account + "/hooks",
             "api/v1/contracts/0x00000000000000000000000000000000000b2608",
             "api/v1/tokens/" + SAMPLE_ACCOUNT_DELETED.account,
             "api/v1/network/exchangerate",
@@ -465,6 +469,7 @@ describe("AccountDetails.vue", () => {
             "api/v1/network/supply",
             "api/v1/contracts/" + SAMPLE_ACCOUNT_STAKING_NODE.account,
             "api/v1/balances",
+            "api/v1/accounts/" + SAMPLE_ACCOUNT_STAKING_NODE.account + "/hooks",
             "api/v1/network/exchangerate",
             "api/v1/contracts/0x00000000000000000000000000000000000b2608",
             "api/v1/tokens/" + SAMPLE_ACCOUNT_STAKING_NODE.account,
@@ -538,6 +543,7 @@ describe("AccountDetails.vue", () => {
             "api/v1/network/supply",
             "api/v1/contracts/" + SAMPLE_ACCOUNT_STAKING_ACCOUNT.account,
             "api/v1/balances",
+            "api/v1/accounts/" + SAMPLE_ACCOUNT_STAKING_ACCOUNT.account + "/hooks",
             "api/v1/contracts/" + SAMPLE_ACCOUNT_STAKING_ACCOUNT.staked_account_id,
             "api/v1/network/exchangerate",
             "api/v1/contracts/0x00000000000000000000000000000000000b2608",
@@ -610,6 +616,7 @@ describe("AccountDetails.vue", () => {
             "api/v1/contracts/" + SAMPLE_ACCOUNT.account,
             SAMPLE_PUBLIC_LABELS_URL,
             "api/v1/balances",
+            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/hooks",
             "api/v1/transactions",
             "api/v1/contracts/" + SAMPLE_ACCOUNT.evm_address,
             "api/v1/tokens/" + SAMPLE_ACCOUNT.account,
