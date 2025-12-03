@@ -84,7 +84,7 @@ jobs:
         run: cat package.json
 
       - name: Setup NodeJS
-        uses: actions/setup-node@cdca7365b2dadb8aad0a33bc7601856ffabcc48e # v4.3.0
+        uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6.1.0
         with:
           node-version: 22
           cache: npm
