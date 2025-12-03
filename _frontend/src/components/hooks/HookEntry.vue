@@ -37,7 +37,7 @@
         </Property>
       </div>
 
-      <div :class="{'split-separator': isMediumScreen}" class="right-content">
+      <div class="split-separator right-content">
         <Property id="hook-admin-key">
           <template #name>Admin Key</template>
           <template #value>
@@ -173,8 +173,14 @@ div.right-content {
 }
 
 div.split-separator {
-  border-left: 1px solid var(--border-secondary);
-  padding-left: 24px;
+  margin-top: 16px;
+}
+
+@media (min-width: 1080px) {
+  div.split-separator {
+    border-left: 1px solid var(--border-secondary);
+    padding-left: 24px;
+  }
 }
 
 </style>
