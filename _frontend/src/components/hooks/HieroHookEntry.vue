@@ -59,7 +59,9 @@
         </Property>
         <Property id="hook-deleted">
           <template #name>Deleted</template>
-          <template #value>{{ props.hook.deleted }}</template>
+          <template #value>
+            <span :class="{'h-is-low-contrast': !props.hook.deleted}">{{ props.hook.deleted }}</span>
+          </template>
         </Property>
       </div>
 
