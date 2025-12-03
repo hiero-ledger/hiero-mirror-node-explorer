@@ -828,6 +828,7 @@ export function makeShortNodeDescription(description: string): string {
     return (separator !== -1) ? (description.slice(0, separator) ?? null) : description
 }
 
+// eslint-disable-next-line complexity
 export function makeNodeSelectorDescription(node: NetworkNode): string {
     const percentFormatter = new Intl.NumberFormat("en-US", {
         style: 'percent',

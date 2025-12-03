@@ -29,11 +29,11 @@
         </Property>
         <Property id="hook-extension-point">
           <template #name>Extension Point</template>
-          <template #value>{{ props.hook.extension_point }}</template>
+          <template #value>{{ displayExtensionPoint(props.hook.extension_point) }}</template>
         </Property>
         <Property id="hook-type">
           <template #name>Hook Type</template>
-          <template #value>{{ props.hook.type }}</template>
+          <template #value>{{ displayHookType(props.hook.type) }}</template>
         </Property>
       </div>
 
@@ -77,21 +77,44 @@
 
 import {inject, PropType} from "vue";
 import Property from "@/components/Property.vue";
-import {HieroHook} from "@/utils/cache/HieroHooksByAccountIdCache.ts";
 import KeyValue from "@/components/values/KeyValue.vue";
 import TimestampValue from "@/components/values/TimestampValue.vue";
 import ContractLink from "@/components/values/link/ContractLink.vue";
 import AccountLink from "@/components/values/link/AccountLink.vue";
+import {ExtensionPoint, Hook, HookType} from "@/schemas/MirrorNodeSchemas.ts";
 
 const props = defineProps({
   hook: {
-    type: Object as PropType<HieroHook | null>,
+    type: Object as PropType<Hook | null>,
     default: null
   },
 })
 
 const isMediumScreen = inject('isMediumScreen', true)
 
+const displayExtensionPoint = (extensionPoint: ExtensionPoint) => {
+  let result: string
+  switch (extensionPoint) {
+    case ExtensionPoint.ACCOUNT_ALLOWANCE_HOOK:
+      result = 'Account Allowance Hook'
+      break
+    default:
+      result = extensionPoint
+  }
+  return result
+}
+
+const displayHookType = (hookType: HookType) => {
+  let result: string
+  switch (hookType) {
+    case HookType.LAMBDA:
+      result = 'Lambda'
+      break
+    default:
+      result = hookType
+  }
+  return result
+}
 </script>
 
 <!-- --------------------------------------------------------------------------------------------------------------- -->

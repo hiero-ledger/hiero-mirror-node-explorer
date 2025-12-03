@@ -17,7 +17,7 @@
       </SelectView>
     </div>
 
-    <table class="o-table">
+    <table v-if="slots.length > 0" class="o-table">
       <thead>
       <tr style="text-align: left;">
         <th class="o-table__th" scope="col">ADDRESS</th>
@@ -39,6 +39,9 @@
       </tr>
       </tbody>
     </table>
+
+    <EmptyTable v-else class="mt-3" no-data-message="This hook does not use any storage slot"/>
+
   </div>
 
 </template>
@@ -55,6 +58,7 @@ import SelectView from "@/elements/SelectView.vue";
 import {HieroHookStorageByIdCache} from "@/utils/cache/HieroHookStorageByIdCache.ts";
 import HexaDumpValue from "@/components/values/HexaDumpValue.vue";
 import TimestampValue from "@/components/values/TimestampValue.vue";
+import EmptyTable from "@/components/EmptyTable.vue";
 
 const props = defineProps({
   accountId: {

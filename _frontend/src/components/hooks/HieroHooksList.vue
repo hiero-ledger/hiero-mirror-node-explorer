@@ -25,9 +25,7 @@ import {HieroHooksByAccountIdCache} from "@/utils/cache/HieroHooksByAccountIdCac
 import HieroHookEntry from "@/components/hooks/HieroHookEntry.vue";
 
 const props = defineProps({
-  accountId: {
-    type: String
-  }
+  accountId: String,
 })
 
 const accountId = computed(() => props.accountId ?? null)
