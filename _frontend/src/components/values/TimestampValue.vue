@@ -14,10 +14,9 @@
       <span>
         <span v-if="timePart" class="mr-3 h-is-numeric">
           <span>{{ timePart.hour }}:{{ timePart.minute }}</span>
-          <span v-if="isMediumScreen" class="h-is-low-contrast">:{{ timePart.second }}.{{
+          <span class="h-is-low-contrast">:{{ timePart.second }}.{{
               timePart.fractionalSecond
-            }}</span>
-          <span>&nbsp;{{ timePart.dayPeriod }}</span>
+            }}&nbsp;{{ timePart.dayPeriod }}</span>
         </span>
         <span class="h-is-numeric">{{ datePart }}</span>
       </span>
@@ -69,7 +68,6 @@ export default defineComponent({
 
   setup(props) {
 
-    const isMediumScreen = inject('isMediumScreen', ref(true))
     const locale = "en-US"
 
     const seconds = computed(() => {
@@ -86,11 +84,8 @@ export default defineComponent({
       timeZoneName: "short",
       timeZone: HMSF.forceUTC ? "UTC" : undefined
     }
+    const dateFormat = new Intl.DateTimeFormat(locale, dateOptions)
     const datePart = computed(() => {
-      const options = {...dateOptions}
-      options.timeZoneName = isMediumScreen.value ? "short" : undefined
-
-      const dateFormat = new Intl.DateTimeFormat(locale, options)
       return (seconds.value != null && !isNever.value) ? dateFormat.format(seconds.value * 1000) : "?"
     })
 
@@ -101,7 +96,6 @@ export default defineComponent({
     const initialLoading = inject(initialLoadingKey, ref(false))
 
     return {
-      isMediumScreen,
       isNever,
       seconds,
       datePart,
