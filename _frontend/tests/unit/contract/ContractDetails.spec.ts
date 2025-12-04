@@ -122,8 +122,7 @@ describe("ContractDetails.vue", () => {
         });
         await flushPromises()
 
-        expect(fetchGetURLs(mock)).toStrictEqual([
-        ])
+        expect(fetchGetURLs(mock)).toStrictEqual([])
 
         const tabComponent = wrapper2.findComponent(Tabs)
         expect(tabComponent.exists()).toBe(true)
@@ -131,30 +130,44 @@ describe("ContractDetails.vue", () => {
         const tabs = tabComponent.findAll('li')
         expect(tabs.length).toBe(2)
         expect(tabs[0].text()).toBe('Runtime Bytecode')
-        expect(tabs[1].text()).toBe('Assembly Bytecode')
+        expect(tabs[1].text()).toBe('Creation Bytecode')
 
         expect(wrapper2.get("#bytecode").text()).toContain(
-            "6080 6040 5236 606d 5730 73ff ffff ffff ffff ffff ffff ffff ffff ffff ffff ff16 3373 ffff ffff ffff ffff " +
-            "ffff ffff ffff ffff ffff ffff 167f ddf2 52ad 1be2 c89b 69c2 b068 fc37 8daa 952b a7f1 63c4 a116 28f5 5a4d " +
-            "f523 b3ef 3460 4051 6063 9190 607f 565b 6040 5180 9103 90a3 005b 6000 80fd 5b60 7981 6098 565b 8252 5050 " +
-            "565b 6000 6020 8201 9050 6092 6000 8301 8460 7256 5b92 9150 5056 5b60 0081 9050 9190 5056 fea2 6469 7066 " +
-            "7358 2212 20b9 4efc a641 a0cf 62b2 bd50 5f79 fe4b e165 c582 520b c615 e5c5 fa34 0215 6eaf d864 736f 6c63 " +
-            "4300 0804 0033")
+            "6080 6040 5236 606d 5730 73ff ffff ffff ffff ffff ffff ffff ffff ffff ffff ff16 3373 ffff ffff ffff ffff" +
+            " ffff ffff ffff ffff ffff ffff 167f ddf2 52ad 1be2 c89b 69c2 b068 fc37 8daa 952b a7f1 63c4 a116 28f5 5a4d" +
+            " f523 b3ef 3460 4051 6063 9190 607f 565b 6040 5180 9103 90a3 005b 6000 80fd 5b60 7981 6098 565b 8252 5050" +
+            " 565b 6000 6020 8201 9050 6092 6000 8301 8460 7256 5b92 9150 5056 5b60 0081 9050 9190 5056 fea2 6469 7066" +
+            " 7358 2212 20b9 4efc a641 a0cf 62b2 bd50 5f79 fe4b e165 c582 520b c615 e5c5 fa34 0215 6eaf d864 736f 6c63" +
+            " 4300 0804 0033"
+        )
 
-        const tab = tabComponent.find("#tab-assembly")
+
+        const tab = tabComponent.find("#tab-creation")
         await tab.trigger('click')
-        await flushPromises()
 
-        expect(wrapper2.get("#assembly-code").text()).toContain(
-            "0x0000:PUSH10x800x0002:PUSH10x400x0004:MSTORE0x0005:CALLDATASIZE0x0006:PUSH10x6d0x0008:JUMPI0x0009:ADDRESS" +
-            "0x000a:PUSH200xffffffffffffffffffffffffffffffffffffffff0x001f:AND0x0020:CALLER0x0021:PUSH200xffffffffffffffffffffffffffffffffffffffff" +
-            "0x0036:AND0x0037:PUSH320xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef0x0058:CALLVALUE0x0059:PUSH10x400x005b:MLOAD" +
-            "0x005c:PUSH10x630x005e:SWAP20x005f:SWAP10x0060:PUSH10x7f0x0062:JUMP0x0063:JUMPDEST0x0064:PUSH10x400x0066:MLOAD0x0067:DUP10x0068:SWAP2" +
-            "0x0069:SUB0x006a:SWAP10x006b:LOG30x006c:STOP0x006d:JUMPDEST0x006e:PUSH10x000x0070:DUP10x0071:REVERT0x0072:JUMPDEST0x0073:PUSH10x79" +
-            "0x0075:DUP20x0076:PUSH10x980x0078:JUMP0x0079:JUMPDEST0x007a:DUP30x007b:MSTORE0x007c:POP0x007d:POP0x007e:JUMP0x007f:JUMPDEST0x0080:PUSH10x00" +
-            "0x0082:PUSH10x200x0084:DUP30x0085:ADD0x0086:SWAP10x0087:POP0x0088:PUSH10x920x008a:PUSH10x000x008c:DUP40x008d:ADD0x008e:DUP50x008f:PUSH10x72" +
-            "0x0091:JUMP0x0092:JUMPDEST0x0093:SWAP30x0094:SWAP20x0095:POP0x0096:POP0x0097:JUMP0x0098:JUMPDEST0x0099:PUSH10x000x009b:DUP20x009c:SWAP1" +
-            "0x009d:POP0x009e:SWAP20x009f:SWAP10x00a0:POP0x00a1:JUMP0x00a2:INVALID")
+        // Check show assembly bytecode checkbox
+        const checkbox = wrapper2.get("#show-assembly-bytecode")
+        expect((checkbox.element as HTMLInputElement).checked).toBe(false);
+        await checkbox.setValue(true);
+        expect((checkbox.element as HTMLInputElement).checked).toBe(true);
+
+        expect(wrapper2.get("#creation-bytecode").text()).toContain(
+            "0x0000:60-PUSH10x800x0002:60-PUSH10x400x0004:52-MSTORE0x0005:36-CALLDATASIZE0x0006:60-PUSH10x6d" +
+            "0x0008:57-JUMPI0x0009:30-ADDRESS0x000a:73-PUSH200xffffffffffffffffffffffffffffffffffffffff" +
+            "0x001f:16-AND0x0020:33-CALLER0x0021:73-PUSH200xffffffffffffffffffffffffffffffffffffffff" +
+            "0x0036:16-AND0x0037:7f-PUSH320xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef" +
+            "0x0058:34-CALLVALUE0x0059:60-PUSH10x400x005b:51-MLOAD0x005c:60-PUSH10x630x005e:91-SWAP2" +
+            "0x005f:90-SWAP10x0060:60-PUSH10x7f0x0062:56-JUMP0x0063:5b-JUMPDEST0x0064:60-PUSH10x400x0066:51-MLOAD" +
+            "0x0067:80-DUP10x0068:91-SWAP20x0069:03-SUB0x006a:90-SWAP10x006b:a3-LOG30x006c:00-STOP0x006d:5b-JUMPDEST" +
+            "0x006e:60-PUSH10x000x0070:80-DUP10x0071:fd-REVERT0x0072:5b-JUMPDEST0x0073:60-PUSH10x790x0075:81-DUP2" +
+            "0x0076:60-PUSH10x980x0078:56-JUMP0x0079:5b-JUMPDEST0x007a:82-DUP30x007b:52-MSTORE0x007c:50-POP" +
+            "0x007d:50-POP0x007e:56-JUMP0x007f:5b-JUMPDEST0x0080:60-PUSH10x000x0082:60-PUSH10x200x0084:82-DUP3" +
+            "0x0085:01-ADD0x0086:90-SWAP10x0087:50-POP0x0088:60-PUSH10x920x008a:60-PUSH10x000x008c:83-DUP4" +
+            "0x008d:01-ADD0x008e:84-DUP50x008f:60-PUSH10x720x0091:56-JUMP0x0092:5b-JUMPDEST0x0093:92-SWAP3" +
+            "0x0094:91-SWAP20x0095:50-POP0x0096:50-POP0x0097:56-JUMP0x0098:5b-JUMPDEST0x0099:60-PUSH10x00" +
+            "0x009b:81-DUP20x009c:90-SWAP10x009d:50-POP0x009e:91-SWAP20x009f:90-SWAP10x00a0:50-POP" +
+            "0x00a1:56-JUMP0x00a2:fe-INVALID"
+        )
         expect(wrapper2.get("#solcVersion").text()).toBe("Solidity Compiler Version0.8.4")
 
         //
@@ -174,6 +187,7 @@ describe("ContractDetails.vue", () => {
 
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/contracts/" + SAMPLE_CONTRACT.contract_id + "/results?internal=true",
+            "api/v1/accounts/0xffffffffffffffffffffffffffffffffffffffff",
             "api/v1/contracts/0.0.1260",
             "api/v1/contracts/" + SAMPLE_CONTRACT_RESULTS.results[0].from,
             "api/v1/tokens/0.0.1260",
@@ -182,6 +196,9 @@ describe("ContractDetails.vue", () => {
 
         expect(wrapper3.findComponent(ContractResultTable).exists()).toBe(true)
 
+        // Uncheck show assembly bytecode checkbox
+        await checkbox.setValue(false);
+        expect((checkbox.element as HTMLInputElement).checked).toBe(false);
 
         mock.restore()
         wrapper.unmount()
@@ -279,20 +296,32 @@ describe("ContractDetails.vue", () => {
             "7358 2212 20b9 4efc a641 a0cf 62b2 bd50 5f79 fe4b e165 c582 520b c615 e5c5 fa34 0215 6eaf d864 736f 6c63 " +
             "4300 0804 0033")
 
-        tab = wrapper2.find("#tab-assembly")
+        tab = wrapper2.find("#tab-creation")
         await tab.trigger('click')
         await flushPromises()
 
-        expect(wrapper2.get("#assembly-code").text()).toContain(
-            "0x0000:PUSH10x800x0002:PUSH10x400x0004:MSTORE0x0005:CALLDATASIZE0x0006:PUSH10x6d0x0008:JUMPI0x0009:ADDRESS" +
-            "0x000a:PUSH200xffffffffffffffffffffffffffffffffffffffff0x001f:AND0x0020:CALLER0x0021:PUSH200xffffffffffffffffffffffffffffffffffffffff" +
-            "0x0036:AND0x0037:PUSH320xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef0x0058:CALLVALUE0x0059:PUSH10x400x005b:MLOAD" +
-            "0x005c:PUSH10x630x005e:SWAP20x005f:SWAP10x0060:PUSH10x7f0x0062:JUMP0x0063:JUMPDEST0x0064:PUSH10x400x0066:MLOAD0x0067:DUP10x0068:SWAP2" +
-            "0x0069:SUB0x006a:SWAP10x006b:LOG30x006c:STOP0x006d:JUMPDEST0x006e:PUSH10x000x0070:DUP10x0071:REVERT0x0072:JUMPDEST0x0073:PUSH10x79" +
-            "0x0075:DUP20x0076:PUSH10x980x0078:JUMP0x0079:JUMPDEST0x007a:DUP30x007b:MSTORE0x007c:POP0x007d:POP0x007e:JUMP0x007f:JUMPDEST0x0080:PUSH10x00" +
-            "0x0082:PUSH10x200x0084:DUP30x0085:ADD0x0086:SWAP10x0087:POP0x0088:PUSH10x920x008a:PUSH10x000x008c:DUP40x008d:ADD0x008e:DUP50x008f:PUSH10x72" +
-            "0x0091:JUMP0x0092:JUMPDEST0x0093:SWAP30x0094:SWAP20x0095:POP0x0096:POP0x0097:JUMP0x0098:JUMPDEST0x0099:PUSH10x000x009b:DUP20x009c:SWAP1" +
-            "0x009d:POP0x009e:SWAP20x009f:SWAP10x00a0:POP0x00a1:JUMP0x00a2:INVALID")
+        // Check show assembly bytecode checkbox
+        const checkbox = wrapper2.get("#show-assembly-bytecode")
+        expect((checkbox.element as HTMLInputElement).checked).toBe(false);
+        await checkbox.setValue(true);
+        expect((checkbox.element as HTMLInputElement).checked).toBe(true);
+
+        expect(wrapper2.get("#creation-bytecode").text()).toContain(
+            "0x0000:60-PUSH10x800x0002:60-PUSH10x400x0004:52-MSTORE0x0005:36-CALLDATASIZE0x0006:60-PUSH10x6d" +
+            "0x0008:57-JUMPI0x0009:30-ADDRESS0x000a:73-PUSH200xffffffffffffffffffffffffffffffffffffffff" +
+            "0x001f:16-AND0x0020:33-CALLER0x0021:73-PUSH200xffffffffffffffffffffffffffffffffffffffff" +
+            "0x0036:16-AND0x0037:7f-PUSH320xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef" +
+            "0x0058:34-CALLVALUE0x0059:60-PUSH10x400x005b:51-MLOAD0x005c:60-PUSH10x630x005e:91-SWAP20x005f:90-SWAP1" +
+            "0x0060:60-PUSH10x7f0x0062:56-JUMP0x0063:5b-JUMPDEST0x0064:60-PUSH10x400x0066:51-MLOAD0x0067:80-DUP1" +
+            "0x0068:91-SWAP20x0069:03-SUB0x006a:90-SWAP10x006b:a3-LOG30x006c:00-STOP0x006d:5b-JUMPDEST" +
+            "0x006e:60-PUSH10x000x0070:80-DUP10x0071:fd-REVERT0x0072:5b-JUMPDEST0x0073:60-PUSH10x790x0075:81-DUP2" +
+            "0x0076:60-PUSH10x980x0078:56-JUMP0x0079:5b-JUMPDEST0x007a:82-DUP30x007b:52-MSTORE0x007c:50-POP" +
+            "0x007d:50-POP0x007e:56-JUMP0x007f:5b-JUMPDEST0x0080:60-PUSH10x000x0082:60-PUSH10x200x0084:82-DUP3" +
+            "0x0085:01-ADD0x0086:90-SWAP10x0087:50-POP0x0088:60-PUSH10x920x008a:60-PUSH10x000x008c:83-DUP4" +
+            "0x008d:01-ADD0x008e:84-DUP50x008f:60-PUSH10x720x0091:56-JUMP0x0092:5b-JUMPDEST0x0093:92-SWAP3" +
+            "0x0094:91-SWAP20x0095:50-POP0x0096:50-POP0x0097:56-JUMP0x0098:5b-JUMPDEST0x0099:60-PUSH10x00" +
+            "0x009b:81-DUP20x009c:90-SWAP10x009d:50-POP0x009e:91-SWAP20x009f:90-SWAP10x00a0:50-POP0x00a1:56-JUMP" +
+            "0x00a2:fe-INVALID")
         expect(wrapper2.get("#solcVersion").text()).toBe("Solidity Compiler Version0.8.4")
 
         //
@@ -312,6 +341,7 @@ describe("ContractDetails.vue", () => {
 
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/contracts/" + SAMPLE_CONTRACT.evm_address + "/results?internal=true",
+            "api/v1/accounts/0xffffffffffffffffffffffffffffffffffffffff",
             "api/v1/contracts/0.0.1260",
             "api/v1/contracts/" + SAMPLE_CONTRACT_RESULTS.results[0].from,
             "api/v1/tokens/0.0.1260",
@@ -320,6 +350,9 @@ describe("ContractDetails.vue", () => {
 
         expect(wrapper3.findComponent(ContractResultTable).exists()).toBe(true)
 
+        // Uncheck show assembly bytecode checkbox
+        await checkbox.setValue(false);
+        expect((checkbox.element as HTMLInputElement).checked).toBe(false);
 
         mock.restore()
         wrapper.unmount()

@@ -17,15 +17,23 @@
           @update:selected-tab="handleTabUpdate($event)"
       />
 
-      <div v-if="selectedTab === 'assembly'" class="show-hexa-opcode-checkbox">
-        <input type="checkbox" v-model="showHexaOpcode" id="show-hexa-opcode" name="show-hexa-opcode"/>
-        <label for="show-hexa-opcode">Show hexa opcode</label>
+      <div class="show-assembly-checkbox">
+        <input id="show-assembly-bytecode" v-model="showAssemblyBytecode" name="show-assembly-bytecode"
+               type="checkbox"/>
+        <label for="show-assembly-bytecode">Show assembly bytecode</label>
       </div>
     </div>
 
     <template v-if="selectedTab === 'runtime'">
       <div id="bytecode" class="code-pane">
+        <DisassembledCodeValue
+            v-if="showAssemblyBytecode"
+            class="h-code-box h-code-source"
+            :byte-code="props.byteCode ?? undefined"
+            :show-hexa-opcode="true"
+        />
         <ByteCodeValue
+            v-else
             class="h-code-box h-code-source"
             :byte-code="props.byteCode ?? undefined"
             :scroll-bar="false"
@@ -33,15 +41,25 @@
       </div>
     </template>
 
-    <template v-else>
-      <div id="assembly-code" class="code-pane">
+    <template v-else-if="selectedTab === 'creation'">
+      <div id="creation-bytecode" class="code-pane">
         <DisassembledCodeValue
+            v-if="showAssemblyBytecode"
             class="h-code-box h-code-source"
-            :byte-code="props.byteCode ?? undefined"
-            :show-hexa-opcode="showHexaOpcode"
+            :byte-code="props.creationByteCode ?? undefined"
+            :show-hexa-opcode="true"
+        />
+        <ByteCodeValue
+            v-else
+            class="h-code-box h-code-source"
+            :byte-code="props.creationByteCode ?? undefined"
+            :scroll-bar="false"
         />
       </div>
     </template>
+
+    <template v-else/>
+
   </div>
 
 </template>
@@ -52,7 +70,7 @@
 
 <script setup lang="ts">
 
-import {PropType, ref} from 'vue';
+import {onMounted, PropType, ref, watch} from 'vue';
 import "prismjs/prism";
 import "prismjs/themes/prism-tomorrow.css"
 import "prismjs/prism.js";
@@ -67,16 +85,19 @@ const props = defineProps({
   byteCode: {
     type: String as PropType<string | null>,
     default: null
+  },
+  creationByteCode: {
+    type: String as PropType<string | null>,
+    default: null
   }
 })
 
-const showHexaOpcode = defineModel("showHexaOpcode", {
-  type: Boolean,
-  default: false
-})
+const showAssemblyBytecode = ref(false)
+onMounted(() => showAssemblyBytecode.value = AppStorage.getShowAssemblyBytecode())
+watch(showAssemblyBytecode, () => AppStorage.setShowAssemblyBytecode(showAssemblyBytecode.value ? showAssemblyBytecode.value : null))
 
-const tabIds = ['runtime', 'assembly']
-const tabLabels = ['Runtime Bytecode', 'Assembly Bytecode']
+const tabIds = ['runtime', 'creation']
+const tabLabels = ['Runtime Bytecode', 'Creation Bytecode']
 const selectedTab = ref<string | null>(AppStorage.getContractByteCodeTab() ?? tabIds[0])
 const handleTabUpdate = (tab: string | null) => {
   selectedTab.value = tab
@@ -113,7 +134,7 @@ div.assembly-header {
   justify-content: space-between;
 }
 
-div.show-hexa-opcode-checkbox {
+div.show-assembly-checkbox {
   align-items: center;
   display: flex;
   gap: 8px;

@@ -139,13 +139,13 @@ export class AppStorage {
     // display hexa opcodes in assembly code
     //
 
-    private static readonly SHOW_HEXA_OPCODE_KEY = 'hexaOpcode'
+    private static readonly SHOW_HEXA_OPCODE_KEY = 'showAssembly'
 
-    public static getShowHexaOpcode(): boolean {
+    public static getShowAssemblyBytecode(): boolean {
         return this.getLocalStorageItem(this.SHOW_HEXA_OPCODE_KEY) != null
     }
 
-    public static setShowHexaOpcode(newValue: boolean | null): void {
+    public static setShowAssemblyBytecode(newValue: boolean | null): void {
         this.setLocalStorageItem(this.SHOW_HEXA_OPCODE_KEY, newValue ? "true" : null)
     }
 
