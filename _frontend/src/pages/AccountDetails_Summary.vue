@@ -71,7 +71,6 @@
     </template>
 
     <template #left-content>
-
       <Property id="balance">
         <template #name>
           Balance
@@ -202,6 +201,38 @@
           <StringValue :string-value="account?.ethereum_nonce?.toString()"/>
         </template>
       </Property>
+      <template v-if="nbOfHooks">
+        <Property id="numOfHooks">
+          <template #name>Number of Hooks</template>
+          <template #value>
+            <div style="display: flex; align-items: baseline; gap: 16px;">
+              <PlainAmount :amount="nbOfHooks"/>
+              <ArrowLink
+                  v-if="normalizedAccountId"
+                  id="showHooksList"
+                  :is-contrasted="true"
+                  :route="routeManager.makeRouteToAccount(normalizedAccountId, 'AccountDetails_Hooks', 'hooks')"
+                  text="Hooks list"
+              />
+            </div>
+          </template>
+        </Property>
+        <Property id="numOfStorage">
+          <template #name>Number of Storage Slots</template>
+          <template #value>
+            <div style="display: flex; align-items: baseline; gap: 16px;">
+              <PlainAmount :amount="nbOfSlots"/>
+              <ArrowLink
+                  v-if="normalizedAccountId"
+                  id="showHooksStorageTable"
+                  :is-contrasted="true"
+                  :route="routeManager.makeRouteToAccount(normalizedAccountId, 'AccountDetails_Hooks', 'storage')"
+                  text="Hooks storage"
+              />
+            </div>
+          </template>
+        </Property>
+      </template>
     </template>
 
     <template #footer>
@@ -251,6 +282,10 @@ import PublicLabel from "@/components/values/PublicLabel.vue";
 import {PublicLabelsCache} from "@/utils/cache/PublicLabelsCache.ts";
 import {routeManager, walletManager} from "@/utils/RouteManager.ts";
 import MirrorLink from "@/components/MirrorLink.vue";
+import ArrowLink from "@/components/ArrowLink.vue";
+import {HooksByAccountIdCache} from "@/utils/cache/HooksByAccountIdCache.ts";
+import {HookStorageByIdCache} from "@/utils/cache/HookStorageByIdCache.ts";
+import PlainAmount from "@/components/values/PlainAmount.vue";
 
 const props = defineProps({
   accountId: String,
@@ -330,21 +365,42 @@ const label = computed(() =>
 // Account Update
 //
 const showUpdateAccountDialog = ref(false)
-
 const onUpdateAccount = () => showUpdateAccountDialog.value = true
-
 const onUpdateCompleted = () => accountLocParser.remount()
 
 const isMyAccount = computed(() => walletManager.accountId.value === props.accountId)
 const walletIconURL = computed(() => (isMyAccount.value) ? walletManager.walletIconURL.value || "" : "")
 const isHieroWallet = computed(() => walletManager.isHieroWallet.value)
-const isAccountEditable = computed(() => isMyAccount.value && isHieroWallet.value
-)
+const isAccountEditable = computed(() => isMyAccount.value && isHieroWallet.value)
+
+//
+// Hooks
+//
+const normalizedAccountId = accountLocParser.accountId
+const hooksLookup = HooksByAccountIdCache.instance.makeLookup(normalizedAccountId)
+onMounted(() => hooksLookup.mount())
+onBeforeUnmount(() => hooksLookup.unmount())
+const hooks = computed(() => hooksLookup.entity.value || [])
+
+const nbOfHooks = computed(() => hooks.value.length)
+const nbOfSlots = ref(0)
+watch(hooks, async () => {
+  let slots = 0
+  for (const hook of hooks.value) {
+    const key = HookStorageByIdCache.makeKey(normalizedAccountId.value!, hook.hook_id)
+    const result = await HookStorageByIdCache.instance.lookup(key)
+    if (result === null) {
+      console.error(`Could not find hook storage for hook ${hook.hook_id} of account ${normalizedAccountId.value}`)
+    } else {
+      slots += result.length
+    }
+  }
+  nbOfSlots.value = slots
+})
 
 const hbarBalance = balanceAnalyzer.hbarBalance
 const isInactiveEvmAddress = accountLocParser.isInactiveEvmAddress
 const account = accountLocParser.accountInfo
-const normalizedAccountId = accountLocParser.accountId
 const accountChecksum = accountLocParser.accountChecksum
 const accountDescription = accountLocParser.accountDescription
 const nodeId = accountLocParser.nodeId
