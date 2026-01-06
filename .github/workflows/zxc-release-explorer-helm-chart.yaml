@@ -53,7 +53,7 @@ jobs:
           password: ${{ github.token }}
 
       - name: Update Helm Chart Version
-        uses: mikefarah/yq@1187c954ec44c3a0e62c13ca7dc9dadc1ca80ae7 # v4.46.1
+        uses: mikefarah/yq@065b200af9851db0d5132f50bc10b1406ea5c0a8 # v4.50.1
         env:
           relver: ${{ inputs.new-version }}
         with:
