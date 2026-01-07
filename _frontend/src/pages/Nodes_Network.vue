@@ -55,7 +55,7 @@
             :tooltip-label="maxRewardRateTooltip"
         />
         <NetworkDashboardItemV2
-            title="CURRENT REWARD RATE"
+            title="CURRENT GLOBAL REWARD RATE"
             :value="makeAnnualizedRate(rewardRate)"
             :tooltip-label="rewardRateTooltip"
         />
@@ -103,7 +103,7 @@ const stakeRewardedTotalTooltip = `Total amount of ${cryptoName} staked for rewa
 const maxStakeRewardedTooltip = `Maximum amount of ${cryptoName} that can be staked for reward while still achieving the maximum reward rate.`
 const totalRewardedTooltip = `Total amount of ${cryptoName} paid in reward for the last period.`
 const maxRewardRateTooltip = "Approximate annual reward rate based on the maximum reward rate that any account can receive in a day."
-const rewardRateTooltip = "Approximate annual reward rate based on the reward earned during the last 24h period."
+const rewardRateTooltip = "Approximate annual reward rate based on the global reward earned during the last 24h period."
 
 const networkNodeAnalyzer = new NetworkAnalyzer()
 onMounted(() => networkNodeAnalyzer.mount())
