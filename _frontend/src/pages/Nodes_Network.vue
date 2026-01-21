@@ -55,7 +55,7 @@
             :tooltip-label="maxRewardRateTooltip"
         />
         <NetworkDashboardItemV2
-            title="CURRENT REWARD RATE"
+            title="CURRENT GLOBAL REWARD RATE"
             :value="makeAnnualizedRate(rewardRate)"
             :tooltip-label="rewardRateTooltip"
         />
@@ -103,7 +103,7 @@ const stakeRewardedTotalTooltip = `Total amount of ${cryptoName} staked for rewa
 const maxStakeRewardedTooltip = `Maximum amount of ${cryptoName} that can be staked for reward while still achieving the maximum reward rate.`
 const totalRewardedTooltip = `Total amount of ${cryptoName} paid in reward for the last period.`
 const maxRewardRateTooltip = "Approximate annual reward rate based on the maximum reward rate that any account can receive in a day."
-const rewardRateTooltip = "Approximate annual reward rate based on the reward earned during the last 24h period."
+const rewardRateTooltip = "Approximate annual reward rate based on the global reward earned during the last 24h period."
 
 const networkNodeAnalyzer = new NetworkAnalyzer()
 onMounted(() => networkNodeAnalyzer.mount())
@@ -115,11 +115,6 @@ onBeforeUnmount(() => stakeLookup.unmount())
 
 const stakeTotal = computed(() => stakeLookup.entity.value?.stake_total ?? 0)
 const maxStakeRewarded = computed(() => stakeLookup.entity.value?.max_stake_rewarded ?? 0)
-const rewardRate = computed(() => {
-  return networkNodeAnalyzer.stakeRewardedTotal.value != 0
-      ? (stakeLookup.entity.value?.staking_reward_rate ?? 0) / networkNodeAnalyzer.stakeRewardedTotal.value * 100000000
-      : 0
-})
 const maxRewardRate = computed(() => stakeLookup.entity.value?.max_staking_reward_rate_per_hbar ?? 0)
 
 const makeFloorHbarAmount = (tinyBarAmount: number) => Math.floor((tinyBarAmount ?? 0) / 100000000).toLocaleString('en-US')
@@ -131,6 +126,7 @@ const totalRewarded = networkNodeAnalyzer.totalRewarded
 const durationMin = networkNodeAnalyzer.durationMin
 const elapsedMin = networkNodeAnalyzer.elapsedMin
 const remainingMin = networkNodeAnalyzer.remainingMin
+const rewardRate = networkNodeAnalyzer.globalStakingRewardRate
 
 const isMapVisible = computed(() => routeManager.currentNetwork.value === 'mainnet')
 
