@@ -433,42 +433,12 @@ export async function drainAndFilterTransactions(
     minTinyBar: number,
     account: string
 ): Promise<Transaction[]> {
-
     const MAX_DRAIN_ITERATION_WHEN_FILTERING = 40
-
-    // This function is used to filter out what we consider as 'spam' transactions
-    // A transaction is considered spam if it contains a transfer involving the user account which has an amount
-    // below the limit chosen by the user (e.g. 1 hbar).
-    // The amount considered is the (absolute) net value of the transfer -- we deduce the amount of the perceived staking reward if any.
-    const filterTinyTxn = (txn: Transaction) => {
-        let filter = true
-        let reward = 0
-        if (txn.name === TransactionType.CRYPTOTRANSFER && minTinyBar > 0) {
-            for (const r of txn.staking_reward_transfers) {
-                if (r.account === account) {
-                    reward = r.amount
-                }
-            }
-            for (const t of txn.transfers) {
-                if (t.account === account) {
-                    const netAmount = Math.abs(t.amount - reward)
-                    if (netAmount < minTinyBar) {
-                        filter = false
-                    }
-                    break
-                }
-            }
-        }
-        return filter
-    }
+    const filterTinyTxn = createSpamTransactionFilter(minTinyBar, account)
 
     let result = (r.transactions ?? []).filter(filterTinyTxn)
     let i = 0
     while (r.links?.next && result.length < limit && i < MAX_DRAIN_ITERATION_WHEN_FILTERING) {
-        // console.log(`drainAndFilterTransactions (iteration ${i + 1})`)
-        // console.log(`  - limit:${limit}`)
-        // console.log(`  - result.length:${result.length}`)
-        // console.log(`  - r.links.next:${r.links.next}`)
         const ar = await axios.get<TransactionResponse>(r.links.next)
         if (ar.data.transactions) {
             result = result.concat(ar.data.transactions.filter(filterTinyTxn))
@@ -477,6 +447,25 @@ export async function drainAndFilterTransactions(
         i += 1
     }
     return result
+}
+
+// Returns the function used to filter out what we consider as 'spam' transactions
+// A transaction is considered spam if it contains a transfer involving the user account which has an amount
+// below the limit chosen by the user (e.g. 1 hbar).
+// The amount considered is the (absolute) net value of the transfer -- we deduce the amount of the perceived staking reward if any.
+function createSpamTransactionFilter(minTinyBar: number, account: string) {
+    return (txn: Transaction) => {
+        if (txn.name !== TransactionType.CRYPTOTRANSFER || minTinyBar <= 0) {
+            return true
+        }
+        const reward = txn.staking_reward_transfers.find(r => r.account === account)?.amount ?? 0
+        const transfer = txn.transfers.find(t => t.account === account)
+        if (transfer) {
+            const netAmount = Math.abs(transfer.amount - reward)
+            return netAmount >= minTinyBar
+        }
+        return true
+    }
 }
 
 export async function drainAccounts(r: AccountsResponse, limit: number): Promise<AccountInfo[]> {
