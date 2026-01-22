@@ -603,20 +603,25 @@ export function extractChecksum(address: string): string | null {
 
 export function computeTPS(blocks: Block[]): number | null { // blocks should be in ascending order
     let result: number | null
+    const rangeNanos = computeBlockRangeNanos(blocks)
+    if (rangeNanos !== null) {
+        const txCount = countTransactions(blocks)
+        result = txCount / (rangeNanos / 1_000_000_000)
+    } else {
+        result = null
+    }
+    return result
+}
 
+function computeBlockRangeNanos(blocks: Block[]): number | null {
+    let result: number | null
     if (blocks.length >= 1) {
         const startBlock = blocks[0]
         const endBlock = blocks[blocks.length - 1]
         const startTime = startBlock.timestamp?.from ?? null
         const endTime = endBlock.timestamp?.to ?? null
         if (startTime !== null && endTime !== null) {
-            const rangeNanos = Timestamp.computeRange(startTime, endTime)
-            if (rangeNanos !== null) {
-                const txCount = countTransactions(blocks)
-                return txCount / (rangeNanos / 1_000_000_000)
-            } else {
-                result = null
-            }
+            result = Timestamp.computeRange(startTime, endTime)
         } else {
             result = null
         }
