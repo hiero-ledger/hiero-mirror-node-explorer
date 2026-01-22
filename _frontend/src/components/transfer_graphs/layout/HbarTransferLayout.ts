@@ -44,7 +44,7 @@ export class HbarTransferLayout {
             }
             for (const t of positiveTransfers) {
                 const isFee = isFeeTransfer(t, this.nodes)
-                const operator = t.account ? makeOperatorDescription(t.account, this.nodes, isFee) : null
+                const operator = t.account ? makeOperatorDescription(t.account, this.nodes) : null
                 this.destinations.push(new HbarTransferRow(t, operator ?? "Transfer", !isFee))
             }
         }
@@ -74,7 +74,7 @@ export class HbarTransferLayout {
                     const payloadRow =
                         new HbarTransferRow(
                             payloadTransfer,
-                            makeOperatorDescription(replacedTransfer.transfer.account ?? "", this.nodes, false),
+                            makeOperatorDescription(replacedTransfer.transfer.account ?? "", this.nodes),
                             true)
                     this.destinations.splice(i, 0, payloadRow)
                     if (feeAmount > 0) {
