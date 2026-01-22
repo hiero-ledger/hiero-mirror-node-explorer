@@ -83,7 +83,7 @@ describe("Nodes.vue", () => {
         expect(items[5].text()).toMatch("MAXIMUM STAKED FOR REWARD 0HBAR")
         expect(items[6].text()).toMatch("REWARDED LAST PERIOD 1,095HBAR")
         expect(items[7].text()).toMatch("MAXIMUM REWARD RATE 0%")
-        expect(items[8].text()).toMatch("CURRENT REWARD RATE 0%")
+        expect(items[8].text()).toMatch("CURRENT GLOBAL REWARD RATE 2.105%")
 
         mock.resetHistory()
         const wrapper2 = mount(Nodes_NodeTable, {

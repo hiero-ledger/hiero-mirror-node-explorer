@@ -38,6 +38,16 @@ export class NetworkAnalyzer {
 
     public readonly node0 = computed(() => this.nodes.value.length >= 1 ? this.nodes.value[0] : null)
 
+    public readonly globalStakingRewardRate: ComputedRef<number> = computed(() => {
+        let result = 0
+        if (this.stakeRewardedTotal.value !== 0) {
+            result = this.totalRewarded.value / this.stakeRewardedTotal.value
+            // return value in tinybars earned per whole hbar, homogeneous with other MN rates
+            result = result * 100000000
+        }
+        return result
+    })
+
     public readonly totalStakeForConsensus: ComputedRef<number> = computed(() => {
         let result = 0
         for (const n of this.nodes.value) {
