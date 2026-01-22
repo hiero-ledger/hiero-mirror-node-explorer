@@ -83,11 +83,15 @@ export class EntityID {
 
         if (address) {
             const buffer = hexToByte(address)
-            if (buffer !== null && buffer.length == 20) {
+            if (buffer !== null && buffer.length === 20) {
                 const view = new DataView(buffer.buffer)
                 const bigNum = view.getBigInt64(12)
-                const num = 0 <= bigNum && bigNum < EntityID.MAX_INT ? Number(bigNum) : null
-                result = num != null ? new EntityID(baseShard, baseRealm, num, null) : null
+
+                if (0 <= bigNum && bigNum < EntityID.MAX_INT) {
+                    result = new EntityID(baseShard, baseRealm, Number(bigNum), null)
+                } else {
+                    result = null
+                }
             } else {
                 result = null
             }
