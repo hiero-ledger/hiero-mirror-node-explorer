@@ -81,7 +81,7 @@ describe("AccountLink.vue", () => {
         mock.onGet(matcher1).reply(200, SAMPLE_NETWORK_NODES);
 
         const testAccountId = "0.0.4"
-        const testExtra = "Hosted by Hedera | East Coast, USA"
+        const testExtra = "Node 1 (Hedera)"
         const wrapper = mount(AccountLink, {
             global: {
                 plugins: [router]
