@@ -23,18 +23,13 @@ export class EntityID {
 
     public static parse(s: string): EntityID | null {
         let result: EntityID | null
-
-        const i1 = s.indexOf(".")
-        const i2 = i1 != -1 ? s.indexOf(".", i1 + 1) : -1
-        const i3 = i2 != -1 ? s.indexOf(".", i2 + 1) : -1
-        if (i1 != -1 && i2 != -1 && i3 == -1) {
-            const shardString = s.substring(0, i1)
-            const realmString = s.substring(i1 + 1, i2)
-            const numString = s.substring(i2 + 1)
+        const parts = s.split(".")
+        if (parts.length === 3) {
+            const [shardString, realmString, numString] = parts
             const shard = EntityID.parsePositiveInt(shardString)
             const realm = EntityID.parsePositiveInt(realmString)
             const num = EntityID.parsePositiveInt(numString)
-            if (shard == null || realm == null || num == null) {
+            if (shard === null || realm === null || num === null) {
                 result = null
             } else {
                 result = new EntityID(shard, realm, num, null)
