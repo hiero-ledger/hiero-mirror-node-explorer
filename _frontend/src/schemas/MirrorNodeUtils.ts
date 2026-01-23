@@ -162,7 +162,7 @@ const AccountDescriptions: Record<number, string> = {
 }
 
 export function makeOperatorDescription(accountId: string, nodes: NetworkNode[],): string | null {
-    const id = EntityID.parse(accountId)
+    const id: EntityID | null = EntityID.parse(accountId)
     if (id !== null) {
         return AccountDescriptions[id.num] ?? makeNodeAccountDescription(accountId, nodes)
     }
