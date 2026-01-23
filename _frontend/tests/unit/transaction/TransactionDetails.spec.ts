@@ -131,7 +131,7 @@ describe("TransactionDetails.vue", () => {
 
         expect(wrapper.get("#memoValue").text()).toBe("None")
         expect(wrapper.get("#operatorAccountValue").text()).toBe("0.0.29624024")
-        expect(wrapper.get("#nodeAccountValue").text()).toBe("0.0.5Hosted by Hedera | Central, USA")
+        expect(wrapper.get("#nodeAccountValue").text()).toBe("0.0.5Node 2 (Hedera)")
         expect(wrapper.get("#durationValue").text()).toBe("2min")
         expect(() => wrapper.get("#associatedTokenId")).toThrowError()
         expect(() => wrapper.get("#entityId")).toThrowError()
@@ -142,8 +142,8 @@ describe("TransactionDetails.vue", () => {
 
         expect(wrapper.findComponent(HbarTransferGraphF).text()).toBe(
             "Hbar Transfers ACCOUNT  AMOUNT  ACCOUNT  AMOUNT 0.0.29624024-0.00470065ℏ-$0.00116\n\n" +
-            "0.0.40.00022028ℏ$0.00005Node fee (Hedera)\n\n" +
-            "0.0.980.00448037ℏ$0.00110Hedera fee collection account")
+            "0.0.40.00022028ℏ$0.00005Node 1 (Hedera)\n\n" +
+            "0.0.980.00448037ℏ$0.00110Network Admin Fee Account")
 
         expect(wrapper.findComponent(TokenTransferGraph).text()).toBe(
             "Token Transfers ACCOUNTAMOUNTACCOUNTAMOUNT0.0.29624024-123423\n\n" +
@@ -1254,8 +1254,8 @@ describe("TransactionDetails.vue", () => {
         expect(wrapper.findComponent(NftTransferGraph).exists()).toBe(true)
 
         expect(wrapper.findComponent(HbarTransferGraphF).text()).toBe("Hbar Transfers ACCOUNT  AMOUNT  ACCOUNT  AMOUNT 0.0.642949-1.15905210ℏ-$0.28517\n\n" +
-            "0.0.30.05805847ℏ$0.01428Node fee (Hedera)\n\n" +
-            "0.0.981.10099363ℏ$0.27088Hedera fee collection account")
+            "0.0.30.05805847ℏ$0.01428Node 0 (Hedera)\n\n" +
+            "0.0.981.10099363ℏ$0.27088Network Admin Fee Account")
         expect(wrapper.findComponent(TokenTransferGraph).text()).toBe("")
         expect(wrapper.findComponent(NftTransferGraph).text()).toBe("")
 

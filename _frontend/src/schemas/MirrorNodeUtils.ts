@@ -145,27 +145,46 @@ export function makeDefaultNodeDescription(nodeId: number | null): string {
     return nodeId ? "Node " + nodeId : "?"
 }
 
-export function makeOperatorDescription(accountId: string, nodes: NetworkNode[], isFee = false): string | null {
-    let result: string | null
-    if (accountId === "0.0.98") {
-        result = "Hedera fee collection account"
-    } else if (accountId === "0.0.800") {
-        result = isFee ? "Staking reward account fee" : "Staking reward account"
-    } else if (accountId === "0.0.801") {
-        result = isFee ? "Node reward account fee" : "Node reward account"
-    } else {
-        const node = lookupNodeByAccountId(accountId, nodes)
-        result = node !== null
-            ? isFee ? `Node fee (${makeNodeOwnerDescription(node, true)})` : makeNodeDescription(node)
-            : null
+const AccountDescriptions: Record<number, string> = {
+    2: "Network Treasury Account",
+    50: "System Admin Account",
+    54: "Software Update Admin Account",
+    55: "Address Book Admin Account",
+    56: "Fee Schedules Admin Account",
+    57: "Exchange Rates Admin Account",
+    58: "Freeze Admin Account",
+    59: "System Delete Admin Account",
+    60: "System Undelete Admin Account",
+    98: "Network Admin Fee Account",
+    800: "Staking Reward Account",
+    801: "Node Reward Account",
+    802: "Fee Collection Account",
+}
+
+export function makeOperatorDescription(accountId: string, nodes: NetworkNode[],): string | null {
+    const id: EntityID | null = EntityID.parse(accountId)
+    if (id !== null) {
+        return AccountDescriptions[id.num] ?? makeNodeAccountDescription(accountId, nodes)
     }
-    return result
+    return null
+}
+
+function makeNodeAccountDescription(accountId: string, nodes: NetworkNode[]): string | null {
+    const node = lookupNodeByAccountId(accountId, nodes)
+    return node !== null
+        ? `Node ${node.node_id} (${makeNodeOwnerDescription(node, true)})`
+        : null
 }
 
 export function isFeeTransfer(t: Transfer, nodes: NetworkNode[]): boolean {
-    return t.account !== null
-        && t.amount > 0
-        && makeOperatorDescription(t.account, nodes) !== null
+    if (t.account !== null && t.amount > 0) {
+        const num = EntityID.parse(t.account)?.num
+
+        const isFeeAccount = num && [98, 800, 801, 802].includes(num)
+        const isNodeAccount = nodes.find(n => n.node_account_id === t.account) !== undefined
+        return isFeeAccount || isNodeAccount
+    }
+    return false
 }
 
 const emptyITF = new ethers.Interface([]) // To decode errors

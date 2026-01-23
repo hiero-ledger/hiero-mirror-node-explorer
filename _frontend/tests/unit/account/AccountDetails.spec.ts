@@ -551,7 +551,7 @@ describe("AccountDetails.vue", () => {
         ])
 
         expect(wrapper.get("#stakedToName").text()).toBe("Staked to")
-        expect(wrapper.get("#stakedToValue").text()).toBe("Account 0.0.5Hosted by Hedera | Central, USA")
+        expect(wrapper.get("#stakedToValue").text()).toBe("Account 0.0.5Node 2 (Hedera)")
         expect(wrapper.get("#pendingRewardValue").text()).toBe("0.00000000ℏ$0.00000")
         expect(wrapper.find("#declineRewardValue").exists()).toBe(false)
 
