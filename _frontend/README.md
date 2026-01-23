@@ -6,26 +6,46 @@
 
 Visual Explorer for the Hiero DLT.
 
-### Project setup
-`npm install`
+### Clone the project
+```bash
+git clone https://github.com/hiero-ledger/hiero-mirror-node-explorer.git
+cd hiero-mirror-node-explorer/_frontend
+```
+
+### Install dependencies
+```bash
+npm install
+```
 
 ### Compile and hot-reload for development
-`npm run dev`
+```bash
+npm run dev
+```
 
 ### Compile and minify for production
-`npm run build`
+```bash
+npm run build
+```
 
 ### Lint files (find and fix problems)
-`npm run lint`
+```bash
+npm run lint
+```
 
 ### Run unit tests
-`npm run test:unit`
+```bash
+npm run test:unit
+```
 
 ### Run end-to-end tests interactively
-`npm run test:e2e:dev`
+```bash
+npm run test:e2e:dev
+```
 
 ### Run end-to-end tests in headless browser mode
-`npm run test:e2e`
+```bash
+npm run test:e2e
+```
 
 ## Configuration
 
@@ -39,19 +59,29 @@ Details for these configuration files can be found in [CONFIGURATION.md](https:/
 ## Run in Docker
 
 ### Build the Docker image (skip to use pre-built image)
-`npm run docker:build`
+```bash
+npm run docker:build
+```
 
 ### Copy and adjust configuration of Hiero networks as needed
-`cp networks-config-http-example.json networks-config.json`
+```bash
+cp networks-config-http-example.json public/networks-config.json
+```
 
 ### Start the Docker container (fetches a pre-built image if not built locally)
-`npm run docker:start`
+```bash
+npm run docker:start
+```
 
 ### Launch Explorer
-`open http://localhost:8080`
+```bash
+open http://localhost:8080
+```
 
 ### Stop the Docker container
-`npm run docker:stop`
+```bash
+npm run docker:stop
+```
 
 
 ## Run in Kubernetes
@@ -60,7 +90,9 @@ To run in [Kubernetes](https://kubernetes.io) the hiero-explorer [Helm](https://
 obtain access to a Kubernetes cluster running version 1.23 or greater. [Minikube](https://minikube.sigs.k8s.io/docs/)
 can be used for a local Kubernetes cluster.
 
-`helm upgrade --install hiero-explorer chart/`
+```bash
+helm upgrade --install hiero-explorer chart/
+```
 
 ### Configure custom networks 
 
@@ -89,11 +121,20 @@ Note that the production sourcify server will not accept verification requests f
 
 Use the following commands to use sourcify locally:
 
-`npm run sourcify:setup`: Check environment set-up for running sourcify locally
+### Check environment set-up for running sourcify locally
+```bash
+npm run sourcify:setup
+```
 
-`npm run sourcify:start`: Start sourcify service. This should open a page saying that the server is alive.
+### Start sourcify service. This should open a page saying that the server is alive.
+```bash
+npm run sourcify:start
+```
 
-`npm run sourcify:stop`: Stop sourcify service
+### Stop sourcify service
+```bash
+npm run sourcify:stop
+```
 
 Please see
 [sourcify-setup/README.md](https://github.com/hashgraph/hedera-mirror-node-explorer/blob/main/_frontend/sourcify-setup/README.md) for more details. 
