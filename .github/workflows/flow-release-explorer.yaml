@@ -49,6 +49,7 @@ jobs:
             marked-mangle@1.1.10 marked-gfm-heading-id@4.1.1 semantic-release-conventional-commits@3.0.0
 
       - name: Calculate Next Version
+        working-directory: _frontend
         env:
           GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
         run: npx semantic-release --dry-run
