@@ -183,8 +183,6 @@ export function isFeeTransfer(t: Transfer, nodes: NetworkNode[]): boolean {
         const isFeeAccount = num && [98, 800, 801, 802].includes(num)
         const isNodeAccount = nodes.find(n => n.node_account_id === t.account) !== undefined
         return isFeeAccount || isNodeAccount
-        // TODO: Once HIP-1259 is fully deployed, replace 3 previous statements by:
-        // return num === 802
     }
     return false
 }
