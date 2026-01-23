@@ -48,13 +48,28 @@ jobs:
             @commitlint/cli@19.5.0 @commitlint/config-conventional@19.5.0 \
             marked-mangle@1.1.10 marked-gfm-heading-id@4.1.1 semantic-release-conventional-commits@3.0.0
 
+      - name: Setup JQ
+        uses: dcarbone/install-jq-action@b7ef57d46ece78760b4019dbc4080a1ba2a40b45 # v3.2.0
+        with:
+          version: 1.7
+
       - name: Calculate Next Version
         working-directory: _frontend
         env:
           GITHUB_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
-        run: npx semantic-release --dry-run
+        run: |
+          if [[ "${{ github.event.repository.default_branch }}" == "${{ github.ref_name }}" ]]; then
+            semantic-release --dry-run
+          else
+            if [[ "${{ inputs.dry-run-enabled }}" == "true" ]]; then
+              jq -r '.version' './package.json' > VERSION
+            else
+              gh run cancel ${{ github.run_id }}
+            fi
+          fi
 
       - name: Retrieve Version
+        working-directory: _frontend
         id: release
         run: echo "version=$(cat VERSION)" >> "${GITHUB_OUTPUT}"
 
