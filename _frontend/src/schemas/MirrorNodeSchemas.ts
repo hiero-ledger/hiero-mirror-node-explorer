@@ -115,7 +115,7 @@ export enum ExtensionPoint {
 }
 
 export enum HookType {
-    LAMBDA = "LAMBDA",
+    EVM = "EVM",
 }
 
 export interface Hook {
