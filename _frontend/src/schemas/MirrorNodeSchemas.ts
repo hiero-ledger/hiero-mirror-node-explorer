@@ -115,7 +115,7 @@ export enum ExtensionPoint {
 }
 
 export enum HookType {
-    LAMBDA = "LAMBDA",
+    EVM = "EVM",
 }
 
 export interface Hook {
@@ -295,7 +295,7 @@ export enum TransactionType {
     FILEDELETE = "FILEDELETE",
     FILEUPDATE = "FILEUPDATE",
     FREEZE = "FREEZE",
-    LAMBDASSTORE = "LAMBDASSTORE",
+    HOOKSTORE = "HOOKSTORE",
     NODECREATE = "NODECREATE",
     NODEDELETE = "NODEDELETE",
     NODESTAKEUPDATE = "NODESTAKEUPDATE",
