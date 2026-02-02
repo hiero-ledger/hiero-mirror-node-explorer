@@ -109,8 +109,8 @@ const displayExtensionPoint = (extensionPoint: ExtensionPoint) => {
 const displayHookType = (hookType: HookType) => {
   let result: string
   switch (hookType) {
-    case HookType.LAMBDA:
-      result = 'Lambda'
+    case HookType.EVM:
+      result = 'EVM'
       break
     default:
       result = hookType
