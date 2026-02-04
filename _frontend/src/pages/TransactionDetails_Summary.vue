@@ -173,6 +173,12 @@
                        :show-extra="true"/>
         </template>
       </Property>
+      <Property v-if="transaction?.high_volume" id="highVolume">
+        <template #name>High Volume</template>
+        <template #value>
+          <StringValue string-value="True"/>
+        </template>
+      </Property>
       <Property id="chargedFee">
         <template #name>Charged Fee</template>
         <template #value>
