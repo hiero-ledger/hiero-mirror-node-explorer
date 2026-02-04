@@ -2534,7 +2534,7 @@ export const SAMPLE_TOKEN_ASSOCIATE_TRANSACTION = {
     "charged_tx_fee": 115905210,
     "consensus_timestamp": "1671648712.150557003",
     "entity_id": "0.0.642949",
-    "high_volume": false,
+    "high_volume": true,
     "max_fee": "500000000",
     "memo_base64": "",
     "name": "TOKENASSOCIATE",
