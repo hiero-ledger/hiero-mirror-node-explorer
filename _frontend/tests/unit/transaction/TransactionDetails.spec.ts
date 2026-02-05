@@ -125,7 +125,7 @@ describe("TransactionDetails.vue", () => {
         expect(wrapper.get("#transactionHashValue").text()).toBe("0xa012961232ed7d2842836e95f7e9c4356fdfe2de08199091701a969c1d1fd93671d3078ee83b28fb460a88b4cbd8ecd2Copy")
         expect(wrapper.get("#blockNumberValue").text()).toBe("25175998")
 
-        expect(wrapper.find("#highVolume").exists()).toBe(false)
+        expect(wrapper.get("#highVolumeValue").text()).toBe("True")
         expect(wrapper.get("#chargedFeeValue").text()).toBe("0.00470065ℏ$0.00116")
         expect(wrapper.get("#maxFeeName").text()).toBe("Max Fee")
         expect(wrapper.get("#maxFeeValue").text()).toBe("1.00000000ℏ$0.24603")
@@ -1717,78 +1717,6 @@ describe("TransactionDetails.vue", () => {
         expect(wrapper.get("#transactionTypeValue").text()).toBe("CRYPTO TRANSFER")
         expect(wrapper.get("#consensusAtValue").text()).toBe("5:12:31.6676 AMFeb 28, 2022, UTC") // UTC because of HMSF.forceUTC
         expect(wrapper.get("#blockNumberValue").text()).toBe("0")
-
-        wrapper.unmount()
-        await flushPromises()
-        SignatureCache.instance.clear()
-        mock.restore()
-    });
-
-    it("TransactionDetails_Summary should display high volume flag set", async () => {
-
-        await router.push("/") // To avoid "missing required param 'network'" error
-
-        const transaction = SAMPLE_TOKEN_ASSOCIATE_TRANSACTION
-        const transactionId = transaction.transaction_id
-        const token1 = SAMPLE_ASSOCIATED_TOKEN
-        const token2 = SAMPLE_ASSOCIATED_TOKEN_2
-
-        const mock = new MockAdapter(axios as any)
-        const matcher1 = "/api/v1/transactions/" + transactionId
-        mock.onGet(matcher1).reply(200, {transactions: [transaction]});
-        const matcher11 = "/api/v1/transactions"
-        mock.onGet(matcher11).reply(((config: AxiosRequestConfig) => {
-            if (config.params.timestamp == transaction.consensus_timestamp) {
-                return [200, {transactions: [transaction]}]
-            } else {
-                return [404]
-            }
-        }) as any);
-        const matcher3 = "/api/v1/accounts/" + transaction.entity_id + "/tokens?limit=100"
-        mock.onGet(matcher3).reply(200, SAMPLE_TOKEN_RELATIONSHIP_RESPONSE);
-        const matcher4 = "/api/v1/tokens/" + token1.token_id
-        mock.onGet(matcher4).reply(200, token1);
-        const matcher5 = "/api/v1/tokens/" + token2.token_id
-        mock.onGet(matcher5).reply(200, token2);
-
-        const matcher10 = "/api/v1/network/exchangerate"
-        mock.onGet(matcher10).reply(200, SAMPLE_NETWORK_EXCHANGERATE);
-        const matcher20 = "/api/v1/blocks"
-        mock.onGet(matcher20).reply(200, SAMPLE_BLOCKSRESPONSE);
-        const matcher30 = "api/v1/network/nodes"
-        mock.onGet(matcher30).reply(200, SAMPLE_NETWORK_NODES);
-
-        const wrapper = mount(TransactionDetails_Summary, {
-            global: {
-                plugins: [router, Oruga],
-                provide: {"isMediumScreen": false}
-            },
-            props: {
-                transactionLoc: transaction.consensus_timestamp,
-            },
-        });
-
-        await flushPromises()
-        // console.log(wrapper.html())
-        // console.log(wrapper.text())
-
-        expect(fetchGetURLs(mock)).toStrictEqual([
-            "api/v1/network/nodes",
-            "api/v1/transactions",
-            "api/v1/network/exchangerate",
-            "api/v1/transactions/" + SAMPLE_TOKEN_ASSOCIATE_TRANSACTION.transaction_id,
-            "api/v1/blocks",
-            "api/v1/contracts/" + SAMPLE_TOKEN_ASSOCIATE_TRANSACTION.node,
-            "api/v1/contracts/" + SAMPLE_TOKEN_ASSOCIATE_TRANSACTION.transfers[2].account,
-            "api/v1/contracts/" + SAMPLE_TOKEN_ASSOCIATE_TRANSACTION.transfers[1].account,
-            "api/v1/accounts/" + SAMPLE_TOKEN_ASSOCIATE_TRANSACTION.transfers[2].account + "/tokens?limit=100",
-            "api/v1/tokens/" + SAMPLE_ASSOCIATED_TOKEN.token_id,
-            "api/v1/tokens/" + SAMPLE_ASSOCIATED_TOKEN_2.token_id,
-        ])
-
-        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(transactionId)+"Copy")
-
-        expect(wrapper.get("#highVolumeValue").text()).toBe("True")
 
         wrapper.unmount()
         await flushPromises()
