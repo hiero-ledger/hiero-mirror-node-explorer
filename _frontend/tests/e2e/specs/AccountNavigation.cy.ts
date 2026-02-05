@@ -301,10 +301,11 @@ describe('Account Navigation', () => {
     it('should follow link to corresponding node and back', () => {
         const accountId = '0.0.3'
         const nodeId = '0'
+        const nodeName = '0 - Hosted by Hedera | West Coast, USA'
         cy.visit('testnet/account/' + accountId)
         cy.url().should('include', '/testnet/account/' + accountId)
         cy.contains('Account ID ' + accountId)
-        cy.contains('a', 'node1')
+        cy.contains('a', nodeName)
             .click()
 
         cy.url().should('include', '/testnet/node/' + nodeId)
