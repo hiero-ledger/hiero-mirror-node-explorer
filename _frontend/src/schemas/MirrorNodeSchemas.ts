@@ -188,6 +188,7 @@ export interface Transaction {
     charged_tx_fee: number
     consensus_timestamp: string
     entity_id: string | null           // Network entity ID in the format of shard.realm.num
+    high_volume: boolean               // Whether the transaction used high-volume entity creation throttles and pricing per HIP-1313
     max_fee: string
     memo_base64: string | null         // To be checked
     name: TransactionType

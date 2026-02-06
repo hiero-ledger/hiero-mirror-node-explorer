@@ -173,6 +173,12 @@
                        :show-extra="true"/>
         </template>
       </Property>
+      <Property v-if="transaction?.high_volume" id="highVolume">
+        <template #name>High Volume</template>
+        <template #value>
+          <StringValue string-value="True"/>
+        </template>
+      </Property>
       <Property id="chargedFee">
         <template #name>Charged Fee</template>
         <template #value>
@@ -376,11 +382,18 @@ const displayAllInnerLink = computed(() => {
   return innerTransactions.value.length > MAX_INLINE_CHILDREN
 })
 
-const displayTransfers = computed(() =>
-    (transactionDetail.value?.transfers && transactionDetail.value.transfers.length > 0)
-    || (transactionDetail.value?.token_transfers && transactionDetail.value.token_transfers.length > 0)
-    || (transactionDetail.value?.nft_transfers && transactionDetail.value.nft_transfers.length > 0)
-)
+const displayTransfers = computed(() => {
+  let result: boolean
+  if (transactionDetail.value) {
+    const hasHbarTransfer = transactionDetail.value.transfers && transactionDetail.value.transfers.length > 0
+    const hasTokenTransfers = transactionDetail.value.token_transfers && transactionDetail.value.token_transfers.length > 0
+    const hasNftTransfers = transactionDetail.value.nft_transfers && transactionDetail.value.nft_transfers.length > 0
+    result = hasHbarTransfer || hasTokenTransfers || hasNftTransfers
+  } else {
+    result = false
+  }
+  return result
+})
 
 const displayResult = computed(
     () => transactionAnalyzer.hasSucceeded.value && transactionAnalyzer.result.value != "SUCCESS")
