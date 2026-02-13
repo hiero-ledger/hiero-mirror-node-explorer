@@ -124,6 +124,8 @@ describe("TransactionDetails.vue", () => {
         expect(wrapper.get("#consensusAtValue").text()).toBe("5:12:31.6676 AMFeb 28, 2022, UTC") // UTC because of HMSF.forceUTC
         expect(wrapper.get("#transactionHashValue").text()).toBe("0xa012961232ed7d2842836e95f7e9c4356fdfe2de08199091701a969c1d1fd93671d3078ee83b28fb460a88b4cbd8ecd2Copy")
         expect(wrapper.get("#blockNumberValue").text()).toBe("25175998")
+
+        expect(wrapper.get("#highVolumeValue").text()).toBe("True")
         expect(wrapper.get("#chargedFeeValue").text()).toBe("0.00470065ℏ$0.00116")
         expect(wrapper.get("#maxFeeName").text()).toBe("Max Fee")
         expect(wrapper.get("#maxFeeValue").text()).toBe("1.00000000ℏ$0.24603")
