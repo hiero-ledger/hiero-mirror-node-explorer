@@ -224,17 +224,35 @@ export class FunctionCallDecoder {
         const revertReason = this.revertReason.value
         if (revertReason !== null) {
             try {
-                const r = ethers.AbiCoder.defaultAbiCoder().decode(["int64"], revertReason)
-                if (r.length >= 1) {
-                    const comment = labelForResponseCode(r[0])
-                    const ntv = new NameTypeValue("revertReason", "int64", r[0], null, comment)
-                    result.push(ntv)
+                // 1) Let's try error decoding
+                const i = this.contractAnalyzer.interface.value
+                const revertDescription = i?.parseError(revertReason) ?? null
+                if (revertDescription !== null) {
+                    const revertArgs = revertDescription.args
+                    const fragmentInputs = revertDescription.fragment.inputs ?? []
+                    for (let i = 0, count = revertArgs.length; i < count; i += 1) {
+                        const value = revertArgs[i]
+                        const name = i < fragmentInputs.length ? fragmentInputs[i].name : "?"
+                        const type = i < fragmentInputs.length ? fragmentInputs[i].type : "?"
+                        result.push(new NameTypeValue(name, type, value, null, null))
+                    }
                 } else {
-                    const ntv = new NameTypeValue("revertReason", "string", revertReason, null, null)
-                    result.push(ntv)
+                    // 2) Let's try response code decoding
+                    const r = ethers.getBigInt(revertReason)
+                    const comment = labelForResponseCode(r)
+                    if (comment !== null) {
+                        const ntv = new NameTypeValue("revertReason", "int64", r, null, comment)
+                        result.push(ntv)
+                    } else {
+                        // 3) Ok ... it's bytes ... or string ...
+                        const type = revertReason.startsWith("0x") ? "byte" : "string"
+                        const ntv = new NameTypeValue("revertReason", type, revertReason, null, null)
+                        result.push(ntv)
+                    }
                 }
             } catch {
-                const ntv = new NameTypeValue("revertReason", "byte", revertReason, null, null)
+                const type = revertReason.startsWith("0x") ? "byte" : "string"
+                const ntv = new NameTypeValue("revertReason", type, revertReason, null, null)
                 result.push(ntv)
             }
         }
