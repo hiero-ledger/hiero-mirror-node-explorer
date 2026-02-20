@@ -232,17 +232,16 @@ describe("TransactionDetails.vue", () => {
             "api/v1/transactions",
             "api/v1/network/fees",
             "api/v1/contracts/" + SAMPLE_CONTRACTCALL_TRANSACTIONS.transactions[0].entity_id,
-            "api/v1/transactions/" + SAMPLE_CONTRACTCALL_TRANSACTIONS.transactions[0].transaction_id,
-            "api/v1/contracts/results/" + SAMPLE_CONTRACTCALL_TRANSACTIONS.transactions[0].transaction_id,
             "api/v1/contracts/results",
+            "api/v1/contracts/results/" + SAMPLE_CONTRACTCALL_TRANSACTIONS.transactions[0].transaction_id,
             "api/v1/contracts/" + SAMPLE_CONTRACT_RESULT_DETAILS.contract_id + "/results/" + SAMPLE_CONTRACTCALL_TRANSACTIONS.transactions[0].consensus_timestamp,
             "api/v1/accounts/",
             "api/v1/contracts/0.0.846260", // SAMPLE_CONTRACT_RESULT_DETAILS.from as entity id
             "api/v1/contracts/0.0.1062787", // SAMPLE_CONTRACT_RESULT_DETAILS.to as entity id
             "api/v1/contracts/" + SAMPLE_CONTRACT_RESULT_DETAILS.from,
             "api/v1/contracts/" + SAMPLE_CONTRACT_RESULT_DETAILS.to,
-            "api/v1/blocks",
             "api/v1/tokens/0.0.846260", // SAMPLE_CONTRACT_RESULT_DETAILS.from as entity id
+            "api/v1/blocks",
             "api/v1/tokens/0.0.1062787", // SAMPLE_CONTRACT_RESULT_DETAILS.to as entity id
             "https://www.4byte.directory/api/v1/signatures/?format=json&hex_signature=0x18cbafe5",
         ])
@@ -334,17 +333,16 @@ describe("TransactionDetails.vue", () => {
             "api/v1/transactions/" + transactionHash,
             "api/v1/network/fees",
             "api/v1/contracts/" + SAMPLE_CONTRACTCALL_TRANSACTIONS.transactions[0].entity_id,
-            "api/v1/transactions/" + SAMPLE_CONTRACTCALL_TRANSACTIONS.transactions[0].transaction_id,
-            "api/v1/contracts/results/" + SAMPLE_CONTRACTCALL_TRANSACTIONS.transactions[0].transaction_id,
             "api/v1/contracts/results",
+            "api/v1/contracts/results/" + SAMPLE_CONTRACTCALL_TRANSACTIONS.transactions[0].transaction_id,
             "api/v1/contracts/" + SAMPLE_CONTRACT_RESULT_DETAILS.contract_id + "/results/" + SAMPLE_CONTRACTCALL_TRANSACTIONS.transactions[0].consensus_timestamp,
             "api/v1/accounts/",
             "api/v1/contracts/0.0.846260", // SAMPLE_CONTRACT_RESULT_DETAILS.from as entity id
             "api/v1/contracts/0.0.1062787", // SAMPLE_CONTRACT_RESULT_DETAILS.to as entity id
             "api/v1/contracts/" + SAMPLE_CONTRACT_RESULT_DETAILS.from,
             "api/v1/contracts/" + SAMPLE_CONTRACT_RESULT_DETAILS.to,
-            "api/v1/blocks",
             "api/v1/tokens/0.0.846260", // SAMPLE_CONTRACT_RESULT_DETAILS.from as entity id
+            "api/v1/blocks",
             "api/v1/accounts/" + SAMPLE_CONTRACT_RESULT_DETAILS.from,
             "api/v1/accounts/" + SAMPLE_CONTRACT_RESULT_DETAILS.to,
             "api/v1/tokens/0.0.1062787", // SAMPLE_CONTRACT_RESULT_DETAILS.to as entity id
