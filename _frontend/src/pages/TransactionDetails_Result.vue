@@ -121,11 +121,9 @@
 <script setup lang="ts">
 
 import {computed, inject, onBeforeUnmount, onMounted} from 'vue';
-import {TransactionDetail, TransactionType} from "@/schemas/MirrorNodeSchemas";
+import {TransactionType} from "@/schemas/MirrorNodeSchemas";
 import {TransactionLocParser} from "@/utils/parser/TransactionLocParser";
-import {TransactionGroupAnalyzer} from "@/components/transaction/TransactionGroupAnalyzer";
 import {TransactionAnalyzer} from "@/components/transaction/TransactionAnalyzer";
-import {TransactionGroupCache} from "@/utils/cache/TransactionGroupCache";
 import GasAmount from "@/components/values/GasAmount.vue";
 import HbarAmount from "@/components/values/HbarAmount.vue";
 import EVMAddress from "@/components/values/EVMAddress.vue";
@@ -160,29 +158,7 @@ const transactionAnalyzer = new TransactionAnalyzer(transactionLocParser.transac
 onMounted(() => transactionAnalyzer.mount())
 onBeforeUnmount(() => transactionAnalyzer.unmount())
 
-const transactionGroupLookup = TransactionGroupCache.instance.makeLookup(transactionLocParser.transactionId)
-onMounted(() => transactionGroupLookup.mount())
-onBeforeUnmount(() => transactionGroupLookup.unmount())
-
-const transactionGroupAnalyzer = new TransactionGroupAnalyzer(transactionGroupLookup.entity)
-
-const transaction = computed(() => {
-  let result: TransactionDetail | null
-  const consensusTimestamp = transactionAnalyzer.consensusTimestamp.value
-  if (consensusTimestamp !== null) {
-    result = null
-    for (const t of transactionGroupAnalyzer.transactions.value ?? []) {
-      if (consensusTimestamp == t.consensus_timestamp) {
-        result = t
-        break
-      }
-    }
-  } else {
-    result = null
-  }
-  return result
-})
-
+const transaction = transactionLocParser.transaction
 const timestamp = transactionAnalyzer.consensusTimestamp
 const transactionType = transactionAnalyzer.transactionType
 

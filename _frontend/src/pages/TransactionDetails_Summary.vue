@@ -478,7 +478,7 @@ onBeforeUnmount(() => scheduleLookup.unmount())
 
 const operatorAccount = computed(() => {
   let result: string | null = null
-  if (transactionDetail.value?.scheduled) {
+  if (transactionLocParser.transaction.value?.scheduled) {
     result = schedule.value?.payer_account_id ?? null
   }
   if (result === null) {
@@ -503,7 +503,7 @@ const formattedTransactionId = computed(() =>
 )
 
 const transactionId = transactionLocParser.transactionId
-const transaction = transactionDetail
+const transaction = transactionLocParser.transaction
 const netAmount = transactionAnalyzer.netAmount
 const entity = transactionAnalyzer.entityDescriptor
 const systemContract = transactionAnalyzer.systemContract
