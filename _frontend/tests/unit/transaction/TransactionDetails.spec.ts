@@ -232,17 +232,16 @@ describe("TransactionDetails.vue", () => {
             "api/v1/transactions",
             "api/v1/network/fees",
             "api/v1/contracts/" + SAMPLE_CONTRACTCALL_TRANSACTIONS.transactions[0].entity_id,
-            "api/v1/transactions/" + SAMPLE_CONTRACTCALL_TRANSACTIONS.transactions[0].transaction_id,
-            "api/v1/contracts/results/" + SAMPLE_CONTRACTCALL_TRANSACTIONS.transactions[0].transaction_id,
             "api/v1/contracts/results",
+            "api/v1/contracts/results/" + SAMPLE_CONTRACTCALL_TRANSACTIONS.transactions[0].transaction_id,
             "api/v1/contracts/" + SAMPLE_CONTRACT_RESULT_DETAILS.contract_id + "/results/" + SAMPLE_CONTRACTCALL_TRANSACTIONS.transactions[0].consensus_timestamp,
             "api/v1/accounts/",
             "api/v1/contracts/0.0.846260", // SAMPLE_CONTRACT_RESULT_DETAILS.from as entity id
             "api/v1/contracts/0.0.1062787", // SAMPLE_CONTRACT_RESULT_DETAILS.to as entity id
             "api/v1/contracts/" + SAMPLE_CONTRACT_RESULT_DETAILS.from,
             "api/v1/contracts/" + SAMPLE_CONTRACT_RESULT_DETAILS.to,
-            "api/v1/blocks",
             "api/v1/tokens/0.0.846260", // SAMPLE_CONTRACT_RESULT_DETAILS.from as entity id
+            "api/v1/blocks",
             "api/v1/tokens/0.0.1062787", // SAMPLE_CONTRACT_RESULT_DETAILS.to as entity id
             "https://www.4byte.directory/api/v1/signatures/?format=json&hex_signature=0x18cbafe5",
         ])
@@ -334,17 +333,16 @@ describe("TransactionDetails.vue", () => {
             "api/v1/transactions/" + transactionHash,
             "api/v1/network/fees",
             "api/v1/contracts/" + SAMPLE_CONTRACTCALL_TRANSACTIONS.transactions[0].entity_id,
-            "api/v1/transactions/" + SAMPLE_CONTRACTCALL_TRANSACTIONS.transactions[0].transaction_id,
-            "api/v1/contracts/results/" + SAMPLE_CONTRACTCALL_TRANSACTIONS.transactions[0].transaction_id,
             "api/v1/contracts/results",
+            "api/v1/contracts/results/" + SAMPLE_CONTRACTCALL_TRANSACTIONS.transactions[0].transaction_id,
             "api/v1/contracts/" + SAMPLE_CONTRACT_RESULT_DETAILS.contract_id + "/results/" + SAMPLE_CONTRACTCALL_TRANSACTIONS.transactions[0].consensus_timestamp,
             "api/v1/accounts/",
             "api/v1/contracts/0.0.846260", // SAMPLE_CONTRACT_RESULT_DETAILS.from as entity id
             "api/v1/contracts/0.0.1062787", // SAMPLE_CONTRACT_RESULT_DETAILS.to as entity id
             "api/v1/contracts/" + SAMPLE_CONTRACT_RESULT_DETAILS.from,
             "api/v1/contracts/" + SAMPLE_CONTRACT_RESULT_DETAILS.to,
-            "api/v1/blocks",
             "api/v1/tokens/0.0.846260", // SAMPLE_CONTRACT_RESULT_DETAILS.from as entity id
+            "api/v1/blocks",
             "api/v1/accounts/" + SAMPLE_CONTRACT_RESULT_DETAILS.from,
             "api/v1/accounts/" + SAMPLE_CONTRACT_RESULT_DETAILS.to,
             "api/v1/tokens/0.0.1062787", // SAMPLE_CONTRACT_RESULT_DETAILS.to as entity id
@@ -454,9 +452,9 @@ describe("TransactionDetails.vue", () => {
             "api/v1/network/exchangerate",
             "api/v1/contracts/" + transaction.entity_id,
             "api/v1/transactions/" + transaction.transaction_id,
-            "api/v1/contracts/results/" + transaction.transaction_id,
             "api/v1/contracts/" + transaction.node,
             "api/v1/contracts/" + transaction.transfers[2].account,
+            "api/v1/contracts/results/" + transaction.transaction_id,
             "api/v1/accounts/",
             "api/v1/blocks",
         ])
@@ -657,7 +655,10 @@ describe("TransactionDetails.vue", () => {
             "api/v1/transactions",
             "api/v1/network/exchangerate",
             "api/v1/transactions/" + INNER.transaction_id,
+            "api/v1/contracts/" + INNER.node,
+            "api/v1/contracts/" + INNER.transfers[3].account,
             "api/v1/blocks",
+            "api/v1/tokens/" + INNER.entity_id,
             "api/v1/transactions",
         ])
 
@@ -816,10 +817,10 @@ describe("TransactionDetails.vue", () => {
             "api/v1/transactions",
             "api/v1/network/exchangerate",
             "api/v1/transactions/" + SCHEDULING.transaction_id,
-            "api/v1/blocks",
-            "api/v1/schedules/0.0.1382775",
             "api/v1/contracts/" + SCHEDULING.node,
             "api/v1/contracts/" + SCHEDULING.transfers[2].account,
+            "api/v1/blocks",
+            "api/v1/schedules/0.0.1382775",
             "api/v1/contracts/" + SCHEDULING.transfers[1].account,
             "api/v1/transactions",
         ])
@@ -890,14 +891,14 @@ describe("TransactionDetails.vue", () => {
             "api/v1/transactions",
             "api/v1/network/exchangerate",
             "api/v1/transactions/" + SCHEDULING.transaction_id,
+            "api/v1/contracts/" + SCHEDULING.transfers[2].account,
             "api/v1/blocks",
+            "api/v1/tokens/" + SCHEDULED.entity_id,
             "api/v1/schedules/0.0.1382775",
             "api/v1/contracts/" + SCHEDULED.transfers[1].account,
             "api/v1/contracts/" + SCHEDULING.transfers[1].account,
-            "api/v1/tokens/" + SCHEDULED.entity_id,
             "api/v1/contracts/" + SCHEDULED.token_transfers[0].account,
             "api/v1/transactions",
-            "api/v1/contracts/" + SCHEDULING.transfers[2].account,
         ])
 
         expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(SCHEDULING.transaction_id)+"Copy")
@@ -962,9 +963,9 @@ describe("TransactionDetails.vue", () => {
             "api/v1/transactions",
             "api/v1/network/exchangerate",
             "api/v1/transactions/" + PARENT.transaction_id,
+            "api/v1/contracts/" + SAMPLE_PARENT_CHILD_TRANSACTIONS.transactions![0].transfers[1].account,
             "api/v1/blocks",
             "api/v1/tokens/" + CHILD.entity_id,
-            "api/v1/contracts/" + SAMPLE_PARENT_CHILD_TRANSACTIONS.transactions![0].transfers[1].account,
         ])
 
         expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(PARENT.transaction_id)+"Copy")
@@ -1108,8 +1109,8 @@ describe("TransactionDetails.vue", () => {
             "api/v1/transactions",
             "api/v1/network/exchangerate",
             "api/v1/transactions/" + SAMPLE_SAME_ID_NOT_PARENT_TRANSACTIONS.transactions[0].transaction_id,
-            "api/v1/blocks",
             "api/v1/contracts/" + SAMPLE_SAME_ID_NOT_PARENT_TRANSACTIONS.transactions[0].transfers[2].account,
+            "api/v1/blocks",
         ])
 
         expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(NONCE_1.transaction_id)+"Copy")
@@ -1162,9 +1163,9 @@ describe("TransactionDetails.vue", () => {
             "api/v1/transactions",
             "api/v1/network/exchangerate",
             "api/v1/transactions/" + SAMPLE_PARENT_CHILD_AND_UNRELATED_TRANSACTIONS.transactions![0].transaction_id,
+            "api/v1/contracts/" + SAMPLE_PARENT_CHILD_AND_UNRELATED_TRANSACTIONS.transactions![1].transfers[3].account,
             "api/v1/blocks",
             "api/v1/contracts/" + SAMPLE_PARENT_CHILD_AND_UNRELATED_TRANSACTIONS.transactions![1].transfers[4].account,
-            "api/v1/contracts/" + SAMPLE_PARENT_CHILD_AND_UNRELATED_TRANSACTIONS.transactions![1].transfers[3].account,
         ])
 
         expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(NONCE_1.transaction_id)+"Copy")
@@ -1234,9 +1235,9 @@ describe("TransactionDetails.vue", () => {
             "api/v1/transactions",
             "api/v1/network/exchangerate",
             "api/v1/transactions/" + SAMPLE_TOKEN_ASSOCIATE_TRANSACTION.transaction_id,
-            "api/v1/blocks",
             "api/v1/contracts/" + SAMPLE_TOKEN_ASSOCIATE_TRANSACTION.node,
             "api/v1/contracts/" + SAMPLE_TOKEN_ASSOCIATE_TRANSACTION.transfers[2].account,
+            "api/v1/blocks",
             "api/v1/contracts/" + SAMPLE_TOKEN_ASSOCIATE_TRANSACTION.transfers[1].account,
             "api/v1/accounts/" + SAMPLE_TOKEN_ASSOCIATE_TRANSACTION.transfers[2].account + "/tokens?limit=100",
             "api/v1/tokens/" + SAMPLE_ASSOCIATED_TOKEN.token_id,
@@ -1432,9 +1433,9 @@ describe("TransactionDetails.vue", () => {
             "api/v1/network/exchangerate",
             "api/v1/contracts/" + SAMPLE_ETHEREUM_TRANSACTIONS_ON_CONTRACT.transactions[0].entity_id,
             "api/v1/transactions/" + SAMPLE_ETHEREUM_TRANSACTIONS_ON_CONTRACT.transactions[0].transaction_id,
-            "api/v1/contracts/results/" + SAMPLE_ETHEREUM_TRANSACTIONS_ON_CONTRACT.transactions[0].transaction_id,
             "api/v1/contracts/" + SAMPLE_ETHEREUM_TRANSACTIONS_ON_CONTRACT.transactions[0].node,
             "api/v1/contracts/" + SAMPLE_ETHEREUM_TRANSACTIONS_ON_CONTRACT.transactions[0].transfers[2].account,
+            "api/v1/contracts/results/" + SAMPLE_ETHEREUM_TRANSACTIONS_ON_CONTRACT.transactions[0].transaction_id,
             "api/v1/contracts/" + SAMPLE_ETHEREUM_TRANSACTIONS_ON_CONTRACT.transactions[0].transfers[3].account,
             "api/v1/contracts/" + SAMPLE_ETHEREUM_TRANSACTIONS_ON_CONTRACT.transactions[0].transfers[1].account,
             "api/v1/accounts/",
@@ -1644,9 +1645,9 @@ describe("TransactionDetails.vue", () => {
             "api/v1/transactions",
             "api/v1/network/exchangerate",
             "api/v1/transactions/" + SAMPLE_FILE_UPDATE_TRANSACTION.transaction_id,
-            "api/v1/blocks",
             "api/v1/contracts/" + SAMPLE_FILE_UPDATE_TRANSACTION.node,
             "api/v1/contracts/0.0.56",
+            "api/v1/blocks",
         ])
 
         const banner = wrapper.findComponent(NotificationBanner)

@@ -21,11 +21,8 @@
 <script setup lang="ts">
 
 import {computed, onBeforeUnmount, onMounted} from 'vue';
-import {TransactionDetail} from "@/schemas/MirrorNodeSchemas";
 import {TransactionLocParser} from "@/utils/parser/TransactionLocParser";
-import {TransactionGroupAnalyzer} from "@/components/transaction/TransactionGroupAnalyzer";
 import {TransactionAnalyzer} from "@/components/transaction/TransactionAnalyzer";
-import {TransactionGroupCache} from "@/utils/cache/TransactionGroupCache";
 import ContractResultLogs from "@/components/contract/ContractResultLogs.vue";
 import {ContractResultAnalyzer} from "@/utils/analyzer/ContractResultAnalyzer.ts";
 import {NetworkFeesCache} from "@/utils/cache/NetworkFeesCache.ts";
@@ -44,29 +41,7 @@ const transactionAnalyzer = new TransactionAnalyzer(transactionLocParser.transac
 onMounted(() => transactionAnalyzer.mount())
 onBeforeUnmount(() => transactionAnalyzer.unmount())
 
-const transactionGroupLookup = TransactionGroupCache.instance.makeLookup(transactionLocParser.transactionId)
-onMounted(() => transactionGroupLookup.mount())
-onBeforeUnmount(() => transactionGroupLookup.unmount())
-
-const transactionGroupAnalyzer = new TransactionGroupAnalyzer(transactionGroupLookup.entity)
-
-const transaction = computed(() => {
-  let result: TransactionDetail | null
-  const consensusTimestamp = transactionAnalyzer.consensusTimestamp.value
-  if (consensusTimestamp !== null) {
-    result = null
-    for (const t of transactionGroupAnalyzer.transactions.value ?? []) {
-      if (consensusTimestamp == t.consensus_timestamp) {
-        result = t
-        break
-      }
-    }
-  } else {
-    result = null
-  }
-  return result
-})
-
+const transaction = transactionLocParser.transaction
 const timestamp = transactionAnalyzer.consensusTimestamp
 
 const contractResultAnalyzer = new ContractResultAnalyzer(transaction)
