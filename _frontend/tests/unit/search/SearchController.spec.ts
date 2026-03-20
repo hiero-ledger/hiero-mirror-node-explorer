@@ -350,6 +350,64 @@ describe("SearchController.vue", () => {
 
     })
 
+    it("search account with inactive evm address", async () => {
+
+        const INACTIVE_EVM_ADDRESS = "0x6594d70ec1575f2b0d6790b875ce1fbbc7811355"
+
+        const inputText = ref<string>("")
+        const controller = new SearchController(inputText)
+        await flushPromises()
+        expect(vi.getTimerCount()).toBe(0)
+        expect(controller.visible.value).toBe(false)
+        expect(controller.actualInputText.value).toBe("")
+        expect(controller.loading.value).toBe(false)
+        expect(controller.candidateCount.value).toBe(0)
+        expect(controller.visibleAgents.value.length).toBe(0)
+        expect(controller.loadingDomainNameSearchAgents.value.length).toBe(0)
+
+        inputText.value = INACTIVE_EVM_ADDRESS
+        await nextTick()
+        expect(vi.getTimerCount()).toBe(1)
+        expect(controller.visible.value).toBe(false)
+        expect(controller.actualInputText.value).toBe("")
+        expect(controller.loading.value).toBe(false)
+        expect(controller.candidateCount.value).toBe(0)
+        expect(controller.visibleAgents.value.length).toBe(0)
+        expect(controller.loadingDomainNameSearchAgents.value.length).toBe(0)
+
+        vi.advanceTimersToNextTimer()
+        expect(vi.getTimerCount()).toBe(0)
+        expect(controller.visible.value).toBe(true)
+        expect(controller.actualInputText.value).toBe(INACTIVE_EVM_ADDRESS)
+        expect(controller.loading.value).toBe(false)
+        expect(controller.candidateCount.value).toBe(0)
+        expect(controller.visibleAgents.value.length).toBe(0)
+        expect(controller.loadingDomainNameSearchAgents.value.length).toBe(0)
+
+        await flushPromises()
+        expect(fetchGetURLs(mock)).toEqual([
+            "api/v1/accounts/" + INACTIVE_EVM_ADDRESS.slice(2),
+            "api/v1/contracts/" + INACTIVE_EVM_ADDRESS.slice(2),
+            "api/v1/tokens/?name=" + INACTIVE_EVM_ADDRESS + "&limit=100",
+            "http://localhost:3000/mainnet/erc-20.json",
+            "http://localhost:3000/mainnet/erc-721.json",
+        ])
+
+        expect(vi.getTimerCount()).toBe(0)
+        expect(controller.visible.value).toBe(true)
+        expect(controller.actualInputText.value).toBe(INACTIVE_EVM_ADDRESS)
+        expect(controller.loading.value).toBe(false)
+        expect(controller.candidateCount.value).toBe(1)
+        expect(controller.visibleAgents.value.length).toBe(1)
+        expect(controller.loadingDomainNameSearchAgents.value.length).toBe(0)
+        const candidates = controller.visibleAgents.value[0].candidates.value
+        expect(candidates.length).toBe(1)
+        expect(candidates[0].description).toBe(INACTIVE_EVM_ADDRESS)
+        expect(candidates[0].extra).toBe('Inactive EVM address')
+        expect(candidates[0].secondary).toBe(false)
+        expect(candidates[0].entity).toStrictEqual({evm_address: INACTIVE_EVM_ADDRESS})
+    })
+
     it("search account with partial evm address", async () => {
 
         const inputText = ref<string>("")
