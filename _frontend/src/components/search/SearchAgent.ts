@@ -173,7 +173,7 @@ export class AccountSearchAgent extends SearchAgent<EntityID | Uint8Array | stri
                     evm_address: inactiveAddress
                 } as AccountInfo
                 const description = inactiveAddress
-                const route = routeManager.makeRouteToAccount(inactiveAddress)
+                const route = routeManager.makeRouteToAccount(inactiveAddress) as RouteLocationRaw | null
                 const extra = 'Inactive EVM address'
                 const candidate = new SearchCandidate<AccountInfo>(description, extra, route, accountInfo, this)
                 result = [candidate]

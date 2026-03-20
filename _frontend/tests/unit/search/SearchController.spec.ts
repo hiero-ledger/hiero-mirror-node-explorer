@@ -35,6 +35,8 @@ describe("SearchController.vue", () => {
     const SAMPLE_SCHEDULING_TRANSACTION = SAMPLE_SCHEDULING_SCHEDULED_TRANSACTIONS.transactions![0]
     const SAMPLE_SCHEDULED_TRANSACTION = SAMPLE_SCHEDULING_SCHEDULED_TRANSACTIONS.transactions![1]
 
+    const INACTIVE_EVM_ADDRESS = "0x6594d70ec1575f2b0d6790b875ce1fbbc7811355"
+
     // We duplicate SAMPLE_ACCOUNT and patch its account id so that it conflicts with block number
     const SAMPLE_PATCHED_ACCOUNT = JSON.parse(JSON.stringify(SAMPLE_ACCOUNT))
     const SAMPLE_PATCHED_ACCOUNT_ID = new EntityID(0, 0, SAMPLE_BLOCK.number, null)
@@ -351,8 +353,6 @@ describe("SearchController.vue", () => {
     })
 
     it("search account with inactive evm address", async () => {
-
-        const INACTIVE_EVM_ADDRESS = "0x6594d70ec1575f2b0d6790b875ce1fbbc7811355"
 
         const inputText = ref<string>("")
         const controller = new SearchController(inputText)
