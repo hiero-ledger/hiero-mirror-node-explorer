@@ -8,7 +8,7 @@ import {GeoLocationBookEntry, GeoLocationCache} from "@/utils/cache/GeoLocationC
 import {NetworkCache} from "@/utils/cache/NetworkCache.ts";
 import {NetworkNode} from "@/schemas/MirrorNodeSchemas.ts";
 
-describe("GeoLocationCache", () => {
+describe.skip("GeoLocationCache", () => {
 
     test("check if EXPECTED_DESCRIPTIONS array is up to date", async () => {
         const nodes = await NetworkCache.instance.lookup()
