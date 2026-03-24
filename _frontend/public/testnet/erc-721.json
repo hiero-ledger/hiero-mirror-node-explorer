@@ -61480,5 +61480,35 @@
     "address": "0x084cad9232532f1db50aec014f9e545661e52ffa",
     "name": "MyERC721-1774285491876",
     "symbol": "M721"
+  },
+  {
+    "contractId": "0.0.8348886",
+    "address": "0x1d764e741cefb8c18044f48f0b7926a5cb43811e",
+    "name": "AssetToken",
+    "symbol": "AT"
+  },
+  {
+    "contractId": "0.0.8349130",
+    "address": "0xe73012460e618c3ece256355fc0459f7f8907a9f",
+    "name": "AssetToken",
+    "symbol": "AT"
+  },
+  {
+    "contractId": "0.0.8350642",
+    "address": "0x09f7d7717a67783298d5ca6c0fe036c39951d337",
+    "name": "Swarm Agent Identity",
+    "symbol": "SWARM-AGENT"
+  },
+  {
+    "contractId": "0.0.8354924",
+    "address": "0x00000000000000000000000000000000007f7c6c",
+    "name": "Hedera UI Kit NFT",
+    "symbol": "HUKN"
+  },
+  {
+    "contractId": "0.0.8355014",
+    "address": "0x1d3a18374dc2e1ac179b58d770d754f4c123f035",
+    "name": "FixedIncomeHolding",
+    "symbol": "FIH"
   }
 ]
