@@ -891,7 +891,7 @@ describe("AccountLocParser.ts", () => {
         expect(parser.pendingReward.value).toBeNull()
         expect(parser.accountDescription.value).toBeNull()
         expect(parser.nodeId.value).toBeNull()
-        expect(parser.ethereumAddress.value).toBeNull()
+        expect(parser.ethereumAddress.value).toBe(UNKNOWN_ACCOUNT_ADDRESS)
         expect(parser.errorNotification.value).toBe("Own this account? Activate it by transferring any amount of ℏ or tokens to 0x00…070809.")
 
         // 3) Unsets

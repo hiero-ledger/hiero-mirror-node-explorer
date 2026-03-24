@@ -6,98 +6,108 @@
 
 <template>
 
-  <DashboardCardV2 v-if="!isInactiveEvmAddress">
-    <template #title>
-      <p id="recentTransactions">Recent Operations</p>
-    </template>
-
-    <template #left-control>
-      <template v-if="selectedTab === 'transactions' && timeSelection === 'LATEST'">
-        <PlayPauseButton :controller="transactionTableController"/>
+  <template v-if="!isInactiveEvmAddress">
+    <DashboardCardV2 v-if="!isInactiveEvmAddress">
+      <template #title>
+        <p id="recentTransactions">Recent Operations</p>
       </template>
-      <template v-else-if="selectedTab === 'contracts'">
-        <PlayPauseButton v-if="!filterVerified" :controller="contractCreateTableController"/>
-        <PlayPauseButton v-else :controller="verifiedContractsController"/>
-      </template>
-    </template>
 
-    <template #right-control>
-      <template v-if="selectedTab === 'transactions'">
-        <DateTimePicker
-            v-if="timeSelection !== 'LATEST'"
-            :controller="transactionTableController"
-            @dateCleared="onDateCleared"
-        />
-        <SelectView v-model="timeSelection" :small="true">
-          <option value="LATEST">LATEST</option>
-          <option value="JUMP">JUMP TO DATE</option>
-        </SelectView>
-        <Download :size="24" @click="transactionDownloadDialogVisible = true"/>
-        <TransactionFilterSelect v-model:selected-filter="transactionType"/>
+      <template #left-control>
+        <template v-if="selectedTab === 'transactions' && timeSelection === 'LATEST'">
+          <PlayPauseButton :controller="transactionTableController"/>
+        </template>
+        <template v-else-if="selectedTab === 'contracts'">
+          <PlayPauseButton v-if="!filterVerified" :controller="contractCreateTableController"/>
+          <PlayPauseButton v-else :controller="verifiedContractsController"/>
+        </template>
       </template>
-      <template v-else-if="selectedTab === 'contracts'">
-        <span>All</span>
-        <SwitchView v-model="filterVerified"/>
-        <span>Verified</span>
-      </template>
-    </template>
 
-    <template #content>
-
-      <div style="display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap:16px">
-        <Tabs
-            :selected-tab="selectedTab"
-            :tab-ids="tabIds"
-            :tabLabels="tabLabels"
-            @update:selected-tab="handleTabUpdate($event)"
-        />
-        <div v-if="selectedTab === 'transactions'"
-             style="display: flex; align-items: baseline; justify-content: flex-end; gap: 8px;">
-          <div>Hide transfers below</div>
-          <SelectView v-model="minTinyBar" small :style="{'font-size':minTinyBar!=0?'12px':'10px'}"
-                      style="min-width: 70px">
-            <option value=500000000>
-              <HbarAmount :amount="500000000" :decimals="0"/>
-            </option>
-            <option value=400000000>
-              <HbarAmount :amount="400000000" :decimals="0"/>
-            </option>
-            <option value=300000000>
-              <HbarAmount :amount="300000000" :decimals="0"/>
-            </option>
-            <option value=200000000>
-              <HbarAmount :amount="200000000" :decimals="0"/>
-            </option>
-            <option value=100000000>
-              <HbarAmount :amount="100000000" :decimals="0"/>
-            </option>
-            <option value=0>NONE</option>
+      <template #right-control>
+        <template v-if="selectedTab === 'transactions'">
+          <DateTimePicker
+              v-if="timeSelection !== 'LATEST'"
+              :controller="transactionTableController"
+              @dateCleared="onDateCleared"
+          />
+          <SelectView v-model="timeSelection" :small="true">
+            <option value="LATEST">LATEST</option>
+            <option value="JUMP">JUMP TO DATE</option>
           </SelectView>
+          <Download :size="24" @click="transactionDownloadDialogVisible = true"/>
+          <TransactionFilterSelect v-model:selected-filter="transactionType"/>
+        </template>
+        <template v-else-if="selectedTab === 'contracts'">
+          <span>All</span>
+          <SwitchView v-model="filterVerified"/>
+          <span>Verified</span>
+        </template>
+      </template>
+
+      <template #content>
+
+        <div style="display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap:16px">
+          <Tabs
+              :selected-tab="selectedTab"
+              :tab-ids="tabIds"
+              :tabLabels="tabLabels"
+              @update:selected-tab="handleTabUpdate($event)"
+          />
+          <div v-if="selectedTab === 'transactions'"
+               style="display: flex; align-items: baseline; justify-content: flex-end; gap: 8px;">
+            <div>Hide transfers below</div>
+            <SelectView v-model="minTinyBar" small :style="{'font-size':minTinyBar!=0?'12px':'10px'}"
+                        style="min-width: 70px">
+              <option value=500000000>
+                <HbarAmount :amount="500000000" :decimals="0"/>
+              </option>
+              <option value=400000000>
+                <HbarAmount :amount="400000000" :decimals="0"/>
+              </option>
+              <option value=300000000>
+                <HbarAmount :amount="300000000" :decimals="0"/>
+              </option>
+              <option value=200000000>
+                <HbarAmount :amount="200000000" :decimals="0"/>
+              </option>
+              <option value=100000000>
+                <HbarAmount :amount="100000000" :decimals="0"/>
+              </option>
+              <option value=0>NONE</option>
+            </SelectView>
+          </div>
         </div>
-      </div>
 
-      <div v-if="selectedTab === 'transactions'" id="recentTransactionsTable">
-        <TransactionTable v-if="account" :controller="transactionTableController" :narrowed="true"/>
-      </div>
+        <div v-if="selectedTab === 'transactions'" id="recentTransactionsTable">
+          <TransactionTable v-if="account" :controller="transactionTableController" :narrowed="true"/>
+        </div>
 
-      <div v-else-if="selectedTab === 'contracts'" id="recentContractsTable">
-        <AccountCreatedContractsTable
-            v-if="account && !filterVerified"
-            :controller="contractCreateTableController"
-        />
-        <VerifiedContractsTable
-            v-else-if="account"
-            :controller="verifiedContractsController"
-            :loaded="loaded"
-            :overflow="overflow"/>
-        <EmptyTable v-else/>
-      </div>
+        <div v-else-if="selectedTab === 'contracts'" id="recentContractsTable">
+          <AccountCreatedContractsTable
+              v-if="account && !filterVerified"
+              :controller="contractCreateTableController"
+          />
+          <VerifiedContractsTable
+              v-else-if="account"
+              :controller="verifiedContractsController"
+              :loaded="loaded"
+              :overflow="overflow"/>
+          <EmptyTable v-else/>
+        </div>
 
-      <div v-else id="recentRewardsTable">
-        <StakingRewardsTable :controller="rewardsTableController"/>
-      </div>
-    </template>
-  </DashboardCardV2>
+        <div v-else id="recentRewardsTable">
+          <StakingRewardsTable :controller="rewardsTableController"/>
+        </div>
+      </template>
+    </DashboardCardV2>
+  </template>
+  <template v-else>
+    <DashboardCardV2 v-if="accountId">
+      <template #title>Recent Operations</template>
+      <template #content>
+        <DocSnippet><p>There is no activity on this account because it is not yet activated.</p></DocSnippet>
+      </template>
+    </DashboardCardV2>
+  </template>
 
   <TransactionDownloadDialog
       v-if="accountIdRef"
@@ -138,6 +148,7 @@ import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import PlayPauseButton from "@/components/PlayPauseButton.vue";
 import {Download} from 'lucide-vue-next';
 import router, {routeManager} from "@/utils/RouteManager.ts";
+import DocSnippet from "@/components/DocSnippet.vue";
 
 const props = defineProps({
   accountId: String,

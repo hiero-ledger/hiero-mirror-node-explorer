@@ -6,8 +6,17 @@
 
 <template>
 
-  <TokensSection :account-id="normalizedAccountId"/>
-
+  <template v-if="normalizedAccountId">
+    <TokensSection :account-id="normalizedAccountId"/>
+  </template>
+  <template v-else>
+    <DashboardCardV2 v-if="accountId">
+      <template #title>HTS Tokens</template>
+      <template #content>
+        <DocSnippet><p>This account does not hold any asset because it is not yet activated.</p></DocSnippet>
+      </template>
+    </DashboardCardV2>
+  </template>
 </template>
 
 <!-- --------------------------------------------------------------------------------------------------------------- -->
@@ -19,8 +28,10 @@
 import {computed, onBeforeUnmount, onMounted, ref, watch} from 'vue';
 import {AccountLocParser} from "@/utils/parser/AccountLocParser";
 import {AppStorage} from "@/AppStorage";
-import TokensSection from "@/components/token/TokensSection.vue";
 import {NetworkConfig} from "@/config/NetworkConfig";
+import TokensSection from "@/components/token/TokensSection.vue";
+import DocSnippet from "@/components/DocSnippet.vue";
+import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 
 const props = defineProps({
   accountId: String,

@@ -101,12 +101,12 @@ describe("AccountDetails.vue", () => {
             "api/v1/network/exchangerate",
             "api/v1/network/supply",
             "api/v1/contracts/" + SAMPLE_ACCOUNT.account,
+            "api/v1/network/exchangerate",
             "api/v1/balances",
             "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/hooks",
             "api/v1/transactions",
             "api/v1/contracts/" + SAMPLE_ACCOUNT.evm_address,
             "api/v1/tokens/" + SAMPLE_ACCOUNT.account,
-            "api/v1/network/exchangerate",
         ])
 
         expect(wrapper.getComponent(PageHeader).text()).toMatch("Account " + SAMPLE_ACCOUNT.account)
@@ -223,10 +223,10 @@ describe("AccountDetails.vue", () => {
             "api/v1/accounts/" + accountId,
             "api/v1/network/nodes",
             "api/v1/contracts/" + accountId,
+            "api/v1/network/exchangerate",
             "api/v1/balances",
             "api/v1/accounts/" + accountId + "/hooks",
             "api/v1/transactions",
-            "api/v1/network/exchangerate",
         ])
 
         expect(wrapper.text()).toMatch("Account  Account ID " + accountId)
@@ -279,6 +279,7 @@ describe("AccountDetails.vue", () => {
         // console.log(wrapper.text())
 
         expect(fetchGetURLs(mock)).toStrictEqual([
+            "api/v1/network/exchangerate",
             "api/v1/accounts/" + SAMPLE_ACCOUNT.account,
             "api/v1/network/nodes",
             "api/v1/balances",
@@ -287,7 +288,6 @@ describe("AccountDetails.vue", () => {
             "api/v1/transactions",
             "api/v1/contracts/" + SAMPLE_ACCOUNT.evm_address,
             "api/v1/tokens/" + SAMPLE_ACCOUNT.account,
-            "api/v1/network/exchangerate",
         ])
 
         expect(wrapper.text()).toMatch("Account  Account ID " + SAMPLE_ACCOUNT.account)
@@ -359,6 +359,7 @@ describe("AccountDetails.vue", () => {
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/network/exchangerate",
             "api/v1/network/nodes",
+            "api/v1/network/exchangerate",
         ])
 
         expect(wrapper.get("#notificationBanner").text()).toBe("Invalid account ID, address or alias")
@@ -409,11 +410,11 @@ describe("AccountDetails.vue", () => {
             "api/v1/accounts/" + SAMPLE_ACCOUNT_DELETED.account,
             "api/v1/network/nodes",
             "api/v1/contracts/" + SAMPLE_ACCOUNT_DELETED.account,
+            "api/v1/network/exchangerate",
             "api/v1/balances",
             "api/v1/accounts/" + SAMPLE_ACCOUNT_DELETED.account + "/hooks",
             "api/v1/contracts/0x00000000000000000000000000000000000b2608",
             "api/v1/tokens/" + SAMPLE_ACCOUNT_DELETED.account,
-            "api/v1/network/exchangerate",
         ])
 
         expect(wrapper.getComponent(PageHeader).text()).toMatch("Account " + deletedAccount.account)
@@ -468,9 +469,9 @@ describe("AccountDetails.vue", () => {
             "api/v1/network/exchangerate",
             "api/v1/network/supply",
             "api/v1/contracts/" + SAMPLE_ACCOUNT_STAKING_NODE.account,
+            "api/v1/network/exchangerate",
             "api/v1/balances",
             "api/v1/accounts/" + SAMPLE_ACCOUNT_STAKING_NODE.account + "/hooks",
-            "api/v1/network/exchangerate",
             "api/v1/contracts/0x00000000000000000000000000000000000b2608",
             "api/v1/tokens/" + SAMPLE_ACCOUNT_STAKING_NODE.account,
         ])
@@ -542,10 +543,10 @@ describe("AccountDetails.vue", () => {
             "api/v1/network/exchangerate",
             "api/v1/network/supply",
             "api/v1/contracts/" + SAMPLE_ACCOUNT_STAKING_ACCOUNT.account,
+            "api/v1/network/exchangerate",
             "api/v1/balances",
             "api/v1/accounts/" + SAMPLE_ACCOUNT_STAKING_ACCOUNT.account + "/hooks",
             "api/v1/contracts/" + SAMPLE_ACCOUNT_STAKING_ACCOUNT.staked_account_id,
-            "api/v1/network/exchangerate",
             "api/v1/contracts/0x00000000000000000000000000000000000b2608",
             "api/v1/tokens/" + SAMPLE_ACCOUNT_STAKING_ACCOUNT.account,
         ])
@@ -614,13 +615,13 @@ describe("AccountDetails.vue", () => {
             "api/v1/network/exchangerate",
             "api/v1/network/supply",
             "api/v1/contracts/" + SAMPLE_ACCOUNT.account,
+            "api/v1/network/exchangerate",
             SAMPLE_PUBLIC_LABELS_URL,
             "api/v1/balances",
             "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/hooks",
             "api/v1/transactions",
             "api/v1/contracts/" + SAMPLE_ACCOUNT.evm_address,
             "api/v1/tokens/" + SAMPLE_ACCOUNT.account,
-            "api/v1/network/exchangerate",
         ])
 
         expect(wrapper.text()).toMatch("Sample Account LabelPublic Label for ID 0.0.730631 [Exchange]Sample Account Descriptionhttps://example.com Account ID 0.0.730631")

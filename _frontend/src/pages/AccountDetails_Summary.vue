@@ -65,7 +65,7 @@
         <template #value>
           <EVMAddress
               :show-id="false"
-              :address="isInactiveEvmAddress ? accountIdRef : ethereumAddress"/>
+              :address="ethereumAddress"/>
         </template>
       </Property>
     </template>
@@ -76,7 +76,7 @@
           Balance
         </template>
         <template #value>
-          <HbarAmount v-if="hbarBalance !== null" :amount="hbarBalance" show-extra/>
+          <HbarAmount :amount="hbarBalance ?? 0" show-extra/>
         </template>
       </Property>
       <EditableProperty
@@ -98,7 +98,7 @@
               Node {{ account?.staked_node_id }} - {{ stakedNodeDescription }}
             </router-link>
           </div>
-          <span v-else>None</span>
+          <span v-else class="h-is-low-contrast">None</span>
         </template>
       </EditableProperty>
       <Property v-if="enableStaking" id="pendingReward" :tooltip="rewardIssueWarning">
@@ -156,7 +156,7 @@
           <span>Auto Renew Period</span>
         </template>
         <template #value>
-          <DurationValue v-bind:number-value="account?.auto_renew_period ?? undefined"/>
+          <DurationValue v-bind:number-value="account?.auto_renew_period ?? undefined" show-none/>
         </template>
       </EditableProperty>
       <EditableProperty

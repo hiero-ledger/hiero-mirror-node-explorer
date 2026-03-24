@@ -126,7 +126,8 @@ export class AccountLocParser {
     public readonly nodeId: ComputedRef<number | null> = computed(() => this.nodeAnalyzer.node.value?.node_id ?? null)
 
     public readonly ethereumAddress = computed(() => {
-        return this.accountInfo.value !== null ? makeEthAddressForAccount(this.accountInfo.value) : null
+        return this.accountInfo.value !== null ? makeEthAddressForAccount(this.accountInfo.value)
+            : this.isInactiveEvmAddress.value ? this.accountLocObj.value?.toString() : null
     })
 
     public readonly errorNotification: ComputedRef<string | null> = computed(() => {

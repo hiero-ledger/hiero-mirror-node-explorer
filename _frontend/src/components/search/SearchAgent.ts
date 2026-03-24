@@ -32,6 +32,7 @@ import {ERC20Cache} from "@/utils/cache/ERC20Cache.ts";
 import {ERC721Cache} from "@/utils/cache/ERC721Cache.ts";
 import {PublicLabelsCache} from "@/utils/cache/PublicLabelsCache.ts";
 import {routeManager} from "@/utils/RouteManager.ts";
+import {EthereumAddress} from "@/utils/EthereumAddress.ts";
 
 export abstract class SearchAgent<L, E> {
 
@@ -164,7 +165,22 @@ export class AccountSearchAgent extends SearchAgent<EntityID | Uint8Array | stri
         }
 
         let result: SearchCandidate<AccountInfo>[]
-        if (accountInfos.length == 1) {
+        if (accountInfos.length == 0) {
+            const network = routeManager.currentNetworkEntry.value;
+            if (typeof accountLoc === "string" && EthereumAddress.parse(accountLoc) !== null && EntityID.fromAddress(accountLoc, network.baseShard, network.baseRealm) === null) {
+                const inactiveAddress = accountLoc.startsWith('0x') ? accountLoc : `0x${accountLoc}`
+                const accountInfo: AccountInfo = {
+                    evm_address: inactiveAddress
+                } as AccountInfo
+                const description = inactiveAddress
+                const route = routeManager.makeRouteToAccount(inactiveAddress) as RouteLocationRaw | null
+                const extra = 'Inactive EVM address'
+                const candidate = new SearchCandidate<AccountInfo>(description, extra, route, accountInfo, this)
+                result = [candidate]
+            } else {
+                result = []
+            }
+        } else if (accountInfos.length == 1) {
             const accountInfo = accountInfos[0]
             if (accountInfo.account) {
                 const description = accountInfo.account
