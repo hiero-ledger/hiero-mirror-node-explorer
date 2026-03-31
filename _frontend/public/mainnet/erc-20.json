@@ -10934,5 +10934,13 @@
     "symbol": "",
     "totalSupply": 0,
     "decimals": 0
+  },
+  {
+    "contractId": "0.0.10412343",
+    "address": "0x04752e885dc8629a213469d0b3efb43d79c7d466",
+    "name": "VideoBond",
+    "symbol": "VB",
+    "totalSupply": 1e+23,
+    "decimals": 18
   }
 ]
