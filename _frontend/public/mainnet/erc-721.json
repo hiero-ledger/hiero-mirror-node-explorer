@@ -1828,5 +1828,11 @@
     "address": "0x859ebef18e3cc690de220680667942ba8df37aea",
     "name": "test collection 001",
     "symbol": "tc001"
+  },
+  {
+    "contractId": "0.0.10415499",
+    "address": "0x13737b74ac8d2592bcee461c6e1c47ad06b43ddc",
+    "name": "new test collection",
+    "symbol": "heyhey"
   }
 ]
