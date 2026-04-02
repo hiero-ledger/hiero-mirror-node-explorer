@@ -1834,5 +1834,11 @@
     "address": "0x13737b74ac8d2592bcee461c6e1c47ad06b43ddc",
     "name": "new test collection",
     "symbol": "heyhey"
+  },
+  {
+    "contractId": "0.0.10417242",
+    "address": "0x77ff90ffc708d4ca83e96f2664a33bb7d2a5befc",
+    "name": "MCL / COLLECT / 2026 LN1 & OP81",
+    "symbol": "MCLSN&OP"
   }
 ]

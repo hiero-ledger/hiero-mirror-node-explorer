@@ -10998,5 +10998,13 @@
     "symbol": "RFDSC",
     "totalSupply": 20000000,
     "decimals": 8
+  },
+  {
+    "contractId": "0.0.10417954",
+    "address": "0x45189b95e634458c76a4a9b47f9fed8c8f294949",
+    "name": "",
+    "symbol": "",
+    "totalSupply": 0,
+    "decimals": 0
   }
 ]
