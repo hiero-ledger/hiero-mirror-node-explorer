@@ -1840,5 +1840,11 @@
     "address": "0x77ff90ffc708d4ca83e96f2664a33bb7d2a5befc",
     "name": "MCL / COLLECT / 2026 LN1 & OP81",
     "symbol": "MCLSN&OP"
+  },
+  {
+    "contractId": "0.0.10419364",
+    "address": "0x00000000000000000000000000000000009efca4",
+    "name": "Ecodots Soulbound Token",
+    "symbol": "ECOSBT"
   }
 ]
