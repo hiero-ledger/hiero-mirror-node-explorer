@@ -35,7 +35,7 @@
 
       <template v-else-if="state === ChartState.error">
         <TaskPanel :mode="TaskPanelMode.error">
-          <template #taskPanelMessage>Chart data are not available</template>
+          <template #taskPanelMessage>Chart is not available</template>
           <template v-if="errorExtra" #taskPanelExtra1>{{ errorExtra }}</template>
         </TaskPanel>
       </template>

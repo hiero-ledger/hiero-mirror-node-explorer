@@ -5,6 +5,7 @@ import {Chart, ChartConfiguration} from 'chart.js/auto';
 import {ThemeController} from "@/components/ThemeController.ts";
 import {RouteManager} from "@/utils/RouteManager.ts";
 import {ChartRange} from "@/charts/core/ChartRange.ts";
+import axios from "axios";
 
 export enum ChartState {
     unsupported,
@@ -87,7 +88,25 @@ export abstract class ChartController<M> {
     public readonly errorExtra = computed(() => {
         let result: string | null
         if (this.state.value === ChartState.error) {
-            result = JSON.stringify(this.error.value)
+            if (axios.isAxiosError(this.error.value)) {
+                const axiosError = this.error.value
+                if (axiosError.response) {
+                    // Server has responded
+                    switch(axiosError.response.status) {
+                        case 429:
+                            result = "Chart data server is overloaded. Try again later."
+                            break
+                        default:
+                            result = "Chart data server returned an error " + axiosError.response.status
+                            break
+                    }
+                } else {
+                    // Server has not responded
+                    result = "Chart data cannot be accessed for now. Try again later."
+                }
+            } else {
+                result = "Chart data cannot be accessed for now. Try again later."
+            }
         } else {
             result = null
         }
