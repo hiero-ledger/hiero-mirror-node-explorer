@@ -11006,5 +11006,13 @@
     "symbol": "",
     "totalSupply": 0,
     "decimals": 0
+  },
+  {
+    "contractId": "0.0.10427411",
+    "address": "0xe767021ba25455aa571b4ca0b54f49945f47c974",
+    "name": "RFD Smart Contract",
+    "symbol": "RFDSC",
+    "totalSupply": 20000000,
+    "decimals": 6
   }
 ]
