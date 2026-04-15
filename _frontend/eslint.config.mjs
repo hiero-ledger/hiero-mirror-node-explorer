@@ -1,7 +1,7 @@
 import eslint from "@eslint/js"
 import tseslint from 'typescript-eslint';
 import eslintPluginVue from 'eslint-plugin-vue'
-import pluginCypress from 'eslint-plugin-cypress/flat'
+import pluginCypress from 'eslint-plugin-cypress'
 import globals from 'globals'
 
 

@@ -69,7 +69,7 @@
 
 <script setup lang="ts">
 
-import {computed, PropType} from 'vue';
+import {PropType} from 'vue';
 import {CircleAlert} from 'lucide-vue-next';
 import {FunctionCallAnalyzer} from "@/utils/analyzer/FunctionCallAnalyzer";
 import Property from "@/components/Property.vue";
