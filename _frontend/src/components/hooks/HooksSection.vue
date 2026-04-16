@@ -6,7 +6,7 @@
 
 <template>
 
-  <DashboardCardV2 v-if="accountId">
+  <DashboardCardV2 v-if="accountId" id="hooksSection">
 
     <template #title>
       Hiero Hooks
