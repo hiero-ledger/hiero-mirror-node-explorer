@@ -76,7 +76,7 @@ watch(hooks, () => {
   if (hooks.value.length > 0) {
     hookId.value = hooks.value[0].hook_id
   }
-})
+}, {immediate: true})
 
 const storageLookupKey = computed(() => {
   return accountId.value
