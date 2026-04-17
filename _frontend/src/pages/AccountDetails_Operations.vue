@@ -9,7 +9,7 @@
   <template v-if="!isInactiveEvmAddress">
     <DashboardCardV2 v-if="!isInactiveEvmAddress">
       <template #title>
-        <p id="recentTransactions">Recent Operations</p>
+        <p id="recentTransactions">Recent Transactions</p>
       </template>
 
       <template #left-control>
@@ -102,7 +102,7 @@
   </template>
   <template v-else>
     <DashboardCardV2 v-if="accountId">
-      <template #title>Recent Operations</template>
+      <template #title>Recent Transactions</template>
       <template #content>
         <DocSnippet><p>There is no activity on this account because it is not yet activated.</p></DocSnippet>
       </template>
@@ -187,7 +187,7 @@ onMounted(() => accountLocParser.mount())
 onBeforeUnmount(() => accountLocParser.unmount())
 
 const tabIds = enableStaking ? ['transactions', 'contracts', 'rewards'] : ['transactions', 'contracts']
-const tabLabels = enableStaking ? ['Transactions', 'Created Contracts', 'Staking Rewards'] : ['Transactions', 'Created Contracts']
+const tabLabels = enableStaking ? ['All transactions', 'Created contracts', 'Staking rewards'] : ['Transactions', 'Created contracts']
 const selectedTab = ref<string | null>(AppStorage.getAccountOperationTab() ?? tabIds[0])
 const handleTabUpdate = (tab: string | null) => {
   selectedTab.value = tab

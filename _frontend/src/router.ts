@@ -424,7 +424,7 @@ export const ACCOUNT_DETAILS_ROUTE: RouteRecordRaw = {
             component: AccountDetails_Operations,
             props: true,
             meta: {
-                tabLabel: "Operations"
+                tabLabel: "Transactions"
             }
         },
         {
