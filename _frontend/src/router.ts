@@ -506,7 +506,7 @@ export const NODES_ROUTE: RouteRecordRaw =     {
             component: Nodes_NodeTable,
             props: true,
             meta: {
-                tabLabel: "Node Table"
+                tabLabel: "Node table"
             }
         },
     ],

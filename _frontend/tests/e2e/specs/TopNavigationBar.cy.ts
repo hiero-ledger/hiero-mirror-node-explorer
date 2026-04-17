@@ -63,7 +63,7 @@ describe('Top Navigation Bar', () => {
 
         cy.contains('Nodes').click()
         cy.contains('Network')
-        cy.contains('Node Table')
+        cy.contains('Node table')
 
         cy.contains('Staking').click()
         cy.contains('My Staking')

@@ -97,7 +97,7 @@ onMounted(() => showAssemblyBytecode.value = AppStorage.getShowAssemblyBytecode(
 watch(showAssemblyBytecode, () => AppStorage.setShowAssemblyBytecode(showAssemblyBytecode.value ? showAssemblyBytecode.value : null))
 
 const tabIds = ['runtime', 'creation']
-const tabLabels = ['Runtime Bytecode', 'Creation Bytecode']
+const tabLabels = ['Runtime bytecode', 'Creation bytecode']
 const selectedTab = ref<string | null>(AppStorage.getContractByteCodeTab() ?? tabIds[0])
 const handleTabUpdate = (tab: string | null) => {
   selectedTab.value = tab

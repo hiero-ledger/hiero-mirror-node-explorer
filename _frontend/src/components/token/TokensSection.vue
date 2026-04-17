@@ -169,7 +169,7 @@ const claimActionEnabled = true
 
 const tabIds = ['fungible', 'nfts', 'pendingAirdrop']
 
-const tabLabels = ['Fungible', 'NFTs', 'Pending Airdrops']
+const tabLabels = ['Fungible', 'NFTs', 'Pending airdrops']
 const selectedTab = ref<string | null>(AppStorage.getAccountTokenTab() ?? tabIds[0])
 const onSelectTab = (tab: string | null) => {
   selectedTab.value = tab

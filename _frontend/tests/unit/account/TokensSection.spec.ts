@@ -179,7 +179,7 @@ describe("TokensSection.vue", () => {
         expect(tabs.length).toBe(3)
         expect(tabs[0].text()).toBe('Fungible')
         expect(tabs[1].text()).toBe('NFTs')
-        expect(tabs[2].text()).toBe('Pending Airdrops')
+        expect(tabs[2].text()).toBe('Pending airdrops')
 
         wrapper.unmount()
         await flushPromises()
