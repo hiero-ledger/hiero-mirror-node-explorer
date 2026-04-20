@@ -52,7 +52,7 @@
 
 <script lang="ts" setup>
 
-import {computed, onBeforeUnmount, onMounted, ref} from "vue";
+import {computed, onBeforeUnmount, onMounted, ref, watch} from "vue";
 import {HooksByAccountIdCache} from "@/utils/cache/HooksByAccountIdCache.ts";
 import SelectView from "@/elements/SelectView.vue";
 import {HookStorageByIdCache} from "@/utils/cache/HookStorageByIdCache.ts";
@@ -71,7 +71,12 @@ const hooksLookup = HooksByAccountIdCache.instance.makeLookup(accountId)
 onMounted(() => hooksLookup.mount())
 onBeforeUnmount(() => hooksLookup.unmount())
 const hooks = computed(() => hooksLookup.entity.value || [])
-const hookId = ref<number>(hooks.value[0]?.hook_id ?? 1)
+const hookId = ref<number>(1)
+watch(hooks, () => {
+  if (hooks.value.length > 0) {
+    hookId.value = hooks.value[0].hook_id
+  }
+}, {immediate: true})
 
 const storageLookupKey = computed(() => {
   return accountId.value
