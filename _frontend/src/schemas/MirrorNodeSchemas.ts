@@ -641,8 +641,8 @@ export interface ContractResponse extends Contract {
 }
 
 export interface TimestampRange {
-    from: string | undefined    // The inclusive from timestamp in seconds
-    to: string | null | undefined   // The exclusive to timestamp in seconds
+    from: string | undefined    // The inclusive from timestamp in seconds (pattern: ^\d{1,10}(\.\d{1,9})?$)
+    to: string | null | undefined   // The exclusive to timestamp in seconds (pattern: ^\d{1,10}(\.\d{1,9})?$)
 }
 
 export interface ContractResultsResponse {
@@ -925,11 +925,6 @@ export interface Block {
     previous_hash: string | undefined
     size: number | null | undefined // integer
     timestamp: TimestampRange | undefined
-}
-
-export interface TimestampRange {
-    from: string | undefined // pattern: ^\d{1,10}(\.\d{1,9})?$
-    to: string | null | undefined // pattern: ^\d{1,10}(\.\d{1,9})?$
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
