@@ -129,8 +129,8 @@ describe("ContractDetails.vue", () => {
 
         const tabs = tabComponent.findAll('li')
         expect(tabs.length).toBe(2)
-        expect(tabs[0].text()).toBe('Runtime Bytecode')
-        expect(tabs[1].text()).toBe('Creation Bytecode')
+        expect(tabs[0].text()).toBe('Runtime bytecode')
+        expect(tabs[1].text()).toBe('Creation bytecode')
 
         expect(wrapper2.get("#bytecode").text()).toContain(
             "6080 6040 5236 606d 5730 73ff ffff ffff ffff ffff ffff ffff ffff ffff ffff ff16 3373 ffff ffff ffff ffff" +

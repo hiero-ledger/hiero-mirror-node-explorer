@@ -41,6 +41,7 @@ import PageHeader from "@/components/page/header/PageHeader.vue";
 import router, {routeManager} from "@/utils/RouteManager.ts";
 import AccountDetails_Operations from "@/pages/AccountDetails_Operations.vue";
 import AccountDetails_Summary from "@/pages/AccountDetails_Summary.vue";
+import Tabs from "@/components/Tabs.vue";
 
 /*
     Bookmarks
@@ -53,7 +54,59 @@ HMSF.forceUTC = true
 
 describe("AccountDetails.vue", () => {
 
-    it("AccountDetails should display account details", async () => {
+    it("AccountDetails should display top level tabs", async () => {
+        await router.push("/") // To avoid "missing required param 'network'" error
+
+        const mock = new MockAdapter(axios as any);
+
+        const matcher1 = "/api/v1/accounts/" + SAMPLE_ACCOUNT.account
+        mock.onGet(matcher1).reply(200, SAMPLE_ACCOUNT);
+
+        const wrapper = mount(AccountDetails, {
+            global: {
+                plugins: [router, Oruga],
+                provide: {"isMediumScreen": false}
+            },
+            props: {
+                accountId: SAMPLE_ACCOUNT.account ?? undefined
+            },
+        });
+
+        await flushPromises()
+        // console.log(wrapper.html())
+
+        expect(fetchGetURLs(mock)).toStrictEqual([
+            "api/v1/network/exchangerate",
+            "api/v1/accounts/" + SAMPLE_ACCOUNT.account,
+            "api/v1/network/nodes",
+            "api/v1/contracts/" + SAMPLE_ACCOUNT.account,
+            "api/v1/network/exchangerate",
+            "api/v1/balances",
+            "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/hooks",
+            "api/v1/transactions",
+            "api/v1/contracts/" + SAMPLE_ACCOUNT.evm_address,
+            "api/v1/tokens/" + SAMPLE_ACCOUNT.account,
+        ])
+
+        expect(wrapper.getComponent(PageHeader).text()).toMatch("Account " + SAMPLE_ACCOUNT.account)
+
+        const tab = wrapper.findComponent(Tabs)
+        expect(tab.exists()).toBe(true)
+        const tabs = tab.findAll('li')
+        expect(tabs.length).toBe(5)
+
+        expect(tabs[0].text()).toBe('Summary')
+        expect(tabs[1].text()).toBe('Assets')
+        expect(tabs[2].text()).toBe('Transactions')
+        expect(tabs[3].text()).toBe('Allowances')
+        expect(tabs[4].text()).toBe('Hooks')
+
+        mock.restore()
+        wrapper.unmount()
+        await flushPromises()
+    });
+
+    it("AccountDetails default tab should display account summary", async () => {
         await router.push("/") // To avoid "missing required param 'network'" error
 
         const mock = new MockAdapter(axios as any);
@@ -170,6 +223,17 @@ describe("AccountDetails.vue", () => {
             "api/v1/tokens/" + SAMPLE_TRANSACTION.token_transfers[0].token_id,
             "api/v1/blocks",
         ])
+
+        const tab = wrapper.findComponent(Tabs)
+        expect(tab.exists()).toBe(true)
+        const tabs = tab.findAll('li')
+        expect(tabs.length).toBe(3)
+
+        expect(tabs[0].text()).toBe('All transactions')
+        expect(tabs[1].text()).toBe('Created contracts')
+        expect(tabs[2].text()).toBe('Staking rewards')
+
+        expect(wrapper.text()).toMatch("Recent Transactions")
 
         const select = wrapper.findComponent(TransactionFilterSelect)
         expect(select.exists()).toBe(true)
