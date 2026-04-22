@@ -8,7 +8,7 @@
 
   <PageFrameV2 :page-title="pageTitle">
     <template #page-title>
-      Node
+      Consensus Node
       <span style="white-space: nowrap; font-size: smaller">
         {{ nodeIdNb }}
       </span>
