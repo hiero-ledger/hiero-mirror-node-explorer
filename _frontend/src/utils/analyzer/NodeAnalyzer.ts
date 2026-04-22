@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import {computed, ComputedRef, Ref} from "vue";
-import {Key, makeShortNodeDescription, NetworkNode} from "@/schemas/MirrorNodeSchemas";
+import {Key, makeShortNodeDescription, NetworkNode, RegisteredNode} from "@/schemas/MirrorNodeSchemas";
 import {NetworkAnalyzer} from "@/utils/analyzer/NetworkAnalyzer";
 import {makeAnnualizedRate, makeNodeDescription, makeRewardRate} from "@/schemas/MirrorNodeUtils.ts";
 
@@ -46,6 +46,23 @@ export class NodeAnalyzer {
             }
         } else {
             result = null
+        }
+        return result
+    })
+
+    public associatedNodes = computed(() => {
+        const node = this.node.value
+        const associatedNodes = node?.associated_registered_nodes ?? []
+        let result: RegisteredNode[]
+
+        if (node && associatedNodes.length > 0) {
+            result = this.networkAnalyzer.blockNodes.value
+                .concat(this.networkAnalyzer.mirrorNodes.value)
+                .concat(this.networkAnalyzer.rpcRelays.value)
+                .filter(n => associatedNodes.includes(n.registered_node_id))
+                .sort((a, b) => a.registered_node_id - b.registered_node_id)
+        } else {
+            result = []
         }
         return result
     })

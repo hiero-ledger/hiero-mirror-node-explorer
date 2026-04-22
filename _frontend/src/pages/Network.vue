@@ -6,7 +6,7 @@
 
 <template>
 
-  <PageFrameV2 page-title="Nodes">
+  <PageFrameV2 page-title="Network">
 
     <template #left-toolbar>
       <Tabs
@@ -42,7 +42,7 @@ defineProps({
 const excludedTabIds = computed(() =>
     (routeManager.enableStaking.value || routeManager.currentNetwork.value === 'mainnet')
         ? []
-        : ["Nodes_Network"]
+        : ["Network_Overview"]
 )
 
 const tabIds = computed(() =>

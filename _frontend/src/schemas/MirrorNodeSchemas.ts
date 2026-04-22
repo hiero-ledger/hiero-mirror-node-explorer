@@ -881,6 +881,19 @@ export enum RegisteredNodeType {
     RPC_RELAY = "RPC_RELAY"
 }
 
+export function printableNodeType(type: RegisteredNodeType):string {
+    switch(type) {
+        case RegisteredNodeType.BLOCK_NODE:
+            return "Block Node"
+        case RegisteredNodeType.MIRROR_NODE:
+            return "Mirror Node"
+        case RegisteredNodeType.RPC_RELAY:
+            return "JSON-RPC Relay"
+        case RegisteredNodeType.GENERAL_SERVICE:
+            return "General Service"
+    }
+}
+
 export function makeShortNodeDescription(description: string): string {
     const separator = description.indexOf('|') ?? -1
     return (separator !== -1) ? (description.slice(0, separator) ?? null) : description

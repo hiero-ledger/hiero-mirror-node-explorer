@@ -6,14 +6,11 @@
 
 <template>
 
-  <DashboardCardV2>
-    <template #title>
-      <span>{{ `${nodes.length}  Nodes` }}</span>
-    </template>
-    <template #content>
-      <NodeTable :nodes="nodes" :stake-total="totalStakeForConsensus"/>
-    </template>
-  </DashboardCardV2>
+  <Network_RegisteredNodes
+      :nodes="mirrorNodes"
+      subtitle="Mirror Nodes provide indexed query access to network data for analytics, APIs, and explorer integrations."
+      title="Mirror Nodes"
+  />
 
 </template>
 
@@ -21,22 +18,20 @@
 <!--                                                      SCRIPT                                                     -->
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
-<script setup lang="ts">
+<script lang="ts" setup>
 
-import DashboardCardV2 from "@/components/DashboardCardV2.vue";
-import NodeTable from "@/components/node/NodeTable.vue";
 import {NetworkAnalyzer} from "@/utils/analyzer/NetworkAnalyzer.ts";
 import {onBeforeUnmount, onMounted} from "vue";
+import Network_RegisteredNodes from "@/components/node/Network_RegisteredNodes.vue";
 
 defineProps({
   network: String
 })
 
-const networkNodeAnalyzer = new NetworkAnalyzer()
-onMounted(() => networkNodeAnalyzer.mount())
-onBeforeUnmount(() => networkNodeAnalyzer.unmount())
-const nodes = networkNodeAnalyzer.nodes
-const totalStakeForConsensus = networkNodeAnalyzer.totalStakeForConsensus
+const networkAnalyzer = new NetworkAnalyzer()
+onMounted(() => networkAnalyzer.mount())
+onBeforeUnmount(() => networkAnalyzer.unmount())
+const mirrorNodes = networkAnalyzer.mirrorNodes
 
 </script>
 
@@ -44,6 +39,5 @@ const totalStakeForConsensus = networkNodeAnalyzer.totalStakeForConsensus
 <!--                                                       STYLE                                                     -->
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
-<style scoped>
+<style/>
 
-</style>

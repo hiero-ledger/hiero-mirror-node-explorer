@@ -19,7 +19,7 @@
              :target-route="routeManager.makeRouteToContracts()"/>
     <TabItem :tabId="TabId.Accounts"
              :target-route="routeManager.makeRouteToAccounts()"/>
-    <TabItem :tabId="TabId.Nodes"
+    <TabItem :tabId="TabId.Network"
              :target-route="routeManager.makeRouteToNodes()"/>
     <TabItem v-if="enableStaking"
              :tabId="TabId.Staking"

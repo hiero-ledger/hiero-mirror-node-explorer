@@ -32,9 +32,8 @@ import NftDetails_Transactions from "@/pages/NftDetails_Transactions.vue";
 import NftDetails_Metadata from "@/pages/NftDetails_Metadata.vue";
 import NodeAdminKeyDetails from "@/pages/NodeAdminKeyDetails.vue";
 import NodeDetails from "@/pages/NodeDetails.vue";
-import Nodes from "@/pages/Nodes.vue";
-import Nodes_Network from "@/pages/Nodes_Network.vue";
-import Nodes_NodeTable from "@/pages/Nodes_NodeTable.vue";
+import Network from "@/pages/Network.vue";
+import Network_Overview from "@/pages/Network_Overview.vue";
 import PageNotFound from "@/pages/PageNotFound.vue";
 import RoutingSpec from "@/pages/RoutingSpec.vue";
 import ScheduleDetails from "@/pages/ScheduleDetails.vue";
@@ -70,6 +69,11 @@ import Metrics_Network from "@/pages/Metrics_Network.vue";
 import Metrics_Transactions from "@/pages/Metrics_Transactions.vue";
 import Metrics_Accounts from "@/pages/Metrics_Accounts.vue";
 import Metrics_Nodes from "@/pages/Metrics_Nodes.vue";
+import Network_BlockNodes from "@/pages/Network_BlockNodes.vue";
+import Network_ConsensusNodes from "@/pages/Network_ConsensusNodes.vue";
+import Network_MirrorNodes from "@/pages/Network_MirrorNodes.vue";
+import Network_RpcRelays from "@/pages/Network_RpcRelays.vue";
+import RegisteredNodeDetails from "@/pages/RegisteredNodeDetails.vue";
 
 export enum TabId {
     Home = "Home",
@@ -78,7 +82,7 @@ export enum TabId {
     Topics = "Topics",
     Contracts = "Contracts",
     Accounts = "Accounts",
-    Nodes = "Nodes",
+    Network = "Network",
     Staking = "Staking",
     Blocks = "Blocks",
     Metrics = "Metrics",
@@ -482,45 +486,62 @@ export const BLOCK_DETAILS_ROUTE: RouteRecordRaw = {
     ]
 }
 
-export const NODES_ROUTE: RouteRecordRaw =     {
+export const NODES_ROUTE: RouteRecordRaw = {
     path: '/:network/nodes',
-    name: 'Nodes',
-    component: Nodes,
+    name: 'Network',
+    component: Network,
     props: true,
     meta: {
-        tabId: TabId.Nodes
+        tabId: TabId.Network
     },
     children: [
         {
             path: '',
-            name: 'Nodes_Network',
-            component: Nodes_Network,
+            name: 'Network_Overview',
+            component: Network_Overview,
             props: true,
             meta: {
-                tabLabel: "Network"
+                tabLabel: "Overview"
             }
         },
         {
             path: 'table',
-            name: 'Nodes_NodeTable',
-            component: Nodes_NodeTable,
+            name: 'Network_ConsensusNodes',
+            component: Network_ConsensusNodes,
             props: true,
             meta: {
-                tabLabel: "Node table"
+                tabLabel: "Consensus nodes"
+            }
+        },
+        {
+            path: 'bloc-node-table',
+            name: 'Network_BlockNodes',
+            component: Network_BlockNodes,
+            props: true,
+            meta: {
+                tabLabel: "Block nodes"
+            }
+        },
+        {
+            path: 'mirror-node-table',
+            name: 'Network_MirrorNodes',
+            component: Network_MirrorNodes,
+            props: true,
+            meta: {
+                tabLabel: "Mirror nodes"
+            }
+        },
+        {
+            path: 'rpc-relay-table',
+            name: 'Network_RpcRelays',
+            component: Network_RpcRelays,
+            props: true,
+            meta: {
+                tabLabel: "JSON-RPC relays"
             }
         },
     ],
 }
-
-// {
-//     path: '/:network/metrics',
-//         name: 'Metrics',
-//     component: Metrics,
-//     props: true,
-//     meta: {
-//     tabId: TabId.Metrics
-// }
-// },
 
 export const METRICS_ROUTE: RouteRecordRaw = {
     path: '/:network/metrics',
@@ -677,7 +698,7 @@ export const routes: Array<RouteRecordRaw> = [
         component: NodeAdminKeyDetails,
         props: true,
         meta: {
-            tabId: TabId.Nodes
+            tabId: TabId.Network
         }
     },
     {
@@ -756,7 +777,16 @@ export const routes: Array<RouteRecordRaw> = [
         component: NodeDetails,
         props: true,
         meta: {
-            tabId: TabId.Nodes
+            tabId: TabId.Network
+        }
+    },
+    {
+        path: '/:network/registered-node/:nodeId',
+        name: 'RegisteredNodeDetails',
+        component: RegisteredNodeDetails,
+        props: true,
+        meta: {
+            tabId: TabId.Network
         }
     },
     {

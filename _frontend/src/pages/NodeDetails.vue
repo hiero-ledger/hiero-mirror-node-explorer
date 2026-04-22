@@ -171,6 +171,8 @@
       </template>
     </DashboardCardV2>
 
+    <AssociatedRegisteredNodesSection :nodes="associatedNodes"/>
+
   </PageFrameV2>
 
 </template>
@@ -204,6 +206,7 @@ import MirrorLink from "@/components/MirrorLink.vue";
 import HexaValue from "@/components/values/HexaValue.vue";
 import {loadingKey} from "@/AppKeys.ts";
 import {routeManager} from "@/utils/RouteManager.ts";
+import AssociatedRegisteredNodesSection from "@/components/node/AssociatedRegisteredNodesSection.vue";
 
 const props = defineProps({
   nodeId: {
@@ -261,6 +264,7 @@ const makeFloorHbarAmount = (tinyBarAmount: number) => {
 
 const enableStaking = routeManager.enableStaking
 const node = nodeAnalyzer.node
+const associatedNodes = nodeAnalyzer.associatedNodes
 const declineReward = nodeAnalyzer.declineReward
 const totalStakeForConsensus = networkAnalyzer.totalStakeForConsensus
 const annualizedRate = nodeAnalyzer.annualizedRate

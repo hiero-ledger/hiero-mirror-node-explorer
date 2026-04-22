@@ -8,7 +8,7 @@
 
   <DashboardCardV2 v-if="enableStaking">
     <template #title>
-      <span>Network</span>
+      <span>Network Staking</span>
     </template>
 
     <template #content>
@@ -65,7 +65,7 @@
 
   <DashboardCardV2 v-if="isMapVisible">
     <template #title>
-      Map
+      Consensus Node Locations
     </template>
     <template #content>
       <NodeMap :nodes="nodes"/>

@@ -8,12 +8,12 @@ import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import MockAdapter from "axios-mock-adapter";
 import Oruga from "@oruga-ui/oruga-next";
 import {HMSF} from "@/utils/HMSF";
-import Nodes from "@/pages/Nodes.vue";
+import Network from "@/pages/Network.vue";
 import NodeTable from "@/components/node/NodeTable.vue";
 import NetworkDashboardItemV2 from "@/components/node/NetworkDashboardItemV2.vue";
 import {fetchGetURLs} from "../MockUtils";
 import router from "@/utils/RouteManager.ts";
-import Nodes_NodeTable from "@/pages/Nodes_NodeTable.vue";
+import NetworkConsensusNodes from "@/pages/Network_ConsensusNodes.vue";
 
 /*
     Bookmarks
@@ -24,7 +24,7 @@ import Nodes_NodeTable from "@/pages/Nodes_NodeTable.vue";
 
 HMSF.forceUTC = true
 
-describe("Nodes.vue", () => {
+describe("Network.vue", () => {
 
     const tooltipStake = "Total amount of HBAR staked to this specific validator for consensus."
     const tooltipRewardRate = "Approximate annual reward rate based on the reward earned during the " +
@@ -55,7 +55,7 @@ describe("Nodes.vue", () => {
         const matcher2 = "/api/v1/network/stake"
         mock.onGet(matcher2).reply(200, SAMPLE_NETWORK_STAKE);
 
-        const wrapper = mount(Nodes, {
+        const wrapper = mount(Network, {
             global: {
                 plugins: [router, Oruga]
             }
@@ -86,7 +86,7 @@ describe("Nodes.vue", () => {
         expect(items[8].text()).toMatch("CURRENT GLOBAL REWARD RATE 2.105%")
 
         mock.resetHistory()
-        const wrapper2 = mount(Nodes_NodeTable, {
+        const wrapper2 = mount(NetworkConsensusNodes, {
             global: {
                 plugins: [router, Oruga]
             }
@@ -97,7 +97,7 @@ describe("Nodes.vue", () => {
 
         expect(fetchGetURLs(mock)).toStrictEqual([])
 
-        expect(wrapper2.text()).toMatch("3  Nodes")
+        expect(wrapper2.text()).toMatch("3  Network")
         const table = wrapper2.findComponent(NodeTable)
         expect(table.exists()).toBe(true)
         expect(table.get('thead').text()).toBe("IDACCOUNTDESCRIPTIONSTAKE FOR CONSENSUSSTAKE RANGEREWARD RATE")

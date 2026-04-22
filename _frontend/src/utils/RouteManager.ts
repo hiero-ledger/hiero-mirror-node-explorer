@@ -479,6 +479,26 @@ export class RouteManager {
     }
 
     //
+    // Registered Node
+    //
+
+    public makeRouteToRegisteredNode(nodeId: number): RouteLocationRaw {
+        return {name: 'RegisteredNodeDetails', params: {nodeId: nodeId, network: this.currentNetwork.value}}
+    }
+
+    public routeToRegisteredNode(nodeId: number, event: Event): Promise<NavigationFailure | void | undefined> {
+        let result: Promise<NavigationFailure | void | undefined>
+        if (this.shouldOpenNewWindow(event)) {
+            const routeData = this.router.resolve(this.makeRouteToRegisteredNode(nodeId));
+            window.open(routeData.href, '_blank');
+            result = Promise.resolve()
+        } else {
+            result = this.router.push(this.makeRouteToRegisteredNode(nodeId))
+        }
+        return result
+    }
+
+    //
     // SearchHelp
     //
 
