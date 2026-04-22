@@ -28,9 +28,7 @@
     </o-table>
   </div>
 
-  <span v-else-if="initialLoading"/>
-
-  <span v-else class="h-is-low-contrast">None</span>
+  <EmptyTable v-if="endPoints.length === 0"/>
 
 </template>
 
@@ -40,11 +38,11 @@
 
 <script lang="ts" setup>
 
-import {computed, inject, PropType, ref} from 'vue';
+import {computed, PropType} from 'vue';
 import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
-import {initialLoadingKey} from "@/AppKeys";
 import {RegisteredServiceEndPoint} from "@/schemas/MirrorNodeSchemas";
 import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
+import EmptyTable from "@/components/EmptyTable.vue";
 
 const props = defineProps({
   endPoints: {
@@ -52,8 +50,6 @@ const props = defineProps({
     required: true
   },
 })
-
-const initialLoading = inject(initialLoadingKey, ref(false))
 
 const endPoints = computed(() =>
     props.endPoints.filter(s => s.ip_address || s.domain_name)

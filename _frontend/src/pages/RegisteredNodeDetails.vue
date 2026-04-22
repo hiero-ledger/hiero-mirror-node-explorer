@@ -56,14 +56,6 @@
             <StringValue :show-none="true" :string-value="nodeType"/>
           </template>
         </Property>
-
-        <Property id="service-endpoints" :full-width="true">
-          <template #name>Service Endpoints</template>
-          <template #value>
-            <RegisteredServiceEndpoints :end-points="serviceEndpoints"></RegisteredServiceEndpoints>
-          </template>
-        </Property>
-
       </template>
 
       <template #footer>
@@ -71,6 +63,18 @@
                     entityUrl="network/registered-nodes"/>
       </template>
     </DashboardCardV2>
+
+
+    <DashboardCardV2>
+      <template #title>
+        Service Endpoints
+      </template>
+
+      <template #content>
+        <RegisteredServiceEndpointsTable :end-points="serviceEndpoints"></RegisteredServiceEndpointsTable>
+      </template>
+    </DashboardCardV2>
+
 
     <DashboardCardV2>
       <template #title>
@@ -105,7 +109,7 @@ import {loadingKey} from "@/AppKeys.ts";
 import StringValue from "@/components/values/StringValue.vue";
 import KeyValue from "@/components/values/KeyValue.vue";
 import {printableNodeType} from "@/schemas/MirrorNodeSchemas.ts";
-import RegisteredServiceEndpoints from "@/components/values/RegisteredServiceEndpoints.vue";
+import RegisteredServiceEndpointsTable from "@/components/node/RegisteredServiceEndpointsTable.vue";
 import NodeTable from "@/components/node/NodeTable.vue";
 
 const props = defineProps({

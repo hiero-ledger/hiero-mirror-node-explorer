@@ -66,7 +66,7 @@ export class BlockNodeCache extends RegisteredNodeCache {
                         block_node: {
                             endpoint_apis: [RegisteredBlockNodeApi.STATE_PROOF]
                         },
-                        domain_name: "block2.beta.com",
+                        domain_name: null,
                         general_service: null,
                         ip_address: "192.168.42.42",
                         mirror_node: null,
