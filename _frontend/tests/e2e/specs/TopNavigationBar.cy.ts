@@ -61,9 +61,12 @@ describe('Top Navigation Bar', () => {
         cy.contains('Accounts').click()
         cy.contains('Recent Accounts')
 
-        cy.contains('Nodes').click()
-        cy.contains('Network')
-        cy.contains('Node table')
+        cy.contains('Network').click()
+        cy.contains('Overview')
+        cy.contains('Consensus nodes')
+        cy.contains('Block nodes')
+        cy.contains('Mirror nodes')
+        cy.contains('JSON-RPC relays')
 
         cy.contains('Staking').click()
         cy.contains('My Staking')
