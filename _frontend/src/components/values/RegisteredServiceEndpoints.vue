@@ -6,25 +6,26 @@
 
 <template>
 
-  <!--  If domain_name is provided:               -->
-  <!--      www.example.com:50211 (34.94.106.61)  -->
-  <!--  otherwise:                                -->
-  <!--      34.94.106.61:50211                    -->
+  <o-table
+      v-if="endPoints.length > 0"
+      :data="endPoints"
+      :hoverable="false"
+      :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
+      :narrowed="true"
+      :striped="false"
+  >
+    <o-table-column v-slot="props" field="endpoint" label="ENDPOINT">
+      <span class="h-is-monospace">{{ props.row.domain_name || props.row.ip_address }}</span>
+    </o-table-column>
 
-  <div v-if="endPoints.length > 0">
-    <div v-for="s in endPoints" :key="(s.ip_address || s.domain_name)!" class="h-is-monospace">
-      <template v-if="s.domain_name && s.domain_name.length > 0">
-        <span>{{ s.domain_name }}</span>
-        <span v-if="s.port > 0" class="h-is-low-contrast">{{ ':' + s.port }}</span>
-        <span v-if="s.ip_address && s.ip_address.length > 0" class="ml-1">{{ `(${s.ip_address})` }}</span>
-      </template>
-      <template v-else-if="s.ip_address && s.ip_address.length > 0">
-        <span>{{ s.ip_address }}</span>
-        <span v-if="s.port > 0" class="h-is-low-contrast">{{ ':' + s.port }}</span>
-      </template>
-      <div v-if="s.requires_tls" class="h-has-pill h-chip-info ml-2">TLS</div>
-    </div>
-  </div>
+    <o-table-column v-slot="props" field="port" label="PORT">
+      <span class="h-is-monospace">{{ props.row.port > 0 ? props.row.port : '' }}</span>
+    </o-table-column>
+
+    <o-table-column v-slot="props" field="requires_tls" label="TLS REQUIRED">
+      <span v-if="props.row.requires_tls">&#10003;</span>
+    </o-table-column>
+  </o-table>
 
   <span v-else-if="initialLoading"/>
 
@@ -39,8 +40,10 @@
 <script lang="ts" setup>
 
 import {computed, inject, PropType, ref} from 'vue';
+import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
 import {initialLoadingKey} from "@/AppKeys";
 import {RegisteredServiceEndPoint} from "@/schemas/MirrorNodeSchemas";
+import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
 
 const props = defineProps({
   endPoints: {
