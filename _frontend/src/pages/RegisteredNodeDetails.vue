@@ -8,7 +8,7 @@
 
   <PageFrameV2 :page-title="pageTitle">
     <template #page-title>
-      Registered Node
+      {{ pageTitle }}
       <span style="white-space: nowrap; font-size: smaller">
         {{ nodeIdNb }}
       </span>
@@ -78,7 +78,7 @@
       </template>
 
       <template #content>
-          <NodeTable :nodes="associatedConsensusNodes" :display-staking-info="false"/>
+        <NodeTable :display-staking-info="false" :nodes="associatedConsensusNodes"/>
       </template>
     </DashboardCardV2>
 
@@ -119,7 +119,11 @@ const props = defineProps({
 const loading = inject(loadingKey, ref(false))
 
 const nodeIdNb = computed(() => PathParam.parseNodeId(props.nodeId))
-const pageTitle = computed(() => nodeIdNb.value !== null ? "Registered Node " + nodeIdNb.value : "Registered Node")
+const pageTitle = computed(() =>
+    registeredNode.value?.service_endpoints.length
+        ? printableNodeType(registeredNode.value.service_endpoints[0].type)
+        : "Registered Node"
+)
 
 const networkAnalyzer = new NetworkAnalyzer()
 onMounted(() => networkAnalyzer.mount())
