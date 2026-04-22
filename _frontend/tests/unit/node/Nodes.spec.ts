@@ -13,7 +13,7 @@ import NodeTable from "@/components/node/NodeTable.vue";
 import NetworkDashboardItemV2 from "@/components/node/NetworkDashboardItemV2.vue";
 import {fetchGetURLs} from "../MockUtils";
 import router from "@/utils/RouteManager.ts";
-import NetworkConsensusNodes from "@/pages/Network_ConsensusNodes.vue";
+import Network_ConsensusNodes from "@/pages/Network_ConsensusNodes.vue";
 
 /*
     Bookmarks
@@ -86,7 +86,7 @@ describe("Network.vue", () => {
         expect(items[8].text()).toMatch("CURRENT GLOBAL REWARD RATE 2.105%")
 
         mock.resetHistory()
-        const wrapper2 = mount(NetworkConsensusNodes, {
+        const wrapper2 = mount(Network_ConsensusNodes, {
             global: {
                 plugins: [router, Oruga]
             }
@@ -97,7 +97,7 @@ describe("Network.vue", () => {
 
         expect(fetchGetURLs(mock)).toStrictEqual([])
 
-        expect(wrapper2.text()).toMatch("3  Network")
+        expect(wrapper2.text()).toMatch("3  Consensus Nodes")
         const table = wrapper2.findComponent(NodeTable)
         expect(table.exists()).toBe(true)
         expect(table.get('thead').text()).toBe("IDACCOUNTDESCRIPTIONSTAKE FOR CONSENSUSSTAKE RANGEREWARD RATE")

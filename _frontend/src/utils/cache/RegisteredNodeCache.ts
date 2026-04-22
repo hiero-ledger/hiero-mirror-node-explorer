@@ -22,7 +22,6 @@ export class RegisteredNodeCache extends SingletonCache<RegisteredNode[]> {
 
     protected async load(): Promise<RegisteredNode[]> {
 
-        console.log("RegisteredNodeCache.load() - nodeType: " + this.nodeType)
         // let result: RegisteredNode[] = []
         // let nextURL: string | null = "api/v1/network/registered-nodes"
         // const params = {

@@ -514,7 +514,7 @@ export const NODES_ROUTE: RouteRecordRaw = {
             }
         },
         {
-            path: 'bloc-node-table',
+            path: 'block-node-table',
             name: 'Network_BlockNodes',
             component: Network_BlockNodes,
             props: true,

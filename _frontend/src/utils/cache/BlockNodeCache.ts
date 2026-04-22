@@ -14,8 +14,6 @@ export class BlockNodeCache extends RegisteredNodeCache {
     // eslint-disable-next-line max-lines-per-function
     protected getMock(): RegisteredNode[] {
 
-        console.log("BlockNodeCache.getMock()")
-
         return [
             {
                 admin_key: {
