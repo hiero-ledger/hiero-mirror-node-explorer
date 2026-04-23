@@ -2,7 +2,7 @@
   {
     "name": "mainnet",
     "displayName": "MAINNET",
-    "url": "https://mainnet.mirrornode.hedera.com/",
+    "url": "https://mainnet-public.mirrornode.hedera.com/",
     "ledgerID": "00",
     "baseRealm": 0,
     "baseShard": 0,
@@ -14,11 +14,11 @@
     "erc20IndexURL": "mainnet/erc-20.json",
     "erc721IndexURL": "mainnet/erc-721.json",
     "erc1155IndexURL": "mainnet/erc-1155.json",
-    "publicLabelsURL": "mainnet/public-labels.json",
+    "publicLabelsURL": null,
     "sourcifySetup": {
       "activate": true,
-      "repoURL": "https://repository-verify.hashscan.io/contracts/",
-      "serverURL": "https://server-verify.hashscan.io/",
+      "repoURL": "https://repository.local/contracts/",
+      "serverURL": "https://localhost/server/",
       "chainID": 295
     }
   },
@@ -36,12 +36,11 @@
     "erc20IndexURL": "testnet/erc-20.json",
     "erc721IndexURL": "testnet/erc-721.json",
     "erc1155IndexURL": "testnet/erc-1155.json",
-    "publicLabelsURL": "testnet/public-labels.json",
-    "blockscoutURL": "https://blockscout-testnet.hashscan.io/",
+    "publicLabelsURL": null,
     "sourcifySetup": {
       "activate": true,
-      "repoURL": "https://repository-verify.hashscan.io/contracts/",
-      "serverURL": "https://server-verify.hashscan.io/",
+      "repoURL": "https://repository.local/contracts/",
+      "serverURL": "https://localhost/server/",
       "chainID": 296
     }
   },
@@ -59,10 +58,11 @@
     "erc20IndexURL": null,
     "erc721IndexURL": "previewnet/erc-721.json",
     "erc1155IndexURL": null,
+    "publicLabelsURL": null,
     "sourcifySetup": {
       "activate": true,
-      "repoURL": "https://repository-verify.hashscan.io/contracts/",
-      "serverURL": "https://server-verify.hashscan.io/",
+      "repoURL": "https://repository.local/contracts/",
+      "serverURL": "https://localhost/server/",
       "chainID": 297
     }
   }
