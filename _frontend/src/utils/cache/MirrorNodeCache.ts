@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
-import {KeyType, RegisteredBlockNodeApi, RegisteredNode, RegisteredNodeType} from "@/schemas/MirrorNodeSchemas";
+import {KeyType, RegisteredNode, RegisteredNodeType} from "@/schemas/MirrorNodeSchemas";
 import {RegisteredNodeCache} from "@/utils/cache/RegisteredNodeCache.ts";
 
 export class MirrorNodeCache extends RegisteredNodeCache {
@@ -23,19 +23,41 @@ export class MirrorNodeCache extends RegisteredNodeCache {
                 created_timestamp: "1648377044.798291252",
                 description: "First Sample Mirror Node",
                 registered_node_id: 6,
-                service_endpoints: [{
-                    block_node: {
-                        endpoint_apis: [RegisteredBlockNodeApi.PUBLISH]
+                service_endpoints: [
+                    {
+                        block_node: null,
+                        domain_name: "mirror1.alpha.com",
+                        general_service: null,
+                        ip_address: "192.168.12.42",
+                        mirror_node: null,
+                        port: 40840,
+                        requires_tls: true,
+                        rpc_relay: null,
+                        type: RegisteredNodeType.MIRROR_NODE
                     },
-                    domain_name: "mirror1.alpha.com",
-                    general_service: null,
-                    ip_address: "192.168.1.42",
-                    mirror_node: null,
-                    port: 40840,
-                    requires_tls: false,
-                    rpc_relay: null,
-                    type: RegisteredNodeType.MIRROR_NODE
-                }],
+                    {
+                        block_node: null,
+                        domain_name: "mirror2.alpha.com",
+                        general_service: null,
+                        ip_address: null,
+                        mirror_node: null,
+                        port: 40840,
+                        requires_tls: false,
+                        rpc_relay: null,
+                        type: RegisteredNodeType.MIRROR_NODE
+                    },
+                    {
+                        block_node: null,
+                        domain_name: null,
+                        general_service: null,
+                        ip_address: "192.168.2.42",
+                        mirror_node: null,
+                        port: 40840,
+                        requires_tls: true,
+                        rpc_relay: null,
+                        type: RegisteredNodeType.MIRROR_NODE
+                    }
+                ],
                 timestamp: {"from": "1648377044.798291252", "to": null}
             },
             {
@@ -62,7 +84,7 @@ export class MirrorNodeCache extends RegisteredNodeCache {
                         block_node: null,
                         domain_name: "mirror2.beta.com",
                         general_service: null,
-                        ip_address: "192.168.42.42",
+                        ip_address: null,
                         mirror_node: null,
                         port: 40840,
                         requires_tls: false,
@@ -71,7 +93,7 @@ export class MirrorNodeCache extends RegisteredNodeCache {
                     },
                     {
                         block_node: null,
-                        domain_name: "block3.beta.com",
+                        domain_name: null,
                         general_service: null,
                         ip_address: "192.168.2.42",
                         mirror_node: null,

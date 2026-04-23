@@ -23,19 +23,47 @@ export class BlockNodeCache extends RegisteredNodeCache {
                 created_timestamp: "1648377044.798291252",
                 description: "First Sample Block Node",
                 registered_node_id: 3,
-                service_endpoints: [{
-                    block_node: {
-                        endpoint_apis: [RegisteredBlockNodeApi.PUBLISH]
+                service_endpoints: [
+                    {
+                        block_node: {
+                            endpoint_apis: [RegisteredBlockNodeApi.STATE_PROOF]
+                        },
+                        domain_name: "block1.alpha.com",
+                        general_service: null,
+                        ip_address: "192.168.12.42",
+                        mirror_node: null,
+                        port: 40840,
+                        requires_tls: true,
+                        rpc_relay: null,
+                        type: RegisteredNodeType.BLOCK_NODE
                     },
-                    domain_name: "block1.alpha.com",
-                    general_service: null,
-                    ip_address: "192.168.1.42",
-                    mirror_node: null,
-                    port: 40840,
-                    requires_tls: false,
-                    rpc_relay: null,
-                    type: RegisteredNodeType.BLOCK_NODE
-                }],
+                    {
+                        block_node: {
+                            endpoint_apis: [RegisteredBlockNodeApi.STATE_PROOF]
+                        },
+                        domain_name: null,
+                        general_service: null,
+                        ip_address: "192.168.42.42",
+                        mirror_node: null,
+                        port: 40840,
+                        requires_tls: false,
+                        rpc_relay: null,
+                        type: RegisteredNodeType.BLOCK_NODE
+                    },
+                    {
+                        block_node: {
+                            endpoint_apis: [RegisteredBlockNodeApi.STATE_PROOF]
+                        },
+                        domain_name: "block3.alpha.com",
+                        general_service: null,
+                        ip_address: null,
+                        mirror_node: null,
+                        port: 40840,
+                        requires_tls: true,
+                        rpc_relay: null,
+                        type: RegisteredNodeType.BLOCK_NODE
+                    }
+                ],
                 timestamp: {"from": "1648377044.798291252", "to": null}
             },
             {
@@ -79,7 +107,7 @@ export class BlockNodeCache extends RegisteredNodeCache {
                         },
                         domain_name: "block3.beta.com",
                         general_service: null,
-                        ip_address: "192.168.2.42",
+                        ip_address: null,
                         mirror_node: null,
                         port: 40840,
                         requires_tls: true,

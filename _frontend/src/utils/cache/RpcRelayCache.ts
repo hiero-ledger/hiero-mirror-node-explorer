@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
-import {KeyType, RegisteredBlockNodeApi, RegisteredNode, RegisteredNodeType} from "@/schemas/MirrorNodeSchemas";
+import {KeyType, RegisteredNode, RegisteredNodeType} from "@/schemas/MirrorNodeSchemas";
 import {RegisteredNodeCache} from "@/utils/cache/RegisteredNodeCache.ts";
 
 export class RpcRelayCache extends RegisteredNodeCache {
@@ -23,19 +23,41 @@ export class RpcRelayCache extends RegisteredNodeCache {
                 created_timestamp: "1648377044.798291252",
                 description: "First Sample RPC Relay",
                 registered_node_id: 10,
-                service_endpoints: [{
-                    block_node: {
-                        endpoint_apis: [RegisteredBlockNodeApi.PUBLISH]
+                service_endpoints: [
+                    {
+                        block_node: null,
+                        domain_name: "relay1.alpha.com",
+                        general_service: null,
+                        ip_address: "192.168.12.42",
+                        mirror_node: null,
+                        port: 40840,
+                        requires_tls: true,
+                        rpc_relay: null,
+                        type: RegisteredNodeType.RPC_RELAY
                     },
-                    domain_name: "mirror1.alpha.com",
-                    general_service: null,
-                    ip_address: "192.168.1.42",
-                    mirror_node: null,
-                    port: 40840,
-                    requires_tls: false,
-                    rpc_relay: null,
-                    type: RegisteredNodeType.RPC_RELAY
-                }],
+                    {
+                        block_node: null,
+                        domain_name: null,
+                        general_service: null,
+                        ip_address: "192.168.42.42",
+                        mirror_node: null,
+                        port: 40840,
+                        requires_tls: false,
+                        rpc_relay: null,
+                        type: RegisteredNodeType.RPC_RELAY
+                    },
+                    {
+                        block_node: null,
+                        domain_name: "relay3.alpha.com",
+                        general_service: null,
+                        ip_address: null,
+                        mirror_node: null,
+                        port: 40840,
+                        requires_tls: true,
+                        rpc_relay: null,
+                        type: RegisteredNodeType.RPC_RELAY
+                    }
+                ],
                 timestamp: {"from": "1648377044.798291252", "to": null}
             },
             {
@@ -49,7 +71,7 @@ export class RpcRelayCache extends RegisteredNodeCache {
                 service_endpoints: [
                     {
                         block_node: null,
-                        domain_name: "mirror1.beta.com",
+                        domain_name: "relay1.beta.com",
                         general_service: null,
                         ip_address: "192.168.12.42",
                         mirror_node: null,
@@ -60,7 +82,7 @@ export class RpcRelayCache extends RegisteredNodeCache {
                     },
                     {
                         block_node: null,
-                        domain_name: "mirror2.beta.com",
+                        domain_name: null,
                         general_service: null,
                         ip_address: "192.168.42.42",
                         mirror_node: null,
@@ -71,9 +93,9 @@ export class RpcRelayCache extends RegisteredNodeCache {
                     },
                     {
                         block_node: null,
-                        domain_name: "block3.beta.com",
+                        domain_name: "relay3.beta.com",
                         general_service: null,
-                        ip_address: "192.168.2.42",
+                        ip_address: null,
                         mirror_node: null,
                         port: 40840,
                         requires_tls: true,
