@@ -841,14 +841,14 @@ export interface RegisteredNode {
 
 export interface RegisteredServiceEndPoint {
     block_node: RegisteredBlockNodeEndpoint | null
-    domain_name: string | null     // The DNS domain name of the service
+    domain_name: string | null  // The DNS domain name of the service
     general_service: RegisteredGeneralServiceEndpoint | null
-    ip_address: string | null // The IP address of the service
-    mirror_node: RegisteredMirrorNodeEndpoint | null
+    ip_address: string | null   // The IP address of the service
+    mirror_node: unknown        // SHOULD BE: RegisteredMirrorNodeEndpoint | null
     port: number
-    requires_tls: boolean // Whether the registered service endpoint requires TLS or not
-    rpc_relay: RegisteredRpcRelayEndpoint | null
-    type: RegisteredNodeType // Registered node type
+    requires_tls: boolean       // Whether the registered service endpoint requires TLS or not
+    rpc_relay: unknown          // SHOULD BE: RegisteredRpcRelayEndpoint | null
+    type: RegisteredNodeType    // Registered node type
 }
 
 export interface RegisteredBlockNodeEndpoint {
@@ -868,11 +868,14 @@ export interface RegisteredGeneralServiceEndpoint {
     description: string
 }
 
-export interface RegisteredMirrorNodeEndpoint {
-}
-
-export interface RegisteredRpcRelayEndpoint {
-}
+//
+// These are currently empty in MN OpenAPI definition
+//
+// export interface RegisteredMirrorNodeEndpoint {
+// }
+//
+// export interface RegisteredRpcRelayEndpoint {
+// }
 
 export enum RegisteredNodeType {
     BLOCK_NODE = "BLOCK_NODE",
