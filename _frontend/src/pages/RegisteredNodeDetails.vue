@@ -104,13 +104,13 @@ import Property from "@/components/Property.vue";
 import {PathParam} from "@/utils/PathParam";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import MirrorLink from "@/components/MirrorLink.vue";
-import {NetworkAnalyzer} from "@/utils/analyzer/NetworkAnalyzer.ts";
 import {loadingKey} from "@/AppKeys.ts";
 import StringValue from "@/components/values/StringValue.vue";
 import KeyValue from "@/components/values/KeyValue.vue";
 import {printableNodeType} from "@/schemas/MirrorNodeSchemas.ts";
 import RegisteredServiceEndpointsTable from "@/components/node/RegisteredServiceEndpointsTable.vue";
 import NodeTable from "@/components/node/NodeTable.vue";
+import {RegisteredNodeAnalyzer} from "@/utils/analyzer/RegisteredNodeAnalyzer.ts";
 
 const props = defineProps({
   nodeId: {
@@ -123,35 +123,12 @@ const props = defineProps({
 const loading = inject(loadingKey, ref(false))
 
 const nodeIdNb = computed(() => PathParam.parseNodeId(props.nodeId))
+
 const pageTitle = computed(() =>
     registeredNode.value?.service_endpoints.length
         ? printableNodeType(registeredNode.value.service_endpoints[0].type)
         : "Registered Node"
 )
-
-const networkAnalyzer = new NetworkAnalyzer()
-onMounted(() => networkAnalyzer.mount())
-onBeforeUnmount(() => networkAnalyzer.unmount())
-
-const registeredNode = computed(() => networkAnalyzer.mirrorNodes.value
-    .concat(networkAnalyzer.blockNodes.value)
-    .concat(networkAnalyzer.rpcRelays.value)
-    .find((node) => node.registered_node_id === nodeIdNb.value) ?? null)
-
-const nodeType = computed(() =>
-    registeredNode.value ? printableNodeType(registeredNode.value.service_endpoints[0].type) : null
-)
-
-const serviceEndpoints = computed(() =>
-    registeredNode.value?.service_endpoints ?? []
-)
-
-const associatedConsensusNodes = computed(() => {
-  const id = nodeIdNb.value
-  return id !== null
-      ? networkAnalyzer.nodes.value.filter((node) => node.associated_registered_nodes.includes(id))
-      : []
-})
 
 const notification = computed(() => {
   let result: string | null
@@ -162,6 +139,14 @@ const notification = computed(() => {
   }
   return result
 })
+
+const nodeAnalyzer = new RegisteredNodeAnalyzer(nodeIdNb)
+onMounted(() => nodeAnalyzer.mount())
+onBeforeUnmount(() => nodeAnalyzer.unmount())
+const registeredNode = nodeAnalyzer.registeredNode
+const nodeType = nodeAnalyzer.nodeType
+const serviceEndpoints = nodeAnalyzer.serviceEndpoints
+const associatedConsensusNodes = nodeAnalyzer.associatedConsensusNodes
 
 </script>
 
