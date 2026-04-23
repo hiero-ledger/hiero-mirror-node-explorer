@@ -486,8 +486,8 @@ export const BLOCK_DETAILS_ROUTE: RouteRecordRaw = {
     ]
 }
 
-export const NODES_ROUTE: RouteRecordRaw = {
-    path: '/:network/nodes',
+export const NETWORK_ROUTE: RouteRecordRaw = {
+    path: '/:network/network',
     name: 'Network',
     component: Network,
     props: true,
@@ -505,7 +505,7 @@ export const NODES_ROUTE: RouteRecordRaw = {
             }
         },
         {
-            path: 'table',
+            path: 'consensus-nodes',
             name: 'Network_ConsensusNodes',
             component: Network_ConsensusNodes,
             props: true,
@@ -514,7 +514,7 @@ export const NODES_ROUTE: RouteRecordRaw = {
             }
         },
         {
-            path: 'block-node-table',
+            path: 'block-nodes',
             name: 'Network_BlockNodes',
             component: Network_BlockNodes,
             props: true,
@@ -523,7 +523,7 @@ export const NODES_ROUTE: RouteRecordRaw = {
             }
         },
         {
-            path: 'mirror-node-table',
+            path: 'mirror-nodes',
             name: 'Network_MirrorNodes',
             component: Network_MirrorNodes,
             props: true,
@@ -532,7 +532,7 @@ export const NODES_ROUTE: RouteRecordRaw = {
             }
         },
         {
-            path: 'rpc-relay-table',
+            path: 'rpc-relays',
             name: 'Network_RpcRelays',
             component: Network_RpcRelays,
             props: true,
@@ -770,7 +770,15 @@ export const routes: Array<RouteRecordRaw> = [
         }
     },
     TOPIC_DETAILS_ROUTE,
-    NODES_ROUTE,
+    {
+        path: '/:network/nodes',
+        redirect: {name: 'Network'}
+    },
+    {
+        path: '/:network/nodes/table',
+        redirect: {name: 'Network_ConsensusNodes'}
+    },
+    NETWORK_ROUTE,
     {
         path: '/:network/node/:nodeId',
         name: 'NodeDetails',

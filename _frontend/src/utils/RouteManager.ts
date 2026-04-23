@@ -23,8 +23,8 @@ import {
     BLOCK_DETAILS_ROUTE,
     CONTRACT_DETAILS_ROUTE,
     METRICS_ROUTE,
+    NETWORK_ROUTE,
     NFT_DETAILS_ROUTE,
-    NODES_ROUTE,
     routes,
     TOKEN_DETAILS_ROUTE,
     TOKENS_ROUTE,
@@ -557,7 +557,7 @@ export class RouteManager {
         return {name: 'Accounts', params: {network: this.currentNetwork.value}}
     }
 
-    public readonly nodesOperator = new RouteOperator(NODES_ROUTE, this)
+    public readonly nodesOperator = new RouteOperator(NETWORK_ROUTE, this)
 
     public routeToNodes(tabId: string | null = null, replace = false): Promise<NavigationFailure | void | undefined> {
         let result: Promise<NavigationFailure | void | undefined>
