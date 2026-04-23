@@ -8,7 +8,7 @@ import {makeAnnualizedRate, makeNodeDescription, makeRewardRate} from "@/schemas
 export class NodeAnalyzer {
 
     public readonly nodeLoc: Ref<number | string | null>
-    public readonly networkAnalyzer = new NetworkAnalyzer()
+    public readonly networkAnalyzer: NetworkAnalyzer = new NetworkAnalyzer()
 
     //
     // Public

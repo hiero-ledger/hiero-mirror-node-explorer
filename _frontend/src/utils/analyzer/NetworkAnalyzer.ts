@@ -6,15 +6,17 @@ import {NodeCache} from "@/utils/cache/NodeCache.ts";
 import {BlockNodeCache} from "@/utils/cache/BlockNodeCache.ts";
 import {MirrorNodeCache} from "@/utils/cache/MirrorNodeCache.ts";
 import {RpcRelayCache} from "@/utils/cache/RpcRelayCache.ts";
+import {SingletonLookup} from "@/utils/cache/base/SingletonCache";
+import {NetworkNode, RegisteredNode} from "@/schemas/MirrorNodeSchemas";
 
 
 export class NetworkAnalyzer {
 
-    public readonly networkLookup = NodeCache.instance.makeLookup()
+    public readonly nodeLookup: SingletonLookup<NetworkNode[]> = NodeCache.instance.makeLookup()
 
-    public readonly blockNodeLookup = BlockNodeCache.instance.makeLookup()
-    public readonly mirrorNodeLookup = MirrorNodeCache.instance.makeLookup()
-    public readonly rpcRelayLookup = RpcRelayCache.instance.makeLookup()
+    public readonly blockNodeLookup: SingletonLookup<RegisteredNode[]> = BlockNodeCache.instance.makeLookup()
+    public readonly mirrorNodeLookup: SingletonLookup<RegisteredNode[]> = MirrorNodeCache.instance.makeLookup()
+    public readonly rpcRelayLookup: SingletonLookup<RegisteredNode[]> = RpcRelayCache.instance.makeLookup()
 
     public readonly stakingPeriod: Ref<StakingPeriod | null> = ref(null)
     private intervalHandle = -1
@@ -25,7 +27,7 @@ export class NetworkAnalyzer {
     //
 
     public mount(): void {
-        this.networkLookup.mount()
+        this.nodeLookup.mount()
         this.blockNodeLookup.mount()
         this.mirrorNodeLookup.mount()
         this.rpcRelayLookup.mount()
@@ -35,7 +37,7 @@ export class NetworkAnalyzer {
     }
 
     public unmount(): void {
-        this.networkLookup.unmount()
+        this.nodeLookup.unmount()
         this.blockNodeLookup.unmount()
         this.mirrorNodeLookup.unmount()
         this.rpcRelayLookup.unmount()
@@ -48,7 +50,7 @@ export class NetworkAnalyzer {
         }
     }
 
-    public readonly nodes = computed(() => this.networkLookup.entity.value ?? [])
+    public readonly nodes = computed(() => this.nodeLookup.entity.value ?? [])
 
     public readonly node0 = computed(() => this.nodes.value.length >= 1 ? this.nodes.value[0] : null)
 

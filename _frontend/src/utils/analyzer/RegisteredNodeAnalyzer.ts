@@ -7,7 +7,7 @@ import {NetworkAnalyzer} from "@/utils/analyzer/NetworkAnalyzer";
 export class RegisteredNodeAnalyzer {
 
     public readonly registeredNodeId: Ref<number | null>
-    public readonly networkAnalyzer = new NetworkAnalyzer()
+    public readonly networkAnalyzer: NetworkAnalyzer = new NetworkAnalyzer()
 
     public registeredNode = computed(() => {
         let result: RegisteredNode | null
