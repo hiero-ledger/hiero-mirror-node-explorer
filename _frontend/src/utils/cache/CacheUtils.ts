@@ -50,6 +50,9 @@ import {ERC1155Cache} from "@/utils/cache/ERC1155Cache.ts";
 import {PublicLabelsCache} from "@/utils/cache/PublicLabelsCache.ts";
 import {HooksByAccountIdCache} from "@/utils/cache/HooksByAccountIdCache.ts";
 import {HookStorageByIdCache} from "@/utils/cache/HookStorageByIdCache.ts";
+import {BlockNodeCache} from "@/utils/cache/BlockNodeCache.ts";
+import {MirrorNodeCache} from "@/utils/cache/MirrorNodeCache.ts";
+import {RpcRelayCache} from "@/utils/cache/RpcRelayCache.ts";
 
 export class CacheUtils {
 
@@ -64,6 +67,7 @@ export class CacheUtils {
         BlockByHashCache.instance.clear()
         BlockByNbCache.instance.clear()
         BlockByTsCache.instance.clear()
+        BlockNodeCache.instance.clear()
         ContractByAddressCache.instance.clear()
         ContractByIdCache.instance.clear()
         ContractResultByHashCache.instance.clear()
@@ -82,12 +86,14 @@ export class CacheUtils {
         LastTopicMessageByIdCache.instance.clear()
         LogicContractCache.instance.clear()
         // IPFSCache.instance => no clear: we preserve it because IPFS content is valid for all networks
+        MirrorNodeCache.instance.clear()
         NetworkCache.instance.clear()
         NetworkFeesCache.instance.clear()
         NftBySerialCache.instance.clear()
         NftCollectionCache.instance.clear()
         PendingAirdropCache.instance.clear()
         PublicLabelsCache.instance.clear()
+        RpcRelayCache.instance.clear()
         ScheduleByIdCache.instance.clear()
         SelectedTokensCache.instance.clear()
         // SignatureCache.instance => no clear: we preserve it because 4byte content is valid for all networks
