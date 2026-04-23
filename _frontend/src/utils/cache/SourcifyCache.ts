@@ -17,23 +17,7 @@ export class SourcifyCache extends EntityCache<string, SourcifyRecord | null> {
     //
 
     public static fetchMetadata(response: SourcifyResponse): SolcMetadata | null {
-
-        // https://docs.sourcify.dev/docs/api/server/get-source-files-all/
-
-        let result: SolcMetadata | null
-        try {
-            result = null
-            for (const i of response.files) {
-                if (i.name === "metadata.json") {
-                    result = JSON.parse(i.content)
-                    break
-                }
-            }
-        } catch {
-            result = null
-        }
-
-        return result
+        return response.metadata ?? null;
     }
 
     public static async checkAllContracts(addressesToCheck: string[]): Promise<string[]> {
@@ -91,7 +75,7 @@ export class SourcifyCache extends EntityCache<string, SourcifyRecord | null> {
                 const requestURL = sourcifySetup.makeRequestURL(contractAddress)
                 try {
                     const response = await axios.get<SourcifyResponse>(requestURL)
-                    const isFullMatch = response.data.status === "full"
+                    const isFullMatch = response.data.runtimeMatch === "exact_match"
                     const repoURL = sourcifySetup.makeContractSourceURL(contractAddress, isFullMatch)
                     result = new SourcifyRecord(response.data, isFullMatch, repoURL)
                 } catch (error) {
@@ -124,8 +108,21 @@ export class SourcifyRecord {
 }
 
 export interface SourcifyResponse {
-    status: string,
-    files: SourcifyResponseItem[]
+    matchId: string,
+    creationMatch: string|null,
+    runtimeMatch: string,           // exact_match
+    verifiedAt: string,             // 2026-03-17T14:52:17Z
+    match: string,                  // exact_match
+    chainId: string,                // 296
+    address: string,                // 0x00000000000000000000000000000000005A67f7
+    abi?: unknown,
+    metadata?: SolcMetadata,
+    creationByteCode?: unknown,
+    onchainBytecode?: unknown,
+    deployment?: unknown,
+    blockNumber?: unknown,
+    compilation?: unknown,
+    sources?: Record<string, { content: string }>
 }
 
 export interface SourcifyResponseItem {

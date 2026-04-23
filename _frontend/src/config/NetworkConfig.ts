@@ -45,14 +45,12 @@ export class SourcifySetup {
     // https://docs.sourcify.dev/docs/api/repository/get-file-static/
 
     makeRequestURL(contractAddress: string): string {
-        const normalizedAddress = EthereumAddress.normalizeEIP55(contractAddress)
-        return this.serverURL + "files/any/" + this.chainID + "/" + normalizedAddress
+        return this.serverURL + "v2/contract/" + this.chainID + "/" + contractAddress + "?fields=metadata,sources"
     }
 
     makeContractSourceURL(contractAddress: string, full: boolean): string {
         const normalizedAddress = EthereumAddress.normalizeEIP55(contractAddress)
-        const matchPrefix = full ? "full_match/" : "partial_match/"
-        return this.repoURL + matchPrefix + this.chainID + "/" + normalizedAddress
+        return this.repoURL + this.chainID + "/" + normalizedAddress
     }
 
     makeCheckAllByAddressURL(): string {

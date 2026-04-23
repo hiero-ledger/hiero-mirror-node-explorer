@@ -149,22 +149,21 @@ export class ContractAnalyzer {
 
     public readonly solidityFiles = computed(() => {
         const result: Array<SourcifyResponseItem> = []
-        const sourcifyRecord = this.report.value?.sourcifyRecord ?? null
-        if (sourcifyRecord !== null && sourcifyRecord.response.files.length > 0) {
-            const files = sourcifyRecord.response.files
-            files?.forEach((f) => {
-                const parts = f.name.split('.')
-                const suffix = parts[parts.length - 1].toLowerCase()
-                if (suffix !== "json") {
-                    result.push(f)
-                }
+        const sources = this.report.value?.sourcifyRecord?.response.sources
+        if (sources) {
+            const files = Object.keys(sources)
+            files.forEach(f => {
+                const name = f.slice(f.lastIndexOf('/') + 1)
+                const content = sources[f]!.content
+                result.push({
+                    name: name,
+                    path: f,
+                    content: content
+                })
             })
         }
         return result
     })
-
-    public readonly sourceFiles = computed(
-        () => this.report.value?.sourcifyRecord?.response.files ?? [])
 
     //
     // public readonly sourceFileNames: ComputedRef<string[]> = computed(() => {
