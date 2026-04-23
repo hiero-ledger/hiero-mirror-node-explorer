@@ -4,9 +4,9 @@ import {NetworkNode, NetworkNodesResponse} from "@/schemas/MirrorNodeSchemas";
 import {SingletonCache} from "@/utils/cache/base/SingletonCache";
 import axios, {AxiosResponse} from "axios";
 
-export class NetworkCache extends SingletonCache<NetworkNode[]> {
+export class NodeCache extends SingletonCache<NetworkNode[]> {
 
-    public static readonly instance = new NetworkCache()
+    public static readonly instance = new NodeCache()
 
     //
     // Cache

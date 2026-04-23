@@ -2,7 +2,7 @@
 
 import {computed, ComputedRef, ref, Ref, watch, WatchStopHandle} from "vue";
 import {StakingPeriod} from "@/utils/StakingPeriod";
-import {NetworkCache} from "@/utils/cache/NetworkCache";
+import {NodeCache} from "@/utils/cache/NodeCache.ts";
 import {BlockNodeCache} from "@/utils/cache/BlockNodeCache.ts";
 import {MirrorNodeCache} from "@/utils/cache/MirrorNodeCache.ts";
 import {RpcRelayCache} from "@/utils/cache/RpcRelayCache.ts";
@@ -10,7 +10,7 @@ import {RpcRelayCache} from "@/utils/cache/RpcRelayCache.ts";
 
 export class NetworkAnalyzer {
 
-    public readonly networkLookup = NetworkCache.instance.makeLookup()
+    public readonly networkLookup = NodeCache.instance.makeLookup()
 
     public readonly blockNodeLookup = BlockNodeCache.instance.makeLookup()
     public readonly mirrorNodeLookup = MirrorNodeCache.instance.makeLookup()

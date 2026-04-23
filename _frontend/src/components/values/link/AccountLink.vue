@@ -29,7 +29,7 @@
 <script setup lang="ts">
 
 import {computed, onBeforeUnmount, onMounted, PropType, ref, watch} from "vue";
-import {NetworkCache} from "@/utils/cache/NetworkCache";
+import {NodeCache} from "@/utils/cache/NodeCache.ts";
 import {ContractByIdCache} from "@/utils/cache/ContractByIdCache";
 import {RouteLocationRaw} from "vue-router";
 import EntityLink from "@/components/values/link/EntityLink.vue";
@@ -56,7 +56,7 @@ const props = defineProps({
   },
 })
 
-const networkLookup = NetworkCache.instance.makeLookup()
+const networkLookup = NodeCache.instance.makeLookup()
 onMounted(() => networkLookup.mount())
 onBeforeUnmount(() => networkLookup.unmount())
 

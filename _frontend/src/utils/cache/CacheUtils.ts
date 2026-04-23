@@ -24,7 +24,7 @@ import {HCSAssetCache} from "@/utils/cache/HCSAssetCache.ts";
 import {HbarPriceCache} from "@/utils/cache/HbarPriceCache";
 import {LastTopicMessageByIdCache} from "@/utils/cache/LastTopicMessageByIdCache.ts";
 import {LogicContractCache} from "@/utils/cache/LogicContractCache";
-import {NetworkCache} from "@/utils/cache/NetworkCache";
+import {NodeCache} from "@/utils/cache/NodeCache.ts";
 import {NetworkFeesCache} from "@/utils/cache/NetworkFeesCache.ts";
 import {NftBySerialCache} from "@/utils/cache/NftBySerialCache.ts";
 import {NftCollectionCache} from "@/utils/cache/NftCollectionCache";
@@ -87,10 +87,10 @@ export class CacheUtils {
         LogicContractCache.instance.clear()
         // IPFSCache.instance => no clear: we preserve it because IPFS content is valid for all networks
         MirrorNodeCache.instance.clear()
-        NetworkCache.instance.clear()
         NetworkFeesCache.instance.clear()
         NftBySerialCache.instance.clear()
         NftCollectionCache.instance.clear()
+        NodeCache.instance.clear()
         PendingAirdropCache.instance.clear()
         PublicLabelsCache.instance.clear()
         RpcRelayCache.instance.clear()
