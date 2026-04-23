@@ -5125,6 +5125,82 @@ export const SAMPLE_PUBLIC_LABELS_JSON = [
     },
 ]
 
+export const SAMPLE_REGISTERED_NODES: { registered_nodes: object[] } = {
+    "registered_nodes": [
+        {
+            "admin_key": null,
+            "created_timestamp": "1654531806.041135961",
+            "description": "Block Node | East Coast, USA",
+            "registered_node_id": 0,
+            "service_endpoints": [
+                {
+                    "block_node": {"endpoint_apis": ["PUBLISH", "SUBSCRIBE_STREAM"]},
+                    "domain_name": "block.example.com",
+                    "general_service": null,
+                    "ip_address": null,
+                    "mirror_node": null,
+                    "port": 50211,
+                    "requires_tls": true,
+                    "rpc_relay": null,
+                    "type": "BLOCK_NODE"
+                },
+                {
+                    "block_node": {"endpoint_apis": ["STATUS"]},
+                    "domain_name": null,
+                    "general_service": null,
+                    "ip_address": "1.2.3.4",
+                    "mirror_node": null,
+                    "port": 50212,
+                    "requires_tls": false,
+                    "rpc_relay": null,
+                    "type": "BLOCK_NODE"
+                }
+            ],
+            "timestamp": {"from": "1654531806.041135961", "to": null}
+        },
+        {
+            "admin_key": null,
+            "created_timestamp": "1654531900.000000000",
+            "description": "Mirror Node | West Coast, USA",
+            "registered_node_id": 1,
+            "service_endpoints": [
+                {
+                    "block_node": null,
+                    "domain_name": null,
+                    "general_service": null,
+                    "ip_address": "5.6.7.8",
+                    "mirror_node": {},
+                    "port": 443,
+                    "requires_tls": true,
+                    "rpc_relay": null,
+                    "type": "MIRROR_NODE"
+                }
+            ],
+            "timestamp": {"from": "1654531900.000000000", "to": null}
+        },
+        {
+            "admin_key": null,
+            "created_timestamp": "1654532000.000000000",
+            "description": "RPC Relay | Central, USA",
+            "registered_node_id": 2,
+            "service_endpoints": [
+                {
+                    "block_node": null,
+                    "domain_name": "relay.example.com",
+                    "general_service": null,
+                    "ip_address": null,
+                    "mirror_node": null,
+                    "port": 8080,
+                    "requires_tls": false,
+                    "rpc_relay": {},
+                    "type": "RPC_RELAY"
+                }
+            ],
+            "timestamp": {"from": "1654532000.000000000", "to": null}
+        }
+    ]
+}
+
 export const SAMPLE_NETWORK_CONFIG_JSON = [
     {
         ...NetworkConfig.FALLBACK.entries[0],
