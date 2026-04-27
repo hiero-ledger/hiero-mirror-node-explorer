@@ -11,7 +11,7 @@
       {{ props.title }}
     </template>
     <template #content>
-      <p class="mb-4"> {{ props.subtitle }}</p>
+      <p class="mb-4 h-is-low-contrast"> {{ props.subtitle }}</p>
       <RegisteredNodeTable :nodes="props.nodes"/>
     </template>
   </DashboardCardV2>
