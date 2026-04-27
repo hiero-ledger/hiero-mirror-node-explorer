@@ -33,7 +33,7 @@ export class RegisteredNodeAnalyzer {
     public associatedConsensusNodes = computed(() => {
         const id = this.registeredNodeId.value
         return id !== null
-            ? this.networkAnalyzer.nodes.value.filter((node) => node.associated_registered_nodes.includes(id))
+            ? this.networkAnalyzer.nodes.value.filter((node) => node.associated_registered_nodes && node.associated_registered_nodes.includes(id))
             : []
     })
 
