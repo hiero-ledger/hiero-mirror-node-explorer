@@ -4,6 +4,8 @@ import {NetworkNode, NetworkNodesResponse} from "@/schemas/MirrorNodeSchemas";
 import {SingletonCache} from "@/utils/cache/base/SingletonCache";
 import axios, {AxiosResponse} from "axios";
 
+const mockRegisteredNodes = import.meta.env.VITE_APP_MOCK_HIP_1137 === "true"
+
 export class NodeCache extends SingletonCache<NetworkNode[]> {
 
     public static readonly instance = new NodeCache()
@@ -25,14 +27,16 @@ export class NodeCache extends SingletonCache<NetworkNode[]> {
             nextURL = response.data.links?.next ?? null
             params.limit = undefined
         }
-        result.forEach((n: NetworkNode) => {
-            n.associated_registered_nodes =
-                n.node_id % 11 === 0
-                    ? [3, 6, 10]
-                    : n.node_id % 7 === 0
-                        ? [7, 12, 15]
-                        : []
-        })
+        if (mockRegisteredNodes) {
+            result.forEach((n: NetworkNode) => {
+                n.associated_registered_nodes =
+                    n.node_id % 11 === 0
+                        ? [3, 6, 10]
+                        : n.node_id % 7 === 0
+                            ? [7, 12, 15]
+                            : []
+            })
+        }
         return Promise.resolve(result)
     }
 }
