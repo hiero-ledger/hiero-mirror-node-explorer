@@ -4818,6 +4818,7 @@ export const SAMPLE_NETWORK_NODES = {
                 "_type": "ED25519",
                 "key": "c67e3c4172e3eea8e4f45714240e453ab8702e7fc13d7ea58e523e6caeb8a38e"
             },
+            "associated_registered_nodes": [0,1,2],
             "decline_reward": null,
             "description": "Hosted by Hedera | East Coast, USA",
             "file_id": "0.0.102",
@@ -5128,7 +5129,10 @@ export const SAMPLE_PUBLIC_LABELS_JSON = [
 export const SAMPLE_REGISTERED_NODES: { registered_nodes: object[] } = {
     "registered_nodes": [
         {
-            "admin_key": null,
+            "admin_key": {
+                "_type": KeyType.ED25519,
+                "key": "d6e8334cd8594e88c82ff266b4974b4e4ac596962dcfab7314f935e7fdda672f"
+            },
             "created_timestamp": "1654531806.041135961",
             "description": "Block Node | East Coast, USA",
             "registered_node_id": 0,

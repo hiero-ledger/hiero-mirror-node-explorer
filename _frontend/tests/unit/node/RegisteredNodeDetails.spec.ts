@@ -5,7 +5,7 @@
 import {describe, expect, it} from 'vitest'
 import {flushPromises, mount} from "@vue/test-utils"
 import axios from "axios";
-import {SAMPLE_NETWORK_NODES} from "../Mocks";
+import {SAMPLE_NETWORK_NODES, SAMPLE_REGISTERED_NODES} from "../Mocks";
 import MockAdapter from "axios-mock-adapter";
 import Oruga from "@oruga-ui/oruga-next";
 import {HMSF} from "@/utils/HMSF";
@@ -29,8 +29,10 @@ describe("RegisteredNodeDetails.vue", () => {
         await router.push("/") // To avoid "missing required param 'network'" error
 
         const mock = new MockAdapter(axios as any);
-        const matcher1 = "api/v1/network/nodes"
-        mock.onGet(matcher1).reply(200, SAMPLE_NETWORK_NODES);
+        const matcher1 = "api/v1/network/registered-nodes"
+        mock.onGet(matcher1).reply(200, SAMPLE_REGISTERED_NODES);
+        const matcher2 = "api/v1/network/nodes"
+        mock.onGet(matcher2).reply(200, SAMPLE_NETWORK_NODES);
 
         const wrapper = mount(RegisteredNodeDetails, {
             global: {
@@ -38,12 +40,15 @@ describe("RegisteredNodeDetails.vue", () => {
                 provide: {"isMediumScreen": false}
             },
             props: {
-                nodeId: "3"
+                nodeId: "0"
             }
         });
 
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/network/nodes",
+            "api/v1/network/registered-nodes",
+            "api/v1/network/registered-nodes",
+            "api/v1/network/registered-nodes",
         ])
 
         await flushPromises()
@@ -52,8 +57,8 @@ describe("RegisteredNodeDetails.vue", () => {
 
         expect(wrapper.text()).toMatch("Block Node")
 
-        expect(wrapper.get("#node-idValue").text()).toBe("3")
-        expect(wrapper.get("#descriptionValue").text()).toBe("First Sample Block Node")
+        expect(wrapper.get("#node-idValue").text()).toBe("0")
+        expect(wrapper.get("#descriptionValue").text()).toBe("Block Node | East Coast, USA")
         expect(wrapper.get("#admin-keyValue").text()).toBe(
             "0xd6e8334cd8594e88c82ff266b4974b4e4ac596962dcfab7314f935e7fdda672f" + "Copy" + "ED25519"
         )
@@ -62,11 +67,10 @@ describe("RegisteredNodeDetails.vue", () => {
         // Service endpoints table: 3 endpoints (all have ip_address or domain_name)
         const endpointsTable = wrapper.get("#service-endpoint-table")
         expect(endpointsTable.get("thead").text()).toBe("ENDPOINTPORTTLS REQUIRED")
-        expect(endpointsTable.get("tbody").findAll("tr").length).toBe(3)
+        expect(endpointsTable.get("tbody").findAll("tr").length).toBe(2)
         expect(endpointsTable.get("tbody").text()).toBe(
-            "block1.alpha.com" + "40840" + "\u2713" +
-            "192.168.42.42" + "40840" +
-            "block3.alpha.com" + "40840" + "\u2713"
+            "block.example.com" + "50211" + "\u2713" +
+            "1.2.3.4" + "50212"
         )
 
         // Associated consensus nodes: node_id=0 has associated_registered_nodes=[3,6,10], includes 3
@@ -87,8 +91,10 @@ describe("RegisteredNodeDetails.vue", () => {
         await router.push("/") // To avoid "missing required param 'network'" error
 
         const mock = new MockAdapter(axios as any);
-        const matcher1 = "api/v1/network/nodes"
-        mock.onGet(matcher1).reply(200, SAMPLE_NETWORK_NODES);
+        const matcher1 = "api/v1/network/registered-nodes"
+        mock.onGet(matcher1).reply(200, SAMPLE_REGISTERED_NODES);
+        const matcher2 = "api/v1/network/nodes"
+        mock.onGet(matcher2).reply(200, SAMPLE_NETWORK_NODES);
 
         const wrapper = mount(RegisteredNodeDetails, {
             global: {
@@ -96,21 +102,29 @@ describe("RegisteredNodeDetails.vue", () => {
                 provide: {"isMediumScreen": false}
             },
             props: {
-                nodeId: "3"
+                nodeId: "1"
             }
         });
+
+        expect(fetchGetURLs(mock)).toStrictEqual([
+            "api/v1/network/nodes",
+            "api/v1/network/registered-nodes",
+            "api/v1/network/registered-nodes",
+            "api/v1/network/registered-nodes",
+        ])
 
         await flushPromises()
         // console.log(wrapper.html())
         // console.log(wrapper.text())
 
-        expect(wrapper.text()).toMatch("Block Node")
-        expect(wrapper.get("#node-idValue").text()).toBe("3")
-        expect(wrapper.get("#descriptionValue").text()).toBe("First Sample Block Node")
-        expect(wrapper.get("#service-typeValue").text()).toBe("Block Node")
+        expect(wrapper.text()).toMatch("Mirror Node")
+
+        expect(wrapper.get("#node-idValue").text()).toBe("1")
+        expect(wrapper.get("#descriptionValue").text()).toBe("Mirror Node | West Coast, USA")
+        expect(wrapper.get("#service-typeValue").text()).toBe("Mirror Node")
 
         mock.resetHistory()
-        await wrapper.setProps({nodeId: "6"})
+        await wrapper.setProps({nodeId: "2"})
         await flushPromises()
         // console.log(wrapper.html())
         // console.log(wrapper.text())
@@ -118,10 +132,10 @@ describe("RegisteredNodeDetails.vue", () => {
         // No new HTTP requests: all cache data is already loaded
         expect(fetchGetURLs(mock)).toStrictEqual([])
 
-        expect(wrapper.text()).toMatch("Mirror Node")
-        expect(wrapper.get("#node-idValue").text()).toBe("6")
-        expect(wrapper.get("#descriptionValue").text()).toBe("First Sample Mirror Node")
-        expect(wrapper.get("#service-typeValue").text()).toBe("Mirror Node")
+        expect(wrapper.text()).toMatch("JSON-RPC Relay")
+        expect(wrapper.get("#node-idValue").text()).toBe("2")
+        expect(wrapper.get("#descriptionValue").text()).toBe("RPC Relay | Central, USA")
+        expect(wrapper.get("#service-typeValue").text()).toBe("JSON-RPC Relay")
 
         mock.restore()
         wrapper.unmount()
