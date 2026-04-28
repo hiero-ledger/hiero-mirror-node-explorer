@@ -107,14 +107,17 @@ export class SourcifyRecord {
     }
 }
 
-export interface SourcifyResponse {
-    matchId: string,
+export interface SourcifyStatusRecord {
+    matchId: string,                // 28201817
     creationMatch: string|null,
-    runtimeMatch: string,           // exact_match
+    runtimeMatch: string,           // exact_match, match
     verifiedAt: string,             // 2026-03-17T14:52:17Z
     match: string,                  // exact_match
     chainId: string,                // 296
     address: string,                // 0x00000000000000000000000000000000005A67f7
+}
+
+export interface SourcifyResponse extends SourcifyStatusRecord {
     abi?: unknown,
     metadata?: SolcMetadata,
     creationByteCode?: unknown,
@@ -123,6 +126,10 @@ export interface SourcifyResponse {
     blockNumber?: unknown,
     compilation?: unknown,
     sources?: Record<string, { content: string }>
+}
+
+export interface SourcifyBatchResponse {
+    results: SourcifyStatusRecord[]
 }
 
 export interface SourcifyResponseItem {

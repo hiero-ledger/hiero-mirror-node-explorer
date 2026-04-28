@@ -47,6 +47,13 @@ export class Timestamp {
         return result
     }
 
+    public static fromDate(date: Date): Timestamp {
+        const milliseconds = date.getTime();
+        const seconds = Math.floor(milliseconds / 1000)
+        const nanoseconds = (milliseconds % 1000) * 1_000_000_000
+        return new Timestamp(seconds, nanoseconds)
+    }
+
     public nanoSeconds(from: Timestamp): number {
         const secondDelta = this.seconds - from.seconds
         const nanosecondDelta = this.nanoseconds - from.nanoseconds

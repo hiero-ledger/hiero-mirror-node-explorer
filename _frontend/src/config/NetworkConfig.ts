@@ -48,6 +48,10 @@ export class SourcifySetup {
         return this.serverURL + "v2/contract/" + this.chainID + "/" + contractAddress + "?fields=metadata,sources"
     }
 
+    makeBatchRequestURL(): string {
+        return this.serverURL + "v2/contracts/" + this.chainID
+    }
+
     makeContractSourceURL(contractAddress: string, full: boolean): string {
         const normalizedAddress = EthereumAddress.normalizeEIP55(contractAddress)
         return this.repoURL + this.chainID + "/" + normalizedAddress
