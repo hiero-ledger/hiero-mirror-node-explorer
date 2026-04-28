@@ -82,10 +82,10 @@
 
   <ContractERCSection :erc-analyzer="ercAnalyzer"/>
 
-  <ContractVerificationDialog
+  <ContractVerificationInfoDialog
       v-model:show-dialog="showVerifyDialog"
       :contract-id="parsedContractId"
-      v-on:verify-did-complete="verifyDidComplete"/>
+  />
 
 </template>
 
@@ -112,7 +112,7 @@ import MirrorLink from "@/components/MirrorLink.vue";
 import InfoTooltip from "@/components/InfoTooltip.vue";
 import ButtonView from "@/elements/ButtonView.vue";
 import {ButtonSize} from "@/dialogs/core/DialogUtils.ts";
-import ContractVerificationDialog from "@/dialogs/verification/ContractVerificationDialog.vue";
+import ContractVerificationInfoDialog from "@/dialogs/verification/ContractVerificationInfoDialog.vue";
 import ContractSectionTitle from "@/components/contract/ContractSectionTitle.vue";
 
 const props = defineProps({
@@ -174,10 +174,6 @@ const accountChecksum = computed(() =>
 // Verify dialog
 //
 const showVerifyDialog = ref(false)
-const verifyDidComplete = () => {
-  contractAnalyzer.verifyDidComplete()
-}
-
 
 </script>
 

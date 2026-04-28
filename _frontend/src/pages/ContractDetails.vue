@@ -51,10 +51,10 @@
 
   </PageFrameV2>
 
-  <ContractVerificationDialog
+  <ContractVerificationInfoDialog
       v-model:show-dialog="showVerifyDialog"
       :contract-id="parsedContractId"
-      v-on:verify-did-complete="verifyDidComplete"/>
+  />
 
 </template>
 
@@ -73,7 +73,7 @@ import {ButtonSize} from "@/dialogs/core/DialogUtils.ts";
 import {ContractAnalyzer} from "@/utils/analyzer/ContractAnalyzer.ts";
 import {ContractLocParser} from "@/utils/parser/ContractLocParser";
 import {routeManager} from "@/utils/RouteManager.ts";
-import ContractVerificationDialog from "@/dialogs/verification/ContractVerificationDialog.vue";
+import ContractVerificationInfoDialog from "@/dialogs/verification/ContractVerificationInfoDialog.vue";
 import ArrowLink from "@/components/ArrowLink.vue";
 
 const props = defineProps({
@@ -124,9 +124,6 @@ const isVerificationAvailable = computed(() => {
 })
 
 const showVerifyDialog = ref(false)
-const verifyDidComplete = () => {
-  contractAnalyzer.verifyDidComplete()
-}
 
 //
 // Account route
