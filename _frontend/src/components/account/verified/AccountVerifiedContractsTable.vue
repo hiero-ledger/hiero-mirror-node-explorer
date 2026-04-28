@@ -58,19 +58,19 @@
 
 import {computed, onBeforeUnmount, onMounted, PropType} from 'vue';
 import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
-import {Contract} from "@/schemas/MirrorNodeSchemas";
+import {Contract} from "@/schemas/MirrorNodeSchemas.ts";
 import TimestampValue from "@/components/values/TimestampValue.vue";
-import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
+import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints.ts";
 import EmptyTable from "@/components/EmptyTable.vue";
 import ContractName from "@/components/values/ContractName.vue";
-import {VerifiedContractsController} from "@/components/contract/VerifiedContractsController";
+import {AccountVerifiedContractsController} from "@/components/account/verified/AccountVerifiedContractsController.ts";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
 import ContractIOL from "@/components/values/link/ContractIOL.vue";
 import {routeManager} from "@/utils/RouteManager.ts";
 
 const props = defineProps({
   controller: {
-    type: Object as PropType<VerifiedContractsController>,
+    type: Object as PropType<AccountVerifiedContractsController>,
     required: true
   },
   loaded: Boolean,

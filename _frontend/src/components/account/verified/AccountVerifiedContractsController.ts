@@ -2,12 +2,12 @@
 
 import {computed, ComputedRef, ref, Ref, watch} from "vue";
 import {PlayPauseController} from "@/components/PlayPauseButton.vue";
-import {Contract} from "@/schemas/MirrorNodeSchemas";
+import {Contract} from "@/schemas/MirrorNodeSchemas.ts";
 import axios, {AxiosError} from "axios";
-import {VerifiedContractsBuffer} from "@/utils/cache/VerifiedContractsBuffer";
-import {Lookup} from "@/utils/cache/base/Lookup";
+import {VerifiedContractsBuffer} from "@/utils/cache/VerifiedContractsBuffer.ts";
+import {Lookup} from "@/utils/cache/base/Lookup.ts";
 
-export class VerifiedContractsController implements PlayPauseController {
+export class AccountVerifiedContractsController implements PlayPauseController {
 
     private contractsLookup: Lookup<VerifiedContractsBuffer>
 

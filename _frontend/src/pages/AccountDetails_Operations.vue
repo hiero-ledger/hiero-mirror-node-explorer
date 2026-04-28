@@ -86,7 +86,7 @@
               v-if="account && !filterVerified"
               :controller="contractCreateTableController"
           />
-          <VerifiedContractsTable
+          <AccountVerifiedContractsTable
               v-else-if="account"
               :controller="verifiedContractsController"
               :loaded="loaded"
@@ -133,12 +133,12 @@ import StakingRewardsTable from "@/components/staking/StakingRewardsTable.vue";
 import {TransactionType} from "@/schemas/MirrorNodeSchemas";
 import {TransactionTableController} from "@/components/transaction/TransactionTableController";
 import EmptyTable from "@/components/EmptyTable.vue";
-import VerifiedContractsTable from "@/components/account/VerifiedContractsTable.vue";
+import AccountVerifiedContractsTable from "@/components/account/verified/AccountVerifiedContractsTable.vue";
 import {AppStorage} from "@/AppStorage";
 import Tabs from "@/components/Tabs.vue";
 import AccountCreatedContractsTable from "@/components/account/AccountCreatedContractsTable.vue";
 import {VerifiedContractsByAccountIdCache} from "@/utils/cache/VerifiedContractsByAccountIdCache";
-import {VerifiedContractsController} from "@/components/contract/VerifiedContractsController";
+import {AccountVerifiedContractsController} from "@/components/account/verified/AccountVerifiedContractsController.ts";
 import DateTimePicker from "@/components/DateTimePicker.vue";
 import TransactionDownloadDialog from "@/dialogs/download/TransactionDownloadDialog.vue";
 import {NetworkConfig} from "@/config/NetworkConfig";
@@ -223,7 +223,7 @@ const contractCreateTableController = new TransactionTableController(
     "p3", "k3",
     accountIdRef)
 
-const verifiedContractsController = new VerifiedContractsController(
+const verifiedContractsController = new AccountVerifiedContractsController(
     VerifiedContractsByAccountIdCache.instance.makeLookup(accountIdRef),
     ref(defaultPageSize),
     AppStorage.ACCOUNT_OPERATION_TABLE_PAGE_SIZE_KEY
