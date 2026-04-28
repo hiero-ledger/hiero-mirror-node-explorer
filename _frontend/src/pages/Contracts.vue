@@ -28,11 +28,9 @@
             v-if="!filterVerified"
             :controller="contractTableController"
         />
-        <VerifiedContractsTable
+        <VerifiedContractTable
             v-else
             :controller="verifiedContractsController"
-            :loaded="loaded"
-            :overflow="overflow"
         />
       </template>
     </DashboardCardV2>
@@ -52,17 +50,17 @@ import ContractTable from "@/components/contract/ContractTable.vue";
 import PageFrameV2 from "@/components/page/PageFrameV2.vue";
 import {ContractTableController} from "@/components/contract/ContractTableController";
 import {useRouter} from "vue-router";
-import VerifiedContractsTable from "@/components/account/VerifiedContractsTable.vue";
-import {VerifiedContractsController} from "@/components/contract/VerifiedContractsController";
-import {VerifiedContractsCache} from "@/utils/cache/VerifiedContractsCache";
-import {AppStorage} from "@/AppStorage";
+import VerifiedContractTable from "@/components/contract/verified/VerifiedContractTable.vue";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import PlayPauseButton from "@/components/PlayPauseButton.vue";
 import SwitchView from "@/elements/SwitchView.vue";
+import {VerifiedContractTableController} from "@/components/contract/verified/VerifiedContractTableController.ts";
 
 defineProps({
   network: String
 })
+
+const router = useRouter()
 
 const isMediumScreen = inject('isMediumScreen', true)
 
@@ -73,13 +71,10 @@ const filterVerified = ref(false)
 //
 const defaultPageSize = isMediumScreen ? 15 : 10
 const contractTableController = new ContractTableController(useRouter(), defaultPageSize)
-const verifiedContractsController = new VerifiedContractsController(
-    VerifiedContractsCache.instance.makeLookup(),
-    ref(defaultPageSize),
-    AppStorage.CONTRACT_TABLE_PAGE_SIZE_KEY
+const verifiedContractsController = new VerifiedContractTableController(
+    router,
+    defaultPageSize
 )
-const loaded = verifiedContractsController.loaded
-const overflow = verifiedContractsController.overflow
 
 </script>
 
