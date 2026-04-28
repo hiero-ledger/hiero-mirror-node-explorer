@@ -5,13 +5,13 @@
 
 import {describe, expect, test} from 'vitest'
 import {GeoLocationBookEntry, GeoLocationCache} from "@/utils/cache/GeoLocationCache.ts";
-import {NetworkCache} from "@/utils/cache/NetworkCache.ts";
+import {NodeCache} from "@/utils/cache/NodeCache.ts";
 import {NetworkNode} from "@/schemas/MirrorNodeSchemas.ts";
 
 describe.skip("GeoLocationCache", () => {
 
     test("check if EXPECTED_DESCRIPTIONS array is up to date", async () => {
-        const nodes = await NetworkCache.instance.lookup()
+        const nodes = await NodeCache.instance.lookup()
 
         const outdatedDescriptions: NetworkNode[] = []
         const missingDescriptions: NetworkNode[] = []
@@ -65,7 +65,7 @@ describe.skip("GeoLocationCache", () => {
 
     test("check if EXPECTED_DESCRIPTIONS and node-locations.json are in sync", async () => {
 
-        const nodes = await NetworkCache.instance.lookup()
+        const nodes = await NodeCache.instance.lookup()
         const book = await GeoLocationCache.instance.lookup()
 
         const missingNodes: NetworkNode[] = []

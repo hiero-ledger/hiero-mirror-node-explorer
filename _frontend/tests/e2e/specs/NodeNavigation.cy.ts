@@ -7,10 +7,13 @@ describe('Node Navigation', () => {
     it('should navigate from node table to node details', () => {
         cy.visit('testnet/nodes/')
         cy.url().should('include', '/testnet/nodes')
-        cy.contains('Network')
-        cy.contains('Nodes')
+        cy.contains('Overview')
+        cy.contains('Consensus nodes')
+        cy.contains('Block nodes')
+        cy.contains('Mirror nodes')
+        cy.contains('JSON-RPC relays')
 
-        cy.get('#tab-Nodes_NodeTable').click()
+        cy.get('#tab-Network_ConsensusNodes').click()
 
         cy.get('table')
             .find('tbody tr')

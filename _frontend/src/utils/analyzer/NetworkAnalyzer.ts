@@ -2,12 +2,22 @@
 
 import {computed, ComputedRef, ref, Ref, watch, WatchStopHandle} from "vue";
 import {StakingPeriod} from "@/utils/StakingPeriod";
-import {NetworkCache} from "@/utils/cache/NetworkCache";
+import {NodeCache} from "@/utils/cache/NodeCache.ts";
+import {BlockNodeCache} from "@/utils/cache/BlockNodeCache.ts";
+import {MirrorNodeCache} from "@/utils/cache/MirrorNodeCache.ts";
+import {RpcRelayCache} from "@/utils/cache/RpcRelayCache.ts";
+import {SingletonLookup} from "@/utils/cache/base/SingletonCache";
+import {NetworkNode, RegisteredNode} from "@/schemas/MirrorNodeSchemas";
 
 
 export class NetworkAnalyzer {
 
-    public readonly networkLookup = NetworkCache.instance.makeLookup()
+    public readonly nodeLookup: SingletonLookup<NetworkNode[]> = NodeCache.instance.makeLookup()
+
+    public readonly blockNodeLookup: SingletonLookup<RegisteredNode[]> = BlockNodeCache.instance.makeLookup()
+    public readonly mirrorNodeLookup: SingletonLookup<RegisteredNode[]> = MirrorNodeCache.instance.makeLookup()
+    public readonly rpcRelayLookup: SingletonLookup<RegisteredNode[]> = RpcRelayCache.instance.makeLookup()
+
     public readonly stakingPeriod: Ref<StakingPeriod | null> = ref(null)
     private intervalHandle = -1
     private watchHandle: WatchStopHandle | null = null
@@ -17,14 +27,20 @@ export class NetworkAnalyzer {
     //
 
     public mount(): void {
-        this.networkLookup.mount()
+        this.nodeLookup.mount()
+        this.blockNodeLookup.mount()
+        this.mirrorNodeLookup.mount()
+        this.rpcRelayLookup.mount()
         this.updateStakingPeriod()
         this.intervalHandle = window.setInterval(this.updateStakingPeriod, 10000)
         this.watchHandle = watch(this.nodes, this.updateStakingPeriod)
     }
 
     public unmount(): void {
-        this.networkLookup.unmount()
+        this.nodeLookup.unmount()
+        this.blockNodeLookup.unmount()
+        this.mirrorNodeLookup.unmount()
+        this.rpcRelayLookup.unmount()
         this.stakingPeriod.value = null
         window.clearInterval(this.intervalHandle)
         this.intervalHandle = -1
@@ -34,7 +50,7 @@ export class NetworkAnalyzer {
         }
     }
 
-    public readonly nodes = computed(() => this.networkLookup.entity.value ?? [])
+    public readonly nodes = computed(() => this.nodeLookup.entity.value ?? [])
 
     public readonly node0 = computed(() => this.nodes.value.length >= 1 ? this.nodes.value[0] : null)
 
@@ -100,6 +116,10 @@ export class NetworkAnalyzer {
         = computed(() => this.stakingPeriod.value?.elapsedMin ?? null)
     public readonly remainingMin
         = computed(() => this.stakingPeriod.value?.remainingMin ?? null)
+
+    public readonly blockNodes = computed(() => this.blockNodeLookup.entity.value ?? [])
+    public readonly mirrorNodes = computed(() => this.mirrorNodeLookup.entity.value ?? [])
+    public readonly rpcRelays = computed(() => this.rpcRelayLookup.entity.value ?? [])
 
     //
     // Private

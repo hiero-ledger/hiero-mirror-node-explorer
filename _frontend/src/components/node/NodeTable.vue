@@ -50,14 +50,6 @@
         </Tooltip>
       </o-table-column>
 
-      <o-table-column v-if="false" v-slot="props" field="percentage" label="%" position="right">
-        <Tooltip :text="tooltipPercentage">
-          <div class="regular-node-column">
-            <StringValue :string-value="makeWeightPercentage(props.row)"/>
-          </div>
-        </Tooltip>
-      </o-table-column>
-
       <o-table-column
           v-if="enableStaking"
           v-slot="props" field="stake-range" label="STAKE RANGE" position="right"
@@ -117,7 +109,7 @@
 
 <script setup lang="ts">
 
-import {onBeforeUnmount, onMounted, PropType} from 'vue';
+import {computed, onBeforeUnmount, onMounted, PropType} from 'vue';
 import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
 import {NetworkNode} from "@/schemas/MirrorNodeSchemas";
 import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
@@ -140,7 +132,11 @@ const props = defineProps({
     type: Object as PropType<Array<NetworkNode>>,
     required: true
   },
-  stakeTotal: Number
+  stakeTotal: Number,
+  displayStakingInfo: {
+    type: Boolean,
+    default: true
+  }
 })
 
 const tooltipStake = "Total amount of HBAR staked to this specific validator for consensus."
@@ -151,7 +147,9 @@ const tooltipPercentage = (node: NetworkNode) => {
 
 const tooltipRewardRate = "Approximate annual reward rate based on the reward earned during the last 24h period."
 
-const enableStaking = routeManager.enableStaking
+const enableStaking = computed(() =>
+    props.displayStakingInfo && routeManager.enableStaking.value
+)
 
 const networkAnalyzer = new NetworkAnalyzer()
 onMounted(() => networkAnalyzer.mount())

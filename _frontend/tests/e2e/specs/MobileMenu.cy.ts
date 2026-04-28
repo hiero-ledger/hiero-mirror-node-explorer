@@ -28,7 +28,7 @@ describe('Mobile Menu', () => {
             cy.contains('Topics')
             cy.contains('Contracts')
             cy.contains('Accounts')
-            cy.contains('Nodes')
+            cy.contains('Network')
             cy.contains('Staking')
             cy.contains('Blocks')
         })
@@ -62,7 +62,7 @@ describe('Mobile Menu', () => {
         cy.get('[data-cy="mobile-menu-icon"]').click()
         cy.url().should('include', '/' + defaultNetwork + '/home')
 
-        for (const p of ['Transactions', 'Tokens', 'Topics', 'Contracts', 'Accounts', 'Nodes', 'Staking', 'Blocks', 'Home']) {
+        for (const p of ['Transactions', 'Tokens', 'Topics', 'Contracts', 'Accounts', 'Network', 'Staking', 'Blocks', 'Home']) {
             cy.contains(p).click()
             cy.url().should('include', '/' + defaultNetwork + '/' + p.toLowerCase())
 

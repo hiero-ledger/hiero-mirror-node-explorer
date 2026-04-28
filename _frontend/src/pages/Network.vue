@@ -6,7 +6,7 @@
 
 <template>
 
-  <PageFrameV2 page-title="Nodes">
+  <PageFrameV2 page-title="Network">
 
     <template #left-toolbar>
       <Tabs
@@ -39,16 +39,25 @@ defineProps({
   network: String
 })
 
-const excludedTabIds = computed(() =>
-    (routeManager.enableStaking.value || routeManager.currentNetwork.value === 'mainnet')
-        ? []
-        : ["Nodes_Network"]
-)
+const activateRegisteredNodes = import.meta.env.VITE_APP_ACTIVATE_HIP_1137 === 'true'
+
+const excludedTabIds = computed(() => {
+  const excluded: string[] = []
+
+  if (!routeManager.enableStaking.value && routeManager.currentNetwork.value !== 'mainnet') {
+    excluded.push("Network_Overview")
+  }
+
+  if (!activateRegisteredNodes) {
+    excluded.push("Network_BlockNodes")
+    excluded.push("Network_MirrorNodes")
+    excluded.push("Network_RpcRelays")
+  }
+  return excluded
+})
 
 const tabIds = computed(() =>
-    {
-      return routeManager.nodesOperator.filterTabIds(excludedTabIds.value)
-    }
+    routeManager.nodesOperator.filterTabIds(excludedTabIds.value)
 )
 
 const tabLabels = computed(() =>

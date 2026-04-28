@@ -8,7 +8,7 @@
 
   <PageFrameV2 :page-title="pageTitle">
     <template #page-title>
-      Node
+      Consensus Node
       <span style="white-space: nowrap; font-size: smaller">
         {{ nodeIdNb }}
       </span>
@@ -171,6 +171,8 @@
       </template>
     </DashboardCardV2>
 
+    <AssociatedRegisteredNodesSection v-if="activateRegisteredNodes" :nodes="associatedNodes"/>
+
   </PageFrameV2>
 
 </template>
@@ -204,6 +206,7 @@ import MirrorLink from "@/components/MirrorLink.vue";
 import HexaValue from "@/components/values/HexaValue.vue";
 import {loadingKey} from "@/AppKeys.ts";
 import {routeManager} from "@/utils/RouteManager.ts";
+import AssociatedRegisteredNodesSection from "@/components/node/AssociatedRegisteredNodesSection.vue";
 
 const props = defineProps({
   nodeId: {
@@ -212,6 +215,8 @@ const props = defineProps({
   },
   network: String
 })
+
+const activateRegisteredNodes = import.meta.env.VITE_APP_ACTIVATE_HIP_1137 === 'true'
 
 const cryptoName = CoreConfig.inject().cryptoName
 const loading = inject(loadingKey, ref(false))
@@ -261,6 +266,7 @@ const makeFloorHbarAmount = (tinyBarAmount: number) => {
 
 const enableStaking = routeManager.enableStaking
 const node = nodeAnalyzer.node
+const associatedNodes = nodeAnalyzer.associatedNodes
 const declineReward = nodeAnalyzer.declineReward
 const totalStakeForConsensus = networkAnalyzer.totalStakeForConsensus
 const annualizedRate = nodeAnalyzer.annualizedRate

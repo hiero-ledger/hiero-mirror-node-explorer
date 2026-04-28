@@ -115,6 +115,9 @@ describe("TransactionDetails.vue", () => {
             "api/v1/contracts/" + SAMPLE_TRANSACTION.transfers[2].account,
             "api/v1/contracts/" + SAMPLE_TRANSACTION.transfers[0].account,
             "api/v1/contracts/" + SAMPLE_TRANSACTION.transfers[1].account,
+            "api/v1/network/registered-nodes",
+            "api/v1/network/registered-nodes",
+            "api/v1/network/registered-nodes",
             "api/v1/tokens/" + SAMPLE_TRANSACTION.token_transfers[0].token_id,
             "api/v1/contracts/" + SAMPLE_TRANSACTION.token_transfers[1].account,
         ])
@@ -411,6 +414,9 @@ describe("TransactionDetails.vue", () => {
             "api/v1/contracts/" + SAMPLE_TRANSACTION.transfers[2].account,
             "api/v1/contracts/" + SAMPLE_TRANSACTION.transfers[0].account,
             "api/v1/contracts/" + SAMPLE_TRANSACTION.transfers[1].account,
+            "api/v1/network/registered-nodes",
+            "api/v1/network/registered-nodes",
+            "api/v1/network/registered-nodes",
             "api/v1/tokens/" + SAMPLE_TRANSACTION.token_transfers[0].token_id,
             "api/v1/contracts/" + SAMPLE_TRANSACTION.token_transfers[1].account,
         ])
@@ -741,6 +747,9 @@ describe("TransactionDetails.vue", () => {
             "api/v1/contracts/0.0.5",
             "api/v1/contracts/" + OUTER.transfers[1].account,
             "api/v1/contracts/" + OUTER.transfers[0].account,
+            "api/v1/network/registered-nodes",
+            "api/v1/network/registered-nodes",
+            "api/v1/network/registered-nodes",
             "api/v1/tokens/" + INNER1.entity_id,
         ])
 
@@ -822,6 +831,9 @@ describe("TransactionDetails.vue", () => {
             "api/v1/blocks",
             "api/v1/schedules/0.0.1382775",
             "api/v1/contracts/" + SCHEDULING.transfers[1].account,
+            "api/v1/network/registered-nodes",
+            "api/v1/network/registered-nodes",
+            "api/v1/network/registered-nodes",
             "api/v1/transactions",
         ])
 
@@ -897,6 +909,9 @@ describe("TransactionDetails.vue", () => {
             "api/v1/schedules/0.0.1382775",
             "api/v1/contracts/" + SCHEDULED.transfers[1].account,
             "api/v1/contracts/" + SCHEDULING.transfers[1].account,
+            "api/v1/network/registered-nodes",
+            "api/v1/network/registered-nodes",
+            "api/v1/network/registered-nodes",
             "api/v1/contracts/" + SCHEDULED.token_transfers[0].account,
             "api/v1/transactions",
         ])
@@ -966,6 +981,9 @@ describe("TransactionDetails.vue", () => {
             "api/v1/contracts/" + SAMPLE_PARENT_CHILD_TRANSACTIONS.transactions![0].transfers[1].account,
             "api/v1/blocks",
             "api/v1/tokens/" + CHILD.entity_id,
+            "api/v1/network/registered-nodes",
+            "api/v1/network/registered-nodes",
+            "api/v1/network/registered-nodes",
         ])
 
         expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(PARENT.transaction_id)+"Copy")
@@ -1034,6 +1052,9 @@ describe("TransactionDetails.vue", () => {
             "api/v1/contracts/" + PARENT.node,
             "api/v1/contracts/" + PARENT.transfers[1].account,
             "api/v1/contracts/" + PARENT.transfers[0].account,
+            "api/v1/network/registered-nodes",
+            "api/v1/network/registered-nodes",
+            "api/v1/network/registered-nodes",
             "api/v1/tokens/" + CHILD1.entity_id,
             "api/v1/contracts/results/" + SAMPLE_PARENT_CHILD_TRANSACTIONS.transactions![0].transaction_id,
             "api/v1/accounts/",
@@ -1239,6 +1260,9 @@ describe("TransactionDetails.vue", () => {
             "api/v1/contracts/" + SAMPLE_TOKEN_ASSOCIATE_TRANSACTION.transfers[2].account,
             "api/v1/blocks",
             "api/v1/contracts/" + SAMPLE_TOKEN_ASSOCIATE_TRANSACTION.transfers[1].account,
+            "api/v1/network/registered-nodes",
+            "api/v1/network/registered-nodes",
+            "api/v1/network/registered-nodes",
             "api/v1/accounts/" + SAMPLE_TOKEN_ASSOCIATE_TRANSACTION.transfers[2].account + "/tokens?limit=100",
             "api/v1/tokens/" + SAMPLE_ASSOCIATED_TOKEN.token_id,
             "api/v1/tokens/" + SAMPLE_ASSOCIATED_TOKEN_2.token_id,
@@ -1373,6 +1397,9 @@ describe("TransactionDetails.vue", () => {
             "api/v1/contracts/" + SAMPLE_ETHEREUM_TRANSACTIONS_ON_ACCOUNT.transactions[0].transfers[2].account,
             "api/v1/contracts/" + SAMPLE_ETHEREUM_TRANSACTIONS_ON_ACCOUNT.transactions[0].transfers[4].account,
             "api/v1/contracts/" + SAMPLE_ETHEREUM_TRANSACTIONS_ON_ACCOUNT.transactions[0].transfers[1].account,
+            "api/v1/network/registered-nodes",
+            "api/v1/network/registered-nodes",
+            "api/v1/network/registered-nodes",
             "api/v1/contracts/results/" + SAMPLE_ETHEREUM_TRANSACTIONS_ON_ACCOUNT.transactions[0].transaction_id,
             "api/v1/accounts/",
             "api/v1/accounts/" + SAMPLE_ETHEREUM_TRANSACTIONS_ON_ACCOUNT.transactions[0].entity_id,
@@ -1438,6 +1465,9 @@ describe("TransactionDetails.vue", () => {
             "api/v1/contracts/results/" + SAMPLE_ETHEREUM_TRANSACTIONS_ON_CONTRACT.transactions[0].transaction_id,
             "api/v1/contracts/" + SAMPLE_ETHEREUM_TRANSACTIONS_ON_CONTRACT.transactions[0].transfers[3].account,
             "api/v1/contracts/" + SAMPLE_ETHEREUM_TRANSACTIONS_ON_CONTRACT.transactions[0].transfers[1].account,
+            "api/v1/network/registered-nodes",
+            "api/v1/network/registered-nodes",
+            "api/v1/network/registered-nodes",
             "api/v1/accounts/",
             "api/v1/blocks",
         ])
@@ -1571,6 +1601,9 @@ describe("TransactionDetails.vue", () => {
             "api/v1/contracts/" + SAMPLE_ETHEREUM_TRANSACTIONS_ASSOCIATING_TOKEN.transactions[0].transfers[2].account,
             "api/v1/contracts/" + SAMPLE_ETHEREUM_TRANSACTIONS_ASSOCIATING_TOKEN.transactions[0].transfers[3].account,
             "api/v1/contracts/" + SAMPLE_ETHEREUM_TRANSACTIONS_ASSOCIATING_TOKEN.transactions[0].transfers[1].account,
+            "api/v1/network/registered-nodes",
+            "api/v1/network/registered-nodes",
+            "api/v1/network/registered-nodes",
             "api/v1/tokens/" + SAMPLE_ETHEREUM_TRANSACTIONS_ASSOCIATING_TOKEN.transactions[0].transfers[3].account,
             "api/v1/contracts/results/" + SAMPLE_ETHEREUM_TRANSACTIONS_ASSOCIATING_TOKEN.transactions[0].transaction_id,
             "api/v1/accounts/",
@@ -1710,6 +1743,9 @@ describe("TransactionDetails.vue", () => {
             "api/v1/contracts/" + SAMPLE_TRANSACTION.token_transfers[0].account,
             "api/v1/contracts/" + SAMPLE_TRANSACTION.transfers[0].account,
             "api/v1/contracts/" + SAMPLE_TRANSACTION.transfers[1].account,
+            "api/v1/network/registered-nodes",
+            "api/v1/network/registered-nodes",
+            "api/v1/network/registered-nodes",
             "api/v1/tokens/" + SAMPLE_TRANSACTION.token_transfers[0].token_id,
             "api/v1/contracts/" + SAMPLE_TRANSACTION.token_transfers[1].account,
         ])

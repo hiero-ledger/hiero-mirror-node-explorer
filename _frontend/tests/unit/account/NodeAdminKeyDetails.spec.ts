@@ -49,6 +49,9 @@ describe("NodeAdminKeyDetails.vue", () => {
 
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/network/nodes",
+            "api/v1/network/registered-nodes",
+            "api/v1/network/registered-nodes",
+            "api/v1/network/registered-nodes",
         ])
 
         expect(wrapper.text()).toMatch("Admin Key for Node " + node + ' - Hosted by Hedera')
@@ -103,6 +106,9 @@ describe("NodeAdminKeyDetails.vue", () => {
 
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/network/nodes",
+            "api/v1/network/registered-nodes",
+            "api/v1/network/registered-nodes",
+            "api/v1/network/registered-nodes",
         ])
 
         expect(wrapper.text()).toMatch("Admin Key for Node " + node + ' - Hosted by Hedera')

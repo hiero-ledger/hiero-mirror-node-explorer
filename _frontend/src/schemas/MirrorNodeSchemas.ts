@@ -641,8 +641,8 @@ export interface ContractResponse extends Contract {
 }
 
 export interface TimestampRange {
-    from: string | undefined    // The inclusive from timestamp in seconds
-    to: string | null | undefined   // The exclusive to timestamp in seconds
+    from: string | undefined    // The inclusive from timestamp in seconds (pattern: ^\d{1,10}(\.\d{1,9})?$)
+    to: string | null | undefined   // The exclusive to timestamp in seconds (pattern: ^\d{1,10}(\.\d{1,9})?$)
 }
 
 export interface ContractResultsResponse {
@@ -793,11 +793,12 @@ export interface ContractState {
 
 export interface NetworkNodesResponse {
     nodes: NetworkNode[] | undefined
-    links: Links | undefined
+    links: Links
 }
 
 export interface NetworkNode {
     admin_key: Key | null
+    associated_registered_nodes: number[]
     decline_reward: boolean | null  //Whether the node wants to receive staking rewards or not
     description: string | null
     file_id: string | null          // Network entity ID in the format of shard.realm.num
@@ -822,6 +823,78 @@ export interface ServiceEndPoint {
     domain_name: string
     ip_address_v4: string
     port: number
+}
+
+export interface RegisteredNodesResponse {
+    registered_nodes: RegisteredNode[] | undefined
+    links: Links
+}
+
+export interface RegisteredNode {
+    admin_key: Key | null
+    created_timestamp: string | null
+    description: string | null
+    registered_node_id: number
+    service_endpoints: RegisteredServiceEndPoint[]
+    timestamp: TimestampRange
+}
+
+export interface RegisteredServiceEndPoint {
+    block_node: RegisteredBlockNodeEndpoint | null
+    domain_name: string | null  // The DNS domain name of the service
+    general_service: RegisteredGeneralServiceEndpoint | null
+    ip_address: string | null   // The IP address of the service
+    mirror_node: unknown        // SHOULD BE: RegisteredMirrorNodeEndpoint | null
+    port: number
+    requires_tls: boolean       // Whether the registered service endpoint requires TLS or not
+    rpc_relay: unknown          // SHOULD BE: RegisteredRpcRelayEndpoint | null
+    type: RegisteredNodeType    // Registered node type
+}
+
+export interface RegisteredBlockNodeEndpoint {
+    endpoint_apis: RegisteredBlockNodeApi[]
+}
+
+export enum RegisteredBlockNodeApi {
+    OTHER = "OTHER",
+    STATUS = "STATUS",
+    PUBLISH = "PUBLISH",
+    SUBSCRIBE_STREAM = "SUBSCRIBE_STREAM",
+    STATE_PROOF = "STATE_PROOF",
+    UNRECOGNIZED = "UNRECOGNIZED"
+}
+
+export interface RegisteredGeneralServiceEndpoint {
+    description: string
+}
+
+//
+// These are currently empty in MN OpenAPI definition
+//
+// export interface RegisteredMirrorNodeEndpoint {
+// }
+//
+// export interface RegisteredRpcRelayEndpoint {
+// }
+
+export enum RegisteredNodeType {
+    BLOCK_NODE = "BLOCK_NODE",
+    GENERAL_SERVICE = "GENERAL_SERVICE",
+    MIRROR_NODE = "MIRROR_NODE",
+    RPC_RELAY = "RPC_RELAY"
+}
+
+export function printableNodeType(type: RegisteredNodeType):string {
+    switch(type) {
+        case RegisteredNodeType.BLOCK_NODE:
+            return "Block Node"
+        case RegisteredNodeType.MIRROR_NODE:
+            return "Mirror Node"
+        case RegisteredNodeType.RPC_RELAY:
+            return "JSON-RPC Relay"
+        case RegisteredNodeType.GENERAL_SERVICE:
+            return "General Service"
+    }
 }
 
 export function makeShortNodeDescription(description: string): string {
@@ -925,11 +998,6 @@ export interface Block {
     previous_hash: string | undefined
     size: number | null | undefined // integer
     timestamp: TimestampRange | undefined
-}
-
-export interface TimestampRange {
-    from: string | undefined // pattern: ^\d{1,10}(\.\d{1,9})?$
-    to: string | null | undefined // pattern: ^\d{1,10}(\.\d{1,9})?$
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
