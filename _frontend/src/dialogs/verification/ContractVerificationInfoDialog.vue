@@ -50,6 +50,7 @@
 import ModalDialog from "@/dialogs/core/ModalDialog.vue";
 import ModalDialogButton from "@/dialogs/core/ModalDialogButton.vue";
 import {PropType} from "vue";
+import {SourcifyUtils} from "@/utils/sourcify/SourcifyUtils.ts";
 
 defineProps({
   contractAddress: {
@@ -64,10 +65,9 @@ const showDialog = defineModel("showDialog", {
 })
 
 const docUrl = "https://docs.hedera.com/hedera/core-concepts/smart-contracts/verifying-smart-contracts-beta"
-const verifyUrl = "https://verify.sourcify.dev"
 
 const handleGoToSourcify = () => {
-  window.open(verifyUrl, "_blank")
+  window.open(SourcifyUtils.VERIFY_URL, "_blank")
 }
 
 </script>
