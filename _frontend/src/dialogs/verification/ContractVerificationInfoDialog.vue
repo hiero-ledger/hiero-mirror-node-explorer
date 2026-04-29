@@ -50,7 +50,7 @@
 import ModalDialog from "@/dialogs/core/ModalDialog.vue";
 import ModalDialogButton from "@/dialogs/core/ModalDialogButton.vue";
 import {PropType} from "vue";
-import {SourcifyUtils} from "@/utils/sourcify/SourcifyUtils.ts";
+import {routeManager} from "@/utils/RouteManager.ts";
 
 defineProps({
   contractAddress: {
@@ -67,7 +67,12 @@ const showDialog = defineModel("showDialog", {
 const docUrl = "https://docs.hedera.com/hedera/core-concepts/smart-contracts/verifying-smart-contracts-beta"
 
 const handleGoToSourcify = () => {
-  window.open(SourcifyUtils.VERIFY_URL, "_blank")
+  const verifierURL = routeManager.currentNetworkEntry.value.sourcifySetup?.verifierURL
+  if (verifierURL) {
+    window.open(verifierURL, "_blank")
+  } else {
+    console.error("No verifier URL defined for selected network")
+  }
 }
 
 </script>

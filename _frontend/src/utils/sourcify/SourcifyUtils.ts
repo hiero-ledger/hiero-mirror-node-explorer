@@ -6,8 +6,6 @@ import {routeManager} from "@/utils/RouteManager.ts";
 
 export class SourcifyUtils {
 
-    public static readonly VERIFY_URL = "https://verify.sourcify.dev"
-
     //
     // Session verification
     //

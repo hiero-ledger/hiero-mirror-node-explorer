@@ -16,19 +16,11 @@ export class SourcifySetup {
     static parse(obj: Record<string, unknown>): SourcifySetup {
 
         const activate = fetchBoolean(obj, "activate") ?? true
-        const repoURL = fetchURL(obj, "repoURL")
-        const serverURL = fetchURL(obj, "serverURL")
+        const verifierURL = fetchURL(obj, "verifierURL") ?? "https://verify.sourcify.dev/"
+        const repoURL = fetchURL(obj, "repoURL") ?? "https://repo.sourcify.dev/"
+        const serverURL = fetchURL(obj, "serverURL") ?? "https://sourcify.dev/server/"
         const chainID = fetchNumber(obj, "chainID")
 
-        if (activate === null) {
-            throw this.missingPropertyError("activate")
-        }
-        if (repoURL === null) {
-            throw this.missingPropertyError("repoURL")
-        }
-        if (serverURL === null) {
-            throw this.missingPropertyError("serverURL")
-        }
         if (chainID === null) {
             throw this.missingPropertyError("chainID")
         }
@@ -37,6 +29,7 @@ export class SourcifySetup {
             activate,
             repoURL,
             serverURL,
+            verifierURL,
             chainID
         )
     }
@@ -63,6 +56,7 @@ export class SourcifySetup {
         public readonly activate: boolean,
         public readonly repoURL: string,
         public readonly serverURL: string,
+        public readonly verifierURL: string,
         public readonly chainID: number,
     ) {
     }
@@ -76,6 +70,7 @@ export class NetworkEntry {
 
     public static readonly NETWORK_NAME_MAX_LENGTH = 15
 
+    // eslint-disable-next-line complexity,max-lines-per-function
     static parse(obj: Record<string, unknown>): NetworkEntry {
 
         const name = fetchString(obj, "name")
