@@ -62,7 +62,7 @@ export class VerifiedContractTableController extends TableControllerV2<SourcifyS
 
         const sourcifySetup = routeManager.currentNetworkEntry.value.sourcifySetup
         if (sourcifySetup !== null && sourcifySetup.activate) {
-            let requestURL = sourcifySetup.makeBatchRequestURL() + "?limit=" + this.pageSize.value
+            let requestURL = sourcifySetup.makeBatchRequestURL() + "?limit=" + limit
             if (matchId !== null) {
                 requestURL += "&afterMatchId=" + matchId
             }
