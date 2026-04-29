@@ -32,11 +32,11 @@
       </div>
     </o-table-column>
 
-    <o-table-column v-slot="props" field="contract_name" label="CONTRACT NAME">
+    <o-table-column v-if="isVerificationAvailable" v-slot="props" field="contract_name" label="CONTRACT NAME">
       <ContractName :contract-id="props.row.entity_id"/>
     </o-table-column>
 
-    <o-table-column v-slot="props" field="created" label="CREATE">
+    <o-table-column v-slot="props" field="created" label="CREATED">
       <TimestampValue v-bind:timestamp="props.row.consensus_timestamp"/>
     </o-table-column>
 
@@ -64,7 +64,7 @@
 
 <script setup lang="ts">
 
-import {onBeforeUnmount, onMounted, PropType} from 'vue';
+import {computed, onBeforeUnmount, onMounted, PropType} from 'vue';
 import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
 import {Transaction} from "@/schemas/MirrorNodeSchemas";
 import TimestampValue from "@/components/values/TimestampValue.vue";
@@ -84,6 +84,12 @@ const props = defineProps({
 
 onMounted(() => props.controller.mount())
 onBeforeUnmount(() => props.controller.unmount())
+
+const isVerificationAvailable = computed(() => {
+  const sourcifySetup = routeManager.currentNetworkEntry.value.sourcifySetup
+  return sourcifySetup?.activate
+      && sourcifySetup?.serverURL.length
+})
 
 const handleClick = (t: Transaction, c: unknown, i: number, ci: number, event: Event) => {
   routeManager.routeToContract(t.entity_id!, event)

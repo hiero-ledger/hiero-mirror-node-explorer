@@ -17,7 +17,7 @@
         <PlayPauseButton v-else :controller="verifiedContractsController"/>
       </template>
       <template #right-control>
-        <div class="verify-switch">
+        <div v-if="isVerificationAvailable" class="verify-switch">
           <div class="switch-text">All</div>
           <SwitchView v-model="filterVerified"/>
           <div class="switch-text">Verified</div>
@@ -45,7 +45,7 @@
 
 <script setup lang="ts">
 
-import {inject, ref} from 'vue';
+import {computed, inject, ref} from 'vue';
 import ContractTable from "@/components/contract/ContractTable.vue";
 import PageFrameV2 from "@/components/page/PageFrameV2.vue";
 import {ContractTableController} from "@/components/contract/ContractTableController";
@@ -55,6 +55,7 @@ import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import PlayPauseButton from "@/components/PlayPauseButton.vue";
 import SwitchView from "@/elements/SwitchView.vue";
 import {VerifiedContractTableController} from "@/components/contract/verified/VerifiedContractTableController.ts";
+import {routeManager} from "@/utils/RouteManager.ts";
 
 defineProps({
   network: String
@@ -65,6 +66,12 @@ const router = useRouter()
 const isMediumScreen = inject('isMediumScreen', true)
 
 const filterVerified = ref(false)
+
+const isVerificationAvailable = computed(() => {
+  const sourcifySetup = routeManager.currentNetworkEntry.value.sourcifySetup
+  return sourcifySetup?.activate
+      && sourcifySetup?.serverURL.length
+})
 
 //
 // ContractTableController
