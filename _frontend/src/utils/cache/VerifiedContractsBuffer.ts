@@ -7,11 +7,10 @@ import {routeManager} from "@/utils/RouteManager.ts";
 
 export class VerifiedContractsBuffer {
 
-    private static DEFAULT_CAPACITY = 250
+    private static DEFAULT_CAPACITY = 500
     private static ITERATION_LIMIT = 25
     private maxIterations: number
     private candidates: Contract[] = []
-    private verifiedAddresses: string[] = []
     private readonly accountId: string | null
 
     public contracts: Contract[] = []
@@ -72,18 +71,15 @@ export class VerifiedContractsBuffer {
                 this.candidates = this.candidates.slice(0, this.capacity)
             }
 
-            const addressesToCheck: string[] = []
-            this.candidates.forEach((c) => addressesToCheck.push(c.evm_address))
-            const newlyVerifiedAddresses = await SourcifyCache.checkAllContracts(addressesToCheck)
-            this.verifiedAddresses = this.verifiedAddresses.concat(newlyVerifiedAddresses)
+            const contractIdsToCheck: string[] = []
+            this.candidates.forEach((c) => {
+                if (c.contract_id) contractIdsToCheck.push(c.contract_id)
+            })
+            const verifiedContractIds = await SourcifyCache.instance.checkAllContracts(contractIdsToCheck)
 
             for (const c of this.candidates) {
-                if (c.contract_id != null && this.verifiedAddresses.includes(c.evm_address)) {
+                if (c.contract_id != null && verifiedContractIds.includes(c.contract_id)) {
                     this.contracts.push(c)
-                    const record = await SourcifyCache.instance.lookup(c.contract_id)
-                    if (record === null) {
-                        SourcifyCache.instance.forget(c.contract_id)
-                    }
                 }
             }
         }

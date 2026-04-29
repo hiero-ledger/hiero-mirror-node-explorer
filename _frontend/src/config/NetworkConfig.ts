@@ -57,10 +57,6 @@ export class SourcifySetup {
         return this.repoURL + this.chainID + "/" + normalizedAddress
     }
 
-    makeCheckAllByAddressURL(): string {
-        return this.serverURL + "check-all-by-addresses"
-    }
-
     //
     // Private
     //
