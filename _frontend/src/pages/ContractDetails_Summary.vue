@@ -56,8 +56,16 @@
             {{ isFullMatch ? "Full Match" : "Partial Match" }}
             <InfoTooltip :label="tooltipText"/>
             <ButtonView
-                v-if="!isFullMatch"
-                id="verify-button"
+                v-if="isFullMatch"
+                id="go-to-sourcify-button"
+                :size="ButtonSize.small"
+                @action="handleGoToSourcify"
+            >
+              GO TO SOURCIFY
+            </ButtonView>
+            <ButtonView
+                v-else
+                id="re-verify-button"
                 :size="ButtonSize.small"
                 @action="showVerifyDialog = true"
             >
@@ -174,6 +182,16 @@ const accountChecksum = computed(() =>
 // Verify dialog
 //
 const showVerifyDialog = ref(false)
+
+const handleGoToSourcify = () => {
+  const repoUrl = routeManager.currentNetworkEntry.value.sourcifySetup?.repoURL
+  const chainId = routeManager.currentNetworkEntry.value.sourcifySetup?.chainID
+  if (repoUrl && chainId) {
+    const contractUrl = repoUrl + chainId.toString() + "/" + contractAddress.value
+    window.open(contractUrl, "_blank")
+
+  }
+}
 
 </script>
 
