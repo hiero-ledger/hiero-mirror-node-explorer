@@ -5,37 +5,37 @@
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <template>
-  <ModalDialog v-model:show-dialog="showDialog" :width="600">
+  <ModalDialog v-model:show-dialog="showDialog" :width="520">
 
-    <template #modalDialogTitle>Verify Contract {{ props.contractId }}</template>
+    <template #modalDialogTitle>Verify Contract</template>
 
     <template #modalDialogContent>
 
       <div class="dialog-content">
-        <p>Smart contract verification is now provided by the
-          <a :href="sourcifyUrl" class="h-is-extra-text" target="_blank">sourcify.dev</a>
-          service.</p>
+        <p class="dialog-primary-text" >Smart contract verification is now handled by sourcify.dev</p>
 
-        <p>You may use any of the following options to verify the contract:</p>
+        <p class="dialog-secondary-text">You can verify your contract using one of the following methods:</p>
 
-        <div class="dialog-options">
-          <p>&bull; Verify directly with sourcify.dev verification service</p>
-          <p>&bull; Use the forge command-line of the Foundry toolkit</p>
-          <p>&bull; Use the Hardhat environment with its Sourcify plugin</p>
+        <div class="dialog-options dialog-secondary-text">
+          <p>&bull; Verify directly via the sourcify.dev service</p>
+          <p>&bull; Use the Forge CLI (Foundry)</p>
+          <p>&bull; Use Hardhat with the Sourcify plugin</p>
         </div>
 
-        <p>More information on how to verify a contract is available
-          <a :href="docUrl" class="h-is-extra-text" target="_blank">here</a>.</p>
+        <p class="dialog-secondary-text">Learn more about smart contract verification
+          <a :href="docUrl" class="h-is-extra-text" target="_blank">here</a></p>
 
-        <div class="h-is-low-contrast" style="font-size: 0.9em;">Note: All contracts previously verified with Hashscan
-          are
-          verified with <a :href="sourcifyUrl" class="" target="_blank">sourcify.dev</a>.
-        </div>
+        <p class="dialog-secondary-text">Contracts previously verified on HashScan are verified on sourcify.dev</p>
       </div>
     </template>
 
     <template #modalDialogButtons>
-      <ModalDialogButton v-model:show-dialog="showDialog">CLOSE</ModalDialogButton>
+      <ModalDialogButton v-model:show-dialog="showDialog">CANCEL</ModalDialogButton>
+      <ModalDialogButton
+          v-model:show-dialog="showDialog"
+          :is-default="true"
+          @action="handleGoToSourcify">GO TO SOURCIFY
+      </ModalDialogButton>
     </template>
 
   </ModalDialog>
@@ -51,8 +51,8 @@ import ModalDialog from "@/dialogs/core/ModalDialog.vue";
 import ModalDialogButton from "@/dialogs/core/ModalDialogButton.vue";
 import {PropType} from "vue";
 
-const props = defineProps({
-  contractId: {
+defineProps({
+  contractAddress: {
     type: String as PropType<string | null>,
     default: null
   }
@@ -63,8 +63,22 @@ const showDialog = defineModel("showDialog", {
   required: true
 })
 
-const sourcifyUrl = "https://sourcify.dev"
 const docUrl = "https://docs.hedera.com/hedera/core-concepts/smart-contracts/verifying-smart-contracts-beta"
+const verifyUrl = "https://verify.sourcify.dev"
+
+// const verifyUrl = computed(() => {
+//   const baseUrl = "https://verify.sourcify.dev"
+//   const chainId = routeManager.currentNetworkEntry.value.sourcifySetup?.chainID ?? null
+//   if (chainId && props.contractAddress) {
+//     return `${baseUrl}?chain=${chainId}&address=${props.contractAddress}`
+//   } else {
+//     return baseUrl
+//   }
+// })
+
+const handleGoToSourcify = () => {
+  window.open(verifyUrl, "_blank")
+}
 
 </script>
 
@@ -79,6 +93,15 @@ const docUrl = "https://docs.hedera.com/hedera/core-concepts/smart-contracts/ver
   flex-direction: column;
   gap: 1rem;
   align-items: center;
+}
+
+.dialog-primary-text {
+  font-size: 1.2rem;
+}
+
+.dialog-secondary-text {
+  font-size: 0.9em;
+  color: var(--text-secondary);
 }
 
 div.dialog-options {

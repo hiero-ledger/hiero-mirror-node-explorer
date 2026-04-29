@@ -53,7 +53,7 @@
 
   <ContractVerificationInfoDialog
       v-model:show-dialog="showVerifyDialog"
-      :contract-id="parsedContractId"
+      :contract-address="contractAddress"
   />
 
 </template>
@@ -101,6 +101,7 @@ const contractLocParser = new ContractLocParser(computed(() => props.contractId 
 onMounted(() => contractLocParser.mount())
 onBeforeUnmount(() => contractLocParser.unmount())
 const parsedContractId = contractLocParser.contractId
+const contractAddress = contractLocParser.ethereumAddress
 const notification = contractLocParser.errorNotification
 const pageTitle = computed(() =>
     parsedContractId.value !== null ? "Contract " + parsedContractId.value : null

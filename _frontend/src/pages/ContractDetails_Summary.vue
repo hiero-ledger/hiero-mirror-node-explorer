@@ -84,7 +84,7 @@
 
   <ContractVerificationInfoDialog
       v-model:show-dialog="showVerifyDialog"
-      :contract-id="parsedContractId"
+      :contract-address="contractAddress"
   />
 
 </template>
