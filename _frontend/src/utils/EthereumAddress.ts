@@ -17,12 +17,6 @@ export class EthereumAddress {
         return bytes !== null && bytes.length == 20 ? new EthereumAddress(bytes) : null
     }
 
-    public static normalizeEIP55(byteString: string): string {
-        // https://eips.ethereum.org/EIPS/eip-55
-        // https://docs.ethers.org/v6/api/address/#getAddress
-        return ethers.getAddress(byteString)
-    }
-
     public toString(): string {
         return "0x" + byteToHex(this.bytes)
     }

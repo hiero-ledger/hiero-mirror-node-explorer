@@ -5,7 +5,6 @@ import {fetchBoolean, fetchNumber, fetchObject, fetchString, fetchURL} from "@/c
 import {inject} from "vue";
 import {networkConfigKey} from "@/AppKeys";
 import {hip15checksum} from "@/schemas/MirrorNodeUtils.ts";
-import {EthereumAddress} from "@/utils/EthereumAddress";
 import {ColorMap, NetworkColorMaps} from "@/config/NetworkColorMaps.ts";
 
 export class SourcifySetup {
@@ -53,8 +52,7 @@ export class SourcifySetup {
     }
 
     makeContractSourceURL(contractAddress: string, full: boolean): string {
-        const normalizedAddress = EthereumAddress.normalizeEIP55(contractAddress)
-        return this.repoURL + this.chainID + "/" + normalizedAddress
+        return this.repoURL + this.chainID + "/" + contractAddress
     }
 
     //
