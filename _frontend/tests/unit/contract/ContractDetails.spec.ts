@@ -102,7 +102,8 @@ describe("ContractDetails.vue", () => {
         expect(wrapper.get("#evmAddress").text()).toBe("EVM Address 0x00000000000000000000000000000000000b70cfCopy")
 
         // None of the elements related to contract verification should be present in this context
-        expect(wrapper.find('#verify-button').exists()).toBe(false)
+        expect(wrapper.find('#re-verify-button').exists()).toBe(false)
+        expect(wrapper.find('#go-to-sourcify-button').exists()).toBe(false)
         expect(wrapper.find('#showSource').exists()).toBe(false)
         expect(wrapper.find('#verificationStatus').exists()).toBe(false)
         expect(wrapper.find('#contractName').exists()).toBe(false)
@@ -259,7 +260,8 @@ describe("ContractDetails.vue", () => {
         expect(wrapper.get("#evmAddress").text()).toBe("EVM Address 0x00000000000000000000000000000000000b70cfCopy")
 
         // None of the elements related to contract verification should be present in this context
-        expect(wrapper.find('#verify-button').exists()).toBe(false)
+        expect(wrapper.find('#re-verify-button').exists()).toBe(false)
+        expect(wrapper.find('#go-to-sourcify-button').exists()).toBe(false)
         expect(wrapper.find('#showSource').exists()).toBe(false)
         expect(wrapper.find('#verificationStatus').exists()).toBe(false)
         expect(wrapper.find('#contractName').exists()).toBe(false)
