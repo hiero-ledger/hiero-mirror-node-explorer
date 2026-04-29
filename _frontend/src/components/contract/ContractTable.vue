@@ -29,7 +29,7 @@
       <ContractIOL class="contract_id" :contract-id="props.row.contract_id"/>
     </o-table-column>
 
-    <o-table-column v-if="isVerificationAvailable" v-slot="props" field="contract_name" label="CONTRACT NAME">
+    <o-table-column v-if="enableVerification" v-slot="props" field="contract_name" label="CONTRACT NAME">
       <ContractName :contract-id="props.row.contract_id"/>
     </o-table-column>
 
@@ -60,7 +60,7 @@
 
 <script setup lang="ts">
 
-import {computed, onBeforeUnmount, onMounted, PropType} from 'vue';
+import {onBeforeUnmount, onMounted, PropType} from 'vue';
 import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
 import {Contract} from "@/schemas/MirrorNodeSchemas";
 import BlobValue from "@/components/values/BlobValue.vue";
@@ -84,16 +84,10 @@ const props = defineProps({
   }
 })
 
-const isVerificationAvailable = computed(() => {
-  const sourcifySetup = routeManager.currentNetworkEntry.value.sourcifySetup
-  return sourcifySetup?.activate
-      && sourcifySetup?.serverURL.length
-})
-
 onMounted(() => props.controller.mount())
 onBeforeUnmount(() => props.controller.unmount())
 
-const handleClick = (contract: Contract, c: unknown, i: number, ci: number, event: Event) => {
+const handleClick = (contract: Contract, _c: unknown, _i: number, _ci: number, event: Event) => {
   if (contract.contract_id) {
     routeManager.routeToContract(contract.contract_id, event)
   }
@@ -105,6 +99,7 @@ const total = props.controller.totalRowCount
 const currentPage = props.controller.currentPage
 const onPageChange = props.controller.onPageChange
 const perPage = props.controller.pageSize
+const enableVerification = routeManager.enableVerification
 
 </script>
 

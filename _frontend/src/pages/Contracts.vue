@@ -17,7 +17,7 @@
         <PlayPauseButton v-else :controller="verifiedContractsController"/>
       </template>
       <template #right-control>
-        <div v-if="isVerificationAvailable" class="verify-switch">
+        <div v-if="enableVerification" class="verify-switch">
           <div class="switch-text">All</div>
           <SwitchView v-model="filterVerified"/>
           <div class="switch-text">Verified</div>
@@ -45,7 +45,7 @@
 
 <script setup lang="ts">
 
-import {computed, inject, ref} from 'vue';
+import {inject, ref} from 'vue';
 import ContractTable from "@/components/contract/ContractTable.vue";
 import PageFrameV2 from "@/components/page/PageFrameV2.vue";
 import {ContractTableController} from "@/components/contract/ContractTableController";
@@ -65,13 +65,9 @@ const router = useRouter()
 
 const isMediumScreen = inject('isMediumScreen', true)
 
-const filterVerified = ref(false)
+const enableVerification = routeManager.enableVerification
 
-const isVerificationAvailable = computed(() => {
-  const sourcifySetup = routeManager.currentNetworkEntry.value.sourcifySetup
-  return sourcifySetup?.activate
-      && sourcifySetup?.serverURL.length
-})
+const filterVerified = ref(false)
 
 //
 // ContractTableController

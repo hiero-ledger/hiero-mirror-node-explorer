@@ -36,7 +36,7 @@
           <Download :size="24" @click="transactionDownloadDialogVisible = true"/>
           <TransactionFilterSelect v-model:selected-filter="transactionType"/>
         </template>
-        <template v-else-if="selectedTab === 'contracts' && isVerificationAvailable">
+        <template v-else-if="selectedTab === 'contracts' && enableVerification">
           <span>All</span>
           <SwitchView v-model="filterVerified"/>
           <span>Verified</span>
@@ -160,12 +160,7 @@ const isMediumScreen = inject('isMediumScreen', true)
 const networkConfig = NetworkConfig.inject()
 
 const enableStaking = routeManager.enableStaking
-
-const isVerificationAvailable = computed(() => {
-  const sourcifySetup = routeManager.currentNetworkEntry.value.sourcifySetup
-  return sourcifySetup?.activate
-      && sourcifySetup?.serverURL.length
-})
+const enableVerification = routeManager.enableVerification
 
 const timeSelection = ref("LATEST")
 watch(timeSelection, (newValue, oldValue) => {

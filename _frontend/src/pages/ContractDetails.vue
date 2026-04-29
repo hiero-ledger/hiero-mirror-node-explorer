@@ -34,7 +34,7 @@
 
     <template #right-toolbar>
       <ButtonView
-          v-if="isVerificationAvailable && !isVerified"
+          v-if="enableVerification && !isVerified"
           :size="ButtonSize.small"
           :for-toolbar="true"
           @action="showVerifyDialog = true"
@@ -114,15 +114,7 @@ const contractAnalyzer = new ContractAnalyzer(parsedContractId)
 onMounted(() => contractAnalyzer.mount())
 onBeforeUnmount(() => contractAnalyzer.unmount())
 const isVerified = contractAnalyzer.isVerified
-
-
-// True when the verification is ENABLED by configuration and the current verification STATUS is known, which
-// enables to decide which option to present to the user
-const isVerificationAvailable = computed(() => {
-  const sourcifySetup = routeManager.currentNetworkEntry.value.sourcifySetup
-  return sourcifySetup?.activate
-      && sourcifySetup?.serverURL.length
-})
+const enableVerification = routeManager.enableVerification
 
 const showVerifyDialog = ref(false)
 

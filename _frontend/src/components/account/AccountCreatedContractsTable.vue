@@ -32,7 +32,7 @@
       </div>
     </o-table-column>
 
-    <o-table-column v-if="isVerificationAvailable" v-slot="props" field="contract_name" label="CONTRACT NAME">
+    <o-table-column v-if="enableVerification" v-slot="props" field="contract_name" label="CONTRACT NAME">
       <ContractName :contract-id="props.row.entity_id"/>
     </o-table-column>
 
@@ -64,7 +64,7 @@
 
 <script setup lang="ts">
 
-import {computed, onBeforeUnmount, onMounted, PropType} from 'vue';
+import {onBeforeUnmount, onMounted, PropType} from 'vue';
 import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
 import {Transaction} from "@/schemas/MirrorNodeSchemas";
 import TimestampValue from "@/components/values/TimestampValue.vue";
@@ -85,13 +85,7 @@ const props = defineProps({
 onMounted(() => props.controller.mount())
 onBeforeUnmount(() => props.controller.unmount())
 
-const isVerificationAvailable = computed(() => {
-  const sourcifySetup = routeManager.currentNetworkEntry.value.sourcifySetup
-  return sourcifySetup?.activate
-      && sourcifySetup?.serverURL.length
-})
-
-const handleClick = (t: Transaction, c: unknown, i: number, ci: number, event: Event) => {
+const handleClick = (t: Transaction, _c: unknown, _i: number, _ci: number, event: Event) => {
   routeManager.routeToContract(t.entity_id!, event)
 }
 
@@ -103,6 +97,7 @@ const onPageChange = props.controller.onPageChange
 const perPage = props.controller.pageSize
 const paginated = props.controller.paginated
 const showPageSizeSelector = props.controller.showPageSizeSelector
+const enableVerification = routeManager.enableVerification
 
 </script>
 
