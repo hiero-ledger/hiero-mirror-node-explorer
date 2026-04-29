@@ -62,6 +62,8 @@ export class RowBufferV2<R, K> {
         return Math.max(0, (pageCount - 1) * pageSize)
     })
 
+    public readonly loading = computed(() => this.currentTask.value !== null)
+
     public async abortCurrentTask() {
         if (this.currentTask.value !== null) {
             this.abortController.abort()
@@ -80,12 +82,15 @@ export class RowBufferV2<R, K> {
     public async refresh(): Promise<void> {
         await this.abortCurrentTask()
         this.currentTask.value = this.handleRefresh()
-        return this.currentTask.value
+        try {
+            await this.currentTask.value
+        } finally {
+            this.currentTask.value = null
+        }
     }
 
     private async handleRefresh(): Promise<void> {
         const pageSize = this.tableController.pageSize.value
-        this.tableController.loading.value = true
         try {
             if (this.headKey.value === null) {
                 // Buffer is empty => we call tailLoad(null)
@@ -106,7 +111,6 @@ export class RowBufferV2<R, K> {
             // this.startIndex unchanged
         }
         await this.tableController.bufferDidChange()
-        this.tableController.loading.value = false
     }
 
     //
@@ -116,7 +120,11 @@ export class RowBufferV2<R, K> {
     public async moveToPage(page: number): Promise<void> {
         await this.abortCurrentTask()
         this.currentTask.value = this.handleMoveToPage(page)
-        return this.currentTask.value
+        try {
+            await this.currentTask.value
+        } finally {
+            this.currentTask.value = null
+        }
     }
 
     private async handleMoveToPage(page: number): Promise<void> {
@@ -125,7 +133,6 @@ export class RowBufferV2<R, K> {
         const nextEndIndex = nextStartIndex + pageSize
         const bufferLength = this.rows.value.length
         const tailKey = this.tailKey.value
-        this.tableController.loading.value = true
 
         try {
             if (tailKey === null) {
@@ -159,7 +166,6 @@ export class RowBufferV2<R, K> {
         }
 
         await this.tableController.bufferDidChange()
-        this.tableController.loading.value = false
     }
 
     //
