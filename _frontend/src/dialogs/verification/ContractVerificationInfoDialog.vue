@@ -66,16 +66,6 @@ const showDialog = defineModel("showDialog", {
 const docUrl = "https://docs.hedera.com/hedera/core-concepts/smart-contracts/verifying-smart-contracts-beta"
 const verifyUrl = "https://verify.sourcify.dev"
 
-// const verifyUrl = computed(() => {
-//   const baseUrl = "https://verify.sourcify.dev"
-//   const chainId = routeManager.currentNetworkEntry.value.sourcifySetup?.chainID ?? null
-//   if (chainId && props.contractAddress) {
-//     return `${baseUrl}?chain=${chainId}&address=${props.contractAddress}`
-//   } else {
-//     return baseUrl
-//   }
-// })
-
 const handleGoToSourcify = () => {
   window.open(verifyUrl, "_blank")
 }
