@@ -4,13 +4,10 @@
 
 import {describe, expect, test, vi} from 'vitest'
 import {RouteManager} from "@/utils/RouteManager";
-import {ref} from "vue";
-import {TransactionTableControllerXL} from "@/components/transaction/TransactionTableControllerXL";
 import {flushPromises} from "@vue/test-utils";
 import MockAdapter from "axios-mock-adapter";
 import axios from "axios";
 import {Router} from "vue-router";
-import {SAMPLE_CONTRACTCALL_TRANSACTIONS, SAMPLE_CONTRACTS} from "../Mocks";
 import {VerifiedContractTableController} from "@/components/contract/verified/VerifiedContractTableController.ts";
 import {TableController} from "@/utils/table/TableController.ts";
 import {fetchGetURLs} from "../MockUtils.ts";
@@ -21,12 +18,16 @@ function makeRouter(): Router {
 }
 
 
-describe("TransactionTableController.ts", () => {
+describe("VerifiedContractTableController.ts", () => {
 
     test("mount + unmount", async () => {
-        const PAGE_SIZE = 5
+        const PAGE_SIZE = 15
 
         const router = makeRouter()
+
+        const mock = new MockAdapter(axios as any)
+        const matcher1 = "http://localhost:3000/v2/contracts/295?limit=15"
+        mock.onGet(matcher1).reply(200, SOURCIFY_RESPONSE_1)
 
         const tc = new VerifiedContractTableController(router, PAGE_SIZE)
 
@@ -35,7 +36,7 @@ describe("TransactionTableController.ts", () => {
         expect(tc.autoRefresh.value).toBe(false)
         expect(tc.currentPage.value).toBe(1)
         expect(tc.loading.value).toBe(false)
-        expect(tc.totalRowCount.value).toBe(50)
+        expect(tc.totalRowCount.value).toBe(150)
         expect(tc.rows.value).toStrictEqual([])
         expect(tc.mounted.value).toBe(false)
 
@@ -45,7 +46,7 @@ describe("TransactionTableController.ts", () => {
         expect(tc.autoRefresh.value).toBe(false)
         expect(tc.currentPage.value).toBe(1)
         expect(tc.loading.value).toBe(false)
-        expect(tc.totalRowCount.value).toBe(50)
+        expect(tc.totalRowCount.value).toBe(150)
         expect(tc.rows.value).toStrictEqual([])
         expect(tc.mounted.value).toBe(false)
 
@@ -56,8 +57,8 @@ describe("TransactionTableController.ts", () => {
         expect(tc.autoRefresh.value).toBe(true)
         expect(tc.currentPage.value).toBe(1)
         expect(tc.loading.value).toBe(false)
-        expect(tc.totalRowCount.value).toBe(50)
-        expect(tc.rows.value).toStrictEqual([])
+        expect(tc.totalRowCount.value).toBe(150)
+        expect(tc.rows.value).toStrictEqual(SOURCIFY_RESPONSE_1.results)
         expect(tc.mounted.value).toBe(true)
 
         // After unmount()
@@ -66,9 +67,11 @@ describe("TransactionTableController.ts", () => {
         expect(tc.autoRefresh.value).toBe(false)
         expect(tc.currentPage.value).toBe(1)
         expect(tc.loading.value).toBe(false)
-        expect(tc.totalRowCount.value).toBe(50)
-        expect(tc.rows.value).toStrictEqual([])
+        expect(tc.totalRowCount.value).toBe(150)
+        expect(tc.rows.value).toStrictEqual(SOURCIFY_RESPONSE_1.results)
         expect(tc.mounted.value).toBe(false)
+
+        mock.restore()
     }, 30_000)
 
 
@@ -163,6 +166,8 @@ describe("TransactionTableController.ts", () => {
             "http://localhost:3000/v2/contracts/295?limit=16&afterMatchId=28139683&sort=asc",
         ])
 
+        vi.useRealTimers()
+        mock.restore()
     })
 })
 
