@@ -51,7 +51,7 @@ export class SourcifySetup {
         return this.serverURL + "v2/contracts/" + this.chainID
     }
 
-    makeContractSourceURL(contractAddress: string, full: boolean): string {
+    makeContractSourceURL(contractAddress: string): string {
         return this.repoURL + this.chainID + "/" + contractAddress
     }
 
