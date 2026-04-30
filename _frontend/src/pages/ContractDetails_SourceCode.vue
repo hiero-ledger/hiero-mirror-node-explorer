@@ -106,7 +106,6 @@ const isImportFile = (file: SourcifyResponseItem): boolean => {
 //
 
 const handleDownload = async () => {
-  const contractURL = contractAnalyzer.sourcifyURL.value ?? ''
   if (selectedSource.value === '') {
     const zip = new JSZip();
     for (const fileItem of contractAnalyzer.solidityFiles.value) {

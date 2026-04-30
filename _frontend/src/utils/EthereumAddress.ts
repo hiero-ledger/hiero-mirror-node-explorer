@@ -2,7 +2,6 @@
 
 import {byteToHex, hexToByte} from "@/utils/B64Utils";
 import {EntityID} from "@/utils/EntityID";
-import {ethers} from "ethers";
 
 export class EthereumAddress {
 
