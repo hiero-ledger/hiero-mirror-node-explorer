@@ -5,7 +5,7 @@
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <template>
-  <ModalDialog v-model:show-dialog="showDialog" :width="520">
+  <ModalDialog v-model:show-dialog="showDialog" :width="550">
 
     <template #modalDialogTitle>Verify Contract</template>
 
@@ -17,15 +17,14 @@
         <p class="dialog-secondary-text">You can verify your contract using one of the following methods:</p>
 
         <div class="dialog-options dialog-secondary-text">
-          <p>&bull; Verify directly via the sourcify.dev service</p>
-          <p>&bull; Use the Forge CLI (Foundry)</p>
+          <p>&bull; Verify directly at verify.sourcify.dev</p>
+          <p>&bull; Use Foundry:
+            <span class="h-is-monospace" style="font-size: 0.9rem">forge verify-contract --verifier sourcify...</span>
+          </p>
           <p>&bull; Use Hardhat with the Sourcify plugin</p>
         </div>
 
-        <p class="dialog-secondary-text">Learn more about smart contract verification
-          <a :href="docUrl" class="h-is-extra-text" target="_blank">here</a></p>
-
-        <p class="dialog-secondary-text">Contracts previously verified on HashScan are verified on sourcify.dev</p>
+        <p class="dialog-secondary-text">{{ bottomNotice }}</p>
       </div>
     </template>
 
@@ -51,6 +50,7 @@ import ModalDialog from "@/dialogs/core/ModalDialog.vue";
 import ModalDialogButton from "@/dialogs/core/ModalDialogButton.vue";
 import {PropType} from "vue";
 import {routeManager} from "@/utils/RouteManager.ts";
+import {CoreConfig} from "@/config/CoreConfig.ts";
 
 defineProps({
   contractAddress: {
@@ -64,7 +64,8 @@ const showDialog = defineModel("showDialog", {
   required: true
 })
 
-const docUrl = "https://docs.hedera.com/hedera/core-concepts/smart-contracts/verifying-smart-contracts-beta"
+const coreConfig = CoreConfig.inject()
+const bottomNotice = `Contracts previously verified by ${coreConfig.productName} are verified on sourcify.dev.`
 
 const handleGoToSourcify = () => {
   const verifierURL = routeManager.currentNetworkEntry.value.sourcifySetup?.verifierURL
