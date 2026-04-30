@@ -53,6 +53,10 @@
                           :fragment-collection="selectedCollection as FragmentCollection"/>
       </template>
 
+      <template v-else-if="isAnalyzing">
+        <EmptyTable :loading="true"/>
+      </template>
+
       <template v-else>
         <DocSnippet
             doc-hint="See how to verify a contract"
@@ -89,6 +93,7 @@ import Property from "@/components/Property.vue";
 import AccountLink from "@/components/values/link/AccountLink.vue";
 import ContractSectionTitle from "@/components/contract/ContractSectionTitle.vue";
 import DocSnippet from "@/components/DocSnippet.vue";
+import EmptyTable from "@/components/EmptyTable.vue";
 
 const props = defineProps({
   contractId: String,
@@ -100,6 +105,7 @@ const contractAnalyzer = new ContractAnalyzer(contractId)
 onMounted(() => contractAnalyzer.mount())
 onBeforeUnmount(() => contractAnalyzer.unmount())
 const isVerified = contractAnalyzer.isVerified
+const isAnalyzing = contractAnalyzer.isAnalyzing
 
 
 const abiAnalyzer = new ABIAnalyzer(contractAnalyzer)
