@@ -36,6 +36,10 @@
         <ContractSourceValue :source-files="solidityFiles" :filter="selectedSource"/>
       </template>
 
+      <template v-else-if="isAnalyzing">
+        <EmptyTable :loading="true"/>
+      </template>
+
       <template v-else>
         <DocSnippet
             doc-hint="See how to verify a contract"
@@ -67,6 +71,7 @@ import JSZip from "jszip";
 import {saveAs} from "file-saver";
 import {SourcifyResponseItem} from "@/utils/cache/SourcifyCache.ts";
 import DocSnippet from "@/components/DocSnippet.vue";
+import EmptyTable from "@/components/EmptyTable.vue";
 
 const props = defineProps({
   contractId: String,
@@ -85,6 +90,7 @@ const isVerified = contractAnalyzer.isVerified
 const solidityFiles = contractAnalyzer.solidityFiles
 const sourceFileName = contractAnalyzer.sourceFileName
 const contractFileName = contractAnalyzer.contractFileName
+const isAnalyzing = contractAnalyzer.isAnalyzing
 
 const selectedSource = ref('')
 watch(contractAnalyzer.contractFileName,

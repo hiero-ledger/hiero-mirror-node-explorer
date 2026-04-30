@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
-import {computed, ComputedRef, Ref, shallowRef, ShallowRef, watch, WatchStopHandle} from "vue";
+import {computed, ComputedRef, ref, Ref, shallowRef, ShallowRef, watch, WatchStopHandle} from "vue";
 import {SystemContractEntry, systemContractRegistry} from "@/schemas/SystemContractRegistry";
 import {ethers} from "ethers";
 import {SourcifyCache, SourcifyRecord, SourcifyResponseItem} from "@/utils/cache/SourcifyCache";
@@ -37,6 +37,8 @@ export class ContractAnalyzer {
         this.watchHandles = []
         this.report.value = null
     }
+
+    public readonly isAnalyzing = computed(() => this.analyzing.value)
 
     public readonly contractAddress = computed<string | null>(() => {
         let result: string | null
@@ -231,8 +233,11 @@ export class ContractAnalyzer {
     // Private
     //
 
+    private readonly analyzing = ref(false)
+
     private readonly analyze = async () => {
         if (this.contractId.value !== null) {
+            this.analyzing.value = true
             const e = systemContractRegistry.lookup(this.contractId.value)
             try {
                 if (e !== null) {
@@ -271,6 +276,8 @@ export class ContractAnalyzer {
                     abi: null,
                     reportError: error
                 }
+            } finally {
+                this.analyzing.value = false
             }
         } else {
             this.report.value = null
