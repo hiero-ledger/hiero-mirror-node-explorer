@@ -41,7 +41,6 @@ import {inject, PropType, ref} from 'vue';
 import {initialLoadingKey} from "@/AppKeys";
 import {SourcifyResponseItem} from "@/utils/cache/SourcifyCache";
 import "prismjs/prism";
-import "prismjs/themes/prism-tomorrow.css"
 import "prismjs/prism.js";
 import "prismjs/components/prism-clike.js";
 import "prismjs/components/prism-solidity.js";
