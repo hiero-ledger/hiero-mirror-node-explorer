@@ -174,14 +174,16 @@ export class ThemeController {
 
     private setPrismTheme(isDark: boolean) {
 
-        let link = document.getElementById("prism-theme") as HTMLLinkElement | null;
+        const existing = document.getElementById("prism-theme");
+        const themeElement: HTMLLinkElement = existing instanceof HTMLLinkElement
+            ? existing
+            : document.createElement("link");
 
-        if (!link) {
-            link = document.createElement("link") as HTMLLinkElement;
-            link.id = "prism-theme";
-            link.rel = "stylesheet";
-            document.head.appendChild(link);
+        if (!existing) {
+            themeElement.id = "prism-theme";
+            themeElement.rel = "stylesheet";
+            document.head.appendChild(themeElement);
         }
-        link.href = isDark ? "/themes/prism-tomorrow.css" : "/themes/prism.css";
+        themeElement.href = isDark ? "/themes/prism-tomorrow.css" : "/themes/prism.css";
     }
 }
