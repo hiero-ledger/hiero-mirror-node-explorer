@@ -54,7 +54,7 @@
       style="width: 116px; margin-left: 4px"
   />
 
-  <EmptyTable v-if="!transactions.length"/>
+  <EmptyTable v-if="!transactions.length" :loading="loading"/>
 
 </template>
 

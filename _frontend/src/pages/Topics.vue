@@ -35,6 +35,7 @@ import {TransactionResult, TransactionType} from "@/schemas/MirrorNodeSchemas";
 import {useRouter} from "vue-router";
 import {AppStorage} from "@/AppStorage";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
+import {TableController} from "@/utils/table/TableController.ts";
 
 const props = defineProps({
   network: String
@@ -47,6 +48,8 @@ const defaultPageSize = isMediumScreen ? 15 : 5
 const transactionTableController = new TransactionTableController(
     router,
     defaultPageSize,
+    TableController.FAST_REFRESH_PERIOD,
+    TableController.FAST_REFRESH_COUNT,
     TransactionType.CONSENSUSCREATETOPIC,
     TransactionResult.SUCCESS,
     AppStorage.TOPIC_TABLE_PAGE_SIZE_KEY

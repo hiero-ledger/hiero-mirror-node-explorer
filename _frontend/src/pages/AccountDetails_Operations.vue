@@ -149,6 +149,7 @@ import PlayPauseButton from "@/components/PlayPauseButton.vue";
 import {Download} from 'lucide-vue-next';
 import router, {routeManager} from "@/utils/RouteManager.ts";
 import DocSnippet from "@/components/DocSnippet.vue";
+import {TableController} from "@/utils/table/TableController.ts";
 
 const props = defineProps({
   accountId: String,
@@ -214,6 +215,8 @@ const transactionTableController = new TransactionTableControllerXL(
 const contractCreateTableController = new TransactionTableController(
     router,
     defaultPageSize,
+    TableController.SLOW_REFRESH_PERIOD,
+    TableController.SLOW_REFRESH_COUNT,
     TransactionType.CONTRACTCREATEINSTANCE,
     "success",
     AppStorage.ACCOUNT_OPERATION_TABLE_PAGE_SIZE_KEY,
