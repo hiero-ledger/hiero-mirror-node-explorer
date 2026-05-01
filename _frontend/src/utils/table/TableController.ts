@@ -47,7 +47,8 @@ export abstract class TableController<R, K> implements PlayPauseController {
     public readonly totalRowCount: ComputedRef<number> = computed(
         () => this.buffer.totalRowCount.value)
 
-    public readonly loading: Ref<boolean> = ref(false)
+    public readonly loading: ComputedRef<boolean> = computed(
+        () => this.buffer.loading.value)
 
     public readonly paginated: ComputedRef<boolean> = computed(
         () => this.buffer.totalRowCount.value >= this.pageSize.value)
