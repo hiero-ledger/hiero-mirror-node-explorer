@@ -18,7 +18,10 @@ export class TransactionTableController extends TableController<Transaction, str
     // Public
     //
 
-    public constructor(router: Router, defaultPageSize: number,
+    public constructor(router: Router,
+                       defaultPageSize: number,
+                       updatePeriod: number,
+                       maxUpdatePeriod: number,
                        transactionType = "",
                        transactionResult = "",
                        storageKey: string,
@@ -28,8 +31,8 @@ export class TransactionTableController extends TableController<Transaction, str
         super(
             router,
             defaultPageSize,
-            TableController.FAST_REFRESH_PERIOD,
-            TableController.FAST_REFRESH_COUNT,
+            updatePeriod,
+            maxUpdatePeriod,
             100,
             storageKey,
             pageParamName,
