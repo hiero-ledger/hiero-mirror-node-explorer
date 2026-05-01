@@ -72,7 +72,6 @@
 
 import {onMounted, PropType, ref, watch} from 'vue';
 import "prismjs/prism";
-import "prismjs/themes/prism-tomorrow.css"
 import "prismjs/prism.js";
 import "prismjs/components/prism-clike.js";
 import "prismjs/components/prism-solidity.js";

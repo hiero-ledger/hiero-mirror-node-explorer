@@ -76,6 +76,7 @@ export class ThemeController {
     // Private
     //
 
+    // eslint-disable-next-line complexity,max-lines-per-function
     private darkSelectedDidChange = () => {
         if (this.darkSelected.value) {
             AppStorage.setTheme('dark')
@@ -168,5 +169,21 @@ export class ThemeController {
             document.getElementById('crypto-logo')?.setAttribute('src', this.coreConfig.cryptoLogoLightURL)
         }
 
+        this.setPrismTheme(this.darkSelected.value)
+    }
+
+    private setPrismTheme(isDark: boolean) {
+
+        const existing = document.getElementById("prism-theme");
+        const themeElement: HTMLLinkElement = existing instanceof HTMLLinkElement
+            ? existing
+            : document.createElement("link");
+
+        if (!existing) {
+            themeElement.id = "prism-theme";
+            themeElement.rel = "stylesheet";
+            document.head.appendChild(themeElement);
+        }
+        themeElement.href = isDark ? "/themes/prism-tomorrow.css" : "/themes/prism.css";
     }
 }
