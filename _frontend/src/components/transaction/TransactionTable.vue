@@ -66,7 +66,7 @@
       style="width: 116px; margin-left: 4px"
   />
 
-  <EmptyTable v-if="transactions.length === 0"/>
+  <EmptyTable v-if="transactions.length === 0" :loading="loading"/>
 
 </template>
 
