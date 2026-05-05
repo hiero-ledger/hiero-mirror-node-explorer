@@ -85,7 +85,7 @@ watch(() => props.tabIds, adjustSelectedTab, {immediate: true})
 <style scoped>
 
 div.tab-root {
-  align-items: baseline;
+  align-items: center ;
   column-gap: 16px;
   display: flex;
   flex-wrap: wrap;
