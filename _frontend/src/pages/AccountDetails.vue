@@ -66,14 +66,16 @@ const props = defineProps({
   network: String,
 })
 
+const activateHooks = import.meta.env.VITE_APP_ACTIVATE_HIP_1195 === 'true'
 const networkConfig = NetworkConfig.inject()
 
 //
 // Tabs
 //
 
-const tabIds = routeManager.accountDetailsOperator.tabIds
-const tabLabels = routeManager.accountDetailsOperator.tabLabels
+const excludedTabIds = computed(() => activateHooks ? [] : ["AccountDetails_Hooks"])
+const tabIds = computed(() => routeManager.accountDetailsOperator.filterTabIds(excludedTabIds.value))
+const tabLabels = computed(() => routeManager.accountDetailsOperator.filterTabLabels(excludedTabIds.value))
 const selectedTabId = routeManager.accountDetailsOperator.selectedTabId
 
 const onUpdate = (tabId: string | null) => {

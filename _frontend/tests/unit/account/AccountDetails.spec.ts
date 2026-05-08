@@ -2,7 +2,7 @@
 
 // SPDX-License-Identifier: Apache-2.0
 
-import {describe, expect, it} from 'vitest'
+import {describe, expect, it, vi} from 'vitest'
 import {flushPromises, mount} from "@vue/test-utils"
 import axios from "axios";
 import AccountDetails from "@/pages/AccountDetails.vue";
@@ -55,6 +55,8 @@ HMSF.forceUTC = true
 describe("AccountDetails.vue", () => {
 
     it("AccountDetails should display top level tabs", async () => {
+        vi.stubEnv('VITE_APP_ACTIVATE_HIP_1195', 'true')
+
         await router.push("/") // To avoid "missing required param 'network'" error
 
         const mock = new MockAdapter(axios as any);
