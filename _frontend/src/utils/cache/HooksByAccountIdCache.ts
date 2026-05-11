@@ -12,6 +12,11 @@ export class HooksByAccountIdCache extends EntityCache<string, Hook[] | null> {
     // Cache
     //
     protected async load(accountId: string): Promise<Hook[] | null> {
+        const activateHooks = import.meta.env.VITE_APP_ACTIVATE_HIP_1195 === 'true'
+        if (!activateHooks) {
+            return null
+        }
+
         let result: Hook[] | null
         const params = {
             limit: 100,

@@ -16,6 +16,11 @@ export class HookStorageByIdCache extends EntityCache<string, HookStorage[] | nu
     // Cache
     //
     protected async load(key: string): Promise<HookStorage[] | null> {
+        const activateHooks = import.meta.env.VITE_APP_ACTIVATE_HIP_1195 === 'true'
+        if (!activateHooks) {
+            return null
+        }
+
         const accountAndHookId = key.split("---")
         const accountId = accountAndHookId[0]
         const hookId = Number(accountAndHookId[1])
