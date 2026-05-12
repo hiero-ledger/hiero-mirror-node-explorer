@@ -96,7 +96,7 @@ const handleClick = (result: ContractResult, c: unknown, i: number, ci: number, 
 }
 
 const makeErrorMessage = (result: ContractResult) => {
-  return decodeSolidityErrorMessage(result.error_message ?? null)
+  return decodeSolidityErrorMessage(result.error_message)
 }
 
 const results = props.controller.rows

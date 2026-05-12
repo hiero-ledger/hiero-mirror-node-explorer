@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import {describe, expect, test} from "vitest";
-import {decodeSolidityErrorMessage} from "@/schemas/MirrorNodeUtils.ts";
+import {decodeSolidityErrorMessage, fetchSolidityPanicMessage} from "@/schemas/MirrorNodeUtils.ts";
 import {SAMPLE_REVERT_CONTRACT_RESULT_ACTIONS} from "../Mocks.ts";
 
 describe("MirrorNodeUtils.ts", () => {
@@ -10,24 +10,50 @@ describe("MirrorNodeUtils.ts", () => {
 
         expect(decodeSolidityErrorMessage(null))
             .toBe(null)
+        expect(fetchSolidityPanicMessage(null))
+            .toBe(null)
+
         expect(decodeSolidityErrorMessage("0x"))
             .toBe(null)
+        expect(fetchSolidityPanicMessage("0x"))
+            .toBe(null)
+
         expect(decodeSolidityErrorMessage(""))
             .toBe(null)
+        expect(fetchSolidityPanicMessage(""))
+            .toBe(null)
+
 
         expect(decodeSolidityErrorMessage("0x4e487b710000000000000000000000000000000000000000000000000000000000000001"))
             .toBe("Panic(0x01)")
+        expect(fetchSolidityPanicMessage("0x4e487b710000000000000000000000000000000000000000000000000000000000000001"))
+            .toBe("assert called with an argument that evaluates to false")
+
         expect(decodeSolidityErrorMessage("0x08c379a00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000b566963746f72204875676f000000000000000000000000000000000000000000"))
             .toBe("Error(\"Victor Hugo\")")
+        expect(fetchSolidityPanicMessage("0x08c379a00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000b566963746f72204875676f000000000000000000000000000000000000000000"))
+            .toBe(null)
+
         expect(decodeSolidityErrorMessage("0x494e56414c49445f4f5045524154494f4e"))
             .toBe("INVALID_OPERATION")
+        expect(fetchSolidityPanicMessage("0x494e56414c49445f4f5045524154494f4e"))
+            .toBe(null)
 
         expect(decodeSolidityErrorMessage("0xc2bb947c"))
             .toBe("0xc2bb947c")
+        expect(fetchSolidityPanicMessage("0xc2bb947c"))
+            .toBe(null)
 
         const actions = SAMPLE_REVERT_CONTRACT_RESULT_ACTIONS.actions
-        expect(decodeSolidityErrorMessage(actions[0].result_data)).toBe("Error(\"payWithCardNFT - failed to call accept contract method\")")
-        expect(decodeSolidityErrorMessage(actions[1].result_data)).toBeNull()
+        expect(decodeSolidityErrorMessage(actions[0].result_data))
+            .toBe("Error(\"payWithCardNFT - failed to call accept contract method\")")
+        expect(fetchSolidityPanicMessage(actions[0].result_data))
+            .toBe(null)
+
+        expect(decodeSolidityErrorMessage(actions[1].result_data))
+            .toBeNull()
+        expect(fetchSolidityPanicMessage(actions[1].result_data))
+            .toBe(null)
     })
 
 })

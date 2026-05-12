@@ -194,8 +194,63 @@ export function decodeSolidityErrorMessage(message: string|null): string | null 
 
     if (message === null || message === "0x" || message === "") {
         result = null
-    } else if (ethers.isHexString(message)) {
+    } else {
+        const errorDescription = decodeGenericError(message)
+        if (errorDescription !== null) {
+            if (errorDescription.name == "Panic") {
+                result = "Panic(" + ethers.toBeHex(errorDescription.args[0]) + ")"
+            } else {
+                result = errorDescription.name + "(\"" + errorDescription.args[0] + "\")"
+            }
+        } else {
+            try {
+                // Let's see if message is UTF-8 decodable
+                result = ethers.toUtf8String(message)
+            } catch {
+                result = message
+            }
+        }
+    }
 
+    return result
+}
+
+// https://blog.soliditylang.org/2020/12/16/solidity-v0.8.0-release-announcement/
+// Section "Revert on assertion failures and similar conditions instead of using the invalid opcode"
+const panicMessages = new Map<bigint, string>([
+    [0x01n, "assert called with an argument that evaluates to false"],
+    [0x11n, "Arithmetic operation results in underflow or overflow outside of an unchecked { ... } block"],
+    [0x12n, "Divide or divide modulo by zero"],
+    [0x21n, "Convert a value that is too big or negative into an enum type"],
+    [0x22n, "Access a storage byte array that is incorrectly encoded"],
+    [0x31n, "Call .pop() on an empty array"],
+    [0x32n, "Access an array, bytesN or an array slice at an out-of-bounds or negative index"],
+    [0x41n, "Allocate too much memory or create an array that is too large"],
+    [0x51n, "Call a zero-initialized variable of internal function type"],
+])
+
+export function fetchSolidityPanicMessage(message: string|null): string | null {
+    let result: string|null
+
+    const errorDescription = decodeGenericError(message)
+    if (errorDescription !== null) {
+        if (errorDescription.name == "Panic") {
+            const panicCode = errorDescription.args[0]
+            result = panicMessages.get(panicCode) ?? null
+        } else {
+            result = null
+        }
+    } else {
+        result = null
+    }
+
+    return result
+}
+
+export function decodeGenericError(message: string|null): ethers.ErrorDescription|null {
+    let result: ethers.ErrorDescription|null
+
+    if (ethers.isHexString(message)) {
         //
         // It can be:
         // - encoding of Error(string)
@@ -206,24 +261,13 @@ export function decodeSolidityErrorMessage(message: string|null): string | null 
         // https://blog.soliditylang.org/2020/12/16/solidity-v0.8.0-release-announcement/
         // Section "Revert on assertion failures and similar conditions instead of using the invalid opcode"
         //
-
         try {
-            const errorDescription = emptyITF.parseError(message)
-            if (errorDescription !== null) {
-                if (errorDescription.name == "Panic") {
-                    result = "Panic(" + ethers.toBeHex(errorDescription.args[0]) + ")"
-                } else {
-                    result = errorDescription.name + "(\"" + errorDescription.args[0] + "\")"
-                }
-            } else {
-                result = ethers.toUtf8String(message)
-            }
+            result = emptyITF.parseError(message)
         } catch {
-            result = message
+            result = null
         }
-
     } else {
-        result = message
+        result = null
     }
 
     return result
