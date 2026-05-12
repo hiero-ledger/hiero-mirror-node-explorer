@@ -26,8 +26,8 @@ describe("MirrorNodeUtils.ts", () => {
 
         expect(decodeSolidityErrorMessage("0x4e487b710000000000000000000000000000000000000000000000000000000000000001"))
             .toBe("Panic(0x01)")
-        expect(fetchSolidityPanicMessage("assert called with an argument that evaluates to false"))
-            .toBe(null)
+        expect(fetchSolidityPanicMessage("0x4e487b710000000000000000000000000000000000000000000000000000000000000001"))
+            .toBe("assert called with an argument that evaluates to false")
 
         expect(decodeSolidityErrorMessage("0x08c379a00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000b566963746f72204875676f000000000000000000000000000000000000000000"))
             .toBe("Error(\"Victor Hugo\")")
