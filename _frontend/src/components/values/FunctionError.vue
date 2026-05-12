@@ -37,7 +37,13 @@
     <Property :custom-nb-col-class="customNbColClass" id="errorMessage">
       <template #name>Error Message</template>
       <template #value>
-        <StringValue v-if="decodedError" :string-value="decodedError"/>
+        <span v-if="decodedError">
+          <StringValue :string-value="decodedError"/>
+          <span v-if="decodedPanicMessage !== null">
+            <br/>
+            <span class="h-is-low-contrast h-should-wrap"> {{ decodedPanicMessage }} </span>
+          </span>
+        </span>
         <template v-else>
           <HexaDumpValue :byte-string="error" :show-none="true"/>
           <div v-if="errorDecodingStatus" class="h-is-extra-text">
@@ -62,7 +68,7 @@ import {CircleAlert} from "lucide-vue-next";
 import HexaDumpValue from "@/components/values/HexaDumpValue.vue";
 import {FunctionCallAnalyzer} from "@/utils/analyzer/FunctionCallAnalyzer";
 import Property from "@/components/Property.vue";
-import {decodeSolidityErrorMessage} from "@/schemas/MirrorNodeUtils.ts";
+import {decodeSolidityErrorMessage, fetchSolidityPanicMessage} from "@/schemas/MirrorNodeUtils.ts";
 import StringValue from "@/components/values/StringValue.vue";
 import FunctionValue from "@/components/values/FunctionValue.vue";
 
@@ -78,8 +84,8 @@ const props = defineProps({
   }
 })
 
-const decodedError = computed(() =>
-    props.analyzer.normalizedError.value != null ? decodeSolidityErrorMessage(props.analyzer.normalizedError.value) : null)
+const decodedError = computed(() => decodeSolidityErrorMessage(error.value))
+const decodedPanicMessage = computed(() => fetchSolidityPanicMessage(error.value))
 
 const error = props.analyzer.normalizedError
 const errorSignature = props.analyzer.errorSignature
