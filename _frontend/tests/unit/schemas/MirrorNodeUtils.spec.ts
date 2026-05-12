@@ -15,12 +15,12 @@ describe("MirrorNodeUtils.ts", () => {
 
         expect(decodeSolidityErrorMessage("0x"))
             .toBe(null)
-        expect(fetchSolidityPanicMessage(null))
+        expect(fetchSolidityPanicMessage("0x"))
             .toBe(null)
 
         expect(decodeSolidityErrorMessage(""))
             .toBe(null)
-        expect(fetchSolidityPanicMessage(null))
+        expect(fetchSolidityPanicMessage(""))
             .toBe(null)
 
 
@@ -31,28 +31,28 @@ describe("MirrorNodeUtils.ts", () => {
 
         expect(decodeSolidityErrorMessage("0x08c379a00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000b566963746f72204875676f000000000000000000000000000000000000000000"))
             .toBe("Error(\"Victor Hugo\")")
-        expect(fetchSolidityPanicMessage(null))
+        expect(fetchSolidityPanicMessage("0x08c379a00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000b566963746f72204875676f000000000000000000000000000000000000000000"))
             .toBe(null)
 
         expect(decodeSolidityErrorMessage("0x494e56414c49445f4f5045524154494f4e"))
             .toBe("INVALID_OPERATION")
-        expect(fetchSolidityPanicMessage(null))
+        expect(fetchSolidityPanicMessage("0x494e56414c49445f4f5045524154494f4e"))
             .toBe(null)
 
         expect(decodeSolidityErrorMessage("0xc2bb947c"))
             .toBe("0xc2bb947c")
-        expect(fetchSolidityPanicMessage(null))
+        expect(fetchSolidityPanicMessage("0xc2bb947c"))
             .toBe(null)
 
         const actions = SAMPLE_REVERT_CONTRACT_RESULT_ACTIONS.actions
         expect(decodeSolidityErrorMessage(actions[0].result_data))
             .toBe("Error(\"payWithCardNFT - failed to call accept contract method\")")
-        expect(fetchSolidityPanicMessage(null))
+        expect(fetchSolidityPanicMessage(actions[0].result_data))
             .toBe(null)
 
         expect(decodeSolidityErrorMessage(actions[1].result_data))
             .toBeNull()
-        expect(fetchSolidityPanicMessage(null))
+        expect(fetchSolidityPanicMessage(actions[1].result_data))
             .toBe(null)
     })
 
