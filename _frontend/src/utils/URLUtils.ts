@@ -3,26 +3,57 @@
 import {CID} from "multiformats";
 
 export function blob2URL(blob: string | null, ipfsGateway: string | null, arweaveServer: string | null): string | null {
-    let result: string | null
+    if (blob === null) {
+        return null
+    }
 
-    if (blob !== null) {
-        if (isSecureURL(blob)) {
-            result = blob
-        } else if (ipfsGateway && blob.startsWith('ipfs://') && blob.length > 7) {
-            result = `${ipfsGateway}${blob.substring(7)}`
-        } else if (ipfsGateway && isIPFSHash(blob)) {
-            result = `${ipfsGateway}${blob}`
-        } else if (arweaveServer && blob.startsWith('ar://') && blob.length > 5) {
-            result = `${arweaveServer}${blob.substring(5)}`
-        } else if (arweaveServer && isArweaveHash(blob)) {
-            result = `${arweaveServer}${blob}`
-        } else {
-            result = null
-        }
-    } else {
-        result = null
+    let result: string | null = null
+    if (isSecureURL(blob)) {
+        result = blob
+    }
+    if (!result && ipfsGateway) {
+        result = blob2IpfsURL(blob, ipfsGateway)
+    }
+    if (!result && arweaveServer) {
+        result = blob2ArweaveURL(blob, arweaveServer)
     }
     return result
+}
+
+export function blob2IpfsURL(blob: string, ipfsGateway: string): string | null {
+    let uri = blob
+    if (blob.length > 7 && blob.startsWith('ipfs://')) {
+        uri = blob.substring(7)
+    }
+    const uriParts = uri.split('/');
+    const cid = uriParts[0];
+
+    if (!isIPFSHash(cid)) {
+        return null
+    }
+    const encodedCid = uriParts.map((part, index) => {
+        return index === 0 ? encodeURI(part) : encodeURIComponent(part);
+    }).join('/');
+
+    return `${ipfsGateway}${encodedCid}`
+}
+
+export function blob2ArweaveURL(blob: string, arweaveServer: string): string | null {
+    let uri = blob
+    if (blob.length > 5 && blob.startsWith('ar://')) {
+        uri = blob.substring(5)
+    }
+    const uriParts = uri.split('/');
+    const cid = uriParts[0];
+
+    if (!isArweaveHash(cid)) {
+        return null
+    }
+    const encodedCid = uriParts.map((part, index) => {
+        return index === 0 ? encodeURI(part) : encodeURIComponent(part);
+    }).join('/');
+
+    return `${arweaveServer}${encodedCid}`
 }
 
 export function isSecureURL(blob: string): boolean {
