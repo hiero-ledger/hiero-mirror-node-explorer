@@ -562,14 +562,14 @@ export const IPFS_GATEWAY_PREFIX = 'https://gateway.pinata.cloud/ipfs/'
 export const IPFS_CID_METADATA = "UW1QSjhnbTFIOFY3Ym9SR1JiV3ZyWloxSkMyeXFzajNoYkJKeUJhTFBnSG5ROA=="
 export const IPFS_METADATA = "aXBmczovL1FtUEo4Z20xSDhWN2JvUkdSYld2clpaMUpDMnlxc2ozaGJCSnlCYUxQZ0huUTg="
 export const IPFS_METADATA_CONTENT_URL = IPFS_GATEWAY_PREFIX + "QmPJ8gm1H8V7boRGRbWvrZZ1JC2yqsj3hbBJyBaLPgHnQ8"
-export const IPFS_IMAGE_URL = IPFS_GATEWAY_PREFIX + "QmXhGcYgJPgVmdDzkUuiK1RVy6fW7NVaJLLxir2iKLKRZU/0292-Shrak.png"
+export const IPFS_IMAGE_URL = IPFS_GATEWAY_PREFIX + "QmXhGcYgJPgVmdDzkUuiK1RVy6fW7NVaJLLxir2iKLKRZU/0292-Shrak%2312.png"
 export const IPFS_METADATA_CONTENT = {
     "name": "Shrak #293",
     "creator": "@Buckyoto + @JuicyUnlimited for @KarateCombat",
     "creatorDID": "did:hedera:mainnet:7Prd74ry1Uct87nZqL3ny7aR7Cg46JamVbJgk8azVgUm;hedera:mainnet:fid=0.0.123",
     "type": "image/png",
     "description": "This is a collection about $KARATE. $KARATE is not for the faint of heart. Happy Karate De Mayo to all one thousand and all. www.KARATE.com",
-    "image": "ipfs://QmXhGcYgJPgVmdDzkUuiK1RVy6fW7NVaJLLxir2iKLKRZU/0292-Shrak.png",
+    "image": "ipfs://QmXhGcYgJPgVmdDzkUuiK1RVy6fW7NVaJLLxir2iKLKRZU/0292-Shrak#12.png",
     "format": "HIP412@2.0.0",
     "attributes": [
         {
@@ -621,7 +621,7 @@ export const AR_METADATA_CONTENT = {
 
 export const NON_STD_METADATA_CONTENT = {
     "custom": "Non standard metadata",
-    "picture": "ipfs://QmXhGcYgJPgVmdDzkUuiK1RVy6fW7NVaJLLxir2iKLKRZU/0292-Shrak.png"
+    "picture": "ipfs://QmXhGcYgJPgVmdDzkUuiK1RVy6fW7NVaJLLxir2iKLKRZU/0292-Shrak#12.png"
 }
 
 export const HTTPS_METADATA = "aHR0cHM6Ly9jbG91ZGZsYXJlLWlwZnMuY29tL2lwZnMvUW1QSjhnbTFIOFY3Ym9SR1JiV3ZyWloxSkMyeXFzajNoYkJKeUJhTFBnSG5ROA=="

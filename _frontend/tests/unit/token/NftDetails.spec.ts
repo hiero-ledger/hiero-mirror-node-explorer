@@ -197,7 +197,7 @@ describe("NftDetails.vue", () => {
         expect(metadata.get("#raw-metadata-propertyValue").text()).toBe('aXBmczovL1FtUEo4Z20xSDhWN2JvUkdSYld2clpaMUpDMnlxc2ozaGJCSnlCYUxQZ0huUTg=')
         expect(metadata.get("#metadata-locationValue").text()).toBe('ipfs://QmPJ8gm1H8V7boRGRbWvrZZ1JC2yqsj3hbBJyBaLPgHnQ8')
         expect(metadata.get("#formatValue").text()).toBe('HIP412@2.0.0')
-        expect(metadata.get("#imageValue").text()).toBe('ipfs://QmXhGcYgJPgVmdDzkUuiK1RVy6fW7NVaJLLxir2iKLKRZU/0292-Shrak.png')
+        expect(metadata.get("#imageValue").text()).toBe('ipfs://QmXhGcYgJPgVmdDzkUuiK1RVy6fW7NVaJLLxir2iKLKRZU/0292-Shrak#12.png')
         expect(metadata.get("#typeValue").text()).toBe('image/png')
 
         mock.restore()
