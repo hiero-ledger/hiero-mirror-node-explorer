@@ -12,48 +12,24 @@ export function blob2URL(blob: string | null, ipfsGateway: string | null, arweav
         result = blob
     }
     if (!result && ipfsGateway) {
-        result = blob2IpfsURL(blob, ipfsGateway)
+        result = blob2ProtocolURL(blob, 'ipfs://', isIPFSHash, ipfsGateway)
     }
     if (!result && arweaveServer) {
-        result = blob2ArweaveURL(blob, arweaveServer)
+        result = blob2ProtocolURL(blob, 'ar://', isArweaveHash, arweaveServer)
     }
     return result
 }
 
-export function blob2IpfsURL(blob: string, ipfsGateway: string): string | null {
-    let uri = blob
-    if (blob.length > 7 && blob.startsWith('ipfs://')) {
-        uri = blob.substring(7)
-    }
-    const uriParts = uri.split('/');
-    const cid = uriParts[0];
-
-    if (!isIPFSHash(cid)) {
+function blob2ProtocolURL(blob: string, scheme: string, isValidHash: (s: string) => boolean, server: string): string | null {
+    const uri = blob.startsWith(scheme) ? blob.substring(scheme.length) : blob
+    const uriParts = uri.split('/')
+    if (!isValidHash(uriParts[0])) {
         return null
     }
-    const encodedCid = uriParts.map((part, index) => {
-        return index === 0 ? encodeURI(part) : encodeURIComponent(part);
-    }).join('/');
-
-    return `${ipfsGateway}${encodedCid}`
-}
-
-export function blob2ArweaveURL(blob: string, arweaveServer: string): string | null {
-    let uri = blob
-    if (blob.length > 5 && blob.startsWith('ar://')) {
-        uri = blob.substring(5)
-    }
-    const uriParts = uri.split('/');
-    const cid = uriParts[0];
-
-    if (!isArweaveHash(cid)) {
-        return null
-    }
-    const encodedCid = uriParts.map((part, index) => {
-        return index === 0 ? encodeURI(part) : encodeURIComponent(part);
-    }).join('/');
-
-    return `${arweaveServer}${encodedCid}`
+    const encodedPath = uriParts.map((part, index) => {
+        return index === 0 ? encodeURI(part) : encodeURIComponent(part)
+    }).join('/')
+    return `${server}${encodedPath}`
 }
 
 export function isSecureURL(blob: string): boolean {
