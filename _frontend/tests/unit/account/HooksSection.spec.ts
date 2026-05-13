@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
-import {afterEach, beforeEach, describe, expect, test} from 'vitest'
+import {afterEach, beforeEach, describe, expect, test, vi} from 'vitest'
 import {flushPromises, mount, VueWrapper} from "@vue/test-utils"
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
@@ -67,6 +67,8 @@ describe("HooksSection.vue", () => {
             timestamp: "1586568700.453054000"
         }
     ]
+
+    vi.stubEnv('VITE_APP_ACTIVATE_HIP_1195', 'true')
 
     beforeEach(async () => {
         mock = new MockAdapter(axios as any)
