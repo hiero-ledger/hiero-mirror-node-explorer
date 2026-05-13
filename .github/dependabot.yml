@@ -12,7 +12,7 @@ updates:
       interval: daily
 
   - package-ecosystem: npm
-    directory: /
+    directory: /_frontend
     schedule:
       interval: daily
     groups:
@@ -20,3 +20,48 @@ updates:
         patterns:
           - "vitest"
           - "@vitest/*"
+      vue:
+        patterns:
+          - "vue"
+          - "vue-router"
+          - "vue-tsc"
+          - "@vue/*"
+          - "@vitejs/plugin-vue"
+          - "@vuepic/*"
+          - "@vueuse/*"
+      vite:
+        patterns:
+          - "vite"
+          - "@vitejs/*"
+          - "esbuild"
+      eslint:
+        patterns:
+          - "eslint"
+          - "eslint-*"
+          - "@eslint/*"
+          - "typescript-eslint"
+          - "@vue/eslint-config-typescript"
+      typescript:
+        patterns:
+          - "typescript"
+          - "@tsconfig/*"
+          - "@vue/tsconfig"
+          - "@types/*"
+      walletconnect:
+        patterns:
+          - "@walletconnect/*"
+      fortawesome:
+        patterns:
+          - "@fortawesome/*"
+      cypress:
+        patterns:
+          - "cypress"
+          - "@cypress/*"
+          - "eslint-plugin-cypress"
+      d3:
+        patterns:
+          - "d3"
+          - "d3-*"
+          - "@types/d3*"
+          - "topojson-*"
+          - "@types/topojson-*"
