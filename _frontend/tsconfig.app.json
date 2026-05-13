@@ -5,7 +5,6 @@
   "compilerOptions": {
     "verbatimModuleSyntax": false,
     "composite": true,
-    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     }
