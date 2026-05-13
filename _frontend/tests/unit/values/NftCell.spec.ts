@@ -28,6 +28,8 @@ describe("NftCell.vue", () => {
         await flushPromises()
 
         expect(wrapper.text()).toBe("")
+        expect(wrapper.find('img').exists()).toBe(false)
+        expect(wrapper.find('video').exists()).toBe(false)
 
         wrapper.unmount()
         await flushPromises()
@@ -55,6 +57,8 @@ describe("NftCell.vue", () => {
         // console.log(wrapper.html())
 
         expect(wrapper.text()).toBe("")
+        expect(wrapper.find('img').exists()).toBe(false)
+        expect(wrapper.find('video').exists()).toBe(false)
 
         wrapper.unmount()
         await flushPromises()
@@ -115,7 +119,7 @@ describe("NftCell.vue", () => {
 
         const wrapper = mount(NftCell, {
             props: {
-                tokenId: nft.token_id,
+                tokenId: nftId,
                 serialNumber: serial,
                 property: NftCellItem.description
             },
@@ -133,6 +137,9 @@ describe("NftCell.vue", () => {
             property: NftCellItem.image
         })
         await flushPromises()
+        expect(wrapper.text()).toBe('NFT')
+        expect(wrapper.find('video').exists()).toBe(false)
+
         const figure = wrapper.find('figure')
         expect(figure.exists()).toBe(true)
         expect(figure.get('img').attributes('src')).toBe(IPFS_IMAGE_URL)

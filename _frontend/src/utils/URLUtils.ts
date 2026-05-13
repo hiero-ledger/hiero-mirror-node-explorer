@@ -3,26 +3,33 @@
 import {CID} from "multiformats";
 
 export function blob2URL(blob: string | null, ipfsGateway: string | null, arweaveServer: string | null): string | null {
-    let result: string | null
+    if (blob === null) {
+        return null
+    }
 
-    if (blob !== null) {
-        if (isSecureURL(blob)) {
-            result = blob
-        } else if (ipfsGateway && blob.startsWith('ipfs://') && blob.length > 7) {
-            result = `${ipfsGateway}${blob.substring(7)}`
-        } else if (ipfsGateway && isIPFSHash(blob)) {
-            result = `${ipfsGateway}${blob}`
-        } else if (arweaveServer && blob.startsWith('ar://') && blob.length > 5) {
-            result = `${arweaveServer}${blob.substring(5)}`
-        } else if (arweaveServer && isArweaveHash(blob)) {
-            result = `${arweaveServer}${blob}`
-        } else {
-            result = null
-        }
-    } else {
-        result = null
+    let result: string | null = null
+    if (isSecureURL(blob)) {
+        result = blob
+    }
+    if (!result && ipfsGateway) {
+        result = blob2ProtocolURL(blob, 'ipfs://', isIPFSHash, ipfsGateway)
+    }
+    if (!result && arweaveServer) {
+        result = blob2ProtocolURL(blob, 'ar://', isArweaveHash, arweaveServer)
     }
     return result
+}
+
+function blob2ProtocolURL(blob: string, scheme: string, isValidHash: (s: string) => boolean, server: string): string | null {
+    const uri = blob.startsWith(scheme) ? blob.substring(scheme.length) : blob
+    const uriParts = uri.split('/')
+    if (!isValidHash(uriParts[0])) {
+        return null
+    }
+    const encodedPath = uriParts.map((part, index) => {
+        return index === 0 ? encodeURI(part) : encodeURIComponent(part)
+    }).join('/')
+    return `${server}${encodedPath}`
 }
 
 export function isSecureURL(blob: string): boolean {
