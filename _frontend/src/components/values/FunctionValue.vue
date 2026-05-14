@@ -8,7 +8,7 @@
 
   <div v-if="value">
     <EVMAddress v-if="addressValue" :address="addressValue" :compact="!isSmallScreen"/>
-    <Copyable v-else :content-to-copy="value">
+    <Copyable v-else :content-to-copy="value" :enable-copy="enableCopy">
       <div :class="{'h-is-low-contrast': lowContrast}" class="function-value">
         <p class="mr-1">{{ value }}</p>
 
@@ -60,6 +60,10 @@ const addressValue = computed(() => {
 
 const type = props.ntv?.type
 const value = props.ntv?.value?.toString()
+
+const enableCopy = computed(() => {
+  return type != undefined && type !== 'bool' && !type.startsWith('int') && !type.startsWith('uint')
+})
 
 </script>
 
