@@ -8,14 +8,18 @@
 
   <div v-if="value">
     <EVMAddress v-if="addressValue" :address="addressValue" :compact="!isSmallScreen"/>
-    <div v-else :class="{'h-is-low-contrast': lowContrast}" class="function-value">
-      <p class="mr-1">{{ value }}</p>
+    <Copyable v-else :content-to-copy="value">
+      <template #content>
+        <div :class="{'h-is-low-contrast': lowContrast}" class="function-value">
+          <p class="mr-1">{{ value }}</p>
 
-      <p v-if="ntv?.comment"
-         class="h-is-extra-text">
-        ({{ ntv.comment }})
-      </p>
-    </div>
+          <p v-if="ntv?.comment"
+             class="h-is-extra-text">
+            ({{ ntv.comment }})
+          </p>
+        </div>
+      </template>
+    </Copyable>
     <div v-if="!hideType" class="h-is-extra-text">{{ type }}</div>
   </div>
   <div v-else-if="initialLoading"/>
@@ -27,12 +31,13 @@
 <!--                                                      SCRIPT                                                     -->
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
-<script setup lang="ts">
+<script lang="ts" setup>
 
 import {computed, inject, PropType, ref} from 'vue';
 import {initialLoadingKey} from "@/AppKeys";
 import EVMAddress from "@/components/values/EVMAddress.vue";
 import {NameTypeValue} from "@/utils/analyzer/call/FunctionCallDecoder.ts";
+import Copyable from "@/elements/Copyable.vue";
 
 const props = defineProps({
   ntv: Object as PropType<NameTypeValue>,

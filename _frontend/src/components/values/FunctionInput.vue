@@ -36,7 +36,7 @@
       <Property :custom-nb-col-class="customNbColClass" id="functionInput">
         <template #name>Input Args</template>
         <template #value>
-          <ByteCodeValue :byte-code="inputArgsOnly ?? undefined"/>
+          <ByteCodeValue :byte-code="inputArgsOnly" :copyable="true"/>
           <div v-if="inputDecodingStatus" class="h-is-extra-text">
             <CircleAlert class="h-is-low-contrast mr-1" :size="16" style="vertical-align: text-top"/>
             <span>{{ inputDecodingStatus }}</span>
@@ -52,7 +52,7 @@
     <Property :custom-nb-col-class="customNbColClass" id="functionInput">
       <template #name>Input - Function & Args</template>
       <template #value>
-        <ByteCodeValue :byte-code="input ?? undefined"/>
+        <ByteCodeValue :byte-code="input" :copyable="true"/>
         <div v-if="functionDecodingStatus" class="h-is-extra-text">
           <CircleAlert class="h-is-low-contrast mr-1" :size="16" style="vertical-align: text-top"/>
           <span>{{ functionDecodingStatus }}</span>
