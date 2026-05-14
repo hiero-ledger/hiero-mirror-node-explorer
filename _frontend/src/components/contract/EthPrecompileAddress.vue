@@ -7,12 +7,10 @@
 <template>
   <div v-if="squeezedAddress">
     <div class="evm-address">
-      <Copyable :content-to-copy="props.evmAddress" enable-copy>
-        <template #content>
-          <div class="h-is-low-contrast h-is-monospace" style="display: inline">
-            {{ squeezedAddress }}
-          </div>
-        </template>
+      <Copyable :content-to-copy="props.evmAddress">
+        <div class="h-is-low-contrast h-is-monospace" style="display: inline">
+          {{ squeezedAddress }}
+        </div>
       </Copyable>
       <div v-if="entityId" class="entity-id-or-name" style="margin-left: 4px">
         <span>({{ precompileLabel }})</span>

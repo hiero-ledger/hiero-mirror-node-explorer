@@ -9,16 +9,14 @@
   <div v-if="value">
     <EVMAddress v-if="addressValue" :address="addressValue" :compact="!isSmallScreen"/>
     <Copyable v-else :content-to-copy="value">
-      <template #content>
-        <div :class="{'h-is-low-contrast': lowContrast}" class="function-value">
-          <p class="mr-1">{{ value }}</p>
+      <div :class="{'h-is-low-contrast': lowContrast}" class="function-value">
+        <p class="mr-1">{{ value }}</p>
 
-          <p v-if="ntv?.comment"
-             class="h-is-extra-text">
-            ({{ ntv.comment }})
-          </p>
-        </div>
-      </template>
+        <p v-if="ntv?.comment"
+           class="h-is-extra-text">
+          ({{ ntv.comment }})
+        </p>
+      </div>
     </Copyable>
     <div v-if="!hideType" class="h-is-extra-text">{{ type }}</div>
   </div>

@@ -6,15 +6,10 @@
 
 <template>
 
-  <Copyable
-      :enable-copy="enableCopy"
-      :content-to-copy="transactionId ?? ''"
-  >
-    <template #content>
-      <div class="is-inline-block">
-        <span>{{ transactionId }}</span>
-      </div>
-    </template>
+  <Copyable :content-to-copy="transactionId ?? ''" :enable-copy="enableCopy">
+    <div class="is-inline-block">
+      <span>{{ transactionId }}</span>
+    </div>
   </Copyable>
 
 </template>
