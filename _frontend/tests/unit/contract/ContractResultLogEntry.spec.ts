@@ -60,8 +60,8 @@ describe("ContractResultLogEntry.vue", () => {
         expect(wrapper.get("#blockNumber").get("a").text()).toBe('9')
         expect(wrapper.get("#blockNumber").text()).toBe("Block9")
         expect(wrapper.get("#address").text()).toBe("Address0x00…0b70cfCopy(TestEvent)")
-        expect(wrapper.get("#Args").text()).toBe("LogsFlightEvent (string phase, int256 airspeed, int256 verticalSpeed)Topic 0  signature hash0x01f789d670afa3030578cc570ac4d43ace6f1575dd6c395a711e72a30051efd2string  phaseHolding pointint256  airspeed0int256  verticalSpeed0")
-        expect(wrapper.get("#logArg_phase").text()).toBe("string  phaseHolding point")
+        expect(wrapper.get("#Args").text()).toBe("LogsFlightEvent (string phase, int256 airspeed, int256 verticalSpeed)Topic 0  signature hash0x01f789d670afa3030578cc570ac4d43ace6f1575dd6c395a711e72a30051efd2Copystring  phaseHolding pointCopyint256  airspeed0int256  verticalSpeed0")
+        expect(wrapper.get("#logArg_phase").text()).toBe("string  phaseHolding pointCopy")
         expect(wrapper.get("#logArg_airspeed").text()).toBe("int256  airspeed0")
         expect(wrapper.get("#logArg_verticalSpeed").text()).toBe("int256  verticalSpeed0")
 
