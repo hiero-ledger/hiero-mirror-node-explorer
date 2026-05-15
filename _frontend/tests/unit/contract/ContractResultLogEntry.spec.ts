@@ -60,8 +60,8 @@ describe("ContractResultLogEntry.vue", () => {
         expect(wrapper.get("#blockNumber").get("a").text()).toBe('9')
         expect(wrapper.get("#blockNumber").text()).toBe("Block9")
         expect(wrapper.get("#address").text()).toBe("Address0x00…0b70cfCopy(TestEvent)")
-        expect(wrapper.get("#Args").text()).toBe("LogsFlightEvent (index_topic_1 string phase, int256 airspeed, int256 verticalSpeed)Topic 0  signature hash0x01f789d670afa3030578cc570ac4d43ace6f1575dd6c395a711e72a30051efd2Topic 1string  phase[object Object]int256  airspeed10int256  verticalSpeed0")
-        expect(wrapper.get("#logArg_phase").text()).toBe("string  phase[object Object]")
+        expect(wrapper.get("#Args").text()).toBe("LogsFlightEvent (index_topic_1 string phase, int256 airspeed, int256 verticalSpeed)Topic 0  signature hash0x01f789d670afa3030578cc570ac4d43ace6f1575dd6c395a711e72a30051efd2CopyTopic 1string  phase[object Object]Copyint256  airspeed10int256  verticalSpeed0")
+        expect(wrapper.get("#logArg_phase").text()).toBe("string  phase[object Object]Copy")
         expect(wrapper.get("#logArg_airspeed").text()).toBe("int256  airspeed10")
         expect(wrapper.get("#logArg_verticalSpeed").text()).toBe("int256  verticalSpeed0")
 
@@ -103,9 +103,9 @@ describe("ContractResultLogEntry.vue", () => {
         expect(wrapper.get("#address").text()).toBe(`Address0x00…0b70cfCopy(${SAMPLE_CONTRACT.contract_id})`)
         expect(wrapper.get("#Args").text()).toBe(
             "Logs" +
-            "Topic 0" + "01f7 89d6 70af a303 0578 cc57 0ac4 d43a ce6f 1575 dd6c 395a 711e 72a3 0051 efd2Copy" +
-            "Data" + "0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0060 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 000d 486f 6c64 696e 6720 706f 696e 7400 0000 0000 0000 0000 0000 0000 0000 0000 0000Copy"
-        )
+            "Topic " + "0" + "01f7 89d6 70af a303 0578 cc57 0ac4 d43a ce6f 1575 dd6c 395a 711e 72a3 0051 efd2" + "Copy" +
+            "Topic " + "1" + "3f42 6e69 ebfe 4b95 ac58 4a1d c00b e8e9 6c9e ba18 57fc 765e ec04 81a1 2a57 641c" + "Copy" +
+            "Data" + "0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 000a 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000" + "Copy" )
 
         wrapper.unmount()
         await flushPromises()
