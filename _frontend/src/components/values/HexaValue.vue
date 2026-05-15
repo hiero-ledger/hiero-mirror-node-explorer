@@ -6,11 +6,9 @@
 
 <template>
   <Copyable v-if="normByteString" :content-to-copy="normByteString" :enable-copy="isCopyEnabled">
-    <template v-slot:content>
-      <div class="hexa-value">
-        {{ normByteString }}
-      </div>
-    </template>
+    <div class="hexa-value">
+      {{ normByteString }}
+    </div>
   </Copyable>
 
   <template v-else-if="showNone && !initialLoading">

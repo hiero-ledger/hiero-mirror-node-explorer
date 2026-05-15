@@ -5,13 +5,14 @@
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <template>
-  <Copyable v-if="normByteString"
-            :content-to-copy="'0x' + normByteString" :enable-copy="isCopyEnabled">
-    <template #content>
-      <div class="hexa-dump-value" :class="{'scrollbar': props.scrollBar}">
-        {{ flow(isMediumScreen ? wordWrapMedium : wordWrapSmall) }}
-      </div>
-    </template>
+  <Copyable
+      v-if="normByteString"
+      :content-to-copy="'0x' + normByteString"
+      :enable-copy="isCopyEnabled"
+  >
+    <div :class="{'scrollbar': props.scrollBar}" class="hexa-dump-value">
+      {{ flow(isMediumScreen ? wordWrapMedium : wordWrapSmall) }}
+    </div>
   </Copyable>
   <template v-else-if="showNone && !initialLoading">
     <div class="h-is-low-contrast">None</div>

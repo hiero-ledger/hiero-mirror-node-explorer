@@ -8,14 +8,12 @@
   <div v-if="evmAddress">
     <div class="evm-address">
       <Copyable :content-to-copy="evmAddress" :enable-copy="enableCopy">
-        <template v-slot:content>
-          <div class="h-is-low-contrast h-is-monospace" style="display: inline">
-            {{ (props.compact || !isSmallScreen) ? nonSignificantCompact : nonSignificantFull }}
-          </div>
-          <div class="h-is-monospace" style="margin-right: 4px; display: inline">
-            {{ (props.compact || !isSmallScreen) ? significantCompact : significantFull }}
-          </div>
-        </template>
+        <div class="h-is-low-contrast h-is-monospace" style="display: inline">
+          {{ (props.compact || !isSmallScreen) ? nonSignificantCompact : nonSignificantFull }}
+        </div>
+        <div class="h-is-monospace" style="margin-right: 4px; display: inline">
+          {{ (props.compact || !isSmallScreen) ? significantCompact : significantFull }}
+        </div>
       </Copyable>
       <div v-if="entityId && showId" class="entity-id-or-name">
         <span>(</span>
@@ -130,6 +128,7 @@ const derivedEntityId = computed(() => {
 onMounted(() => updateIdAndAddress())
 watch([() => props.address, () => props.id, () => props.entityType], () => updateIdAndAddress())
 
+// eslint-disable-next-line complexity
 const updateIdAndAddress = async () => {
   entityLinkType.value = ExtendedEntityType.UNDEFINED
   evmAddress.value = props.address ?? null

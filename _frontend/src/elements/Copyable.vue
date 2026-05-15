@@ -6,7 +6,7 @@
 
 <template>
   <div class="shy-scope" :class="{'hoverable':enableCopy}">
-    <slot name="content"/>
+    <slot/>
     <div v-if="enableCopy && contentToCopy" id="shyCopyButton" class="shy">
       <div v-if="enableCopy" class="copy-button-container">
         <button class="copy-button" v-on:click.stop="copyToClipboard">Copy</button>

@@ -43,12 +43,18 @@
               v-for="(t, ti) in props.log.topics"
               :class="{'unverif-log-args-prop': !isMediumScreen || !isSmallScreen}"
               :key="t"
-              class="unverified-log-entry"
+              class="log-entry"
           >
             <div class="topic-title-box">
               <span>{{ 'Topic ' + ti }}</span>
             </div>
             <HexaDumpValue :show-none="true" :byteString="t" :word-wrap-small="0" :word-wrap-medium="8"/>
+          </div>
+          <div :class="{'unverif-log-args-prop': !isMediumScreen || !isSmallScreen}" class="log-entry">
+            <div class="topic-title-box">
+              <span>Data</span>
+            </div>
+            <HexaDumpValue :byteString="props.log.data" :show-none="true" :word-wrap-medium="8" :word-wrap-small="0"/>
           </div>
         </div>
 
@@ -59,7 +65,7 @@
           <div
               v-for="(arg, i) in args"
               :key="arg.name"
-              class="verified-log-entry"
+              class="log-entry"
           >
             <div v-if="arg.indexed" class="topic-title-box">{{ 'Topic ' + i }}</div>
             <div v-else/>
@@ -170,16 +176,11 @@ div.log-content {
   gap: 16px;
 }
 
-div.unverified-log-entry {
-  align-items: center;
-  display: flex;
-  gap: 16px;
-}
-
-div.verified-log-entry {
+div.log-entry {
   display: grid;
   grid-template-columns: 75px 1fr;
   gap: 8px;
+  align-items: baseline;
 }
 
 .topic-title-box {
