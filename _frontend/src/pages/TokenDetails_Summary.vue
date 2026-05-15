@@ -165,6 +165,10 @@
 
   </DashboardCardV2>
 
+  <TokenKeysSection :token-info="tokenInfo"/>
+
+  <TokenFeesSection v-if="hasCustomFees" :analyzer="tokenAnalyzer"/>
+
 </template>
 
 <!-- --------------------------------------------------------------------------------------------------------------- -->
@@ -192,7 +196,9 @@ import {PublicLabelsCache} from "@/utils/cache/PublicLabelsCache.ts";
 import {TokenInfoCache} from "@/utils/cache/TokenInfoCache.ts";
 import {makeEthAddressForToken, makeTokenName, makeTokenSymbol} from "@/schemas/MirrorNodeUtils.ts";
 import {routeManager} from "@/utils/RouteManager.ts";
-
+import TokenKeysSection from "@/components/token/TokenKeysSection.vue";
+import TokenFeesSection from "@/components/token/TokenFeesSection.vue";
+import {TokenInfoAnalyzer} from "@/components/token/TokenInfoAnalyzer.ts";
 
 const props = defineProps({
   tokenId: {
@@ -202,17 +208,23 @@ const props = defineProps({
   network: String
 })
 
-
 const tokenId = computed(() => props.tokenId ?? null)
+
 const tokenLookup = TokenInfoCache.instance.makeLookup(tokenId)
 onMounted(() => tokenLookup.mount())
 onBeforeUnmount(() => tokenLookup.unmount())
+
+const networkConfig = NetworkConfig.inject()
+const tokenAnalyzer = new TokenInfoAnalyzer(tokenId, networkConfig)
+const hasCustomFees = tokenAnalyzer.hasCustomFees
+onMounted(() => tokenAnalyzer.mount())
+onBeforeUnmount(() => tokenAnalyzer.unmount())
+
 const tokenInfo = tokenLookup.entity
 const displayName = computed(() => makeTokenName(tokenInfo.value, 80))
 const displaySymbol = computed(() => makeTokenSymbol(tokenInfo.value, 80))
 const validEntityId = computed(() => tokenId.value != null)
 
-const networkConfig = NetworkConfig.inject()
 const tokenChecksum = computed(() =>
     tokenInfo.value?.token_id ? networkConfig.computeChecksum(
         tokenInfo.value?.token_id,

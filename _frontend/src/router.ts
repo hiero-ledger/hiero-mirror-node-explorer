@@ -42,7 +42,6 @@ import Staking from "@/pages/Staking.vue";
 import TokenDetails from "@/pages/TokenDetails.vue";
 import TokenDetails_Holders from "@/pages/TokenDetails_Holders.vue";
 import TokenDetails_Metadata from "@/pages/TokenDetails_Metadata.vue";
-import TokenDetails_Others from "@/pages/TokenDetails_Others.vue";
 import TokenDetails_Summary from "@/pages/TokenDetails_Summary.vue";
 import Tokens from "@/pages/Tokens.vue";
 import TokensByName from "@/pages/TokensByName.vue";
@@ -291,15 +290,6 @@ export const TOKEN_DETAILS_ROUTE: RouteRecordRaw = {
             component: TokenDetails_Metadata,
             meta: {
                 tabLabel: "Metadata"
-            }
-        },
-        {
-            path: 'others',
-            name: 'TokenDetails_Others',
-            props: true,
-            component: TokenDetails_Others,
-            meta: {
-                tabLabel: "Others"
             }
         },
     ],

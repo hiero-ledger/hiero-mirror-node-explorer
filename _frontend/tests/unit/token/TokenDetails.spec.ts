@@ -37,7 +37,6 @@ import PageHeader from "@/components/page/header/PageHeader.vue";
 import NotificationBanner from "@/components/NotificationBanner.vue";
 import router, {routeManager} from "@/utils/RouteManager.ts";
 import TokenDetails_Holders from "@/pages/TokenDetails_Holders.vue";
-import TokenDetails_Others from "@/pages/TokenDetails_Others.vue";
 import TokenDetails_Summary from "@/pages/TokenDetails_Summary.vue";
 
 /*
@@ -93,6 +92,10 @@ describe("TokenDetails.vue", () => {
             "api/v1/contracts/" + SAMPLE_TOKEN.auto_renew_account,
             "api/v1/contracts/" + SAMPLE_TOKEN.treasury_account_id,
             "api/v1/contracts/" + SAMPLE_TOKEN.token_id,
+            "api/v1/contracts/" + SAMPLE_TOKEN.custom_fees.fixed_fees[0].collector_account_id,
+            "api/v1/contracts/" + SAMPLE_TOKEN.custom_fees.fixed_fees[1].collector_account_id,
+            "api/v1/contracts/" + SAMPLE_TOKEN.custom_fees.fixed_fees[2].collector_account_id,
+            "api/v1/network/exchangerate",
             "api/v1/contracts/0x0000000000000000000000000000000001c49eec",
             "api/v1/accounts/0x0000000000000000000000000000000001c49eec",
         ])
@@ -121,6 +124,8 @@ describe("TokenDetails.vue", () => {
 
         expect(wrapper.get("#createTransactionValue").text()).toBe(TransactionID.normalizeForDisplay(SAMPLE_TRANSACTION.transaction_id))
 
+        expect(wrapper.get("#adminKey").text()).toBe("Admin KeyNoneToken is immutable")
+
         //
         // TokenDetails_Holders
         //
@@ -145,33 +150,6 @@ describe("TokenDetails.vue", () => {
         expect(wrapper2.text()).toMatch("Balances")
         expect(wrapper2.findComponent(TokenBalanceTable).exists()).toBe(true)
         expect(wrapper2.findComponent(NftHolderTable).exists()).toBe(false)
-
-
-        //
-        // TokenDetails_Others
-        //
-
-        mock.resetHistory()
-        const wrapper3 = mount(TokenDetails_Others, {
-            global: {
-                plugins: [router, Oruga],
-                provide: {"isMediumScreen": false}
-            },
-            props: {
-                tokenId: testTokenId
-            },
-        });
-        await flushPromises()
-        // console.log(wrapper3.text())
-
-        expect(fetchGetURLs(mock)).toStrictEqual([
-            "api/v1/contracts/" + SAMPLE_TOKEN.custom_fees.fixed_fees[0].collector_account_id,
-            "api/v1/contracts/" + SAMPLE_TOKEN.custom_fees.fixed_fees[1].collector_account_id,
-            "api/v1/contracts/" + SAMPLE_TOKEN.custom_fees.fixed_fees[2].collector_account_id,
-            "api/v1/network/exchangerate",
-        ])
-
-        expect(wrapper3.get("#adminKey").text()).toBe("Admin KeyNoneToken is immutable")
 
         mock.restore()
         wrapper.unmount()
@@ -214,6 +192,7 @@ describe("TokenDetails.vue", () => {
             "api/v1/transactions",
             "api/v1/contracts/" + SAMPLE_NONFUNGIBLE_DUDE.treasury_account_id,
             "api/v1/contracts/" + SAMPLE_NONFUNGIBLE_DUDE.token_id,
+            "api/v1/contracts/" + SAMPLE_NONFUNGIBLE_DUDE.custom_fees.royalty_fees[0].collector_account_id,
             "api/v1/contracts/0x00000000000000000000000000000000000b6b60",
             "api/v1/accounts/0x00000000000000000000000000000000000b6b60",
         ])
@@ -233,6 +212,10 @@ describe("TokenDetails.vue", () => {
         expect(wrapper.get("#maxSupplyValue").text()).toBe("150")
         expect(wrapper.get("#decimalsValue").text()).toBe("0")
         expect(wrapper.get("#metadataValue").text()).toBe("None")
+
+        expect(wrapper.find("#adminKey").text()).toBe(
+            "Admin Key0xc1a8c8c5b446ce053b6eff4fe4f0192f76535ea9ed6b2b91981177ba237f4b5dCopyED25519"
+        )
 
         //
         // TokenDetails_Holders
@@ -262,35 +245,9 @@ describe("TokenDetails.vue", () => {
         expect(wrapper2.findComponent(NftHolderTable).exists()).toBe(true)
         expect(wrapper2.findComponent(TokenBalanceTable).exists()).toBe(false)
 
-        //
-        // TokenDetails_Others
-        //
-
-        mock.resetHistory()
-        const wrapper3 = mount(TokenDetails_Others, {
-            global: {
-                plugins: [router, Oruga],
-                provide: {"isMediumScreen": false}
-            },
-            props: {
-                tokenId: testTokenId
-            },
-        });
-        await flushPromises()
-        // console.log(wrapper3.text())
-
-        expect(fetchGetURLs(mock)).toStrictEqual([
-            "api/v1/contracts/" + SAMPLE_NONFUNGIBLE_DUDE.custom_fees.royalty_fees[0].collector_account_id,
-        ])
-
-        expect(wrapper3.find("#adminKey").text()).toBe(
-            "Admin Key0xc1a8c8c5b446ce053b6eff4fe4f0192f76535ea9ed6b2b91981177ba237f4b5dCopyED25519"
-        )
-
         mock.restore()
         wrapper.unmount()
         wrapper2.unmount()
-        wrapper3.unmount()
         await flushPromises()
     });
 
@@ -328,6 +285,7 @@ describe("TokenDetails.vue", () => {
             "api/v1/transactions",
             "api/v1/contracts/" + SAMPLE_NONFUNGIBLE_DUDE.treasury_account_id,
             "api/v1/contracts/" + SAMPLE_NONFUNGIBLE_DUDE.token_id,
+            "api/v1/contracts/" + SAMPLE_NONFUNGIBLE_DUDE.custom_fees.royalty_fees[0].collector_account_id,
             "api/v1/contracts/0x00000000000000000000000000000000000b6b60",
             "api/v1/accounts/0x00000000000000000000000000000000000b6b60",
         ])
@@ -357,6 +315,9 @@ describe("TokenDetails.vue", () => {
 
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/tokens/" + SAMPLE_TOKEN.token_id,
+            "api/v1/contracts/" + SAMPLE_TOKEN.custom_fees.fixed_fees[1].collector_account_id,
+            "api/v1/contracts/" + SAMPLE_TOKEN.custom_fees.fixed_fees[2].collector_account_id,
+            "api/v1/network/exchangerate",
             "api/v1/transactions",
             "api/v1/contracts/" + SAMPLE_TOKEN.auto_renew_account,
             "api/v1/contracts/" + SAMPLE_TOKEN.treasury_account_id,
@@ -458,39 +419,18 @@ describe("TokenDetails.vue", () => {
 
         expect(wrapper.text()).toContain("NFT Collection" + testTokenName + ' (' + testTokenSymbol + ')' + 'Token ID' + testTokenId)
 
-        //
-        // TokenDetails_Others
-        //
-
-        mock.resetHistory()
-        const wrapper2 = mount(TokenDetails_Others, {
-            global: {
-                plugins: [router, Oruga],
-                provide: {"isMediumScreen": false}
-            },
-            props: {
-                tokenId: testTokenId
-            },
-        });
-        await flushPromises()
-        // console.log(wrapper2.text())
-
-        expect(fetchGetURLs(mock)).toStrictEqual([
-        ])
-
-        expect(wrapper2.text()).toMatch("Token Keys")
-        expect(wrapper2.find("#adminKey").text()).toBe("Admin Key0xc539536f9599daefeeb777677aa1aeea2242dfc7cca92348c228a5187a0faf2bCopyED25519")
-        expect(wrapper2.find("#kycKey").text()).toBe("KYC Key0xc539536f9599daefeeb777677aa1aeea2242dfc7cca92348c228a5187a0faf2bCopyED25519")
-        expect(wrapper2.find("#freezeKey").text()).toBe("Freeze Key0xc539536f9599daefeeb777677aa1aeea2242dfc7cca92348c228a5187a0faf2bCopyED25519")
-        expect(wrapper2.find("#wipeKey").text()).toBe("Wipe Key0xc539536f9599daefeeb777677aa1aeea2242dfc7cca92348c228a5187a0faf2bCopyED25519")
-        expect(wrapper2.find("#supplyKey").text()).toBe("Supply Key0xc539536f9599daefeeb777677aa1aeea2242dfc7cca92348c228a5187a0faf2bCopyED25519")
-        expect(wrapper2.find("#feeScheduleKey").text()).toBe("Fee Schedule Key0xc539536f9599daefeeb777677aa1aeea2242dfc7cca92348c228a5187a0faf2bCopyED25519")
-        expect(wrapper2.find("#pauseKey").text()).toBe("Pause Key0xc539536f9599daefeeb777677aa1aeea2242dfc7cca92348c228a5187a0faf2bCopyED25519")
-        expect(wrapper2.find("#metadataKey").text()).toBe("Metadata Key0xc539536f9599daefeeb777677aa1aeea2242dfc7cca92348c228a5187a0faf2bCopyED25519")
+        expect(wrapper.text()).toMatch("Token Keys")
+        expect(wrapper.find("#adminKey").text()).toBe("Admin Key0xc539536f9599daefeeb777677aa1aeea2242dfc7cca92348c228a5187a0faf2bCopyED25519")
+        expect(wrapper.find("#kycKey").text()).toBe("KYC Key0xc539536f9599daefeeb777677aa1aeea2242dfc7cca92348c228a5187a0faf2bCopyED25519")
+        expect(wrapper.find("#freezeKey").text()).toBe("Freeze Key0xc539536f9599daefeeb777677aa1aeea2242dfc7cca92348c228a5187a0faf2bCopyED25519")
+        expect(wrapper.find("#wipeKey").text()).toBe("Wipe Key0xc539536f9599daefeeb777677aa1aeea2242dfc7cca92348c228a5187a0faf2bCopyED25519")
+        expect(wrapper.find("#supplyKey").text()).toBe("Supply Key0xc539536f9599daefeeb777677aa1aeea2242dfc7cca92348c228a5187a0faf2bCopyED25519")
+        expect(wrapper.find("#feeScheduleKey").text()).toBe("Fee Schedule Key0xc539536f9599daefeeb777677aa1aeea2242dfc7cca92348c228a5187a0faf2bCopyED25519")
+        expect(wrapper.find("#pauseKey").text()).toBe("Pause Key0xc539536f9599daefeeb777677aa1aeea2242dfc7cca92348c228a5187a0faf2bCopyED25519")
+        expect(wrapper.find("#metadataKey").text()).toBe("Metadata Key0xc539536f9599daefeeb777677aa1aeea2242dfc7cca92348c228a5187a0faf2bCopyED25519")
 
         mock.restore()
         wrapper.unmount()
-        wrapper2.unmount()
         await flushPromises()
     });
 
@@ -546,40 +486,18 @@ describe("TokenDetails.vue", () => {
 
         expect(wrapper.text()).toContain("NFT Collection" + testTokenName + ' (' + testTokenSymbol + ')' + 'Token ID' + testTokenId)
 
-
-        //
-        // TokenDetails_Others
-        //
-
-        mock.resetHistory()
-        const wrapper2 = mount(TokenDetails_Others, {
-            global: {
-                plugins: [router, Oruga],
-                provide: {"isMediumScreen": false}
-            },
-            props: {
-                tokenId: testTokenId
-            },
-        });
-        await flushPromises()
-        // console.log(wrapper2.text())
-
-        expect(fetchGetURLs(mock)).toStrictEqual([
-        ])
-
-        expect(wrapper2.text()).toMatch("Token Keys")
-        expect(wrapper2.find("#adminKey").text()).toBe("Admin KeyNoneToken is immutable")
-        expect(wrapper2.find("#kycKey").text()).toBe("KYC KeyNoneKYC is not required")
-        expect(wrapper2.find("#freezeKey").text()).toBe("Freeze KeyNoneToken cannot be frozen")
-        expect(wrapper2.find("#wipeKey").text()).toBe("Wipe KeyNoneToken cannot be wiped")
-        expect(wrapper2.find("#supplyKey").text()).toBe("Supply KeyNoneToken cannot be minted or burnt")
-        expect(wrapper2.find("#feeScheduleKey").text()).toBe("Fee Schedule KeyNoneCustom fee schedule is immutable")
-        expect(wrapper2.find("#pauseKey").text()).toBe("Pause KeyNoneToken cannot be paused")
-        expect(wrapper2.find("#metadataKey").text()).toBe("Metadata KeyNoneToken metadata is immutable")
+        expect(wrapper.text()).toMatch("Token Keys")
+        expect(wrapper.find("#adminKey").text()).toBe("Admin KeyNoneToken is immutable")
+        expect(wrapper.find("#kycKey").text()).toBe("KYC KeyNoneKYC is not required")
+        expect(wrapper.find("#freezeKey").text()).toBe("Freeze KeyNoneToken cannot be frozen")
+        expect(wrapper.find("#wipeKey").text()).toBe("Wipe KeyNoneToken cannot be wiped")
+        expect(wrapper.find("#supplyKey").text()).toBe("Supply KeyNoneToken cannot be minted or burnt")
+        expect(wrapper.find("#feeScheduleKey").text()).toBe("Fee Schedule KeyNoneCustom fee schedule is immutable")
+        expect(wrapper.find("#pauseKey").text()).toBe("Pause KeyNoneToken cannot be paused")
+        expect(wrapper.find("#metadataKey").text()).toBe("Metadata KeyNoneToken metadata is immutable")
 
         mock.restore()
         wrapper.unmount()
-        wrapper2.unmount()
         await flushPromises()
     });
 
@@ -686,38 +604,17 @@ describe("TokenDetails.vue", () => {
             "api/v1/contracts/" + SAMPLE_TOKEN.auto_renew_account,
             "api/v1/contracts/" + SAMPLE_TOKEN.treasury_account_id,
             "api/v1/contracts/" + SAMPLE_TOKEN.token_id,
+            "api/v1/contracts/" + SAMPLE_TOKEN.custom_fees.fixed_fees[0].collector_account_id,
+            "api/v1/contracts/" + SAMPLE_TOKEN.custom_fees.fixed_fees[1].collector_account_id,
+            "api/v1/contracts/" + SAMPLE_TOKEN.custom_fees.fixed_fees[2].collector_account_id,
+            "api/v1/network/exchangerate",
             "api/v1/contracts/0x0000000000000000000000000000000001c49eec",
             "api/v1/accounts/0x0000000000000000000000000000000001c49eec",
         ])
 
         expect(wrapper.text()).toContain("Fungible Token" + testTokenName + ' (' + testTokenSymbol + ')' + 'Token ID' + testTokenId)
 
-
-        //
-        // TokenDetails_Others
-        //
-
-        mock.resetHistory()
-        const wrapper2 = mount(TokenDetails_Others, {
-            global: {
-                plugins: [router, Oruga],
-                provide: {"isMediumScreen": false}
-            },
-            props: {
-                tokenId: testTokenId
-            },
-        });
-        await flushPromises()
-        // console.log(wrapper.text())
-
-        expect(fetchGetURLs(mock)).toStrictEqual([
-            "api/v1/contracts/" + SAMPLE_TOKEN.custom_fees.fixed_fees[0].collector_account_id,
-            "api/v1/contracts/" + SAMPLE_TOKEN.custom_fees.fixed_fees[1].collector_account_id,
-            "api/v1/contracts/" + SAMPLE_TOKEN.custom_fees.fixed_fees[2].collector_account_id,
-            "api/v1/network/exchangerate",
-        ])
-
-        const customFees = wrapper2.findComponent(TokenFeesSection)
+        const customFees = wrapper.findComponent(TokenFeesSection)
         expect(customFees.exists()).toBe(true)
 
         const fixedFee = customFees.findComponent(FixedFeeTable)
@@ -741,7 +638,6 @@ describe("TokenDetails.vue", () => {
 
         mock.restore()
         wrapper.unmount()
-        wrapper2.unmount()
         await flushPromises()
     });
 
@@ -789,39 +685,17 @@ describe("TokenDetails.vue", () => {
             "api/v1/transactions",
             "api/v1/contracts/" + SAMPLE_NONFUNGIBLE.treasury_account_id,
             "api/v1/contracts/" + SAMPLE_NONFUNGIBLE.token_id,
+            "api/v1/contracts/" + SAMPLE_NONFUNGIBLE.custom_fees.royalty_fees[0].collector_account_id,
+            "api/v1/contracts/" + SAMPLE_NONFUNGIBLE.custom_fees.royalty_fees[1].collector_account_id,
+            "api/v1/contracts/" + SAMPLE_NONFUNGIBLE.custom_fees.royalty_fees[2].collector_account_id,
+            "api/v1/network/exchangerate",
             "api/v1/contracts/0x00000000000000000000000000000000000b6b5f",
             "api/v1/accounts/0x00000000000000000000000000000000000b6b5f",
         ])
 
         expect(wrapper.text()).toContain("NFT Collection" + testTokenName + ' (' + testTokenSymbol + ')' + 'Token ID' + testTokenId)
 
-
-        //
-        // TokenDetails_Others
-        //
-
-        mock.resetHistory()
-        const wrapper2 = mount(TokenDetails_Others, {
-            global: {
-                plugins: [router, Oruga],
-                provide: {"isMediumScreen": false}
-            },
-            props: {
-                tokenId: testTokenId
-            },
-        });
-        await flushPromises()
-        // console.log(wrapper.html())
-        // console.log(wrapper.text())
-
-        expect(fetchGetURLs(mock)).toStrictEqual([
-            "api/v1/contracts/" + SAMPLE_NONFUNGIBLE.custom_fees.fixed_fees[0].collector_account_id,
-            "api/v1/contracts/" + SAMPLE_NONFUNGIBLE.custom_fees.fixed_fees[1].collector_account_id,
-            "api/v1/contracts/" + SAMPLE_NONFUNGIBLE.custom_fees.fixed_fees[2].collector_account_id,
-            "api/v1/network/exchangerate",
-        ])
-
-        const customFees = wrapper2.findComponent(TokenFeesSection)
+        const customFees = wrapper.findComponent(TokenFeesSection)
         expect(customFees.exists()).toBe(true)
 
         const fixedFee = customFees.findComponent(FixedFeeTable)
@@ -845,7 +719,6 @@ describe("TokenDetails.vue", () => {
 
         mock.restore()
         wrapper.unmount()
-        wrapper2.unmount()
         await flushPromises()
     });
 
@@ -950,6 +823,10 @@ describe("TokenDetails.vue", () => {
             "api/v1/contracts/" + SAMPLE_TOKEN.auto_renew_account,
             "api/v1/contracts/" + SAMPLE_TOKEN.treasury_account_id,
             "api/v1/contracts/" + SAMPLE_TOKEN.token_id,
+            "api/v1/contracts/" + SAMPLE_NONFUNGIBLE.custom_fees.royalty_fees[0].collector_account_id,
+            "api/v1/contracts/" + SAMPLE_NONFUNGIBLE.custom_fees.royalty_fees[1].collector_account_id,
+            "api/v1/contracts/" + SAMPLE_NONFUNGIBLE.custom_fees.royalty_fees[2].collector_account_id,
+            "api/v1/network/exchangerate",
             "api/v1/contracts/0x0000000000000000000000000000000001c49eec",
             "api/v1/accounts/0x0000000000000000000000000000000001c49eec",
         ])
