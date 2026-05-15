@@ -52,7 +52,7 @@
     "file-saver": "^2.0.5",
     "jszip": "^3.10.1",
     "lucide-vue-next": "^0.544.0",
-    "multiformats": "^13.4.1",
+    "multiformats": "^14.0.0",
     "prismjs": "^1.30.0",
     "topojson-client": "^3.1.0",
     "vue": "^3.5.22",
