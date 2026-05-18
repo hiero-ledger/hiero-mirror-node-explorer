@@ -70438,5 +70438,17 @@
     "address": "0x56ad482979fdafa012eaf999f2eb96b3867fd9e4",
     "name": "Hedera NFT",
     "symbol": "HNFT"
+  },
+  {
+    "contractId": "0.0.8974619",
+    "address": "0x26499626686676259a52ff61d221be8be970c306",
+    "name": "Life Sim Character",
+    "symbol": "LIFE"
+  },
+  {
+    "contractId": "0.0.8977905",
+    "address": "0xcd8cad27f6a4a1fd7a5996d49700a5a9b8382f09",
+    "name": "Vault Access NFT",
+    "symbol": "VANT"
   }
 ]
