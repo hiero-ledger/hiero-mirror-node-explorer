@@ -49,6 +49,7 @@ describe("RewardsCalculator.vue", () => {
             "api/v1/network/registered-nodes",
             "api/v1/network/registered-nodes",
             "api/v1/network/registered-nodes",
+            "api/v1/network/registered-nodes",
         ])
 
         expect(wrapper.text()).toMatch(RegExp("^Rewards Estimator"))
@@ -101,6 +102,7 @@ describe("RewardsCalculator.vue", () => {
 
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/network/nodes",
+            "api/v1/network/registered-nodes",
             "api/v1/network/registered-nodes",
             "api/v1/network/registered-nodes",
             "api/v1/network/registered-nodes",
@@ -157,6 +159,7 @@ describe("RewardsCalculator.vue", () => {
 
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/network/nodes",
+            "api/v1/network/registered-nodes",
             "api/v1/network/registered-nodes",
             "api/v1/network/registered-nodes",
             "api/v1/network/registered-nodes",

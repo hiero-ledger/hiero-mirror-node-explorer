@@ -69,6 +69,7 @@ describe("Network.vue", () => {
             "api/v1/network/registered-nodes",
             "api/v1/network/registered-nodes",
             "api/v1/network/registered-nodes",
+            "api/v1/network/registered-nodes",
             "api/v1/network/stake",
         ])
 

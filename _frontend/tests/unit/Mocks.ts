@@ -5201,6 +5201,28 @@ export const SAMPLE_REGISTERED_NODES: { registered_nodes: object[] } = {
                 }
             ],
             "timestamp": {"from": "1654532000.000000000", "to": null}
+        },
+        {
+            "admin_key": null,
+            "created_timestamp": "1654532000.000000000",
+            "description": "General Service | Central, USA",
+            "registered_node_id": 3,
+            "service_endpoints": [
+                {
+                    "block_node": null,
+                    "domain_name": "general.service.example.com",
+                    "general_service": {
+                        "description": "Sample General Service"
+                    },
+                    "ip_address": null,
+                    "mirror_node": null,
+                    "port": 443,
+                    "requires_tls": true,
+                    "rpc_relay": {},
+                    "type": "GENERAL_SERVICE"
+                }
+            ],
+            "timestamp": {"from": "1654532500.000000000", "to": null}
         }
     ]
 }
