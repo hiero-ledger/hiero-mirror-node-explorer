@@ -17,7 +17,7 @@
         <PlayPauseButton v-else :controller="verifiedContractsController"/>
       </template>
       <template #right-control>
-        <div v-if="enableVerification" class="verify-switch">
+        <div v-if="enableVerification && !hideVerifiedFilter" class="verify-switch">
           <div class="switch-text">All</div>
           <SwitchView v-model="filterVerified"/>
           <div class="switch-text">Verified</div>
@@ -66,6 +66,8 @@ const router = useRouter()
 const isMediumScreen = inject('isMediumScreen', true)
 
 const enableVerification = routeManager.enableVerification
+const hideVerifiedFilter = import.meta.env.VITE_APP_HIDE_VERIFIED_FILTER === 'true'
+
 
 const filterVerified = ref(false)
 
