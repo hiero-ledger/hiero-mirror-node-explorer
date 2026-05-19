@@ -73,6 +73,7 @@ import Network_ConsensusNodes from "@/pages/Network_ConsensusNodes.vue";
 import Network_MirrorNodes from "@/pages/Network_MirrorNodes.vue";
 import Network_RpcRelays from "@/pages/Network_RpcRelays.vue";
 import RegisteredNodeDetails from "@/pages/RegisteredNodeDetails.vue";
+import Network_GeneralServices from "@/pages/Network_GeneralServices.vue";
 
 export enum TabId {
     Home = "Home",
@@ -528,6 +529,15 @@ export const NETWORK_ROUTE: RouteRecordRaw = {
             props: true,
             meta: {
                 tabLabel: "JSON-RPC relays"
+            }
+        },
+        {
+            path: 'general-services',
+            name: 'Network_GeneralServices',
+            component: Network_GeneralServices,
+            props: true,
+            meta: {
+                tabLabel: "General services"
             }
         },
     ],

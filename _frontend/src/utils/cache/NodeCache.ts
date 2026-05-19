@@ -34,7 +34,9 @@ export class NodeCache extends SingletonCache<NetworkNode[]> {
                         ? [3, 6, 10]
                         : n.node_id % 7 === 0
                             ? [7, 12, 15]
-                            : []
+                            : n.node_id % 3 === 0
+                                ? [1]
+                                : []
             })
         }
         return Promise.resolve(result)

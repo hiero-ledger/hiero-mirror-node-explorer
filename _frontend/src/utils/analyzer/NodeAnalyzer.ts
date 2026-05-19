@@ -59,6 +59,7 @@ export class NodeAnalyzer {
             result = this.networkAnalyzer.blockNodes.value
                 .concat(this.networkAnalyzer.mirrorNodes.value)
                 .concat(this.networkAnalyzer.rpcRelays.value)
+                .concat(this.networkAnalyzer.generalServices.value)
                 .filter(n => associatedNodes.includes(n.registered_node_id))
                 .sort((a, b) => a.registered_node_id - b.registered_node_id)
         } else {

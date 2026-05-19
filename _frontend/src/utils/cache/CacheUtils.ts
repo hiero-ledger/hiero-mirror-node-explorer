@@ -52,6 +52,7 @@ import {HookStorageByIdCache} from "@/utils/cache/HookStorageByIdCache.ts";
 import {BlockNodeCache} from "@/utils/cache/BlockNodeCache.ts";
 import {MirrorNodeCache} from "@/utils/cache/MirrorNodeCache.ts";
 import {RpcRelayCache} from "@/utils/cache/RpcRelayCache.ts";
+import {GeneralServiceCache} from "./GeneralServiceCache.ts";
 
 export class CacheUtils {
 
@@ -78,6 +79,7 @@ export class CacheUtils {
         ERC721Cache.instance.clear()
         ERC721InfoCache.instance.clear()
         ERC1155Cache.instance.clear()
+        GeneralServiceCache.instance.clear()
         HCSAssetCache.instance.clear()
         HbarPriceCache.instance.clear()
         HooksByAccountIdCache.instance.clear()

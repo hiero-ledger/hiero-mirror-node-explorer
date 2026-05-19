@@ -15,6 +15,7 @@ export class RegisteredNodeAnalyzer {
             result = this.networkAnalyzer.mirrorNodes.value
                 .concat(this.networkAnalyzer.blockNodes.value)
                 .concat(this.networkAnalyzer.rpcRelays.value)
+                .concat(this.networkAnalyzer.generalServices.value)
                 .find((node) => node.registered_node_id === this.registeredNodeId.value) ?? null
         } else {
             result = null
