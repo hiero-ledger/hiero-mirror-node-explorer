@@ -54,6 +54,7 @@ describe("NodeTable.vue", () => {
             "api/v1/network/registered-nodes",
             "api/v1/network/registered-nodes",
             "api/v1/network/registered-nodes",
+            "api/v1/network/registered-nodes",
         ])
 
         expect(wrapper.get('thead').text()).toBe("IDACCOUNTDESCRIPTIONSTAKE FOR CONSENSUSSTAKE RANGEREWARD RATE")

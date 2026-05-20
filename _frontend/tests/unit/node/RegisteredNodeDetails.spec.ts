@@ -49,6 +49,7 @@ describe("RegisteredNodeDetails.vue", () => {
             "api/v1/network/registered-nodes",
             "api/v1/network/registered-nodes",
             "api/v1/network/registered-nodes",
+            "api/v1/network/registered-nodes",
         ])
 
         await flushPromises()
@@ -108,6 +109,7 @@ describe("RegisteredNodeDetails.vue", () => {
 
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/network/nodes",
+            "api/v1/network/registered-nodes",
             "api/v1/network/registered-nodes",
             "api/v1/network/registered-nodes",
             "api/v1/network/registered-nodes",

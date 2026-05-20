@@ -8,6 +8,7 @@ import {MirrorNodeCache} from "@/utils/cache/MirrorNodeCache.ts";
 import {RpcRelayCache} from "@/utils/cache/RpcRelayCache.ts";
 import {SingletonLookup} from "@/utils/cache/base/SingletonCache";
 import {NetworkNode, RegisteredNode} from "@/schemas/MirrorNodeSchemas";
+import {GeneralServiceCache} from "../cache/GeneralServiceCache.ts";
 
 
 export class NetworkAnalyzer {
@@ -17,6 +18,7 @@ export class NetworkAnalyzer {
     public readonly blockNodeLookup: SingletonLookup<RegisteredNode[]> = BlockNodeCache.instance.makeLookup()
     public readonly mirrorNodeLookup: SingletonLookup<RegisteredNode[]> = MirrorNodeCache.instance.makeLookup()
     public readonly rpcRelayLookup: SingletonLookup<RegisteredNode[]> = RpcRelayCache.instance.makeLookup()
+    public readonly generalServiceLookup: SingletonLookup<RegisteredNode[]> = GeneralServiceCache.instance.makeLookup()
 
     public readonly stakingPeriod: Ref<StakingPeriod | null> = ref(null)
     private intervalHandle = -1
@@ -31,6 +33,7 @@ export class NetworkAnalyzer {
         this.blockNodeLookup.mount()
         this.mirrorNodeLookup.mount()
         this.rpcRelayLookup.mount()
+        this.generalServiceLookup.mount()
         this.updateStakingPeriod()
         this.intervalHandle = window.setInterval(this.updateStakingPeriod, 10000)
         this.watchHandle = watch(this.nodes, this.updateStakingPeriod)
@@ -41,6 +44,7 @@ export class NetworkAnalyzer {
         this.blockNodeLookup.unmount()
         this.mirrorNodeLookup.unmount()
         this.rpcRelayLookup.unmount()
+        this.generalServiceLookup.unmount()
         this.stakingPeriod.value = null
         window.clearInterval(this.intervalHandle)
         this.intervalHandle = -1
@@ -120,6 +124,7 @@ export class NetworkAnalyzer {
     public readonly blockNodes = computed(() => this.blockNodeLookup.entity.value ?? [])
     public readonly mirrorNodes = computed(() => this.mirrorNodeLookup.entity.value ?? [])
     public readonly rpcRelays = computed(() => this.rpcRelayLookup.entity.value ?? [])
+    public readonly generalServices = computed(() => this.generalServiceLookup.entity.value ?? [])
 
     //
     // Private

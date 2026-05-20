@@ -52,6 +52,7 @@ const excludedTabIds = computed(() => {
     excluded.push("Network_BlockNodes")
     excluded.push("Network_MirrorNodes")
     excluded.push("Network_RpcRelays")
+    excluded.push("Network_GeneralServices")
   }
   return excluded
 })

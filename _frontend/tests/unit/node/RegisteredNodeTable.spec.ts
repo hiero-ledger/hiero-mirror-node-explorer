@@ -35,7 +35,7 @@ describe("RegisteredNodeTable.vue", () => {
         // console.log(wrapper.html())
 
         expect(wrapper.get('thead').text()).toBe("SERVICE TYPEREGISTERED NODE IDDESCRIPTIONSERVICE ENDPOINTS")
-        expect(wrapper.get('tbody').findAll('tr').length).toBe(3)
+        expect(wrapper.get('tbody').findAll('tr').length).toBe(4)
         expect(wrapper.get('tbody').text()).toBe(
             "Block Node" +
             "0" +
@@ -50,7 +50,12 @@ describe("RegisteredNodeTable.vue", () => {
             "JSON-RPC Relay" +
             "2" +
             "RPC Relay | Central, USA" +
-            "relay.example.com:8080"
+            "relay.example.com:8080" +
+
+            "General Service" +
+            "3" +
+            "General Service | Central, USA" +
+            "general.service.example.com:443"
         )
 
         wrapper.unmount()
