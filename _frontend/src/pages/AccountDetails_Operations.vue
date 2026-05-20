@@ -36,7 +36,7 @@
           <Download :size="24" @click="transactionDownloadDialogVisible = true"/>
           <TransactionFilterSelect v-model:selected-filter="transactionType"/>
         </template>
-        <template v-else-if="selectedTab === 'contracts'">
+        <template v-else-if="selectedTab === 'contracts' && enableVerification && !hideVerifiedFilter">
           <span>All</span>
           <SwitchView v-model="filterVerified"/>
           <span>Verified</span>
@@ -160,6 +160,8 @@ const isMediumScreen = inject('isMediumScreen', true)
 const networkConfig = NetworkConfig.inject()
 
 const enableStaking = routeManager.enableStaking
+const enableVerification = routeManager.enableVerification
+const hideVerifiedFilter = import.meta.env.VITE_APP_HIDE_VERIFIED_FILTER === 'true'
 
 const timeSelection = ref("LATEST")
 watch(timeSelection, (newValue, oldValue) => {

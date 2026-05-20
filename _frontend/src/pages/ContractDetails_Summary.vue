@@ -56,8 +56,16 @@
             {{ isFullMatch ? "Full Match" : "Partial Match" }}
             <InfoTooltip :label="tooltipText"/>
             <ButtonView
-                v-if="!isFullMatch"
-                id="verify-button"
+                v-if="isFullMatch"
+                id="go-to-sourcify-button"
+                :size="ButtonSize.small"
+                @action="handleGoToSourcify"
+            >
+              GO TO SOURCIFY
+            </ButtonView>
+            <ButtonView
+                v-else
+                id="re-verify-button"
                 :size="ButtonSize.small"
                 @action="showVerifyDialog = true"
             >
@@ -82,10 +90,10 @@
 
   <ContractERCSection :erc-analyzer="ercAnalyzer"/>
 
-  <ContractVerificationDialog
+  <ContractVerificationInfoDialog
       v-model:show-dialog="showVerifyDialog"
-      :contract-id="parsedContractId"
-      v-on:verify-did-complete="verifyDidComplete"/>
+      :contract-address="contractAddress"
+  />
 
 </template>
 
@@ -112,7 +120,7 @@ import MirrorLink from "@/components/MirrorLink.vue";
 import InfoTooltip from "@/components/InfoTooltip.vue";
 import ButtonView from "@/elements/ButtonView.vue";
 import {ButtonSize} from "@/dialogs/core/DialogUtils.ts";
-import ContractVerificationDialog from "@/dialogs/verification/ContractVerificationDialog.vue";
+import ContractVerificationInfoDialog from "@/dialogs/verification/ContractVerificationInfoDialog.vue";
 import ContractSectionTitle from "@/components/contract/ContractSectionTitle.vue";
 
 const props = defineProps({
@@ -174,10 +182,16 @@ const accountChecksum = computed(() =>
 // Verify dialog
 //
 const showVerifyDialog = ref(false)
-const verifyDidComplete = () => {
-  contractAnalyzer.verifyDidComplete()
-}
 
+const handleGoToSourcify = () => {
+  const repoUrl = routeManager.currentNetworkEntry.value.sourcifySetup?.repoURL
+  const chainId = routeManager.currentNetworkEntry.value.sourcifySetup?.chainID
+  if (repoUrl && chainId) {
+    const contractUrl = repoUrl + chainId.toString() + "/" + contractAddress.value
+    window.open(contractUrl, "_blank")
+
+  }
+}
 
 </script>
 
@@ -187,4 +201,9 @@ const verifyDidComplete = () => {
 
 <style scoped>
 
+.verification-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
 </style>

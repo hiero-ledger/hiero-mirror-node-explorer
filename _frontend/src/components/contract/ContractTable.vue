@@ -29,7 +29,7 @@
       <ContractIOL class="contract_id" :contract-id="props.row.contract_id"/>
     </o-table-column>
 
-    <o-table-column v-slot="props" field="contract_name" label="CONTRACT NAME">
+    <o-table-column v-if="enableVerification" v-slot="props" field="contract_name" label="CONTRACT NAME">
       <ContractName :contract-id="props.row.contract_id"/>
     </o-table-column>
 
@@ -87,7 +87,7 @@ const props = defineProps({
 onMounted(() => props.controller.mount())
 onBeforeUnmount(() => props.controller.unmount())
 
-const handleClick = (contract: Contract, c: unknown, i: number, ci: number, event: Event) => {
+const handleClick = (contract: Contract, _c: unknown, _i: number, _ci: number, event: Event) => {
   if (contract.contract_id) {
     routeManager.routeToContract(contract.contract_id, event)
   }
@@ -99,6 +99,7 @@ const total = props.controller.totalRowCount
 const currentPage = props.controller.currentPage
 const onPageChange = props.controller.onPageChange
 const perPage = props.controller.pageSize
+const enableVerification = routeManager.enableVerification
 
 </script>
 

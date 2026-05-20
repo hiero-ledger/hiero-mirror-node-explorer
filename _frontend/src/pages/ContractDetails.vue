@@ -34,7 +34,7 @@
 
     <template #right-toolbar>
       <ButtonView
-          v-if="isVerificationAvailable && !isVerified"
+          v-if="enableVerification && !isVerified"
           :size="ButtonSize.small"
           :for-toolbar="true"
           @action="showVerifyDialog = true"
@@ -51,10 +51,10 @@
 
   </PageFrameV2>
 
-  <ContractVerificationDialog
+  <ContractVerificationInfoDialog
       v-model:show-dialog="showVerifyDialog"
-      :contract-id="parsedContractId"
-      v-on:verify-did-complete="verifyDidComplete"/>
+      :contract-address="contractAddress"
+  />
 
 </template>
 
@@ -73,7 +73,7 @@ import {ButtonSize} from "@/dialogs/core/DialogUtils.ts";
 import {ContractAnalyzer} from "@/utils/analyzer/ContractAnalyzer.ts";
 import {ContractLocParser} from "@/utils/parser/ContractLocParser";
 import {routeManager} from "@/utils/RouteManager.ts";
-import ContractVerificationDialog from "@/dialogs/verification/ContractVerificationDialog.vue";
+import ContractVerificationInfoDialog from "@/dialogs/verification/ContractVerificationInfoDialog.vue";
 import ArrowLink from "@/components/ArrowLink.vue";
 
 const props = defineProps({
@@ -101,6 +101,7 @@ const contractLocParser = new ContractLocParser(computed(() => props.contractId 
 onMounted(() => contractLocParser.mount())
 onBeforeUnmount(() => contractLocParser.unmount())
 const parsedContractId = contractLocParser.contractId
+const contractAddress = contractLocParser.ethereumAddress
 const notification = contractLocParser.errorNotification
 const pageTitle = computed(() =>
     parsedContractId.value !== null ? "Contract " + parsedContractId.value : null
@@ -113,20 +114,9 @@ const contractAnalyzer = new ContractAnalyzer(parsedContractId)
 onMounted(() => contractAnalyzer.mount())
 onBeforeUnmount(() => contractAnalyzer.unmount())
 const isVerified = contractAnalyzer.isVerified
-
-
-// True when the verification is ENABLED by configuration and the current verification STATUS is known, which
-// enables to decide which option to present to the user
-const isVerificationAvailable = computed(() => {
-  const sourcifySetup = routeManager.currentNetworkEntry.value.sourcifySetup
-  return sourcifySetup?.activate
-      && sourcifySetup?.serverURL.length
-})
+const enableVerification = routeManager.enableVerification
 
 const showVerifyDialog = ref(false)
-const verifyDidComplete = () => {
-  contractAnalyzer.verifyDidComplete()
-}
 
 //
 // Account route

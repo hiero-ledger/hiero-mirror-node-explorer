@@ -17,7 +17,7 @@
         <PlayPauseButton v-else :controller="verifiedContractsController"/>
       </template>
       <template #right-control>
-        <div class="verify-switch">
+        <div v-if="enableVerification && !hideVerifiedFilter" class="verify-switch">
           <div class="switch-text">All</div>
           <SwitchView v-model="filterVerified"/>
           <div class="switch-text">Verified</div>
@@ -55,6 +55,7 @@ import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import PlayPauseButton from "@/components/PlayPauseButton.vue";
 import SwitchView from "@/elements/SwitchView.vue";
 import {VerifiedContractTableController} from "@/components/contract/verified/VerifiedContractTableController.ts";
+import {routeManager} from "@/utils/RouteManager.ts";
 
 defineProps({
   network: String
@@ -63,6 +64,10 @@ defineProps({
 const router = useRouter()
 
 const isMediumScreen = inject('isMediumScreen', true)
+
+const enableVerification = routeManager.enableVerification
+const hideVerifiedFilter = import.meta.env.VITE_APP_HIDE_VERIFIED_FILTER === 'true'
+
 
 const filterVerified = ref(false)
 

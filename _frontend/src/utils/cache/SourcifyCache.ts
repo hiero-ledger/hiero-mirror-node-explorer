@@ -51,6 +51,7 @@ export class SourcifyCache extends EntityCache<string, SourcifyRecord | null> {
     // Cache
     //
 
+    // eslint-disable-next-line complexity
     protected async load(contractId: string): Promise<SourcifyRecord | null> {
         let result: SourcifyRecord | null
         const sourcifySetup = routeManager.currentNetworkEntry.value.sourcifySetup

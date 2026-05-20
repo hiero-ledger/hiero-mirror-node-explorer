@@ -19,6 +19,7 @@
       "activate": true,
       "repoURL": "https://repo.sourcify.dev/",
       "serverURL": "https://sourcify.dev/server/",
+      "verifierURL": "https://verify.sourcify.dev/",
       "chainID": 295
     }
   },
@@ -41,6 +42,7 @@
       "activate": true,
       "repoURL": "https://repo.sourcify.dev/",
       "serverURL": "https://sourcify.dev/server/",
+      "verifierURL": "https://verify.sourcify.dev/",
       "chainID": 296
     }
   },
@@ -63,6 +65,7 @@
       "activate": false,
       "repoURL": "https://repo.sourcify.dev/",
       "serverURL": "https://sourcify.dev/server/",
+      "verifierURL": "https://verify.sourcify.dev/",
       "chainID": 297
     }
   }

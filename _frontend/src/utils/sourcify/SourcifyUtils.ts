@@ -6,7 +6,6 @@ import {routeManager} from "@/utils/RouteManager.ts";
 
 export class SourcifyUtils {
 
-
     //
     // Session verification
     //

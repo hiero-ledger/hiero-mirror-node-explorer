@@ -98,6 +98,12 @@ export class RouteManager {
         return this.currentNetworkEntry.value.enableMarket
     })
 
+    public enableVerification = computed(() => {
+        const sourcifySetup = this.currentNetworkEntry.value.sourcifySetup
+        return sourcifySetup?.activate
+            && sourcifySetup.serverURL.length > 0
+    })
+
     public readonly nbNetworks = computed(() => {
         return this.networkConfig.value.entries.length
     })
