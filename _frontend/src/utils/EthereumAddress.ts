@@ -2,7 +2,6 @@
 
 import {byteToHex, hexToByte} from "@/utils/B64Utils";
 import {EntityID} from "@/utils/EntityID";
-import {ethers} from "ethers";
 
 export class EthereumAddress {
 
@@ -15,12 +14,6 @@ export class EthereumAddress {
     public static parse(byteString: string): EthereumAddress | null {
         const bytes = hexToByte(byteString)
         return bytes !== null && bytes.length == 20 ? new EthereumAddress(bytes) : null
-    }
-
-    public static normalizeEIP55(byteString: string): string {
-        // https://eips.ethereum.org/EIPS/eip-55
-        // https://docs.ethers.org/v6/api/address/#getAddress
-        return ethers.getAddress(byteString)
     }
 
     public toString(): string {

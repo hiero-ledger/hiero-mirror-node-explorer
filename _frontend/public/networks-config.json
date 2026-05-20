@@ -17,8 +17,8 @@
     "publicLabelsURL": null,
     "sourcifySetup": {
       "activate": true,
-      "repoURL": "https://repository.local/contracts/",
-      "serverURL": "https://localhost/server/",
+      "repoURL": "https://repo.sourcify.dev/",
+      "serverURL": "https://sourcify.dev/server/",
       "chainID": 295
     }
   },
@@ -39,8 +39,8 @@
     "publicLabelsURL": null,
     "sourcifySetup": {
       "activate": true,
-      "repoURL": "https://repository.local/contracts/",
-      "serverURL": "https://localhost/server/",
+      "repoURL": "https://repo.sourcify.dev/",
+      "serverURL": "https://sourcify.dev/server/",
       "chainID": 296
     }
   },
@@ -60,9 +60,9 @@
     "erc1155IndexURL": null,
     "publicLabelsURL": null,
     "sourcifySetup": {
-      "activate": true,
-      "repoURL": "https://repository.local/contracts/",
-      "serverURL": "https://localhost/server/",
+      "activate": false,
+      "repoURL": "https://repo.sourcify.dev/",
+      "serverURL": "https://sourcify.dev/server/",
       "chainID": 297
     }
   }

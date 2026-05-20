@@ -5,7 +5,6 @@ import {fetchBoolean, fetchNumber, fetchObject, fetchString, fetchURL} from "@/c
 import {inject} from "vue";
 import {networkConfigKey} from "@/AppKeys";
 import {hip15checksum} from "@/schemas/MirrorNodeUtils.ts";
-import {EthereumAddress} from "@/utils/EthereumAddress";
 import {ColorMap, NetworkColorMaps} from "@/config/NetworkColorMaps.ts";
 
 export class SourcifySetup {
@@ -45,18 +44,15 @@ export class SourcifySetup {
     // https://docs.sourcify.dev/docs/api/repository/get-file-static/
 
     makeRequestURL(contractAddress: string): string {
-        const normalizedAddress = EthereumAddress.normalizeEIP55(contractAddress)
-        return this.serverURL + "files/any/" + this.chainID + "/" + normalizedAddress
+        return this.serverURL + "v2/contract/" + this.chainID + "/" + contractAddress + "?fields=metadata,sources"
     }
 
-    makeContractSourceURL(contractAddress: string, full: boolean): string {
-        const normalizedAddress = EthereumAddress.normalizeEIP55(contractAddress)
-        const matchPrefix = full ? "full_match/" : "partial_match/"
-        return this.repoURL + matchPrefix + this.chainID + "/" + normalizedAddress
+    makeBatchRequestURL(): string {
+        return this.serverURL + "v2/contracts/" + this.chainID
     }
 
-    makeCheckAllByAddressURL(): string {
-        return this.serverURL + "check-all-by-addresses"
+    makeContractSourceURL(contractAddress: string): string {
+        return this.repoURL + this.chainID + "/" + contractAddress
     }
 
     //

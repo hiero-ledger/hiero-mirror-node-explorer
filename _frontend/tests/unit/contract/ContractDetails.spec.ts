@@ -85,7 +85,7 @@ describe("ContractDetails.vue", () => {
             "api/v1/contracts/" + SAMPLE_CONTRACT.contract_id,
             "api/v1/network/exchangerate",
             "api/v1/network/supply",
-            "http://localhost:3000/files/any/295/" + SAMPLE_CONTRACT.evm_address,
+            "http://localhost:3000/v2/contract/295/" + SAMPLE_CONTRACT.evm_address + "?fields=metadata,sources",
             "http://localhost:3000/mainnet/erc-20.json",
             "http://localhost:3000/mainnet/erc-721.json",
             "http://localhost:3000/mainnet/erc-1155.json",
@@ -240,14 +240,14 @@ describe("ContractDetails.vue", () => {
             "api/v1/contracts/" + SAMPLE_CONTRACT.evm_address,
             "api/v1/network/exchangerate",
             "api/v1/network/supply",
-            "http://localhost:3000/files/any/295/" + SAMPLE_CONTRACT.evm_address,
+            "http://localhost:3000/v2/contract/295/" + SAMPLE_CONTRACT.evm_address + "?fields=metadata,sources",
             "api/v1/contracts/" + SAMPLE_CONTRACT.evm_address,
             "http://localhost:3000/mainnet/erc-20.json",
             "http://localhost:3000/mainnet/erc-721.json",
             "http://localhost:3000/mainnet/erc-1155.json",
             "api/v1/network/nodes",
             "api/v1/accounts/" + SAMPLE_CONTRACT.evm_address,
-            "http://localhost:3000/files/any/295/" + SAMPLE_CONTRACT.evm_address,
+            "http://localhost:3000/v2/contract/295/" + SAMPLE_CONTRACT.evm_address + "?fields=metadata,sources",
         ])
 
         expect(wrapper.getComponent(PageHeader).text()).toMatch("Contract " + SAMPLE_CONTRACT.contract_id)
@@ -457,7 +457,7 @@ describe("ContractDetails.vue", () => {
             "http://localhost:3000/mainnet/erc-721.json",
             "http://localhost:3000/mainnet/erc-1155.json",
             "api/v1/network/nodes",
-            "http://localhost:3000/files/any/295/" + SAMPLE_CONTRACT.evm_address,
+            "http://localhost:3000/v2/contract/295/" + SAMPLE_CONTRACT.evm_address + "?fields=metadata,sources",
         ])
 
         expect(wrapper.findComponent(NotificationBanner).exists()).toBe(false)
@@ -482,7 +482,7 @@ describe("ContractDetails.vue", () => {
 
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/contracts/" + SAMPLE_CONTRACT_DUDE.contract_id,
-            "http://localhost:3000/files/any/295/0x00000000000000000000000000000000000C41Df",
+            "http://localhost:3000/v2/contract/295/" + SAMPLE_CONTRACT_DUDE.evm_address + "?fields=metadata,sources",
         ])
 
         expect(wrapper.get("#entityId").text()).toBe("Contract ID " + SAMPLE_CONTRACT_DUDE.contract_id + "Copy-gazpt")
@@ -540,7 +540,7 @@ describe("ContractDetails.vue", () => {
             "api/v1/balances",
             "api/v1/transactions",
             "api/v1/contracts/" + SAMPLE_CONTRACT_DELETED.contract_id + "/state?slot=0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc",
-            "http://localhost:3000/files/any/295/0x00000000000000000000000000000000000C41Df",
+            "http://localhost:3000/v2/contract/295/" + SAMPLE_CONTRACT.evm_address + "?fields=metadata,sources",
             "api/v1/contracts/" + SAMPLE_CONTRACT_DELETED.contract_id + "/state?slot=0xb53127684a568b3173ae13b9f8a6016e243e63b6e8ee1178d6a717850b5d6103",
             "api/v1/accounts/" + SAMPLE_CONTRACT_DELETED.contract_id + "/nfts",
             "api/v1/tokens",
@@ -598,7 +598,7 @@ describe("ContractDetails.vue", () => {
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/network/exchangerate",
             "api/v1/contracts/" + SAMPLE_CONTRACT_DELETED.contract_id,
-            "http://localhost:3000/files/any/295/0x00000000000000000000000000000000000C41Df",
+            "http://localhost:3000/v2/contract/295/" + SAMPLE_CONTRACT_DUDE.evm_address + "?fields=metadata,sources",
             "http://localhost:3000/mainnet/erc-20.json",
             "http://localhost:3000/mainnet/erc-721.json",
             "http://localhost:3000/mainnet/erc-1155.json",
@@ -645,7 +645,7 @@ describe("ContractDetails.vue", () => {
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/network/exchangerate",
             "api/v1/contracts/" + SAMPLE_CONTRACT_DELETED.contract_id,
-            "http://localhost:3000/files/any/295/0x00000000000000000000000000000000000C41Df",
+            "http://localhost:3000/v2/contract/295/" + SAMPLE_CONTRACT_DELETED.evm_address + "?fields=metadata,sources",
             "http://localhost:3000/mainnet/erc-20.json",
             "http://localhost:3000/mainnet/erc-721.json",
             "http://localhost:3000/mainnet/erc-1155.json",
@@ -744,7 +744,7 @@ describe("ContractDetails.vue", () => {
             "api/v1/contracts/" + SAMPLE_CONTRACT.contract_id,
             "api/v1/network/exchangerate",
             "api/v1/network/supply",
-            "http://localhost:3000/files/any/295/" + SAMPLE_CONTRACT.evm_address,
+            "http://localhost:3000/v2/contract/295/" + SAMPLE_CONTRACT.evm_address + "?fields=metadata,sources",
             "http://localhost:3000/mainnet/erc-20.json",
             "http://localhost:3000/mainnet/erc-721.json",
             "http://localhost:3000/mainnet/erc-1155.json",
@@ -822,7 +822,7 @@ describe("ContractDetails.vue", () => {
 
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/contracts/" + SAMPLE_CONTRACT.contract_id,
-            "http://localhost:3000/files/any/295/" + SAMPLE_CONTRACT.evm_address,
+            "http://localhost:3000/v2/contract/295/" + SAMPLE_CONTRACT.evm_address + "?fields=metadata,sources",
             "http://localhost:3000/mainnet/erc-20.json",
             "http://localhost:3000/mainnet/erc-721.json",
             "http://localhost:3000/mainnet/erc-1155.json",

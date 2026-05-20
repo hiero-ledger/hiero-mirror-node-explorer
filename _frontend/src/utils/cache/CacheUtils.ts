@@ -44,7 +44,6 @@ import {TransactionByTsCache} from "@/utils/cache/TransactionByTsCache";
 import {TransactionGroupByBlockCache} from "@/utils/cache/TransactionGroupByBlockCache";
 import {TransactionGroupCache} from "@/utils/cache/TransactionGroupCache";
 import {VerifiedContractsByAccountIdCache} from "@/utils/cache/VerifiedContractsByAccountIdCache";
-import {VerifiedContractsCache} from "@/utils/cache/VerifiedContractsCache";
 import {ScheduleByIdCache} from "@/utils/cache/ScheduleByIdCache.ts";
 import {ERC1155Cache} from "@/utils/cache/ERC1155Cache.ts";
 import {PublicLabelsCache} from "@/utils/cache/PublicLabelsCache.ts";
@@ -111,6 +110,5 @@ export class CacheUtils {
         TransactionGroupByBlockCache.instance.clear()
         TransactionGroupCache.instance.clear()
         VerifiedContractsByAccountIdCache.instance.clear()
-        VerifiedContractsCache.instance.clear()
     }
 }

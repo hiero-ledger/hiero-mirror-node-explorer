@@ -106,12 +106,10 @@ const isImportFile = (file: SourcifyResponseItem): boolean => {
 //
 
 const handleDownload = async () => {
-  const contractURL = contractAnalyzer.sourcifyURL.value ?? ''
   if (selectedSource.value === '') {
     const zip = new JSZip();
-    for (const file of contractAnalyzer.sourceFiles.value) {
-      const filePath = file.path.substring(file.path.indexOf('match') + 10)
-      zip.file(filePath, file.content);
+    for (const fileItem of contractAnalyzer.solidityFiles.value) {
+      zip.file(fileItem.path, fileItem.content);
     }
     zip.generateAsync({type: "blob"})
         .then(function (content: Blob) {
@@ -119,17 +117,18 @@ const handleDownload = async () => {
           saveAs(content, zipName);
         });
   } else {
-    for (const file of contractAnalyzer.solidityFiles.value) {
-      if (file.name === selectedSource.value) {
-        const URLPrefix = contractURL.substring(0, contractURL.indexOf('contracts'))
-        const filePath = file.path.substring(file.path.indexOf('contracts'))
-        const fileURL = URLPrefix + filePath
-
+    const item = contractAnalyzer.solidityFiles.value.find(item => item.name === selectedSource.value)
+    if (item) {
+      const blob = new Blob([item.content], {type: "text/plain"})
+      if (blob !== null) {
+        const url = window.URL.createObjectURL(blob)
         const a = document.createElement('a')
-        a.setAttribute('href', fileURL)
-        a.setAttribute('download', file.name);
+        a.setAttribute('href', url)
+        a.setAttribute('download', item.name);
         a.click()
       }
+    } else {
+      console.log("WARNING: cannot find item for path " + selectedSource.value)
     }
   }
 }
