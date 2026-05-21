@@ -34,6 +34,11 @@ jobs:
         with:
           token: ${{ secrets.GH_ACCESS_TOKEN }}
           fetch-depth: 0
+          persist-credentials: true
+
+      - name: Check runner version
+        run: | 
+          echo "Runner version: $RUNNER_VERSION"
 
       - name: Setup Node
         uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
