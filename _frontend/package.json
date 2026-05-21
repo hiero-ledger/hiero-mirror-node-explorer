@@ -79,7 +79,7 @@
     "axios-mock-adapter": "^2.1.0",
     "cypress": "^15.15.0",
     "esbuild": "^0.28.0",
-    "eslint": "10.3.0",
+    "eslint": "10.4.0",
     "eslint-plugin-cypress": "6.4.1",
     "eslint-plugin-vue": "10.9.1",
     "globals": "^16.4.0",
@@ -88,7 +88,7 @@
     "resize-observer-polyfill": "~1.5.1",
     "start-server-and-test": "^2.1.2",
     "typescript": "~6.0.3",
-    "typescript-eslint": "8.59.3",
+    "typescript-eslint": "8.59.4",
     "vite": "^8.0.12",
     "vitest": "^3.2.4",
     "vue-tsc": "^2.2.12"
