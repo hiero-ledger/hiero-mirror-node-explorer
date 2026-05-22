@@ -65,6 +65,7 @@ export class EntityDescriptor {
                 case TransactionType.TOKENFREEZE:
                 case TransactionType.TOKENUNFREEZE:
                 case TransactionType.TOKENREJECT:
+                case TransactionType.NODECREATE:
                     result = new EntityDescriptor("Account ID", "AccountDetails")
                     break;
 

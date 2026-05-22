@@ -163,6 +163,16 @@ export function makeTypeLabel(type: TransactionType | undefined): string {
             result = "Node Update";
             break;
 
+        case TransactionType.REGISTEREDNODECREATE:
+            result = "Registered Node Create";
+            break;
+        case TransactionType.REGISTEREDNODEDELETE:
+            result = "Registered Node Delete";
+            break;
+        case TransactionType.REGISTEREDNODEUPDATE:
+            result = "Registered Node Update";
+            break;
+
         case TransactionType.SCHEDULECREATE:
             result = "Schedule Create";
             break;
