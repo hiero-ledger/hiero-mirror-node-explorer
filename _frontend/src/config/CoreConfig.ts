@@ -37,6 +37,7 @@ export class CoreConfig {
     // Private
     //
 
+    // eslint-disable-next-line max-lines-per-function
     private constructor(
         // The name of the product as shown in the short form of the footer tagline
         public readonly productName: string,
@@ -98,6 +99,7 @@ export class CoreConfig {
     ) {
     }
 
+    // eslint-disable-next-line complexity
     private static parse(obj: Record<string, unknown>): CoreConfig {
         return new CoreConfig(
             fetchString(obj, "productName") ?? "Hiero Explorer",
@@ -121,7 +123,7 @@ export class CoreConfig {
             fetchString(obj, "googleTagID"),
             fetchString(obj, "cookiesDialogContent"),
             fetchURL(obj, "ipfsGatewayURL") ?? "https://gateway.pinata.cloud/ipfs/",
-            fetchURL(obj, "arweaveServerURL") ?? "https://arweave.net/",
+            fetchURL(obj, "arweaveServerURL") ?? "https://arweave.ar.io/",
             fetchString(obj, "cryptoName") ?? "HBAR",
             fetchString(obj, "cryptoSymbol"),
             fetchURL(obj, "cryptoLogoLightURL") ?? localPathToURL("crypto-logo-light.svg"),
