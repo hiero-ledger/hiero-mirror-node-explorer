@@ -93,7 +93,7 @@ jobs:
         if: ${{ inputs.enable-unit-tests && !cancelled() }}
 
       - name: Report Unit Test Coverage
-        uses: step-security/vitest-coverage-report-action@9d0fd37b856d4db3cbe992a95174e1b2a962e424 # v2.9.0
+        uses: step-security/vitest-coverage-report-action@3de289d3a88f666de8c72b02aa805fdffa404c11 # v2.11.2
         if: ${{ inputs.enable-unit-tests && !cancelled() }}
         with:
           working-directory: ./_frontend
