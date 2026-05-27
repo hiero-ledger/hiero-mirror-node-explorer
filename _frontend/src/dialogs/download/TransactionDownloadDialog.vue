@@ -49,8 +49,7 @@
           <Datepicker
               v-model="selectedStartDate"
               placeholder="SELECT A DATE"
-              :is-24="false"
-              :enable-time-picker="false"
+              :time-picker="false"
               :dark="darkSelected"
               :teleport="true"/>
         </template>
@@ -62,8 +61,7 @@
           <Datepicker
               v-model="selectedEndDate"
               placeholder="SELECT A DATE"
-              :is-24="false"
-              :enable-time-picker="false"
+              :time-picker="false"
               :dark="darkSelected"
               :teleport="true"/>
         </template>
@@ -86,7 +84,7 @@ import {computed} from "vue";
 import DownloadDialog from "@/dialogs/download/DownloadDialog.vue";
 import SelectView from "@/elements/SelectView.vue";
 import TransactionFilterSelect from "@/components/transaction/TransactionFilterSelect.vue";
-import Datepicker from "@vuepic/vue-datepicker";
+import {VueDatePicker as Datepicker} from "@vuepic/vue-datepicker";
 import {ThemeController} from "@/components/ThemeController.ts";
 import ContentCell from "@/dialogs/core/ContentCell.vue";
 import TextFieldView from "@/elements/TextFieldView.vue";

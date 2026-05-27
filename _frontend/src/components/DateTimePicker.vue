@@ -7,8 +7,7 @@
     <Datepicker
         v-model="date"
         placeholder="SELECT A DATE"
-        :is-24="false"
-        time-picker-inline
+        :time-config="{ is24: false, timePickerInline: true }"
         :dark="darkSelected"
         @closed="handleClosed"
         @cleared="emit('dateCleared')"
@@ -23,7 +22,7 @@
 <script setup lang="ts">
 
 import {PropType, ref} from "vue";
-import Datepicker from '@vuepic/vue-datepicker';
+import {VueDatePicker as Datepicker} from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 import {TransactionTableControllerXL} from "@/components/transaction/TransactionTableControllerXL";
 import {ThemeController} from "@/components/ThemeController.ts";
