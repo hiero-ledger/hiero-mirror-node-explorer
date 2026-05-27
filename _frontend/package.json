@@ -34,7 +34,7 @@
     "@hashgraph/sdk": "2.81.0",
     "@hedera-name-service/hns-resolution-sdk": "2.0.15",
     "@kabuto-sh/ns": "0.15.2",
-    "@oruga-ui/oruga-next": "^0.11.6",
+    "@oruga-ui/oruga-next": "^0.13.5",
     "@oruga-ui/theme-oruga": "^0.7.1",
     "@vuepic/vue-datepicker": "13.0.0",
     "@vueuse/core": "^13.9.0",
