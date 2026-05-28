@@ -37,7 +37,7 @@
           <o-pagination
               :total="props.logs.length"
               v-model:current="currentPage"
-              order="centered"
+              position="centered"
               :range-before="1"
               :range-after="1"
               :per-page="pageSize"

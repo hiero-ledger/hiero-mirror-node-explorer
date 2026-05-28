@@ -21,7 +21,7 @@
 
       :hoverable="true"
       :narrowed="props.narrowed"
-      :striped="true"
+      :striped="false"
       :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
 
       row-key="consensus_timestamp"
@@ -52,7 +52,7 @@
       <TimestampValue v-bind:timestamp="props.row.consensus_timestamp"/>
     </o-table-column>
 
-    <template v-slot:bottom-left>
+    <template v-slot:bottomLeft>
       <TablePageSize
           v-model:size="perPage"
       />

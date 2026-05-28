@@ -13,7 +13,7 @@
         :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
         :paginated="false"
         :per-page="props.nodes.length"
-        :striped="true"
+        :striped="false"
         default-sort="node_id"
         @cell-click="handleClick"
     >

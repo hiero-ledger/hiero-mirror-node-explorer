@@ -41,7 +41,7 @@
         <BlobValue :blob-value="props.row.message" :base64="true" :show-none="true"/>
       </o-table-column>
 
-      <template v-slot:bottom-left>
+      <template v-slot:bottomLeft>
         <TablePageSize
             v-model:size="perPage"
         />

@@ -19,7 +19,7 @@
       @cell-click="handleClick"
 
       :hoverable="true"
-      :striped="true"
+      :striped="false"
       :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
 
       row-key="consensus_timestamp"
@@ -36,7 +36,7 @@
       <BlobValue :blob-value="props.row.memo_base64" :base64="true" :show-none="true"/>
     </o-table-column>
 
-    <template v-slot:bottom-left>
+    <template v-slot:bottomLeft>
       <TablePageSize
           v-model:size="perPage"
       />
