@@ -42,6 +42,14 @@ export default defineConfig({
     commonjsOptions: {
       transformMixedEsModules: true, // else hashconnect crashes because require() is undefined :(
     },
+    rollupOptions: {
+      onwarn(warning, warn) {
+        // Suppress Rolldown INVALID_ANNOTATION warnings from node_modules
+        // (@vuepic/vue-datepicker bundles @vueuse/core with misplaced #__PURE__ comments)
+        if (warning.code === 'INVALID_ANNOTATION' && warning.id?.includes('node_modules')) return
+        warn(warning)
+      }
+    }
   },
   define: {
     'import.meta.env.VITE_BUILD_SHORTCOMMITHASH': JSON.stringify(commitHash),
