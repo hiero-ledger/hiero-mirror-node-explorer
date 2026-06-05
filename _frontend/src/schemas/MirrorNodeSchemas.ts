@@ -653,9 +653,24 @@ export interface ContractResultsResponse {
     links: Links | undefined
 }
 
+export interface AccessListItem {
+    address: string        // The hex encoded address of the accessed contract
+    storage_keys: string[] // The list of accessed hex encoded storage keys
+}
+
+export interface AuthorizationListItem {
+    address: string         // The hex encoded address to be delegated to
+    chain_id: string        // The hex encoded chain id -- e.g. "0x127"
+    nonce: number           // The nonce of the authorization
+    r: string               // The hex encoded signature r value
+    s: string               // The hex encoded signature s value
+    y_parity: string        // The hex encoded parity of the y-coordinate of the signature point -- e.g. "0x1"
+}
+
 export interface ContractResult {
-    access_list: string | null
-    address: string | null
+    access_list: AccessListItem[] | undefined    // The access list of the wrapped ethereum transaction
+    address: string
+    authorization_list: AuthorizationListItem[] | undefined  // The authorization list of the wrapped EIP-7702 ethereum transaction
     amount: number | null
     block_gas_used: number | null // integer
     block_hash: string | null
@@ -664,16 +679,16 @@ export interface ContractResult {
     call_result: string | null
     chain_id: string | null
     contract_id: string | null
-    created_contract_ids: Array<string> | null
+    created_contract_ids: string[] | null
     error_message: string | null
     failed_initcode: string
-    from: string
-    function_parameters: string
+    from: string | null
+    function_parameters: string | null
+    gas_consumed: number | null
     gas_limit: number
     gas_price: string | null
     gas_used: number | null
-    gas_consumed: number | null
-    hash: string | null
+    hash: string
     max_fee_per_gas: string | null
     max_priority_fee_per_gas: string | null
     nonce: number | null // integer
