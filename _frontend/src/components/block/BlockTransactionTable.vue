@@ -15,7 +15,7 @@
       :paginated="paginated"
       pagination-order="centered"
       :per-page="perPage"
-      :striped="true"
+      :striped="false"
       :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
       row-key="consensus_timestamp"
       @cell-click="handleClick"
@@ -42,7 +42,7 @@
       <TimestampValue v-bind:timestamp="props.row.consensus_timestamp"/>
     </o-table-column>
 
-    <template v-slot:bottom-left>
+    <template v-slot:bottomLeft>
       <TablePageSize
           v-model:size="perPage"
       />

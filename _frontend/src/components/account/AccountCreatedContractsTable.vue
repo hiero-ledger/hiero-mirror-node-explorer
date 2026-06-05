@@ -16,7 +16,7 @@
       :paginated="paginated"
       pagination-order="centered"
       :per-page="perPage"
-      :striped="true"
+      :striped="false"
 
       :total="total"
       backend-pagination
@@ -40,7 +40,7 @@
       <TimestampValue v-bind:timestamp="props.row.consensus_timestamp"/>
     </o-table-column>
 
-    <template v-slot:bottom-left>
+    <template v-slot:bottomLeft>
       <TablePageSize
           v-model:size="perPage"
       />

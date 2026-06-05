@@ -19,7 +19,7 @@
 
       :hoverable="true"
       :narrowed="props.narrowed"
-      :striped="true"
+      :striped="false"
       :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
 
       row-key="token_id"
@@ -40,7 +40,7 @@
       </div>
     </o-table-column>
 
-    <template v-slot:bottom-left>
+    <template v-slot:bottomLeft>
       <TablePageSize
           v-model:size="perPage"
       />

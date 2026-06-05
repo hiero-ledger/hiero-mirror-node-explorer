@@ -20,7 +20,7 @@
 
       :hoverable="true"
       :narrowed="narrowed"
-      :striped="true"
+      :striped="false"
       :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
 
       row-key="account"
@@ -59,7 +59,7 @@
       <HbarAmount v-bind:amount="props.row.balance.balance ?? 0"/>
     </o-table-column>
 
-    <template v-slot:bottom-left>
+    <template v-slot:bottomLeft>
       <TablePageSize
           v-model:size="perPage"
       />

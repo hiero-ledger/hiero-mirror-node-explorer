@@ -21,7 +21,7 @@
         @cell-click="handleClick"
         :hoverable="true"
         :narrowed="true"
-        :striped="true"
+        :striped="false"
         :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
 
         row-key="serial_number"
@@ -65,7 +65,7 @@
             :property="NftCellItem.description"/>
       </o-table-column>
 
-      <template v-slot:bottom-left>
+      <template v-slot:bottomLeft>
         <TablePageSize
             v-model:size="perPage"
         />

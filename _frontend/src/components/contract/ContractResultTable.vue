@@ -16,7 +16,7 @@
       :paginated="paginated"
       pagination-order="centered"
       :per-page="perPage"
-      :striped="true"
+      :striped="false"
 
       :total="total"
       backend-pagination
@@ -43,7 +43,7 @@
       <HbarAmount :amount="props.row.amount"/>
     </o-table-column>
 
-    <template v-slot:bottom-left>
+    <template v-slot:bottomLeft>
       <TablePageSize
           v-model:size="perPage"
       />

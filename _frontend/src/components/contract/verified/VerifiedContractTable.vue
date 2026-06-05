@@ -20,7 +20,7 @@
 
       :hoverable="true"
       :narrowed="true"
-      :striped="true"
+      :striped="false"
       :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
 
       row-key="matchId"
@@ -46,7 +46,7 @@
       <VerifiedContractDate :verified-date="props.row.verifiedAt"/>
     </o-table-column>
 
-    <template v-slot:bottom-left>
+    <template v-slot:bottomLeft>
       <TablePageSize
           v-model:size="perPage"
       />

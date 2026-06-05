@@ -50,15 +50,17 @@ describe("NftPreview.vue", () => {
         // console.log(wrapper.html())
         // console.log(wrapper.text())
 
-        expect(wrapper.text()).toBe('Non Fungible Token' + tooltipText)
-        const hbarLogo = wrapper.find('svg')
-        expect(hbarLogo.exists()).toBe(true)
-        expect(hbarLogo.attributes('class')).toContain('lucide-image-off-icon')
+        const placeHolder = wrapper.find('div.placeholder')
+        expect(placeHolder.exists()).toBe(true)
+        expect(placeHolder.text()).toBe('Non Fungible Token' + tooltipText)
 
-        const tooltip = wrapper.find('#info-tooltip')
-        expect(tooltip.exists()).toBe(true)
-        expect(tooltip.text()).toBe(tooltipText)
-        expect(tooltip.get('svg').attributes('class')).toContain('lucide-info-icon')
+        const placeHolderLogo = placeHolder.find('svg')
+        expect(placeHolderLogo.exists()).toBe(true)
+        expect(placeHolderLogo.attributes('class')).toContain('lucide-image-off-icon')
+
+        const tooltipIcon = placeHolder.find('div.o-tooltip').find('svg')
+        expect(tooltipIcon.exists()).toBe(true)
+        expect(tooltipIcon.attributes('class')).toContain('lucide-info-icon')
 
         expect(wrapper.find('figure').exists()).toBe(false)
         expect(wrapper.find('video').exists()).toBe(false)
