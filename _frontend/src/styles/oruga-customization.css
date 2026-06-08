@@ -44,18 +44,46 @@
 
 .o-pagination {
     --oruga-pagination-button-margin: 2px;
-    --oruga-pagination-button-color: var(--text-primary);
-    --oruga-pagination-button-border-width: 2px;
-    --oruga-pagination-button-border-style: solid;
-    --oruga-pagination-button-border-color: var(--background-tertiary);
-    --oruga-pagination-button-border-radius: 12px;
     --oruga-pagination-button-height: 36px;
     --oruga-pagination-button-min-width: 36px;
+    --oruga-pagination-button-border-width: 2px;
+    --oruga-pagination-button-border-style: solid;
+    --oruga-pagination-button-border-radius: 12px;
+
+    --oruga-pagination-button-color: var(--text-primary);
+    --oruga-pagination-button-background-color: transparent;
+    --oruga-pagination-button-border-color: transparent;
+
     --oruga-pagination-button-current-color: var(--text-primary);
-    --oruga-pagination-button-current-background-color: var(--background-tertiary);
+    --oruga-pagination-button-current-background-color: transparent;
     --oruga-pagination-button-current-border-color: var(--light-network-button-color);
-    --oruga-pagination-button-box-shadow: none;
+
+    --oruga-pagination-button-hover-border-color: var(--text-secondary);
+    --oruga-pagination-button-hover-color: var(--text-primary);
 }
+
+/*  ----------------------------------------------------------------------------
+    The rules below avoid the box-shadow focus on hovered and clicked pagination buttons,
+    and re-establish the button styling after selection
+*/
+
+.o-pagination__button:not(.o-pagination__button--disabled):hover,
+.o-pagination button:focus:not(:focus-visible) {
+    box-shadow: none;
+}
+
+.o-pagination__button:focus:not(:hover),
+.o-pagination__button:focus-visible:not(:hover) {
+    border-color: transparent;
+}
+
+.o-pagination__button--current:focus,
+.o-pagination__button--current:focus-visible {
+    border-color: var(--oruga-pagination-button-current-border-color);
+}
+
+/*  ----------------------------------------------------------------------------
+*/
 
 table.o-table {
     margin-bottom: 1rem;
