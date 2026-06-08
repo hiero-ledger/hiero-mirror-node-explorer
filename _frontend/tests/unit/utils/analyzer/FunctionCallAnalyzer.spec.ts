@@ -64,8 +64,8 @@ describe("FunctionCallAnalyzer.spec.ts", () => {
         input.value = "0x49146bde000000000000000000000000845b706151aed537b1fd81c1ea4ea03920097abd0000000000000000000000000000000000000000000000000000000002e6ae09"
         output.value = "0x0000000000000000000000000000000000000000000000000000000005a995c0"
         contractId.value = "0.0.359"
-        await flushPromises()
         await vi.dynamicImportSettled()
+        await flushPromises()
         expect(fetchGetURLs(mock)).toStrictEqual([])
         expect(functionCallAnalyzer.functionHash.value).toBe("0x49146bde")
         expect(functionCallAnalyzer.signature.value).toBe("function associateToken(address account, address token) returns (int64 responseCode)")
@@ -89,6 +89,7 @@ describe("FunctionCallAnalyzer.spec.ts", () => {
         input.value = "0x618dc65e0000000000000000000000000000000000163b5a70a082310000000000000000000000005fe56763c7633efefe8c2272f19732521a48e300"
         output.value = "0x00000000000000000000000000000000000000000000000000003dc604b33217"
         contractId.value = "0.0.359"
+        await vi.dynamicImportSettled()
         await flushPromises()
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/contracts/0.0.1456986",
@@ -128,6 +129,7 @@ describe("FunctionCallAnalyzer.spec.ts", () => {
         output.value = "0x000000009999999999999999999999999"
         error.value = "0x"
         contractId.value = "0.0.359"
+        await vi.dynamicImportSettled()
         await flushPromises()
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/contracts/0.0.1456986",
@@ -764,6 +766,7 @@ describe("FunctionCallAnalyzer.spec.ts", () => {
         contractId.value = "0.0.359"
         await flushPromises()
         await vi.dynamicImportSettled()
+        await flushPromises()
         // expect(fetchGetURLs(mock)).toStrictEqual([])
         expect(functionCallAnalyzer.functionHash.value).toBe("0x618dc65e")
         expect(functionCallAnalyzer.signature.value).toBe("function redirectForToken(address token, bytes encodedFunctionSelector) returns (int64 responseCode, bytes response)")
@@ -864,6 +867,7 @@ describe("FunctionCallAnalyzer.spec.ts", () => {
         contractId.value = "0.0.359"
         await flushPromises()
         await vi.dynamicImportSettled()
+        await flushPromises()
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/contracts/0.0.6089314",
             "api/v1/tokens/0.0.6089314",
