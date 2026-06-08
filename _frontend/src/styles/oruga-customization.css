@@ -28,10 +28,10 @@
 
 .o-table__root {
     --oruga-table-background-color: var(--background-tertiary);
-    --oruga-table-striped-background-color: var(--background-tertiary);
     --oruga-table-border-radius: 0;
     --oruga-table-color: var(--text-primary);
-    --oruga-table-hoverable-background-color: var(--background-primary);
+    --oruga-table-tr-striped-background-color: var(--background-tertiary);
+    --oruga-table-tr-hover-background-color: var(--background-primary);
     --oruga-table-th-color: var(--text-secondary);
     --oruga-table-th-font-weight: 500 !important;
     --oruga-table-th-border-width: 1px;
