@@ -5,25 +5,6 @@
 */
 :root {
     --oruga-base-font-size: 14px;
-    --oruga-table-background-color: var(--background-tertiary);
-    --oruga-table-striped-background-color: var(--background-tertiary);
-    --oruga-table-border-radius: 0;
-    --oruga-table-color: var(--text-primary);
-    --oruga-table-hoverable-background-color: var(--background-primary);
-    --oruga-table-th-color: var(--text-secondary);
-    --oruga-table-th-font-weight: 500 !important;
-    --oruga-table-th-border: 1px solid var(--border-secondary);
-    --oruga-table-td-border: 1px solid var(--table-border);
-    --oruga-pagination-link-margin: 2px;
-    --oruga-pagination-link-color: var(--text-primary);
-    --oruga-pagination-link-border: 2px solid transparent;
-    --oruga-pagination-link-border-color: var(--background-tertiary);
-    --oruga-pagination-link-border-radius: 12px;
-    --oruga-pagination-link-height: 36px;
-    --oruga-pagination-link-min-width: 36px;
-    --oruga-pagination-link-current-color: var(--text-primary);
-    --oruga-pagination-link-current-background-color: var(--background-tertiary);
-    --oruga-pagination-link-current-border-color: var(--light-network-button-color);
     --oruga-select-color: var(--text-primary);
     --oruga-select-background-color: var(--background-tertiary);
     --oruga-select-border-color: var(--text-primary);
@@ -43,6 +24,37 @@
     --oruga-tooltip-color: var(--network-button-text-color);
     --oruga-tooltip-background-color: var(--network-button-color);
     --oruga-tooltip-arrow-margin: 5px;
+}
+
+.o-table__root {
+    --oruga-table-background-color: var(--background-tertiary);
+    --oruga-table-striped-background-color: var(--background-tertiary);
+    --oruga-table-border-radius: 0;
+    --oruga-table-color: var(--text-primary);
+    --oruga-table-hoverable-background-color: var(--background-primary);
+    --oruga-table-th-color: var(--text-secondary);
+    --oruga-table-th-font-weight: 500 !important;
+    --oruga-table-th-border-width: 1px;
+    --oruga-table-th-border-style: solid;
+    --oruga-table-th-border-color: var(--border-secondary);
+    --oruga-table-td-border-width: 1px;
+    --oruga-table-td-border-style: solid;
+    --oruga-table-td-border-color: var(--table-border);
+}
+
+.o-pagination {
+    --oruga-pagination-button-margin: 2px;
+    --oruga-pagination-button-color: var(--text-primary);
+    --oruga-pagination-button-border-width: 2px;
+    --oruga-pagination-button-border-style: solid;
+    --oruga-pagination-button-border-color: var(--background-tertiary);
+    --oruga-pagination-button-border-radius: 12px;
+    --oruga-pagination-button-height: 36px;
+    --oruga-pagination-button-min-width: 36px;
+    --oruga-pagination-button-current-color: var(--text-primary);
+    --oruga-pagination-button-current-background-color: var(--background-tertiary);
+    --oruga-pagination-button-current-border-color: var(--light-network-button-color);
+    --oruga-pagination-button-box-shadow: none;
 }
 
 table.o-table {

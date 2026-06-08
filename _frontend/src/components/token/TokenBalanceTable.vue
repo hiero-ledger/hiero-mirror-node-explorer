@@ -22,7 +22,7 @@
 
         :hoverable="true"
         :narrowed="true"
-        :striped="true"
+        :striped="false"
         :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
 
         row-key="account"
@@ -35,7 +35,7 @@
         <TokenAmount :amount="BigInt(props.row.balance)" :token-id="tokenId"/>
       </o-table-column>
 
-      <template v-slot:bottom-left>
+      <template v-slot:bottomLeft>
         <TablePageSize
             v-model:size="perPage"
         />

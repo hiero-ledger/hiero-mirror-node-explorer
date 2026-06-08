@@ -20,7 +20,7 @@
 
       :hoverable="true"
       :narrowed="narrowed"
-      :striped="true"
+      :striped="false"
       :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
 
       row-key="number"
@@ -41,7 +41,7 @@
       <PlainAmount v-bind:amount="props.row.gas_used"/>
     </o-table-column>
 
-    <template v-slot:bottom-left>
+    <template v-slot:bottomLeft>
       <TablePageSize
           v-model:size="perPage"
       />

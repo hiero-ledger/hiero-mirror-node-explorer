@@ -15,7 +15,7 @@
       pagination-order="centered"
 
       :per-page="perPage"
-      :striped="true"
+      :striped="false"
 
       row-key="contract_id"
       @cell-click="handleClick"
@@ -33,7 +33,7 @@
       <TimestampValue v-bind:timestamp="props.row.created_timestamp"/>
     </o-table-column>
 
-    <template v-slot:bottom-left>
+    <template v-slot:bottomLeft>
       <TablePageSize
           v-model:size="perPage"
       />

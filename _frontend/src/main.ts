@@ -3,12 +3,12 @@
 import {createApp} from 'vue'
 import Root from './Root.vue'
 import axios from 'axios'
-import {OrugaConfig} from '@oruga-ui/oruga-next'
+import {createOruga} from '@oruga-ui/oruga-next'
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import {library} from "@fortawesome/fontawesome-svg-core";
 import {faForward} from "@fortawesome/free-solid-svg-icons";
 
-import "@oruga-ui/theme-oruga/dist/oruga.css";
+import "@oruga-ui/theme-oruga/style.css";
 import "@/styles/explorer.css";
 import {AxiosMonitor} from "@/utils/AxiosMonitor";
 import {CoreConfig} from "@/config/CoreConfig";
@@ -62,7 +62,7 @@ const createAndMount = async () => {
     const app = createApp(Root, {coreConfig, networkConfig})
     app.component("font-awesome-icon", FontAwesomeIcon)
     app.use(router)
-    app.use(OrugaConfig, {iconPack: 'fas'})
+    app.use(createOruga({iconPack: 'fas'}))
     app.mount('#app')
 }
 

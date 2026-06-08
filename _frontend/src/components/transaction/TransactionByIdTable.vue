@@ -14,7 +14,7 @@
       :paginated="!isTouchDevice && paginationNeeded"
       pagination-order="centered"
       :per-page="isMediumScreen ? pageSize : 5"
-      :striped="true"
+      :striped="false"
       :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
       row-key="consensus_timestamp"
       @cell-click="handleClick"

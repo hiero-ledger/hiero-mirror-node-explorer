@@ -22,7 +22,7 @@
 
       :hoverable="true"
       :narrowed="true"
-      :striped="true"
+      :striped="false"
       :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
 
   >
@@ -64,7 +64,7 @@
       <FreezeStatusView :account-id="accountId" :token-id="row.token_id"/>
     </o-table-column>
 
-    <template v-slot:bottom-left>
+    <template v-slot:bottomLeft>
       <TablePageSize
           v-model:size="props.controller.pageSize.value"
       />
