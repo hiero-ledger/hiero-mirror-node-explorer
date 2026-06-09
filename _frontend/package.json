@@ -65,7 +65,7 @@
     "@types/d3": "^7.4.3",
     "@types/d3-geo": "^3.1.0",
     "@types/file-saver": "^2.0.7",
-    "@types/jsdom": "^27.0.0",
+    "@types/jsdom": "^28.0.3",
     "@types/prismjs": "^1.26.6",
     "@types/topojson-client": "^3.1.5",
     "@types/topojson-specification": "^1.0.5",
