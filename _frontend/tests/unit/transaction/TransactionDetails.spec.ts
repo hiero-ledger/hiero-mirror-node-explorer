@@ -52,6 +52,9 @@ import router from "@/utils/RouteManager.ts";
 import TransactionDetails_Summary from "@/pages/TransactionDetails_Summary.vue";
 import TransactionDetails_Result from "@/pages/TransactionDetails_Result.vue";
 import {SignatureCache} from "@/utils/cache/SignatureCache.ts";
+import AuthorizationListSection from "@/components/contract/AuthorizationListSection.vue";
+import AccessListSection from "@/components/contract/AccessListSection.vue";
+import AccessListItemView from "@/components/contract/AccessListItemView.vue";
 
 /*
     Bookmarks
@@ -124,7 +127,7 @@ describe("TransactionDetails.vue", () => {
             "api/v1/contracts/" + SAMPLE_TRANSACTION.token_transfers[1].account,
         ])
 
-        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(SAMPLE_TRANSACTION.transaction_id)+"Copy")
+        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(SAMPLE_TRANSACTION.transaction_id) + "Copy")
         expect(wrapper.get("#transactionTypeValue").text()).toBe("CRYPTO TRANSFER")
         expect(wrapper.get("#consensusAtValue").text()).toBe("5:12:31.6676 AMFeb 28, 2022, UTC") // UTC because of HMSF.forceUTC
         expect(wrapper.get("#transactionHashValue").text()).toBe("0xa012961232ed7d2842836e95f7e9c4356fdfe2de08199091701a969c1d1fd93671d3078ee83b28fb460a88b4cbd8ecd2Copy")
@@ -425,7 +428,7 @@ describe("TransactionDetails.vue", () => {
             "api/v1/contracts/" + SAMPLE_TRANSACTION.token_transfers[1].account,
         ])
 
-        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(SAMPLE_TRANSACTION.transaction_id)+"Copy")
+        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(SAMPLE_TRANSACTION.transaction_id) + "Copy")
         expect(wrapper.get("#transactionTypeValue").text()).toBe("CRYPTO TRANSFER")
         expect(wrapper.get("#memoValue").text()).toBe("None")
 
@@ -470,7 +473,7 @@ describe("TransactionDetails.vue", () => {
             "api/v1/blocks",
         ])
 
-        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(transaction.transaction_id)+"Copy")
+        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(transaction.transaction_id) + "Copy")
         expect(wrapper.get("#transactionTypeValue").text()).toBe("CONTRACT CALL")
         expect(wrapper.get("#memoValue").text()).toBe("Mirror Node acceptance test: 2022-03-07T15:09:26.066680977Z Execute contract")
 
@@ -618,7 +621,7 @@ describe("TransactionDetails.vue", () => {
             "api/v1/blocks",
         ])
 
-        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(transaction.transaction_id)+"Copy")
+        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(transaction.transaction_id) + "Copy")
 
         expect(wrapper.get("#transactionTypeValue").text()).toBe("CONTRACT CALL")
         expect(wrapper.get("#entityId").text()).toBe("Contract IDHedera Token Service System Contract")
@@ -675,7 +678,7 @@ describe("TransactionDetails.vue", () => {
             "api/v1/transactions",
         ])
 
-        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(INNER.transaction_id)+"Copy")
+        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(INNER.transaction_id) + "Copy")
         expect(wrapper.get("#transactionTypeValue").text()).toBe("TOKEN MINT")
 
         const link = wrapper.get("#batchTransactionValue")
@@ -762,7 +765,7 @@ describe("TransactionDetails.vue", () => {
             "api/v1/tokens/" + INNER1.entity_id,
         ])
 
-        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(OUTER.transaction_id)+"Copy")
+        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(OUTER.transaction_id) + "Copy")
 
         expect(wrapper.get("#transactionTypeValue").text()).toBe("ATOMIC BATCH")
 
@@ -848,7 +851,7 @@ describe("TransactionDetails.vue", () => {
             "api/v1/transactions",
         ])
 
-        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(SCHEDULING.transaction_id)+"Copy")
+        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(SCHEDULING.transaction_id) + "Copy")
 
         const scheduled = wrapper.get("#scheduledTransactionValue")
         expect(scheduled.text()).toBe("0.0.503733@1666754898.238965661" + "EXECUTED")
@@ -929,7 +932,7 @@ describe("TransactionDetails.vue", () => {
             "api/v1/transactions",
         ])
 
-        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(SCHEDULING.transaction_id)+"Copy")
+        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(SCHEDULING.transaction_id) + "Copy")
 
         const scheduling = wrapper.get("#scheduleCreateTransactionValue")
         expect(scheduling.text()).toBe(TransactionID.normalizeForDisplay(SCHEDULING.transaction_id))
@@ -1001,7 +1004,7 @@ describe("TransactionDetails.vue", () => {
             "api/v1/network/registered-nodes",
         ])
 
-        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(PARENT.transaction_id)+"Copy")
+        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(PARENT.transaction_id) + "Copy")
 
         const link = wrapper.get("#parentTransactionValue")
         expect(link.text()).toBe("CONTRACT CALL")
@@ -1098,7 +1101,7 @@ describe("TransactionDetails.vue", () => {
             "/mainnet/token/" + TARGETED_TOKEN
         )
 
-        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(PARENT.transaction_id)+"Copy")
+        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(PARENT.transaction_id) + "Copy")
         expect(wrapper.find("#batchTransaction").exists()).toBe(false)
         expect(wrapper.find("#innerTransactions").exists()).toBe(false)
         expect(wrapper.find("#scheduledTransaction").exists()).toBe(false)
@@ -1152,7 +1155,7 @@ describe("TransactionDetails.vue", () => {
             "api/v1/blocks",
         ])
 
-        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(NONCE_1.transaction_id)+"Copy")
+        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(NONCE_1.transaction_id) + "Copy")
         expect(wrapper.find("#batchTransaction").exists()).toBe(false)
         expect(wrapper.find("#innerTransactions").exists()).toBe(false)
         expect(wrapper.find("#scheduledTransaction").exists()).toBe(false)
@@ -1208,7 +1211,7 @@ describe("TransactionDetails.vue", () => {
             "api/v1/contracts/" + SAMPLE_PARENT_CHILD_AND_UNRELATED_TRANSACTIONS.transactions![1].transfers[4].account,
         ])
 
-        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(NONCE_1.transaction_id)+"Copy")
+        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(NONCE_1.transaction_id) + "Copy")
         expect(wrapper.find("#batchTransaction").exists()).toBe(false)
         expect(wrapper.find("#innerTransactions").exists()).toBe(false)
         expect(wrapper.find("#scheduledTransaction").exists()).toBe(false)
@@ -1289,7 +1292,7 @@ describe("TransactionDetails.vue", () => {
             "api/v1/tokens/" + SAMPLE_ASSOCIATED_TOKEN_2.token_id,
         ])
 
-        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(transactionId)+"Copy")
+        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(transactionId) + "Copy")
         expect(wrapper.get("#transactionTypeValue").text()).toBe("TOKEN ASSOCIATE")
         expect(wrapper.get("#consensusAtValue").text()).toBe("6:51:52.1505 PMDec 21, 2022, UTC") // UTC because of HMSF.forceUTC
         expect(wrapper.get("#transactionHashValue").text()).toBe("0x4786079999df169a38349249d3c9a5489a83f1c7c51b6b1edeb81347a496d93183e24a43ad03372ebc501528a6032debCopy")
@@ -1358,7 +1361,7 @@ describe("TransactionDetails.vue", () => {
         // console.log(wrapper.html())
         // console.log(wrapper.text())
 
-        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(transactionId)+"Copy")
+        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(transactionId) + "Copy")
         expect(wrapper.text()).toMatch(RegExp("CONTRACT CALL"))
         expect(wrapper.get("#entityIdName").text()).toBe("Token ID")
         expect(wrapper.get("#entityIdValue").text()).toMatch(entityId)
@@ -1429,7 +1432,7 @@ describe("TransactionDetails.vue", () => {
             "api/v1/blocks",
         ])
 
-        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(transactionId)+"Copy")
+        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(transactionId) + "Copy")
         expect(wrapper.text()).toMatch(RegExp("ETHEREUM TRANSACTION"))
         expect(wrapper.get("#entityIdName").text()).toBe("Account ID")
         expect(wrapper.get("#entityIdValue").text()).toMatch(entityId)
@@ -1497,7 +1500,7 @@ describe("TransactionDetails.vue", () => {
             "api/v1/blocks",
         ])
 
-        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(transactionId)+"Copy")
+        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(transactionId) + "Copy")
         expect(wrapper.text()).toMatch(RegExp("ETHEREUM TRANSACTION"))
         expect(wrapper.get("#entityIdName").text()).toBe("Contract ID")
         expect(wrapper.get("#entityIdValue").text()).toMatch(entityId)
@@ -1639,7 +1642,7 @@ describe("TransactionDetails.vue", () => {
             "api/v1/tokens/" + SAMPLE_ETHEREUM_TRANSACTIONS_ASSOCIATING_TOKEN.transactions[0].entity_id,
         ])
 
-        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(transactionId)+"Copy")
+        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(transactionId) + "Copy")
         expect(wrapper.text()).toMatch(RegExp("ETHEREUM TRANSACTION"))
         expect(wrapper.get("#entityIdName").text()).toBe("Token ID")
         expect(wrapper.get("#entityIdValue").text()).toMatch(entityId)
@@ -1716,7 +1719,7 @@ describe("TransactionDetails.vue", () => {
 
         expect(wrapper.text()).not.toContain("FAILURE")
 
-        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(transaction.transaction_id)+"Copy")
+        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(transaction.transaction_id) + "Copy")
         expect(wrapper.get("#transactionTypeValue").text()).toBe("FILE UPDATE")
         expect(wrapper.get("#resultValue").text()).toBe("FEE_SCHEDULE_FILE_PART_UPLOADED")
         expect(wrapper.get("#consensusAtValue").text()).toBe("5:42:14.5350 PMJun 9, 2022, UTC")
@@ -1780,7 +1783,7 @@ describe("TransactionDetails.vue", () => {
             "api/v1/contracts/" + SAMPLE_TRANSACTION.token_transfers[1].account,
         ])
 
-        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(SAMPLE_TRANSACTION.transaction_id)+"Copy")
+        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(SAMPLE_TRANSACTION.transaction_id) + "Copy")
         expect(wrapper.get("#transactionTypeValue").text()).toBe("CRYPTO TRANSFER")
         expect(wrapper.get("#consensusAtValue").text()).toBe("5:12:31.6676 AMFeb 28, 2022, UTC") // UTC because of HMSF.forceUTC
         expect(wrapper.get("#blockNumberValue").text()).toBe("0")
@@ -1791,4 +1794,119 @@ describe("TransactionDetails.vue", () => {
         mock.restore()
     });
 
+    it("TransactionDetails_Summary should display authorization list and access list", async () => {
+
+        await router.push("/") // To avoid "missing required param 'network'" error
+
+        const transaction = SAMPLE_CONTRACTCALL_TRANSACTIONS.transactions[0]
+        const contractResult = SAMPLE_CONTRACT_RESULT_DETAILS
+        const authList = contractResult.authorization_list
+        const accessList = contractResult.access_list
+
+        const mock = new MockAdapter(axios as any)
+        const matcher1 = "/api/v1/transactions"
+        mock.onGet(matcher1).reply(200, SAMPLE_CONTRACTCALL_TRANSACTIONS);
+
+        const param2 = {timestamp: transaction.consensus_timestamp, internal: true, limit: 1}
+        const matcher2 = "/api/v1/contracts/results"
+        mock.onGet(matcher2, {params: param2}).reply(200, {
+            results: [contractResult], "links": {"next": null}
+        });
+
+        const matcher3 = "/api/v1/contracts/" + contractResult.contract_id + "/results/" + transaction.consensus_timestamp
+        mock.onGet(matcher3).reply(200, contractResult);
+
+        const wrapper = mount(TransactionDetails_Summary, {
+            global: {
+                plugins: [router, Oruga],
+                provide: {"isMediumScreen": false}
+            },
+            props: {
+                transactionLoc: transaction.consensus_timestamp,
+            },
+        });
+
+        await flushPromises()
+        // console.log(wrapper.html())
+        // console.log(wrapper.text())
+
+        expect(fetchGetURLs(mock)).toStrictEqual([
+            "api/v1/network/nodes",
+            "api/v1/transactions",
+            "api/v1/network/exchangerate",
+            "api/v1/contracts/" + transaction.entity_id,
+            "api/v1/contracts/results",
+            "api/v1/transactions/" + transaction.transaction_id,
+            "api/v1/contracts/" + transaction.node,
+            "api/v1/contracts/" + transaction.transfers[2].account,
+            "api/v1/contracts/" + contractResult.contract_id + "/results/" + transaction.consensus_timestamp,
+            "api/v1/contracts/results/" + transaction.transaction_id,
+            "api/v1/accounts/",
+            "api/v1/contracts/0.0.1", // authList[0].address as entity id
+            "api/v1/contracts/0.0.2", // authList[1].address as entity id
+            "api/v1/contracts/" + contractResult.contract_id,
+            "api/v1/contracts/" + accessList[0].address,
+            "api/v1/contracts/" + accessList[1].address,
+            "api/v1/contracts/" + authList[0].address,
+            "api/v1/contracts/" + authList[1].address,
+            "api/v1/tokens/" + "0.0.1", // authList[0].address as entity id
+            "api/v1/blocks",
+            "api/v1/accounts/" + "0xec5a142db59c15c177f65985fbb380b55555c849",
+            "api/v1/accounts/" + "0xa02457e5dfd32bda5fc7e1f1b008aa5979568150",
+            "api/v1/accounts/" + "0x0000000000000000000000000000000000000001",
+            "api/v1/accounts/" + "0x0000000000000000000000000000000000000002",
+            "api/v1/tokens/" + "0.0.2", // authList[1].address as entity id
+            "api/v1/tokens/" + contractResult.contract_id,
+            "api/v1/tokens/" + transaction.entity_id,
+            "https://www.4byte.directory/api/v1/signatures/?format=json&hex_signature=0x18cbafe5",
+        ])
+
+        const authListSection = wrapper.findComponent(AuthorizationListSection)
+        expect(authListSection.exists()).toBe(true)
+
+        const rows = authListSection.findAll("tr")
+        expect(rows).toHaveLength(3)
+        expect(rows[0].text()).toBe("NONCE" + "DELEGATED ADDRESS" + "CHAIN ID" + "R" + "S" + "PARITY")
+        expect(rows[1].text()).toBe(
+            "5" +
+            "0x00…000001" + "Copy" + "(0.0.1)" +
+            "0x127" +
+            "0x0x…222222" + "Copy" +
+            "0x0x…333333" + "Copy" +
+            "Odd"
+        )
+        expect(rows[2].text()).toBe(
+            "8" +
+            "0x00…000002" + "Copy" + "(0.0.2)" +
+            "0x128" +
+            "0x0x…444444" + "Copy" +
+            "0x0x…555555" + "Copy" +
+            "Even"
+        )
+
+        const accessListSection = wrapper.findComponent(AccessListSection)
+        expect(accessListSection.exists()).toBe(true)
+
+        const items = accessListSection.findAllComponents(AccessListItemView)
+        expect(items).toHaveLength(2)
+        expect(items[0].text()).toBe(
+            "Address" +
+            "0xec…55c849" + "Copy" +
+            "Storage Keys" +
+            "#00000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0081" + "Copy" +
+            "#10000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0082" + "Copy"
+        )
+        expect(items[1].text()).toBe(
+            "Address" +
+            "0xa0…568150" + "Copy" +
+            "Storage Keys" +
+            "#00000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0083" + "Copy" +
+            "#10000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0084" + "Copy"
+        )
+
+        wrapper.unmount()
+        await flushPromises()
+        SignatureCache.instance.clear()
+        mock.restore()
+    });
 });
