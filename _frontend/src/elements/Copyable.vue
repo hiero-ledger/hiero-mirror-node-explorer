@@ -29,7 +29,7 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmits(['copyMade'])
+const emit = defineEmits<{ copyMade: [] }>()
 
 const copyToClipboard = (): void => {
   if (props.contentToCopy?.length) {

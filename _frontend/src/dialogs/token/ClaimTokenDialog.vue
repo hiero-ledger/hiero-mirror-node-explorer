@@ -51,7 +51,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(["tokenClaimed"])
+const emit = defineEmits<{ tokenClaimed: [transactionId: string | null] }>()
 
 const analyzer = computed(() => props.analyzer)
 const controller = new ClaimTokenController(showDialog, analyzer)

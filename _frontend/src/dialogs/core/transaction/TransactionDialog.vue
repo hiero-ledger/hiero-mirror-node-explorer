@@ -96,7 +96,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(["transactionDidExecute"])
+const emit = defineEmits<{ transactionDidExecute: [transactionId: string | null] }>()
 
 const slots = useSlots()
 

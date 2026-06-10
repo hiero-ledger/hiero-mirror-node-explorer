@@ -142,7 +142,7 @@ watch(props.controller.showDialog, (show) => {
   }
 })
 
-const emit = defineEmits(["taskDialogDidSucceed"])
+const emit = defineEmits<{ taskDialogDidSucceed: [] }>()
 
 const slots = useSlots()
 

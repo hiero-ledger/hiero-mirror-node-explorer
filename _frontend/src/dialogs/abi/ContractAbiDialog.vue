@@ -89,9 +89,7 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmits(
-    ["didUpdateContractState"]
-)
+const emit = defineEmits<{ didUpdateContractState: [] }>()
 
 const controller = new ContractAbiController(showDialog, props.contractCallBuilder)
 

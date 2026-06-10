@@ -43,7 +43,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(["action"])
+const emit = defineEmits<{ action: [] }>()
 
 const handleAction = () => {
   emit("action")

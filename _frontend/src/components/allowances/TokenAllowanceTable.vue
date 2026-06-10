@@ -102,7 +102,7 @@ interface DisplayedTokenAllowance extends TokenAllowance {
   isEditable: boolean
 }
 
-const emit = defineEmits(["editAllowance"])
+const emit = defineEmits<{ editAllowance: [row: DisplayedTokenAllowance] }>()
 
 const props = defineProps({
   controller: {

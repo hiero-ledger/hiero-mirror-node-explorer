@@ -48,7 +48,7 @@ defineProps({
   }
 })
 
-const emit = defineEmits(['edit'])
+const emit = defineEmits<{ edit: [] }>()
 
 const onEdit = () => emit('edit')
 

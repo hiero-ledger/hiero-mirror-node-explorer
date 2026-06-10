@@ -37,7 +37,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(["update:size"])
+const emit = defineEmits<{ 'update:size': [value: number] }>()
 
 const selected = ref(props.size)
 watch(() => props.size, () => selected.value = props.size)

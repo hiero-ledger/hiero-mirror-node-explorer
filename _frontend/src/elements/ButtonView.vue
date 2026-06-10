@@ -60,7 +60,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(["action"])
+const emit = defineEmits<{ action: [] }>()
 
 const handleClick = () => {
   emit("action")

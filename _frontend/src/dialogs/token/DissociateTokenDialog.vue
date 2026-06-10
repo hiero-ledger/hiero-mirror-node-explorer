@@ -50,7 +50,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(["tokenDissociated"])
+const emit = defineEmits<{ tokenDissociated: [transactionId: string | null] }>()
 
 const analyzer = computed(() => props.analyzer)
 const controller = new DissociateTokenController(showDialog, analyzer)

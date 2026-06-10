@@ -60,7 +60,7 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmits(["allowanceDeleted"])
+const emit = defineEmits<{ allowanceDeleted: [transactionId: string | null] }>()
 
 const tokenId = computed(() => props.tokenId)
 const spenderId = computed(() => props.spenderId)

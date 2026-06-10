@@ -53,7 +53,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(["search"]);
+const emit = defineEmits<{ search: [] }>();
 
 const isMediumScreen = inject('isMediumScreen', true)
 

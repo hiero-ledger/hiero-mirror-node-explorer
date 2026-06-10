@@ -74,7 +74,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(["didUpdateContractState"])
+const emit = defineEmits<{ didUpdateContractState: [] }>()
 
 const running = ref(true)
 

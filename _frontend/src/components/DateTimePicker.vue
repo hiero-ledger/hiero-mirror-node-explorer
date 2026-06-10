@@ -31,7 +31,7 @@ const props = defineProps({
   controller: Object as PropType<TransactionTableControllerXL>
 })
 
-const emit = defineEmits(["dateCleared"])
+const emit = defineEmits<{ dateCleared: [] }>()
 
 const darkSelected = ThemeController.inject().darkSelected
 const date = ref(new Date())

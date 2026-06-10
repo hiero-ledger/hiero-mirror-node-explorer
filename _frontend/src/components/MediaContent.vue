@@ -99,7 +99,7 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmits(['onLoadSuccess', 'onLoadError'])
+const emit = defineEmits<{ onLoadSuccess: [], onLoadError: [] }>()
 
 const videoUrl: ComputedRef<string | null> = computed(
     () => props.type?.startsWith('video') || props.type?.startsWith('audio')

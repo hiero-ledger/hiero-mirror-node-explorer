@@ -53,7 +53,7 @@ const props = defineProps({
 
 const slots = useSlots()
 
-const emit = defineEmits(["onClose"])
+const emit = defineEmits<{ onClose: [] }>()
 
 watch(showDialog, () => {
   if (!showDialog.value) {

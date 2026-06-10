@@ -92,7 +92,7 @@ interface DisplayedNftAllowance extends NftAllowance {
   isEditable: boolean
 }
 
-const emit = defineEmits(["deleteAllowance"])
+const emit = defineEmits<{ deleteAllowance: [row: DisplayedNftAllowance] }>()
 
 const props = defineProps({
   controller: {

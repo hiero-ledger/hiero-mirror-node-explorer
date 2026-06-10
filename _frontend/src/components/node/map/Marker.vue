@@ -16,7 +16,7 @@
 
 import {computed} from "vue";
 
-const emits = defineEmits(["action"])
+const emits = defineEmits<{ action: [] }>()
 
 const itemSize = 10
 const itemStyle = computed(() => {

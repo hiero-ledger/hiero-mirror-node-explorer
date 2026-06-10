@@ -242,7 +242,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(["updated"])
+const emit = defineEmits<{ updated: [] }>()
 
 const networkConfig = NetworkConfig.inject()
 const controller = new UpdateAccountController(showDialog, networkConfig)

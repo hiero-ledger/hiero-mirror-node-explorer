@@ -51,7 +51,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(["tokenRejected"])
+const emit = defineEmits<{ tokenRejected: [transactionId: string | null] }>()
 
 const analyzer = computed(() => props.analyzer)
 const controller = new RejectTokenController(showDialog, analyzer)
