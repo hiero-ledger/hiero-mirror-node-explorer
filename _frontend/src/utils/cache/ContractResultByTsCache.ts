@@ -5,6 +5,9 @@ import {ContractResultByHashCache} from "@/utils/cache/ContractResultByHashCache
 import {EntityCache} from "@/utils/cache/base/EntityCache"
 import {drainContractResults} from "@/schemas/MirrorNodeUtils.ts";
 import axios from "axios";
+import {SAMPLE_CONTRACT_RESULT_DETAILS} from "../../../tests/unit/Mocks.ts"
+
+const mockLists = import.meta.env.VITE_APP_MOCK_CONTRACT_RESULT_LISTS === "true"
 
 export class ContractResultByTsCache extends EntityCache<string, ContractResultDetails | null> {
 
@@ -75,7 +78,11 @@ export class ContractResultByTsCache extends EntityCache<string, ContractResultD
         let result: ContractResultDetails | null
         try {
             const response = await axios.get<ContractResultDetails>("api/v1/contracts/" + contractId + "/results/" + timestamp)
-            result = response.data
+            result = mockLists ? {
+                ...response.data,
+                access_list: SAMPLE_CONTRACT_RESULT_DETAILS.access_list,
+                authorization_list: SAMPLE_CONTRACT_RESULT_DETAILS.authorization_list
+            } : response.data
         } catch (error) {
             if (axios.isAxiosError(error) && error.response?.status == 404) {
                 result = null
