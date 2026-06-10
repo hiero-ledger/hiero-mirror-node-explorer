@@ -36,7 +36,7 @@
     "@kabuto-sh/ns": "0.15.2",
     "@oruga-ui/oruga-next": "0.13.5",
     "@oruga-ui/theme-oruga": "0.9.1",
-    "@vuepic/vue-datepicker": "13.0.0",
+    "@vuepic/vue-datepicker": "14.0.0",
     "@vueuse/core": "14.3.0",
     "@walletconnect/modal": "^2.7.0",
     "@walletconnect/sign-client": "^2.23.9",
@@ -56,7 +56,7 @@
     "prismjs": "^1.30.0",
     "topojson-client": "^3.1.0",
     "vue": "3.5.35",
-    "vue-router": "5.0.7"
+    "vue-router": "5.1.0"
   },
   "devDependencies": {
     "@cypress/code-coverage": "4.0.3",
@@ -74,7 +74,7 @@
     "@vitest/coverage-v8": "4.1.8",
     "@vitest/web-worker": "4.1.8",
     "@vue/eslint-config-typescript": "14.8.0",
-    "@vue/test-utils": "2.4.10",
+    "@vue/test-utils": "2.4.11",
     "@vue/tsconfig": "^0.9.1",
     "axios-mock-adapter": "^2.1.0",
     "cypress": "^15.16.0",
@@ -91,7 +91,7 @@
     "typescript-eslint": "8.60.1",
     "vite": "^8.0.16",
     "vitest": "4.1.8",
-    "vue-tsc": "^2.2.12"
+    "vue-tsc": "^3.3.4"
   },
   "overrides": {
     "elliptic": "^6.6.1",
