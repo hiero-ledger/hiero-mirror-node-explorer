@@ -17,6 +17,7 @@ export class TransactionGroupByBlockCache extends EntityCache<number, Transactio
     // Cache
     //
 
+    // eslint-disable-next-line complexity
     protected async load(blockNb: number): Promise<Transaction[] | null> {
         let result: Transaction[] | null
         try {
@@ -27,7 +28,7 @@ export class TransactionGroupByBlockCache extends EntityCache<number, Transactio
                     timestamp: "lte:" + block.timestamp.to
                 }
                 const response = await axios.get<TransactionResponse>("api/v1/transactions", {params: params})
-                result = await drainTransactions(response.data, params.limit)
+                result = await drainTransactions(response.data, block.count, params.limit)
                 TransactionByHashCache.instance.updateWithTransactions(result)
                 TransactionByTsCache.instance.updateWithTransactions(result)
             } else {
