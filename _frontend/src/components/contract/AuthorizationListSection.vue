@@ -70,9 +70,8 @@ const props = defineProps({
 })
 
 const toCompactString = (initial: string, leading = 2, trailing = 6): string => {
-  return "0x"
-      + initial.slice(0, leading)
-      + "…" + initial.slice(-trailing)
+  const value = initial.startsWith("0x") ? initial.slice(2) : initial
+  return "0x" + value.slice(0, leading) + "…" + value.slice(-trailing)
 }
 
 </script>
