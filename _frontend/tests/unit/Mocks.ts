@@ -1387,7 +1387,6 @@ export const SAMPLE_REVERT_CONTRACT_RESULT_DETAILS = {
     ],
     "status": "0x0",
     "failed_initcode": null,
-    "access_list": null,
     "block_gas_used": 3248000,
     "chain_id": null,
     "gas_price": null,
@@ -1401,7 +1400,7 @@ export const SAMPLE_REVERT_CONTRACT_RESULT_DETAILS = {
 }
 
 export const SAMPLE_REVERT_CONTRACT_RESULT_DETAILS_WITH_TRACES = {
-    "address": null,
+    "address": 0xc3902c1348597a84efd1e18d5993636ef6854c25,
     "amount": 0,
     "bloom": "0x",
     "call_result": "0x",
@@ -1608,7 +1607,7 @@ export const SAMPLE_REVERT_CONTRACT_RESULT_ACTIONS = {
 export const SAMPLE_ERROR_RESULTS = {
     "results": [
         {
-            "address": null,
+            "address": 0xc3902c1348597a84efd1e18d5993636ef6854c25,
             "amount": 0,
             "bloom": "0x",
             "call_result": "0x",

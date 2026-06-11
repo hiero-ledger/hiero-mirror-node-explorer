@@ -12,8 +12,8 @@
     </template>
     <template #content>
       <div class="access-list">
-        <template v-for="(item, index) in props.accessList" :key="index">
-          <AccessListItemView :item="item"/>
+        <template v-for="(item, index) in props.accessList" :key="item.address">
+          <AccessListItemView :item="item" :index="index"/>
           <hr class="table-separator"/>
         </template>
       </div>
