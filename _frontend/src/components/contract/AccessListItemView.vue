@@ -10,7 +10,7 @@
 
     <!-- left content-->
     <div style="grid-column: span 1;">
-      <Property id="address" :vertical="isSmallScreen">
+      <Property :id="'address-' + props.index" :vertical="isSmallScreen">
         <template v-slot:name>Address</template>
         <template v-slot:value>
           <EVMAddress :address="props.item.address" :compact="true" enable-copy/>
@@ -19,7 +19,7 @@
     </div>
 
     <!-- right content -->
-    <Property id="Args" style="grid-column: span 3;" vertical>
+    <Property :id="'keys-' + props.index" style="grid-column: span 3;" vertical>
       <template v-slot:name>Storage Keys</template>
       <template v-slot:value>
         <div class="storage-key-list">
@@ -56,6 +56,10 @@ import Property from "@/components/Property.vue";
 const props = defineProps({
   item: {
     type: Object as PropType<AccessListItem>,
+    required: true
+  },
+  index: {
+    type: Number,
     required: true
   }
 })
