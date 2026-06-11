@@ -1871,16 +1871,16 @@ describe("TransactionDetails.vue", () => {
             "5" +
             "0x00…000001" + "Copy" + "(0.0.1)" +
             "0x127" +
-            "0x0x…222222" + "Copy" +
-            "0x0x…333333" + "Copy" +
+            "0x22…222222" + "Copy" +
+            "0x33…333333" + "Copy" +
             "Odd"
         )
         expect(rows[2].text()).toBe(
             "8" +
             "0x00…000002" + "Copy" + "(0.0.2)" +
             "0x128" +
-            "0x0x…444444" + "Copy" +
-            "0x0x…555555" + "Copy" +
+            "0x44…444444" + "Copy" +
+            "0x55…555555" + "Copy" +
             "Even"
         )
 
