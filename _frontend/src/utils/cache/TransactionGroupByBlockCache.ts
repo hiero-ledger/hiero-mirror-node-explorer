@@ -24,10 +24,14 @@ export class TransactionGroupByBlockCache extends EntityCache<number, Transactio
             if (block?.timestamp?.to && block?.count) {
                 const params = {
                     limit: Math.min(block.count, 100),
-                    timestamp: "lte:" + block.timestamp.to
+                    timestamp: ["gte:" + block.timestamp.from, "lte:" + block.timestamp.to]
                 }
                 const response = await axios.get<TransactionResponse>("api/v1/transactions", {params: params})
-                result = await drainTransactions(response.data, params.limit)
+                result = await drainTransactions(response.data, block.count)
+                if (result.length !== block.count) {
+                    console.warn(`fetchBlockTransactions only retrieved ${result.length} transactions (expected ${block.count}) for block ${blockNb}`)
+                }
+
                 TransactionByHashCache.instance.updateWithTransactions(result)
                 TransactionByTsCache.instance.updateWithTransactions(result)
             } else {
