@@ -18,34 +18,41 @@ export class TransactionGroupByBlockCache extends EntityCache<number, Transactio
     //
 
     protected async load(blockNb: number): Promise<Transaction[] | null> {
-        let result: Transaction[] | null
         try {
-            const block = await BlockByNbCache.instance.lookup(blockNb)
-            if (block?.timestamp?.to && block?.count) {
-                const params = {
-                    limit: Math.min(block.count, 100),
-                    timestamp: ["gte:" + block.timestamp.from, "lte:" + block.timestamp.to]
-                }
-                const response = await axios.get<TransactionResponse>("api/v1/transactions", {params: params})
-                result = await drainTransactions(response.data, block.count)
-                if (result.length !== block.count) {
-                    console.warn(`fetchBlockTransactions only retrieved ${result.length} transactions (expected ${block.count}) for block ${blockNb}`)
-                }
-
-                TransactionByHashCache.instance.updateWithTransactions(result)
-                TransactionByTsCache.instance.updateWithTransactions(result)
-            } else {
-                result = null
-            }
+            return await this.fetchBlockTransactions(blockNb)
         } catch (error) {
             if (axios.isAxiosError(error) && error.response?.status == 404) {
-                result = null
-            } else {
-                throw error
+                return null
             }
+            throw error
+        }
+    }
+
+    private async fetchBlockTransactions(blockNb: number): Promise<Transaction[] | null> {
+        const block = await BlockByNbCache.instance.lookup(blockNb)
+        if (!block?.timestamp || !block.count) {
+            return null
+        }
+        const {from, to} = block.timestamp
+        if (!from || !to) {
+            return null
+        }
+        const params = {
+            limit: Math.min(block.count, 100),
+            timestamp: ["gte:" + from, "lte:" + to]
+        }
+        const response = await axios.get<TransactionResponse>(
+            "api/v1/transactions",
+            {params: params}
+        )
+        const result = await drainTransactions(response.data, block.count)
+        if (result.length !== block.count) {
+            console.warn(`fetchBlockTransactions only retrieved ${result.length} transactions (expected ${block.count}) for block ${blockNb}`)
         }
 
-        return Promise.resolve(result)
+        TransactionByHashCache.instance.updateWithTransactions(result)
+        TransactionByTsCache.instance.updateWithTransactions(result)
+        return result
     }
 }
 
