@@ -299,6 +299,16 @@
     </template>
   </DashboardCardV2>
 
+  <AuthorizationListSection
+      v-if="authorizationList.length > 0"
+      :authorization-list="authorizationList"
+  />
+
+  <AccessListSection
+      v-if="accessList.length > 0"
+      :access-list="accessList"
+  />
+
 </template>
 
 <!-- --------------------------------------------------------------------------------------------------------------- -->
@@ -340,6 +350,9 @@ import {HbarPriceCache} from "@/utils/cache/HbarPriceCache.ts";
 import {cryptoRateToPrice} from "@/schemas/MirrorNodeUtils.ts";
 import TransactionIdValue from "@/components/values/TransactionIdValue.vue";
 import {routeManager} from "@/utils/RouteManager.ts";
+import {ContractResultAnalyzer} from "@/utils/analyzer/ContractResultAnalyzer.ts";
+import AuthorizationListSection from "@/components/contract/AuthorizationListSection.vue";
+import AccessListSection from "@/components/contract/AccessListSection.vue";
 
 const MAX_INLINE_CHILDREN = 10
 
@@ -373,6 +386,10 @@ onMounted(() => transactionGroupLookup.mount())
 onBeforeUnmount(() => transactionGroupLookup.unmount())
 
 const transactionGroupAnalyzer = new TransactionGroupAnalyzer(transactionGroupLookup.entity)
+
+const contractResultAnalyzer = new ContractResultAnalyzer(transactionLocParser.transaction)
+onMounted(() => contractResultAnalyzer.mount())
+onBeforeUnmount(() => contractResultAnalyzer.unmount())
 
 const displayAllChildrenLink = computed(() => {
   return transactionGroupAnalyzer.childTransactions.value.length > MAX_INLINE_CHILDREN
@@ -520,6 +537,8 @@ const batchKey = transactionAnalyzer.batchKey
 const parentTimestamp = transactionAnalyzer.parentTimestamp
 const outerTransaction = transactionAnalyzer.outerTransaction
 const innerTransactions = transactionGroupAnalyzer.innerTransactions
+const accessList = contractResultAnalyzer.accessList
+const authorizationList = contractResultAnalyzer.authorizationList
 
 </script>
 

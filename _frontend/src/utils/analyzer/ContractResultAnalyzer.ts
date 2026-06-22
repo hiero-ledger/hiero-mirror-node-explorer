@@ -63,8 +63,9 @@ export class ContractResultAnalyzer {
             : null
     })
 
-    public ethereumNonce = computed(
-        () => this.contractResult.value?.nonce ?? null)
+    public ethereumNonce = computed(() =>
+        this.contractResult.value?.nonce ?? null
+    )
 
     public readonly contractType = computed(() => {
         let result: string | null
@@ -85,6 +86,14 @@ export class ContractResultAnalyzer {
         }
         return result
     })
+
+    public readonly accessList = computed(() =>
+        this.contractResult.value?.access_list ?? []
+    )
+
+    public readonly authorizationList = computed(() =>
+        this.contractResult.value?.authorization_list ?? []
+    )
 
     //
     // Private
