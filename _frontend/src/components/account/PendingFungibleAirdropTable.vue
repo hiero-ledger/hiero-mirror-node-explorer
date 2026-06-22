@@ -23,7 +23,8 @@
       :striped="false"
       :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
 
-      v-model:checked-rows="checkedRows"
+      :checked-rows="checkedRows"
+      @update:checked-rows="checkedRows = $event as TokenAirdrop[]"
       :checkable="props.checkEnabled"
 
   >

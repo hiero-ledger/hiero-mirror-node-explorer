@@ -36,7 +36,8 @@
         <div v-if="isPaginated" class="pagination">
           <o-pagination
               :total="props.logs.length"
-              v-model:current="currentPage"
+              :current="currentPage"
+              @update:current="currentPage = $event as number"
               position="centered"
               :range-before="1"
               :range-after="1"

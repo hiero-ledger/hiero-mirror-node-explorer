@@ -16,7 +16,8 @@
 
         :detailed="isMediumScreen"
         custom-detail-row
-        v-model:detailed-rows="expandedActions"
+        :detailed-rows="expandedActions"
+        @update:detailed-rows="expandedActions = $event as Array<ContractActionWithPath>"
 
         :hoverable="false"
         :narrowed="true"
