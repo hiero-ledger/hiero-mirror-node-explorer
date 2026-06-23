@@ -126,7 +126,7 @@ const showDialog = defineModel("showDialog", {
   required: true
 })
 
-const emit = defineEmits(["allowanceApproved"])
+const emit = defineEmits<{ allowanceApproved: [transactionId: string | null] }>()
 
 const networkConfig = NetworkConfig.inject()
 const controller = new ApproveAllowanceController(showDialog, networkConfig)

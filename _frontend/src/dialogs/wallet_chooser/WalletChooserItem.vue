@@ -34,7 +34,7 @@ const props = defineProps({
   walletItem: {type: Object as PropType<WalletItem>, required: true},
 })
 
-const emit = defineEmits(["connect"])
+const emit = defineEmits<{ connect: [] }>()
 
 const isSelected = computed(() => {
   return selection.value !== null && selection.value.uuid === props.walletItem.uuid

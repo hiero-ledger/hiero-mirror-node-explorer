@@ -35,7 +35,10 @@ const showDialog = defineModel("showDialog", {
   required: true
 })
 
-const emit = defineEmits(["onChooseAccept", "onChooseReject"],)
+const emit = defineEmits<{
+  onChooseAccept: []
+  onChooseReject: []
+}>()
 
 const coreConfig = CoreConfig.inject()
 const cookiesDialogContent = coreConfig.cookiesDialogContent

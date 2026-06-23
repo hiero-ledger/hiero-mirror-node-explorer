@@ -63,7 +63,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(["allowanceApproved"])
+const emit = defineEmits<{ allowanceApproved: [transactionId: string | null] }>()
 
 const tokenAllowance = computed(() => props.tokenAllowance)
 const controller = new UpdateTokenAllowanceController(showDialog, tokenAllowance)

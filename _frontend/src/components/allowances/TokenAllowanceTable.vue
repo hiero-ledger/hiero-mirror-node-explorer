@@ -7,7 +7,8 @@
 <template>
 
   <o-table
-      v-model:current-page="currentPage"
+      :current-page="currentPage"
+      @update:current-page="currentPage = $event as number"
       :data="allowances"
       :hoverable="false"
       :loading="loading"
@@ -102,7 +103,7 @@ interface DisplayedTokenAllowance extends TokenAllowance {
   isEditable: boolean
 }
 
-const emit = defineEmits(["editAllowance"])
+const emit = defineEmits<{ editAllowance: [row: DisplayedTokenAllowance] }>()
 
 const props = defineProps({
   controller: {

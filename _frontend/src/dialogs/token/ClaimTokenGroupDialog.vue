@@ -58,7 +58,7 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmits(["claimed"])
+const emit = defineEmits<{ claimed: [] }>()
 
 
 const airdrops = computed(() => props.airdrops ?? [])

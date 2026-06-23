@@ -6,7 +6,7 @@
 
 <template>
   <TabsView
-      v-model:selected-tab="selectedRange"
+      v-model:selected-tab="selectedTab"
       :tab-ids="ids"
       :tab-labels="labels"
       :active-tabs="active"
@@ -22,7 +22,7 @@
 
 import {computed, PropType} from "vue";
 import {ChartController, ChartState} from "@/charts/core/ChartController.ts";
-import {ChartRange} from "@/charts/core/ChartRange.ts";
+import {ChartRange, toChartRange} from "@/charts/core/ChartRange.ts";
 import TabsView from "@/components/TabsView.vue";
 
 const props = defineProps({
@@ -41,8 +41,12 @@ const active = computed(() => [
   allRangeSupported.value
 ])
 
+const selectedTab = computed<string | null>({
+  get: () => props.controller.range.value as string,
+  set: (value: string | null) => props.controller.range.value = toChartRange(value, ChartRange.day)
+})
+
 const loading = computed(() => props.controller.state.value === ChartState.loading)
-const selectedRange = props.controller.range
 const dayRangeSupported = computed(() => props.controller.isRangeSupported(ChartRange.day))
 const monthRangeSupported = computed(() => props.controller.isRangeSupported(ChartRange.month))
 const yearRangeSupported = computed(() => props.controller.isRangeSupported(ChartRange.year))

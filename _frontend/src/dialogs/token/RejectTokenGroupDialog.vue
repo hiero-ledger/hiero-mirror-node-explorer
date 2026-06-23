@@ -55,7 +55,7 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmits(["rejected"])
+const emit = defineEmits<{ rejected: [] }>()
 
 
 const tokens = computed(() => props.tokens ?? [])

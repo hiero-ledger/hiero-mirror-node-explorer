@@ -13,12 +13,14 @@
       backend-pagination
       pagination-order="centered"
       :total="props.controller.totalRowCount.value"
-      v-model:current-page="props.controller.currentPage.value"
+      :current-page="props.controller.currentPage.value"
+      @update:current-page="props.controller.currentPage.value = $event as number"
       :per-page="props.controller.pageSize.value"
       @page-change="props.controller.onPageChange"
       @cell-click="handleClick"
       :checkable="props.checkEnabled"
-      v-model:checked-rows="checkedRows"
+      :checked-rows="checkedRows"
+      @update:checked-rows="checkedRows = $event as (Token | Nft)[]"
 
       :hoverable="true"
       :narrowed="true"

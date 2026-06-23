@@ -47,7 +47,7 @@ const showDialog = defineModel("showDialog", {
 
 const disclaimer = CoreConfig.inject().walletChooserDisclaimerPopup ?? ""
 
-const emit = defineEmits(["onAgree"])
+const emit = defineEmits<{ onAgree: [] }>()
 
 const dontShowNextTime = ref(false)
 const handleAgree = () => {

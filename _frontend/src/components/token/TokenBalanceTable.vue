@@ -15,7 +15,8 @@
         backend-pagination
         pagination-order="centered"
         :total="total"
-        v-model:current-page="currentPage"
+        :current-page="currentPage"
+        @update:current-page="currentPage = $event as number"
         :per-page="perPage"
         @page-change="onPageChange"
         @cell-click="handleClick"

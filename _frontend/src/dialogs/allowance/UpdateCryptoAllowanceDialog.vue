@@ -64,7 +64,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(["allowanceApproved"])
+const emit = defineEmits<{ allowanceApproved: [transactionId: string | null] }>()
 
 const hbarAllowance = computed(() => props.hbarAllowance)
 const controller = new UpdateCryptoAllowanceController(showDialog, hbarAllowance)

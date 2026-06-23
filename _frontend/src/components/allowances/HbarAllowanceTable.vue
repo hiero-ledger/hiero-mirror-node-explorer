@@ -7,7 +7,8 @@
 <template>
 
   <o-table
-      v-model:current-page="currentPage"
+      :current-page="currentPage"
+      @update:current-page="currentPage = $event as number"
       :data="allowances"
       :hoverable="false"
       :loading="loading"
@@ -82,8 +83,9 @@ import HbarAmount from "@/components/values/HbarAmount.vue";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
 import {walletManager} from "@/utils/RouteManager.ts";
 import {Pencil} from "lucide-vue-next";
+import {CryptoAllowance} from "@/schemas/MirrorNodeSchemas";
 
-const emit = defineEmits(["editAllowance"])
+const emit = defineEmits<{ editAllowance: [row: CryptoAllowance] }>()
 
 const props = defineProps({
   controller: {

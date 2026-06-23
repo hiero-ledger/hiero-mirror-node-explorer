@@ -141,7 +141,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(["verifyDidComplete"])
+const emit = defineEmits<{ verifyDidComplete: [] }>()
 
 const contractId = computed(() => props.contractId)
 const controller = new ContractVerificationController(showDialog, contractId)

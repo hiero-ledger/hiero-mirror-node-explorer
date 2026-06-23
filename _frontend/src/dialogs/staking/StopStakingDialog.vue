@@ -48,7 +48,7 @@ const props = defineProps({
   },
 })
 
-const emit = defineEmits(["stakingChanged"])
+const emit = defineEmits<{ stakingChanged: [transactionId: string | null] }>()
 
 const accountId = computed(() => props.accountId)
 const controller = new StopStackingController(showDialog, accountId)

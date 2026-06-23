@@ -104,7 +104,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(["transactionGroupDidExecute"])
+const emit = defineEmits<{ transactionGroupDidExecute: [] }>()
 const taskDidSucceed = () => {
   emit("transactionGroupDidExecute")
 }

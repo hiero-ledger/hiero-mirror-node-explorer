@@ -41,7 +41,6 @@ export function computeStartDateForRange(period: ChartRange): Date {
     return result
 }
 
-
 export function computeGranularityForRange(period: ChartRange): ChartGranularity {
     let result: ChartGranularity
     switch (period) {
@@ -62,3 +61,7 @@ export function computeGranularityForRange(period: ChartRange): ChartGranularity
     return result
 }
 
+export function toChartRange(value: string | null, fallback: ChartRange): ChartRange {
+    const result = value as ChartRange
+    return Object.values(ChartRange).includes(result) ? result : fallback
+}

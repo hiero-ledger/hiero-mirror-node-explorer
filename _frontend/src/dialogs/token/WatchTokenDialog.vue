@@ -51,7 +51,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(["tokenWatched"])
+const emit = defineEmits<{ tokenWatched: [] }>()
 
 const analyzer = computed(() => props.analyzer)
 const controller = new WatchTokenController(showDialog, analyzer)

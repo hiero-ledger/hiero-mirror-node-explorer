@@ -7,7 +7,8 @@
 <template>
 
   <o-table
-      v-model:current-page="currentPage"
+      :current-page="currentPage"
+      @update:current-page="currentPage = $event as number"
       :data="allowances"
       :hoverable="false"
       :loading="loading"
@@ -92,7 +93,7 @@ interface DisplayedNftAllowance extends NftAllowance {
   isEditable: boolean
 }
 
-const emit = defineEmits(["deleteAllowance"])
+const emit = defineEmits<{ deleteAllowance: [row: DisplayedNftAllowance] }>()
 
 const props = defineProps({
   controller: {

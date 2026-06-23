@@ -93,7 +93,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['clearAllFiles'])
+const emit = defineEmits<{ clearAllFiles: [] }>()
 
 const currentPage = ref(1);
 const perPage = ref(10);

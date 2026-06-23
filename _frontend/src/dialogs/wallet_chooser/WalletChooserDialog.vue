@@ -87,7 +87,7 @@ const showDialog = defineModel("showDialog", {
 const chosenWallet = ref<WalletItem | null>(null)
 const showDisclaimerDialog = ref(false)
 
-const emit = defineEmits(["chooseWallet"])
+const emit = defineEmits<{ chooseWallet: [wallet: WalletItem] }>()
 
 watch(showDialog, (showing) => {
   if (showing) chosenWallet.value = null
@@ -137,7 +137,9 @@ const gridTemplateColumns = computed(() => {
 
 const handleAgreeDisclaimer = () => {
   showDialog.value = false
-  emit('chooseWallet', chosenWallet.value)
+  if (chosenWallet.value !== null)  {
+    emit('chooseWallet', chosenWallet.value)
+  }
 }
 
 const WALLECT_CONNECT_LOGO =

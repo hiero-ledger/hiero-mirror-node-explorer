@@ -8,7 +8,8 @@
 <template>
 
   <o-table
-      v-model:current-page="currentPage"
+      :current-page="currentPage"
+      @update:current-page="currentPage = $event as number"
       :data="transactions"
       :hoverable="true"
       :narrowed="narrowed"
