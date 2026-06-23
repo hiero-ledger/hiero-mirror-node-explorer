@@ -216,6 +216,7 @@ import {
   AutoAssociationMode,
   PeriodUnit,
   StakeChoice,
+  toStakeChoice,
   UpdateAccountController
 } from "@/dialogs/UpdateAccountController.ts";
 import {computed} from "vue";
@@ -253,7 +254,6 @@ const selectedUnit = controller.newAutoRenewPeriodUnit
 const autoAssociationMode = controller.autoAssociationMode
 const maxAutoAssociationInputText = controller.maxAutoAssociationInputText
 const newRecSigRequired = controller.newRecSigRequired
-const stakeChoice = controller.stakeChoice
 const newStakedNodeId = controller.newStakedNodeId
 const newDeclineReward = controller.newDeclineReward
 const stakedAccountIdInputText = controller.stakedAccountIdInputText
@@ -263,6 +263,10 @@ const nodes = controller.nodes
 
 const enableStaking = routeManager.enableStaking
 
+const stakeChoice = computed<string>({
+  get: () => controller.stakeChoice.value as string,
+  set: (value: string) => controller.stakeChoice.value = toStakeChoice(value, StakeChoice.NotStaking)
+})
 
 const visibleIndex = computed(() => {
   let result: number
@@ -274,6 +278,7 @@ const visibleIndex = computed(() => {
       result = 1
       break
     case StakeChoice.NotStaking:
+    default:
       result = 2
       break
   }

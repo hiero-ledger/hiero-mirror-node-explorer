@@ -27,6 +27,10 @@ export enum StakeChoice {
     StakeToAccount = "account"
 }
 
+export function toStakeChoice(value: string, fallback: StakeChoice): StakeChoice {
+    const result = value as StakeChoice
+    return Object.values(StakeChoice).includes(result) ? result : fallback
+}
 
 export class UpdateAccountController extends TransactionController {
 
