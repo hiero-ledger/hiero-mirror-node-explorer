@@ -171,7 +171,7 @@
       </template>
     </DashboardCardV2>
 
-    <AssociatedRegisteredNodesSection v-if="activateRegisteredNodes" :nodes="associatedNodes"/>
+    <AssociatedRegisteredNodesSection v-if="associatedNodes.length > 0" :nodes="associatedNodes"/>
 
   </PageFrameV2>
 
@@ -215,8 +215,6 @@ const props = defineProps({
   },
   network: String
 })
-
-const activateRegisteredNodes = import.meta.env.VITE_APP_ACTIVATE_HIP_1137 === 'true'
 
 const cryptoName = CoreConfig.inject().cryptoName
 const loading = inject(loadingKey, ref(false))
