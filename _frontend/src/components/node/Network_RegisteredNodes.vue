@@ -8,7 +8,7 @@
 
   <DashboardCardV2>
     <template #title>
-      {{ props.title }}
+      <span>{{ `${props.nodes.length}  ${props.title}` }}</span>
     </template>
     <template #content>
       <p class="mb-4 h-is-low-contrast"> {{ props.subtitle }}</p>

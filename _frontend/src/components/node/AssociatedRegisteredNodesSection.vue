@@ -8,7 +8,9 @@
 
   <DashboardCardV2>
     <template #title>
-      Associated Registered Nodes
+        <span>{{
+            `${associatedNodes.length}  Associated Registered ${associatedNodes.length > 1 ? 'Nodes' : 'Node'}`
+          }}</span>
     </template>
     <template #content>
       <RegisteredNodeTable :display-service-type="true" :nodes="associatedNodes"/>

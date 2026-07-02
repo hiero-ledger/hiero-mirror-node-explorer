@@ -14,6 +14,10 @@
         :narrowed="true"
         :striped="false"
     >
+      <o-table-column v-slot="props" field="type" label="SERVICE TYPE">
+        <StringValue :show-none="true" :string-value="printableNodeType(props.row.type)"/>
+      </o-table-column>
+
       <o-table-column v-slot="props" field="endpoint" label="ENDPOINT">
         <span class="h-is-monospace">{{ props.row.domain_name || props.row.ip_address }}</span>
       </o-table-column>
@@ -40,9 +44,10 @@
 
 import {computed, PropType} from 'vue';
 import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
-import {RegisteredServiceEndPoint} from "@/schemas/MirrorNodeSchemas";
+import {printableNodeType, RegisteredServiceEndPoint} from "@/schemas/MirrorNodeSchemas";
 import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
 import EmptyTable from "@/components/EmptyTable.vue";
+import StringValue from "@/components/values/StringValue.vue";
 
 const props = defineProps({
   endPoints: {

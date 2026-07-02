@@ -18,12 +18,6 @@
         @cell-click="handleClick"
     >
 
-      <o-table-column v-slot="props" field="type" label="SERVICE TYPE">
-        <div class="regular-node-column">
-          {{ printableNodeType(props.row.service_endpoints[0].type) }}
-        </div>
-      </o-table-column>
-
       <o-table-column v-slot="props" field="node_id" label="REGISTERED NODE ID">
         <div class="regular-node-column node_id">
           {{ props.row.registered_node_id }}
@@ -36,9 +30,15 @@
         </div>
       </o-table-column>
 
-      <o-table-column v-slot="props" field="end_points" label="SERVICE ENDPOINTS">
+      <o-table-column v-slot="props" field="end_points" label="SERVICE ENDPOINT">
         <div class="regular-node-column">
           <StringValue :string-value="makeEndPointString(props.row)"/>
+        </div>
+      </o-table-column>
+
+      <o-table-column v-slot="props" field="nb_end_points" label="NUMBER OF ENDPOINTS">
+        <div class="regular-node-column">
+          {{ props.row.service_endpoints.length }}
         </div>
       </o-table-column>
 
@@ -55,13 +55,12 @@
 
 <script lang="ts" setup>
 
-import {onBeforeUnmount, onMounted, PropType} from 'vue';
+import {PropType} from 'vue';
 import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
-import {printableNodeType, RegisteredNode} from "@/schemas/MirrorNodeSchemas";
+import {RegisteredNode} from "@/schemas/MirrorNodeSchemas";
 import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
 import EmptyTable from "@/components/EmptyTable.vue";
 import StringValue from "@/components/values/StringValue.vue";
-import {NetworkAnalyzer} from "@/utils/analyzer/NetworkAnalyzer";
 import {routeManager} from "@/utils/RouteManager.ts";
 
 const props = defineProps({
@@ -75,10 +74,6 @@ const props = defineProps({
   }
 })
 
-const networkAnalyzer = new NetworkAnalyzer()
-onMounted(() => networkAnalyzer.mount())
-onBeforeUnmount(() => networkAnalyzer.unmount())
-
 const makeEndPointString = (node: RegisteredNode) => {
   let result: string
   const nbEndPoints = node.service_endpoints.length
@@ -87,9 +82,6 @@ const makeEndPointString = (node: RegisteredNode) => {
   } else {
     const endPoint = node.service_endpoints[0]
     result = `${endPoint.domain_name || endPoint.ip_address}:${endPoint.port}`
-    if (nbEndPoints > 1) {
-      result += ` (+${nbEndPoints - 1} more)`
-    }
   }
   return result
 }
