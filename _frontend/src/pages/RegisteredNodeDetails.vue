@@ -49,13 +49,6 @@
             />
           </template>
         </Property>
-
-        <Property id="service-type" :full-width="true">
-          <template #name>Service Type</template>
-          <template #value>
-            <StringValue :show-none="true" :string-value="nodeType"/>
-          </template>
-        </Property>
       </template>
 
       <template #footer>
@@ -144,7 +137,6 @@ const nodeAnalyzer = new RegisteredNodeAnalyzer(nodeIdNb)
 onMounted(() => nodeAnalyzer.mount())
 onBeforeUnmount(() => nodeAnalyzer.unmount())
 const registeredNode = nodeAnalyzer.registeredNode
-const nodeType = nodeAnalyzer.nodeType
 const serviceEndpoints = nodeAnalyzer.serviceEndpoints
 const associatedConsensusNodes = nodeAnalyzer.associatedConsensusNodes
 

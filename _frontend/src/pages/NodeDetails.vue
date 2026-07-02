@@ -171,7 +171,7 @@
       </template>
     </DashboardCardV2>
 
-    <AssociatedRegisteredNodesSection v-if="associatedNodes.length > 0" :nodes="associatedNodes"/>
+    <AssociatedRegisteredNodesSection v-if="associatedNodeIds.length > 0" :node-ids="associatedNodeIds"/>
 
   </PageFrameV2>
 
@@ -264,7 +264,7 @@ const makeFloorHbarAmount = (tinyBarAmount: number) => {
 
 const enableStaking = routeManager.enableStaking
 const node = nodeAnalyzer.node
-const associatedNodes = nodeAnalyzer.associatedNodes
+const associatedNodeIds = nodeAnalyzer.associatedNodeIds
 const declineReward = nodeAnalyzer.declineReward
 const totalStakeForConsensus = networkAnalyzer.totalStakeForConsensus
 const annualizedRate = nodeAnalyzer.annualizedRate

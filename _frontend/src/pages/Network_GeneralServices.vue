@@ -20,18 +20,18 @@
 
 <script lang="ts" setup>
 
-import {NetworkAnalyzer} from "@/utils/analyzer/NetworkAnalyzer.ts";
 import {onBeforeUnmount, onMounted} from "vue";
 import Network_RegisteredNodes from "@/components/node/Network_RegisteredNodes.vue";
+import {RegisteredNodeCache} from "@/utils/cache/RegisteredNodeCache.ts";
 
 defineProps({
   network: String
 })
 
-const networkAnalyzer = new NetworkAnalyzer()
-onMounted(() => networkAnalyzer.mount())
-onBeforeUnmount(() => networkAnalyzer.unmount())
-const generalServices = networkAnalyzer.generalServices
+const registeredNodeLookup = RegisteredNodeCache.instance.makeLookup()
+onMounted(() => registeredNodeLookup.mount())
+onBeforeUnmount(() => registeredNodeLookup.unmount())
+const generalServices = registeredNodeLookup.generalServices
 
 </script>
 

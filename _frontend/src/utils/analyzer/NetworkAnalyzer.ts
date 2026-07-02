@@ -4,15 +4,12 @@ import {computed, ComputedRef, ref, Ref, watch, WatchStopHandle} from "vue";
 import {StakingPeriod} from "@/utils/StakingPeriod";
 import {NodeCache} from "@/utils/cache/NodeCache.ts";
 import {SingletonLookup} from "@/utils/cache/base/SingletonCache";
-import {NetworkNode, RegisteredNode, RegisteredNodeType} from "@/schemas/MirrorNodeSchemas";
-import {RegisteredNodeCache} from "@/utils/cache/RegisteredNodeCache.ts";
+import {NetworkNode} from "@/schemas/MirrorNodeSchemas";
 
 
 export class NetworkAnalyzer {
 
     public readonly nodeLookup: SingletonLookup<NetworkNode[]> = NodeCache.instance.makeLookup()
-
-    public readonly registeredNodeLookup: SingletonLookup<RegisteredNode[]> = RegisteredNodeCache.instance.makeLookup()
 
     public readonly stakingPeriod: Ref<StakingPeriod | null> = ref(null)
     private intervalHandle = -1
@@ -89,36 +86,8 @@ export class NetworkAnalyzer {
     public readonly remainingMin
         = computed(() => this.stakingPeriod.value?.remainingMin ?? null)
 
-    public readonly registeredNodes = computed(() => this.registeredNodeLookup.entity.value ?? [])
-    private readonly registeredNodesByRole = computed(() => {
-        const blockNodes: RegisteredNode[] = []
-        const mirrorNodes: RegisteredNode[] = []
-        const rpcRelays: RegisteredNode[] = []
-        const generalServices: RegisteredNode[] = []
-
-        for (const n of this.registeredNodes.value) {
-            for (const e of n.service_endpoints) {
-                if (e.type === RegisteredNodeType.BLOCK_NODE) {
-                    blockNodes.push(n)
-                } else if (e.type === RegisteredNodeType.MIRROR_NODE) {
-                    mirrorNodes.push(n)
-                } else if (e.type === RegisteredNodeType.RPC_RELAY) {
-                    rpcRelays.push(n)
-                } else {
-                    generalServices.push(n)
-                }
-            }
-        }
-        return {blockNodes, mirrorNodes, rpcRelays, generalServices}
-    })
-    public readonly blockNodes = computed(() => this.registeredNodesByRole.value.blockNodes)
-    public readonly mirrorNodes = computed(() => this.registeredNodesByRole.value.mirrorNodes)
-    public readonly rpcRelays = computed(() => this.registeredNodesByRole.value.rpcRelays)
-    public readonly generalServices = computed(() => this.registeredNodesByRole.value.generalServices)
-
     public mount(): void {
         this.nodeLookup.mount()
-        this.registeredNodeLookup.mount()
         this.updateStakingPeriod()
         this.intervalHandle = window.setInterval(this.updateStakingPeriod, 10000)
         this.watchHandle = watch(this.nodes, this.updateStakingPeriod)
@@ -130,7 +99,6 @@ export class NetworkAnalyzer {
 
     public unmount(): void {
         this.nodeLookup.unmount()
-        this.registeredNodeLookup.unmount()
         this.stakingPeriod.value = null
         window.clearInterval(this.intervalHandle)
         this.intervalHandle = -1
