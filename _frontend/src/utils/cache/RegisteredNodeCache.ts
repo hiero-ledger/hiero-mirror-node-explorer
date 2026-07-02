@@ -7,14 +7,19 @@ import {
     RegisteredNodesResponse,
     RegisteredNodeType
 } from "@/schemas/MirrorNodeSchemas";
-import {SingletonCache} from "@/utils/cache/base/SingletonCache";
+import {SingletonCache, SingletonLookup} from "@/utils/cache/base/SingletonCache";
 import axios, {AxiosResponse} from "axios";
+import {computed} from "vue";
 
 const mockRegisteredNodes = import.meta.env.VITE_APP_MOCK_HIP_1137 === "true"
 
 export class RegisteredNodeCache extends SingletonCache<RegisteredNode[]> {
 
     public static readonly instance = new RegisteredNodeCache()
+
+    public makeLookup(): RegisteredNodeLookup {
+        return new RegisteredNodeLookup(this)
+    }
 
     // eslint-disable-next-line max-lines-per-function
     protected getMock(): RegisteredNode[] {
@@ -202,5 +207,44 @@ export class RegisteredNodeCache extends SingletonCache<RegisteredNode[]> {
             }
         }
         return Promise.resolve(result)
+    }
+}
+
+export class RegisteredNodeLookup extends SingletonLookup<RegisteredNode[]> {
+
+    //
+    // Public
+    //
+
+    public readonly registeredNodes = computed(() => this.entity.value ?? [])
+    private readonly registeredNodesByRole = computed(() => {
+        const blockNodes: RegisteredNode[] = []
+        const mirrorNodes: RegisteredNode[] = []
+        const rpcRelays: RegisteredNode[] = []
+        const generalServices: RegisteredNode[] = []
+
+        for (const n of this.registeredNodes.value) {
+            for (const e of n.service_endpoints) {
+                if (e.type === RegisteredNodeType.BLOCK_NODE) {
+                    blockNodes.push(n)
+                } else if (e.type === RegisteredNodeType.MIRROR_NODE) {
+                    mirrorNodes.push(n)
+                } else if (e.type === RegisteredNodeType.RPC_RELAY) {
+                    rpcRelays.push(n)
+                } else {
+                    generalServices.push(n)
+                }
+            }
+        }
+        return {blockNodes, mirrorNodes, rpcRelays, generalServices}
+    })
+
+    public readonly blockNodes = computed(() => this.registeredNodesByRole.value.blockNodes)
+    public readonly mirrorNodes = computed(() => this.registeredNodesByRole.value.mirrorNodes)
+    public readonly rpcRelays = computed(() => this.registeredNodesByRole.value.rpcRelays)
+    public readonly generalServices = computed(() => this.registeredNodesByRole.value.generalServices)
+
+    constructor(cache: RegisteredNodeCache) {
+        super(cache)
     }
 }
