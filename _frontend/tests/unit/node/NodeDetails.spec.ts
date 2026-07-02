@@ -66,10 +66,6 @@ describe("NodeDetails.vue", () => {
 
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/network/nodes",
-            "api/v1/network/registered-nodes",
-            "api/v1/network/registered-nodes",
-            "api/v1/network/registered-nodes",
-            "api/v1/network/registered-nodes",
             "api/v1/network/stake",
         ])
 
@@ -137,12 +133,9 @@ describe("NodeDetails.vue", () => {
 
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/network/nodes",
-            "api/v1/network/registered-nodes",
-            "api/v1/network/registered-nodes",
-            "api/v1/network/registered-nodes",
-            "api/v1/network/registered-nodes",
             "api/v1/network/stake",
             "api/v1/contracts/0.0.3",
+            "api/v1/network/registered-nodes",
         ])
 
         expect(wrapper.text()).toMatch(RegExp("Node " + node))
@@ -200,10 +193,6 @@ describe("NodeDetails.vue", () => {
 
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/network/nodes",
-            "api/v1/network/registered-nodes",
-            "api/v1/network/registered-nodes",
-            "api/v1/network/registered-nodes",
-            "api/v1/network/registered-nodes",
             "api/v1/network/stake",
             "api/v1/contracts/0.0.5",
         ])
@@ -247,10 +236,6 @@ describe("NodeDetails.vue", () => {
 
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/network/nodes",
-            "api/v1/network/registered-nodes",
-            "api/v1/network/registered-nodes",
-            "api/v1/network/registered-nodes",
-            "api/v1/network/registered-nodes",
             "api/v1/network/stake",
         ])
 

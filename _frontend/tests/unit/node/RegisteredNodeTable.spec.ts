@@ -34,28 +34,28 @@ describe("RegisteredNodeTable.vue", () => {
         // console.log(wrapper.text())
         // console.log(wrapper.html())
 
-        expect(wrapper.get('thead').text()).toBe("SERVICE TYPEREGISTERED NODE IDDESCRIPTIONSERVICE ENDPOINTS")
+        expect(wrapper.get('thead').text()).toBe("REGISTERED NODE IDDESCRIPTIONSERVICE ENDPOINTNUMBER OF ENDPOINTS")
         expect(wrapper.get('tbody').findAll('tr').length).toBe(4)
         expect(wrapper.get('tbody').text()).toBe(
-            "Block Node" +
             "0" +
             "Block Node | East Coast, USA" +
-            "block.example.com:50211 (+1 more)" +
+            "block.example.com:50211" +
+            "2" +
 
-            "Mirror Node" +
             "1" +
             "Mirror Node | West Coast, USA" +
             "5.6.7.8:443" +
+            "1" +
 
-            "JSON-RPC Relay" +
             "2" +
             "RPC Relay | Central, USA" +
             "relay.example.com:8080" +
+            "1" +
 
-            "General Service" +
             "3" +
             "General Service | Central, USA" +
-            "general.service.example.com:443"
+            "general.service.example.com:443" +
+            "1"
         )
 
         wrapper.unmount()

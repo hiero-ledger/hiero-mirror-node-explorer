@@ -29,7 +29,7 @@ export class RegisteredNodeAnalyzer {
         const id = this.registeredNodeId.value
         const consensusNodes = this.consensusNodeLookup.entity.value
         return (id !== null && consensusNodes !== null)
-            ? consensusNodes.filter((node) => node.associated_registered_nodes.includes(id))
+            ? consensusNodes.filter((node) => node.associated_registered_nodes?.includes(id))
             : []
     })
 
