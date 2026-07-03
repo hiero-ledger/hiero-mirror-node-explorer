@@ -106,9 +106,8 @@ const props = defineProps({
   },
 })
 
-const checkedRows = defineModel("checkedTokens", {
-  type: Object as PropType<(Token | Nft)[]>,
-  default: [] as (Token | Nft)[]
+const checkedRows = defineModel<(Token | Nft)[]>("checkedTokens", {
+  default: (): (Token | Nft)[] => []
 })
 
 watch([props.controller.rows, () => props.checkEnabled], () =>

@@ -106,9 +106,8 @@ const props = defineProps({
   },
 })
 
-const checkedRows = defineModel("checkedAirdrops", {
-  type: Object as PropType<TokenAirdrop[]>,
-  default: [] as TokenAirdrop[]
+const checkedRows = defineModel<TokenAirdrop[]>("checkedAirdrops", {
+  default: (): TokenAirdrop[] => []
 })
 
 watch([props.controller.rows, () => props.checkEnabled], () => checkedRows.value.splice(0))
