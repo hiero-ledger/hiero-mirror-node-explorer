@@ -99,7 +99,7 @@ jobs:
           working-directory: ./_frontend
 
       - name: Cypress run
-        uses: cypress-io/github-action@fa4a118725a8f001170d49631ea89e5d66fee626 # v7.4.1
+        uses: step-security/cypress-io-github-action@c98dc23b55e4212aae83721dd931123433589247 # v7.4.1
         if: ${{ inputs.enable-e2e-tests && !cancelled() }}
         with:
           working-directory: ./_frontend
