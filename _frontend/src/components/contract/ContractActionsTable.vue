@@ -114,9 +114,8 @@ const props = defineProps({
   }
 })
 
-const expandedActions = defineModel('expandedActions', {
-  type: Array as PropType<Array<ContractActionWithPath>>,
-  default: () => []
+const expandedActions = defineModel<ContractActionWithPath[]>("expandedActions", {
+  default: (): ContractActionWithPath[] => []
 })
 
 const isMediumScreen = inject('isMediumScreen', true)
