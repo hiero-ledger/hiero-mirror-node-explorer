@@ -30,7 +30,7 @@
         <span v-if="props.row.requires_tls">&#10003;</span>
       </o-table-column>
 
-      <o-table-column v-slot="props" field="details" label="ENDPOINT DETAILS">
+      <o-table-column v-slot="props" field="details" label="DETAILS">
         <StringValue :show-none="false" :string-value="makeRegisteredServiceEndpointDetails(props.row)"/>
       </o-table-column>
 
