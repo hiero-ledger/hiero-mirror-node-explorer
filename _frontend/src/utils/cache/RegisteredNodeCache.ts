@@ -30,7 +30,7 @@ export class RegisteredNodeCache extends SingletonCache<RegisteredNode[]> {
                     "key": "d6e8334cd8594e88c82ff266b4974b4e4ac596962dcfab7314f935e7fdda672f"
                 },
                 created_timestamp: "1648377044.798291252",
-                description: "Sample Registered Node (1 block node endpoint) ",
+                description: "Sample Registered Node 1",
                 registered_node_id: 1,
                 service_endpoints: [
                     {
@@ -39,7 +39,33 @@ export class RegisteredNodeCache extends SingletonCache<RegisteredNode[]> {
                         },
                         domain_name: "block1.alpha.com",
                         general_service: null,
-                        ip_address: "192.168.12.42",
+                        ip_address: "192.168.1.42",
+                        mirror_node: null,
+                        port: 40840,
+                        requires_tls: true,
+                        rpc_relay: null,
+                        type: RegisteredNodeType.BLOCK_NODE
+                    },
+                    {
+                        block_node: {
+                            endpoint_apis: [RegisteredBlockNodeApi.STATE_PROOF]
+                        },
+                        domain_name: "block2.alpha.com",
+                        general_service: null,
+                        ip_address: null,
+                        mirror_node: null,
+                        port: 40840,
+                        requires_tls: true,
+                        rpc_relay: null,
+                        type: RegisteredNodeType.BLOCK_NODE
+                    },
+                    {
+                        block_node: {
+                            endpoint_apis: [RegisteredBlockNodeApi.STATE_PROOF, RegisteredBlockNodeApi.PUBLISH, RegisteredBlockNodeApi.OTHER]
+                        },
+                        domain_name: null,
+                        general_service: null,
+                        ip_address: "192.168.1.42",
                         mirror_node: null,
                         port: 40840,
                         requires_tls: true,
@@ -55,7 +81,7 @@ export class RegisteredNodeCache extends SingletonCache<RegisteredNode[]> {
                     "key": "d6e8334cd8594e88c82ff266b4974b4e4ac596962dcfab7314f935e7fdda672f"
                 },
                 created_timestamp: "1648377044.798291252",
-                description: "Sample Registered Node (1 mirror node endpoint) ",
+                description: "Sample Registered Node 2",
                 registered_node_id: 2,
                 service_endpoints: [
                     {
@@ -78,7 +104,7 @@ export class RegisteredNodeCache extends SingletonCache<RegisteredNode[]> {
                     "key": "d6e8334cd8594e88c82ff266b4974b4e4ac596962dcfab7314f935e7fdda672f"
                 },
                 created_timestamp: "1648377044.798291252",
-                description: "Sample Registered Node (1 RPC relay endpoint) ",
+                description: "Sample Registered Node 3",
                 registered_node_id: 3,
                 service_endpoints: [
                     {
@@ -101,7 +127,7 @@ export class RegisteredNodeCache extends SingletonCache<RegisteredNode[]> {
                     "key": "d6e8334cd8594e88c82ff266b4974b4e4ac596962dcfab7314f935e7fdda672f"
                 },
                 created_timestamp: "1648377044.798291252",
-                description: "Sample Registered Node (1 general service endpoint) ",
+                description: "Sample Registered Node 4",
                 registered_node_id: 4,
                 service_endpoints: [
                     {
@@ -126,9 +152,22 @@ export class RegisteredNodeCache extends SingletonCache<RegisteredNode[]> {
                     "key": "d6e8334cd8594e88c82ff266b4974b4e4ac596962dcfab7314f935e7fdda672f"
                 },
                 created_timestamp: "1648377044.798291252",
-                description: "Sample Registered Node (4 service endpoints, 1 of each type) ",
+                description: "Sample Registered Node 10",
                 registered_node_id: 10,
                 service_endpoints: [
+                    {
+                        block_node: null,
+                        domain_name: "general.service.com",
+                        general_service: {
+                            description: "This is another mocked-up general service",
+                        },
+                        ip_address: null,
+                        mirror_node: null,
+                        port: 40840,
+                        requires_tls: true,
+                        rpc_relay: null,
+                        type: RegisteredNodeType.GENERAL_SERVICE
+                    },
                     {
                         block_node: {
                             endpoint_apis: [RegisteredBlockNodeApi.STATE_PROOF]
@@ -166,17 +205,17 @@ export class RegisteredNodeCache extends SingletonCache<RegisteredNode[]> {
                     },
                     {
                         block_node: null,
-                        domain_name: "general.service.com",
+                        domain_name: null,
                         general_service: {
-                            description: "This is another mocked-up general service",
+                            description: "This is a mocked-up general service",
                         },
-                        ip_address: null,
+                        ip_address: "192.168.1.12",
                         mirror_node: null,
                         port: 40840,
                         requires_tls: true,
                         rpc_relay: null,
                         type: RegisteredNodeType.GENERAL_SERVICE
-                    }
+                    },
                 ],
                 timestamp: {"from": "1648377044.798291252", "to": null}
             },
