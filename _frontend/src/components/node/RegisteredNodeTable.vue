@@ -57,7 +57,7 @@
 
 import {PropType} from 'vue';
 import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
-import {RegisteredNode, RegisteredNodeType} from "@/schemas/MirrorNodeSchemas";
+import {RegisteredNode, registeredNodeTypeLabels} from "@/schemas/MirrorNodeSchemas";
 import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
 import EmptyTable from "@/components/EmptyTable.vue";
 import StringValue from "@/components/values/StringValue.vue";
@@ -90,21 +90,16 @@ const makeEndPointString = (node: RegisteredNode) => {
 }
 
 const makeServiceTypeString = (node: RegisteredNode) => {
-  let result: string
-  const foundTypes: RegisteredNodeType[] = []
+  const foundTypes: string[] = []
 
   for (const endPoint of node.service_endpoints) {
-    if (!foundTypes.includes(endPoint.type)) {
-      foundTypes.push(endPoint.type)
+    const type = registeredNodeTypeLabels[endPoint.type] ?? endPoint.type
+   console.log(`service type: ${type}`)
+    if (!foundTypes.includes(type)) {
+      foundTypes.push(type)
     }
   }
-
-  if (foundTypes.length === 0) {
-    result = 'None'
-  } else {
-    result = foundTypes.join(', ')
-  }
-  return result
+  return foundTypes.length === 0 ? 'None' : foundTypes.join(', ')
 }
 
 const handleClick = (node: RegisteredNode, c: unknown, i: number, ci: number, event: Event) => {
