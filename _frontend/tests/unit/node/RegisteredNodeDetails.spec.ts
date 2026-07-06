@@ -63,16 +63,16 @@ describe("RegisteredNodeDetails.vue", () => {
 
         // Service endpoints table: 3 endpoints (all have ip_address or domain_name)
         const endpointsTable = wrapper.get("#service-endpoint-table")
-        expect(endpointsTable.get("thead").text()).toBe("SERVICE TYPEENDPOINTPORTTLS REQUIRED")
+        expect(endpointsTable.get("thead").text()).toBe("SERVICE TYPE" + "HOST" + "PORT" + "TLS" + "ENDPOINT DETAILS")
         expect(endpointsTable.get("tbody").findAll("tr").length).toBe(2)
         expect(endpointsTable.get("tbody").text()).toBe(
-            "Block Node" + "block.example.com" + "50211" + "\u2713" +
-            "Block Node" + "1.2.3.4" + "50212"
+            "Block Node" + "1.2.3.4" + "50212" + "STATUS" +
+            "Block Node" + "block.example.com" + "50211" + "✓" + "PUBLISH, SUBSCRIBE_STREAM"
         )
 
         // Associated consensus nodes: node_id=0 has associated_registered_nodes=[3,6,10], includes 3
         const nodeTable = wrapper.get("#node-table")
-        expect(nodeTable.get("thead").text()).toBe("IDACCOUNTDESCRIPTION")
+        expect(nodeTable.get("thead").text()).toBe("ID" + "ACCOUNT" + "DESCRIPTION")
         expect(nodeTable.get("tbody").findAll("tr").length).toBe(1)
         expect(nodeTable.get("tbody").text()).toBe(
             "0" + "0.0.3" + "Hosted by " + "Hedera | East Coast, USA"
