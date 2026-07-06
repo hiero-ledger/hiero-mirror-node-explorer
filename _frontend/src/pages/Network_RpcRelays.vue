@@ -7,7 +7,8 @@
 <template>
 
   <Network_RegisteredNodes
-      :nodes="rpcRelays"
+      :nodes="registeredNodes"
+      :filter-service-type="RegisteredNodeType.RPC_RELAY"
       subtitle="JSON-RPC relays provide Ethereum-compatible RPC interfaces for interacting with Hedera smart contracts and EVM tooling."
       title="JSON-RPC Relays"
   />
@@ -23,6 +24,7 @@
 import {onBeforeUnmount, onMounted} from "vue";
 import Network_RegisteredNodes from "@/components/node/Network_RegisteredNodes.vue";
 import {RegisteredNodeCache} from "@/utils/cache/RegisteredNodeCache.ts";
+import {RegisteredNodeType} from "@/schemas/MirrorNodeSchemas.ts";
 
 defineProps({
   network: String
@@ -31,7 +33,7 @@ defineProps({
 const registeredNodeLookup = RegisteredNodeCache.instance.makeLookup()
 onMounted(() => registeredNodeLookup.mount())
 onBeforeUnmount(() => registeredNodeLookup.unmount())
-const rpcRelays = registeredNodeLookup.rpcRelays
+const registeredNodes = registeredNodeLookup.registeredNodes
 
 </script>
 

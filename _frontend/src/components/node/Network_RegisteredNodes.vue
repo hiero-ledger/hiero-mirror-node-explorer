@@ -12,7 +12,7 @@
     </template>
     <template #content>
       <p class="mb-4 h-is-low-contrast"> {{ props.subtitle }}</p>
-      <RegisteredNodeTable :nodes="props.nodes"/>
+      <RegisteredNodeTable :filter-service-type="props.filterServiceType" :nodes="props.nodes"/>
     </template>
   </DashboardCardV2>
 
@@ -27,7 +27,7 @@
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import {PropType} from "vue";
 import RegisteredNodeTable from "@/components/node/RegisteredNodeTable.vue";
-import {RegisteredNode} from "@/schemas/MirrorNodeSchemas.ts";
+import {RegisteredNode, RegisteredNodeType} from "@/schemas/MirrorNodeSchemas.ts";
 
 const props = defineProps({
   title: String,
@@ -36,6 +36,10 @@ const props = defineProps({
     type: Object as PropType<Array<RegisteredNode>>,
     required: true
   },
+  filterServiceType: {
+    type: Object as PropType<RegisteredNodeType | null>,
+    default: null
+  }
 })
 
 </script>

@@ -13,7 +13,7 @@
           }}</span>
     </template>
     <template #content>
-      <RegisteredNodeTable :display-service-type="true" :nodes="associatedNodes"/>
+      <RegisteredNodeTable :nodes="associatedNodes"/>
     </template>
   </DashboardCardV2>
 
