@@ -18,6 +18,7 @@ export interface AccountInfo {
     auto_renew_period: number | null
     balance: Balance | null
     created_timestamp: string | null
+    delegation_address: string | null | undefined   // A network entity encoded as an EVM address in hex. '0x' when unset.
     deleted: boolean | null
     expiry_timestamp: string | null
     key: Key | null
