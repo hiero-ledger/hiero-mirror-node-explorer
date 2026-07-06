@@ -256,32 +256,6 @@ export class RegisteredNodeLookup extends SingletonLookup<RegisteredNode[]> {
     //
 
     public readonly registeredNodes = computed(() => this.entity.value ?? [])
-    private readonly registeredNodesByRole = computed(() => {
-        const blockNodes = new Set<RegisteredNode>()
-        const mirrorNodes = new Set<RegisteredNode>()
-        const rpcRelays = new Set<RegisteredNode>()
-        const generalServices = new Set<RegisteredNode>()
-
-        for (const n of this.registeredNodes.value) {
-            for (const e of n.service_endpoints) {
-                if (e.type === RegisteredNodeType.BLOCK_NODE) {
-                    blockNodes.add(n)
-                } else if (e.type === RegisteredNodeType.MIRROR_NODE) {
-                    mirrorNodes.add(n)
-                } else if (e.type === RegisteredNodeType.RPC_RELAY) {
-                    rpcRelays.add(n)
-                } else {
-                    generalServices.add(n)
-                }
-            }
-        }
-        return {blockNodes, mirrorNodes, rpcRelays, generalServices}
-    })
-
-    public readonly blockNodes = computed(() => [...this.registeredNodesByRole.value.blockNodes])
-    public readonly mirrorNodes = computed(() => [...this.registeredNodesByRole.value.mirrorNodes])
-    public readonly rpcRelays = computed(() => [...this.registeredNodesByRole.value.rpcRelays])
-    public readonly generalServices = computed(() => [...this.registeredNodesByRole.value.generalServices])
 
     constructor(cache: RegisteredNodeCache) {
         super(cache)
