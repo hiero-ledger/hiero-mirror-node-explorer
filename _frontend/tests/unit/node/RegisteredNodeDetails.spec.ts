@@ -63,11 +63,11 @@ describe("RegisteredNodeDetails.vue", () => {
 
         // Service endpoints table: 3 endpoints (all have ip_address or domain_name)
         const endpointsTable = wrapper.get("#service-endpoint-table")
-        expect(endpointsTable.get("thead").text()).toBe("SERVICE TYPE" + "HOST" + "PORT" + "TLS" + "ENDPOINT DETAILS")
+        expect(endpointsTable.get("thead").text()).toBe("SERVICE TYPE" + "HOST" + "PORT" + "TLS" + "DETAILS")
         expect(endpointsTable.get("tbody").findAll("tr").length).toBe(2)
         expect(endpointsTable.get("tbody").text()).toBe(
-            "Block Node" + "1.2.3.4" + "50212" + "STATUS" +
-            "Block Node" + "block.example.com" + "50211" + "✓" + "PUBLISH, SUBSCRIBE_STREAM"
+            "Block Node" + "1.2.3.4" + "50212" + "Supports STATUS API" +
+            "Block Node" + "block.example.com" + "50211" + "✓" + "Supports PUBLISH, SUBSCRIBE_STREAM APIs"
         )
 
         // Associated consensus nodes: node_id=0 has associated_registered_nodes=[3,6,10], includes 3

@@ -39,19 +39,19 @@ describe("RegisteredNodeTable.vue", () => {
         expect(wrapper.get('tbody').text()).toBe(
             "0" +
             "Block Node | East Coast, USA" +
-            "BLOCK_NODE" +
+            "Block node" +
             "block.example.com:50211 (+1 more)" +
             "1" +
             "Mirror Node | West Coast, USA" +
-            "MIRROR_NODE" +
+            "Mirror node" +
             "5.6.7.8:443" +
             "2" +
             "RPC Relay | Central, USA" +
-            "RPC_RELAY" +
+            "RPC relay" +
             "relay.example.com:8080" +
             "3" +
             "General Service | Central, USA" +
-            "GENERAL_SERVICE" +
+            "Gen. service" +
             "general.service.example.com:443"
         )
 
