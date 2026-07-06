@@ -36,12 +36,6 @@
         </div>
       </o-table-column>
 
-      <o-table-column v-slot="props" field="nb_end_points" label="NUMBER OF ENDPOINTS">
-        <div class="regular-node-column">
-          {{ props.row.service_endpoints.length }}
-        </div>
-      </o-table-column>
-
     </o-table>
   </div>
 
@@ -82,6 +76,9 @@ const makeEndPointString = (node: RegisteredNode) => {
   } else {
     const endPoint = node.service_endpoints[0]
     result = `${endPoint.domain_name || endPoint.ip_address}:${endPoint.port}`
+    if (nbEndPoints > 1) {
+      result += ` (+${nbEndPoints - 1} more)`
+    }
   }
   return result
 }
