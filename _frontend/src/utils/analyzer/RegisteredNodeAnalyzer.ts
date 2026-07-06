@@ -4,6 +4,7 @@ import {computed, Ref} from "vue";
 import {RegisteredNode} from "@/schemas/MirrorNodeSchemas";
 import {NodeCache} from "@/utils/cache/NodeCache.ts";
 import {RegisteredNodeCache} from "@/utils/cache/RegisteredNodeCache.ts";
+import {sortRegisteredServiceEndPoint} from "@/schemas/MirrorNodeUtils.ts";
 
 export class RegisteredNodeAnalyzer {
 
@@ -22,7 +23,7 @@ export class RegisteredNodeAnalyzer {
         return result
     })
     public serviceEndpoints = computed(() =>
-        this.registeredNode.value?.service_endpoints ?? []
+        this.registeredNode.value?.service_endpoints.sort(sortRegisteredServiceEndPoint) ?? []
     )
 
     public associatedConsensusNodes = computed(() => {
