@@ -715,7 +715,8 @@ export function makeRegisteredServiceEndpointDetails(endpoint: RegisteredService
     if (endpoint.general_service) {
         result = endpoint.general_service.description
     } else if (endpoint.block_node) {
-        result = endpoint.block_node.endpoint_apis.join(", ")
+        const apis = endpoint.block_node.endpoint_apis
+        result = apis.length > 0 ? `Supports ${apis.join(", ")} ${apis.length > 1 ? "APIs" : "API"}` : ""
     } else {
         result = ""
     }
