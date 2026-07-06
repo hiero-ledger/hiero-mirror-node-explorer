@@ -16,6 +16,7 @@ import {
     Nft,
     NftTransfer,
     REDIRECT_FOR_TOKEN_FUNCTION_SIGHASH,
+    RegisteredServiceEndPoint,
     Token,
     TokenInfo,
     TokenRelationshipResponse,
@@ -707,4 +708,16 @@ const precompiledContractLabels = new Map<string, string>([
 
 export function labelForEthPrecompiledContract(evmAddress: string): string|null {
     return precompiledContractLabels.get(evmAddress) ?? null
+}
+
+export function makeRegisteredServiceEndpointDetails(endpoint: RegisteredServiceEndPoint): string {
+    let result: string
+    if (endpoint.general_service) {
+        result = endpoint.general_service.description
+    } else if (endpoint.block_node) {
+        result = endpoint.block_node.endpoint_apis.join(", ")
+    } else {
+        result = ""
+    }
+    return result
 }
