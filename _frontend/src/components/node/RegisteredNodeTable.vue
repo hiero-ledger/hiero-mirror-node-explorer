@@ -8,11 +8,10 @@
 
   <div v-if="nodes" id="node-table">
     <o-table
-        :data="props.nodes"
+        :data="filteredNodes"
         :hoverable="true"
         :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
         :paginated="false"
-        :per-page="props.nodes.length"
         :striped="false"
         default-sort="node_id"
         @cell-click="handleClick"
@@ -30,7 +29,7 @@
         </div>
       </o-table-column>
 
-      <o-table-column v-slot="props" field="type" label="SERVICE TYPE">
+      <o-table-column v-if="props.filterServiceType === null" v-slot="props" field="type" label="SERVICE TYPE">
         <div class="regular-node-column">
           <StringValue :string-value="makeServiceTypeString(props.row)"/>
         </div>
@@ -55,9 +54,9 @@
 
 <script lang="ts" setup>
 
-import {PropType} from 'vue';
+import {computed, PropType} from 'vue';
 import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
-import {RegisteredNode, registeredNodeTypeLabels} from "@/schemas/MirrorNodeSchemas";
+import {RegisteredNode, RegisteredNodeType, registeredNodeTypeLabels} from "@/schemas/MirrorNodeSchemas";
 import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
 import EmptyTable from "@/components/EmptyTable.vue";
 import StringValue from "@/components/values/StringValue.vue";
@@ -68,19 +67,31 @@ const props = defineProps({
     type: Object as PropType<Array<RegisteredNode>>,
     required: true
   },
-  displayServiceType: {
-    type: Boolean,
-    default: false
+  filterServiceType: {
+    type: Object as PropType<RegisteredNodeType | null>,
+    default: null
   }
+})
+
+const filteredNodes = computed(() => {
+  if (props.filterServiceType === null) {
+    return props.nodes
+  }
+  return props.nodes.filter(node => {
+    return node.service_endpoints.some(endPoint => endPoint.type === props.filterServiceType)
+  })
 })
 
 const makeEndPointString = (node: RegisteredNode) => {
   let result: string
-  const nbEndPoints = node.service_endpoints.length
+  const endPoints = props.filterServiceType === null
+      ? node.service_endpoints
+      : node.service_endpoints.filter(endPoint => endPoint.type === props.filterServiceType)
+  const nbEndPoints = endPoints.length
   if (nbEndPoints === 0) {
     result = 'None'
   } else {
-    const endPoint = node.service_endpoints[0]
+    const endPoint = endPoints[0]
     result = `${endPoint.domain_name || endPoint.ip_address}:${endPoint.port}`
     if (nbEndPoints > 1) {
       result += ` (+${nbEndPoints - 1} more)`
@@ -90,8 +101,11 @@ const makeEndPointString = (node: RegisteredNode) => {
 }
 
 const makeServiceTypeString = (node: RegisteredNode) => {
-  const foundTypes: string[] = []
+  if (props.filterServiceType !== null) {
+    return registeredNodeTypeLabels[props.filterServiceType] ?? props.filterServiceType
+  }
 
+  const foundTypes: string[] = []
   for (const endPoint of node.service_endpoints) {
     const type = registeredNodeTypeLabels[endPoint.type] ?? endPoint.type
    console.log(`service type: ${type}`)
