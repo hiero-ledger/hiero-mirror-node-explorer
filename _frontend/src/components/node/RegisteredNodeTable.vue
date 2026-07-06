@@ -30,7 +30,13 @@
         </div>
       </o-table-column>
 
-      <o-table-column v-slot="props" field="end_points" label="SERVICE ENDPOINT">
+      <o-table-column v-slot="props" field="type" label="SERVICE TYPE">
+        <div class="regular-node-column">
+          <StringValue :string-value="makeServiceTypeString(props.row)"/>
+        </div>
+      </o-table-column>
+
+      <o-table-column v-slot="props" field="end_point" label="SERVICE ENDPOINT">
         <div class="regular-node-column">
           <StringValue :string-value="makeEndPointString(props.row)"/>
         </div>
@@ -51,7 +57,7 @@
 
 import {PropType} from 'vue';
 import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
-import {RegisteredNode} from "@/schemas/MirrorNodeSchemas";
+import {RegisteredNode, RegisteredNodeType} from "@/schemas/MirrorNodeSchemas";
 import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
 import EmptyTable from "@/components/EmptyTable.vue";
 import StringValue from "@/components/values/StringValue.vue";
@@ -79,6 +85,24 @@ const makeEndPointString = (node: RegisteredNode) => {
     if (nbEndPoints > 1) {
       result += ` (+${nbEndPoints - 1} more)`
     }
+  }
+  return result
+}
+
+const makeServiceTypeString = (node: RegisteredNode) => {
+  let result: string
+  const foundTypes: RegisteredNodeType[] = []
+
+  for (const endPoint of node.service_endpoints) {
+    if (!foundTypes.includes(endPoint.type)) {
+      foundTypes.push(endPoint.type)
+    }
+  }
+
+  if (foundTypes.length === 0) {
+    result = 'None'
+  } else {
+    result = foundTypes.join(', ')
   }
   return result
 }
