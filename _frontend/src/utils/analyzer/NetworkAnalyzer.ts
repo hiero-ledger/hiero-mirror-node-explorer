@@ -93,10 +93,6 @@ export class NetworkAnalyzer {
         this.watchHandle = watch(this.nodes, this.updateStakingPeriod)
     }
 
-    //
-    // Private
-    //
-
     public unmount(): void {
         this.nodeLookup.unmount()
         this.stakingPeriod.value = null
@@ -107,6 +103,10 @@ export class NetworkAnalyzer {
             this.watchHandle = null
         }
     }
+
+    //
+    // Private
+    //
 
     private readonly updateStakingPeriod = () => {
         let startTimeInSec, endTimeInSec

@@ -25,28 +25,30 @@
 <script lang="ts" setup>
 
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
-import {computed, PropType} from "vue";
+import {computed, onBeforeUnmount, onMounted, PropType} from "vue";
 import RegisteredNodeTable from "@/components/node/RegisteredNodeTable.vue";
-import {RegisteredNode, RegisteredNodeType} from "@/schemas/MirrorNodeSchemas.ts";
+import {RegisteredNodeType} from "@/schemas/MirrorNodeSchemas.ts";
+import {RegisteredNodeCache} from "@/utils/cache/RegisteredNodeCache.ts";
 
 const props = defineProps({
   title: String,
   subtitle: String,
-  nodes: {
-    type: Object as PropType<Array<RegisteredNode>>,
-    required: true
-  },
   filterServiceType: {
     type: Object as PropType<RegisteredNodeType | null>,
     default: null
   }
 })
 
+const registeredNodeLookup = RegisteredNodeCache.instance.makeLookup()
+onMounted(() => registeredNodeLookup.mount())
+onBeforeUnmount(() => registeredNodeLookup.unmount())
+const registeredNodes = registeredNodeLookup.registeredNodes
+
 const filteredNodes = computed(() => {
   if (props.filterServiceType === null) {
-    return props.nodes
+    return registeredNodes.value
   }
-  return props.nodes.filter(node => {
+  return registeredNodes.value.filter(node => {
     return node.service_endpoints.some(endPoint => endPoint.type === props.filterServiceType)
   })
 })
