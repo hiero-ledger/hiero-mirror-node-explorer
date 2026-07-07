@@ -39,8 +39,6 @@ defineProps({
   network: String
 })
 
-const activateRegisteredNodes = import.meta.env.VITE_APP_ACTIVATE_HIP_1137 === 'true'
-
 const excludedTabIds = computed(() => {
   const excluded: string[] = []
 
@@ -48,12 +46,6 @@ const excludedTabIds = computed(() => {
     excluded.push("Network_Overview")
   }
 
-  if (!activateRegisteredNodes) {
-    excluded.push("Network_BlockNodes")
-    excluded.push("Network_MirrorNodes")
-    excluded.push("Network_RpcRelays")
-    excluded.push("Network_GeneralServices")
-  }
   return excluded
 })
 

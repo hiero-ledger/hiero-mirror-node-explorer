@@ -16,6 +16,7 @@ import {
     Nft,
     NftTransfer,
     REDIRECT_FOR_TOKEN_FUNCTION_SIGHASH,
+    RegisteredServiceEndPoint,
     Token,
     TokenInfo,
     TokenRelationshipResponse,
@@ -707,4 +708,25 @@ const precompiledContractLabels = new Map<string, string>([
 
 export function labelForEthPrecompiledContract(evmAddress: string): string|null {
     return precompiledContractLabels.get(evmAddress) ?? null
+}
+
+export function makeRegisteredServiceEndpointDetails(endpoint: RegisteredServiceEndPoint): string {
+    let result: string
+    if (endpoint.general_service) {
+        result = endpoint.general_service.description
+    } else if (endpoint.block_node) {
+        const apis = endpoint.block_node.endpoint_apis
+        result = apis.length > 0 ? `Supports ${apis.join(", ")} ${apis.length > 1 ? "APIs" : "API"}` : ""
+    } else {
+        result = ""
+    }
+    return result
+}
+
+// eslint-disable-next-line complexity
+export function sortRegisteredServiceEndPoint(a: RegisteredServiceEndPoint, b: RegisteredServiceEndPoint): number {
+    if (a.type !== b.type) return a.type.localeCompare(b.type)
+    if (a.domain_name !== b.domain_name) return (a.domain_name || "").localeCompare(b.domain_name || "")
+    if (a.ip_address !== b.ip_address) return (a.ip_address || "").localeCompare(b.ip_address || "")
+    return (a.port || 0) - (b.port || 0)
 }

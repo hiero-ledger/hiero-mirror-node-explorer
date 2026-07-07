@@ -68,10 +68,6 @@ describe("AdminKeyDetails.vue", () => {
             "api/v1/network/exchangerate",
             "api/v1/accounts/" + SAMPLE_ACCOUNT_PROTOBUF_KEY.account,
             "api/v1/network/nodes",
-            "api/v1/network/registered-nodes",
-            "api/v1/network/registered-nodes",
-            "api/v1/network/registered-nodes",
-            "api/v1/network/registered-nodes",
         ])
 
         await flushPromises()
@@ -110,10 +106,6 @@ describe("AdminKeyDetails.vue", () => {
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/accounts/" + SAMPLE_ACCOUNT_PROTOBUF_KEY.account,
             "api/v1/network/nodes",
-            "api/v1/network/registered-nodes",
-            "api/v1/network/registered-nodes",
-            "api/v1/network/registered-nodes",
-            "api/v1/network/registered-nodes",
             "api/v1/contracts/" + SAMPLE_ACCOUNT_PROTOBUF_KEY.account,
         ])
 
@@ -170,10 +162,6 @@ describe("AdminKeyDetails.vue", () => {
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/accounts/" + SAMPLE_ACCOUNT.account,
             "api/v1/network/nodes",
-            "api/v1/network/registered-nodes",
-            "api/v1/network/registered-nodes",
-            "api/v1/network/registered-nodes",
-            "api/v1/network/registered-nodes",
             "api/v1/contracts/" + SAMPLE_ACCOUNT.account,
         ])
 

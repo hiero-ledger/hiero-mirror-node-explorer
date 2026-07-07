@@ -171,7 +171,7 @@
       </template>
     </DashboardCardV2>
 
-    <AssociatedRegisteredNodesSection v-if="activateRegisteredNodes" :nodes="associatedNodes"/>
+    <AssociatedRegisteredNodesSection v-if="associatedNodeIds.length > 0" :node-ids="associatedNodeIds"/>
 
   </PageFrameV2>
 
@@ -215,8 +215,6 @@ const props = defineProps({
   },
   network: String
 })
-
-const activateRegisteredNodes = import.meta.env.VITE_APP_ACTIVATE_HIP_1137 === 'true'
 
 const cryptoName = CoreConfig.inject().cryptoName
 const loading = inject(loadingKey, ref(false))
@@ -266,7 +264,7 @@ const makeFloorHbarAmount = (tinyBarAmount: number) => {
 
 const enableStaking = routeManager.enableStaking
 const node = nodeAnalyzer.node
-const associatedNodes = nodeAnalyzer.associatedNodes
+const associatedNodeIds = nodeAnalyzer.associatedNodeIds
 const declineReward = nodeAnalyzer.declineReward
 const totalStakeForConsensus = networkAnalyzer.totalStakeForConsensus
 const annualizedRate = nodeAnalyzer.annualizedRate

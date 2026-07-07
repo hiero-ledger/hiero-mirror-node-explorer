@@ -12,19 +12,12 @@
         :hoverable="true"
         :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
         :paginated="false"
-        :per-page="props.nodes.length"
         :striped="false"
-        default-sort="node_id"
+        default-sort="registered_node_id"
         @cell-click="handleClick"
     >
 
-      <o-table-column v-slot="props" field="type" label="SERVICE TYPE">
-        <div class="regular-node-column">
-          {{ printableNodeType(props.row.service_endpoints[0].type) }}
-        </div>
-      </o-table-column>
-
-      <o-table-column v-slot="props" field="node_id" label="REGISTERED NODE ID">
+      <o-table-column v-slot="props" field="registered_node_id" label="REGISTERED NODE ID">
         <div class="regular-node-column node_id">
           {{ props.row.registered_node_id }}
         </div>
@@ -36,7 +29,13 @@
         </div>
       </o-table-column>
 
-      <o-table-column v-slot="props" field="end_points" label="SERVICE ENDPOINTS">
+      <o-table-column v-if="props.filterServiceType === null" v-slot="props" field="type" label="SERVICE TYPE">
+        <div class="regular-node-column">
+          <StringValue :string-value="makeServiceTypeString(props.row)"/>
+        </div>
+      </o-table-column>
+
+      <o-table-column v-slot="props" field="end_point" label="SERVICE ENDPOINT">
         <div class="regular-node-column">
           <StringValue :string-value="makeEndPointString(props.row)"/>
         </div>
@@ -55,13 +54,12 @@
 
 <script lang="ts" setup>
 
-import {onBeforeUnmount, onMounted, PropType} from 'vue';
+import {PropType} from 'vue';
 import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
-import {printableNodeType, RegisteredNode} from "@/schemas/MirrorNodeSchemas";
+import {RegisteredNode, RegisteredNodeType, registeredNodeTypeLabels} from "@/schemas/MirrorNodeSchemas";
 import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
 import EmptyTable from "@/components/EmptyTable.vue";
 import StringValue from "@/components/values/StringValue.vue";
-import {NetworkAnalyzer} from "@/utils/analyzer/NetworkAnalyzer";
 import {routeManager} from "@/utils/RouteManager.ts";
 
 const props = defineProps({
@@ -69,29 +67,43 @@ const props = defineProps({
     type: Object as PropType<Array<RegisteredNode>>,
     required: true
   },
-  displayServiceType: {
-    type: Boolean,
-    default: false
+  filterServiceType: {
+    type: Object as PropType<RegisteredNodeType | null>,
+    default: null
   }
 })
 
-const networkAnalyzer = new NetworkAnalyzer()
-onMounted(() => networkAnalyzer.mount())
-onBeforeUnmount(() => networkAnalyzer.unmount())
-
 const makeEndPointString = (node: RegisteredNode) => {
   let result: string
-  const nbEndPoints = node.service_endpoints.length
+  const endPoints = props.filterServiceType === null
+      ? node.service_endpoints
+      : node.service_endpoints.filter(endPoint => endPoint.type === props.filterServiceType)
+  const nbEndPoints = endPoints.length
   if (nbEndPoints === 0) {
     result = 'None'
   } else {
-    const endPoint = node.service_endpoints[0]
+    const endPoint = endPoints[0]
     result = `${endPoint.domain_name || endPoint.ip_address}:${endPoint.port}`
     if (nbEndPoints > 1) {
       result += ` (+${nbEndPoints - 1} more)`
     }
   }
   return result
+}
+
+const makeServiceTypeString = (node: RegisteredNode) => {
+  if (props.filterServiceType !== null) {
+    return registeredNodeTypeLabels[props.filterServiceType] ?? props.filterServiceType
+  }
+
+  const foundTypes: string[] = []
+  for (const endPoint of node.service_endpoints) {
+    const type = registeredNodeTypeLabels[endPoint.type] ?? endPoint.type
+    if (!foundTypes.includes(type)) {
+      foundTypes.push(type)
+    }
+  }
+  return foundTypes.length === 0 ? 'None' : foundTypes.join(', ')
 }
 
 const handleClick = (node: RegisteredNode, c: unknown, i: number, ci: number, event: Event) => {

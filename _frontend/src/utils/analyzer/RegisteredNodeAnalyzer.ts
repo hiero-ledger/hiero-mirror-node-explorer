@@ -1,21 +1,21 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import {computed, Ref} from "vue";
-import {printableNodeType, RegisteredNode} from "@/schemas/MirrorNodeSchemas";
-import {NetworkAnalyzer} from "@/utils/analyzer/NetworkAnalyzer";
+import {RegisteredNode} from "@/schemas/MirrorNodeSchemas";
+import {NodeCache} from "@/utils/cache/NodeCache.ts";
+import {RegisteredNodeCache} from "@/utils/cache/RegisteredNodeCache.ts";
+import {sortRegisteredServiceEndPoint} from "@/schemas/MirrorNodeUtils.ts";
 
 export class RegisteredNodeAnalyzer {
 
     public readonly registeredNodeId: Ref<number | null>
-    public readonly networkAnalyzer: NetworkAnalyzer = new NetworkAnalyzer()
+    public readonly registeredNodeLookup = RegisteredNodeCache.instance.makeLookup()
+    public readonly consensusNodeLookup = NodeCache.instance.makeLookup()
 
     public registeredNode = computed(() => {
         let result: RegisteredNode | null
         if (this.registeredNodeId.value !== null) {
-            result = this.networkAnalyzer.mirrorNodes.value
-                .concat(this.networkAnalyzer.blockNodes.value)
-                .concat(this.networkAnalyzer.rpcRelays.value)
-                .concat(this.networkAnalyzer.generalServices.value)
+            result = this.registeredNodeLookup.registeredNodes.value
                 .find((node) => node.registered_node_id === this.registeredNodeId.value) ?? null
         } else {
             result = null
@@ -23,18 +23,14 @@ export class RegisteredNodeAnalyzer {
         return result
     })
     public serviceEndpoints = computed(() =>
-        this.registeredNode.value?.service_endpoints ?? []
-    )
-    public nodeType = computed(() =>
-        this.serviceEndpoints.value.length > 0
-            ? printableNodeType(this.serviceEndpoints.value[0].type)
-            : null
+        [...(this.registeredNode.value?.service_endpoints ?? [])].sort(sortRegisteredServiceEndPoint)
     )
 
     public associatedConsensusNodes = computed(() => {
         const id = this.registeredNodeId.value
-        return id !== null
-            ? this.networkAnalyzer.nodes.value.filter((node) => node.associated_registered_nodes && node.associated_registered_nodes.includes(id))
+        const consensusNodes = this.consensusNodeLookup.entity.value
+        return (id !== null && consensusNodes !== null)
+            ? consensusNodes.filter((node) => node.associated_registered_nodes?.includes(id))
             : []
     })
 
@@ -43,10 +39,12 @@ export class RegisteredNodeAnalyzer {
     }
 
     public mount(): void {
-        this.networkAnalyzer.mount()
+        this.registeredNodeLookup.mount()
+        this.consensusNodeLookup.mount()
     }
 
     public unmount(): void {
-        this.networkAnalyzer.unmount()
+        this.registeredNodeLookup.unmount()
+        this.consensusNodeLookup.unmount()
     }
 }

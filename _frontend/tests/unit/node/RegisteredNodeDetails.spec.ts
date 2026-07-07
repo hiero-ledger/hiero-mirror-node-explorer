@@ -45,38 +45,34 @@ describe("RegisteredNodeDetails.vue", () => {
         });
 
         expect(fetchGetURLs(mock)).toStrictEqual([
+            "api/v1/network/registered-nodes",
             "api/v1/network/nodes",
-            "api/v1/network/registered-nodes",
-            "api/v1/network/registered-nodes",
-            "api/v1/network/registered-nodes",
-            "api/v1/network/registered-nodes",
         ])
 
         await flushPromises()
         // console.log(wrapper.html())
         // console.log(wrapper.text())
 
-        expect(wrapper.text()).toMatch("Block Node")
+        expect(wrapper.text()).toMatch("Registered Node")
 
         expect(wrapper.get("#node-idValue").text()).toBe("0")
         expect(wrapper.get("#descriptionValue").text()).toBe("Block Node | East Coast, USA")
         expect(wrapper.get("#admin-keyValue").text()).toBe(
             "0xd6e8334cd8594e88c82ff266b4974b4e4ac596962dcfab7314f935e7fdda672f" + "Copy" + "ED25519"
         )
-        expect(wrapper.get("#service-typeValue").text()).toBe("Block Node")
 
         // Service endpoints table: 3 endpoints (all have ip_address or domain_name)
         const endpointsTable = wrapper.get("#service-endpoint-table")
-        expect(endpointsTable.get("thead").text()).toBe("ENDPOINTPORTTLS REQUIRED")
+        expect(endpointsTable.get("thead").text()).toBe("SERVICE TYPE" + "HOST" + "PORT" + "TLS" + "DETAILS")
         expect(endpointsTable.get("tbody").findAll("tr").length).toBe(2)
         expect(endpointsTable.get("tbody").text()).toBe(
-            "block.example.com" + "50211" + "\u2713" +
-            "1.2.3.4" + "50212"
+            "Block Node" + "1.2.3.4" + "50212" + "Supports STATUS API" +
+            "Block Node" + "block.example.com" + "50211" + "✓" + "Supports PUBLISH, SUBSCRIBE_STREAM APIs"
         )
 
         // Associated consensus nodes: node_id=0 has associated_registered_nodes=[3,6,10], includes 3
         const nodeTable = wrapper.get("#node-table")
-        expect(nodeTable.get("thead").text()).toBe("IDACCOUNTDESCRIPTION")
+        expect(nodeTable.get("thead").text()).toBe("ID" + "ACCOUNT" + "DESCRIPTION")
         expect(nodeTable.get("tbody").findAll("tr").length).toBe(1)
         expect(nodeTable.get("tbody").text()).toBe(
             "0" + "0.0.3" + "Hosted by " + "Hedera | East Coast, USA"
@@ -108,22 +104,18 @@ describe("RegisteredNodeDetails.vue", () => {
         });
 
         expect(fetchGetURLs(mock)).toStrictEqual([
+            "api/v1/network/registered-nodes",
             "api/v1/network/nodes",
-            "api/v1/network/registered-nodes",
-            "api/v1/network/registered-nodes",
-            "api/v1/network/registered-nodes",
-            "api/v1/network/registered-nodes",
         ])
 
         await flushPromises()
         // console.log(wrapper.html())
         // console.log(wrapper.text())
 
-        expect(wrapper.text()).toMatch("Mirror Node")
+        expect(wrapper.text()).toMatch("Registered Node")
 
         expect(wrapper.get("#node-idValue").text()).toBe("1")
         expect(wrapper.get("#descriptionValue").text()).toBe("Mirror Node | West Coast, USA")
-        expect(wrapper.get("#service-typeValue").text()).toBe("Mirror Node")
 
         mock.resetHistory()
         await wrapper.setProps({nodeId: "2"})
@@ -137,7 +129,6 @@ describe("RegisteredNodeDetails.vue", () => {
         expect(wrapper.text()).toMatch("JSON-RPC Relay")
         expect(wrapper.get("#node-idValue").text()).toBe("2")
         expect(wrapper.get("#descriptionValue").text()).toBe("RPC Relay | Central, USA")
-        expect(wrapper.get("#service-typeValue").text()).toBe("JSON-RPC Relay")
 
         mock.restore()
         wrapper.unmount()
@@ -171,7 +162,6 @@ describe("RegisteredNodeDetails.vue", () => {
         expect(wrapper.get("#node-idValue").text()).toBe("None")
         expect(wrapper.get("#descriptionValue").text()).toBe("None")
         expect(wrapper.get("#admin-keyValue").text()).toBe("None")
-        expect(wrapper.get("#service-typeValue").text()).toBe("None")
 
         mock.restore()
         wrapper.unmount()

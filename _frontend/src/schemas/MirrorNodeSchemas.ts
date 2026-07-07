@@ -903,6 +903,13 @@ export enum RegisteredNodeType {
     RPC_RELAY = "RPC_RELAY"
 }
 
+export const registeredNodeTypeLabels = {
+    [RegisteredNodeType.BLOCK_NODE]: "Block node",
+    [RegisteredNodeType.GENERAL_SERVICE]: "Gen. service",
+    [RegisteredNodeType.MIRROR_NODE]: "Mirror node",
+    [RegisteredNodeType.RPC_RELAY]: "RPC relay",
+};
+
 export function printableNodeType(type: RegisteredNodeType):string {
     switch(type) {
         case RegisteredNodeType.BLOCK_NODE:

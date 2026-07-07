@@ -14,7 +14,11 @@
         :narrowed="true"
         :striped="false"
     >
-      <o-table-column v-slot="props" field="endpoint" label="ENDPOINT">
+      <o-table-column v-slot="props" field="type" label="SERVICE TYPE">
+        <StringValue :show-none="true" :string-value="printableNodeType(props.row.type)"/>
+      </o-table-column>
+
+      <o-table-column v-slot="props" field="host" label="HOST">
         <span class="h-is-monospace">{{ props.row.domain_name || props.row.ip_address }}</span>
       </o-table-column>
 
@@ -22,9 +26,14 @@
         <span class="h-is-monospace">{{ props.row.port > 0 ? props.row.port : '' }}</span>
       </o-table-column>
 
-      <o-table-column v-slot="props" field="requires_tls" label="TLS REQUIRED">
+      <o-table-column v-slot="props" field="tls" label="TLS">
         <span v-if="props.row.requires_tls">&#10003;</span>
       </o-table-column>
+
+      <o-table-column v-slot="props" field="details" label="DETAILS">
+        <StringValue :show-none="false" :string-value="makeRegisteredServiceEndpointDetails(props.row)"/>
+      </o-table-column>
+
     </o-table>
   </div>
 
@@ -40,9 +49,11 @@
 
 import {computed, PropType} from 'vue';
 import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
-import {RegisteredServiceEndPoint} from "@/schemas/MirrorNodeSchemas";
+import {printableNodeType, RegisteredServiceEndPoint} from "@/schemas/MirrorNodeSchemas";
 import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
 import EmptyTable from "@/components/EmptyTable.vue";
+import StringValue from "@/components/values/StringValue.vue";
+import {makeRegisteredServiceEndpointDetails} from "@/schemas/MirrorNodeUtils.ts";
 
 const props = defineProps({
   endPoints: {

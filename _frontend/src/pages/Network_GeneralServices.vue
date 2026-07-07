@@ -7,7 +7,7 @@
 <template>
 
   <Network_RegisteredNodes
-      :nodes="generalServices"
+      :filter-service-type="RegisteredNodeType.GENERAL_SERVICE"
       subtitle="General services are services provided by a registered node but not currently defined as part of the Hiero Ledger system."
       title="General Services"
   />
@@ -20,18 +20,12 @@
 
 <script lang="ts" setup>
 
-import {NetworkAnalyzer} from "@/utils/analyzer/NetworkAnalyzer.ts";
-import {onBeforeUnmount, onMounted} from "vue";
 import Network_RegisteredNodes from "@/components/node/Network_RegisteredNodes.vue";
+import {RegisteredNodeType} from "@/schemas/MirrorNodeSchemas.ts";
 
 defineProps({
   network: String
 })
-
-const networkAnalyzer = new NetworkAnalyzer()
-onMounted(() => networkAnalyzer.mount())
-onBeforeUnmount(() => networkAnalyzer.unmount())
-const generalServices = networkAnalyzer.generalServices
 
 </script>
 

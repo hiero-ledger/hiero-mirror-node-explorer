@@ -8,7 +8,7 @@
 
   <PageFrameV2 :page-title="pageTitle">
     <template #page-title>
-      {{ pageTitle }}
+      Registered Node
       <span style="white-space: nowrap; font-size: smaller">
         {{ nodeIdNb }}
       </span>
@@ -49,13 +49,6 @@
             />
           </template>
         </Property>
-
-        <Property id="service-type" :full-width="true">
-          <template #name>Service Type</template>
-          <template #value>
-            <StringValue :show-none="true" :string-value="nodeType"/>
-          </template>
-        </Property>
       </template>
 
       <template #footer>
@@ -67,7 +60,9 @@
 
     <DashboardCardV2>
       <template #title>
-        Service Endpoints
+        <span>{{
+            `${serviceEndpoints.length}  Service ${serviceEndpoints.length > 1 ? 'Endpoints' : 'Endpoint'}`
+          }}</span>
       </template>
 
       <template #content>
@@ -76,9 +71,11 @@
     </DashboardCardV2>
 
 
-    <DashboardCardV2>
+    <DashboardCardV2 v-if="associatedConsensusNodes.length > 0">
       <template #title>
-        Associated Consensus Nodes
+        <span>{{
+            `${associatedConsensusNodes.length}  Associated Consensus ${associatedConsensusNodes.length > 1 ? 'Nodes' : 'Node'}`
+          }}</span>
       </template>
 
       <template #content>
@@ -107,7 +104,6 @@ import MirrorLink from "@/components/MirrorLink.vue";
 import {loadingKey} from "@/AppKeys.ts";
 import StringValue from "@/components/values/StringValue.vue";
 import KeyValue from "@/components/values/KeyValue.vue";
-import {printableNodeType} from "@/schemas/MirrorNodeSchemas.ts";
 import RegisteredServiceEndpointsTable from "@/components/node/RegisteredServiceEndpointsTable.vue";
 import NodeTable from "@/components/node/NodeTable.vue";
 import {RegisteredNodeAnalyzer} from "@/utils/analyzer/RegisteredNodeAnalyzer.ts";
@@ -123,12 +119,7 @@ const props = defineProps({
 const loading = inject(loadingKey, ref(false))
 
 const nodeIdNb = computed(() => PathParam.parseNodeId(props.nodeId))
-
-const pageTitle = computed(() =>
-    registeredNode.value?.service_endpoints.length
-        ? printableNodeType(registeredNode.value.service_endpoints[0].type)
-        : "Registered Node"
-)
+const pageTitle = computed(() => nodeIdNb.value !== null ? "Registered Node " + nodeIdNb.value : "Registered Node")
 
 const notification = computed(() => {
   let result: string | null
@@ -144,7 +135,6 @@ const nodeAnalyzer = new RegisteredNodeAnalyzer(nodeIdNb)
 onMounted(() => nodeAnalyzer.mount())
 onBeforeUnmount(() => nodeAnalyzer.unmount())
 const registeredNode = nodeAnalyzer.registeredNode
-const nodeType = nodeAnalyzer.nodeType
 const serviceEndpoints = nodeAnalyzer.serviceEndpoints
 const associatedConsensusNodes = nodeAnalyzer.associatedConsensusNodes
 

@@ -49,10 +49,7 @@ import {ERC1155Cache} from "@/utils/cache/ERC1155Cache.ts";
 import {PublicLabelsCache} from "@/utils/cache/PublicLabelsCache.ts";
 import {HooksByAccountIdCache} from "@/utils/cache/HooksByAccountIdCache.ts";
 import {HookStorageByIdCache} from "@/utils/cache/HookStorageByIdCache.ts";
-import {BlockNodeCache} from "@/utils/cache/BlockNodeCache.ts";
-import {MirrorNodeCache} from "@/utils/cache/MirrorNodeCache.ts";
-import {RpcRelayCache} from "@/utils/cache/RpcRelayCache.ts";
-import {GeneralServiceCache} from "./GeneralServiceCache.ts";
+import {RegisteredNodeCache} from "@/utils/cache/RegisteredNodeCache.ts";
 
 export class CacheUtils {
 
@@ -67,7 +64,6 @@ export class CacheUtils {
         BlockByHashCache.instance.clear()
         BlockByNbCache.instance.clear()
         BlockByTsCache.instance.clear()
-        BlockNodeCache.instance.clear()
         ContractByAddressCache.instance.clear()
         ContractByIdCache.instance.clear()
         ContractResultByHashCache.instance.clear()
@@ -79,7 +75,6 @@ export class CacheUtils {
         ERC721Cache.instance.clear()
         ERC721InfoCache.instance.clear()
         ERC1155Cache.instance.clear()
-        GeneralServiceCache.instance.clear()
         HCSAssetCache.instance.clear()
         HbarPriceCache.instance.clear()
         HooksByAccountIdCache.instance.clear()
@@ -87,14 +82,13 @@ export class CacheUtils {
         LastTopicMessageByIdCache.instance.clear()
         LogicContractCache.instance.clear()
         // IPFSCache.instance => no clear: we preserve it because IPFS content is valid for all networks
-        MirrorNodeCache.instance.clear()
         NetworkFeesCache.instance.clear()
         NftBySerialCache.instance.clear()
         NftCollectionCache.instance.clear()
         NodeCache.instance.clear()
         PendingAirdropCache.instance.clear()
         PublicLabelsCache.instance.clear()
-        RpcRelayCache.instance.clear()
+        RegisteredNodeCache.instance.clear()
         ScheduleByIdCache.instance.clear()
         SelectedTokensCache.instance.clear()
         // SignatureCache.instance => no clear: we preserve it because 4byte content is valid for all networks

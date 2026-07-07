@@ -7,7 +7,7 @@
 <template>
 
   <Network_RegisteredNodes
-      :nodes="mirrorNodes"
+      :filter-service-type="RegisteredNodeType.MIRROR_NODE"
       subtitle="Mirror Nodes provide indexed query access to network data for analytics, APIs, and explorer integrations."
       title="Mirror Nodes"
   />
@@ -20,18 +20,12 @@
 
 <script lang="ts" setup>
 
-import {NetworkAnalyzer} from "@/utils/analyzer/NetworkAnalyzer.ts";
-import {onBeforeUnmount, onMounted} from "vue";
 import Network_RegisteredNodes from "@/components/node/Network_RegisteredNodes.vue";
+import {RegisteredNodeType} from "@/schemas/MirrorNodeSchemas.ts";
 
 defineProps({
   network: String
 })
-
-const networkAnalyzer = new NetworkAnalyzer()
-onMounted(() => networkAnalyzer.mount())
-onBeforeUnmount(() => networkAnalyzer.unmount())
-const mirrorNodes = networkAnalyzer.mirrorNodes
 
 </script>
 
