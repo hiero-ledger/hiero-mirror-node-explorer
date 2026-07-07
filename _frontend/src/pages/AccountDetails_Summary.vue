@@ -201,6 +201,14 @@
           <StringValue :string-value="account?.ethereum_nonce?.toString()"/>
         </template>
       </Property>
+      <template v-if="delegationAddress">
+        <Property id="delegationAddress">
+          <template #name>Delegation Address</template>
+          <template #value>
+            <EVMAddress :address="delegationAddress" show-id compact/>
+          </template>
+        </Property>
+      </template>
       <template v-if="nbOfHooks">
         <Property id="numOfHooks">
           <template #name>Number of Hooks</template>
@@ -407,6 +415,7 @@ const nodeId = accountLocParser.nodeId
 const ethereumAddress = accountLocParser.ethereumAddress
 const stakePeriodStart = accountLocParser.stakePeriodStart
 const stakedAccountId = accountLocParser.stakedAccountId
+const delegationAddress = accountLocParser.delegationAddress
 const stakedNodeDescription = stakedNodeAnalyzer.nodeDescription
 
 </script>

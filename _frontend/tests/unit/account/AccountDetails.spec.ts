@@ -193,6 +193,40 @@ describe("AccountDetails.vue", () => {
         expect(wrapper.get("#stakedToName").text()).toBe("Staked to")
         expect(wrapper.get("#stakedToValue").text()).toBe("None")
 
+        expect(wrapper.find("#delegationAddress").exists()).toBe(false)
+
+        mock.restore()
+        wrapper.unmount()
+        await flushPromises()
+    });
+
+    it("AccountDetails default tab should display delegation address", async () => {
+        await router.push("/") // To avoid "missing required param 'network'" error
+
+        const mock = new MockAdapter(axios as any);
+
+        const account = {...SAMPLE_ACCOUNT, delegation_address: "0x00000000000000000000000000000000000b2608"}
+        const accountId = account.account
+
+        mock.onGet("/api/v1/accounts/" + accountId).reply(200, account);
+
+        const wrapper = mount(AccountDetails, {
+            global: {
+                plugins: [router, Oruga],
+                provide: {"isMediumScreen": false}
+            },
+            props: {
+                accountId: accountId
+            },
+        });
+
+        await flushPromises()
+        // console.log(wrapper.html())
+
+        const delegationText = wrapper.get("#delegationAddressValue").text()
+        expect(delegationText).toContain("0x00…0b2608")
+        expect(delegationText).toContain("0.0.730632")
+
         mock.restore()
         wrapper.unmount()
         await flushPromises()
