@@ -130,6 +130,12 @@ export class AccountLocParser {
             : this.isInactiveEvmAddress.value ? this.accountLocObj.value?.toString() : null
     })
 
+    public readonly delegationAddress = computed(() => {
+        const address = this.accountInfo.value?.delegation_address
+        return address != null && address !== '0x' ? address : null
+    })
+
+    // eslint-disable-next-line complexity
     public readonly errorNotification: ComputedRef<string | null> = computed(() => {
         let result: string | null
         const l = this.accountLoc.value
