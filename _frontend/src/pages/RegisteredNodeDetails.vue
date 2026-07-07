@@ -119,7 +119,7 @@ const props = defineProps({
 const loading = inject(loadingKey, ref(false))
 
 const nodeIdNb = computed(() => PathParam.parseNodeId(props.nodeId))
-const pageTitle = computed(() => nodeIdNb.value !== null ? "Registered Node " + nodeIdNb.value : null)
+const pageTitle = computed(() => nodeIdNb.value !== null ? "Registered Node " + nodeIdNb.value : "Registered Node")
 
 const notification = computed(() => {
   let result: string | null

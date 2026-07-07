@@ -23,7 +23,7 @@ export class RegisteredNodeAnalyzer {
         return result
     })
     public serviceEndpoints = computed(() =>
-        this.registeredNode.value?.service_endpoints.sort(sortRegisteredServiceEndPoint) ?? []
+        [...(this.registeredNode.value?.service_endpoints ?? [])].sort(sortRegisteredServiceEndPoint)
     )
 
     public associatedConsensusNodes = computed(() => {

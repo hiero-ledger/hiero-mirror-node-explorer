@@ -725,8 +725,8 @@ export function makeRegisteredServiceEndpointDetails(endpoint: RegisteredService
 
 // eslint-disable-next-line complexity
 export function sortRegisteredServiceEndPoint(a: RegisteredServiceEndPoint, b: RegisteredServiceEndPoint): number {
-    if (a.type !== b.type) return a.type.localeCompare(b.type);
-    if (a.domain_name !== b.domain_name) return (a.domain_name || '').localeCompare(b.domain_name || '');
-    if (a.ip_address !== b.ip_address) return (a.ip_address || '').localeCompare(b.ip_address || '');
-    return (a.port || 0) - (b.port || 0);
+    if (a.type !== b.type) return a.type.localeCompare(b.type)
+    if (a.domain_name !== b.domain_name) return (a.domain_name || "").localeCompare(b.domain_name || "")
+    if (a.ip_address !== b.ip_address) return (a.ip_address || "").localeCompare(b.ip_address || "")
+    return (a.port || 0) - (b.port || 0)
 }

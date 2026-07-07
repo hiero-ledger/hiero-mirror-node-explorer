@@ -8,16 +8,16 @@
 
   <div v-if="nodes" id="node-table">
     <o-table
-        :data="filteredNodes"
+        :data="props.nodes"
         :hoverable="true"
         :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
         :paginated="false"
         :striped="false"
-        default-sort="node_id"
+        default-sort="registered_node_id"
         @cell-click="handleClick"
     >
 
-      <o-table-column v-slot="props" field="node_id" label="REGISTERED NODE ID">
+      <o-table-column v-slot="props" field="registered_node_id" label="REGISTERED NODE ID">
         <div class="regular-node-column node_id">
           {{ props.row.registered_node_id }}
         </div>
@@ -54,7 +54,7 @@
 
 <script lang="ts" setup>
 
-import {computed, PropType} from 'vue';
+import {PropType} from 'vue';
 import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
 import {RegisteredNode, RegisteredNodeType, registeredNodeTypeLabels} from "@/schemas/MirrorNodeSchemas";
 import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
@@ -71,15 +71,6 @@ const props = defineProps({
     type: Object as PropType<RegisteredNodeType | null>,
     default: null
   }
-})
-
-const filteredNodes = computed(() => {
-  if (props.filterServiceType === null) {
-    return props.nodes
-  }
-  return props.nodes.filter(node => {
-    return node.service_endpoints.some(endPoint => endPoint.type === props.filterServiceType)
-  })
 })
 
 const makeEndPointString = (node: RegisteredNode) => {
@@ -108,7 +99,6 @@ const makeServiceTypeString = (node: RegisteredNode) => {
   const foundTypes: string[] = []
   for (const endPoint of node.service_endpoints) {
     const type = registeredNodeTypeLabels[endPoint.type] ?? endPoint.type
-   console.log(`service type: ${type}`)
     if (!foundTypes.includes(type)) {
       foundTypes.push(type)
     }
