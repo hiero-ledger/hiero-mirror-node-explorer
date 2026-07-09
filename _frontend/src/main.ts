@@ -3,10 +3,7 @@
 import {createApp} from 'vue'
 import Root from './Root.vue'
 import axios from 'axios'
-import {createOruga} from '@oruga-ui/oruga-next'
-import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
-import {library} from "@fortawesome/fontawesome-svg-core";
-import {faForward} from "@fortawesome/free-solid-svg-icons";
+import Oruga from '@oruga-ui/oruga-next'
 
 import "@oruga-ui/theme-oruga/style.css";
 import "@/styles/explorer.css";
@@ -14,9 +11,7 @@ import {AxiosMonitor} from "@/utils/AxiosMonitor";
 import {CoreConfig} from "@/config/CoreConfig";
 import {NetworkConfig} from "@/config/NetworkConfig";
 import router, {routeManager} from "@/utils/RouteManager.ts";
-
-library.add(faForward);
-export default FontAwesomeIcon;
+import OrugaIcon from "@/utils/OrugaIcon.vue";
 
 AxiosMonitor.instance.setTargetAxios(axios)
 
@@ -60,9 +55,32 @@ const createAndMount = async () => {
     head.appendChild(link);
 
     const app = createApp(Root, {coreConfig, networkConfig})
-    app.component("font-awesome-icon", FontAwesomeIcon as any)
     app.use(router)
-    app.use(createOruga({iconPack: 'fas'}))
+    app.use(Oruga, {
+        iconComponent: 'OrugaIcon',
+        iconPack: 'lucide',
+        customIconPacks: {
+            lucide: {
+                iconPrefix: '',
+                internalIcons: {
+                    information: 'info',
+                    alert: 'triangle-alert',
+                    'alert-circle': 'circle-alert',
+                    check: 'check',
+                    'chevron-right': 'chevron-right',
+                    'chevron-left': 'chevron-left',
+                    'chevron-down': 'chevron-down',
+                    'arrow-up': 'arrow-up',
+                    eye: 'eye',
+                    'eye-off': 'eye-off',
+                    'caret-up': 'chevron-up',
+                    'caret-down': 'chevron-down'
+                }
+            }
+        }
+    })
+    app.component('OrugaIcon', OrugaIcon)
+
     app.mount('#app')
 }
 

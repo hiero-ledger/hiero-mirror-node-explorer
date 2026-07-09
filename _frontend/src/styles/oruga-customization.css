@@ -67,6 +67,12 @@
     and re-establish the button styling after selection
 */
 
+.o-pagination__button-next,
+.o-pagination__button-previous {
+    height: 36px;
+    width: 36px;
+}
+
 .o-pagination__button:not(.o-pagination__button--disabled):hover,
 .o-pagination button:focus:not(:focus-visible) {
     box-shadow: none;
