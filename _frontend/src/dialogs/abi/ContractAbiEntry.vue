@@ -61,7 +61,7 @@ import "prismjs/components/prism-solidity.js";
 import SolidityCode from "@/components/SolidityCode.vue";
 import ContractAbiDialog from "@/dialogs/abi/ContractAbiDialog.vue";
 import {ContractCallBuilder} from "@/dialogs/abi/ContractCallBuilder.ts";
-import {MoveRight, Play, RotateCw} from 'lucide-vue-next';
+import {MoveRight, Play, RotateCw} from '@lucide/vue';
 
 const props = defineProps({
   contractCallBuilder: {

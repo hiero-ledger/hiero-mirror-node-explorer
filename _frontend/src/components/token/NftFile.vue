@@ -32,7 +32,7 @@
 <script setup lang="ts">
 
 import {PropType} from "vue";
-import {File} from "lucide-vue-next";
+import {File} from "@lucide/vue";
 import MediaContent from "@/components/MediaContent.vue";
 
 const props = defineProps({

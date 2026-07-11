@@ -41,7 +41,7 @@
 <script setup lang="ts">
 
 import {inject, onBeforeUnmount, onMounted, ref} from 'vue';
-import {FileScan, Hexagon, MoveHorizontal, User} from 'lucide-vue-next';
+import {FileScan, Hexagon, MoveHorizontal, User} from '@lucide/vue';
 import CounterView from "@/charts/core/CounterView.vue";
 import {
   AccumulatedTransactionCounterController,

@@ -32,7 +32,7 @@
 
 import {computed, onBeforeUnmount, onMounted, PropType} from "vue";
 import {ContractAnalyzer, GlobalState} from "@/utils/analyzer/ContractAnalyzer";
-import {Check, CheckCheck} from 'lucide-vue-next';
+import {Check, CheckCheck} from '@lucide/vue';
 
 const props = defineProps({
   contractId: {

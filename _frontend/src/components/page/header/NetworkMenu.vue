@@ -21,7 +21,7 @@
 
 import {ref, watch} from "vue";
 import {NetworkConfig} from "@/config/NetworkConfig.ts";
-import {Check} from 'lucide-vue-next';
+import {Check} from '@lucide/vue';
 import {routeManager} from "@/utils/RouteManager.ts";
 
 const networkEntries = NetworkConfig.inject().entries

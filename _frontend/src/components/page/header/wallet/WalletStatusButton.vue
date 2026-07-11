@@ -42,7 +42,7 @@ import {ref} from "vue";
 import DropdownPanel from "@/components/DropdownPanel.vue";
 import ButtonView from "@/elements/ButtonView.vue";
 import {ButtonSize} from "@/dialogs/core/DialogUtils.ts";
-import {ChevronDown, ChevronUp} from "lucide-vue-next"
+import {ChevronDown, ChevronUp} from "@lucide/vue"
 import WalletOptions from "@/components/page/header/wallet/WalletOptions.vue";
 import {walletManager} from "@/utils/RouteManager.ts";
 

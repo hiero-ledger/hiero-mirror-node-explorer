@@ -123,7 +123,7 @@ import {ContractVerificationController} from "@/dialogs/verification/ContractVer
 import {ButtonSize, TaskPanelMode} from "@/dialogs/core/DialogUtils.ts";
 import TaskPanel from "@/dialogs/core/task/TaskPanel.vue";
 import ButtonView from "@/elements/ButtonView.vue";
-import {FilePlus} from 'lucide-vue-next';
+import {FilePlus} from '@lucide/vue';
 
 //
 // ModalDialog

@@ -87,7 +87,7 @@ import {NftAllSerialsAllowanceTableController} from "@/components/allowances/Nft
 import {isValidAssociation} from "@/schemas/MirrorNodeUtils.ts";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
 import {walletManager} from "@/utils/RouteManager.ts";
-import {Trash2} from 'lucide-vue-next';
+import {Trash2} from '@lucide/vue';
 
 interface DisplayedNftAllowance extends NftAllowance {
   isEditable: boolean

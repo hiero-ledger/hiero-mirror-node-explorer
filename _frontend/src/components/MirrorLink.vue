@@ -21,7 +21,7 @@
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <script setup lang="ts">
-import {ArrowRight} from "lucide-vue-next";
+import {ArrowRight} from "@lucide/vue";
 import {computed, inject, PropType} from "vue";
 
 import {routeManager} from "@/utils/RouteManager.ts";

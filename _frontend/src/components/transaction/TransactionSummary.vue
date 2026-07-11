@@ -50,7 +50,7 @@ import TransferGraphSection from "@/components/transfer_graphs/TransferGraphSect
 import {TransactionAnalyzer} from "@/components/transaction/TransactionAnalyzer";
 import TokenExtra from "@/components/values/link/TokenExtra.vue";
 import EntityIOL from "@/components/values/link/EntityIOL.vue";
-import {Link} from "lucide-vue-next";
+import {Link} from "@lucide/vue";
 
 const GRAPH_TRANSACTION_TYPES = [
   TransactionType.CRYPTOTRANSFER,

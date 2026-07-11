@@ -61,7 +61,7 @@ import DashboardItemView from "@/components/home/DashboardItemView.vue";
 import {NetworkMetricsLoader} from "@/components/home/metrics/NetworkMetricsLoader";
 import {CoreConfig} from "@/config/CoreConfig.ts";
 import {ThemeController} from "@/components/ThemeController.ts";
-import {ArrowBigUpDash, Coins, Globe} from 'lucide-vue-next';
+import {ArrowBigUpDash, Coins, Globe} from '@lucide/vue';
 
 const isSmallScreen = inject('isSmallScreen', ref(true))
 const isLargeScreen = inject('isLargeScreen', ref(true))

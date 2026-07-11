@@ -72,7 +72,7 @@ import {BlockLocParser} from "@/utils/parser/BlockLocParser";
 import {routeManager} from "@/utils/RouteManager.ts";
 import {ButtonSize} from "@/dialogs/core/DialogUtils.ts";
 import ButtonView from "@/elements/ButtonView.vue";
-import {ArrowLeft, ArrowRight} from "lucide-vue-next";
+import {ArrowLeft, ArrowRight} from "@lucide/vue";
 
 const props = defineProps({
   blockHon: String,

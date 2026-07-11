@@ -41,7 +41,7 @@
 
 <script setup lang="ts">
 
-import {Menu, X} from 'lucide-vue-next';
+import {Menu, X} from '@lucide/vue';
 import DropdownPanel from "@/components/DropdownPanel.vue";
 import {computed, ref, watch} from "vue";
 import TabBar from "@/components/page/header/TabBar.vue";

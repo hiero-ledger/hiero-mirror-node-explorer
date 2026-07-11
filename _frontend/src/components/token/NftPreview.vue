@@ -40,7 +40,7 @@
 import {computed, PropType, ref} from "vue";
 import InfoTooltip from "@/components/InfoTooltip.vue";
 import MediaContent from "@/components/MediaContent.vue";
-import {ImageOff} from 'lucide-vue-next';
+import {ImageOff} from '@lucide/vue';
 
 const props = defineProps({
   url: {
