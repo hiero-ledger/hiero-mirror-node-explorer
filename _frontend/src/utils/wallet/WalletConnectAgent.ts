@@ -11,7 +11,8 @@ import {CAAccountId, CAChainId} from "@/utils/wallet/caip";
 import {AccountByIdCache} from "@/utils/cache/AccountByIdCache";
 import type SignClient from "@walletconnect/sign-client";
 import {ProposalTypes, SessionTypes, SignClientTypes} from "@walletconnect/types";
-import type {WalletConnectModal} from "@walletconnect/modal"; // "type" to avoid unit test break
+import type {AppKit} from "@reown/appkit/core";
+import type {AppKitNetwork} from "@reown/appkit/networks";
 import {AccountByAddressCache} from "@/utils/cache/AccountByAddressCache";
 import {EntityID} from "@/utils/EntityID";
 import {getSdkError} from "@walletconnect/utils";
@@ -59,12 +60,15 @@ export class WalletConnectAgent {
             optionalNamespaces: WalletConnectAgent.makeNamespaces([network])
         }
         const {uri, approval} = await this.signClient.connect(params)
-        const {WalletConnectModal} = await import("@walletconnect/modal")
-        // https://docs.reown.com/advanced/walletconnectmodal/options
-        const connectModal = new WalletConnectModal({
+        const {createAppKit} = await import("@reown/appkit/core")
+        const connectModal = createAppKit({
             projectId: this.projectId,
-            explorerRecommendedWalletIds: [
-                // https://walletguide.walletconnect.network
+            networks: [WalletConnectAgent.makeAppKitNetwork(network)],
+            defaultNetwork: WalletConnectAgent.makeAppKitNetwork(network),
+            enableCoinbase: false,
+            allWallets: "HIDE",
+            featuredWalletIds: [
+                // https://docs.reown.com/cloud/wallets/wallet-list
                 "a29498d225fa4b13468ff4d6cf4ae0ea4adcbd95f07ce8a843a1dee10b632f3f", // HashPack
                 "a9104b630bac1929ad9ac2a73a17ed4beead1889341f307bff502f89b46c8501", // Blade
                 // WalletConnect + EIP155 disabled for now
@@ -102,6 +106,7 @@ export class WalletConnectAgent {
         private readonly projectId: string) {
     }
 
+    // eslint-disable-next-line complexity
     private async makeWalletSession(session: SessionTypes.Struct): Promise<WalletSession> {
         const name = session.peer.metadata.name
         const iconURL = this.fetchIconURL(session)
@@ -178,6 +183,26 @@ export class WalletConnectAgent {
         return result
     }
 
+    private static makeAppKitNetwork(network: string): AppKitNetwork {
+        const result = {
+            id: network,
+            chainNamespace: CAChainId.NAMESPACE_HEDERA,
+            caipNetworkId: WalletConnectAgent.makeCaChainForHedera(network),
+            name: `Hedera ${network}`,
+            nativeCurrency: {
+                name: "HBAR",
+                symbol: "HBAR",
+                decimals: 8
+            },
+            rpcUrls: {
+                default: {
+                    http: [window.location.origin]
+                }
+            }
+        }
+        return result as unknown as AppKitNetwork
+    }
+
     // Some wallets do not provide icon information => we try to fix
     private static readonly FALLBACK_ICONS = new Map([
         ["MetaMask Wallet", {
@@ -251,20 +276,23 @@ export class WalletConnectAgent {
     private async waitForApprovalOrModalClose(
         uri: string | undefined,
         approval: () => Promise<SessionTypes.Struct>,
-        connectModal: WalletConnectModal): Promise<SessionTypes.Struct | null> {
+        connectModal: AppKit): Promise<SessionTypes.Struct | null> {
 
         return new Promise((resolve, reject) => {
-            connectModal.subscribeModal((state: { open: boolean }) => {
+            const unsubscribe = connectModal.subscribeState((state) => {
                 if (!state.open) {
                     // User has closed the modal without flashing the QR code
                     resolve(null)
                 }
             })
-            connectModal.openModal({uri})
+            connectModal.open({uri})
                 .then(() => approval())
                 .then((session) => resolve(session))
                 .catch((reason) => reject(reason))
-                .finally(() => connectModal.closeModal())
+                .finally(() => {
+                    unsubscribe()
+                    connectModal.close().catch(() => undefined)
+                })
         })
     }
 }
