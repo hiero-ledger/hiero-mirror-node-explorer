@@ -65,7 +65,7 @@ import TimestampValue from "@/components/values/TimestampValue.vue";
 import TransactionSummary from "@/components/transaction/TransactionSummary.vue";
 import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
 import EmptyTable from "@/components/EmptyTable.vue";
-import {TriangleAlert} from "lucide-vue-next";
+import {TriangleAlert} from "@lucide/vue";
 import {routeManager} from "@/utils/RouteManager.ts";
 
 const props = defineProps({
@@ -106,6 +106,7 @@ const hasChild = computed(() => {
   return result
 })
 
+// eslint-disable-next-line complexity
 const makeRelationshipLabel = (row: Transaction): string => {
   let result: string
   if (row.name === TransactionType.SCHEDULECREATE) {

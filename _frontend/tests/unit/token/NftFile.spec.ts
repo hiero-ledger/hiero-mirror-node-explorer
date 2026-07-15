@@ -4,7 +4,7 @@
 
 import {describe, expect, test} from 'vitest'
 import {flushPromises, mount} from "@vue/test-utils";
-import {File} from "lucide-vue-next";
+import {File} from "@lucide/vue";
 import NftFile from "@/components/token/NftFile.vue";
 import Oruga from "@oruga-ui/oruga-next";
 

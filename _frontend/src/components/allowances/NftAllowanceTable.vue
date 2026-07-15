@@ -85,7 +85,7 @@ import TokenLink from "@/components/values/link/TokenLink.vue";
 import {NftAllowanceTableController} from "@/components/allowances/NftAllowanceTableController";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
 import {walletManager} from "@/utils/RouteManager.ts";
-import {Trash2} from 'lucide-vue-next';
+import {Trash2} from '@lucide/vue';
 import {Nft} from "@/schemas/MirrorNodeSchemas";
 
 const emit = defineEmits<{ deleteAllowance: [row: Nft] }>()

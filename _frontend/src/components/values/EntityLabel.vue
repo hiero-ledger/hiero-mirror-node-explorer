@@ -36,7 +36,7 @@
 
 import {computed, PropType, useSlots} from "vue";
 import Tooltip from "@/components/Tooltip.vue";
-import {SquareArrowOutUpRight} from 'lucide-vue-next';
+import {SquareArrowOutUpRight} from '@lucide/vue';
 
 const MAX_LABEL_SIZE = 35
 

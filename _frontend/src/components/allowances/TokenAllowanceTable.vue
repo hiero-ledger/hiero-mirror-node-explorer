@@ -97,7 +97,7 @@ import TokenLink from "@/components/values/link/TokenLink.vue";
 import InfoTooltip from "@/components/InfoTooltip.vue";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
 import {walletManager} from "@/utils/RouteManager.ts";
-import {Pencil} from 'lucide-vue-next';
+import {Pencil} from '@lucide/vue';
 
 interface DisplayedTokenAllowance extends TokenAllowance {
   isEditable: boolean

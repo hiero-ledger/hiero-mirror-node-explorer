@@ -114,7 +114,7 @@ import EntityLink from "@/components/values/link/EntityLink.vue";
 import EVMAddress from "@/components/values/EVMAddress.vue";
 import UpdateAccountDialog from "@/dialogs/UpdateAccountDialog.vue";
 import ApproveAllowanceDialog from "@/dialogs/allowance/ApproveAllowanceDialog.vue";
-import {CheckCheck, UserRoundPen} from 'lucide-vue-next';
+import {CheckCheck, UserRoundPen} from '@lucide/vue';
 import HbarAmount from "@/components/values/HbarAmount.vue";
 import AccountSelector from "@/components/page/header/wallet/AccountSelector.vue";
 import router, {routeManager, walletManager} from "@/utils/RouteManager.ts";

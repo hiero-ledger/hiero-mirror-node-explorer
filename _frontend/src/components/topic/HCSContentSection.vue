@@ -96,7 +96,7 @@ import InfoTooltip from "@/components/InfoTooltip.vue";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import {utf8Encode} from "@/utils/B64Utils.ts";
 import HexaValue from "@/components/values/HexaValue.vue";
-import {Check} from "lucide-vue-next";
+import {Check} from "@lucide/vue";
 import StringValue from "@/components/values/StringValue.vue";
 
 const props = defineProps({

@@ -68,7 +68,7 @@ import {ContractAnalyzer, GlobalState} from "@/utils/analyzer/ContractAnalyzer";
 import ContractLink from "@/components/values/link/ContractLink.vue";
 import AccountLink from "@/components/values/link/AccountLink.vue";
 import TokenLink from "@/components/values/link/TokenLink.vue";
-import {CircleCheckBig} from 'lucide-vue-next';
+import {CircleCheckBig} from '@lucide/vue';
 import {routeManager} from "@/utils/RouteManager.ts";
 
 enum ExtendedEntityType { UNDEFINED, ACCOUNT, CONTRACT, TOKEN }
