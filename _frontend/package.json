@@ -96,10 +96,11 @@
   "overrides": {
     "@grpc/grpc-js": "1.12.7",
     "js-yaml": "4.3.0",
-    "protobufjs": "8.6.0",
+    "protobufjs": "8.6.6",
     "ethers": {
       "ws": "8.21.0"
     },
+    "fast-uri": "3.1.4",
     "glob": "13.0.6"
   }
 }
