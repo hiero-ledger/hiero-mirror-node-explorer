@@ -26,7 +26,7 @@ env:
 jobs:
   container:
     name: Container
-    runs-on: hiero-mirror-node-linux-medium
+    runs-on: hiero-mirror-node-linux-large
     defaults:
       run:
         working-directory: ./_frontend
