@@ -259,6 +259,37 @@ export function makeTypeLabel(type: TransactionType | undefined): string {
             result = "Pseudorandom Number Generate";
             break;
 
+        case TransactionType.CRSPUBLICATION:
+            result = "CRS Publication";
+            break;
+        case TransactionType.HINTSKEYPUBLICATION:
+            result = "Hints Key Publication";
+            break;
+        case TransactionType.HINTSPARTIALSIGNATURE:
+            result = "Hints Partial Signature";
+            break;
+        case TransactionType.HINTSPREPROCESSINGVOTE:
+            result = "Hints Preprocessing Vote";
+            break;
+        case TransactionType.HISTORYPROOFKEYPUBLICATION:
+            result = "History Proof Key Publication";
+            break;
+        case TransactionType.HISTORYPROOFSIGNATURE:
+            result = "History Proof Signature";
+            break;
+        case TransactionType.HISTORYPROOFVOTE:
+            result = "History Proof Vote";
+            break;
+        case TransactionType.LEDGERIDPUBLICATION:
+            result = "Ledger ID Publication";
+            break;
+        case TransactionType.MIGRATIONROOTHASHVOTE:
+            result = "Migration Root Hash Vote";
+            break;
+        case TransactionType.STATESIGNATURETRANSACTION:
+            result = "State Signature Transaction";
+            break;
+
         default:
             result = type ?? "?"
             break
