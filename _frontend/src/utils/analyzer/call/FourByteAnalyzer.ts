@@ -73,7 +73,7 @@ export class FourByteAnalyzer {
         // We select the first signature which enables to decode inputArgs.
         //
         let result: SignatureRecord | null = null
-        for (const r of records.sort(sortSignatureRecordById)) {
+        for (const r of [...records].sort(sortSignatureRecordById)) {
             try {
                 const ff = ethers.FunctionFragment.from(r.text_signature)
                 const decodedArgs = ethers.AbiCoder.defaultAbiCoder().decode(ff.inputs, callParams)
