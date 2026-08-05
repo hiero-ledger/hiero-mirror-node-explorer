@@ -4,10 +4,10 @@
 
   <router-view/>
 
-  <CookiesDialog v-model:show-dialog="showCookiesDialog"
-                 @onChooseReject="handleChooseRejectCookies"
-                 @onChooseAccept="handleChooseAcceptCookies">
-  </CookiesDialog>
+  <TelemetryDialog v-model:show-dialog="showTelemetryDialog"
+                   @onChooseReject="handleChooseRejectTelemetry"
+                   @onChooseAccept="handleChooseAcceptTelemetry">
+  </TelemetryDialog>
 
 </template>
 
@@ -25,7 +25,7 @@ import {
   themeControllerKey
 } from "@/AppKeys"
 import {AxiosMonitor} from "@/utils/AxiosMonitor"
-import CookiesDialog from "@/dialogs/CookiesDialog.vue";
+import TelemetryDialog from "@/dialogs/TelemetryDialog.vue";
 import {AppStorage} from "@/AppStorage";
 import {LARGE_BREAKPOINT, MEDIUM_BREAKPOINT, SMALL_BREAKPOINT, XLARGE_BREAKPOINT} from "@/BreakPoints";
 import {CoreConfig} from "@/config/CoreConfig";
@@ -90,10 +90,10 @@ const themeController = new ThemeController(props.coreConfig)
 provide(themeControllerKey, themeController)
 onMounted(() => themeController.mount())
 
-const showCookiesDialog = ref(false)
+const showTelemetryDialog = ref(false)
 
-const acceptCookies = ref<boolean | null>(null)
-watch(acceptCookies, (accept) => {
+const acceptTelemetry = ref<boolean | null>(null)
+watch(acceptTelemetry, (accept) => {
   const googleTagID = props.coreConfig.googleTagID
   if (accept && googleTagID && googleTagID.length > 0) {
     insertGoogleTag(props.coreConfig.googleTagID)
@@ -107,14 +107,14 @@ provide(explanationKey, AxiosMonitor.instance.explanation)
 provide(suggestionKey, AxiosMonitor.instance.suggestion)
 
 onBeforeMount(() => {
-  const cookiesDialogContent = props.coreConfig.cookiesDialogContent
+  const telemetryDialogContent = props.coreConfig.telemetryDialogContent
 
-  if (cookiesDialogContent && cookiesDialogContent.length > 0) {
-    acceptCookies.value = AppStorage.getAcceptCookiePolicy()
-    showCookiesDialog.value = (acceptCookies.value == null && props.coreConfig.cookiesDialogContent != null)
+  if (telemetryDialogContent && telemetryDialogContent.length > 0) {
+    acceptTelemetry.value = AppStorage.getAcceptTelemetryPolicy()
+    showTelemetryDialog.value = (acceptTelemetry.value == null && props.coreConfig.telemetryDialogContent != null)
   } else {
-    acceptCookies.value = null
-    showCookiesDialog.value = false
+    acceptTelemetry.value = null
+    showTelemetryDialog.value = false
   }
 })
 
@@ -128,14 +128,14 @@ onBeforeUnmount(() => {
   window.removeEventListener('resize', onResizeHandler);
 })
 
-const handleChooseRejectCookies = () => {
-  acceptCookies.value = false
-  AppStorage.setAcceptCookiePolicy(false)
+const handleChooseRejectTelemetry = () => {
+  acceptTelemetry.value = false
+  AppStorage.setAcceptTelemetryPolicy(false)
 }
 
-const handleChooseAcceptCookies = () => {
-  acceptCookies.value = true
-  AppStorage.setAcceptCookiePolicy(true)
+const handleChooseAcceptTelemetry = () => {
+  acceptTelemetry.value = true
+  AppStorage.setAcceptTelemetryPolicy(true)
 }
 
 function insertGoogleTag(tagId: string) {

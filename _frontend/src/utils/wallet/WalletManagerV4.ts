@@ -390,7 +390,7 @@ export class WalletManagerV4 {
 export class WalletConnectDisableByBrowserError extends WalletClientError {
 
     public constructor() {
-        super("Browser setup does not allow to use WalletConnect right now", "Check that cookies are enabled")
+        super("Browser setup does not allow to use WalletConnect right now", "")
     }
 }
 
