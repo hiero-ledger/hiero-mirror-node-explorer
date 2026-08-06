@@ -117,22 +117,21 @@ export class AppStorage {
     }
 
     //
-    // cookiePolicy
+    // telemetryPolicy
     //
 
-    private static readonly COOKIE_POLICY_NAME = 'cookie_policy'
-    private static readonly COOKIE_POLICY_ACCEPT = 'accept'
-    private static readonly COOKIE_POLICY_REJECT = 'reject'
-    private static readonly COOKIE_POLICY_VALIDITY = 365 // days
+    private static readonly TELEMETRY_POLICY_KEY = 'telemetry_policy'
+    private static readonly TELEMETRY_POLICY_ACCEPT = 'accept'
+    private static readonly TELEMETRY_POLICY_REJECT = 'reject'
 
-    public static getAcceptCookiePolicy(): boolean | null {
-        const policy = AppStorage.readCookie(AppStorage.COOKIE_POLICY_NAME)
-        return policy != null ? policy === AppStorage.COOKIE_POLICY_ACCEPT : null
+    public static getAcceptTelemetryPolicy(): boolean | null {
+        const policy = AppStorage.getLocalStorageItem(AppStorage.TELEMETRY_POLICY_KEY)
+        return policy != null ? policy === AppStorage.TELEMETRY_POLICY_ACCEPT : null
     }
 
-    public static setAcceptCookiePolicy(accept: boolean): void {
-        const policy = accept ? AppStorage.COOKIE_POLICY_ACCEPT : AppStorage.COOKIE_POLICY_REJECT
-        AppStorage.createCookie(AppStorage.COOKIE_POLICY_NAME, policy, AppStorage.COOKIE_POLICY_VALIDITY)
+    public static setAcceptTelemetryPolicy(accept: boolean): void {
+        const policy = accept ? AppStorage.TELEMETRY_POLICY_ACCEPT : AppStorage.TELEMETRY_POLICY_REJECT
+        AppStorage.setLocalStorageItem(AppStorage.TELEMETRY_POLICY_KEY, policy)
     }
 
     //
@@ -405,40 +404,6 @@ export class AppStorage {
         } catch {
             // Ignored
         }
-    }
-
-    //
-    // cookies
-    // from routines provided at https://www.quirksmode.org/js/cookies.html
-    //
-
-    private static createCookie(name: string, value: string, days: number): void {
-        let expires
-        if (days) {
-            const date = new Date()
-            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000))
-            expires = `; expires=${date.toUTCString()}`
-        } else {
-            expires = ""
-        }
-        document.cookie = `${name}=${value}${expires}; path=/`
-    }
-
-    private static readCookie(name: string): string | null {
-        let result = null
-        const nameEQ = name + "="
-        const ca = document.cookie.split(';')
-        for (let i = 0; i < ca.length; i++) {
-            let c = ca[i]
-            while (c.charAt(0) == ' ') {
-                c = c.substring(1, c.length)
-            }
-            if (c.indexOf(nameEQ) == 0) {
-                result = c.substring(nameEQ.length, c.length)
-                break
-            }
-        }
-        return result
     }
 
     //
