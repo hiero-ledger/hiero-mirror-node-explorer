@@ -69,7 +69,7 @@ export class FourByteAnalyzer {
 
     private static resolveSignatureCollisions(records: SignatureRecord[], callParams: string): SignatureRecord | null {
         //
-        // Some selectors (like 0x70a08231) have multiple signatures registered on 4bytes.directory.
+        // Some selectors (like 0xa9059cbb) have multiple signatures registered on 4bytes.directory.
         // We select the first signature which enables to decode inputArgs.
         //
         let result: SignatureRecord | null = null
