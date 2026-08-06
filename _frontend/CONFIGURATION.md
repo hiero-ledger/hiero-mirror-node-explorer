@@ -158,6 +158,7 @@ has agreed to telemetry, the google tag ID will be used.
 This provides the HTML content to be used in the telemetry acceptance dialog. If this parameter is specified, it will
 trigger the display of a dialog asking the user to agree to telemetry before proceeding with the application.
 By default, this dialog won't be shown (which also means that the google tag ID will not be used).
+For a limited migration period, the legacy `cookiesDialogContent` key is also accepted as a fallback.
 
 ### `ipfsGatewayURL`
 
