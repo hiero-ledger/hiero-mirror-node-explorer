@@ -22,6 +22,16 @@ describe('CoreConfig telemetry dialog content', () => {
         expect(config.telemetryDialogContent).toBe('<p>Telemetry text</p>')
     })
 
+    test('falls back to cookiesDialogContent when telemetryDialogContent is absent', async () => {
+        mock.onGet('/core-config-cookies.json').reply(200, {
+            cookiesDialogContent: '<p>Legacy telemetry text</p>'
+        })
+
+        const config = await CoreConfig.load('/core-config-cookies.json')
+
+        expect(config.telemetryDialogContent).toBe('<p>Legacy telemetry text</p>')
+    })
+
     test('returns null when telemetryDialogContent is absent', async () => {
         mock.onGet('/core-config-without-telemetry.json').reply(200, {
             productName: 'Explorer'

@@ -101,6 +101,10 @@ export class CoreConfig {
 
     // eslint-disable-next-line complexity
     private static parse(obj: Record<string, unknown>): CoreConfig {
+        // Temporary backward compatibility for installations that still use the old cookiesDialogContent key.
+        const telemetryDialogContent = Object.prototype.hasOwnProperty.call(obj, "telemetryDialogContent")
+            ? fetchString(obj, "telemetryDialogContent")
+            : fetchString(obj, "cookiesDialogContent")
         return new CoreConfig(
             fetchString(obj, "productName") ?? "Hiero Explorer",
             fetchURL(obj, "productLogoLightURL") ?? localPathToURL("product-logo-light.png") ,
@@ -121,7 +125,7 @@ export class CoreConfig {
             fetchString(obj, "estimatorNotice"),
             fetchString(obj, "walletChooserDisclaimerPopup"),
             fetchString(obj, "googleTagID"),
-            fetchString(obj, "telemetryDialogContent"),
+            telemetryDialogContent,
             fetchURL(obj, "ipfsGatewayURL") ?? "https://gateway.pinata.cloud/ipfs/",
             fetchURL(obj, "arweaveServerURL") ?? "https://arweave.ar.io/",
             fetchString(obj, "cryptoName") ?? "HBAR",
