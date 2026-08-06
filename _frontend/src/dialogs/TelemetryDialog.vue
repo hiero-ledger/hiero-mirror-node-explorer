@@ -7,7 +7,7 @@
 <template>
   <ModalDialog v-model:show-dialog="showDialog">
     <template #modalDialogTitle>
-      <span>Accept Telemetry</span>
+      <span>Accept Website Analytics</span>
     </template>
     <template #modalDialogContent>
       <div v-html="telemetryDialogContent"/>
