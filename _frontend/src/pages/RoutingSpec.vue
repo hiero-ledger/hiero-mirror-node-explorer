@@ -53,7 +53,7 @@ import StringValue from "@/components/values/StringValue.vue";
 import {CoreConfig} from "@/config/CoreConfig.ts";
 import PageFrameV2 from "@/components/page/PageFrameV2.vue";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
-import {ChevronDown, ChevronUp} from 'lucide-vue-next';
+import {ChevronDown, ChevronUp} from '@lucide/vue';
 
 const cryptoName = CoreConfig.inject().cryptoName
 

@@ -84,7 +84,7 @@
 import {computed, PropType, ref} from "vue";
 import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
 import {ContractSourceAnalyzerItem} from "@/utils/analyzer/ContractSourceAnalyzer.ts";
-import {ArrowLeft, FileJson} from 'lucide-vue-next';
+import {ArrowLeft, FileJson} from '@lucide/vue';
 
 const props = defineProps({
   auditItems: {

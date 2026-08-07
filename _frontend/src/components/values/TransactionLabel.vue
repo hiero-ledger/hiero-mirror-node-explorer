@@ -20,7 +20,7 @@
 import {computed} from "vue";
 import {TransactionID} from "@/utils/TransactionID";
 import {isSuccessfulResult} from "@/utils/TransactionTools";
-import {TriangleAlert} from 'lucide-vue-next';
+import {TriangleAlert} from '@lucide/vue';
 
 const props = defineProps({
   transactionId: String,

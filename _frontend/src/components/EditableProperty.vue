@@ -32,7 +32,7 @@
 <script setup lang="ts">
 
 import Property from "@/components/Property.vue";
-import {Pencil} from 'lucide-vue-next';
+import {Pencil} from '@lucide/vue';
 
 defineProps({
   id: String,

@@ -25,7 +25,7 @@
 
 import {PropType} from "vue";
 import EntityLabel from "@/components/values/EntityLabel.vue";
-import {NotebookTabs} from 'lucide-vue-next';
+import {NotebookTabs} from '@lucide/vue';
 
 const props = defineProps({
   domainName: {

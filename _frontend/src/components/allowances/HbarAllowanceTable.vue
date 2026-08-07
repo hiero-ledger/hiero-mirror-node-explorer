@@ -82,7 +82,7 @@ import AccountLink from "@/components/values/link/AccountLink.vue";
 import HbarAmount from "@/components/values/HbarAmount.vue";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
 import {walletManager} from "@/utils/RouteManager.ts";
-import {Pencil} from "lucide-vue-next";
+import {Pencil} from "@lucide/vue";
 import {CryptoAllowance} from "@/schemas/MirrorNodeSchemas";
 
 const emit = defineEmits<{ editAllowance: [row: CryptoAllowance] }>()

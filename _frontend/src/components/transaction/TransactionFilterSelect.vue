@@ -7,8 +7,7 @@
 <template>
 
   <SelectView
-      v-bind:model-value="selectedFilter"
-      @update:model-value="handleOption($event)"
+      v-model:model-value="selectedFilter"
       :small="true"
       data-cy="select-type"
   >
@@ -23,67 +22,59 @@
 <!--                                                      SCRIPT                                                     -->
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
-<script lang="ts">
+<script lang="ts" setup>
 
-import {computed, defineComponent} from "vue";
+import {computed} from "vue";
 import {TransactionType} from "@/schemas/MirrorNodeSchemas";
 import {makeTypeLabel} from "@/utils/TransactionTools";
 import SelectView from "@/elements/SelectView.vue";
 
-export default defineComponent({
-  name: "TransactionFilterSelect",
-  components: {SelectView},
-
-  props: {
-    selectedFilter: {
-      type: String,
-      required: true,
-    },
-    nftFilter: {
-      type: Boolean,
-      required: false,
-    },
+const props = defineProps({
+  nftFilter: {
+    type: Boolean,
+    required: false,
   },
+})
 
-  setup(props, context) {
-    const makeFilterLabel = (filterValue: string): string => {
-      return filterValue == "" ? "TYPES: ALL" : makeTypeLabel(filterValue as TransactionType)
-    }
+const selectedFilter = defineModel("selectedFilter", {
+  type: String,
+  required: true
+})
 
-    const handleOption = (option: string) => context.emit('update:selectedFilter', option)
+const makeFilterLabel = (filterValue: string): string => {
+  return filterValue == "" ? "TYPES: ALL" : makeTypeLabel(filterValue as TransactionType)
+}
 
-    const filterValues = computed(() => {
-      let result = Object
-          .keys(TransactionType)
-          .sort((a, b) => {
-            return makeTypeLabel(a as TransactionType) < makeTypeLabel(b as TransactionType) ? -1 : 1;
-          })
-      if (props.nftFilter) {
-        result = result.filter(el => {
-          return el === TransactionType.CRYPTOTRANSFER
-              || el === TransactionType.TOKENMINT
-              || el === TransactionType.CRYPTOAPPROVEALLOWANCE
-              || el === TransactionType.CRYPTODELETEALLOWANCE
-              || el === TransactionType.TOKENWIPE
-              || el === TransactionType.TOKENAIRDROP
-              || el === TransactionType.TOKENBURN
-              || el === TransactionType.TOKENCANCELAIRDROP
-              || el === TransactionType.TOKENCLAIMAIRDROP
-              || el === TransactionType.TOKENREJECT
-              || el === TransactionType.TOKENDELETION;
-        })
-      }
-      result.splice(0, 0, "")
-      return result
-    })
+const nftTransactionTypes = new Set<TransactionType>([
+  TransactionType.CRYPTOTRANSFER,
+  TransactionType.TOKENMINT,
+  TransactionType.CRYPTOAPPROVEALLOWANCE,
+  TransactionType.CRYPTODELETEALLOWANCE,
+  TransactionType.TOKENWIPE,
+  TransactionType.TOKENAIRDROP,
+  TransactionType.TOKENBURN,
+  TransactionType.TOKENCANCELAIRDROP,
+  TransactionType.TOKENCLAIMAIRDROP,
+  TransactionType.TOKENREJECT,
+  TransactionType.TOKENDELETION,
+])
 
-    return {
-      filterValues,
-      makeFilterLabel,
-      handleOption,
-    }
+const filterValues = computed(() => {
+  let result = Object.values(TransactionType)
+      .sort((a, b) => makeTypeLabel(a).localeCompare(makeTypeLabel(b)))
+      // remove filter options not to be shown (because there will never be any transactions of that type in the table)
+      .filter(type =>
+          type !== TransactionType.CRYPTOADDLIVEHASH
+          && type !== TransactionType.CRYPTODELETELIVEHASH
+      )
+
+  // keep only NFT-related transaction types when prop nftFilter is true
+  if (props.nftFilter) {
+    result = result.filter(type => nftTransactionTypes.has(type))
   }
-});
+
+  return ["", ...result]
+})
 
 </script>
 

@@ -25,7 +25,7 @@
 
 import {PropType} from "vue";
 import Tooltip from "@/components/Tooltip.vue";
-import {Info, TriangleAlert} from "lucide-vue-next"
+import {Info, TriangleAlert} from "@lucide/vue"
 
 const props = defineProps({
   warningLabel: {

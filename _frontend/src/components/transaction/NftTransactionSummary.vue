@@ -39,7 +39,7 @@ import {NftTransactionTransfer, TransactionType,} from "@/schemas/MirrorNodeSche
 import TokenExtra from "@/components/values/link/TokenExtra.vue"
 import {NftTransactionAnalyzer} from "./NftTransactionAnalyzer"
 import NftDetailsTransferGraph from "@/components/transfer_graphs/NftDetailsTransferGraph.vue";
-import {Link} from "lucide-vue-next"
+import {Link} from "@lucide/vue"
 
 const GRAPH_TRANSACTION_TYPES = [
   TransactionType.CRYPTOTRANSFER,

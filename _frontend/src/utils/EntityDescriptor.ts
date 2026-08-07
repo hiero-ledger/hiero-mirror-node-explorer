@@ -14,6 +14,7 @@ export class EntityDescriptor {
     ) {
     }
 
+    // eslint-disable-next-line complexity,max-lines-per-function
     static async makeEntityDescriptor(row: Transaction | null): Promise<EntityDescriptor> {
         let result: EntityDescriptor
         if (row !== null) {
@@ -99,10 +100,7 @@ export class EntityDescriptor {
                     result = new EntityDescriptor("Token ID", "TokenDetails");
                     break;
 
-                case TransactionType.ATOMICBATCH:
-                case TransactionType.SYSTEMDELETE:
-                case TransactionType.SYSTEMUNDELETE:
-                case TransactionType.UNCHECKEDSUBMIT:
+                // Remaining transaction types not listed here (they all get the default descriptor)
                 default:
                     result = EntityDescriptor.DEFAULT_ENTITY_DESCRIPTOR;
                     break;

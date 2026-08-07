@@ -26,7 +26,7 @@
 
 import {computed, PropType} from "vue";
 import EntityLabel from "@/components/values/EntityLabel.vue";
-import {Tag} from 'lucide-vue-next';
+import {Tag} from '@lucide/vue';
 import {LabelDefinition} from "@/utils/cache/PublicLabelsCache.ts";
 
 const props = defineProps({

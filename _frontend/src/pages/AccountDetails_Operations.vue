@@ -146,7 +146,7 @@ import SwitchView from "@/elements/SwitchView.vue";
 import SelectView from "@/elements/SelectView.vue";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import PlayPauseButton from "@/components/PlayPauseButton.vue";
-import {Download} from 'lucide-vue-next';
+import {Download} from '@lucide/vue';
 import router, {routeManager} from "@/utils/RouteManager.ts";
 import DocSnippet from "@/components/DocSnippet.vue";
 import {TableController} from "@/utils/table/TableController.ts";

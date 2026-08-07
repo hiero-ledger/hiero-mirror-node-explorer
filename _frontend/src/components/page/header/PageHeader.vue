@@ -88,7 +88,7 @@ import {computed, inject, PropType, ref, useSlots} from "vue";
 import {WalletManagerStatus} from "@/utils/wallet/WalletManagerV4.ts";
 import WalletStatusButton from "@/components/page/header/wallet/WalletStatusButton.vue";
 import MobileMenuButton from "@/components/page/header/MobileMenuButton.vue";
-import {Search} from "lucide-vue-next";
+import {Search} from "@lucide/vue";
 import {routeManager, walletManager} from "@/utils/RouteManager.ts";
 
 const props = defineProps({

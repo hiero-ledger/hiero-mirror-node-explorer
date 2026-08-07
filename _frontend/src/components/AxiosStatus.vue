@@ -54,7 +54,7 @@
 import {computed, inject, onBeforeUnmount, onMounted, ref, watch} from "vue"
 import {errorKey, explanationKey, loadingKey, suggestionKey} from "@/AppKeys"
 import ModalDialog from "@/dialogs/core/ModalDialog.vue";
-import {TriangleAlert} from "lucide-vue-next";
+import {TriangleAlert} from "@lucide/vue";
 import TaskPanel from "@/dialogs/core/task/TaskPanel.vue";
 import {TaskPanelMode} from "@/dialogs/core/DialogUtils.ts";
 
