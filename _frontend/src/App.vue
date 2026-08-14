@@ -4,10 +4,10 @@
 
   <router-view/>
 
-  <TelemetryDialog v-model:show-dialog="showTelemetryDialog"
+  <CookiesDialog v-model:show-dialog="showCookiesDialog"
                    @onChooseReject="handleChooseRejectTelemetry"
                    @onChooseAccept="handleChooseAcceptTelemetry">
-  </TelemetryDialog>
+  </CookiesDialog>
 
 </template>
 
@@ -25,7 +25,7 @@ import {
   themeControllerKey
 } from "@/AppKeys"
 import {AxiosMonitor} from "@/utils/AxiosMonitor"
-import TelemetryDialog from "@/dialogs/TelemetryDialog.vue";
+import CookiesDialog from "@/dialogs/CookiesDialog.vue";
 import {AppStorage} from "@/AppStorage";
 import {LARGE_BREAKPOINT, MEDIUM_BREAKPOINT, SMALL_BREAKPOINT, XLARGE_BREAKPOINT} from "@/BreakPoints";
 import {CoreConfig} from "@/config/CoreConfig";
@@ -90,7 +90,7 @@ const themeController = new ThemeController(props.coreConfig)
 provide(themeControllerKey, themeController)
 onMounted(() => themeController.mount())
 
-const showTelemetryDialog = ref(false)
+const showCookiesDialog = ref(false)
 
 const acceptTelemetry = ref<boolean | null>(null)
 watch(acceptTelemetry, (accept) => {
@@ -107,14 +107,14 @@ provide(explanationKey, AxiosMonitor.instance.explanation)
 provide(suggestionKey, AxiosMonitor.instance.suggestion)
 
 onBeforeMount(() => {
-  const telemetryDialogContent = props.coreConfig.telemetryDialogContent
+  const cookiesDialogContent = props.coreConfig.cookiesDialogContent
 
-  if (telemetryDialogContent && telemetryDialogContent.length > 0) {
+  if (cookiesDialogContent && cookiesDialogContent.length > 0) {
     acceptTelemetry.value = AppStorage.getAcceptTelemetryPolicy()
-    showTelemetryDialog.value = (acceptTelemetry.value == null && props.coreConfig.telemetryDialogContent != null)
+    showCookiesDialog.value = (acceptTelemetry.value == null && props.coreConfig.cookiesDialogContent != null)
   } else {
     acceptTelemetry.value = null
-    showTelemetryDialog.value = false
+    showCookiesDialog.value = false
   }
 })
 

@@ -10,7 +10,7 @@
       <span>Accept Website Analytics</span>
     </template>
     <template #modalDialogContent>
-      <div v-html="telemetryDialogContent"/>
+      <div v-html="cookiesDialogContent"/>
     </template>
     <template #modalDialogButtons>
       <ModalDialogButton v-model:show-dialog="showDialog" @action="handleChooseReject">REJECT</ModalDialogButton>
@@ -41,7 +41,7 @@ const emit = defineEmits<{
 }>()
 
 const coreConfig = CoreConfig.inject()
-const telemetryDialogContent = coreConfig.telemetryDialogContent
+const cookiesDialogContent = coreConfig.cookiesDialogContent
 
 const handleChooseAccept = () => {
   emit('onChooseAccept')

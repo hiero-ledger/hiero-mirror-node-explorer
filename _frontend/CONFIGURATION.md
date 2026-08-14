@@ -39,7 +39,7 @@ The following configuration parameters can be set in `core-config.json`:
 | `estimatorNotice`              | `string` | No estimator notice is displayed                                           |                            |
 | `walletChooserDisclaimerPopup` | `string` | No wallet chooser disclaimer popup is displayed                            |                            |
 | `googleTagID`                  | `string` | Google Tag is disabled                                                     |                            |
-| `telemetryDialogContent`       | `string` | No telemetry acceptance dialog (hence Google Tag is disabled)              |                            |
+| `cookiesDialogContent`         | `string` | No cookies acceptance dialog (hence Google Tag is disabled)              |                            |
 | `ipfsGatewayURL`               | `string` | Gateway `https://gateway.pinata.cloud/ipfs/` is used                       |                            |
 | `arweaveServerURL`             | `string` | The `https://arweave.net/` URL is used                                     |                            |
 | `cryptoName`                   | `string` | `HBAR` is displayed                                                        |                            |
@@ -151,14 +151,12 @@ If not specified, this pop-up dialog is not shown.
 ### `googleTagID`
 
 This provides the global site tag ID to be used by Google Analytics. If this parameter is specified, and if the user
-has agreed to telemetry, the google tag ID will be used.
+has agreed to cookies and telemetry, the google tag ID will be used.
 
-### `telemetryDialogContent`
+### `cookiesDialogContent`
 
-This provides the HTML content to be used in the telemetry acceptance dialog. If this parameter is specified, it will
-trigger the display of a dialog asking the user to agree to telemetry before proceeding with the application.
-By default, this dialog won't be shown (which also means that the google tag ID will not be used).
-For a limited migration period, the legacy `cookiesDialogContent` key is also accepted as a fallback.
+This provides the HTML content to be used in the cookies acceptance dialog. If this parameter is specified, it will
+trigger the display of a dialog asking the user to agree to cookies and telemetry before proceeding with the application. By default, this dialog won't be shown (which also means that the google tag ID will not be used).
 
 ### `ipfsGatewayURL`
 

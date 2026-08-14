@@ -79,7 +79,7 @@ export class CoreConfig {
         // Global site tag ID for Google Analytics
         public readonly googleTagID: string | null,
         // The HTML content of the telemetry acceptation dialog
-        public readonly telemetryDialogContent: string | null,
+        public readonly cookiesDialogContent: string | null,
         // The URL of the IPFS gateway
         public readonly ipfsGatewayURL: string | null,
         // The URL of the Arweave server
@@ -122,7 +122,7 @@ export class CoreConfig {
             fetchString(obj, "walletChooserDisclaimerPopup"),
             fetchString(obj, "googleTagID"),
             // Temporary backward compatibility for installations that still use the old cookiesDialogContent key.
-            fetchString(obj, "telemetryDialogContent") ?? fetchString(obj, "cookiesDialogContent"),
+            fetchString(obj, "cookiesDialogContent") ?? fetchString(obj, "cookiesDialogContent"),
             fetchURL(obj, "ipfsGatewayURL") ?? "https://gateway.pinata.cloud/ipfs/",
             fetchURL(obj, "arweaveServerURL") ?? "https://arweave.ar.io/",
             fetchString(obj, "cryptoName") ?? "HBAR",
