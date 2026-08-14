@@ -121,8 +121,7 @@ export class CoreConfig {
             fetchString(obj, "estimatorNotice"),
             fetchString(obj, "walletChooserDisclaimerPopup"),
             fetchString(obj, "googleTagID"),
-            // Temporary backward compatibility for installations that still use the old cookiesDialogContent key.
-            fetchString(obj, "cookiesDialogContent") ?? fetchString(obj, "cookiesDialogContent"),
+            fetchString(obj, "cookiesDialogContent"),
             fetchURL(obj, "ipfsGatewayURL") ?? "https://gateway.pinata.cloud/ipfs/",
             fetchURL(obj, "arweaveServerURL") ?? "https://arweave.ar.io/",
             fetchString(obj, "cryptoName") ?? "HBAR",
