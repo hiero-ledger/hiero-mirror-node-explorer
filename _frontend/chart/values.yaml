@@ -246,7 +246,7 @@ core-config: |
     "estimatorNotice": null,
     "walletChooserDisclaimerPopup": null,
     "googleTagID": null,
-    "telemetryDialogContent": null,
+    "cookiesDialogContent": null,
     "ipfsGatewayURL": null,
     "arweaveServerURL": null,
     "cryptoName": null,

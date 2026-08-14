@@ -23,7 +23,7 @@ Explorer reports the following [Google Analytics custom events](https://develope
 > **Note 1**: events above are sent when
 >
 > 1) `VITE_APP_GOOGLE_TAG_ID` is setup in `.env` file
-> 2) User has agreed to telemetry
+> 2) User has agreed to cookies and telemetry
 >
 > **Note 2**: events above are **explicitly** sent by Explorer.
 > `gtag()` function may send other events when [Enhanced Measurement Events](https://support.google.com/analytics/answer/9216061) are enabled in GA account.
