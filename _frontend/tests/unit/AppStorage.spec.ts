@@ -3,31 +3,31 @@
 import {beforeEach, describe, expect, test} from 'vitest'
 import {AppStorage} from '@/AppStorage'
 
-describe('AppStorage telemetry policy', () => {
+describe('AppStorage cookies policy', () => {
     beforeEach(() => {
         localStorage.clear()
     })
 
-    test('returns null when telemetry policy was never set', () => {
-        expect(AppStorage.getAcceptTelemetryPolicy()).toBeNull()
+    test('returns null when cookies policy was never set', () => {
+        expect(AppStorage.getAcceptCookiesPolicy()).toBeNull()
     })
 
-    test('stores and reads telemetry policy from local storage', () => {
-        AppStorage.setAcceptTelemetryPolicy(true)
+    test('stores and reads cookies policy from local storage', () => {
+        AppStorage.setAcceptCookiesPolicy(true)
 
-        expect(localStorage.getItem('v1/telemetry_policy')).toBe('accept')
-        expect(AppStorage.getAcceptTelemetryPolicy()).toBe(true)
+        expect(localStorage.getItem('v1/cookies_policy')).toBe('accept')
+        expect(AppStorage.getAcceptCookiesPolicy()).toBe(true)
 
-        AppStorage.setAcceptTelemetryPolicy(false)
+        AppStorage.setAcceptCookiesPolicy(false)
 
-        expect(localStorage.getItem('v1/telemetry_policy')).toBe('reject')
-        expect(AppStorage.getAcceptTelemetryPolicy()).toBe(false)
+        expect(localStorage.getItem('v1/cookies_policy')).toBe('reject')
+        expect(AppStorage.getAcceptCookiesPolicy()).toBe(false)
     })
 
-    test('does not mutate document.cookie when telemetry policy changes', () => {
+    test('does not mutate document.cookie when cookies policy changes', () => {
         const initialBrowserState = document.cookie
 
-        AppStorage.setAcceptTelemetryPolicy(true)
+        AppStorage.setAcceptCookiesPolicy(true)
 
         expect(document.cookie).toBe(initialBrowserState)
     })

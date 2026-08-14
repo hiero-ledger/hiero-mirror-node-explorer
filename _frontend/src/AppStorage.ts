@@ -117,21 +117,21 @@ export class AppStorage {
     }
 
     //
-    // telemetryPolicy
+    // cookiesPolicy
     //
 
-    private static readonly TELEMETRY_POLICY_KEY = 'telemetry_policy'
-    private static readonly TELEMETRY_POLICY_ACCEPT = 'accept'
-    private static readonly TELEMETRY_POLICY_REJECT = 'reject'
+    private static readonly COOKIES_POLICY_KEY = 'cookies_policy'
+    private static readonly COOKIES_POLICY_ACCEPT = 'accept'
+    private static readonly COOKIES_POLICY_REJECT = 'reject'
 
-    public static getAcceptTelemetryPolicy(): boolean | null {
-        const policy = AppStorage.getLocalStorageItem(AppStorage.TELEMETRY_POLICY_KEY)
-        return policy != null ? policy === AppStorage.TELEMETRY_POLICY_ACCEPT : null
+    public static getAcceptCookiesPolicy(): boolean | null {
+        const policy = AppStorage.getLocalStorageItem(AppStorage.COOKIES_POLICY_KEY)
+        return policy != null ? policy === AppStorage.COOKIES_POLICY_ACCEPT : null
     }
 
-    public static setAcceptTelemetryPolicy(accept: boolean): void {
-        const policy = accept ? AppStorage.TELEMETRY_POLICY_ACCEPT : AppStorage.TELEMETRY_POLICY_REJECT
-        AppStorage.setLocalStorageItem(AppStorage.TELEMETRY_POLICY_KEY, policy)
+    public static setAcceptCookiesPolicy(accept: boolean): void {
+        const policy = accept ? AppStorage.COOKIES_POLICY_ACCEPT : AppStorage.COOKIES_POLICY_REJECT
+        AppStorage.setLocalStorageItem(AppStorage.COOKIES_POLICY_KEY, policy)
     }
 
     //

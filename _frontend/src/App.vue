@@ -5,8 +5,8 @@
   <router-view/>
 
   <CookiesDialog v-model:show-dialog="showCookiesDialog"
-                   @onChooseReject="handleChooseRejectTelemetry"
-                   @onChooseAccept="handleChooseAcceptTelemetry">
+                   @onChooseReject="handleChooseRejectCookies"
+                   @onChooseAccept="handleChooseAcceptCookies">
   </CookiesDialog>
 
 </template>
@@ -92,8 +92,8 @@ onMounted(() => themeController.mount())
 
 const showCookiesDialog = ref(false)
 
-const acceptTelemetry = ref<boolean | null>(null)
-watch(acceptTelemetry, (accept) => {
+const acceptCookies = ref<boolean | null>(null)
+watch(acceptCookies, (accept) => {
   const googleTagID = props.coreConfig.googleTagID
   if (accept && googleTagID && googleTagID.length > 0) {
     insertGoogleTag(props.coreConfig.googleTagID)
@@ -110,10 +110,10 @@ onBeforeMount(() => {
   const cookiesDialogContent = props.coreConfig.cookiesDialogContent
 
   if (cookiesDialogContent && cookiesDialogContent.length > 0) {
-    acceptTelemetry.value = AppStorage.getAcceptTelemetryPolicy()
-    showCookiesDialog.value = (acceptTelemetry.value == null && props.coreConfig.cookiesDialogContent != null)
+    acceptCookies.value = AppStorage.getAcceptCookiesPolicy()
+    showCookiesDialog.value = (acceptCookies.value == null && props.coreConfig.cookiesDialogContent != null)
   } else {
-    acceptTelemetry.value = null
+    acceptCookies.value = null
     showCookiesDialog.value = false
   }
 })
@@ -128,14 +128,14 @@ onBeforeUnmount(() => {
   window.removeEventListener('resize', onResizeHandler);
 })
 
-const handleChooseRejectTelemetry = () => {
-  acceptTelemetry.value = false
-  AppStorage.setAcceptTelemetryPolicy(false)
+const handleChooseRejectCookies = () => {
+  acceptCookies.value = false
+  AppStorage.setAcceptCookiesPolicy(false)
 }
 
-const handleChooseAcceptTelemetry = () => {
-  acceptTelemetry.value = true
-  AppStorage.setAcceptTelemetryPolicy(true)
+const handleChooseAcceptCookies = () => {
+  acceptCookies.value = true
+  AppStorage.setAcceptCookiesPolicy(true)
 }
 
 function insertGoogleTag(tagId: string) {

@@ -5,7 +5,7 @@ import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import {CoreConfig} from '@/config/CoreConfig'
 
-describe('CoreConfig telemetry dialog content', () => {
+describe('CoreConfig cookies dialog content', () => {
     const mock = new MockAdapter(axios as any)
 
     afterEach(() => {
@@ -13,41 +13,31 @@ describe('CoreConfig telemetry dialog content', () => {
     })
 
     test('loads cookiesDialogContent from core config', async () => {
-        mock.onGet('/core-config-telemetry.json').reply(200, {
-            cookiesDialogContent: '<p>Telemetry text</p>'
-        })
-
-        const config = await CoreConfig.load('/core-config-telemetry.json')
-
-        expect(config.cookiesDialogContent).toBe('<p>Telemetry text</p>')
-    })
-
-    test('falls back to cookiesDialogContent when cookiesDialogContent is absent', async () => {
         mock.onGet('/core-config-cookies.json').reply(200, {
-            cookiesDialogContent: '<p>Legacy telemetry text</p>'
+            cookiesDialogContent: '<p>Cookies text</p>'
         })
 
         const config = await CoreConfig.load('/core-config-cookies.json')
 
-        expect(config.cookiesDialogContent).toBe('<p>Legacy telemetry text</p>')
+        expect(config.cookiesDialogContent).toBe('<p>Cookies text</p>')
     })
 
     test('returns null when cookiesDialogContent is absent', async () => {
-        mock.onGet('/core-config-without-telemetry.json').reply(200, {
+        mock.onGet('/core-config-without-cookies.json').reply(200, {
             productName: 'Explorer'
         })
 
-        const config = await CoreConfig.load('/core-config-without-telemetry.json')
+        const config = await CoreConfig.load('/core-config-without-cookies.json')
 
         expect(config.cookiesDialogContent).toBeNull()
     })
 
     test('handles explicit null cookiesDialogContent', async () => {
-        mock.onGet('/core-config-null-telemetry.json').reply(200, {
+        mock.onGet('/core-config-null-cookies.json').reply(200, {
             cookiesDialogContent: null
         })
 
-        const config = await CoreConfig.load('/core-config-null-telemetry.json')
+        const config = await CoreConfig.load('/core-config-null-cookies.json')
 
         expect(config.cookiesDialogContent).toBeNull()
     })
