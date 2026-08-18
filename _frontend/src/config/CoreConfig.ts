@@ -78,7 +78,7 @@ export class CoreConfig {
         public readonly walletChooserDisclaimerPopup: string | null,
         // Global site tag ID for Google Analytics
         public readonly googleTagID: string | null,
-        // The HTML content of the cookie acceptation dialog
+        // The HTML content of the cookies acceptation dialog
         public readonly cookiesDialogContent: string | null,
         // The URL of the IPFS gateway
         public readonly ipfsGatewayURL: string | null,

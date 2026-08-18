@@ -5,8 +5,8 @@
   <router-view/>
 
   <CookiesDialog v-model:show-dialog="showCookiesDialog"
-                 @onChooseReject="handleChooseRejectCookies"
-                 @onChooseAccept="handleChooseAcceptCookies">
+                   @onChooseReject="handleChooseRejectCookies"
+                   @onChooseAccept="handleChooseAcceptCookies">
   </CookiesDialog>
 
 </template>
@@ -110,7 +110,7 @@ onBeforeMount(() => {
   const cookiesDialogContent = props.coreConfig.cookiesDialogContent
 
   if (cookiesDialogContent && cookiesDialogContent.length > 0) {
-    acceptCookies.value = AppStorage.getAcceptCookiePolicy()
+    acceptCookies.value = AppStorage.getAcceptCookiesPolicy()
     showCookiesDialog.value = (acceptCookies.value == null && props.coreConfig.cookiesDialogContent != null)
   } else {
     acceptCookies.value = null
@@ -130,12 +130,12 @@ onBeforeUnmount(() => {
 
 const handleChooseRejectCookies = () => {
   acceptCookies.value = false
-  AppStorage.setAcceptCookiePolicy(false)
+  AppStorage.setAcceptCookiesPolicy(false)
 }
 
 const handleChooseAcceptCookies = () => {
   acceptCookies.value = true
-  AppStorage.setAcceptCookiePolicy(true)
+  AppStorage.setAcceptCookiesPolicy(true)
 }
 
 function insertGoogleTag(tagId: string) {
