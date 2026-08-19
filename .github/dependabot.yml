@@ -3,18 +3,25 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: weekly
     open-pull-requests-limit: 10
 
   - package-ecosystem: docker
     directory: /
     schedule:
-      interval: daily
+      interval: weekly
 
   - package-ecosystem: npm
     directory: /_frontend
     schedule:
-      interval: daily
+      interval: weekly
+    versioning-strategy: increase
+    open-pull-requests-limit: 10
+    ignore:
+      # Projects using Vue need to continue using TypeScript 6.0 for now
+      # See https://devblogs.microsoft.com/typescript/announcing-typescript-7-0
+      - dependency-name: "typescript"
+        versions: ["7.x"]
     groups:
       vitest:
         patterns:
