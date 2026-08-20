@@ -72,3 +72,6 @@ updates:
           - "@types/d3*"
           - "topojson-*"
           - "@types/topojson-*"
+      oruga:
+        patterns:
+          - "@oruga-ui/*"
