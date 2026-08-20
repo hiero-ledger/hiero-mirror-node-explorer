@@ -22,6 +22,11 @@ export class RegisteredNodeAnalyzer {
         }
         return result
     })
+
+    public adminKey = computed(() => this.registeredNode.value?.admin_key ?? null)
+
+    public description = computed(() => this.registeredNode.value?.description ?? null)
+
     public serviceEndpoints = computed(() =>
         [...(this.registeredNode.value?.service_endpoints ?? [])].sort(sortRegisteredServiceEndPoint)
     )
