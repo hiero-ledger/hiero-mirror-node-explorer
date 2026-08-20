@@ -5235,7 +5235,10 @@ export const SAMPLE_REGISTERED_NODES: { registered_nodes: object[] } = {
             "timestamp": {"from": "1654531806.041135961", "to": null}
         },
         {
-            "admin_key": null,
+            "admin_key": {
+                "_type": "ProtobufEncoded",
+                "key": "2af001080212eb010a4e2a4c080112480a221220ef2d877b88b7464d9253560b8851316f5c2f6ddf935eb4eec0761a3262b0a48c0a221220a95d54cf49c1d08cd16d8908f37dfad95637134ffaf528a1d96da7f28d45f1390a98012a950108021290010a221220c44c911fa45166e356b498463184459dd9ee760bacc083de348691d6357e06340a221220ef2d877b88b7464d9253560b8851316f5c2f6ddf935eb4eec0761a3262b0a48c0a221220a95d54cf49c1d08cd16d8908f37dfad95637134ffaf528a1d96da7f28d45f1390a221220daa5da866bf4e990c14eff4336f5ab4b416c85a31289c8cb8ae1b4a54ce8c111"
+            },
             "created_timestamp": "1654531900.000000000",
             "description": "Mirror Node | West Coast, USA",
             "registered_node_id": 1,

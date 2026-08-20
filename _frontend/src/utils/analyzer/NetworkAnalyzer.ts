@@ -104,6 +104,18 @@ export class NetworkAnalyzer {
         }
     }
 
+    public findNodeById(nodeId: number): NetworkNode | null {
+        return this.nodes.value.find((n) => n.node_id === nodeId) ?? null
+    }
+
+    public findNodeByAccountId(nodeAccountId: string): NetworkNode | null {
+        return this.nodes.value.find((n) => n.node_account_id === nodeAccountId) ?? null
+    }
+
+    public isConsensusNode(nodeId: number): boolean {
+        return this.findNodeById(nodeId)  !== null
+    }
+
     //
     // Private
     //

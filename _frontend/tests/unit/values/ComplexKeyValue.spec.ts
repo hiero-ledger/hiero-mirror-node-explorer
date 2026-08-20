@@ -2,13 +2,68 @@
 
 
 import {describe, expect, it} from 'vitest'
-import {mount} from "@vue/test-utils";
+import {flushPromises, mount} from "@vue/test-utils";
+import axios from "axios";
+import MockAdapter from "axios-mock-adapter";
 import ComplexKeyValue from "@/components/values/ComplexKeyValue.vue";
 import router from "@/utils/RouteManager.ts";
+import {SAMPLE_NETWORK_NODES} from "../Mocks";
 
 describe("ComplexKeyValue.vue", () => {
 
     const COMPLEX_KEY = "0x2a880208021283020a562a54080112500a2632240a221220ef2d877b88b7464d9253560b8851316f5c2f6ddf935eb4eec0761a3262b0a48c0a2632240a221220a95d54cf49c1d08cd16d8908f37dfad95637134ffaf528a1d96da7f28d45f1390aa8012aa501080212a0010a2632240a221220c44c911fa45166e356b498463184459dd9ee760bacc083de348691d6357e06340a2632240a221220ef2d877b88b7464d9253560b8851316f5c2f6ddf935eb4eec0761a3262b0a48c0a2632240a221220a95d54cf49c1d08cd16d8908f37dfad95637134ffaf528a1d96da7f28d45f1390a2632240a221220daa5da866bf4e990c14eff4336f5ab4b416c85a31289c8cb8ae1b4a54ce8c111"
+
+    it("routes consensus-node keys to NodeAdminKeyDetails", async () => {
+        await router.push("/")
+        const mock = new MockAdapter(axios as any)
+        mock.onGet("api/v1/network/nodes").reply(200, SAMPLE_NETWORK_NODES)
+
+        const wrapper = mount(ComplexKeyValue, {
+            global: {
+                plugins: [router]
+            },
+            props: {
+                keyBytes: COMPLEX_KEY,
+                nodeId: 2
+            }
+        })
+
+        await flushPromises()
+        await wrapper.get("a").trigger("click")
+        await flushPromises()
+
+        expect(router.currentRoute.value.name).toBe("NodeAdminKeyDetails")
+        expect(router.currentRoute.value.params.nodeId).toBe("2")
+
+        mock.restore()
+        wrapper.unmount()
+    })
+
+    it("routes registered-node keys to RegisteredNodeAdminKeyDetails", async () => {
+        await router.push("/")
+        const mock = new MockAdapter(axios as any)
+        mock.onGet("api/v1/network/nodes").reply(200, SAMPLE_NETWORK_NODES)
+
+        const wrapper = mount(ComplexKeyValue, {
+            global: {
+                plugins: [router]
+            },
+            props: {
+                keyBytes: COMPLEX_KEY,
+                nodeId: 99
+            }
+        })
+
+        await flushPromises()
+        await wrapper.get("a").trigger("click")
+        await flushPromises()
+
+        expect(router.currentRoute.value.name).toBe("RegisteredNodeAdminKeyDetails")
+        expect(router.currentRoute.value.params.nodeId).toBe("99")
+
+        mock.restore()
+        wrapper.unmount()
+    })
 
     it("props.keyBytes set with complex key", async () => {
 

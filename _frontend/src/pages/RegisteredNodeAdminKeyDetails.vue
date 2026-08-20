@@ -10,11 +10,11 @@
 
     <DashboardCardV2 v-if="nodeExists">
       <template #title>
-        <span>Admin Key for Node </span>
-        <router-link :to="routeManager.makeRouteToNode(nodeId!)">
+        <span>Admin Key for RegisteredNode </span>
+        <router-link :to="routeManager.makeRouteToRegisteredNode(nodeId!)">
           <span>{{ nodeId }}</span>
           <span v-if="nodeDescription !== null"> - {{ nodeDescription }}</span>
-          </router-link>
+        </router-link>
       </template>
 
       <template #content>
@@ -27,7 +27,7 @@
       </template>
     </DashboardCardV2>
 
-    <NotificationBanner v-else :message="`Consensus Node ${nodeId} was not found`" is-error/>
+    <NotificationBanner v-else :message="`Registered Node ${nodeId} was not found`" is-error/>
 
   </PageFrameV2>
 
@@ -37,15 +37,15 @@
 <!--                                                      SCRIPT                                                     -->
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
-<script setup lang="ts">
+<script lang="ts" setup>
 
 import {computed, onBeforeUnmount, onMounted, PropType} from 'vue';
 import PageFrameV2 from "@/components/page/PageFrameV2.vue";
 import KeyValue from "@/components/values/KeyValue.vue";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
-import {NodeAnalyzer} from "@/utils/analyzer/NodeAnalyzer.ts";
 
 import {routeManager} from "@/utils/RouteManager.ts";
+import {RegisteredNodeAnalyzer} from "@/utils/analyzer/RegisteredNodeAnalyzer.ts";
 import NotificationBanner from "@/components/NotificationBanner.vue";
 
 const props = defineProps({
@@ -71,16 +71,16 @@ const nodeId = computed(() => {
   return result;
 })
 
-const nodeAnalyzer = new NodeAnalyzer(nodeId)
+const nodeAnalyzer = new RegisteredNodeAnalyzer(nodeId)
 onMounted(() => nodeAnalyzer.mount())
 onBeforeUnmount(() => nodeAnalyzer.unmount())
 
-const nodeExists = computed(() => nodeAnalyzer.node.value !== null)
+const nodeExists = computed(() => nodeAnalyzer.registeredNode.value !== null)
 const nodeKey = nodeAnalyzer.adminKey
-const nodeDescription = nodeAnalyzer.shortNodeDescription
+const nodeDescription = nodeAnalyzer.description
 
 const pageTitle = computed(() =>
-    nodeId.value !== null ? "Admin Key for Node " + nodeId.value : null
+    nodeId.value !== null ? "Admin Key for Registered Node " + nodeId.value : null
 )
 
 </script>

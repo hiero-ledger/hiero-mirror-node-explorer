@@ -57,7 +57,7 @@
 
 <script setup lang="ts">
 
-import {computed, inject, PropType, ref} from "vue";
+import {computed, inject, onBeforeUnmount, onMounted, PropType, ref} from "vue";
 import {ComplexKeyLine} from "@/utils/ComplexKeyLine";
 import {hexToByte} from "@/utils/B64Utils";
 import * as hashgraph from "@hashgraph/proto";
@@ -66,6 +66,8 @@ import ContractLink from "@/components/values/link/ContractLink.vue";
 import {initialLoadingKey} from "@/AppKeys";
 
 import {routeManager} from "@/utils/RouteManager.ts";
+import {NetworkAnalyzer} from "@/utils/analyzer/NetworkAnalyzer.ts";
+import {RouteLocationRaw} from "vue-router";
 
 const MAX_INLINE_LEVEL = 1
 
@@ -98,6 +100,10 @@ const props = defineProps({
     default: false
   },
 })
+
+const networkAnalyzer = new NetworkAnalyzer()
+onMounted(() => networkAnalyzer.mount())
+onBeforeUnmount(() => networkAnalyzer.unmount())
 
 const key = computed(() => {
   let result: hashgraph.proto.Key | null
@@ -150,6 +156,7 @@ const lineStyle = (line: ComplexKeyLine): Record<string, string> => {
   }
 }
 
+// eslint-disable-next-line complexity
 const lineText = (line: ComplexKeyLine): string => {
   let result: string
   if (line.key.thresholdKey) {
@@ -165,11 +172,17 @@ const lineText = (line: ComplexKeyLine): string => {
 }
 
 const adminKeyRoute = computed(() => {
-  return props.accountId !== null
-      ? routeManager.makeRouteToAdminKey(props.accountId)
-      : props.nodeId !== null
-          ? routeManager.makeRouteToNodeAdminKey(props.nodeId.toString())
-          : null
+  let result: RouteLocationRaw | null
+  if (props.accountId !== null) {
+    result = routeManager.makeRouteToAdminKey(props.accountId)
+  } else if (props.nodeId !== null) {
+    result = networkAnalyzer.isConsensusNode(props.nodeId)
+        ? routeManager.makeRouteToNodeAdminKey(props.nodeId.toString())
+        : routeManager.makeRouteToRegisteredNodeAdminKey(props.nodeId.toString())
+  } else {
+    result = null
+  }
+  return result
 })
 
 const initialLoading = inject(initialLoadingKey, ref(false))
