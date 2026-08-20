@@ -36,7 +36,7 @@
     "@kabuto-sh/ns": "0.15.2",
     "@lucide/vue": "1.31.0",
     "@oruga-ui/oruga-next": "0.13.6",
-    "@oruga-ui/theme-oruga": "0.9.1",
+    "@oruga-ui/theme-oruga": "0.10.0",
     "@vuepic/vue-datepicker": "14.0.0",
     "@vueuse/core": "14.4.0",
     "@walletconnect/modal": "2.7.0",
