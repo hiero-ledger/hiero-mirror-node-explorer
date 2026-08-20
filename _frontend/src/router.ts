@@ -74,6 +74,7 @@ import Network_MirrorNodes from "@/pages/Network_MirrorNodes.vue";
 import Network_RpcRelays from "@/pages/Network_RpcRelays.vue";
 import RegisteredNodeDetails from "@/pages/RegisteredNodeDetails.vue";
 import Network_GeneralServices from "@/pages/Network_GeneralServices.vue";
+import RegisteredNodeAdminKeyDetails from "@/pages/RegisteredNodeAdminKeyDetails.vue";
 
 export enum TabId {
     Home = "Home",
@@ -696,6 +697,15 @@ export const routes: Array<RouteRecordRaw> = [
         path: '/:network/nodeAdminKey/:nodeId',
         name: 'NodeAdminKeyDetails',
         component: NodeAdminKeyDetails,
+        props: true,
+        meta: {
+            tabId: TabId.Network
+        }
+    },
+    {
+        path: '/:network/registeredNodeAdminKey/:nodeId',
+        name: 'RegisteredNodeAdminKeyDetails',
+        component: RegisteredNodeAdminKeyDetails,
         props: true,
         meta: {
             tabId: TabId.Network

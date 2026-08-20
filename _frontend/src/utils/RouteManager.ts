@@ -305,6 +305,12 @@ export class RouteManager {
         }
     }
 
+    public makeRouteToRegisteredNodeAdminKey(nodeId: string): RouteLocationRaw {
+        return {
+            name: 'RegisteredNodeAdminKeyDetails', params: {nodeId: nodeId, network: this.currentNetwork.value}
+        }
+    }
+
     //
     // Token
     //
