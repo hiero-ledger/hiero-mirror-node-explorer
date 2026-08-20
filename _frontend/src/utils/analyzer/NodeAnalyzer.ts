@@ -29,21 +29,9 @@ export class NodeAnalyzer {
     public node: ComputedRef<NetworkNode | null> = computed(() => {
         let result: NetworkNode | null
         if (typeof this.nodeLoc.value == "number") {
-            result = null
-            for (const node of this.networkAnalyzer.nodes.value) {
-                if (node.node_id == this.nodeLoc.value) {
-                    result = node
-                    break
-                }
-            }
+            result = this.networkAnalyzer.findNodeById(this.nodeLoc.value)
         } else if (typeof this.nodeLoc.value == "string") {
-            result = null
-            for (const node of this.networkAnalyzer.nodes.value) {
-                if (node.node_account_id == this.nodeLoc.value) {
-                    result = node
-                    break
-                }
-            }
+            result = this.networkAnalyzer.findNodeByAccountId(this.nodeLoc.value)
         } else {
             result = null
         }
