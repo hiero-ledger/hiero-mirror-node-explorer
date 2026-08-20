@@ -112,6 +112,10 @@ export class NetworkAnalyzer {
         return this.nodes.value.find((n) => n.node_account_id === nodeAccountId) ?? null
     }
 
+    public isConsensusNode(nodeId: number): boolean {
+        return this.findNodeById(nodeId)  !== null
+    }
+
     //
     // Private
     //
