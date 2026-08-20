@@ -61,11 +61,11 @@
   "devDependencies": {
     "@cypress/code-coverage": "4.0.3",
     "@eslint/js": "10.0.1",
-    "@tsconfig/node18": "18.2.6",
+    "@tsconfig/node18": "18.2.7",
     "@types/d3": "7.4.3",
     "@types/d3-geo": "3.1.1",
     "@types/file-saver": "2.0.7",
-    "@types/jsdom": "28.0.3",
+    "@types/jsdom": "30.0.0",
     "@types/prismjs": "1.26.6",
     "@types/topojson-client": "3.1.5",
     "@types/topojson-specification": "1.0.5",
