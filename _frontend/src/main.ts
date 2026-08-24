@@ -11,6 +11,7 @@ import {AxiosMonitor} from "@/utils/AxiosMonitor";
 import {CoreConfig} from "@/config/CoreConfig";
 import {NetworkConfig} from "@/config/NetworkConfig";
 import router, {routeManager} from "@/utils/RouteManager.ts";
+import OrugaLucideIcon from "@/components/OrugaLucideIcon.vue";
 
 AxiosMonitor.instance.setTargetAxios(axios)
 
@@ -54,8 +55,24 @@ const createAndMount = async () => {
     head.appendChild(link);
 
     const app = createApp(Root, {coreConfig, networkConfig})
+
+    app.component("oruga-lucide-icon", OrugaLucideIcon)
     app.use(router)
-    app.use(createOruga())
+    app.use(createOruga({
+        iconPack: 'basicCustomPack',
+        iconComponent: 'oruga-lucide-icon',
+        customIconPacks: {
+            basicCustomPack: {
+                iconPrefix: '',
+                sizes: {
+                    default: "24",
+                    small: "16",
+                    medium: "24",
+                    large: "32",
+                }
+            }
+        }
+    }))
     app.mount('#app')
 }
 
