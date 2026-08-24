@@ -128,7 +128,7 @@ const derivedEntityId = computed(() => {
 onMounted(() => updateIdAndAddress())
 watch([() => props.address, () => props.id, () => props.entityType], () => updateIdAndAddress())
 
-// eslint-disable-next-line complexity
+ 
 const updateIdAndAddress = async () => {
   entityLinkType.value = ExtendedEntityType.UNDEFINED
   evmAddress.value = props.address ?? null

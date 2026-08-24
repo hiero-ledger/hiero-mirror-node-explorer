@@ -70,7 +70,7 @@ export class NetworkEntry {
 
     public static readonly NETWORK_NAME_MAX_LENGTH = 15
 
-    // eslint-disable-next-line complexity,max-lines-per-function
+     
     static parse(obj: Record<string, unknown>): NetworkEntry {
 
         const name = fetchString(obj, "name")

@@ -76,7 +76,7 @@ export class ThemeController {
     // Private
     //
 
-    // eslint-disable-next-line complexity,max-lines-per-function
+     
     private darkSelectedDidChange = () => {
         if (this.darkSelected.value) {
             AppStorage.setTheme('dark')

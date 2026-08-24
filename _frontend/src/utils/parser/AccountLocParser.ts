@@ -135,7 +135,7 @@ export class AccountLocParser {
         return address != null && address !== '0x' ? address : null
     })
 
-    // eslint-disable-next-line complexity
+     
     public readonly errorNotification: ComputedRef<string | null> = computed(() => {
         let result: string | null
         const l = this.accountLoc.value

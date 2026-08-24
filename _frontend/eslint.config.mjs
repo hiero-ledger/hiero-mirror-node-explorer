@@ -31,8 +31,8 @@ export default tseslint.config(
             "vue/multi-word-component-names": "off",
             "vue/no-mutating-props": "off",
 
-            "complexity": ["error", 8],
-            "max-lines-per-function": ["error", 50]
+            "complexity": "off",
+            "max-lines-per-function": "off"
         }
     },
     {

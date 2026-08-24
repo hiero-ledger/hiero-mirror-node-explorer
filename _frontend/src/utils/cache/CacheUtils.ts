@@ -53,7 +53,7 @@ import {RegisteredNodeCache} from "@/utils/cache/RegisteredNodeCache.ts";
 
 export class CacheUtils {
 
-    // eslint-disable-next-line max-lines-per-function
+     
     public static clearAll(): void {
         AccountByAddressCache.instance.clear()
         AccountByAliasCache.instance.clear()

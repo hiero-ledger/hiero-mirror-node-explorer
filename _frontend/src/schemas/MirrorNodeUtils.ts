@@ -594,7 +594,7 @@ export async function drainContractResultsLogs(r: ContractResultsLogResponse, li
 //
 //in ports to other languages, answer can be a string, digits an int32[] and the rest int32 (or uint32[] and uint32)
 
-// eslint-disable-next-line complexity
+ 
 export function hip15checksum(ledgerId: string, addr: string) {
     let answer = "";
     const d = [];      //digits with 10 for ".", so if addr == "0.0.123" then d == [0, 10, 0, 10, 1, 2, 3] *** FIX ***
@@ -723,7 +723,7 @@ export function makeRegisteredServiceEndpointDetails(endpoint: RegisteredService
     return result
 }
 
-// eslint-disable-next-line complexity
+ 
 export function sortRegisteredServiceEndPoint(a: RegisteredServiceEndPoint, b: RegisteredServiceEndPoint): number {
     if (a.type !== b.type) return a.type.localeCompare(b.type)
     if (a.domain_name !== b.domain_name) return (a.domain_name || "").localeCompare(b.domain_name || "")

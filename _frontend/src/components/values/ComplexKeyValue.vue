@@ -156,7 +156,7 @@ const lineStyle = (line: ComplexKeyLine): Record<string, string> => {
   }
 }
 
-// eslint-disable-next-line complexity
+ 
 const lineText = (line: ComplexKeyLine): string => {
   let result: string
   if (line.key.thresholdKey) {
