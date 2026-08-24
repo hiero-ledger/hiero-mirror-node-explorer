@@ -57,30 +57,6 @@ export class WalletConnectAgent {
 
         // https://docs.reown.com/appkit/networks/custom-networks
 
-        const hederaTestnet: CaipNetwork = defineChain({
-            id: 'mainnet',
-            chainNamespace: CAChainId.NAMESPACE_HEDERA as ChainNamespace,
-            caipNetworkId: WalletConnectAgent.makeCaChainForHedera("testnet") as CaipNetworkId,
-            name: 'Hedera Testnet',
-            nativeCurrency: {
-                symbol: 'ℏ',
-                name: 'HBAR',
-                decimals: 18,
-            },
-            rpcUrls: {
-                default: {
-                    http: ['https://testnet.hashio.io/api'],
-                },
-            },
-            blockExplorers: {
-                default: {
-                    name: 'Hashscan',
-                    url: 'https://hashscan.io/testnet',
-                },
-            },
-            testnet: true,
-        })
-
         const network = routeManager.currentNetwork.value
         const params = {
             optionalNamespaces: WalletConnectAgent.makeNamespaces([network])
@@ -88,7 +64,7 @@ export class WalletConnectAgent {
         const {createAppKit} = await import("@reown/appkit")
         const appKit = createAppKit({
             projectId: this.projectId,
-            networks: [hederaTestnet],
+            networks: [this.hederaMainnet, this.hederaTestnet, this.hederaPreviewnet],
             featuredWalletIds: [
                 // https://walletguide.walletconnect.network
                 "a29498d225fa4b13468ff4d6cf4ae0ea4adcbd95f07ce8a843a1dee10b632f3f", // HashPack
@@ -303,6 +279,78 @@ export class WalletConnectAgent {
             resolve(result)
         })
     }
+
+    readonly hederaMainnet: CaipNetwork = defineChain({
+        id: 'mainnet',
+        chainNamespace: CAChainId.NAMESPACE_HEDERA as ChainNamespace,
+        caipNetworkId: WalletConnectAgent.makeCaChainForHedera("mainnet") as CaipNetworkId,
+        name: 'Hedera Mainnet',
+        nativeCurrency: {
+            symbol: 'ℏ',
+            name: 'HBAR',
+            decimals: 18,
+        },
+        rpcUrls: {
+            default: {
+                http: ['https://mainnet.hashio.io/api'],
+            },
+        },
+        blockExplorers: {
+            default: {
+                name: 'Hashscan',
+                url: 'https://hashscan.io/mainnet',
+            },
+        },
+        testnet: true,
+    })
+
+    readonly hederaTestnet: CaipNetwork = defineChain({
+        id: 'testnet',
+        chainNamespace: CAChainId.NAMESPACE_HEDERA as ChainNamespace,
+        caipNetworkId: WalletConnectAgent.makeCaChainForHedera("testnet") as CaipNetworkId,
+        name: 'Hedera Testnet',
+        nativeCurrency: {
+            symbol: 'ℏ',
+            name: 'HBAR',
+            decimals: 18,
+        },
+        rpcUrls: {
+            default: {
+                http: ['https://testnet.hashio.io/api'],
+            },
+        },
+        blockExplorers: {
+            default: {
+                name: 'Hashscan',
+                url: 'https://hashscan.io/testnet',
+            },
+        },
+        testnet: true,
+    })
+
+    readonly hederaPreviewnet: CaipNetwork = defineChain({
+        id: 'previewnet',
+        chainNamespace: CAChainId.NAMESPACE_HEDERA as ChainNamespace,
+        caipNetworkId: WalletConnectAgent.makeCaChainForHedera("previewnet") as CaipNetworkId,
+        name: 'Hedera Previewnet',
+        nativeCurrency: {
+            symbol: 'ℏ',
+            name: 'HBAR',
+            decimals: 18,
+        },
+        rpcUrls: {
+            default: {
+                http: ['https://previewnet.hashio.io/api'],
+            },
+        },
+        blockExplorers: {
+            default: {
+                name: 'Hashscan',
+                url: 'https://hashscan.io/previewnet',
+            },
+        },
+        testnet: true,
+    })
 }
 
 
