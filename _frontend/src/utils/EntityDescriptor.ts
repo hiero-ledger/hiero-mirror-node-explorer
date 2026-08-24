@@ -14,7 +14,7 @@ export class EntityDescriptor {
     ) {
     }
 
-    // eslint-disable-next-line complexity,max-lines-per-function
+     
     static async makeEntityDescriptor(row: Transaction | null): Promise<EntityDescriptor> {
         let result: EntityDescriptor
         if (row !== null) {

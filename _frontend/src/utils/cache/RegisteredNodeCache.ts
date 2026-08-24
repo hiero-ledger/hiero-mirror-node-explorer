@@ -21,7 +21,7 @@ export class RegisteredNodeCache extends SingletonCache<RegisteredNode[]> {
         return new RegisteredNodeLookup(this)
     }
 
-    // eslint-disable-next-line max-lines-per-function
+     
     protected getMock(): RegisteredNode[] {
         return [
             {

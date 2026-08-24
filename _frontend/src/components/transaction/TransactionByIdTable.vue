@@ -106,7 +106,7 @@ const hasChild = computed(() => {
   return result
 })
 
-// eslint-disable-next-line complexity
+ 
 const makeRelationshipLabel = (row: Transaction): string => {
   let result: string
   if (row.name === TransactionType.SCHEDULECREATE) {
