@@ -39,6 +39,7 @@
     "@oruga-ui/theme-oruga": "0.9.1",
     "@vuepic/vue-datepicker": "14.0.0",
     "@vueuse/core": "14.4.0",
+    "@walletconnect/sign-client": "2.23.10",
     "@reown/appkit": "1.8.23",
     "axios": "1.19.0",
     "base32-decode": "1.0.0",
