@@ -11,7 +11,8 @@ import {CAAccountId, CAChainId} from "@/utils/wallet/caip";
 import {AccountByIdCache} from "@/utils/cache/AccountByIdCache";
 import type SignClient from "@walletconnect/sign-client";
 import {ProposalTypes, SessionTypes, SignClientTypes} from "@walletconnect/types";
-import type {WalletConnectModal} from "@walletconnect/modal"; // "type" to avoid unit test break
+import {AppKit, CaipNetwork, CaipNetworkId, type EventsControllerState} from "@reown/appkit";
+import {ChainNamespace, defineChain} from "@reown/appkit/networks";
 import {AccountByAddressCache} from "@/utils/cache/AccountByAddressCache";
 import {EntityID} from "@/utils/EntityID";
 import {getSdkError} from "@walletconnect/utils";
@@ -36,12 +37,12 @@ export class WalletConnectAgent {
                 url: window.location.origin,
                 icons: [],
             }
-            const { SignClient } = await import("@walletconnect/sign-client")
+            const {SignClient} = await import("@walletconnect/sign-client")
             const signClient = await SignClient.init({
                 logger: 'error',
                 projectId: projectId,
                 // optional parameters
-                relayUrl: "wss://relay.walletconnect.com",
+                // relayUrl: "wss://relay.walletconnect.com",
                 metadata: METADATA
             })
             result = new WalletConnectAgent(signClient, projectId)
@@ -54,16 +55,17 @@ export class WalletConnectAgent {
 
     public async requestSession(): Promise<WalletSession | null> {
 
+        // https://docs.reown.com/appkit/networks/custom-networks
+
         const network = routeManager.currentNetwork.value
         const params = {
             optionalNamespaces: WalletConnectAgent.makeNamespaces([network])
         }
-        const {uri, approval} = await this.signClient.connect(params)
-        const {WalletConnectModal} = await import("@walletconnect/modal")
-        // https://docs.reown.com/advanced/walletconnectmodal/options
-        const connectModal = new WalletConnectModal({
+        const {createAppKit} = await import("@reown/appkit")
+        const appKit = createAppKit({
             projectId: this.projectId,
-            explorerRecommendedWalletIds: [
+            networks: [this.hederaMainnet, this.hederaTestnet, this.hederaPreviewnet],
+            featuredWalletIds: [
                 // https://walletguide.walletconnect.network
                 "a29498d225fa4b13468ff4d6cf4ae0ea4adcbd95f07ce8a843a1dee10b632f3f", // HashPack
                 "a9104b630bac1929ad9ac2a73a17ed4beead1889341f307bff502f89b46c8501", // Blade
@@ -72,11 +74,10 @@ export class WalletConnectAgent {
                 // "fd20dc426fb37566d803205b19bbc1d4096b248ac04548e3cfb6b3a38bd033aa", // Coinbase
             ]
         })
-        const session = await this.waitForApprovalOrModalClose(uri, approval, connectModal)
+        const {uri, approval} = await this.signClient.connect(params)
+        const session = await this.waitForApprovalOrModalClose(uri, approval, appKit)
 
-        const result = session !== null ? await this.makeWalletSession(session) : null
-
-        return Promise.resolve(result)
+        return session !== null ? await this.makeWalletSession(session) : null
     }
 
     public async restoreSession(sessionTopic: string): Promise<WalletSession | null> {
@@ -251,22 +252,105 @@ export class WalletConnectAgent {
     private async waitForApprovalOrModalClose(
         uri: string | undefined,
         approval: () => Promise<SessionTypes.Struct>,
-        connectModal: WalletConnectModal): Promise<SessionTypes.Struct | null> {
+        connectModal: AppKit): Promise<SessionTypes.Struct | null> {
 
-        return new Promise((resolve, reject) => {
-            connectModal.subscribeModal((state: { open: boolean }) => {
-                if (!state.open) {
-                    // User has closed the modal without flashing the QR code
-                    resolve(null)
+        await connectModal.open({uri})
+
+        return new Promise(async (resolve) => {
+            let result: SessionTypes.Struct | null
+            const unsubscribe = connectModal.subscribeEvents((newEvent: EventsControllerState) => {
+                if (newEvent.data.event == "MODAL_CLOSE") {
+                    unsubscribe()
+                    if (waiting) {
+                        // User has closed the modal without flashing the QR code
+                        resolve(null) // (A)
+                    }
                 }
             })
-            connectModal.openModal({uri})
-                .then(() => approval())
-                .then((session) => resolve(session))
-                .catch((reason) => reject(reason))
-                .finally(() => connectModal.closeModal())
+            let waiting = true
+            try {
+                result = await approval()
+            } catch {
+                result = null
+            } finally {
+                waiting = false // So that (A) is not called
+                await connectModal.close()
+            }
+            resolve(result)
         })
     }
+
+    readonly hederaMainnet: CaipNetwork = defineChain({
+        id: 'mainnet',
+        chainNamespace: CAChainId.NAMESPACE_HEDERA as ChainNamespace,
+        caipNetworkId: WalletConnectAgent.makeCaChainForHedera("mainnet") as CaipNetworkId,
+        name: 'Hedera Mainnet',
+        nativeCurrency: {
+            symbol: 'ℏ',
+            name: 'HBAR',
+            decimals: 18,
+        },
+        rpcUrls: {
+            default: {
+                http: ['https://mainnet.hashio.io/api'],
+            },
+        },
+        blockExplorers: {
+            default: {
+                name: 'Hashscan',
+                url: 'https://hashscan.io/mainnet',
+            },
+        },
+        testnet: true,
+    })
+
+    readonly hederaTestnet: CaipNetwork = defineChain({
+        id: 'testnet',
+        chainNamespace: CAChainId.NAMESPACE_HEDERA as ChainNamespace,
+        caipNetworkId: WalletConnectAgent.makeCaChainForHedera("testnet") as CaipNetworkId,
+        name: 'Hedera Testnet',
+        nativeCurrency: {
+            symbol: 'ℏ',
+            name: 'HBAR',
+            decimals: 18,
+        },
+        rpcUrls: {
+            default: {
+                http: ['https://testnet.hashio.io/api'],
+            },
+        },
+        blockExplorers: {
+            default: {
+                name: 'Hashscan',
+                url: 'https://hashscan.io/testnet',
+            },
+        },
+        testnet: true,
+    })
+
+    readonly hederaPreviewnet: CaipNetwork = defineChain({
+        id: 'previewnet',
+        chainNamespace: CAChainId.NAMESPACE_HEDERA as ChainNamespace,
+        caipNetworkId: WalletConnectAgent.makeCaChainForHedera("previewnet") as CaipNetworkId,
+        name: 'Hedera Previewnet',
+        nativeCurrency: {
+            symbol: 'ℏ',
+            name: 'HBAR',
+            decimals: 18,
+        },
+        rpcUrls: {
+            default: {
+                http: ['https://previewnet.hashio.io/api'],
+            },
+        },
+        blockExplorers: {
+            default: {
+                name: 'Hashscan',
+                url: 'https://hashscan.io/previewnet',
+            },
+        },
+        testnet: true,
+    })
 }
 
 
