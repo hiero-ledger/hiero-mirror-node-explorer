@@ -4,9 +4,6 @@ import {createApp} from 'vue'
 import Root from './Root.vue'
 import axios from 'axios'
 import {createOruga} from '@oruga-ui/oruga-next'
-import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
-import {library} from "@fortawesome/fontawesome-svg-core";
-import {faForward} from "@fortawesome/free-solid-svg-icons";
 
 import "@oruga-ui/theme-oruga/style.css";
 import "@/styles/explorer.css";
@@ -14,9 +11,7 @@ import {AxiosMonitor} from "@/utils/AxiosMonitor";
 import {CoreConfig} from "@/config/CoreConfig";
 import {NetworkConfig} from "@/config/NetworkConfig";
 import router, {routeManager} from "@/utils/RouteManager.ts";
-
-library.add(faForward);
-export default FontAwesomeIcon;
+import OrugaLucideIcon from "@/components/OrugaLucideIcon.vue";
 
 AxiosMonitor.instance.setTargetAxios(axios)
 
@@ -60,9 +55,24 @@ const createAndMount = async () => {
     head.appendChild(link);
 
     const app = createApp(Root, {coreConfig, networkConfig})
-    app.component("font-awesome-icon", FontAwesomeIcon as any)
+
+    app.component("oruga-lucide-icon", OrugaLucideIcon)
     app.use(router)
-    app.use(createOruga({iconPack: 'fas'}))
+    app.use(createOruga({
+        iconPack: 'basicCustomPack',
+        iconComponent: 'oruga-lucide-icon',
+        customIconPacks: {
+            basicCustomPack: {
+                iconPrefix: '',
+                sizes: {
+                    default: "24",
+                    small: "16",
+                    medium: "24",
+                    large: "32",
+                }
+            }
+        }
+    }))
     app.mount('#app')
 }
 
