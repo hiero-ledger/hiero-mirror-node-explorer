@@ -1389,7 +1389,7 @@ export const SAMPLE_REVERT_CONTRACT_RESULT_ACTIONS = {
 export const SAMPLE_ERROR_RESULTS = {
     "results": [
         {
-            "address": 0xc3902c1348597a84efd1e18d5993636ef6854c25,
+            "address": "0xc3902c1348597a84efd1e18d5993636ef6854c25",
             "amount": 0,
             "bloom": "0x",
             "call_result": "0x",

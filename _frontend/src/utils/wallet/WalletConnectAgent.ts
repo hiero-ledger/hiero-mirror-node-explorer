@@ -256,7 +256,7 @@ export class WalletConnectAgent {
 
         await connectModal.open({uri})
 
-        return new Promise(async (resolve) => {
+        return new Promise((resolve) => {
             let result: SessionTypes.Struct | null
             const unsubscribe = connectModal.subscribeEvents((newEvent: EventsControllerState) => {
                 if (newEvent.data.event == "MODAL_CLOSE") {
@@ -268,15 +268,18 @@ export class WalletConnectAgent {
                 }
             })
             let waiting = true
-            try {
-                result = await approval()
-            } catch {
-                result = null
-            } finally {
-                waiting = false // So that (A) is not called
-                await connectModal.close()
-            }
-            resolve(result)
+
+            void (async () => {
+                try {
+                    result = await approval()
+                } catch {
+                    result = null
+                } finally {
+                    waiting = false // So that (A) is not called
+                    await connectModal.close()
+                }
+                resolve(result)
+            })()
         })
     }
 
