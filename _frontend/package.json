@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "@bokuweb/zstd-wasm": "0.0.27",
-    "@ethereum-sourcify/bytecode-utils": "1.6.1",
+    "@ethereum-sourcify/bytecode-utils": "1.6.2",
     "@hashgraph/proto": "2.25.0",
     "@hashgraph/sdk": "2.81.0",
     "@hedera-name-service/hns-resolution-sdk": "2.0.15",
