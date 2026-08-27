@@ -12,10 +12,7 @@ defaults:
     shell: bash
 
 permissions:
-  checks: write
-  pull-requests: write
   contents: read
-  issues: read
 
 concurrency:
   group: pr-checks-${{ github.workflow }}-${{ github.head_ref || github.run_id }}
@@ -25,12 +22,22 @@ jobs:
   build:
     name: Code
     uses: ./.github/workflows/zxc-compile-explorer-code.yaml
+    permissions:
+      checks: write
+      pull-requests: write
+      contents: read
+      issues: read
     secrets:
       access-token: ${{ secrets.GITHUB_TOKEN }}
 
   unit-tests:
     name: Unit Tests
     uses: ./.github/workflows/zxc-compile-explorer-code.yaml
+    permissions:
+      checks: write
+      pull-requests: write
+      contents: read
+      issues: read
     with:
       custom-job-label: Standard
       enable-unit-tests: true
@@ -40,6 +47,11 @@ jobs:
   e2e-tests:
     name: E2E Tests
     uses: ./.github/workflows/zxc-compile-explorer-code.yaml
+    permissions:
+      checks: write
+      pull-requests: write
+      contents: read
+      issues: read
     with:
       custom-job-label: Standard
       enable-e2e-tests: true

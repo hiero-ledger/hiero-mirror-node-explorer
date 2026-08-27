@@ -16,8 +16,6 @@ defaults:
     shell: bash
 
 permissions:
-  id-token: write
-  packages: write
   contents: read
 
 env:
@@ -27,6 +25,10 @@ jobs:
   container:
     name: Container
     runs-on: hiero-mirror-node-linux-large
+    permissions:
+      id-token: write
+      packages: write
+      contents: read
     defaults:
       run:
         working-directory: ./_frontend
