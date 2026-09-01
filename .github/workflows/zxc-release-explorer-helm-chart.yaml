@@ -13,8 +13,6 @@ on:
         required: true
 
 permissions:
-  id-token: write
-  packages: write
   contents: read
 
 defaults:
@@ -28,6 +26,10 @@ jobs:
   chart:
     name: Chart
     runs-on: hiero-mirror-node-linux-medium
+    permissions:
+      id-token: write
+      packages: write
+      contents: read
     defaults:
       run:
         working-directory: ./_frontend

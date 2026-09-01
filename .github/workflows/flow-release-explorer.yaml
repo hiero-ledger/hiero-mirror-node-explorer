@@ -13,8 +13,6 @@ defaults:
     shell: bash
 
 permissions:
-  id-token: write
-  packages: write
   contents: read
 
 jobs:
@@ -76,6 +74,10 @@ jobs:
   publish-container:
     name: Publish
     uses: ./.github/workflows/zxc-release-explorer-docker-container.yaml
+    permissions:
+      id-token: write
+      packages: write
+      contents: read
     needs:
       - prepare-release
     with:
@@ -85,6 +87,10 @@ jobs:
   publish-chart:
     name: Publish
     uses: ./.github/workflows/zxc-release-explorer-helm-chart.yaml
+    permissions:
+      id-token: write
+      packages: write
+      contents: read
     needs:
       - prepare-release
     with:

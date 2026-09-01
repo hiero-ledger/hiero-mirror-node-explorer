@@ -28,9 +28,6 @@ defaults:
     shell: bash
 
 permissions:
-  pull-requests: write
-  checks: write
-  issues: read
   contents: read
 
 env:
@@ -40,6 +37,11 @@ jobs:
   compile:
     name: ${{ inputs.custom-job-label || 'Compiles' }}
     runs-on: hiero-mirror-node-linux-large
+    permissions:
+      pull-requests: write
+      checks: write
+      issues: read
+      contents: read
     defaults:
       run:
         working-directory: ./_frontend
