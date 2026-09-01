@@ -37,7 +37,7 @@
     "@vueuse/core": "14.4.0",
     "@walletconnect/sign-client": "2.23.10",
     "@reown/appkit": "1.8.23",
-    "axios": "1.19.0",
+    "axios": "1.20.0",
     "base32-decode": "1.0.0",
     "base32-encode": "2.0.0",
     "brotli-compress": "2.2.2",
@@ -98,6 +98,6 @@
     },
     "fast-uri": "3.1.5",
     "glob": "13.0.6",
-    "axios": "1.19.0"
+    "axios": "1.20.0"
   }
 }
