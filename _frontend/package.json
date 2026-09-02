@@ -30,7 +30,7 @@
     "@hashgraph/sdk": "2.81.0",
     "@hedera-name-service/hns-resolution-sdk": "2.0.15",
     "@kabuto-sh/ns": "0.15.2",
-    "@lucide/vue": "1.34.0",
+    "@lucide/vue": "1.37.0",
     "@oruga-ui/oruga-next": "0.14.1",
     "@oruga-ui/theme-oruga": "0.10.0",
     "@vuepic/vue-datepicker": "14.0.0",
