@@ -10,8 +10,8 @@ describe("InfoTooltip.vue", () => {
 
     const sampleInfoLabel = 'Sample information label'
     const sampleWarningLabel = 'Sample warning label'
-    const infoIconClass = 'lucide-info-icon'
-    const warningIconClass = 'lucide-triangle-alert-icon'
+    const infoIconClass = 'lucide-info'
+    const warningIconClass = 'lucide-triangle-alert'
 
     test("InfoTooltip with information message", async () => {
 

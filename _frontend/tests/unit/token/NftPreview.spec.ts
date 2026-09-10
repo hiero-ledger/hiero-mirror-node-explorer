@@ -56,11 +56,11 @@ describe("NftPreview.vue", () => {
 
         const placeHolderLogo = placeHolder.find('svg')
         expect(placeHolderLogo.exists()).toBe(true)
-        expect(placeHolderLogo.attributes('class')).toContain('lucide-image-off-icon')
+        expect(placeHolderLogo.attributes('class')).toContain('lucide-image-off')
 
         const tooltipIcon = placeHolder.find('div.o-tooltip').find('svg')
         expect(tooltipIcon.exists()).toBe(true)
-        expect(tooltipIcon.attributes('class')).toContain('lucide-info-icon')
+        expect(tooltipIcon.attributes('class')).toContain('lucide-info')
 
         expect(wrapper.find('figure').exists()).toBe(false)
         expect(wrapper.find('video').exists()).toBe(false)
@@ -87,7 +87,7 @@ describe("NftPreview.vue", () => {
         expect(wrapper.text()).toBe('Non Fungible Token')
         const hbarLogo = wrapper.find('svg')
         expect(hbarLogo.exists()).toBe(true)
-        expect(hbarLogo.attributes('class')).toContain('lucide-image-off-icon')
+        expect(hbarLogo.attributes('class')).toContain('lucide-image-off')
 
         expect(wrapper.findComponent('o-tooltip').exists()).toBe(false)
 
@@ -120,7 +120,7 @@ describe("NftPreview.vue", () => {
         expect(wrapper.text()).toBe('Non Fungible Token')
         const hbarLogo = wrapper.find('svg')
         expect(hbarLogo.exists()).toBe(true)
-        expect(hbarLogo.attributes('class')).toContain('lucide-image-off-icon')
+        expect(hbarLogo.attributes('class')).toContain('lucide-image-off')
 
         expect(wrapper.findComponent('o-tooltip').exists()).toBe(false)
 
@@ -153,7 +153,7 @@ describe("NftPreview.vue", () => {
         expect(wrapper.text()).toBe('Non Fungible Token')
         const hbarLogo = wrapper.find('svg')
         expect(hbarLogo.exists()).toBe(true)
-        expect(hbarLogo.attributes('class')).toContain('lucide-image-off-icon')
+        expect(hbarLogo.attributes('class')).toContain('lucide-image-off')
 
         expect(wrapper.findComponent('o-tooltip').exists()).toBe(false)
 
