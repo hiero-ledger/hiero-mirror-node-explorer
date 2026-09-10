@@ -105,7 +105,7 @@ jobs:
               mirrors = ["https://hub.mirror.docker.lat.ope.eng.hashgraph.io"]
 
       - name: Authorize Docker
-        uses: step-security/docker-login-action@bd6978fd4ef9a5f78130095b298b8a721afcb0d8 # v4.5.1
+        uses: step-security/docker-login-action@8c7b695d8738c5699a679ff5254baf0f19f20a94 # v4.6.0
         if: ${{ inputs.dry-run-enabled != true }}
         with:
           registry: ghcr.io
