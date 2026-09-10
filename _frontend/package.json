@@ -72,7 +72,7 @@
     "@vue/test-utils": "2.5.0",
     "@vue/tsconfig": "0.9.1",
     "axios-mock-adapter": "2.1.0",
-    "cypress": "15.21.1",
+    "cypress": "16.0.0",
     "esbuild": "0.28.2",
     "eslint": "10.10.0",
     "eslint-plugin-cypress": "7.0.1",
