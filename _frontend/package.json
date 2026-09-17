@@ -65,7 +65,7 @@
     "@types/topojson-client": "3.1.5",
     "@types/topojson-specification": "1.0.5",
     "@vitejs/plugin-basic-ssl": "2.3.0",
-    "@vitejs/plugin-vue": "6.0.8",
+    "@vitejs/plugin-vue": "6.0.9",
     "@vitest/coverage-v8": "5.0.0",
     "@vitest/web-worker": "5.0.0",
     "@vue/eslint-config-typescript": "14.9.0",
