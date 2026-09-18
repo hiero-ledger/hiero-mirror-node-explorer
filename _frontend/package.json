@@ -91,22 +91,20 @@
   },
   "overrides": {
     "@grpc/grpc-js": "1.12.7",
-    "js-yaml": "4.3.1",
+    "js-yaml": "4.3.2",
     "protobufjs": "8.6.6",
     "ethers": {
       "ws": "8.21.0"
     },
-    "fast-uri": "3.1.6",
-    "glob": "13.0.6",
     "axios": "1.20.0"
   },
   "allowScripts": {
     "vue-demi@0.14.10": true,
     "@reown/appkit@1.8.23": true,
     "cbor-extract@2.2.2": true,
-    "cypress@15.21.1": true,
     "esbuild@0.28.2": true,
     "fsevents@2.3.3": true,
-    "keccak@3.0.4": true
+    "keccak@3.0.4": true,
+    "cypress@16.0.0": true
   }
 }
