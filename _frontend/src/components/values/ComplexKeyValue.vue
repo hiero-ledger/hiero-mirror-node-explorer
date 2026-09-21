@@ -60,7 +60,7 @@
 import {computed, inject, onBeforeUnmount, onMounted, PropType, ref} from "vue";
 import {ComplexKeyLine} from "@/utils/ComplexKeyLine";
 import {hexToByte} from "@/utils/B64Utils";
-import * as hashgraph from "@hashgraph/proto";
+import * as hashgraph from "@hiero-ledger/proto";
 import HexaDumpValue from "@/components/values/HexaDumpValue.vue";
 import ContractLink from "@/components/values/link/ContractLink.vue";
 import {initialLoadingKey} from "@/AppKeys";

@@ -29,7 +29,7 @@ import {
 } from "@/schemas/MirrorNodeSchemas";
 import {ethers} from "ethers";
 import {EntityID} from "@/utils/EntityID";
-import * as hashgraph from "@hashgraph/proto";
+import * as hashgraph from "@hiero-ledger/proto";
 import axios from "axios";
 import {waitFor} from "@/utils/TimerUtils";
 import {TransactionID} from "@/utils/TransactionID.ts";

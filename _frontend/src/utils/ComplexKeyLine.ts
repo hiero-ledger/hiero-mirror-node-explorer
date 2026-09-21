@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
-import hashgraph from "@hashgraph/proto";
+import hashgraph from "@hiero-ledger/proto";
 import {byteToHex} from "@/utils/B64Utils";
 import {EntityID} from "@/utils/EntityID";
 
