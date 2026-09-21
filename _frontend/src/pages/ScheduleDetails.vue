@@ -150,7 +150,7 @@ import KeyValue from "@/components/values/KeyValue.vue";
 import TransactionLink from "@/components/values/TransactionLink.vue";
 import {base64Decode, byteToHex} from "@/utils/B64Utils.ts";
 import HexaValue from "@/components/values/HexaValue.vue";
-import {proto} from "@hashgraph/proto";
+import {proto} from "@hiero-ledger/proto";
 import {loadingKey} from "@/AppKeys.ts";
 import {routeManager} from "@/utils/RouteManager.ts";
 import {EntityID} from "@/utils/EntityID.ts";
