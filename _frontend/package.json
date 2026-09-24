@@ -34,7 +34,7 @@
     "@oruga-ui/oruga-next": "0.14.3",
     "@oruga-ui/theme-oruga": "0.10.0",
     "@vuepic/vue-datepicker": "14.0.0",
-    "@vueuse/core": "14.4.0",
+    "@vueuse/core": "15.0.0",
     "@walletconnect/sign-client": "2.25.0",
     "@reown/appkit": "1.8.23",
     "axios": "1.20.0",
@@ -50,7 +50,7 @@
     "multiformats": "14.0.5",
     "prismjs": "1.30.0",
     "topojson-client": "3.1.0",
-    "vue": "3.5.42",
+    "vue": "3.5.43",
     "vue-router": "5.3.1"
   },
   "devDependencies": {
@@ -69,7 +69,7 @@
     "@vitest/coverage-v8": "5.0.0",
     "@vitest/web-worker": "5.0.0",
     "@vue/eslint-config-typescript": "14.9.0",
-    "@vue/test-utils": "2.5.0",
+    "@vue/test-utils": "2.5.1",
     "@vue/tsconfig": "0.9.1",
     "axios-mock-adapter": "2.1.0",
     "cypress": "16.0.0",
