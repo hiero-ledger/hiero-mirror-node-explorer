@@ -10,8 +10,8 @@ describe('Name Service Search', () => {
     })
 
     it('should find account with KNS name', () => {
-        const searchName = "hashgraph.hh"
-        const searchAccount = "0.0.1273453"
+        const searchName = "hbar.hh"
+        const searchAccount = "0.0.1157939"
         testBodyV2(
             searchName,
             '/mainnet/account/' + searchAccount,
@@ -27,7 +27,7 @@ describe('Name Service Search', () => {
     })
 
     it('should find account with HNS name', () => {
-        const searchName = "hashgraph.hbar"
+        const searchName = "hashpack.hbar"
         const searchAccount = "0.0.944899"
         testBodyV2(
             searchName,
