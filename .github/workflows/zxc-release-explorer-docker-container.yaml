@@ -119,7 +119,7 @@ jobs:
         run: npm run build
 
       - name: Build Image
-        uses: step-security/docker-build-push-action@144392094f7fc3199dda455efe3b70dbea4b72a0 # v7.3.0
+        uses: step-security/docker-build-push-action@b736dc8a921e02a288f956d3dd9111e276a4cfec # v7.4.0
         env:
           SOURCE_DATE_EPOCH: ${{ steps.commit.outputs.source-date }}
         with:
