@@ -27,7 +27,7 @@
     "@bokuweb/zstd-wasm": "0.0.27",
     "@ethereum-sourcify/bytecode-utils": "1.6.3",
     "@hiero-ledger/proto": "2.31.0",
-    "@hiero-ledger/sdk": "2.88.0",
+    "@hiero-ledger/sdk": "2.89.1",
     "@hedera-name-service/hns-resolution-sdk": "2.0.15",
     "@kabuto-sh/ns": "0.16.0",
     "@lucide/vue": "1.48.0",
