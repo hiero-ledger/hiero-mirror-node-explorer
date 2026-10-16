@@ -90,13 +90,12 @@
     "vue-tsc": "3.3.13"
   },
   "overrides": {
-    "@grpc/grpc-js": "1.12.7",
+    "@grpc/grpc-js": "1.14.6",
     "js-yaml": "4.3.2",
     "protobufjs": "8.6.6",
     "ethers": {
       "ws": "8.21.0"
     },
-    "axios": "1.20.0",
     "qs": "6.16.0"
   },
   "allowScripts": {
