@@ -26,6 +26,12 @@ import ERC20ByName from "@/pages/ERC20ByName.vue";
 import ERC721ByName from "@/pages/ERC721ByName.vue";
 import Home from "@/pages/Home.vue";
 import Metrics from "@/pages/Metrics.vue";
+import CLPR from "@/pages/CLPR.vue";
+import CLPR_Overview from "@/pages/CLPR_Overview.vue";
+import CLPR_Messages from "@/pages/CLPR_Messages.vue";
+import CLPR_Channels from "@/pages/CLPR_Channels.vue";
+import CLPR_Connectors from "@/pages/CLPR_Connectors.vue";
+import CLPR_Configuration from "@/pages/CLPR_Configuration.vue";
 import NftDetails from "@/pages/NftDetails.vue";
 import NftDetails_Summary from "@/pages/NftDetails_Summary.vue";
 import NftDetails_Transactions from "@/pages/NftDetails_Transactions.vue";
@@ -87,6 +93,7 @@ export enum TabId {
     Staking = "Staking",
     Blocks = "Blocks",
     Metrics = "Metrics",
+    CLPR = "CLPR",
 }
 
 export const TRANSACTION_DETAILS_ROUTE: RouteRecordRaw = {
@@ -592,6 +599,63 @@ export const METRICS_ROUTE: RouteRecordRaw = {
     ]
 }
 
+export const CLPR_ROUTE: RouteRecordRaw = {
+    path: '/:network/clpr',
+    name: 'CLPR',
+    component: CLPR,
+    props: true,
+    meta: {
+        tabId: TabId.CLPR
+    },
+    children: [
+        {
+            path: '',
+            name: 'CLPR_Overview',
+            component: CLPR_Overview,
+            props: true,
+            meta: {
+                tabLabel: "Overview"
+            }
+        },
+        {
+            path: 'messages',
+            name: 'CLPR_Messages',
+            component: CLPR_Messages,
+            props: true,
+            meta: {
+                tabLabel: "Messages"
+            }
+        },
+        {
+            path: 'channels',
+            name: 'CLPR_Channels',
+            component: CLPR_Channels,
+            props: true,
+            meta: {
+                tabLabel: "Channels"
+            }
+        },
+        {
+            path: 'connectors',
+            name: 'CLPR_Connectors',
+            component: CLPR_Connectors,
+            props: true,
+            meta: {
+                tabLabel: "Connectors"
+            }
+        },
+        {
+            path: 'configuration',
+            name: 'CLPR_Configuration',
+            component: CLPR_Configuration,
+            props: true,
+            meta: {
+                tabLabel: "Configuration"
+            }
+        },
+    ]
+}
+
 export const routes: Array<RouteRecordRaw> = [
     {
         path: '/',
@@ -827,6 +891,7 @@ export const routes: Array<RouteRecordRaw> = [
     },
     BLOCK_DETAILS_ROUTE,
     METRICS_ROUTE,
+    CLPR_ROUTE,
     {
         // EIP 3091 Support
         path: '/:network/tx/:transactionLoc',

@@ -21,6 +21,7 @@ import {WalletManagerV4} from "@/utils/wallet/WalletManagerV4.ts";
 import {
     ACCOUNT_DETAILS_ROUTE,
     BLOCK_DETAILS_ROUTE,
+    CLPR_ROUTE,
     CONTRACT_DETAILS_ROUTE,
     METRICS_ROUTE,
     NETWORK_ROUTE,
@@ -608,6 +609,23 @@ export class RouteManager {
 
     public makeRouteToMetrics(tabId: string | null = null): RouteLocationRaw {
         const targetTabId = tabId ?? this.metricsOperator.defaultTabId
+        return {name: targetTabId, params: {network: this.currentNetwork.value}}
+    }
+
+    public readonly clprOperator = new RouteOperator(CLPR_ROUTE, this)
+
+    public routeToClpr(tabId: string | null = null, replace = false): Promise<NavigationFailure | void | undefined> {
+        let result: Promise<NavigationFailure | void | undefined>
+        if (replace) {
+            result = this.router.replace(this.makeRouteToClpr(tabId))
+        } else {
+            result = this.router.push(this.makeRouteToClpr(tabId))
+        }
+        return result
+    }
+
+    public makeRouteToClpr(tabId: string | null = null): RouteLocationRaw {
+        const targetTabId = tabId ?? this.clprOperator.defaultTabId
         return {name: targetTabId, params: {network: this.currentNetwork.value}}
     }
 
