@@ -96,7 +96,9 @@
     "ethers": {
       "ws": "8.21.0"
     },
-    "qs": "6.16.0"
+    "minimatch": "11.0.3",
+    "qs": "6.16.1",
+    "zod": "4.6.7"
   },
   "allowScripts": {
     "fsevents": true,
