@@ -1023,6 +1023,45 @@ export interface BlocksResponse {
     links: Links | undefined
 }
 
+export enum ClprMessageType {
+    DATA = "DATA",
+    RESPONSE = "RESPONSE",
+    CONTROL = "CONTROL",
+}
+
+export enum ClprMessageReplyStatus {
+    SUCCESS = "SUCCESS",
+    APPLICATION_ERROR = "APPLICATION_ERROR",
+    CONNECTOR_NOT_FOUND = "CONNECTOR_NOT_FOUND",
+    CONNECTOR_UNDERFUNDED = "CONNECTOR_UNDERFUNDED",
+}
+
+export interface ClprMessage {
+    acknowledged: boolean
+    channel_id: string // 0x-prefixed hex, 32 bytes
+    connector_id: string | null // null for response and control messages
+    message_data: string | null
+    message_id: number // int64
+    reply_status: ClprMessageReplyStatus | null
+    reply_to_message_id: number | null
+    running_hash: string
+    sender: string | null
+    target_application: string | null
+    timestamp: string
+    type: ClprMessageType
+}
+
+export interface ClprMessagesResponse {
+    links: Links | undefined
+    messages: ClprMessage[] | undefined
+}
+
+// Minimal channel descriptor, only used by the CLPR mockup (subset of the API ClprChannel)
+export interface ClprChannelMock {
+    channel_id: string
+    chain_id: string
+}
+
 export interface Block {
     count: number | undefined // integer - minimum 0
     gas_used: number | null | undefined // integer - minimum 0

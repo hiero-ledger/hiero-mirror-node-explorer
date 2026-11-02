@@ -29,6 +29,8 @@
     <TabItem v-if="showMetrics"
              :tabId="TabId.Metrics"
              :target-route="routeManager.makeRouteToMetrics()"/>
+    <TabItem :tabId="TabId.CLPR"
+             :target-route="routeManager.makeRouteToClpr()"/>
   </div>
 </template>
 
