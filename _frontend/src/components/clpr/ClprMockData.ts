@@ -32,7 +32,7 @@ export const CLPR_MOCK_CHANNELS: ClprChannelMock[] = [
     {channel_id: CHANNEL_5B60, chain_id: "eip155:137"},
 ]
 
-export const CLPR_MOCK_MESSAGES: ClprMessage[] = [
+const HANDWRITTEN_MESSAGES: ClprMessage[] = [
     {
         acknowledged: false,
         channel_id: CHANNEL_1A2B,
@@ -175,9 +175,30 @@ export const CLPR_MOCK_MESSAGES: ClprMessage[] = [
     },
 ]
 
-export function getClprMockMessages(channelId: string): ClprMessage[] {
+// Older messages of the first channel, so that the pagination can be exercised
+const GENERATED_MESSAGES: ClprMessage[] = Array.from({length: 40}, (_, i): ClprMessage => {
+    const isResponse = i % 4 === 3
+    return {
+        acknowledged: true,
+        channel_id: CHANNEL_1A2B,
+        connector_id: isResponse ? null : CONNECTOR_4D5E,
+        message_data: null,
+        message_id: 1236 - i,
+        reply_status: isResponse ? ClprMessageReplyStatus.SUCCESS : (i % 5 === 0 ? ClprMessageReplyStatus.SUCCESS : null),
+        reply_to_message_id: isResponse ? 990 - i : null,
+        running_hash: hex("1a2b" + (1236 - i).toString(16)),
+        sender: isResponse ? null : APP_A1,
+        target_application: isResponse ? null : APP_T1,
+        timestamp: (1759219200 - i * 3600) + "." + String(400 + i).padStart(9, "0"),
+        type: isResponse ? ClprMessageType.RESPONSE : ClprMessageType.DATA,
+    }
+})
+
+export const CLPR_MOCK_MESSAGES: ClprMessage[] = [...HANDWRITTEN_MESSAGES, ...GENERATED_MESSAGES]
+
+export function getClprMockMessages(channelId: string, type: ClprMessageType | null = null): ClprMessage[] {
     // Mimics the API default order: consensus timestamp descending, then message id descending
     return CLPR_MOCK_MESSAGES
-        .filter(m => m.channel_id === channelId)
+        .filter(m => m.channel_id === channelId && (type === null || m.type === type))
         .sort((a, b) => Number(b.timestamp) - Number(a.timestamp) || b.message_id - a.message_id)
 }
