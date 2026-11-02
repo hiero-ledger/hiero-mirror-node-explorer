@@ -10,7 +10,11 @@
       :data="messages"
       :hoverable="true"
       :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
-      :paginated="false"
+      paginated
+      pagination-order="centered"
+      :current-page="currentPage"
+      @update:current-page="currentPage = $event as number"
+      :per-page="perPage"
       :striped="false"
       row-key="message_id"
   >
@@ -50,6 +54,10 @@
     <o-table-column v-slot="props" field="timestamp" label="TIME">
       <TimestampValue :timestamp="props.row.timestamp"/>
     </o-table-column>
+
+    <template v-slot:bottomLeft>
+      <TablePageSize v-model:size="perPage"/>
+    </template>
   </o-table>
 
   <EmptyTable v-if="!messages.length"/>
@@ -62,21 +70,29 @@
 
 <script setup lang="ts">
 
-import {PropType} from "vue";
+import {inject, PropType, ref, watch} from "vue";
 import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
 import {ClprMessage} from "@/schemas/MirrorNodeSchemas.ts";
 import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
 import EmptyTable from "@/components/EmptyTable.vue";
 import StringValue from "@/components/values/StringValue.vue";
 import TimestampValue from "@/components/values/TimestampValue.vue";
+import TablePageSize from "@/components/transaction/TablePageSize.vue";
 import ClprHexLabel from "@/components/clpr/ClprHexLabel.vue";
 
-defineProps({
+const props = defineProps({
   messages: {
     type: Array as PropType<ClprMessage[]>,
     required: true
   }
 })
+
+const isMediumScreen = inject('isMediumScreen', true)
+const currentPage = ref(1)
+const perPage = ref(isMediumScreen ? 15 : 5)
+
+// Back to the first page whenever the list changes (channel or type selection)
+watch(() => props.messages, () => currentPage.value = 1)
 
 </script>
 
