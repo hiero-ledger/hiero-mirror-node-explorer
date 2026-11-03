@@ -27,23 +27,23 @@ describe("CLPR_Messages.vue", () => {
         await flushPromises()
 
         const select = wrapper.get('select[data-cy="select-channel"]')
-        expect((select.element as HTMLSelectElement).value).toBe(CLPR_MOCK_CHANNELS[0].channel_id)
+        expect((select.element as HTMLSelectElement).value).toBe(CLPR_MOCK_CHANNELS[0].channel_id!)
 
         const table = wrapper.findComponent(ClprMessageTable)
         expect(table.get('thead').text()).toBe("IDTYPESENDERTARGETCONNECTORACKNOWLEDGEDRESPONSEREPLY TOTIME")
-        const firstChannelRows = getClprMockMessages(CLPR_MOCK_CHANNELS[0].channel_id)
+        const firstChannelRows = getClprMockMessages(CLPR_MOCK_CHANNELS[0].channel_id!)
         expect(firstChannelRows.length).toBeGreaterThan(15)
         expect(table.findAll('tbody tr').length).toBe(15) // first page
         expect(table.find('select[data-cy="select-page-size"]').exists()).toBe(true)
 
-        await select.setValue(CLPR_MOCK_CHANNELS[1].channel_id)
-        const secondChannelRows = getClprMockMessages(CLPR_MOCK_CHANNELS[1].channel_id)
+        await select.setValue(CLPR_MOCK_CHANNELS[1].channel_id!)
+        const secondChannelRows = getClprMockMessages(CLPR_MOCK_CHANNELS[1].channel_id!)
         expect(table.findAll('tbody tr').length).toBe(secondChannelRows.length)
 
-        await select.setValue(CLPR_MOCK_CHANNELS[0].channel_id)
+        await select.setValue(CLPR_MOCK_CHANNELS[0].channel_id!)
         const typeSelect = wrapper.get('select[data-cy="select-type"]')
         await typeSelect.setValue("CONTROL")
-        const controlRows = getClprMockMessages(CLPR_MOCK_CHANNELS[0].channel_id, ClprMessageType.CONTROL)
+        const controlRows = getClprMockMessages(CLPR_MOCK_CHANNELS[0].channel_id!, ClprMessageType.CONTROL)
         expect(controlRows.length).toBeGreaterThan(0)
         expect(table.findAll('tbody tr').length).toBe(controlRows.length)
 
