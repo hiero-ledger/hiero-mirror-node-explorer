@@ -32,12 +32,19 @@ export const CLPR_MOCK_CHANNELS: ClprChannelMock[] = [
     {channel_id: CHANNEL_5B60, chain_id: "eip155:137"},
 ]
 
+const PAYLOADS = [
+    "0xa9059cbb000000000000000000000000d8da6bf26964af9d7eed9e03e53415d37aa96045000000000000000000000000000000000000000000000000016345785d8a0000",
+    "0x095ea7b30000000000000000000000007788aa11bb22cc33dd44ee55ff66778899001a1a0000000000000000000000000000000000000000000000000de0b6b3a7640000",
+    "0x40c10f19000000000000000000000000d8da6bf26964af9d7eed9e03e53415d37aa96045000000000000000000000000000000000000000000000000002386f26fc10000",
+    "0x70a08231000000000000000000000000d8da6bf26964af9d7eed9e03e53415d37aa96045",
+]
+
 const HANDWRITTEN_MESSAGES: ClprMessage[] = [
     {
         acknowledged: false,
         channel_id: CHANNEL_1A2B,
         connector_id: null,
-        message_data: null,
+        message_data: "0x0a0b436f6e666967557064617465100318c0f1ed01",
         message_id: 1245,
         reply_status: null,
         reply_to_message_id: null,
@@ -51,7 +58,7 @@ const HANDWRITTEN_MESSAGES: ClprMessage[] = [
         acknowledged: false,
         channel_id: CHANNEL_1A2B,
         connector_id: CONNECTOR_4D5E,
-        message_data: null,
+        message_data: "0xa9059cbb000000000000000000000000d8da6bf26964af9d7eed9e03e53415d37aa96045000000000000000000000000000000000000000000000000016345785d8a0000",
         message_id: 1244,
         reply_status: null,
         reply_to_message_id: null,
@@ -65,7 +72,7 @@ const HANDWRITTEN_MESSAGES: ClprMessage[] = [
         acknowledged: true,
         channel_id: CHANNEL_1A2B,
         connector_id: null,
-        message_data: null,
+        message_data: "0x01",
         message_id: 1243,
         reply_status: ClprMessageReplyStatus.SUCCESS,
         reply_to_message_id: 997,
@@ -79,7 +86,7 @@ const HANDWRITTEN_MESSAGES: ClprMessage[] = [
         acknowledged: true,
         channel_id: CHANNEL_1A2B,
         connector_id: CONNECTOR_4D5E,
-        message_data: null,
+        message_data: "0xa9059cbb000000000000000000000000d8da6bf26964af9d7eed9e03e53415d37aa96045000000000000000000000000000000000000000000000000016345785d8a0000",
         message_id: 1240,
         reply_status: ClprMessageReplyStatus.SUCCESS,
         reply_to_message_id: null,
@@ -93,7 +100,7 @@ const HANDWRITTEN_MESSAGES: ClprMessage[] = [
         acknowledged: true,
         channel_id: CHANNEL_1A2B,
         connector_id: CONNECTOR_88AA,
-        message_data: null,
+        message_data: "0x40c10f19000000000000000000000000d8da6bf26964af9d7eed9e03e53415d37aa96045000000000000000000000000000000000000000000000000002386f26fc10000",
         message_id: 1238,
         reply_status: ClprMessageReplyStatus.APPLICATION_ERROR,
         reply_to_message_id: null,
@@ -107,7 +114,7 @@ const HANDWRITTEN_MESSAGES: ClprMessage[] = [
         acknowledged: true,
         channel_id: CHANNEL_1A2B,
         connector_id: CONNECTOR_88AA,
-        message_data: null,
+        message_data: "0x095ea7b30000000000000000000000007788aa11bb22cc33dd44ee55ff66778899001a1a0000000000000000000000000000000000000000000000000de0b6b3a7640000",
         message_id: 1237,
         reply_status: ClprMessageReplyStatus.CONNECTOR_UNDERFUNDED,
         reply_to_message_id: null,
@@ -121,7 +128,7 @@ const HANDWRITTEN_MESSAGES: ClprMessage[] = [
         acknowledged: false,
         channel_id: CHANNEL_2F91,
         connector_id: CONNECTOR_55CC,
-        message_data: null,
+        message_data: "0xa9059cbb000000000000000000000000d8da6bf26964af9d7eed9e03e53415d37aa96045000000000000000000000000000000000000000000000000016345785d8a0000",
         message_id: 512,
         reply_status: null,
         reply_to_message_id: null,
@@ -135,7 +142,7 @@ const HANDWRITTEN_MESSAGES: ClprMessage[] = [
         acknowledged: true,
         channel_id: CHANNEL_2F91,
         connector_id: CONNECTOR_55CC,
-        message_data: null,
+        message_data: "0x70a08231000000000000000000000000d8da6bf26964af9d7eed9e03e53415d37aa96045",
         message_id: 511,
         reply_status: ClprMessageReplyStatus.CONNECTOR_NOT_FOUND,
         reply_to_message_id: null,
@@ -149,7 +156,7 @@ const HANDWRITTEN_MESSAGES: ClprMessage[] = [
         acknowledged: true,
         channel_id: CHANNEL_5B60,
         connector_id: CONNECTOR_77EE,
-        message_data: null,
+        message_data: "0x70a08231000000000000000000000000d8da6bf26964af9d7eed9e03e53415d37aa96045",
         message_id: 8819,
         reply_status: null,
         reply_to_message_id: null,
@@ -163,7 +170,7 @@ const HANDWRITTEN_MESSAGES: ClprMessage[] = [
         acknowledged: true,
         channel_id: CHANNEL_5B60,
         connector_id: CONNECTOR_77EE,
-        message_data: null,
+        message_data: "0xa9059cbb000000000000000000000000d8da6bf26964af9d7eed9e03e53415d37aa96045000000000000000000000000000000000000000000000000016345785d8a0000",
         message_id: 8812,
         reply_status: ClprMessageReplyStatus.SUCCESS,
         reply_to_message_id: null,
@@ -182,7 +189,7 @@ const GENERATED_MESSAGES: ClprMessage[] = Array.from({length: 40}, (_, i): ClprM
         acknowledged: true,
         channel_id: CHANNEL_1A2B,
         connector_id: isResponse ? null : CONNECTOR_4D5E,
-        message_data: null,
+        message_data: isResponse ? "0x01" : PAYLOADS[i % PAYLOADS.length],
         message_id: 1236 - i,
         reply_status: isResponse ? ClprMessageReplyStatus.SUCCESS : (i % 5 === 0 ? ClprMessageReplyStatus.SUCCESS : null),
         reply_to_message_id: isResponse ? 990 - i : null,
@@ -201,4 +208,18 @@ export function getClprMockMessages(channelId: string, type: ClprMessageType | n
     return CLPR_MOCK_MESSAGES
         .filter(m => m.channel_id === channelId && (type === null || m.type === type))
         .sort((a, b) => Number(b.timestamp) - Number(a.timestamp) || b.message_id - a.message_id)
+}
+
+export function getClprMockMessage(channelId: string, messageId: number): ClprMessage | null {
+    return CLPR_MOCK_MESSAGES.find(m => m.channel_id === channelId && m.message_id === messageId) ?? null
+}
+
+const NULL_HASH = "0x" + "0".repeat(64)
+
+// The running hash of the previous message of the same channel (the hash chain input of the given message)
+export function getClprMockPreviousRunningHash(message: ClprMessage): string {
+    const previous = CLPR_MOCK_MESSAGES
+        .filter(m => m.channel_id === message.channel_id && m.message_id < message.message_id)
+        .sort((a, b) => b.message_id - a.message_id)[0]
+    return previous?.running_hash ?? NULL_HASH
 }

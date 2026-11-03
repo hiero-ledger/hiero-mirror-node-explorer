@@ -17,6 +17,7 @@
       :per-page="perPage"
       :striped="false"
       row-key="message_id"
+      @cell-click="handleClick"
   >
     <o-table-column v-slot="props" field="message_id" label="ID" position="right">
       <span class="message-id">{{ props.row.message_id }}</span>
@@ -78,6 +79,7 @@ import EmptyTable from "@/components/EmptyTable.vue";
 import StringValue from "@/components/values/StringValue.vue";
 import TimestampValue from "@/components/values/TimestampValue.vue";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
+import {routeManager} from "@/utils/RouteManager.ts";
 import ClprHexLabel from "@/components/clpr/ClprHexLabel.vue";
 
 const props = defineProps({
@@ -86,6 +88,10 @@ const props = defineProps({
     required: true
   }
 })
+
+const handleClick = (message: ClprMessage, c: unknown, i: number, ci: number, event: Event) => {
+  routeManager.routeToClprMessage(message.channel_id, message.message_id, event)
+}
 
 const isMediumScreen = inject('isMediumScreen', true)
 const currentPage = ref(1)

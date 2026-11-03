@@ -629,6 +629,25 @@ export class RouteManager {
         return {name: targetTabId, params: {network: this.currentNetwork.value}}
     }
 
+    public makeRouteToClprMessage(channelId: string, messageId: number): RouteLocationRaw {
+        return {
+            name: 'CLPR_MessageDetails',
+            params: {channelId: channelId, messageId: messageId, network: this.currentNetwork.value}
+        }
+    }
+
+    public routeToClprMessage(channelId: string, messageId: number, event: Event | null = null): Promise<NavigationFailure | void | undefined> {
+        let result: Promise<NavigationFailure | void | undefined>
+        if (this.shouldOpenNewWindow(event)) {
+            const routeData = this.router.resolve(this.makeRouteToClprMessage(channelId, messageId))
+            window.open(routeData.href, '_blank')
+            result = Promise.resolve()
+        } else {
+            result = this.router.push(this.makeRouteToClprMessage(channelId, messageId))
+        }
+        return result
+    }
+
     public makeRouteToPageNotFound(): RouteLocationRaw {
         return {name: 'PageNotFound', params: {network: this.currentNetwork.value}}
     }
