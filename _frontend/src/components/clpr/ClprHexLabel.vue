@@ -16,6 +16,7 @@
 <script setup lang="ts">
 
 import {computed, PropType} from "vue";
+import {shortenHex} from "@/components/clpr/ClprUtils.ts";
 
 const props = defineProps({
   value: {
@@ -24,11 +25,7 @@ const props = defineProps({
   }
 })
 
-// Long hex ids are abbreviated (0x1a2b3c4d…0000); the full value is available as tooltip
-const shortened = computed(() => {
-  const v = props.value ?? ""
-  return v.length > 14 ? v.slice(0, 10) + "…" + v.slice(-4) : v
-})
+const shortened = computed(() => shortenHex(props.value ?? ""))
 
 </script>
 

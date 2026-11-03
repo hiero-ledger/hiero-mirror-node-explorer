@@ -5,7 +5,8 @@
 // To be replaced by real API calls once the endpoints are available.
 
 import {
-    ClprChannelMock,
+    ClprChannel,
+    ClprChannelStatus,
     ClprConnectorMock,
     ClprMessage,
     ClprMessageReplyStatus,
@@ -13,17 +14,19 @@ import {
 } from "@/schemas/MirrorNodeSchemas.ts";
 
 const hex = (prefix: string): string => "0x" + prefix.padEnd(64, "0")
+// 32-byte id displayed as 0xPREFIX…SUFFIX in the HTML mockup
+const hexId = (prefix: string, suffix: string): string => "0x" + prefix + "0".repeat(64 - prefix.length - suffix.length) + suffix
 const address = (prefix: string): string => "0x" + prefix.padEnd(40, "0")
 
-const CHANNEL_1A2B = hex("1a2b3c4d")
-const CHANNEL_2F91 = hex("2f918e02")
-const CHANNEL_5B60 = hex("5b60a1c7")
+const CHANNEL_1A2B = hexId("1a2b", "3c4d")
+const CHANNEL_2F91 = hexId("2f91", "8e02")
+const CHANNEL_5B60 = hexId("5b60", "9f3e")
 
-const CONNECTOR_4D5E = hex("4d5e6f70")
-const CONNECTOR_88AA = hex("88aa22bb")
-const CONNECTOR_55CC = hex("55cc9d41")
-const CONNECTOR_77EE = hex("77ee0b36")
-const CONNECTOR_3344 = hex("33447788")
+const CONNECTOR_4D5E = hexId("4d5e", "6f70")
+const CONNECTOR_88AA = hexId("88aa", "22bb")
+const CONNECTOR_55CC = hexId("55cc", "99dd")
+const CONNECTOR_77EE = hexId("77ee", "33ff")
+const CONNECTOR_3344 = hexId("3344", "7788")
 
 const APP_A1 = address("a1")
 const APP_A2 = address("a2")
@@ -33,11 +36,173 @@ const APP_T1 = address("7788aa11bb22cc33dd44ee55ff66778899001a1a")
 const APP_T2 = address("9a1b2c3d4e5f60718293a4b5c6d7e8f901020304")
 const APP_T3 = address("1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f70819203")
 
-export const CLPR_MOCK_CHANNELS: ClprChannelMock[] = [
-    {channel_id: CHANNEL_1A2B, chain_id: "eip155:1"},
-    {channel_id: CHANNEL_2F91, chain_id: "eip155:1"},
-    {channel_id: CHANNEL_5B60, chain_id: "eip155:137"},
+// Channels as returned by GET /api/v1/clpr/channels, newest first within each status group.
+// PENDING channels are commitments not yet completed: they have no channel_id nor chain_id.
+export const CLPR_MOCK_CHANNELS: ClprChannel[] = [
+    {
+        acked_message_id: 1240,
+        chain_id: "eip155:1",
+        channel_id: hexId("1a2b", "3c4d"),
+        created_timestamp: "1789913100.000000000",
+        endpoint_manifest_version: 4,
+        next_message_id: 1245,
+        ownership_commitment: hexId("1a2b", "c0de"),
+        received_message_id: 998,
+        status: ClprChannelStatus.ACTIVE,
+        timestamp: {from: "1790583300.000000000", to: null},
+        verifier_contract_id: null,
+        verifier_fingerprint: hexId("9f8e", "7a61"),
+    },
+    {
+        acked_message_id: 498,
+        chain_id: "eip155:1",
+        channel_id: hexId("2f91", "8e02"),
+        created_timestamp: "1790070000.000000000",
+        endpoint_manifest_version: 2,
+        next_message_id: 513,
+        ownership_commitment: hexId("2f91", "c0de"),
+        received_message_id: 480,
+        status: ClprChannelStatus.PAUSED,
+        timestamp: {from: "1790824320.000000000", to: null},
+        verifier_contract_id: "0.0.555001",
+        verifier_fingerprint: hexId("6601", "aa90"),
+    },
+    {
+        acked_message_id: 2206,
+        chain_id: "eip155:1",
+        channel_id: hexId("7cd4", "11aa"),
+        created_timestamp: "1786705200.000000000",
+        endpoint_manifest_version: 4,
+        next_message_id: 2210,
+        ownership_commitment: hexId("7cd4", "c0de"),
+        received_message_id: 2190,
+        status: ClprChannelStatus.CLOSING,
+        timestamp: {from: "1790920800.000000000", to: null},
+        verifier_contract_id: null,
+        verifier_fingerprint: hexId("9f8e", "7a61"),
+    },
+    {
+        acked_message_id: 8815,
+        chain_id: "eip155:137",
+        channel_id: hexId("5b60", "9f3e"),
+        created_timestamp: "1783009500.000000000",
+        endpoint_manifest_version: 6,
+        next_message_id: 8820,
+        ownership_commitment: hexId("5b60", "c0de"),
+        received_message_id: 8790,
+        status: ClprChannelStatus.ACTIVE,
+        timestamp: {from: "1783009500.000000000", to: null},
+        verifier_contract_id: null,
+        verifier_fingerprint: hexId("2211", "ff00"),
+    },
+    {
+        acked_message_id: 43,
+        chain_id: "hedera:testnet",
+        channel_id: hexId("3d82", "c701"),
+        created_timestamp: "1790769900.000000000",
+        endpoint_manifest_version: 7,
+        next_message_id: 45,
+        ownership_commitment: hexId("3d82", "c0de"),
+        received_message_id: 40,
+        status: ClprChannelStatus.ACTIVE,
+        timestamp: {from: "1790769900.000000000", to: null},
+        verifier_contract_id: null,
+        verifier_fingerprint: hexId("1010", "2020"),
+    },
+    {
+        acked_message_id: 309,
+        chain_id: "hedera:testnet",
+        channel_id: hexId("9e14", "4420"),
+        created_timestamp: "1781078400.000000000",
+        endpoint_manifest_version: 7,
+        next_message_id: 310,
+        ownership_commitment: hexId("9e14", "c0de"),
+        received_message_id: 305,
+        status: ClprChannelStatus.DRAINED,
+        timestamp: {from: "1790553600.000000000", to: null},
+        verifier_contract_id: null,
+        verifier_fingerprint: hexId("1010", "2020"),
+    },
+    {
+        acked_message_id: 58,
+        chain_id: "cosmos:cosmoshub-4",
+        channel_id: hexId("ab33", "7760"),
+        created_timestamp: "1789761000.000000000",
+        endpoint_manifest_version: 1,
+        next_message_id: 61,
+        ownership_commitment: hexId("ab33", "c0de"),
+        received_message_id: 50,
+        status: ClprChannelStatus.ACTIVE,
+        timestamp: {from: "1789761000.000000000", to: null},
+        verifier_contract_id: "0.0.555002",
+        verifier_fingerprint: hexId("3344", "5566"),
+    },
+    {
+        acked_message_id: 1401,
+        chain_id: "sei:pacific-1",
+        channel_id: hexId("f002", "d8e1"),
+        created_timestamp: "1777593600.000000000",
+        endpoint_manifest_version: 3,
+        next_message_id: 1402,
+        ownership_commitment: hexId("f002", "c0de"),
+        received_message_id: 1400,
+        status: ClprChannelStatus.CLOSED,
+        timestamp: {from: "1786752000.000000000", to: null},
+        verifier_contract_id: null,
+        verifier_fingerprint: hexId("aabb", "ccdd"),
+    },
+    {
+        acked_message_id: null,
+        chain_id: null,
+        channel_id: null,
+        created_timestamp: "1790926800.000000000",
+        endpoint_manifest_version: null,
+        next_message_id: null,
+        ownership_commitment: hexId("cc44", "8801"),
+        received_message_id: null,
+        status: ClprChannelStatus.PENDING,
+        timestamp: null,
+        verifier_contract_id: null,
+        verifier_fingerprint: null,
+    },
+    {
+        acked_message_id: null,
+        chain_id: null,
+        channel_id: null,
+        created_timestamp: "1790845920.000000000",
+        endpoint_manifest_version: null,
+        next_message_id: null,
+        ownership_commitment: hexId("7ab3", "f1e2"),
+        received_message_id: null,
+        status: ClprChannelStatus.PENDING,
+        timestamp: null,
+        verifier_contract_id: null,
+        verifier_fingerprint: null,
+    },
+    {
+        acked_message_id: null,
+        chain_id: null,
+        channel_id: null,
+        created_timestamp: "1790719500.000000000",
+        endpoint_manifest_version: null,
+        next_message_id: null,
+        ownership_commitment: hexId("1199", "55aa"),
+        received_message_id: null,
+        status: ClprChannelStatus.PENDING,
+        timestamp: null,
+        verifier_contract_id: null,
+        verifier_fingerprint: null,
+    },
 ]
+
+// Channels having an id, i.e. all but the pending ones
+export const CLPR_MOCK_COMPLETED_CHANNELS: ClprChannel[] = CLPR_MOCK_CHANNELS.filter(c => c.channel_id !== null)
+
+export function getClprMockChannels(status: ClprChannelStatus | null = null): ClprChannel[] {
+    return CLPR_MOCK_CHANNELS
+        .filter(c => status === null ? true : c.status === status)
+        .sort((a, b) => Number(b.created_timestamp) - Number(a.created_timestamp))
+}
 
 const PAYLOADS = [
     "0xa9059cbb000000000000000000000000d8da6bf26964af9d7eed9e03e53415d37aa96045000000000000000000000000000000000000000000000000016345785d8a0000",
