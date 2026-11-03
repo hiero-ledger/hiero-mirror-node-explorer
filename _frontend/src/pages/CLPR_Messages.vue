@@ -11,15 +11,18 @@
       Messages
     </template>
     <template #right-control>
-      <SelectView v-model="selectedType" :small="true" data-cy="select-type">
-        <option value="">TYPES: ALL</option>
-        <option v-for="t in Object.values(ClprMessageType)" :key="t" :value="t">{{ t }}</option>
-      </SelectView>
-      <SelectView v-model="selectedChannelId" :small="true" data-cy="select-channel">
-        <option v-for="c in CLPR_MOCK_CHANNELS" :key="c.channel_id" :value="c.channel_id">
-          {{ makeChannelLabel(c) }}
-        </option>
-      </SelectView>
+      <div class="filters">
+        <span class="filter-label">CHANNEL:</span>
+        <SelectView v-model="selectedChannelId" :small="true" data-cy="select-channel">
+          <option v-for="c in CLPR_MOCK_CHANNELS" :key="c.channel_id" :value="c.channel_id">
+            {{ makeChannelLabel(c) }}
+          </option>
+        </SelectView>
+        <SelectView v-model="selectedType" :small="true" data-cy="select-type">
+          <option value="">TYPES: ALL</option>
+          <option v-for="t in Object.values(ClprMessageType)" :key="t" :value="t">{{ t }}</option>
+        </SelectView>
+      </div>
     </template>
     <template #content>
       <ClprMessageTable :messages="messages"/>
@@ -61,5 +64,16 @@ const makeChannelLabel = (c: ClprChannelMock): string =>
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <style scoped>
+
+div.filters {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+}
+
+span.filter-label {
+  color: var(--text-secondary);
+  font-size: 10px;
+}
 
 </style>
