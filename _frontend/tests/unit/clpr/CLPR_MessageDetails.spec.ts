@@ -24,7 +24,7 @@ describe("CLPR_MessageDetails.vue", () => {
         });
         await flushPromises()
 
-        const channelId = CLPR_MOCK_CHANNELS[0].channel_id
+        const channelId = CLPR_MOCK_CHANNELS[0].channel_id!
         const firstMessage = getClprMockMessages(channelId)[0]
         await wrapper.get('tbody tr td').trigger('click')
         await flushPromises()
@@ -39,7 +39,7 @@ describe("CLPR_MessageDetails.vue", () => {
     it("Should display the message details", async () => {
 
         await router.push("/")
-        const channelId = CLPR_MOCK_CHANNELS[0].channel_id
+        const channelId = CLPR_MOCK_CHANNELS[0].channel_id!
 
         const wrapper = mount(CLPR_MessageDetails, {
             global: {plugins: [router, Oruga]},
@@ -62,7 +62,7 @@ describe("CLPR_MessageDetails.vue", () => {
 
         const wrapper = mount(CLPR_MessageDetails, {
             global: {plugins: [router, Oruga]},
-            props: {channelId: CLPR_MOCK_CHANNELS[0].channel_id, messageId: "999999"},
+            props: {channelId: CLPR_MOCK_CHANNELS[0].channel_id!, messageId: "999999"},
         });
         await flushPromises()
 
@@ -73,7 +73,7 @@ describe("CLPR_MessageDetails.vue", () => {
 
     it("Should keep the CLPR tabs, with Messages selected, and go back to the table from the Messages tab", async () => {
 
-        const channelId = CLPR_MOCK_CHANNELS[0].channel_id
+        const channelId = CLPR_MOCK_CHANNELS[0].channel_id!
         await router.push("/mainnet/clpr/messages/" + channelId + "/1244")
 
         const wrapper = mount(CLPR, {
