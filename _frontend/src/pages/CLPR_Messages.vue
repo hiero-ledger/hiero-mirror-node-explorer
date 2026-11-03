@@ -18,6 +18,12 @@
             {{ makeChannelLabel(c) }}
           </option>
         </SelectView>
+        <SelectView v-model="selectedConnectorId" :small="true" data-cy="select-connector">
+          <option value="">CONNECTORS: ALL</option>
+          <option v-for="c in connectors" :key="c.connector_id" :value="c.connector_id">
+            {{ shorten(c.connector_id) }}
+          </option>
+        </SelectView>
         <SelectView v-model="selectedType" :small="true" data-cy="select-type">
           <option value="">TYPES: ALL</option>
           <option v-for="t in Object.values(ClprMessageType)" :key="t" :value="t">{{ t }}</option>
@@ -37,11 +43,11 @@
 
 <script setup lang="ts">
 
-import {computed, ref} from "vue";
+import {computed, ref, watch} from "vue";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import SelectView from "@/elements/SelectView.vue";
 import ClprMessageTable from "@/components/clpr/ClprMessageTable.vue";
-import {CLPR_MOCK_CHANNELS, getClprMockMessages} from "@/components/clpr/ClprMockData.ts";
+import {CLPR_MOCK_CHANNELS, getClprMockConnectors, getClprMockMessages} from "@/components/clpr/ClprMockData.ts";
 import {ClprChannelMock, ClprMessageType} from "@/schemas/MirrorNodeSchemas.ts";
 
 defineProps({
@@ -49,13 +55,20 @@ defineProps({
 })
 
 const selectedChannelId = ref<string>(CLPR_MOCK_CHANNELS[0].channel_id)
+const selectedConnectorId = ref<string>("")
+const connectors = computed(() => getClprMockConnectors(selectedChannelId.value))
+// Connectors belong to a channel: the connector filter is reset whenever the channel changes
+watch(selectedChannelId, () => selectedConnectorId.value = "")
+
 const selectedType = ref<string>("")
 const messages = computed(() => getClprMockMessages(
     selectedChannelId.value,
-    selectedType.value === "" ? null : selectedType.value as ClprMessageType))
+    selectedType.value === "" ? null : selectedType.value as ClprMessageType,
+    selectedConnectorId.value === "" ? null : selectedConnectorId.value))
 
-const makeChannelLabel = (c: ClprChannelMock): string =>
-    c.chain_id + " · " + c.channel_id.slice(0, 10) + "…" + c.channel_id.slice(-4)
+const shorten = (hexId: string): string => hexId.slice(0, 10) + "…" + hexId.slice(-4)
+
+const makeChannelLabel = (c: ClprChannelMock): string => c.chain_id + " · " + shorten(c.channel_id)
 
 </script>
 

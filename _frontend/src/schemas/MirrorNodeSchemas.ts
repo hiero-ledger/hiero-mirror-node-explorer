@@ -1062,6 +1062,12 @@ export interface ClprChannelMock {
     chain_id: string
 }
 
+// Minimal connector descriptor, only used by the CLPR mockup (subset of the API ClprConnector)
+export interface ClprConnectorMock {
+    connector_id: string
+    channel_id: string
+}
+
 export interface Block {
     count: number | undefined // integer - minimum 0
     gas_used: number | null | undefined // integer - minimum 0

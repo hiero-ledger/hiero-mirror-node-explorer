@@ -4,7 +4,13 @@
 // (GET /api/v1/clpr/channels, GET /api/v1/clpr/channels/{channelId}/messages).
 // To be replaced by real API calls once the endpoints are available.
 
-import {ClprChannelMock, ClprMessage, ClprMessageReplyStatus, ClprMessageType} from "@/schemas/MirrorNodeSchemas.ts";
+import {
+    ClprChannelMock,
+    ClprConnectorMock,
+    ClprMessage,
+    ClprMessageReplyStatus,
+    ClprMessageType
+} from "@/schemas/MirrorNodeSchemas.ts";
 
 const hex = (prefix: string): string => "0x" + prefix.padEnd(64, "0")
 const address = (prefix: string): string => "0x" + prefix.padEnd(40, "0")
@@ -17,6 +23,7 @@ const CONNECTOR_4D5E = hex("4d5e6f70")
 const CONNECTOR_88AA = hex("88aa22bb")
 const CONNECTOR_55CC = hex("55cc9d41")
 const CONNECTOR_77EE = hex("77ee0b36")
+const CONNECTOR_3344 = hex("33447788")
 
 const APP_A1 = address("a1")
 const APP_A2 = address("a2")
@@ -169,7 +176,7 @@ const HANDWRITTEN_MESSAGES: ClprMessage[] = [
     {
         acknowledged: true,
         channel_id: CHANNEL_5B60,
-        connector_id: CONNECTOR_77EE,
+        connector_id: CONNECTOR_3344,
         message_data: "0xa9059cbb000000000000000000000000d8da6bf26964af9d7eed9e03e53415d37aa96045000000000000000000000000000000000000000000000000016345785d8a0000",
         message_id: 8812,
         reply_status: ClprMessageReplyStatus.SUCCESS,
@@ -188,7 +195,7 @@ const GENERATED_MESSAGES: ClprMessage[] = Array.from({length: 40}, (_, i): ClprM
     return {
         acknowledged: true,
         channel_id: CHANNEL_1A2B,
-        connector_id: isResponse ? null : CONNECTOR_4D5E,
+        connector_id: isResponse ? null : (i % 3 === 1 ? CONNECTOR_88AA : CONNECTOR_4D5E),
         message_data: isResponse ? "0x01" : PAYLOADS[i % PAYLOADS.length],
         message_id: 1236 - i,
         reply_status: isResponse ? ClprMessageReplyStatus.SUCCESS : (i % 5 === 0 ? ClprMessageReplyStatus.SUCCESS : null),
@@ -201,12 +208,24 @@ const GENERATED_MESSAGES: ClprMessage[] = Array.from({length: 40}, (_, i): ClprM
     }
 })
 
+export const CLPR_MOCK_CONNECTORS: ClprConnectorMock[] = [
+    {connector_id: CONNECTOR_4D5E, channel_id: CHANNEL_1A2B},
+    {connector_id: CONNECTOR_88AA, channel_id: CHANNEL_1A2B},
+    {connector_id: CONNECTOR_55CC, channel_id: CHANNEL_2F91},
+    {connector_id: CONNECTOR_77EE, channel_id: CHANNEL_5B60},
+    {connector_id: CONNECTOR_3344, channel_id: CHANNEL_5B60},
+]
+
+export function getClprMockConnectors(channelId: string): ClprConnectorMock[] {
+    return CLPR_MOCK_CONNECTORS.filter(c => c.channel_id === channelId)
+}
+
 export const CLPR_MOCK_MESSAGES: ClprMessage[] = [...HANDWRITTEN_MESSAGES, ...GENERATED_MESSAGES]
 
-export function getClprMockMessages(channelId: string, type: ClprMessageType | null = null): ClprMessage[] {
+export function getClprMockMessages(channelId: string, type: ClprMessageType | null = null, connectorId: string | null = null): ClprMessage[] {
     // Mimics the API default order: consensus timestamp descending, then message id descending
     return CLPR_MOCK_MESSAGES
-        .filter(m => m.channel_id === channelId && (type === null || m.type === type))
+        .filter(m => m.channel_id === channelId && (type === null || m.type === type) && (connectorId === null || m.connector_id === connectorId))
         .sort((a, b) => Number(b.timestamp) - Number(a.timestamp) || b.message_id - a.message_id)
 }
 
