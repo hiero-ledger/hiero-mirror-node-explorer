@@ -1056,10 +1056,35 @@ export interface ClprMessagesResponse {
     messages: ClprMessage[] | undefined
 }
 
-// Minimal channel descriptor, only used by the CLPR mockup (subset of the API ClprChannel)
-export interface ClprChannelMock {
-    channel_id: string
-    chain_id: string
+export enum ClprChannelStatus {
+    PENDING = "PENDING",
+    ACTIVE = "ACTIVE",
+    PAUSED = "PAUSED",
+    CLOSING = "CLOSING",
+    DRAINED = "DRAINED",
+    CLOSED = "CLOSED",
+}
+
+// Subset of the fields returned by GET /api/v1/clpr/channels.
+// A PENDING channel is a commitment not yet completed: it has no channel_id, chain_id nor queue state.
+export interface ClprChannel {
+    acked_message_id: number | null
+    chain_id: string | null
+    channel_id: string | null // 0x-prefixed hex, 32 bytes
+    created_timestamp: string
+    endpoint_manifest_version: number | null
+    next_message_id: number | null
+    ownership_commitment: string
+    received_message_id: number | null
+    status: ClprChannelStatus
+    timestamp: TimestampRange | null
+    verifier_contract_id: string | null
+    verifier_fingerprint: string | null
+}
+
+export interface ClprChannelsResponse {
+    channels: ClprChannel[] | undefined
+    links: Links | undefined
 }
 
 // Minimal connector descriptor, only used by the CLPR mockup (subset of the API ClprConnector)
