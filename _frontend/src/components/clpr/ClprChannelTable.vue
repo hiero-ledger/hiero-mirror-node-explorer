@@ -16,6 +16,7 @@
       @update:current-page="currentPage = $event as number"
       :per-page="perPage"
       row-key="ownership_commitment"
+      @cell-click="handleClick"
   >
     <o-table-column v-slot="props" field="channel_id" label="CHANNEL ID">
       <ClprHexLabel :value="props.row.channel_id"/>
@@ -69,6 +70,7 @@ import PlainAmount from "@/components/values/PlainAmount.vue";
 import StringValue from "@/components/values/StringValue.vue";
 import TimestampValue from "@/components/values/TimestampValue.vue";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
+import {routeManager} from "@/utils/RouteManager.ts";
 import ClprHexLabel from "@/components/clpr/ClprHexLabel.vue";
 
 const props = defineProps({
@@ -77,6 +79,13 @@ const props = defineProps({
     required: true
   }
 })
+
+// Pending channels have no channel id yet: there are no details to navigate to
+const handleClick = (channel: ClprChannel, c: unknown, i: number, ci: number, event: Event) => {
+  if (channel.channel_id !== null) {
+    routeManager.routeToClprChannel(channel.channel_id, event)
+  }
+}
 
 const isMediumScreen = inject('isMediumScreen', true)
 const currentPage = ref(1)
