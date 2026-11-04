@@ -7,7 +7,7 @@
 import {
     ClprChannel,
     ClprChannelStatus,
-    ClprConnectorMock,
+    ClprConnector,
     ClprMessage,
     ClprMessageReplyStatus,
     ClprMessageType
@@ -538,16 +538,134 @@ const GENERATED_MESSAGES: ClprMessage[] = Array.from({length: 40}, (_, i): ClprM
     }
 })
 
-export const CLPR_MOCK_CONNECTORS: ClprConnectorMock[] = [
-    {connector_id: CONNECTOR_4D5E, channel_id: CHANNEL_1A2B},
-    {connector_id: CONNECTOR_88AA, channel_id: CHANNEL_1A2B},
-    {connector_id: CONNECTOR_55CC, channel_id: CHANNEL_2F91},
-    {connector_id: CONNECTOR_77EE, channel_id: CHANNEL_5B60},
-    {connector_id: CONNECTOR_3344, channel_id: CHANNEL_5B60},
+// Connectors as returned by GET /api/v1/clpr/channels/{channelId}/connectors (stake in tinybars)
+export const CLPR_MOCK_CONNECTORS: ClprConnector[] = [
+    {
+        channel_id: CHANNEL_1A2B,
+        connector_contract_id: "0.0.789",
+        connector_id: CONNECTOR_4D5E,
+        created_timestamp: "1789917600.000000000",
+        deleted: false,
+        in_flight_message_count: 2,
+        locked_stake: "100000000",
+        slash_count: 0,
+        stake_recipient_id: null,
+        timestamp: {from: "1789917600.000000000", to: null},
+    },
+    {
+        channel_id: CHANNEL_1A2B,
+        connector_contract_id: "0.0.790",
+        connector_id: CONNECTOR_88AA,
+        created_timestamp: "1789034400.000000000",
+        deleted: false,
+        in_flight_message_count: 0,
+        locked_stake: "20000000",
+        slash_count: 4,
+        stake_recipient_id: null,
+        timestamp: {from: "1789034400.000000000", to: null},
+    },
+    {
+        channel_id: CHANNEL_2F91,
+        connector_contract_id: "0.0.791",
+        connector_id: CONNECTOR_55CC,
+        created_timestamp: "1790070300.000000000",
+        deleted: false,
+        in_flight_message_count: 1,
+        locked_stake: "200000000",
+        slash_count: 1,
+        stake_recipient_id: null,
+        timestamp: {from: "1790070300.000000000", to: null},
+    },
+    {
+        channel_id: hexId("7cd4", "11aa"),
+        connector_contract_id: "0.0.792",
+        connector_id: hexId("1234", "abcd"),
+        created_timestamp: "1786705500.000000000",
+        deleted: false,
+        in_flight_message_count: 0,
+        locked_stake: "100000000",
+        slash_count: 0,
+        stake_recipient_id: null,
+        timestamp: {from: "1786705500.000000000", to: null},
+    },
+    {
+        channel_id: CHANNEL_5B60,
+        connector_contract_id: "0.0.793",
+        connector_id: CONNECTOR_77EE,
+        created_timestamp: "1783009800.000000000",
+        deleted: false,
+        in_flight_message_count: 6,
+        locked_stake: "500000000",
+        slash_count: 0,
+        stake_recipient_id: null,
+        timestamp: {from: "1783009800.000000000", to: null},
+    },
+    {
+        channel_id: CHANNEL_5B60,
+        connector_contract_id: "0.0.798",
+        connector_id: CONNECTOR_3344,
+        created_timestamp: "1783641600.000000000",
+        deleted: true,
+        in_flight_message_count: 0,
+        locked_stake: "0",
+        slash_count: 5,
+        stake_recipient_id: null,
+        timestamp: {from: "1783641600.000000000", to: null},
+    },
+    {
+        channel_id: hexId("3d82", "c701"),
+        connector_contract_id: "0.0.794",
+        connector_id: hexId("9900", "aabb"),
+        created_timestamp: "1790770200.000000000",
+        deleted: false,
+        in_flight_message_count: 0,
+        locked_stake: "100000000",
+        slash_count: 0,
+        stake_recipient_id: null,
+        timestamp: {from: "1790770200.000000000", to: null},
+    },
+    {
+        channel_id: hexId("9e14", "4420"),
+        connector_contract_id: "0.0.795",
+        connector_id: hexId("4411", "9922"),
+        created_timestamp: "1781078700.000000000",
+        deleted: false,
+        in_flight_message_count: 0,
+        locked_stake: "50000000",
+        slash_count: 2,
+        stake_recipient_id: null,
+        timestamp: {from: "1781078700.000000000", to: null},
+    },
+    {
+        channel_id: hexId("ab33", "7760"),
+        connector_contract_id: "0.0.796",
+        connector_id: hexId("6655", "4433"),
+        created_timestamp: "1789761300.000000000",
+        deleted: false,
+        in_flight_message_count: 3,
+        locked_stake: "150000000",
+        slash_count: 0,
+        stake_recipient_id: null,
+        timestamp: {from: "1789761300.000000000", to: null},
+    },
+    {
+        channel_id: hexId("f002", "d8e1"),
+        connector_contract_id: "0.0.797",
+        connector_id: hexId("2200", "ee11"),
+        created_timestamp: "1777593900.000000000",
+        deleted: true,
+        in_flight_message_count: 0,
+        locked_stake: "0",
+        slash_count: 0,
+        stake_recipient_id: null,
+        timestamp: {from: "1777593900.000000000", to: null},
+    },
 ]
 
-export function getClprMockConnectors(channelId: string): ClprConnectorMock[] {
-    return CLPR_MOCK_CONNECTORS.filter(c => c.channel_id === channelId)
+export function getClprMockConnectors(channelId: string): ClprConnector[] {
+    return CLPR_MOCK_CONNECTORS
+        .filter(c => c.channel_id === channelId)
+        .sort((a, b) => Number(b.created_timestamp) - Number(a.created_timestamp))
 }
 
 export const CLPR_MOCK_MESSAGES: ClprMessage[] = [...HANDWRITTEN_MESSAGES, ...GENERATED_MESSAGES]

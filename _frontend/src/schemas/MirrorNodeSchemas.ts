@@ -1109,10 +1109,23 @@ export interface ClprChannelsResponse {
     links: Links | undefined
 }
 
-// Minimal connector descriptor, only used by the CLPR mockup (subset of the API ClprConnector)
-export interface ClprConnectorMock {
-    connector_id: string
+// Subset of the fields returned by GET /api/v1/clpr/channels/{channelId}/connectors
+export interface ClprConnector {
     channel_id: string
+    connector_contract_id: string
+    connector_id: string
+    created_timestamp: string
+    deleted: boolean
+    in_flight_message_count: number
+    locked_stake: string // tinybars
+    slash_count: number
+    stake_recipient_id: string | null
+    timestamp: TimestampRange
+}
+
+export interface ClprConnectorsResponse {
+    connectors: ClprConnector[] | undefined
+    links: Links | undefined
 }
 
 export interface Block {
