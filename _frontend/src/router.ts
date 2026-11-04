@@ -33,6 +33,7 @@ import CLPR_Channels from "@/pages/CLPR_Channels.vue";
 import CLPR_Connectors from "@/pages/CLPR_Connectors.vue";
 import CLPR_Configuration from "@/pages/CLPR_Configuration.vue";
 import CLPR_MessageDetails from "@/pages/CLPR_MessageDetails.vue";
+import CLPR_ChannelDetails from "@/pages/CLPR_ChannelDetails.vue";
 import NftDetails from "@/pages/NftDetails.vue";
 import NftDetails_Summary from "@/pages/NftDetails_Summary.vue";
 import NftDetails_Transactions from "@/pages/NftDetails_Transactions.vue";
@@ -642,6 +643,13 @@ export const CLPR_ROUTE: RouteRecordRaw = {
             meta: {
                 tabLabel: "Channels"
             }
+        },
+        {
+            // Not a tab: replaces the content of the Channels tab
+            path: 'channels/:channelId',
+            name: 'CLPR_ChannelDetails',
+            component: CLPR_ChannelDetails,
+            props: true,
         },
         {
             path: 'connectors',
