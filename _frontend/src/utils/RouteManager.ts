@@ -648,6 +648,22 @@ export class RouteManager {
         return result
     }
 
+    public makeRouteToClprChannel(channelId: string): RouteLocationRaw {
+        return {name: 'CLPR_ChannelDetails', params: {channelId: channelId, network: this.currentNetwork.value}}
+    }
+
+    public routeToClprChannel(channelId: string, event: Event | null = null): Promise<NavigationFailure | void | undefined> {
+        let result: Promise<NavigationFailure | void | undefined>
+        if (this.shouldOpenNewWindow(event)) {
+            const routeData = this.router.resolve(this.makeRouteToClprChannel(channelId))
+            window.open(routeData.href, '_blank')
+            result = Promise.resolve()
+        } else {
+            result = this.router.push(this.makeRouteToClprChannel(channelId))
+        }
+        return result
+    }
+
     public makeRouteToPageNotFound(): RouteLocationRaw {
         return {name: 'PageNotFound', params: {network: this.currentNetwork.value}}
     }

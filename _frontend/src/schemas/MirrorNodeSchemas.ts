@@ -1080,6 +1080,28 @@ export interface ClprChannel {
     timestamp: TimestampRange | null
     verifier_contract_id: string | null
     verifier_fingerprint: string | null
+    endpoint_manifest: ClprEndpointManifest | null
+    last_config_timestamp: string | null
+    peer_config_timestamp: string | null
+    peer_throttles: ClprPeerThrottles | null
+    received_running_hash: string | null
+    sent_running_hash: string | null
+    trust_anchor_id: string | null
+}
+
+export interface ClprEndpointManifest {
+    endpoints: { service_endpoint: { ip_address: string, port: number } }[]
+    version: number
+}
+
+export interface ClprPeerThrottles {
+    max_gas_per_message: number | null
+    max_local_endpoints: number | null
+    max_message_payload_bytes: number | null
+    max_messages_per_bundle: number | null
+    max_peer_endpoints: number | null
+    max_queue_depth: number | null
+    max_sync_bytes: number | null
 }
 
 export interface ClprChannelsResponse {

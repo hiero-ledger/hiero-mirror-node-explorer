@@ -44,18 +44,24 @@ defineProps({
 const tabIds = routeManager.clprOperator.tabIds
 const tabLabels = routeManager.clprOperator.tabLabels
 
-// The message details are displayed in place of the Messages tab content: Messages stays the selected tab
+// Details pages are displayed in place of the content of their parent tab, which stays the selected tab
+const DETAILS_PARENT_TABS: Record<string, string> = {
+  CLPR_MessageDetails: "CLPR_Messages",
+  CLPR_ChannelDetails: "CLPR_Channels",
+}
+
 const selectedTabId = computed(() => {
   const id = routeManager.clprOperator.selectedTabId.value
-  return id === "CLPR_MessageDetails" ? "CLPR_Messages" : id
+  return id !== null ? (DETAILS_PARENT_TABS[id] ?? id) : null
 })
 
-// Tabs does not notify a click on the already selected tab, but from the message details
-// a click on the Messages tab must go back to the Messages table
+// Tabs does not notify a click on the already selected tab, but from a details page
+// a click on the parent tab must go back to its table
 const onTabsClick = (event: MouseEvent) => {
-  const tabId = (event.target as HTMLElement).closest("li")?.id
-  if (tabId === "tab-CLPR_Messages" && routeManager.clprOperator.selectedTabId.value === "CLPR_MessageDetails") {
-    routeManager.routeToClpr("CLPR_Messages", true)
+  const tabId = (event.target as HTMLElement).closest("li")?.id?.replace("tab-", "")
+  const current = routeManager.clprOperator.selectedTabId.value
+  if (tabId && current !== null && current in DETAILS_PARENT_TABS && DETAILS_PARENT_TABS[current] === tabId) {
+    routeManager.routeToClpr(tabId, true)
   }
 }
 
