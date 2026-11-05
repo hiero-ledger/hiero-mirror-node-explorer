@@ -664,6 +664,25 @@ export class RouteManager {
         return result
     }
 
+    public makeRouteToClprConnector(channelId: string, connectorId: string): RouteLocationRaw {
+        return {
+            name: 'CLPR_ConnectorDetails',
+            params: {channelId: channelId, connectorId: connectorId, network: this.currentNetwork.value}
+        }
+    }
+
+    public routeToClprConnector(channelId: string, connectorId: string, event: Event | null = null): Promise<NavigationFailure | void | undefined> {
+        let result: Promise<NavigationFailure | void | undefined>
+        if (this.shouldOpenNewWindow(event)) {
+            const routeData = this.router.resolve(this.makeRouteToClprConnector(channelId, connectorId))
+            window.open(routeData.href, '_blank')
+            result = Promise.resolve()
+        } else {
+            result = this.router.push(this.makeRouteToClprConnector(channelId, connectorId))
+        }
+        return result
+    }
+
     public makeRouteToPageNotFound(): RouteLocationRaw {
         return {name: 'PageNotFound', params: {network: this.currentNetwork.value}}
     }

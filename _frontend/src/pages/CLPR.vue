@@ -48,6 +48,7 @@ const tabLabels = routeManager.clprOperator.tabLabels
 const DETAILS_PARENT_TABS: Record<string, string> = {
   CLPR_MessageDetails: "CLPR_Messages",
   CLPR_ChannelDetails: "CLPR_Channels",
+  CLPR_ConnectorDetails: "CLPR_Connectors",
 }
 
 const selectedTabId = computed(() => {

@@ -1111,6 +1111,7 @@ export interface ClprChannelsResponse {
 
 // Subset of the fields returned by GET /api/v1/clpr/channels/{channelId}/connectors
 export interface ClprConnector {
+    admin_key: Key | null
     channel_id: string
     connector_contract_id: string
     connector_id: string

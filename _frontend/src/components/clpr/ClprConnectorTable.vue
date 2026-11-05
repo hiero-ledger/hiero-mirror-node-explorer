@@ -17,6 +17,7 @@
         @update:current-page="currentPage = $event as number"
         :per-page="perPage"
         row-key="connector_id"
+        @cell-click="handleClick"
     >
       <o-table-column v-slot="props" field="connector_id" label="CONNECTOR ID">
         <ClprHexLabel :value="props.row.connector_id"/>
@@ -72,6 +73,7 @@ import PlainAmount from "@/components/values/PlainAmount.vue";
 import TimestampValue from "@/components/values/TimestampValue.vue";
 import AccountLink from "@/components/values/link/AccountLink.vue";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
+import {routeManager} from "@/utils/RouteManager.ts";
 import ClprTableFrame from "@/components/clpr/ClprTableFrame.vue";
 import ClprHexLabel from "@/components/clpr/ClprHexLabel.vue";
 
@@ -81,6 +83,10 @@ const props = defineProps({
     required: true
   }
 })
+
+const handleClick = (connector: ClprConnector, c: unknown, i: number, ci: number, event: Event) => {
+  routeManager.routeToClprConnector(connector.channel_id, connector.connector_id, event)
+}
 
 const isMediumScreen = inject('isMediumScreen', true)
 const currentPage = ref(1)
