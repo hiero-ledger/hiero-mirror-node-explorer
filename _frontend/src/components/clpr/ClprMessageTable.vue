@@ -25,7 +25,7 @@
       </o-table-column>
 
       <o-table-column v-slot="props" field="type" label="TYPE">
-        {{ props.row.type }}
+        <ClprPill :label="props.row.type" level="network"/>
       </o-table-column>
 
       <o-table-column v-slot="props" field="sender" label="SENDER">
@@ -41,11 +41,19 @@
       </o-table-column>
 
       <o-table-column v-slot="props" field="acknowledged" label="ACKNOWLEDGED">
-        {{ props.row.acknowledged ? "Yes" : "No" }}
+        <ClprPill
+            :label="props.row.acknowledged ? 'Yes' : 'No'"
+            :level="props.row.acknowledged ? 'success' : 'default'"
+        />
       </o-table-column>
 
       <o-table-column v-slot="props" field="reply_status" label="RESPONSE">
-        <StringValue :string-value="props.row.reply_status"/>
+        <ClprPill
+            v-if="props.row.reply_status"
+            :label="props.row.reply_status"
+            :level="getReplyStatusLevel(props.row.reply_status)"
+        />
+        <span v-else class="h-is-low-contrast">None</span>
       </o-table-column>
 
       <o-table-column v-slot="props" field="reply_to_message_id" label="REPLY TO" position="right">
@@ -78,12 +86,13 @@ import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
 import {ClprMessage} from "@/schemas/MirrorNodeSchemas.ts";
 import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
 import EmptyTable from "@/components/EmptyTable.vue";
-import StringValue from "@/components/values/StringValue.vue";
 import TimestampValue from "@/components/values/TimestampValue.vue";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
 import {routeManager} from "@/utils/RouteManager.ts";
 import ClprTableFrame from "@/components/clpr/ClprTableFrame.vue";
 import ClprHexLabel from "@/components/clpr/ClprHexLabel.vue";
+import ClprPill from "@/components/clpr/ClprPill.vue";
+import {getReplyStatusLevel} from "@/components/clpr/ClprUtils.ts";
 
 const props = defineProps({
   messages: {

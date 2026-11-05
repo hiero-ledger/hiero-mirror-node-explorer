@@ -25,7 +25,7 @@
       >
         <o-table-column v-slot="props" field="what" label="WHAT">
           <ClprConnectorStateLabel v-if="props.row.connector" :connector="props.row.connector"/>
-          <span v-else>{{ props.row.what }}</span>
+          <ClprPill v-else :label="props.row.what" :level="props.row.level"/>
         </o-table-column>
 
         <o-table-column v-slot="props" field="where" label="WHERE">
@@ -64,6 +64,7 @@ import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import TimestampValue from "@/components/values/TimestampValue.vue";
 import ClprConnectorStateLabel from "@/components/clpr/ClprConnectorStateLabel.vue";
+import ClprPill, {ClprPillLevel} from "@/components/clpr/ClprPill.vue";
 import ClprHexLabel from "@/components/clpr/ClprHexLabel.vue";
 import {CLPR_ECONOMICS, ClprConnectorState, getConnectorState} from "@/components/clpr/ClprEconomics.ts";
 import {
@@ -86,6 +87,7 @@ import {routeManager} from "@/utils/RouteManager.ts";
 interface AttentionItem {
   key: string
   what: string
+  level?: ClprPillLevel // color of the "what" pill (not used for connectors, which display their state)
   connector?: ClprConnector // when set, the connector state is displayed instead of "what"
   where: string // hex id displayed in the WHERE column
   channelId?: string // target of a click on the row, if any
@@ -105,6 +107,7 @@ const buildItems = (): AttentionItem[] => {
     result.push({
       key: "paused-" + c.channel_id,
       what: "Paused",
+      level: "error",
       where: c.channel_id!,
       channelId: c.channel_id!,
       detail: "Channel is paused on " + c.chain_id,
@@ -119,6 +122,7 @@ const buildItems = (): AttentionItem[] => {
       result.push({
         key: "stale-" + c.channel_id,
         what: "Stale",
+        level: "warn",
         where: c.channel_id!,
         channelId: c.channel_id!,
         detail: "Backlog of " + getChannelBacklog(c) + ", oldest message unacknowledged for " +
@@ -161,6 +165,7 @@ const buildItems = (): AttentionItem[] => {
       result.push({
         key: "pending-" + p.ownership_commitment,
         what: "Pending",
+        level: "default",
         where: p.ownership_commitment,
         detail: "Channel registration committed but not completed",
         since: p.created_timestamp

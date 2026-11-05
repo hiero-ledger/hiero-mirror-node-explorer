@@ -31,7 +31,7 @@
       <Property id="type" full-width>
         <template #name>Type</template>
         <template #value>
-          <StringValue :string-value="message?.type"/>
+          <ClprPill v-if="message" :label="message.type" level="network"/>
         </template>
       </Property>
       <Property id="sender" full-width>
@@ -55,13 +55,22 @@
       <Property id="acknowledged" full-width>
         <template #name>Acknowledged</template>
         <template #value>
-          <StringValue :string-value="message ? (message.acknowledged ? 'Yes' : 'No') : null"/>
+          <ClprPill
+              v-if="message"
+              :label="message.acknowledged ? 'Yes' : 'No'"
+              :level="message.acknowledged ? 'success' : 'default'"
+          />
         </template>
       </Property>
       <Property id="replyStatus" full-width>
         <template #name>Response Status</template>
         <template #value>
-          <StringValue :string-value="message?.reply_status ?? null"/>
+          <ClprPill
+              v-if="message?.reply_status"
+              :label="message.reply_status"
+              :level="getReplyStatusLevel(message.reply_status)"
+          />
+          <span v-else class="h-is-low-contrast">None</span>
         </template>
       </Property>
       <Property v-if="message?.reply_to_message_id != null" id="replyTo" full-width>
@@ -154,6 +163,8 @@ import HexaValue from "@/components/values/HexaValue.vue";
 import PlainAmount from "@/components/values/PlainAmount.vue";
 import StringValue from "@/components/values/StringValue.vue";
 import TimestampValue from "@/components/values/TimestampValue.vue";
+import ClprPill from "@/components/clpr/ClprPill.vue";
+import {getReplyStatusLevel} from "@/components/clpr/ClprUtils.ts";
 import {routeManager} from "@/utils/RouteManager.ts";
 import {ClprMessageType} from "@/schemas/MirrorNodeSchemas.ts";
 import {getClprMockMessage, getClprMockPreviousRunningHash} from "@/components/clpr/ClprMockData.ts";

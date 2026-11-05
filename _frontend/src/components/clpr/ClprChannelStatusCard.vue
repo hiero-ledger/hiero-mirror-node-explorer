@@ -33,7 +33,7 @@
           </o-table-column>
 
           <o-table-column v-slot="props" field="status" label="STATUS">
-            {{ props.row.status }}
+            <ClprChannelStatusLabel :status="props.row.status"/>
           </o-table-column>
 
           <o-table-column v-slot="props" field="backlog" label="BACKLOG" position="right">
@@ -75,6 +75,7 @@ import StringValue from "@/components/values/StringValue.vue";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
 import ClprHexLabel from "@/components/clpr/ClprHexLabel.vue";
 import ClprTableFrame from "@/components/clpr/ClprTableFrame.vue";
+import ClprChannelStatusLabel from "@/components/clpr/ClprChannelStatusLabel.vue";
 import ClprChannelHealthLabel from "@/components/clpr/ClprChannelHealthLabel.vue";
 import {CLPR_HEALTH, ClprChannelHealth, getChannelBacklog, getChannelHealth} from "@/components/clpr/ClprHealth.ts";
 import {

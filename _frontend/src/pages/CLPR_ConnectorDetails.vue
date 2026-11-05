@@ -13,7 +13,7 @@
       <h2 class="connector-title">
         Connector {{ shortenHex(connector.connector_id) }}
       </h2>
-      <ClprConnectorStateLabel class="connector-status" :connector="connector"/>
+      <ClprConnectorStateLabel :connector="connector"/>
     </div>
     <Tabs
         :selected-tab="selectedTab"
@@ -91,7 +91,7 @@ const selectedTab = ref<string | null>(tabIds[0])
 <style scoped>
 
 div.connector-header {
-  align-items: baseline;
+  align-items: center;
   display: flex;
   gap: 12px;
   margin: 8px 0 12px 0;
@@ -102,10 +102,6 @@ h2.connector-title {
   font-size: 20px;
   font-weight: 500;
   margin: 0;
-}
-
-.connector-status {
-  font-size: 12px;
 }
 
 </style>
