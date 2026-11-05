@@ -5,7 +5,7 @@
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <template>
-  <span :class="['state', stateClass]">{{ state }}</span>
+  <ClprPill :label="state" :level="level"/>
 </template>
 
 <!-- --------------------------------------------------------------------------------------------------------------- -->
@@ -15,6 +15,7 @@
 <script setup lang="ts">
 
 import {computed, PropType} from "vue";
+import ClprPill, {ClprPillLevel} from "@/components/clpr/ClprPill.vue";
 import {ClprConnector} from "@/schemas/MirrorNodeSchemas.ts";
 import {ClprConnectorState, getConnectorState} from "@/components/clpr/ClprEconomics.ts";
 
@@ -27,7 +28,7 @@ const props = defineProps({
 
 const state = computed(() => getConnectorState(props.connector))
 
-const stateClass = computed(() => {
+const level = computed<ClprPillLevel>(() => {
   switch (state.value) {
     case ClprConnectorState.HEALTHY:
       return "success"
@@ -37,7 +38,7 @@ const stateClass = computed(() => {
     case ClprConnectorState.BANNED:
       return "error"
     default:
-      return "neutral"
+      return "default"
   }
 })
 
@@ -48,21 +49,5 @@ const stateClass = computed(() => {
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <style scoped>
-
-span.state.success {
-  color: var(--text-success);
-}
-
-span.state.warn {
-  color: #d98200;
-}
-
-span.state.error {
-  color: var(--text-error);
-}
-
-span.state.neutral {
-  color: var(--text-secondary);
-}
 
 </style>

@@ -13,7 +13,8 @@
       <h2 class="channel-title">
         Channel {{ shortenHex(channel.channel_id ?? props.channelId) }}
       </h2>
-      <span class="channel-status">{{ channel.status }}</span>
+      <ClprChannelStatusLabel :status="channel.status"/>
+      <ClprChannelHealthLabel v-if="health" :health="health"/>
     </div>
     <Tabs
         :selected-tab="selectedTab"
@@ -52,8 +53,15 @@ import NotificationBanner from "@/components/NotificationBanner.vue";
 import Tabs from "@/components/Tabs.vue";
 import ClprMessagesCard from "@/components/clpr/ClprMessagesCard.vue";
 import ClprConnectorsCard from "@/components/clpr/ClprConnectorsCard.vue";
+import ClprChannelStatusLabel from "@/components/clpr/ClprChannelStatusLabel.vue";
+import ClprChannelHealthLabel from "@/components/clpr/ClprChannelHealthLabel.vue";
 import ClprChannelSummary from "@/components/clpr/ClprChannelSummary.vue";
-import {getClprMockChannel} from "@/components/clpr/ClprMockData.ts";
+import {getChannelHealth} from "@/components/clpr/ClprHealth.ts";
+import {
+  CLPR_MOCK_NOW_SECONDS,
+  getClprMockChannel,
+  getClprMockOldestUnackedTimestamp
+} from "@/components/clpr/ClprMockData.ts";
 import {shortenHex} from "@/components/clpr/ClprUtils.ts";
 
 const props = defineProps({
@@ -69,6 +77,11 @@ const channel = computed(() => getClprMockChannel(props.channelId))
 const notification = computed(() =>
     channel.value === null ? "CLPR channel " + props.channelId + " not found" : null)
 
+// Health is derived by the Explorer from the channel and its oldest unacknowledged message (see ClprHealth)
+const health = computed(() => channel.value !== null
+    ? getChannelHealth(channel.value, getClprMockOldestUnackedTimestamp(channel.value), CLPR_MOCK_NOW_SECONDS)
+    : null)
+
 const tabIds = ['summary', 'messages', 'connectors', 'trust']
 const tabLabels = ['Summary', 'Messages', 'Connectors', 'Verifier & Trust']
 const selectedTab = ref<string | null>(tabIds[0])
@@ -82,7 +95,7 @@ const selectedTab = ref<string | null>(tabIds[0])
 <style scoped>
 
 div.channel-header {
-  align-items: baseline;
+  align-items: center;
   display: flex;
   gap: 12px;
   margin: 8px 0 12px 0;
@@ -93,11 +106,6 @@ h2.channel-title {
   font-size: 20px;
   font-weight: 500;
   margin: 0;
-}
-
-span.channel-status {
-  color: var(--text-secondary);
-  font-size: 12px;
 }
 
 </style>

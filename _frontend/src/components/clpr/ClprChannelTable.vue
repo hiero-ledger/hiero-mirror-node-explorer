@@ -28,7 +28,7 @@
       </o-table-column>
 
       <o-table-column v-slot="props" field="status" label="STATUS">
-        {{ props.row.status }}
+        <ClprChannelStatusLabel :status="props.row.status"/>
       </o-table-column>
 
       <o-table-column v-slot="props" field="verifier_contract_id" label="VERIFIER">
@@ -74,6 +74,7 @@ import TimestampValue from "@/components/values/TimestampValue.vue";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
 import {routeManager} from "@/utils/RouteManager.ts";
 import ClprTableFrame from "@/components/clpr/ClprTableFrame.vue";
+import ClprChannelStatusLabel from "@/components/clpr/ClprChannelStatusLabel.vue";
 import ClprHexLabel from "@/components/clpr/ClprHexLabel.vue";
 
 const props = defineProps({

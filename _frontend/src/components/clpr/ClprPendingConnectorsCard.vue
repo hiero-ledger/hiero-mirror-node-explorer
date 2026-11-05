@@ -28,7 +28,7 @@
           </o-table-column>
 
           <o-table-column v-slot="props" field="status" label="STATUS">
-            {{ props.row.status }}
+            <ClprPill :label="props.row.status"/>
           </o-table-column>
 
           <o-table-column v-slot="props" field="created_timestamp" label="CREATED">
@@ -66,6 +66,7 @@ import EmptyTable from "@/components/EmptyTable.vue";
 import TimestampValue from "@/components/values/TimestampValue.vue";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
 import ClprTableFrame from "@/components/clpr/ClprTableFrame.vue";
+import ClprPill from "@/components/clpr/ClprPill.vue";
 import ClprHexLabel from "@/components/clpr/ClprHexLabel.vue";
 import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
 import {CLPR_MOCK_PENDING_CONNECTORS} from "@/components/clpr/ClprMockData.ts";

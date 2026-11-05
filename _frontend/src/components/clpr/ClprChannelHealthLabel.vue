@@ -5,7 +5,7 @@
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <template>
-  <span :class="['health', healthClass]">{{ props.health }}</span>
+  <ClprPill :label="props.health" :level="level"/>
 </template>
 
 <!-- --------------------------------------------------------------------------------------------------------------- -->
@@ -15,6 +15,7 @@
 <script setup lang="ts">
 
 import {computed, PropType} from "vue";
+import ClprPill, {ClprPillLevel} from "@/components/clpr/ClprPill.vue";
 import {ClprChannelHealth} from "@/components/clpr/ClprHealth.ts";
 
 const props = defineProps({
@@ -24,7 +25,7 @@ const props = defineProps({
   }
 })
 
-const healthClass = computed(() => {
+const level = computed<ClprPillLevel>(() => {
   switch (props.health) {
     case ClprChannelHealth.HEALTHY:
       return "success"
@@ -34,7 +35,7 @@ const healthClass = computed(() => {
     case ClprChannelHealth.PAUSED:
       return "error"
     default:
-      return "neutral"
+      return "default"
   }
 })
 
@@ -45,21 +46,5 @@ const healthClass = computed(() => {
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <style scoped>
-
-span.health.success {
-  color: var(--text-success);
-}
-
-span.health.warn {
-  color: #d98200;
-}
-
-span.health.error {
-  color: var(--text-error);
-}
-
-span.health.neutral {
-  color: var(--text-secondary);
-}
 
 </style>
