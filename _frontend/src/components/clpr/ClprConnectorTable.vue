@@ -6,49 +6,51 @@
 
 <template>
 
-  <o-table
-      :data="connectors"
-      :hoverable="true"
-      :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
-      paginated
-      pagination-order="centered"
-      :current-page="currentPage"
-      @update:current-page="currentPage = $event as number"
-      :per-page="perPage"
-      row-key="connector_id"
-  >
-    <o-table-column v-slot="props" field="connector_id" label="CONNECTOR ID">
-      <ClprHexLabel :value="props.row.connector_id"/>
-    </o-table-column>
+  <ClprTableFrame :row-count="connectors.length" :page-size="perPage">
+    <o-table
+        :data="connectors"
+        :hoverable="true"
+        :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
+        paginated
+        pagination-order="centered"
+        :current-page="currentPage"
+        @update:current-page="currentPage = $event as number"
+        :per-page="perPage"
+        row-key="connector_id"
+    >
+      <o-table-column v-slot="props" field="connector_id" label="CONNECTOR ID">
+        <ClprHexLabel :value="props.row.connector_id"/>
+      </o-table-column>
 
-    <o-table-column v-slot="props" field="connector_contract_id" label="CONTRACT">
-      <AccountLink :account-id="props.row.connector_contract_id"/>
-    </o-table-column>
+      <o-table-column v-slot="props" field="connector_contract_id" label="CONTRACT">
+        <AccountLink :account-id="props.row.connector_contract_id"/>
+      </o-table-column>
 
-    <o-table-column v-slot="props" field="locked_stake" label="LOCKED STAKE" position="right">
-      <HbarAmount :amount="Number(props.row.locked_stake)" :decimals="2"/>
-    </o-table-column>
+      <o-table-column v-slot="props" field="locked_stake" label="LOCKED STAKE" position="right">
+        <HbarAmount :amount="Number(props.row.locked_stake)" :decimals="2"/>
+      </o-table-column>
 
-    <o-table-column v-slot="props" field="in_flight_message_count" label="IN-FLIGHT" position="right">
-      <PlainAmount :amount="props.row.in_flight_message_count"/>
-    </o-table-column>
+      <o-table-column v-slot="props" field="in_flight_message_count" label="IN-FLIGHT" position="right">
+        <PlainAmount :amount="props.row.in_flight_message_count"/>
+      </o-table-column>
 
-    <o-table-column v-slot="props" field="slash_count" label="SLASHES" position="right">
-      <PlainAmount :amount="props.row.slash_count"/>
-    </o-table-column>
+      <o-table-column v-slot="props" field="slash_count" label="SLASHES" position="right">
+        <PlainAmount :amount="props.row.slash_count"/>
+      </o-table-column>
 
-    <o-table-column v-slot="props" field="deleted" label="STATUS">
-      {{ props.row.deleted ? "Deleted" : "Active" }}
-    </o-table-column>
+      <o-table-column v-slot="props" field="deleted" label="STATUS">
+        {{ props.row.deleted ? "Deleted" : "Active" }}
+      </o-table-column>
 
-    <o-table-column v-slot="props" field="created_timestamp" label="CREATED">
-      <TimestampValue :timestamp="props.row.created_timestamp"/>
-    </o-table-column>
+      <o-table-column v-slot="props" field="created_timestamp" label="CREATED">
+        <TimestampValue :timestamp="props.row.created_timestamp"/>
+      </o-table-column>
 
-    <template v-slot:bottomLeft>
-      <TablePageSize v-model:size="perPage"/>
-    </template>
-  </o-table>
+      <template v-slot:bottomLeft>
+        <TablePageSize v-model:size="perPage"/>
+      </template>
+    </o-table>
+  </ClprTableFrame>
 
   <EmptyTable v-if="!connectors.length"/>
 
@@ -70,6 +72,7 @@ import PlainAmount from "@/components/values/PlainAmount.vue";
 import TimestampValue from "@/components/values/TimestampValue.vue";
 import AccountLink from "@/components/values/link/AccountLink.vue";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
+import ClprTableFrame from "@/components/clpr/ClprTableFrame.vue";
 import ClprHexLabel from "@/components/clpr/ClprHexLabel.vue";
 
 const props = defineProps({

@@ -6,60 +6,62 @@
 
 <template>
 
-  <o-table
-      :data="messages"
-      :hoverable="true"
-      :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
-      paginated
-      pagination-order="centered"
-      :current-page="currentPage"
-      @update:current-page="currentPage = $event as number"
-      :per-page="perPage"
-      :striped="false"
-      row-key="message_id"
-      @cell-click="handleClick"
-  >
-    <o-table-column v-slot="props" field="message_id" label="ID" position="right">
-      <span class="message-id">{{ props.row.message_id }}</span>
-    </o-table-column>
+  <ClprTableFrame :row-count="messages.length" :page-size="perPage">
+    <o-table
+        :data="messages"
+        :hoverable="true"
+        :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
+        paginated
+        pagination-order="centered"
+        :current-page="currentPage"
+        @update:current-page="currentPage = $event as number"
+        :per-page="perPage"
+        :striped="false"
+        row-key="message_id"
+        @cell-click="handleClick"
+    >
+      <o-table-column v-slot="props" field="message_id" label="ID" position="right">
+        <span class="message-id">{{ props.row.message_id }}</span>
+      </o-table-column>
 
-    <o-table-column v-slot="props" field="type" label="TYPE">
-      {{ props.row.type }}
-    </o-table-column>
+      <o-table-column v-slot="props" field="type" label="TYPE">
+        {{ props.row.type }}
+      </o-table-column>
 
-    <o-table-column v-slot="props" field="sender" label="SENDER">
-      <ClprHexLabel :value="props.row.sender"/>
-    </o-table-column>
+      <o-table-column v-slot="props" field="sender" label="SENDER">
+        <ClprHexLabel :value="props.row.sender"/>
+      </o-table-column>
 
-    <o-table-column v-slot="props" field="target_application" label="TARGET">
-      <ClprHexLabel :value="props.row.target_application"/>
-    </o-table-column>
+      <o-table-column v-slot="props" field="target_application" label="TARGET">
+        <ClprHexLabel :value="props.row.target_application"/>
+      </o-table-column>
 
-    <o-table-column v-slot="props" field="connector_id" label="CONNECTOR">
-      <ClprHexLabel :value="props.row.connector_id"/>
-    </o-table-column>
+      <o-table-column v-slot="props" field="connector_id" label="CONNECTOR">
+        <ClprHexLabel :value="props.row.connector_id"/>
+      </o-table-column>
 
-    <o-table-column v-slot="props" field="acknowledged" label="ACKNOWLEDGED">
-      {{ props.row.acknowledged ? "Yes" : "No" }}
-    </o-table-column>
+      <o-table-column v-slot="props" field="acknowledged" label="ACKNOWLEDGED">
+        {{ props.row.acknowledged ? "Yes" : "No" }}
+      </o-table-column>
 
-    <o-table-column v-slot="props" field="reply_status" label="RESPONSE">
-      <StringValue :string-value="props.row.reply_status"/>
-    </o-table-column>
+      <o-table-column v-slot="props" field="reply_status" label="RESPONSE">
+        <StringValue :string-value="props.row.reply_status"/>
+      </o-table-column>
 
-    <o-table-column v-slot="props" field="reply_to_message_id" label="REPLY TO" position="right">
-      <span v-if="props.row.reply_to_message_id !== null">{{ props.row.reply_to_message_id }}</span>
-      <span v-else class="h-is-low-contrast">None</span>
-    </o-table-column>
+      <o-table-column v-slot="props" field="reply_to_message_id" label="REPLY TO" position="right">
+        <span v-if="props.row.reply_to_message_id !== null">{{ props.row.reply_to_message_id }}</span>
+        <span v-else class="h-is-low-contrast">None</span>
+      </o-table-column>
 
-    <o-table-column v-slot="props" field="timestamp" label="TIME">
-      <TimestampValue :timestamp="props.row.timestamp"/>
-    </o-table-column>
+      <o-table-column v-slot="props" field="timestamp" label="TIME">
+        <TimestampValue :timestamp="props.row.timestamp"/>
+      </o-table-column>
 
-    <template v-slot:bottomLeft>
-      <TablePageSize v-model:size="perPage"/>
-    </template>
-  </o-table>
+      <template v-slot:bottomLeft>
+        <TablePageSize v-model:size="perPage"/>
+      </template>
+    </o-table>
+  </ClprTableFrame>
 
   <EmptyTable v-if="!messages.length"/>
 
@@ -80,6 +82,7 @@ import StringValue from "@/components/values/StringValue.vue";
 import TimestampValue from "@/components/values/TimestampValue.vue";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
 import {routeManager} from "@/utils/RouteManager.ts";
+import ClprTableFrame from "@/components/clpr/ClprTableFrame.vue";
 import ClprHexLabel from "@/components/clpr/ClprHexLabel.vue";
 
 const props = defineProps({

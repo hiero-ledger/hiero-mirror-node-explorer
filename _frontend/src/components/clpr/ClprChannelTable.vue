@@ -6,50 +6,52 @@
 
 <template>
 
-  <o-table
-      :data="channels"
-      :hoverable="true"
-      :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
-      paginated
-      pagination-order="centered"
-      :current-page="currentPage"
-      @update:current-page="currentPage = $event as number"
-      :per-page="perPage"
-      row-key="ownership_commitment"
-      @cell-click="handleClick"
-  >
-    <o-table-column v-slot="props" field="channel_id" label="CHANNEL ID">
-      <ClprHexLabel :value="props.row.channel_id"/>
-    </o-table-column>
+  <ClprTableFrame :row-count="channels.length" :page-size="perPage">
+    <o-table
+        :data="channels"
+        :hoverable="true"
+        :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
+        paginated
+        pagination-order="centered"
+        :current-page="currentPage"
+        @update:current-page="currentPage = $event as number"
+        :per-page="perPage"
+        row-key="ownership_commitment"
+        @cell-click="handleClick"
+    >
+      <o-table-column v-slot="props" field="channel_id" label="CHANNEL ID">
+        <ClprHexLabel :value="props.row.channel_id"/>
+      </o-table-column>
 
-    <o-table-column v-slot="props" field="chain_id" label="PEER CHAIN">
-      <StringValue :string-value="props.row.chain_id"/>
-    </o-table-column>
+      <o-table-column v-slot="props" field="chain_id" label="PEER CHAIN">
+        <StringValue :string-value="props.row.chain_id"/>
+      </o-table-column>
 
-    <o-table-column v-slot="props" field="status" label="STATUS">
-      {{ props.row.status }}
-    </o-table-column>
+      <o-table-column v-slot="props" field="status" label="STATUS">
+        {{ props.row.status }}
+      </o-table-column>
 
-    <o-table-column v-slot="props" field="verifier_contract_id" label="VERIFIER">
-      <StringValue :string-value="props.row.verifier_contract_id"/>
-    </o-table-column>
+      <o-table-column v-slot="props" field="verifier_contract_id" label="VERIFIER">
+        <StringValue :string-value="props.row.verifier_contract_id"/>
+      </o-table-column>
 
-    <o-table-column v-slot="props" field="backlog" label="BACKLOG" position="right">
-      <PlainAmount :amount="makeBacklog(props.row)"/>
-    </o-table-column>
+      <o-table-column v-slot="props" field="backlog" label="BACKLOG" position="right">
+        <PlainAmount :amount="makeBacklog(props.row)"/>
+      </o-table-column>
 
-    <o-table-column v-slot="props" field="ownership_commitment" label="OWNERSHIP COMMITMENT">
-      <ClprHexLabel :value="props.row.ownership_commitment"/>
-    </o-table-column>
+      <o-table-column v-slot="props" field="ownership_commitment" label="OWNERSHIP COMMITMENT">
+        <ClprHexLabel :value="props.row.ownership_commitment"/>
+      </o-table-column>
 
-    <o-table-column v-slot="props" field="created_timestamp" label="CREATED">
-      <TimestampValue :timestamp="props.row.created_timestamp"/>
-    </o-table-column>
+      <o-table-column v-slot="props" field="created_timestamp" label="CREATED">
+        <TimestampValue :timestamp="props.row.created_timestamp"/>
+      </o-table-column>
 
-    <template v-slot:bottomLeft>
-      <TablePageSize v-model:size="perPage"/>
-    </template>
-  </o-table>
+      <template v-slot:bottomLeft>
+        <TablePageSize v-model:size="perPage"/>
+      </template>
+    </o-table>
+  </ClprTableFrame>
 
   <EmptyTable v-if="!channels.length"/>
 
@@ -71,6 +73,7 @@ import StringValue from "@/components/values/StringValue.vue";
 import TimestampValue from "@/components/values/TimestampValue.vue";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
 import {routeManager} from "@/utils/RouteManager.ts";
+import ClprTableFrame from "@/components/clpr/ClprTableFrame.vue";
 import ClprHexLabel from "@/components/clpr/ClprHexLabel.vue";
 
 const props = defineProps({
