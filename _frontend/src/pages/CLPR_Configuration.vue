@@ -8,6 +8,8 @@
 
   <ClprLedgerConfigurationCard/>
 
+  <ClprEconomicConfigurationCard/>
+
   <ClprEndpointManifestCard/>
 
 </template>
@@ -19,6 +21,7 @@
 <script setup lang="ts">
 
 import ClprLedgerConfigurationCard from "@/components/clpr/ClprLedgerConfigurationCard.vue";
+import ClprEconomicConfigurationCard from "@/components/clpr/ClprEconomicConfigurationCard.vue";
 import ClprEndpointManifestCard from "@/components/clpr/ClprEndpointManifestCard.vue";
 
 defineProps({

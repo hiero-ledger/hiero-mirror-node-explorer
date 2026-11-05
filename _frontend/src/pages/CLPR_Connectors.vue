@@ -6,7 +6,7 @@
 
 <template>
 
-  <ClprConnectorsCard :channel-id="selectedChannelId">
+  <ClprConnectorsCard :channel-id="selectedChannelId" :state-filter="true">
     <template #channel-filter>
       <span class="filter-label">CHANNEL:</span>
       <SelectView v-model="selectedChannelId" :small="true" data-cy="select-channel">

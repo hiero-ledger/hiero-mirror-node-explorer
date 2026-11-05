@@ -10,9 +10,13 @@
     <template #title>
       Connectors
     </template>
-    <template v-if="slots['channel-filter']" #right-control>
+    <template v-if="slots['channel-filter'] || props.stateFilter" #right-control>
       <div class="filters">
         <slot name="channel-filter"/>
+        <SelectView v-if="props.stateFilter" v-model="selectedState" :small="true" data-cy="select-state">
+          <option value="">STATES: ALL</option>
+          <option v-for="st in Object.values(ClprConnectorState)" :key="st" :value="st">{{ st }}</option>
+        </SelectView>
       </div>
     </template>
     <template #content>
@@ -28,8 +32,10 @@
 
 <script setup lang="ts">
 
-import {computed, useSlots} from "vue";
+import {computed, ref, useSlots} from "vue";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
+import SelectView from "@/elements/SelectView.vue";
+import {ClprConnectorState, getConnectorState} from "@/components/clpr/ClprEconomics.ts";
 import ClprConnectorTable from "@/components/clpr/ClprConnectorTable.vue";
 import {getClprMockConnectors} from "@/components/clpr/ClprMockData.ts";
 
@@ -38,13 +44,19 @@ const props = defineProps({
   channelId: {
     type: String,
     required: true
+  },
+  stateFilter: {
+    type: Boolean,
+    default: false
   }
 })
 
 const slots = useSlots()
 
 // Static mockup data, to be replaced by a call to GET /api/v1/clpr/channels/{channelId}/connectors
-const connectors = computed(() => getClprMockConnectors(props.channelId))
+const selectedState = ref<string>("")
+const connectors = computed(() => getClprMockConnectors(props.channelId)
+    .filter(c => selectedState.value === "" || getConnectorState(c) === selectedState.value))
 
 </script>
 
