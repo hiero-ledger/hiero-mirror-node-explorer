@@ -13,7 +13,7 @@
       <h2 class="connector-title">
         Connector {{ shortenHex(connector.connector_id) }}
       </h2>
-      <span class="connector-status">{{ connector.deleted ? "Deleted" : "Active" }}</span>
+      <ClprConnectorStateLabel class="connector-status" :connector="connector"/>
     </div>
     <Tabs
         :selected-tab="selectedTab"
@@ -54,6 +54,7 @@ import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import NotificationBanner from "@/components/NotificationBanner.vue";
 import Tabs from "@/components/Tabs.vue";
 import ClprMessagesCard from "@/components/clpr/ClprMessagesCard.vue";
+import ClprConnectorStateLabel from "@/components/clpr/ClprConnectorStateLabel.vue";
 import ClprConnectorSummary from "@/components/clpr/ClprConnectorSummary.vue";
 import {getClprMockConnector} from "@/components/clpr/ClprMockData.ts";
 import {shortenHex} from "@/components/clpr/ClprUtils.ts";
@@ -103,8 +104,7 @@ h2.connector-title {
   margin: 0;
 }
 
-span.connector-status {
-  color: var(--text-secondary);
+.connector-status {
   font-size: 12px;
 }
 
