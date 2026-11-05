@@ -30,7 +30,7 @@
         </template>
       </Property>
       <Property id="lastUpdated" full-width>
-        <template #name>Last Updated</template>
+        <template #name>Last Status or Anchor Change</template>
         <template #value>
           <TimestampValue :show-none="true" :timestamp="channel.timestamp?.from"/>
         </template>
