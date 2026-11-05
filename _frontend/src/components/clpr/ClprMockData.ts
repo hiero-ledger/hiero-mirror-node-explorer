@@ -11,7 +11,8 @@ import {
     ClprMessage,
     ClprMessageReplyStatus,
     ClprMessageType,
-    ClprPendingConnector
+    ClprPendingConnector,
+    KeyType
 } from "@/schemas/MirrorNodeSchemas.ts";
 
 const hex = (prefix: string): string => "0x" + prefix.padEnd(64, "0")
@@ -542,6 +543,7 @@ const GENERATED_MESSAGES: ClprMessage[] = Array.from({length: 40}, (_, i): ClprM
 // Connectors as returned by GET /api/v1/clpr/channels/{channelId}/connectors (stake in tinybars)
 export const CLPR_MOCK_CONNECTORS: ClprConnector[] = [
     {
+        admin_key: {_type: KeyType.ED25519, key: "302a300506032b6570032100" + "e5b2".repeat(16)},
         channel_id: CHANNEL_1A2B,
         connector_contract_id: "0.0.789",
         connector_id: CONNECTOR_4D5E,
@@ -554,6 +556,7 @@ export const CLPR_MOCK_CONNECTORS: ClprConnector[] = [
         timestamp: {from: "1789917600.000000000", to: null},
     },
     {
+        admin_key: {_type: KeyType.ED25519, key: "302a300506032b6570032100" + "e5b2".repeat(16)},
         channel_id: CHANNEL_1A2B,
         connector_contract_id: "0.0.790",
         connector_id: CONNECTOR_88AA,
@@ -566,6 +569,7 @@ export const CLPR_MOCK_CONNECTORS: ClprConnector[] = [
         timestamp: {from: "1789034400.000000000", to: null},
     },
     {
+        admin_key: {_type: KeyType.ED25519, key: "302b300506032b6570032100" + "e5b2".repeat(16)},
         channel_id: CHANNEL_2F91,
         connector_contract_id: "0.0.791",
         connector_id: CONNECTOR_55CC,
@@ -578,6 +582,7 @@ export const CLPR_MOCK_CONNECTORS: ClprConnector[] = [
         timestamp: {from: "1790070300.000000000", to: null},
     },
     {
+        admin_key: {_type: KeyType.ED25519, key: "302c300506032b6570032100" + "e5b2".repeat(16)},
         channel_id: hexId("7cd4", "11aa"),
         connector_contract_id: "0.0.792",
         connector_id: hexId("1234", "abcd"),
@@ -590,6 +595,7 @@ export const CLPR_MOCK_CONNECTORS: ClprConnector[] = [
         timestamp: {from: "1786705500.000000000", to: null},
     },
     {
+        admin_key: {_type: KeyType.ED25519, key: "302d300506032b6570032100" + "e5b2".repeat(16)},
         channel_id: CHANNEL_5B60,
         connector_contract_id: "0.0.793",
         connector_id: CONNECTOR_77EE,
@@ -602,6 +608,7 @@ export const CLPR_MOCK_CONNECTORS: ClprConnector[] = [
         timestamp: {from: "1783009800.000000000", to: null},
     },
     {
+        admin_key: {_type: KeyType.ED25519, key: "3032300506032b6570032100" + "e5b2".repeat(16)},
         channel_id: CHANNEL_5B60,
         connector_contract_id: "0.0.798",
         connector_id: CONNECTOR_3344,
@@ -614,6 +621,7 @@ export const CLPR_MOCK_CONNECTORS: ClprConnector[] = [
         timestamp: {from: "1783641600.000000000", to: null},
     },
     {
+        admin_key: {_type: KeyType.ED25519, key: "302e300506032b6570032100" + "e5b2".repeat(16)},
         channel_id: hexId("3d82", "c701"),
         connector_contract_id: "0.0.794",
         connector_id: hexId("9900", "aabb"),
@@ -626,6 +634,7 @@ export const CLPR_MOCK_CONNECTORS: ClprConnector[] = [
         timestamp: {from: "1790770200.000000000", to: null},
     },
     {
+        admin_key: {_type: KeyType.ED25519, key: "302f300506032b6570032100" + "e5b2".repeat(16)},
         channel_id: hexId("9e14", "4420"),
         connector_contract_id: "0.0.795",
         connector_id: hexId("4411", "9922"),
@@ -638,6 +647,7 @@ export const CLPR_MOCK_CONNECTORS: ClprConnector[] = [
         timestamp: {from: "1781078700.000000000", to: null},
     },
     {
+        admin_key: {_type: KeyType.ED25519, key: "3030300506032b6570032100" + "e5b2".repeat(16)},
         channel_id: hexId("ab33", "7760"),
         connector_contract_id: "0.0.796",
         connector_id: hexId("6655", "4433"),
@@ -650,6 +660,7 @@ export const CLPR_MOCK_CONNECTORS: ClprConnector[] = [
         timestamp: {from: "1789761300.000000000", to: null},
     },
     {
+        admin_key: {_type: KeyType.ED25519, key: "3031300506032b6570032100" + "e5b2".repeat(16)},
         channel_id: hexId("f002", "d8e1"),
         connector_contract_id: "0.0.797",
         connector_id: hexId("2200", "ee11"),
@@ -702,3 +713,7 @@ export const CLPR_MOCK_PENDING_CONNECTORS: ClprPendingConnector[] = [
     {commitment: hexId("0a0a", "b1b1"), created_timestamp: "1790965200.000000000", status: "OPEN"},
     {commitment: hexId("9f9f", "e2e2"), created_timestamp: "1790766000.000000000", status: "OPEN"},
 ]
+
+export function getClprMockConnector(channelId: string, connectorId: string): ClprConnector | null {
+    return CLPR_MOCK_CONNECTORS.find(c => c.channel_id === channelId && c.connector_id === connectorId) ?? null
+}
