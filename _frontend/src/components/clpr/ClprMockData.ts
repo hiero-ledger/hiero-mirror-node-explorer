@@ -25,12 +25,16 @@ const address = (prefix: string): string => "0x" + prefix.padEnd(40, "0")
 const CHANNEL_1A2B = hexId("1a2b", "3c4d")
 const CHANNEL_2F91 = hexId("2f91", "8e02")
 const CHANNEL_5B60 = hexId("5b60", "9f3e")
+const CHANNEL_3D82 = hexId("3d82", "c701")
+const CHANNEL_AB33 = hexId("ab33", "7760")
 
 const CONNECTOR_4D5E = hexId("4d5e", "6f70")
 const CONNECTOR_88AA = hexId("88aa", "22bb")
 const CONNECTOR_55CC = hexId("55cc", "99dd")
 const CONNECTOR_77EE = hexId("77ee", "33ff")
 const CONNECTOR_3344 = hexId("3344", "7788")
+const CONNECTOR_9900 = hexId("9900", "aabb")
+const CONNECTOR_6655 = hexId("6655", "4433")
 
 const APP_A1 = address("a1")
 const APP_A2 = address("a2")
@@ -383,6 +387,48 @@ const PAYLOADS = [
 const HANDWRITTEN_MESSAGES: ClprMessage[] = [
     {
         acknowledged: false,
+        channel_id: CHANNEL_3D82,
+        connector_id: CONNECTOR_9900,
+        message_data: PAYLOADS[0],
+        message_id: 44,
+        reply_status: null,
+        reply_to_message_id: null,
+        running_hash: hex("3d82002c"),
+        sender: APP_A4,
+        target_application: APP_T3,
+        timestamp: "1790979000.000000000",
+        type: ClprMessageType.DATA,
+    },
+    {
+        acknowledged: false,
+        channel_id: CHANNEL_AB33,
+        connector_id: CONNECTOR_6655,
+        message_data: PAYLOADS[3],
+        message_id: 59,
+        reply_status: null,
+        reply_to_message_id: null,
+        running_hash: hex("ab33003b"),
+        sender: APP_A4,
+        target_application: APP_T3,
+        timestamp: "1790964000.000000000",
+        type: ClprMessageType.DATA,
+    },
+    {
+        acknowledged: false,
+        channel_id: CHANNEL_AB33,
+        connector_id: CONNECTOR_6655,
+        message_data: PAYLOADS[0],
+        message_id: 60,
+        reply_status: null,
+        reply_to_message_id: null,
+        running_hash: hex("ab33003c"),
+        sender: APP_A4,
+        target_application: APP_T3,
+        timestamp: "1790969400.000000000",
+        type: ClprMessageType.DATA,
+    },
+    {
+        acknowledged: false,
         channel_id: CHANNEL_1A2B,
         connector_id: null,
         message_data: "0x0a0b436f6e666967557064617465100318c0f1ed01",
@@ -392,7 +438,7 @@ const HANDWRITTEN_MESSAGES: ClprMessage[] = [
         running_hash: hex("1a2b04dd"),
         sender: null,
         target_application: null,
-        timestamp: "1791016200.000000001",
+        timestamp: "1791016200.000000000",
         type: ClprMessageType.CONTROL,
     },
     {
@@ -406,7 +452,7 @@ const HANDWRITTEN_MESSAGES: ClprMessage[] = [
         running_hash: hex("1a2b04dc"),
         sender: APP_A1,
         target_application: APP_T1,
-        timestamp: "1790929860.000000300",
+        timestamp: "1791016260.000000000",
         type: ClprMessageType.DATA,
     },
     {
@@ -420,7 +466,7 @@ const HANDWRITTEN_MESSAGES: ClprMessage[] = [
         running_hash: hex("1a2b04db"),
         sender: null,
         target_application: null,
-        timestamp: "1790929800.000000301",
+        timestamp: "1791016200.000000000",
         type: ClprMessageType.RESPONSE,
     },
     {
@@ -434,7 +480,7 @@ const HANDWRITTEN_MESSAGES: ClprMessage[] = [
         running_hash: hex("1a2b04d8"),
         sender: APP_A1,
         target_application: APP_T1,
-        timestamp: "1790842920.000000302",
+        timestamp: "1790842920.000000000",
         type: ClprMessageType.DATA,
     },
     {
@@ -448,7 +494,7 @@ const HANDWRITTEN_MESSAGES: ClprMessage[] = [
         running_hash: hex("1a2b04d6"),
         sender: APP_A2,
         target_application: APP_T1,
-        timestamp: "1790841480.000000303",
+        timestamp: "1790841480.000000000",
         type: ClprMessageType.DATA,
     },
     {
@@ -462,7 +508,7 @@ const HANDWRITTEN_MESSAGES: ClprMessage[] = [
         running_hash: hex("1a2b04d5"),
         sender: APP_A2,
         target_application: APP_T1,
-        timestamp: "1790838600.000000304",
+        timestamp: "1790838600.000000000",
         type: ClprMessageType.DATA,
     },
     {
@@ -476,7 +522,7 @@ const HANDWRITTEN_MESSAGES: ClprMessage[] = [
         running_hash: hex("2f910200"),
         sender: APP_A3,
         target_application: APP_T2,
-        timestamp: "1790824140.000000310",
+        timestamp: "1790824140.000000000",
         type: ClprMessageType.DATA,
     },
     {
@@ -490,7 +536,7 @@ const HANDWRITTEN_MESSAGES: ClprMessage[] = [
         running_hash: hex("2f9101ff"),
         sender: APP_A3,
         target_application: APP_T2,
-        timestamp: "1790805600.000000311",
+        timestamp: "1790805600.000000000",
         type: ClprMessageType.DATA,
     },
     {
@@ -504,7 +550,7 @@ const HANDWRITTEN_MESSAGES: ClprMessage[] = [
         running_hash: hex("5b602273"),
         sender: APP_A4,
         target_application: APP_T3,
-        timestamp: "1791013200.000000330",
+        timestamp: "1791013200.000000000",
         type: ClprMessageType.DATA,
     },
     {
@@ -518,7 +564,7 @@ const HANDWRITTEN_MESSAGES: ClprMessage[] = [
         running_hash: hex("5b60226c"),
         sender: APP_A4,
         target_application: APP_T3,
-        timestamp: "1790919600.000000331",
+        timestamp: "1790919600.000000000",
         type: ClprMessageType.DATA,
     },
 ]
@@ -537,7 +583,7 @@ const GENERATED_MESSAGES: ClprMessage[] = Array.from({length: 40}, (_, i): ClprM
         running_hash: hex("1a2b" + (1236 - i).toString(16)),
         sender: isResponse ? null : APP_A1,
         target_application: isResponse ? null : APP_T1,
-        timestamp: (1759219200 - i * 3600) + "." + String(400 + i).padStart(9, "0"),
+        timestamp: (1759219200 - i * 3600) + ".000000000",
         type: isResponse ? ClprMessageType.RESPONSE : ClprMessageType.DATA,
     }
 })
@@ -682,7 +728,12 @@ export function getClprMockConnectors(channelId: string): ClprConnector[] {
         .sort((a, b) => Number(b.created_timestamp) - Number(a.created_timestamp))
 }
 
+// "acknowledged" is computed by the API: message_id <= acked_message_id of the channel
+const ackedMessageId = (channelId: string): number =>
+    CLPR_MOCK_CHANNELS.find(c => c.channel_id === channelId)?.acked_message_id ?? 0
+
 export const CLPR_MOCK_MESSAGES: ClprMessage[] = [...HANDWRITTEN_MESSAGES, ...GENERATED_MESSAGES]
+    .map(m => ({...m, acknowledged: m.message_id <= ackedMessageId(m.channel_id)}))
 
 export function getClprMockMessages(channelId: string, type: ClprMessageType | null = null, connectorId: string | null = null): ClprMessage[] {
     // Mimics the API default order: consensus timestamp descending, then message id descending
@@ -750,4 +801,18 @@ export const CLPR_MOCK_ENDPOINT_MANIFEST: ClprCurrentEndpointManifest = {
     ],
     service_address: "0x" + "0".repeat(37) + "16d",
     version: 7,
+}
+
+// The "present" of the mock data: the one of the HTML mockup (2026-10-03 09:00 UTC).
+// To be replaced by the actual current time once real data is displayed.
+export const CLPR_MOCK_NOW_SECONDS = Date.UTC(2026, 9, 3, 9, 0, 0) / 1000
+
+// Timestamp of the oldest message of the channel not yet acknowledged by the peer, if any.
+// With the API: GET /api/v1/clpr/channels/{channelId}/messages?order=desc&limit={backlog}&timestamp=lte:{now}
+// (plus a lower bound within the allowed range): the last message returned is the oldest unacknowledged one.
+export function getClprMockOldestUnackedTimestamp(channel: ClprChannel): string | null {
+    const unacked = CLPR_MOCK_MESSAGES
+        .filter(m => m.channel_id === channel.channel_id && m.message_id > (channel.acked_message_id ?? 0))
+        .sort((a, b) => Number(a.timestamp) - Number(b.timestamp))
+    return unacked.length ? unacked[0].timestamp : null
 }

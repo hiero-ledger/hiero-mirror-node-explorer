@@ -6,14 +6,11 @@
 
 <template>
 
-  <DashboardCardV2>
-    <template #title>
-      Overview
-    </template>
-    <template #content>
-      <span class="h-is-secondary-text">Coming soon</span>
-    </template>
-  </DashboardCardV2>
+  <ClprOverviewStatsCard/>
+
+  <ClprChannelStatusCard/>
+
+  <ClprAttentionCard/>
 
 </template>
 
@@ -23,7 +20,9 @@
 
 <script setup lang="ts">
 
-import DashboardCardV2 from "@/components/DashboardCardV2.vue";
+import ClprOverviewStatsCard from "@/components/clpr/ClprOverviewStatsCard.vue";
+import ClprChannelStatusCard from "@/components/clpr/ClprChannelStatusCard.vue";
+import ClprAttentionCard from "@/components/clpr/ClprAttentionCard.vue";
 
 defineProps({
   network: String
