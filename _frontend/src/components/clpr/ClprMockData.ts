@@ -10,7 +10,8 @@ import {
     ClprConnector,
     ClprMessage,
     ClprMessageReplyStatus,
-    ClprMessageType
+    ClprMessageType,
+    ClprPendingConnector
 } from "@/schemas/MirrorNodeSchemas.ts";
 
 const hex = (prefix: string): string => "0x" + prefix.padEnd(64, "0")
@@ -694,3 +695,10 @@ export function getClprMockPreviousRunningHash(message: ClprMessage): string {
 export function getClprMockChannel(channelId: string): ClprChannel | null {
     return CLPR_MOCK_CHANNELS.find(c => c.channel_id === channelId) ?? null
 }
+
+// Pending connector commitments as returned by GET /api/v1/clpr/connectors/pending, newest first.
+// Neither the channel nor the connector id is known until the commitment is revealed.
+export const CLPR_MOCK_PENDING_CONNECTORS: ClprPendingConnector[] = [
+    {commitment: hexId("0a0a", "b1b1"), created_timestamp: "1790965200.000000000", status: "OPEN"},
+    {commitment: hexId("9f9f", "e2e2"), created_timestamp: "1790766000.000000000", status: "OPEN"},
+]

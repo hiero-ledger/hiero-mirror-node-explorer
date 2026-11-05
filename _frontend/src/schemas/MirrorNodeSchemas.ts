@@ -1123,6 +1123,13 @@ export interface ClprConnector {
     timestamp: TimestampRange
 }
 
+// A connector registration whose commitment is not yet revealed (GET /api/v1/clpr/connectors/pending)
+export interface ClprPendingConnector {
+    commitment: string
+    created_timestamp: string
+    status: "OPEN"
+}
+
 export interface ClprConnectorsResponse {
     connectors: ClprConnector[] | undefined
     links: Links | undefined
