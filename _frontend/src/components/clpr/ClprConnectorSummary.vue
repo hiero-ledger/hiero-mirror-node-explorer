@@ -49,12 +49,6 @@
           <TimestampValue :show-none="true" :timestamp="connector.created_timestamp"/>
         </template>
       </Property>
-      <Property id="lastUpdated" full-width>
-        <template #name>Last Updated</template>
-        <template #value>
-          <TimestampValue :show-none="true" :timestamp="connector.timestamp.from"/>
-        </template>
-      </Property>
       <Property id="stakeRecipient" full-width>
         <template #name>Stake Recipient</template>
         <template #value>
