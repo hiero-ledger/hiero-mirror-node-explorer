@@ -29,18 +29,32 @@
 
       <o-table-column v-slot="props" field="locked_stake" label="LOCKED STAKE" position="right">
         <HbarAmount :amount="Number(props.row.locked_stake)" :decimals="2"/>
+        <span class="h-is-secondary-text"> / {{ minStakeLabel }} min</span>
+        <ClprBar
+            :value="Number(props.row.locked_stake)"
+            :max="CLPR_ECONOMICS.minLockedStake * 2"
+            :level="Number(props.row.locked_stake) < CLPR_ECONOMICS.minLockedStake ? 'bad' : ''"
+        />
       </o-table-column>
 
       <o-table-column v-slot="props" field="in_flight_message_count" label="IN-FLIGHT" position="right">
         <PlainAmount :amount="props.row.in_flight_message_count"/>
+        <span class="h-is-secondary-text"> / {{ quota.toLocaleString() }}</span>
+        <ClprBar :value="props.row.in_flight_message_count" :max="quota" level="info"/>
       </o-table-column>
 
       <o-table-column v-slot="props" field="slash_count" label="SLASHES" position="right">
         <PlainAmount :amount="props.row.slash_count"/>
+        <span class="h-is-secondary-text"> / {{ CLPR_ECONOMICS.slashBanThreshold }}</span>
+        <ClprBar
+            :value="props.row.slash_count"
+            :max="CLPR_ECONOMICS.slashBanThreshold"
+            :level="props.row.slash_count >= CLPR_ECONOMICS.slashBanThreshold - 1 ? 'bad' : props.row.slash_count ? 'warn' : ''"
+        />
       </o-table-column>
 
-      <o-table-column v-slot="props" field="deleted" label="STATUS">
-        {{ props.row.deleted ? "Deleted" : "Active" }}
+      <o-table-column v-slot="props" field="state" label="STATE">
+        <ClprConnectorStateLabel :connector="props.row"/>
       </o-table-column>
 
       <o-table-column v-slot="props" field="created_timestamp" label="CREATED">
@@ -75,6 +89,10 @@ import AccountLink from "@/components/values/link/AccountLink.vue";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
 import {routeManager} from "@/utils/RouteManager.ts";
 import ClprTableFrame from "@/components/clpr/ClprTableFrame.vue";
+import ClprBar from "@/components/clpr/ClprBar.vue";
+import ClprConnectorStateLabel from "@/components/clpr/ClprConnectorStateLabel.vue";
+import {CLPR_ECONOMICS, getConnectorQuota} from "@/components/clpr/ClprEconomics.ts";
+import {CLPR_MOCK_LEDGER_CONFIGURATION} from "@/components/clpr/ClprMockData.ts";
 import ClprHexLabel from "@/components/clpr/ClprHexLabel.vue";
 
 const props = defineProps({
@@ -87,6 +105,11 @@ const props = defineProps({
 const handleClick = (connector: ClprConnector, c: unknown, i: number, ci: number, event: Event) => {
   routeManager.routeToClprConnector(connector.channel_id, connector.connector_id, event)
 }
+
+// The quota is a share of the max queue depth of the ledger configuration
+// (mock for now, to be replaced by GET /api/v1/clpr/configuration)
+const quota = getConnectorQuota(CLPR_MOCK_LEDGER_CONFIGURATION.throttles.max_queue_depth ?? 0)
+const minStakeLabel = (CLPR_ECONOMICS.minLockedStake / 100_000_000).toLocaleString() + " ℏ"
 
 const isMediumScreen = inject('isMediumScreen', true)
 const currentPage = ref(1)
