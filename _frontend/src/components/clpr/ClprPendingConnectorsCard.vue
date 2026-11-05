@@ -11,33 +11,35 @@
       Pending Connectors
     </template>
     <template #content>
-      <o-table
-          :data="pendingConnectors"
-          :hoverable="true"
-          :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
-          paginated
-          pagination-order="centered"
-          :current-page="currentPage"
-          @update:current-page="currentPage = $event as number"
-          :per-page="perPage"
-          row-key="commitment"
-      >
-        <o-table-column v-slot="props" field="commitment" label="COMMITMENT">
-          <ClprHexLabel :value="props.row.commitment"/>
-        </o-table-column>
+      <ClprTableFrame :row-count="pendingConnectors.length" :page-size="perPage">
+        <o-table
+            :data="pendingConnectors"
+            :hoverable="true"
+            :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
+            paginated
+            pagination-order="centered"
+            :current-page="currentPage"
+            @update:current-page="currentPage = $event as number"
+            :per-page="perPage"
+            row-key="commitment"
+        >
+          <o-table-column v-slot="props" field="commitment" label="COMMITMENT">
+            <ClprHexLabel :value="props.row.commitment"/>
+          </o-table-column>
 
-        <o-table-column v-slot="props" field="status" label="STATUS">
-          {{ props.row.status }}
-        </o-table-column>
+          <o-table-column v-slot="props" field="status" label="STATUS">
+            {{ props.row.status }}
+          </o-table-column>
 
-        <o-table-column v-slot="props" field="created_timestamp" label="CREATED">
-          <TimestampValue :timestamp="props.row.created_timestamp"/>
-        </o-table-column>
+          <o-table-column v-slot="props" field="created_timestamp" label="CREATED">
+            <TimestampValue :timestamp="props.row.created_timestamp"/>
+          </o-table-column>
 
-        <template v-slot:bottomLeft>
-          <TablePageSize v-model:size="perPage"/>
-        </template>
-      </o-table>
+          <template v-slot:bottomLeft>
+            <TablePageSize v-model:size="perPage"/>
+          </template>
+        </o-table>
+      </ClprTableFrame>
 
       <EmptyTable v-if="!pendingConnectors.length"/>
     </template>
@@ -63,6 +65,7 @@ import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import EmptyTable from "@/components/EmptyTable.vue";
 import TimestampValue from "@/components/values/TimestampValue.vue";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
+import ClprTableFrame from "@/components/clpr/ClprTableFrame.vue";
 import ClprHexLabel from "@/components/clpr/ClprHexLabel.vue";
 import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
 import {CLPR_MOCK_PENDING_CONNECTORS} from "@/components/clpr/ClprMockData.ts";
