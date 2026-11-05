@@ -8,6 +8,8 @@ import {
     ClprChannel,
     ClprChannelStatus,
     ClprConnector,
+    ClprCurrentEndpointManifest,
+    ClprLedgerConfiguration,
     ClprMessage,
     ClprMessageReplyStatus,
     ClprMessageType,
@@ -716,4 +718,36 @@ export const CLPR_MOCK_PENDING_CONNECTORS: ClprPendingConnector[] = [
 
 export function getClprMockConnector(channelId: string, connectorId: string): ClprConnector | null {
     return CLPR_MOCK_CONNECTORS.find(c => c.channel_id === channelId && c.connector_id === connectorId) ?? null
+}
+
+// Current ledger configuration as returned by GET /api/v1/clpr/configuration
+export const CLPR_MOCK_LEDGER_CONFIGURATION: ClprLedgerConfiguration = {
+    chain_id: "hedera:mainnet",
+    consensus_timestamp: "1789466400.000000000",
+    initial_trust_anchor: hexId("3344", "5566"),
+    initial_trust_anchor_id: hexId("9f8e", "7a61"),
+    protocol_version: 1,
+    service_address: "0x" + "0".repeat(37) + "16d",
+    throttles: {
+        max_gas_per_message: 15000000,
+        max_local_endpoints: 39,
+        max_message_payload_bytes: 65536,
+        max_messages_per_bundle: 1000,
+        max_peer_endpoints: 39,
+        max_queue_depth: 10000,
+        max_sync_bytes: 4194304,
+    },
+}
+
+// Current endpoint manifest as returned by GET /api/v1/clpr/endpoint-manifest
+export const CLPR_MOCK_ENDPOINT_MANIFEST: ClprCurrentEndpointManifest = {
+    consensus_timestamp: "1790640000.000000000",
+    endpoints: [
+        {service_endpoint: {ip_address: "34.82.11.4", port: 50212}},
+        {service_endpoint: {ip_address: "35.190.22.9", port: 50212}},
+        {service_endpoint: {ip_address: "34.70.88.3", port: 50212}},
+        {service_endpoint: {ip_address: "52.14.88.201", port: 50212}},
+    ],
+    service_address: "0x" + "0".repeat(37) + "16d",
+    version: 7,
 }

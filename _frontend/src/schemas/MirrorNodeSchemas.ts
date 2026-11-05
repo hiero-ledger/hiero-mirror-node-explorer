@@ -1094,6 +1094,23 @@ export interface ClprEndpointManifest {
     version: number
 }
 
+// GET /api/v1/clpr/configuration
+export interface ClprLedgerConfiguration {
+    chain_id: string
+    consensus_timestamp: string
+    initial_trust_anchor: string
+    initial_trust_anchor_id: string
+    protocol_version: number
+    service_address: string
+    throttles: ClprPeerThrottles
+}
+
+// GET /api/v1/clpr/endpoint-manifest
+export interface ClprCurrentEndpointManifest extends ClprEndpointManifest {
+    consensus_timestamp: string
+    service_address: string
+}
+
 export interface ClprPeerThrottles {
     max_gas_per_message: number | null
     max_local_endpoints: number | null

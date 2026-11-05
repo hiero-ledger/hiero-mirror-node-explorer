@@ -6,14 +6,9 @@
 
 <template>
 
-  <DashboardCardV2>
-    <template #title>
-      Configuration
-    </template>
-    <template #content>
-      <span class="h-is-secondary-text">Coming soon</span>
-    </template>
-  </DashboardCardV2>
+  <ClprLedgerConfigurationCard/>
+
+  <ClprEndpointManifestCard/>
 
 </template>
 
@@ -23,7 +18,8 @@
 
 <script setup lang="ts">
 
-import DashboardCardV2 from "@/components/DashboardCardV2.vue";
+import ClprLedgerConfigurationCard from "@/components/clpr/ClprLedgerConfigurationCard.vue";
+import ClprEndpointManifestCard from "@/components/clpr/ClprEndpointManifestCard.vue";
 
 defineProps({
   network: String
