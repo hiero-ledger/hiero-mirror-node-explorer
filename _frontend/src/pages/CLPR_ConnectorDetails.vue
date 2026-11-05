@@ -26,6 +26,11 @@
 
   <template v-if="connector">
     <ClprConnectorSummary v-if="selectedTab === 'summary'" :connector="connector"/>
+    <ClprMessagesCard
+        v-else-if="selectedTab === 'messages'"
+        :channel-id="connector.channel_id"
+        :connector-id="connector.connector_id"
+    />
     <DashboardCardV2 v-else>
       <template #title>
         {{ tabLabels[tabIds.indexOf(selectedTab ?? '')] }}
@@ -48,6 +53,7 @@ import {computed, ref} from "vue";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import NotificationBanner from "@/components/NotificationBanner.vue";
 import Tabs from "@/components/Tabs.vue";
+import ClprMessagesCard from "@/components/clpr/ClprMessagesCard.vue";
 import ClprConnectorSummary from "@/components/clpr/ClprConnectorSummary.vue";
 import {getClprMockConnector} from "@/components/clpr/ClprMockData.ts";
 import {shortenHex} from "@/components/clpr/ClprUtils.ts";

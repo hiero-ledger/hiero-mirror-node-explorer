@@ -10,16 +10,16 @@
     <template #title>
       Messages
     </template>
-    <template #right-control>
+    <template v-if="hasFilters" #right-control>
       <div class="filters">
         <slot name="channel-filter"/>
-        <SelectView v-model="selectedConnectorId" :small="true" data-cy="select-connector">
+        <SelectView v-if="!props.connectorId" v-model="selectedConnectorId" :small="true" data-cy="select-connector">
           <option value="">CONNECTORS: ALL</option>
           <option v-for="c in connectors" :key="c.connector_id" :value="c.connector_id">
             {{ shortenHex(c.connector_id) }}
           </option>
         </SelectView>
-        <SelectView v-model="selectedType" :small="true" data-cy="select-type">
+        <SelectView v-if="!props.connectorId" v-model="selectedType" :small="true" data-cy="select-type">
           <option value="">TYPES: ALL</option>
           <option v-for="t in Object.values(ClprMessageType)" :key="t" :value="t">{{ t }}</option>
         </SelectView>
@@ -38,7 +38,7 @@
 
 <script setup lang="ts">
 
-import {computed, ref, watch} from "vue";
+import {computed, PropType, ref, useSlots, watch} from "vue";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import SelectView from "@/elements/SelectView.vue";
 import {shortenHex} from "@/components/clpr/ClprUtils.ts";
@@ -48,12 +48,21 @@ import {ClprMessageType} from "@/schemas/MirrorNodeSchemas.ts";
 
 // Messages of one channel, with connector and type filters.
 // The channel selection, if any, is up to the parent (see channel-filter slot).
+// When a connector is imposed by the context (connectorId), neither the connector selector nor the type selector
+// are displayed: only DATA messages are associated with a connector, so the type filter would be pointless.
 const props = defineProps({
   channelId: {
     type: String,
     required: true
+  },
+  connectorId: {
+    type: String as PropType<string | null>,
+    default: null
   }
 })
+
+const slots = useSlots()
+const hasFilters = computed(() => !props.connectorId || !!slots['channel-filter'])
 
 const selectedConnectorId = ref<string>("")
 const connectors = computed(() => getClprMockConnectors(props.channelId))
@@ -64,7 +73,7 @@ const selectedType = ref<string>("")
 const messages = computed(() => getClprMockMessages(
     props.channelId,
     selectedType.value === "" ? null : selectedType.value as ClprMessageType,
-    selectedConnectorId.value === "" ? null : selectedConnectorId.value))
+    props.connectorId ?? (selectedConnectorId.value === "" ? null : selectedConnectorId.value)))
 
 </script>
 
