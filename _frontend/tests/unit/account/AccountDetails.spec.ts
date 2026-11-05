@@ -2,8 +2,8 @@
 
 // SPDX-License-Identifier: Apache-2.0
 
-import {describe, expect, it, vi} from 'vitest'
-import {flushPromises, mount} from "@vue/test-utils"
+import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest'
+import {enableAutoUnmount, flushPromises, mount} from "@vue/test-utils"
 import axios from "axios";
 import AccountDetails from "@/pages/AccountDetails.vue";
 import {
@@ -53,13 +53,24 @@ import Tabs from "@/components/Tabs.vue";
 HMSF.forceUTC = true
 
 describe("AccountDetails.vue", () => {
+    let mock: MockAdapter
+
+    beforeEach(() => {
+        vi.stubEnv('VITE_APP_ACTIVATE_HIP_1195', 'true')
+    })
+
+    enableAutoUnmount(afterEach)
+
+    afterEach(async () => {
+        await flushPromises()
+        mock?.restore()
+        vi.unstubAllEnvs()
+    })
 
     it("AccountDetails should display top level tabs", async () => {
-        vi.stubEnv('VITE_APP_ACTIVATE_HIP_1195', 'true')
-
         await router.push("/") // To avoid "missing required param 'network'" error
 
-        const mock = new MockAdapter(axios as any);
+        mock = new MockAdapter(axios as any);
 
         const matcher1 = "/api/v1/accounts/" + SAMPLE_ACCOUNT.account
         mock.onGet(matcher1).reply(200, SAMPLE_ACCOUNT);
@@ -77,7 +88,7 @@ describe("AccountDetails.vue", () => {
         await flushPromises()
         // console.log(wrapper.html())
 
-        expect(fetchGetURLs(mock)).toStrictEqual([
+        expect(fetchGetURLs(mock).sort()).toStrictEqual([
             "api/v1/network/exchangerate",
             "api/v1/accounts/" + SAMPLE_ACCOUNT.account,
             "api/v1/network/nodes",
@@ -88,7 +99,7 @@ describe("AccountDetails.vue", () => {
             "api/v1/transactions",
             "api/v1/contracts/" + SAMPLE_ACCOUNT.evm_address,
             "api/v1/tokens/" + SAMPLE_ACCOUNT.account,
-        ])
+        ].sort())
 
         expect(wrapper.getComponent(PageHeader).text()).toMatch("Account " + SAMPLE_ACCOUNT.account)
 
@@ -103,15 +114,12 @@ describe("AccountDetails.vue", () => {
         expect(tabs[3].text()).toBe('Allowances')
         expect(tabs[4].text()).toBe('Hooks')
 
-        mock.restore()
-        wrapper.unmount()
-        await flushPromises()
     });
 
     it("AccountDetails default tab should display account summary", async () => {
         await router.push("/") // To avoid "missing required param 'network'" error
 
-        const mock = new MockAdapter(axios as any);
+        mock = new MockAdapter(axios as any);
 
         const matcher1 = "/api/v1/accounts/" + SAMPLE_ACCOUNT.account
         mock.onGet(matcher1).reply(200, SAMPLE_ACCOUNT);
@@ -149,7 +157,7 @@ describe("AccountDetails.vue", () => {
         await flushPromises()
         // console.log(wrapper.html())
 
-        expect(fetchGetURLs(mock)).toStrictEqual([
+        expect(fetchGetURLs(mock).sort()).toStrictEqual([
             "api/v1/network/exchangerate",
             "api/v1/accounts/" + SAMPLE_ACCOUNT.account,
             "api/v1/network/nodes",
@@ -162,7 +170,7 @@ describe("AccountDetails.vue", () => {
             "api/v1/transactions",
             "api/v1/contracts/" + SAMPLE_ACCOUNT.evm_address,
             "api/v1/tokens/" + SAMPLE_ACCOUNT.account,
-        ])
+        ].sort())
 
         expect(wrapper.getComponent(PageHeader).text()).toMatch("Account " + SAMPLE_ACCOUNT.account)
 
@@ -187,15 +195,12 @@ describe("AccountDetails.vue", () => {
 
         expect(wrapper.find("#delegationAddress").exists()).toBe(false)
 
-        mock.restore()
-        wrapper.unmount()
-        await flushPromises()
     });
 
     it("AccountDetails default tab should display delegation address", async () => {
         await router.push("/") // To avoid "missing required param 'network'" error
 
-        const mock = new MockAdapter(axios as any);
+        mock = new MockAdapter(axios as any);
 
         const account = {...SAMPLE_ACCOUNT, delegation_address: "0x00000000000000000000000000000000000b2608"}
         const accountId = account.account
@@ -219,15 +224,12 @@ describe("AccountDetails.vue", () => {
         expect(delegationText).toContain("0x00…0b2608")
         expect(delegationText).toContain("0.0.730632")
 
-        mock.restore()
-        wrapper.unmount()
-        await flushPromises()
     });
 
     it("AccountDetails_Operations should display recent transactions", async () => {
         await router.push("/") // To avoid "missing required param 'network'" error
 
-        const mock = new MockAdapter(axios as any);
+        mock = new MockAdapter(axios as any);
 
         const matcher1 = "/api/v1/accounts/" + SAMPLE_ACCOUNT.account
         mock.onGet(matcher1).reply(200, SAMPLE_ACCOUNT);
@@ -251,14 +253,14 @@ describe("AccountDetails.vue", () => {
         await flushPromises()
         // console.log(wrapper.html())
 
-        expect(fetchGetURLs(mock)).toStrictEqual([
+        expect(fetchGetURLs(mock).sort()).toStrictEqual([
             "api/v1/accounts/" + SAMPLE_ACCOUNT.account,
             "api/v1/network/nodes",
             "api/v1/accounts/" + SAMPLE_ACCOUNT.account + "/rewards?limit=1",
             "api/v1/transactions",
             "api/v1/tokens/" + SAMPLE_TRANSACTION.token_transfers[0].token_id,
             "api/v1/blocks",
-        ])
+        ].sort())
 
         const tab = wrapper.findComponent(Tabs)
         expect(tab.exists()).toBe(true)
@@ -288,16 +290,13 @@ describe("AccountDetails.vue", () => {
         expect(wrapper.find("#recentTransactions").exists()).toBe(true)
         expect(wrapper.findComponent(TransactionTable).exists()).toBe(true)
 
-        mock.restore()
-        wrapper.unmount()
-        await flushPromises()
 
     });
 
     it("AccountDetails should display a node account details", async () => {
         await router.push("/") // To avoid "missing required param 'network'" error
 
-        const mock = new MockAdapter(axios as any);
+        mock = new MockAdapter(axios as any);
 
         const accountId = SAMPLE_NODE_ACCOUNT.account
         const nodeId = 0
@@ -321,7 +320,7 @@ describe("AccountDetails.vue", () => {
         await flushPromises()
         // console.log(wrapper.html())
 
-        expect(fetchGetURLs(mock)).toStrictEqual([
+        expect(fetchGetURLs(mock).sort()).toStrictEqual([
             "api/v1/network/exchangerate",
             "api/v1/accounts/" + accountId,
             "api/v1/network/nodes",
@@ -330,7 +329,7 @@ describe("AccountDetails.vue", () => {
             "api/v1/balances",
             "api/v1/accounts/" + accountId + "/hooks",
             "api/v1/transactions",
-        ])
+        ].sort())
 
         expect(wrapper.text()).toMatch("Account  Account ID " + accountId)
 
@@ -339,16 +338,13 @@ describe("AccountDetails.vue", () => {
         expect(link.text()).toBe("0 - Hosted by Hedera | East Coast, USA")
         expect(link.get('a').attributes('href')).toMatch(RegExp("/node/" + nodeId + "$"))
 
-        mock.restore()
-        wrapper.unmount()
-        await flushPromises()
     });
 
     it("AccountDetails_Summary should update when account id changes", async () => {
 
         await router.push("/") // To avoid "missing required param 'network'" error
 
-        const mock = new MockAdapter(axios as any);
+        mock = new MockAdapter(axios as any);
 
         const account1 = SAMPLE_ACCOUNT
         let matcher1 = "/api/v1/accounts/" + account1.account
@@ -381,7 +377,7 @@ describe("AccountDetails.vue", () => {
         // console.log(wrapper.html())
         // console.log(wrapper.text())
 
-        expect(fetchGetURLs(mock)).toStrictEqual([
+        expect(fetchGetURLs(mock).sort()).toStrictEqual([
             "api/v1/network/exchangerate",
             "api/v1/accounts/" + SAMPLE_ACCOUNT.account,
             "api/v1/network/nodes",
@@ -391,7 +387,7 @@ describe("AccountDetails.vue", () => {
             "api/v1/transactions",
             "api/v1/contracts/" + SAMPLE_ACCOUNT.evm_address,
             "api/v1/tokens/" + SAMPLE_ACCOUNT.account,
-        ])
+        ].sort())
 
         expect(wrapper.text()).toMatch("Account  Account ID " + SAMPLE_ACCOUNT.account)
         expect(wrapper.get("#keyValue").text()).toBe(
@@ -414,14 +410,14 @@ describe("AccountDetails.vue", () => {
         // console.log(wrapper.html())
         // console.log(wrapper.text())
 
-        expect(fetchGetURLs(mock)).toStrictEqual([
+        expect(fetchGetURLs(mock).sort()).toStrictEqual([
             "api/v1/accounts/" + SAMPLE_ACCOUNT_DUDE.account,
             "api/v1/balances",
             "api/v1/accounts/" + SAMPLE_ACCOUNT_DUDE.account + "/hooks",
             "api/v1/contracts/" + SAMPLE_ACCOUNT_DUDE.account,
             "api/v1/contracts/0x00000000000000000000000000000000000b2608",
             "api/v1/tokens/" + SAMPLE_ACCOUNT_DUDE.account,
-        ])
+        ].sort())
 
         expect(wrapper.text()).toMatch("Account  Account ID " + SAMPLE_ACCOUNT_DUDE.account)
         expect(wrapper.get("#keyValue").text()).toBe("0x" + SAMPLE_ACCOUNT_DUDE.key.key + "CopyED25519")
@@ -432,7 +428,7 @@ describe("AccountDetails.vue", () => {
         expect(wrapper.get("#maxAutoAssociationValue").text()).toBe("Unlimited Auto Associations")
         expect(wrapper.get("#receiverSigRequiredValue").text()).toBe("true")
 
-        mock.restore()
+
         wrapper.unmount()
         await flushPromises()
 
@@ -443,7 +439,7 @@ describe("AccountDetails.vue", () => {
 
         await router.push("/") // To avoid "missing required param 'network'" error
 
-        const mock = new MockAdapter(axios as any);
+        mock = new MockAdapter(axios as any);
 
         const invalidAccountId = "0.0.0.1000"
         const wrapper = mount(AccountDetails, {
@@ -459,11 +455,11 @@ describe("AccountDetails.vue", () => {
         // console.log(wrapper.html())
         // console.log(wrapper.text())
 
-        expect(fetchGetURLs(mock)).toStrictEqual([
+        expect(fetchGetURLs(mock).sort()).toStrictEqual([
             "api/v1/network/exchangerate",
             "api/v1/network/nodes",
             "api/v1/network/exchangerate",
-        ])
+        ].sort())
 
         expect(wrapper.get("#notificationBanner").text()).toBe("Invalid account ID, address or alias")
 
@@ -475,7 +471,7 @@ describe("AccountDetails.vue", () => {
 
         await router.push("/") // To avoid "missing required param 'network'" error
 
-        const mock = new MockAdapter(axios as any);
+        mock = new MockAdapter(axios as any);
 
         const deletedAccount = SAMPLE_ACCOUNT_DELETED
         const matcher1 = "/api/v1/accounts/" + deletedAccount.account
@@ -508,7 +504,7 @@ describe("AccountDetails.vue", () => {
         await flushPromises()
         // console.log(wrapper.text())
 
-        expect(fetchGetURLs(mock)).toStrictEqual([
+        expect(fetchGetURLs(mock).sort()).toStrictEqual([
             "api/v1/network/exchangerate",
             "api/v1/accounts/" + SAMPLE_ACCOUNT_DELETED.account,
             "api/v1/network/nodes",
@@ -518,7 +514,7 @@ describe("AccountDetails.vue", () => {
             "api/v1/accounts/" + SAMPLE_ACCOUNT_DELETED.account + "/hooks",
             "api/v1/contracts/0x00000000000000000000000000000000000b2608",
             "api/v1/tokens/" + SAMPLE_ACCOUNT_DELETED.account,
-        ])
+        ].sort())
 
         expect(wrapper.getComponent(PageHeader).text()).toMatch("Account " + deletedAccount.account)
 
@@ -526,16 +522,13 @@ describe("AccountDetails.vue", () => {
         expect(banner.exists()).toBe(true)
         expect(banner.text()).toBe("Account is deleted")
 
-        mock.restore()
-        wrapper.unmount()
-        await flushPromises()
     });
 
     it("AccountDetails should display account staking to node", async () => {
 
         await router.push("/") // To avoid "missing required param 'network'" error
 
-        const mock = new MockAdapter(axios as any);
+        mock = new MockAdapter(axios as any);
 
         const matcher1 = "/api/v1/accounts/" + SAMPLE_ACCOUNT_STAKING_NODE.account
         mock.onGet(matcher1).reply(200, SAMPLE_ACCOUNT_STAKING_NODE);
@@ -565,7 +558,7 @@ describe("AccountDetails.vue", () => {
         await flushPromises()
         // console.log(wrapper.html())
 
-        expect(fetchGetURLs(mock)).toStrictEqual([
+        expect(fetchGetURLs(mock).sort()).toStrictEqual([
             "api/v1/network/exchangerate",
             "api/v1/accounts/" + SAMPLE_ACCOUNT_STAKING_NODE.account,
             "api/v1/network/nodes",
@@ -577,23 +570,20 @@ describe("AccountDetails.vue", () => {
             "api/v1/accounts/" + SAMPLE_ACCOUNT_STAKING_NODE.account + "/hooks",
             "api/v1/contracts/0x00000000000000000000000000000000000b2608",
             "api/v1/tokens/" + SAMPLE_ACCOUNT_STAKING_NODE.account,
-        ])
+        ].sort())
 
         expect(wrapper.get("#stakedToName").text()).toBe("Staked to")
         expect(wrapper.get("#stakedToValue").text()).toBe("Node 1 - Hosted by Hedera | East Coast, USA")
         expect(wrapper.get("#pendingRewardValue").text()).toBe("0.12345678ℏ$0.03037Period Started Nov 11, 2022, 00:00 UTC")
         expect(wrapper.get("#declineRewardValue").text()).toBe("Accepted")
 
-        mock.restore()
-        wrapper.unmount()
-        await flushPromises()
     });
 
     it("AccountDetails should display account staking to account", async () => {
 
         await router.push("/") // To avoid "missing required param 'network'" error
 
-        const mock = new MockAdapter(axios as any);
+        mock = new MockAdapter(axios as any);
 
         const config = [
             {
@@ -639,7 +629,7 @@ describe("AccountDetails.vue", () => {
         await flushPromises()
         // console.log(wrapper.html())
 
-        expect(fetchGetURLs(mock)).toStrictEqual([
+        expect(fetchGetURLs(mock).sort()).toStrictEqual([
             "api/v1/network/exchangerate",
             "api/v1/accounts/" + SAMPLE_ACCOUNT_STAKING_ACCOUNT.account,
             "api/v1/network/nodes",
@@ -652,22 +642,19 @@ describe("AccountDetails.vue", () => {
             "api/v1/contracts/" + SAMPLE_ACCOUNT_STAKING_ACCOUNT.staked_account_id,
             "api/v1/contracts/0x00000000000000000000000000000000000b2608",
             "api/v1/tokens/" + SAMPLE_ACCOUNT_STAKING_ACCOUNT.account,
-        ])
+        ].sort())
 
         expect(wrapper.get("#stakedToName").text()).toBe("Staked to")
         expect(wrapper.get("#stakedToValue").text()).toBe("Account 0.0.5Node 2 (Hedera)")
         expect(wrapper.get("#pendingRewardValue").text()).toBe("0.00000000ℏ$0.00000")
         expect(wrapper.find("#declineRewardValue").exists()).toBe(false)
 
-        mock.restore()
-        wrapper.unmount()
-        await flushPromises()
     });
 
     it("AccountDetails should display account with a public label", async () => {
         await router.push("/") // To avoid "missing required param 'network'" error
 
-        const mock = new MockAdapter(axios as any);
+        mock = new MockAdapter(axios as any);
 
         const matcher1 = "/api/v1/accounts/" + SAMPLE_ACCOUNT.account
         mock.onGet(matcher1).reply(200, SAMPLE_ACCOUNT);
@@ -711,7 +698,7 @@ describe("AccountDetails.vue", () => {
         await flushPromises()
         // console.log(wrapper.html())
 
-        expect(fetchGetURLs(mock)).toStrictEqual([
+        expect(fetchGetURLs(mock).sort()).toStrictEqual([
             "api/v1/network/exchangerate",
             "api/v1/accounts/" + SAMPLE_ACCOUNT.account,
             "api/v1/network/nodes",
@@ -725,7 +712,7 @@ describe("AccountDetails.vue", () => {
             "api/v1/transactions",
             "api/v1/contracts/" + SAMPLE_ACCOUNT.evm_address,
             "api/v1/tokens/" + SAMPLE_ACCOUNT.account,
-        ])
+        ].sort())
 
         expect(wrapper.text()).toMatch("Sample Account LabelPublic Label for ID 0.0.730631 [Exchange]Sample Account Descriptionhttps://example.com Account ID 0.0.730631")
 
@@ -740,8 +727,5 @@ describe("AccountDetails.vue", () => {
             + " Account ID "
             + LABEL_INFO.entityId)
 
-        mock.restore()
-        wrapper.unmount()
-        await flushPromises()
     });
 });
