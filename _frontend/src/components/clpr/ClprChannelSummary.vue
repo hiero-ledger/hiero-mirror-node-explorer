@@ -26,7 +26,7 @@
       <Property id="status" full-width>
         <template #name>Status</template>
         <template #value>
-          <StringValue :string-value="channel.status"/>
+          <ClprChannelStatusLabel :status="channel.status"/>
         </template>
       </Property>
       <Property id="lastUpdated" full-width>
@@ -200,6 +200,7 @@
 import {computed, PropType} from "vue";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import Property from "@/components/Property.vue";
+import ClprChannelStatusLabel from "@/components/clpr/ClprChannelStatusLabel.vue";
 import HexaValue from "@/components/values/HexaValue.vue";
 import PlainAmount from "@/components/values/PlainAmount.vue";
 import StringValue from "@/components/values/StringValue.vue";
