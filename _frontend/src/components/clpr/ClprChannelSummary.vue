@@ -98,24 +98,6 @@
           <span v-if="channel.received_message_id !== null" class="h-is-secondary-text"> (peer message ID)</span>
         </template>
       </Property>
-      <Property id="sentRunningHash" full-width>
-        <template #name>Outbound Running Hash</template>
-        <template #value>
-          <HexaValue :byte-string="channel.sent_running_hash" :show-none="true"/>
-          <div v-if="channel.next_message_id !== null" class="h-is-secondary-text">
-            after message {{ channel.next_message_id - 1 }}
-          </div>
-        </template>
-      </Property>
-      <Property id="receivedRunningHash" full-width>
-        <template #name>Inbound Running Hash</template>
-        <template #value>
-          <HexaValue :byte-string="channel.received_running_hash" :show-none="true"/>
-          <div v-if="channel.received_message_id !== null" class="h-is-secondary-text">
-            after peer message {{ channel.received_message_id }}
-          </div>
-        </template>
-      </Property>
     </template>
     <template #footer>
       <div class="note">

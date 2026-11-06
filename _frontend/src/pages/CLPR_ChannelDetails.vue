@@ -28,6 +28,7 @@
   <template v-if="channel">
     <ClprChannelSummary v-if="selectedTab === 'summary'" :channel="channel"/>
     <ClprMessagesCard v-else-if="selectedTab === 'messages'" :channel-id="channel.channel_id!"/>
+    <ClprChannelTrust v-else-if="selectedTab === 'trust'" :channel="channel"/>
     <ClprConnectorsCard v-else-if="selectedTab === 'connectors'" :channel-id="channel.channel_id!"/>
     <DashboardCardV2 v-else>
       <template #title>
@@ -55,6 +56,7 @@ import ClprMessagesCard from "@/components/clpr/ClprMessagesCard.vue";
 import ClprConnectorsCard from "@/components/clpr/ClprConnectorsCard.vue";
 import ClprChannelStatusLabel from "@/components/clpr/ClprChannelStatusLabel.vue";
 import ClprChannelHealthLabel from "@/components/clpr/ClprChannelHealthLabel.vue";
+import ClprChannelTrust from "@/components/clpr/ClprChannelTrust.vue";
 import ClprChannelSummary from "@/components/clpr/ClprChannelSummary.vue";
 import {getChannelHealth} from "@/components/clpr/ClprHealth.ts";
 import {

@@ -1086,6 +1086,7 @@ export interface ClprChannel {
     peer_throttles: ClprPeerThrottles | null
     received_running_hash: string | null
     sent_running_hash: string | null
+    trust_anchor: string | null
     trust_anchor_id: string | null
 }
 

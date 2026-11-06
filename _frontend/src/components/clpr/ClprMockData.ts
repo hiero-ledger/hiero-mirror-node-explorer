@@ -77,6 +77,7 @@ export const CLPR_MOCK_CHANNELS: ClprChannel[] = [
         },
         received_running_hash: hexId("3b77", "c1d9"),
         sent_running_hash: hexId("6f1a", "e02c"),
+        trust_anchor: "0x" + "77aabbcc" + "ab".repeat(60),
         trust_anchor_id: hexId("77aa", "bbcc"),
     },
     {
@@ -109,6 +110,7 @@ export const CLPR_MOCK_CHANNELS: ClprChannel[] = [
         },
         received_running_hash: hexId("9d02", "4410"),
         sent_running_hash: hexId("3a71", "88e0"),
+        trust_anchor: "0x" + "0c0cd0d0" + "ab".repeat(60),
         trust_anchor_id: hexId("0c0c", "d0d0"),
     },
     {
@@ -141,6 +143,7 @@ export const CLPR_MOCK_CHANNELS: ClprChannel[] = [
         },
         received_running_hash: hexId("a0a0", "1b1b"),
         sent_running_hash: hexId("185f", "66be"),
+        trust_anchor: "0x" + "77aabbcc" + "ab".repeat(60),
         trust_anchor_id: hexId("77aa", "bbcc"),
     },
     {
@@ -173,6 +176,7 @@ export const CLPR_MOCK_CHANNELS: ClprChannel[] = [
         },
         received_running_hash: hexId("c4c4", "2e2e"),
         sent_running_hash: hexId("074e", "55ad"),
+        trust_anchor: "0x" + "5a5a6b6b" + "ab".repeat(60),
         trust_anchor_id: hexId("5a5a", "6b6b"),
     },
     {
@@ -205,6 +209,7 @@ export const CLPR_MOCK_CHANNELS: ClprChannel[] = [
         },
         received_running_hash: hexId("7e7e", "9f9f"),
         sent_running_hash: hexId("e52c", "33ab"),
+        trust_anchor: "0x" + "40405050" + "ab".repeat(60),
         trust_anchor_id: hexId("4040", "5050"),
     },
     {
@@ -237,6 +242,7 @@ export const CLPR_MOCK_CHANNELS: ClprChannel[] = [
         },
         received_running_hash: hexId("1c1c", "8d8d"),
         sent_running_hash: hexId("d41b", "22fa"),
+        trust_anchor: "0x" + "40405050" + "ab".repeat(60),
         trust_anchor_id: hexId("4040", "5050"),
     },
     {
@@ -269,6 +275,7 @@ export const CLPR_MOCK_CHANNELS: ClprChannel[] = [
         },
         received_running_hash: hexId("5a5a", "e0e0"),
         sent_running_hash: hexId("c30a", "11f9"),
+        trust_anchor: "0x" + "77889900" + "ab".repeat(60),
         trust_anchor_id: hexId("7788", "9900"),
     },
     {
@@ -301,6 +308,7 @@ export const CLPR_MOCK_CHANNELS: ClprChannel[] = [
         },
         received_running_hash: hexId("6060", "7a7a"),
         sent_running_hash: hexId("b219", "00e8"),
+        trust_anchor: "0x" + "eeff0011" + "ab".repeat(60),
         trust_anchor_id: hexId("eeff", "0011"),
     },
     {
@@ -322,6 +330,7 @@ export const CLPR_MOCK_CHANNELS: ClprChannel[] = [
         peer_throttles: null,
         received_running_hash: null,
         sent_running_hash: null,
+        trust_anchor: null,
         trust_anchor_id: null,
     },
     {
@@ -343,6 +352,7 @@ export const CLPR_MOCK_CHANNELS: ClprChannel[] = [
         peer_throttles: null,
         received_running_hash: null,
         sent_running_hash: null,
+        trust_anchor: null,
         trust_anchor_id: null,
     },
     {
@@ -364,6 +374,7 @@ export const CLPR_MOCK_CHANNELS: ClprChannel[] = [
         peer_throttles: null,
         received_running_hash: null,
         sent_running_hash: null,
+        trust_anchor: null,
         trust_anchor_id: null,
     },
 ]
