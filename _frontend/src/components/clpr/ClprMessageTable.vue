@@ -41,10 +41,7 @@
       </o-table-column>
 
       <o-table-column v-slot="props" field="acknowledged" label="ACKNOWLEDGED">
-        <ClprPill
-            :label="props.row.acknowledged ? 'Yes' : 'No'"
-            :level="props.row.acknowledged ? 'success' : 'default'"
-        />
+        <Check v-if="props.row.acknowledged" :size="16" class="acknowledged-tick" aria-label="Acknowledged"/>
       </o-table-column>
 
       <o-table-column v-slot="props" field="reply_status" label="RESPONSE">
@@ -83,6 +80,7 @@
 
 import {inject, PropType, ref, watch} from "vue";
 import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
+import {Check} from "@lucide/vue";
 import {ClprMessage} from "@/schemas/MirrorNodeSchemas.ts";
 import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
 import EmptyTable from "@/components/EmptyTable.vue";
@@ -119,6 +117,11 @@ watch(() => props.messages, () => currentPage.value = 1)
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <style scoped>
+
+.acknowledged-tick {
+  color: var(--text-success);
+  vertical-align: middle;
+}
 
 span.message-id {
   font-weight: 600;
