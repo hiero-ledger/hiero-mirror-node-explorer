@@ -399,19 +399,20 @@ const PAYLOADS = [
 ]
 
 const HANDWRITTEN_MESSAGES: ClprMessage[] = [
-    // Not in the HTML mockup: a control message on the first channel, so that the Type filter has something to show
+    // Not in the HTML mockup: a control message on the first channel (id 1239, between 1238 and 1240), so that the
+    // Type filter has something to show
     {
         acknowledged: false,
         channel_id: CHANNEL_1A2B,
         connector_id: null,
         message_data: null,
-        message_id: 1245,
+        message_id: 1239,
         reply_status: null,
         reply_to_message_id: null,
-        running_hash: hex("1a2b04dd"),
+        running_hash: hex("1a2b04d7"),
         sender: null,
         target_application: null,
-        timestamp: "1791016200.000000000",
+        timestamp: "1790842200.000000000",
         type: ClprMessageType.CONTROL,
     },
     {
@@ -799,18 +800,10 @@ export function getClprMockMessages(channelId: string, type: ClprMessageType | n
         .sort((a, b) => Number(b.timestamp) - Number(a.timestamp) || b.message_id - a.message_id)
 }
 
-export function getClprMockMessage(channelId: string, messageId: number): ClprMessage | null {
-    return CLPR_MOCK_MESSAGES.find(m => m.channel_id === channelId && m.message_id === messageId) ?? null
-}
-
-const NULL_HASH = "0x" + "0".repeat(64)
-
-// The running hash of the previous message of the same channel (the hash chain input of the given message)
-export function getClprMockPreviousRunningHash(message: ClprMessage): string {
-    const previous = CLPR_MOCK_MESSAGES
-        .filter(m => m.channel_id === message.channel_id && m.message_id < message.message_id)
-        .sort((a, b) => b.message_id - a.message_id)[0]
-    return previous?.running_hash ?? NULL_HASH
+// A message is identified by its channel and message id; the timestamp is what the API queries by
+export function getClprMockMessage(channelId: string, messageId: number, timestamp: string): ClprMessage | null {
+    return CLPR_MOCK_MESSAGES.find(
+        m => m.channel_id === channelId && m.message_id === messageId && m.timestamp === timestamp) ?? null
 }
 
 export function getClprMockChannel(channelId: string): ClprChannel | null {

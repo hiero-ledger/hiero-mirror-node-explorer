@@ -85,7 +85,7 @@ import EmptyTable from "@/components/EmptyTable.vue";
 import HbarAmount from "@/components/values/HbarAmount.vue";
 import PlainAmount from "@/components/values/PlainAmount.vue";
 import TimestampValue from "@/components/values/TimestampValue.vue";
-import AccountLink from "@/components/values/link/AccountLink.vue";
+import StringValue from "@/components/values/StringValue.vue";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
 import {routeManager} from "@/utils/RouteManager.ts";
 import ClprTableFrame from "@/components/clpr/ClprTableFrame.vue";

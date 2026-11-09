@@ -10,9 +10,6 @@
     <template #title>
       Economic Configuration
     </template>
-    <template #right-control>
-      <span class="h-is-secondary-text">version {{ economics.version }}</span>
-    </template>
     <template #content>
       <Property id="minLockedStake" full-width>
         <template #name>Minimum Locked Stake</template>
@@ -50,12 +47,6 @@
           <StringValue :string-value="economics.connectorQueueQuotaPercent + ' % of max queue depth'"/>
         </template>
       </Property>
-      <Property id="economicsSince" full-width>
-        <template #name>In Effect Since</template>
-        <template #value>
-          <TimestampValue :show-none="true" :timestamp="economics.since"/>
-        </template>
-      </Property>
     </template>
     <template #footer>
       <div class="note">
@@ -78,7 +69,6 @@ import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import Property from "@/components/Property.vue";
 import HbarAmount from "@/components/values/HbarAmount.vue";
 import StringValue from "@/components/values/StringValue.vue";
-import TimestampValue from "@/components/values/TimestampValue.vue";
 import {CLPR_ECONOMICS} from "@/components/clpr/ClprEconomics.ts";
 
 const economics = CLPR_ECONOMICS

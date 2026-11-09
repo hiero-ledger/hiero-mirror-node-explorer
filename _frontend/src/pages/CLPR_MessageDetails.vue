@@ -76,10 +76,7 @@
       <Property v-if="message?.reply_to_message_id != null" id="replyTo" full-width>
         <template #name>In Reply To</template>
         <template #value>
-          <router-link v-if="replyToExists" :to="routeManager.makeRouteToClprMessage(message.channel_id, message.reply_to_message_id)">
-            Message {{ message.reply_to_message_id }}
-          </router-link>
-          <span v-else>Peer message {{ message.reply_to_message_id }}</span>
+          <span>Peer message {{ message.reply_to_message_id }}</span>
         </template>
       </Property>
       <Property id="size" full-width>
@@ -131,12 +128,6 @@
       Running Hashes
     </template>
     <template #content>
-      <Property id="previousRunningHash" full-width>
-        <template #name>Previous Running Hash</template>
-        <template #value>
-          <HexaValue :byte-string="previousRunningHash" :show-none="true"/>
-        </template>
-      </Property>
       <Property id="runningHash" full-width>
         <template #name>Running Hash After</template>
         <template #value>
@@ -165,12 +156,15 @@ import StringValue from "@/components/values/StringValue.vue";
 import TimestampValue from "@/components/values/TimestampValue.vue";
 import ClprPill from "@/components/clpr/ClprPill.vue";
 import {getReplyStatusLevel} from "@/components/clpr/ClprUtils.ts";
-import {routeManager} from "@/utils/RouteManager.ts";
 import {ClprMessageType} from "@/schemas/MirrorNodeSchemas.ts";
-import {getClprMockMessage, getClprMockPreviousRunningHash} from "@/components/clpr/ClprMockData.ts";
+import {getClprMockMessage} from "@/components/clpr/ClprMockData.ts";
 
 const props = defineProps({
   channelId: {
+    type: String,
+    required: true
+  },
+  timestamp: {
     type: String,
     required: true
   },
@@ -181,23 +175,20 @@ const props = defineProps({
   network: String
 })
 
-// Static mockup data, to be replaced by a call to GET /api/v1/clpr/channels/{channelId}/messages
-const message = computed(() => getClprMockMessage(props.channelId, Number(props.messageId)))
+// A message is identified by its channel and its message id, and found with the channel's timestamp-based query.
+// Static mockup data, to be replaced by a call to
+// GET /api/v1/clpr/channels/{channelId}/messages?timestamp=eq:{timestamp}, selecting the message with the id.
+const message = computed(() => getClprMockMessage(props.channelId, Number(props.messageId), props.timestamp))
 const notification = computed(() =>
-    message.value === null ? "CLPR message " + props.messageId + " not found in channel " + props.channelId : null)
-
-const replyToExists = computed(() =>
-    message.value?.reply_to_message_id != null
-    && getClprMockMessage(message.value.channel_id, message.value.reply_to_message_id) !== null)
+    message.value === null
+        ? "CLPR message " + props.messageId + " not found in channel " + props.channelId + " at " + props.timestamp
+        : null)
 
 // Number of bytes of the 0x-prefixed hex message_data
 const size = computed(() => {
   const data = message.value?.message_data ?? null
   return data !== null ? Math.max(data.length - 2, 0) / 2 : null
 })
-
-const previousRunningHash = computed(() =>
-    message.value !== null ? getClprMockPreviousRunningHash(message.value) : null)
 
 interface Step {
   title: string
@@ -206,7 +197,8 @@ interface Step {
   pending?: boolean
 }
 
-// Lifecycle limited to what the API tells (no bundle or transaction evidence available yet)
+// Lifecycle limited to what the API tells (no bundle or transaction evidence available). In particular, the reply to
+// a Data message sent by this ledger is not persisted: whether it arrived cannot be known.
 const steps = computed<Step[]>(() => {
   const m = message.value
   const result: Step[] = []
@@ -217,15 +209,10 @@ const steps = computed<Step[]>(() => {
         meta: "Dispatched here with result " + (m.reply_status ?? "unknown")
       })
     }
-    result.push({title: m.type === ClprMessageType.CONTROL ? "Enqueued by administrator" : "Enqueued on this ledger", timestamp: m.timestamp})
+    result.push({title: "Enqueued on this ledger", timestamp: m.timestamp})
     result.push(m.acknowledged
         ? {title: "Acknowledged by peer", meta: "Reported in a bundle received from the peer"}
         : {title: "Acknowledged by peer", meta: "Not yet: the peer's next bundle will carry the acknowledgement", pending: true})
-    if (m.type === ClprMessageType.DATA) {
-      result.push(m.reply_status !== null
-          ? {title: "Response received: " + m.reply_status, meta: "Carried in a bundle received from the peer"}
-          : {title: "Response received", meta: "Not yet", pending: true})
-    }
   }
   return result
 })

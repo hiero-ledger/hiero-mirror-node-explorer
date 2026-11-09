@@ -629,21 +629,21 @@ export class RouteManager {
         return {name: targetTabId, params: {network: this.currentNetwork.value}}
     }
 
-    public makeRouteToClprMessage(channelId: string, messageId: number): RouteLocationRaw {
+    public makeRouteToClprMessage(channelId: string, timestamp: string, messageId: number): RouteLocationRaw {
         return {
             name: 'CLPR_MessageDetails',
-            params: {channelId: channelId, messageId: messageId, network: this.currentNetwork.value}
+            params: {channelId: channelId, timestamp: timestamp, messageId: messageId, network: this.currentNetwork.value}
         }
     }
 
-    public routeToClprMessage(channelId: string, messageId: number, event: Event | null = null): Promise<NavigationFailure | void | undefined> {
+    public routeToClprMessage(channelId: string, timestamp: string, messageId: number, event: Event | null = null): Promise<NavigationFailure | void | undefined> {
         let result: Promise<NavigationFailure | void | undefined>
         if (this.shouldOpenNewWindow(event)) {
-            const routeData = this.router.resolve(this.makeRouteToClprMessage(channelId, messageId))
+            const routeData = this.router.resolve(this.makeRouteToClprMessage(channelId, timestamp, messageId))
             window.open(routeData.href, '_blank')
             result = Promise.resolve()
         } else {
-            result = this.router.push(this.makeRouteToClprMessage(channelId, messageId))
+            result = this.router.push(this.makeRouteToClprMessage(channelId, timestamp, messageId))
         }
         return result
     }

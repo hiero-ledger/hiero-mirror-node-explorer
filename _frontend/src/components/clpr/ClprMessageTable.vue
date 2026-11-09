@@ -100,7 +100,7 @@ const props = defineProps({
 })
 
 const handleClick = (message: ClprMessage, c: unknown, i: number, ci: number, event: Event) => {
-  routeManager.routeToClprMessage(message.channel_id, message.message_id, event)
+  routeManager.routeToClprMessage(message.channel_id, message.timestamp, message.message_id, event)
 }
 
 const isMediumScreen = inject('isMediumScreen', true)

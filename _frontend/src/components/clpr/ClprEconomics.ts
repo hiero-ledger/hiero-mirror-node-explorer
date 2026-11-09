@@ -9,8 +9,6 @@ import {ClprConnector} from "@/schemas/MirrorNodeSchemas.ts";
 const TINYBARS_PER_HBAR = 100_000_000
 
 export const CLPR_ECONOMICS = {
-    version: 2,
-    since: "1785574800.000000000", // 2026-08-01 09:00 UTC
     minLockedStake: 1 * TINYBARS_PER_HBAR,
     basePenalty: 0.1 * TINYBARS_PER_HBAR,
     penaltyMultiplier: 2,
