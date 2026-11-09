@@ -6,7 +6,7 @@
 
 <template>
 
-  <div :class="{'h-side-by-side-content': message}">
+  <div :class="{'top-cards': message}">
     <DashboardCardV2>
       <template #title>
         Message {{ props.messageId }}
@@ -17,43 +17,43 @@
       </template>
 
       <template #content>
-        <Property id="channelId" :full-width="!sideBySide">
+        <Property id="channelId" full-width>
           <template #name>Channel</template>
           <template #value>
             <HexaValue :byte-string="message?.channel_id ?? null" :show-none="true"/>
           </template>
         </Property>
-        <Property id="messageId" :full-width="!sideBySide">
+        <Property id="messageId" full-width>
           <template #name>Message ID</template>
           <template #value>
             <PlainAmount :amount="message?.message_id"/>
           </template>
         </Property>
-        <Property id="type" :full-width="!sideBySide">
+        <Property id="type" full-width>
           <template #name>Type</template>
           <template #value>
             <ClprPill v-if="message" :label="message.type" level="network"/>
           </template>
         </Property>
-        <Property id="sender" :full-width="!sideBySide">
+        <Property id="sender" full-width>
           <template #name>Sender</template>
           <template #value>
             <HexaValue :byte-string="message?.sender ?? null" :show-none="true"/>
           </template>
         </Property>
-        <Property id="targetApplication" :full-width="!sideBySide">
+        <Property id="targetApplication" full-width>
           <template #name>Target Application</template>
           <template #value>
             <HexaValue :byte-string="message?.target_application ?? null" :show-none="true"/>
           </template>
         </Property>
-        <Property id="connectorId" :full-width="!sideBySide">
+        <Property id="connectorId" full-width>
           <template #name>Connector</template>
           <template #value>
             <HexaValue :byte-string="message?.connector_id ?? null" :show-none="true"/>
           </template>
         </Property>
-        <Property id="acknowledged" :full-width="!sideBySide">
+        <Property id="acknowledged" full-width>
           <template #name>Acknowledged</template>
           <template #value>
             <ClprPill
@@ -63,7 +63,7 @@
             />
           </template>
         </Property>
-        <Property id="replyStatus" :full-width="!sideBySide">
+        <Property id="replyStatus" full-width>
           <template #name>Response Status</template>
           <template #value>
             <ClprPill
@@ -74,19 +74,19 @@
             <span v-else class="h-is-low-contrast">None</span>
           </template>
         </Property>
-        <Property v-if="message?.reply_to_message_id != null" id="replyTo" :full-width="!sideBySide">
+        <Property v-if="message?.reply_to_message_id != null" id="replyTo" full-width>
           <template #name>In Reply To</template>
           <template #value>
             <span>Peer message {{ message.reply_to_message_id }}</span>
           </template>
         </Property>
-        <Property id="size" :full-width="!sideBySide">
+        <Property id="size" full-width>
           <template #name>Size</template>
           <template #value>
             <StringValue :string-value="size !== null ? size + ' bytes' : null"/>
           </template>
         </Property>
-        <Property id="timestamp" :full-width="!sideBySide">
+        <Property id="timestamp" full-width>
           <template #name>Enqueued</template>
           <template #value>
             <TimestampValue :show-none="true" :timestamp="message?.timestamp"/>
@@ -147,7 +147,7 @@
 
 <script setup lang="ts">
 
-import {computed, inject} from "vue";
+import {computed} from "vue";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import NotificationBanner from "@/components/NotificationBanner.vue";
 import Property from "@/components/Property.vue";
@@ -176,9 +176,6 @@ const props = defineProps({
   },
   network: String
 })
-
-// The first two cards are displayed side by side on extra large screens: the label column is then wider
-const sideBySide = inject('isXLargeScreen', false)
 
 // A message is identified by its channel and its message id, and found with the channel's timestamp-based query.
 // Static mockup data, to be replaced by a call to
@@ -229,6 +226,21 @@ const steps = computed<Step[]>(() => {
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <style scoped>
+
+/* The first two cards are displayed side by side on extra large screens, with a 2/3 - 1/3 split */
+div.top-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+@media (min-width: 1600px) {
+  div.top-cards {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: 2fr 1fr;
+  }
+}
 
 ol.timeline {
   list-style: none;
