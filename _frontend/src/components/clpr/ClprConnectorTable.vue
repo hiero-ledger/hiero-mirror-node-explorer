@@ -24,7 +24,7 @@
       </o-table-column>
 
       <o-table-column v-slot="props" field="connector_contract_id" label="CONTRACT">
-        <AccountLink :account-id="props.row.connector_contract_id"/>
+        <StringValue :string-value="props.row.connector_contract_id"/>
       </o-table-column>
 
       <o-table-column v-slot="props" field="locked_stake" label="LOCKED STAKE" position="right">
