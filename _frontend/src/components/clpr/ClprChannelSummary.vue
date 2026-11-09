@@ -112,6 +112,15 @@
       Peer
     </template>
     <template #content>
+      <Property id="peerExplorer" full-width>
+        <template #name>Peer Explorer</template>
+        <template #value>
+          <a v-if="peerExplorerURL" :href="peerExplorerURL" target="_blank" rel="noopener">
+            {{ peerExplorerURL }}
+          </a>
+          <span v-else class="h-is-low-contrast">None</span>
+        </template>
+      </Property>
       <Property id="manifest" full-width>
         <template #name>Peer Endpoint Manifest</template>
         <template #value>
@@ -187,6 +196,7 @@ import HexaValue from "@/components/values/HexaValue.vue";
 import PlainAmount from "@/components/values/PlainAmount.vue";
 import StringValue from "@/components/values/StringValue.vue";
 import TimestampValue from "@/components/values/TimestampValue.vue";
+import {getPeerExplorerURL} from "@/components/clpr/ClprPeerExplorers.ts";
 import {ClprChannel, ClprChannelStatus} from "@/schemas/MirrorNodeSchemas.ts";
 
 const props = defineProps({
@@ -195,6 +205,8 @@ const props = defineProps({
     required: true
   }
 })
+
+const peerExplorerURL = computed(() => getPeerExplorerURL(props.channel.chain_id))
 
 // Messages sent by this ledger and not yet acknowledged by the peer
 const backlog = computed(() =>
