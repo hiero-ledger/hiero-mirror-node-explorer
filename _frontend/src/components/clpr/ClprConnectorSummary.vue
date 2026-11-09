@@ -6,19 +6,19 @@
 
 <template>
 
-  <div class="h-side-by-side-content">
+  <div class="top-cards">
     <DashboardCardV2>
       <template #title>
         Overview
       </template>
       <template #content>
-        <Property id="connectorId" :full-width="!sideBySide">
+        <Property id="connectorId" full-width>
           <template #name>Connector ID</template>
           <template #value>
             <HexaValue :byte-string="connector.connector_id" :show-none="true"/>
           </template>
         </Property>
-        <Property id="channel" :full-width="!sideBySide">
+        <Property id="channel" full-width>
           <template #name>Channel</template>
           <template #value>
             <router-link :to="routeManager.makeRouteToClprChannel(connector.channel_id)">
@@ -26,31 +26,31 @@
             </router-link>
           </template>
         </Property>
-        <Property id="contract" :full-width="!sideBySide">
+        <Property id="contract" full-width>
           <template #name>Connector Contract</template>
           <template #value>
             <AccountLink :account-id="connector.connector_contract_id"/>
           </template>
         </Property>
-        <Property id="adminKey" :full-width="!sideBySide">
+        <Property id="adminKey" full-width>
           <template #name>Admin Key</template>
           <template #value>
             <KeyValue :key-bytes="connector.admin_key?.key" :key-type="connector.admin_key?._type" :show-none="true"/>
           </template>
         </Property>
-        <Property id="state" :full-width="!sideBySide">
+        <Property id="state" full-width>
           <template #name>State</template>
           <template #value>
             <ClprConnectorStateLabel :connector="connector"/>
           </template>
         </Property>
-        <Property id="created" :full-width="!sideBySide">
+        <Property id="created" full-width>
           <template #name>Created</template>
           <template #value>
             <TimestampValue :show-none="true" :timestamp="connector.created_timestamp"/>
           </template>
         </Property>
-        <Property id="stakeRecipient" :full-width="!sideBySide">
+        <Property id="stakeRecipient" full-width>
           <template #name>Stake Recipient</template>
           <template #value>
             <AccountLink :account-id="connector.stake_recipient_id"/>
@@ -64,7 +64,7 @@
         Limits
       </template>
       <template #content>
-        <Property id="lockedStake" :full-width="!sideBySide">
+        <Property id="lockedStake" full-width>
           <template #name>Locked Stake</template>
           <template #value>
             <HbarAmount :amount="stake" :decimals="2"/>
@@ -76,7 +76,7 @@
             />
           </template>
         </Property>
-        <Property id="slashCount" :full-width="!sideBySide">
+        <Property id="slashCount" full-width>
           <template #name>Slashes</template>
           <template #value>
             <PlainAmount :amount="connector.slash_count"/>
@@ -90,7 +90,7 @@
             />
           </template>
         </Property>
-        <Property id="inFlight" :full-width="!sideBySide">
+        <Property id="inFlight" full-width>
           <template #name>In-flight Messages</template>
           <template #value>
             <PlainAmount :amount="connector.in_flight_message_count"/>
@@ -116,7 +116,7 @@
 
 <script setup lang="ts">
 
-import {computed, inject, PropType} from "vue";
+import {computed, PropType} from "vue";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import Property from "@/components/Property.vue";
 import HbarAmount from "@/components/values/HbarAmount.vue";
@@ -139,8 +139,6 @@ const props = defineProps({
   }
 })
 
-// The first two cards are displayed side by side on extra large screens: the label column is then wider
-const sideBySide = inject('isXLargeScreen', false)
 
 const stake = computed(() => Number(props.connector.locked_stake))
 
@@ -157,6 +155,21 @@ const formatHbar = (tinybars: number): string => (tinybars / 100_000_000).toLoca
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <style scoped>
+
+/* The two cards are displayed side by side on extra large screens, with a 2/3 - 1/3 split */
+div.top-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+@media (min-width: 1600px) {
+  div.top-cards {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: 2fr 1fr;
+  }
+}
 
 div.note {
   color: var(--text-secondary);
