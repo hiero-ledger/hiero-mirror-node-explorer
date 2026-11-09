@@ -11,37 +11,37 @@
       Economic Configuration
     </template>
     <template #content>
-      <Property id="minLockedStake" full-width>
+      <Property id="minLockedStake" :full-width="!sideBySide">
         <template #name>Minimum Locked Stake</template>
         <template #value>
           <HbarAmount :amount="economics.minLockedStake" :decimals="2"/>
         </template>
       </Property>
-      <Property id="basePenalty" full-width>
+      <Property id="basePenalty" :full-width="!sideBySide">
         <template #name>Base Penalty</template>
         <template #value>
           <HbarAmount :amount="economics.basePenalty" :decimals="2"/>
         </template>
       </Property>
-      <Property id="penaltyMultiplier" full-width>
+      <Property id="penaltyMultiplier" :full-width="!sideBySide">
         <template #name>Penalty Multiplier</template>
         <template #value>
           <StringValue :string-value="'×' + economics.penaltyMultiplier"/>
         </template>
       </Property>
-      <Property id="slashBanThreshold" full-width>
+      <Property id="slashBanThreshold" :full-width="!sideBySide">
         <template #name>Slash Ban Threshold</template>
         <template #value>
           <StringValue :string-value="economics.slashBanThreshold + ' slashes'"/>
         </template>
       </Property>
-      <Property id="endpointMargin" full-width>
+      <Property id="endpointMargin" :full-width="!sideBySide">
         <template #name>Endpoint Margin</template>
         <template #value>
           <StringValue :string-value="economics.endpointMarginPercent + ' %'"/>
         </template>
       </Property>
-      <Property id="queueQuota" full-width>
+      <Property id="queueQuota" :full-width="!sideBySide">
         <template #name>Connector Queue Quota</template>
         <template #value>
           <StringValue :string-value="economics.connectorQueueQuotaPercent + ' % of max queue depth'"/>
@@ -65,11 +65,15 @@
 
 <script setup lang="ts">
 
+import {inject} from "vue";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import Property from "@/components/Property.vue";
 import HbarAmount from "@/components/values/HbarAmount.vue";
 import StringValue from "@/components/values/StringValue.vue";
 import {CLPR_ECONOMICS} from "@/components/clpr/ClprEconomics.ts";
+
+// The two configuration cards are displayed side by side on extra large screens: the label column is then wider
+const sideBySide = inject('isXLargeScreen', false)
 
 const economics = CLPR_ECONOMICS
 
