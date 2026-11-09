@@ -6,9 +6,10 @@
 
 <template>
 
-  <ClprLedgerConfigurationCard/>
-
-  <ClprEconomicConfigurationCard/>
+  <div class="h-side-by-side-content">
+    <ClprLedgerConfigurationCard/>
+    <ClprEconomicConfigurationCard/>
+  </div>
 
   <ClprEndpointManifestCard/>
 

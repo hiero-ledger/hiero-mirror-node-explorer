@@ -68,97 +68,99 @@
     </template>
   </DashboardCardV2>
 
-  <DashboardCardV2>
-    <template #title>
-      Queues
-    </template>
-    <template #content>
-      <Property id="nextMessageId" full-width>
-        <template #name>Next Message ID</template>
-        <template #value>
-          <PlainAmount :amount="channel.next_message_id ?? undefined"/>
-        </template>
-      </Property>
-      <Property id="ackedMessageId" full-width>
-        <template #name>Acknowledged Through</template>
-        <template #value>
-          <PlainAmount :amount="channel.acked_message_id ?? undefined"/>
-        </template>
-      </Property>
-      <Property id="backlog" full-width>
-        <template #name>Outbound Backlog</template>
-        <template #value>
-          <PlainAmount :amount="backlog"/>
-        </template>
-      </Property>
-      <Property id="receivedMessageId" full-width>
-        <template #name>Received Through</template>
-        <template #value>
-          <PlainAmount :amount="channel.received_message_id ?? undefined"/>
-          <span v-if="channel.received_message_id !== null" class="h-is-secondary-text"> (peer message ID)</span>
-        </template>
-      </Property>
-    </template>
-    <template #footer>
-      <div class="note">
-        Backlog = next message ID − 1 − acknowledged through. A backlog that keeps growing while the channel is ACTIVE
-        means the peer has stopped acknowledging.
-      </div>
-    </template>
-  </DashboardCardV2>
+  <div class="h-side-by-side-content">
+    <DashboardCardV2>
+      <template #title>
+        Queues
+      </template>
+      <template #content>
+        <Property id="nextMessageId" :full-width="!sideBySide">
+          <template #name>Next Message ID</template>
+          <template #value>
+            <PlainAmount :amount="channel.next_message_id ?? undefined"/>
+          </template>
+        </Property>
+        <Property id="ackedMessageId" :full-width="!sideBySide">
+          <template #name>Acknowledged Through</template>
+          <template #value>
+            <PlainAmount :amount="channel.acked_message_id ?? undefined"/>
+          </template>
+        </Property>
+        <Property id="backlog" :full-width="!sideBySide">
+          <template #name>Outbound Backlog</template>
+          <template #value>
+            <PlainAmount :amount="backlog"/>
+          </template>
+        </Property>
+        <Property id="receivedMessageId" :full-width="!sideBySide">
+          <template #name>Received Through</template>
+          <template #value>
+            <PlainAmount :amount="channel.received_message_id ?? undefined"/>
+            <span v-if="channel.received_message_id !== null" class="h-is-secondary-text"> (peer message ID)</span>
+          </template>
+        </Property>
+      </template>
+      <template #footer>
+        <div class="note">
+          Backlog = next message ID − 1 − acknowledged through. A backlog that keeps growing while the channel is ACTIVE
+          means the peer has stopped acknowledging.
+        </div>
+      </template>
+    </DashboardCardV2>
 
-  <DashboardCardV2>
-    <template #title>
-      Peer
-    </template>
-    <template #content>
-      <Property id="peerExplorer" full-width>
-        <template #name>Peer Explorer</template>
-        <template #value>
-          <a v-if="peerExplorerURL" :href="peerExplorerURL" target="_blank" rel="noopener">
-            {{ peerExplorerURL }}
-          </a>
-          <span v-else class="h-is-low-contrast">None</span>
-        </template>
-      </Property>
-      <Property id="manifest" full-width>
-        <template #name>Peer Endpoint Manifest</template>
-        <template #value>
-          <template v-if="channel.endpoint_manifest">
-            <div>
-              v{{ channel.endpoint_manifest.version }}
-              <span class="h-is-secondary-text">({{ channel.endpoint_manifest.endpoints.length }} endpoint(s))</span>
-            </div>
-            <div v-for="(e, i) in channel.endpoint_manifest.endpoints" :key="i">
-              {{ e.service_endpoint.ip_address }}:{{ e.service_endpoint.port }}
-            </div>
+    <DashboardCardV2>
+      <template #title>
+        Peer
+      </template>
+      <template #content>
+        <Property id="peerExplorer" :full-width="!sideBySide">
+          <template #name>Peer Explorer</template>
+          <template #value>
+            <a v-if="peerExplorerURL" :href="peerExplorerURL" target="_blank" rel="noopener">
+              {{ peerExplorerURL }}
+            </a>
+            <span v-else class="h-is-low-contrast">None</span>
           </template>
-          <span v-else class="h-is-low-contrast">None</span>
-        </template>
-      </Property>
-      <Property id="throttles" full-width>
-        <template #name>Peer Throttles</template>
-        <template #value>
-          <template v-if="throttleLines.length">
-            <div v-for="line in throttleLines" :key="line">{{ line }}</div>
+        </Property>
+        <Property id="manifest" :full-width="!sideBySide">
+          <template #name>Peer Endpoint Manifest</template>
+          <template #value>
+            <template v-if="channel.endpoint_manifest">
+              <div>
+                v{{ channel.endpoint_manifest.version }}
+                <span class="h-is-secondary-text">({{ channel.endpoint_manifest.endpoints.length }} endpoint(s))</span>
+              </div>
+              <div v-for="(e, i) in channel.endpoint_manifest.endpoints" :key="i">
+                {{ e.service_endpoint.ip_address }}:{{ e.service_endpoint.port }}
+              </div>
+            </template>
+            <span v-else class="h-is-low-contrast">None</span>
           </template>
-          <span v-else class="h-is-low-contrast">None</span>
-        </template>
-      </Property>
-      <Property id="lastConfig" full-width>
-        <template #name>Last Config Update</template>
-        <template #value>
-          <TimestampValue :show-none="true" :timestamp="channel.last_config_timestamp"/>
-        </template>
-      </Property>
-      <Property id="peerConfig" full-width>
-        <template #name>Config Acknowledged by Peer</template>
-        <template #value>
-          <TimestampValue :show-none="true" :timestamp="channel.peer_config_timestamp"/>
-        </template>
-      </Property>
-    </template>
-  </DashboardCardV2>
+        </Property>
+        <Property id="throttles" :full-width="!sideBySide">
+          <template #name>Peer Throttles</template>
+          <template #value>
+            <template v-if="throttleLines.length">
+              <div v-for="line in throttleLines" :key="line">{{ line }}</div>
+            </template>
+            <span v-else class="h-is-low-contrast">None</span>
+          </template>
+        </Property>
+        <Property id="lastConfig" :full-width="!sideBySide">
+          <template #name>Last Config Update</template>
+          <template #value>
+            <TimestampValue :show-none="true" :timestamp="channel.last_config_timestamp"/>
+          </template>
+        </Property>
+        <Property id="peerConfig" :full-width="!sideBySide">
+          <template #name>Config Acknowledged by Peer</template>
+          <template #value>
+            <TimestampValue :show-none="true" :timestamp="channel.peer_config_timestamp"/>
+          </template>
+        </Property>
+      </template>
+    </DashboardCardV2>
+  </div>
 
   <DashboardCardV2 v-if="isClosing">
     <template #title>
@@ -188,7 +190,7 @@
 
 <script setup lang="ts">
 
-import {computed, PropType} from "vue";
+import {computed, inject, PropType} from "vue";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import Property from "@/components/Property.vue";
 import ClprChannelStatusLabel from "@/components/clpr/ClprChannelStatusLabel.vue";
@@ -205,6 +207,9 @@ const props = defineProps({
     required: true
   }
 })
+
+// The Queues and Peer cards are displayed side by side on extra large screens: the label column is then wider
+const sideBySide = inject('isXLargeScreen', false)
 
 const peerExplorerURL = computed(() => getPeerExplorerURL(props.channel.chain_id))
 
