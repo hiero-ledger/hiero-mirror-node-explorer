@@ -631,7 +631,7 @@ export const CLPR_ROUTE: RouteRecordRaw = {
         },
         {
             // Not a tab: replaces the content of the Messages tab
-            path: 'messages/:channelId/:messageId',
+            path: 'messages/:channelId/:timestamp/:messageId',
             name: 'CLPR_MessageDetails',
             component: CLPR_MessageDetails,
             props: true,

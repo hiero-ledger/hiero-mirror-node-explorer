@@ -12,6 +12,8 @@ import {CLPR_MOCK_CHANNELS, getClprMockMessages} from "@/components/clpr/ClprMoc
 
 HMSF.forceUTC = true
 
+const TIMESTAMP_1244 = getClprMockMessages(CLPR_MOCK_CHANNELS[0].channel_id!).find(m => m.message_id === 1244)!.timestamp
+
 describe("CLPR_MessageDetails.vue", () => {
 
     it("Should navigate to the message details when clicking on a row of the Messages table", async () => {
@@ -43,7 +45,7 @@ describe("CLPR_MessageDetails.vue", () => {
 
         const wrapper = mount(CLPR_MessageDetails, {
             global: {plugins: [router, Oruga]},
-            props: {channelId: channelId, messageId: "1244"},
+            props: {channelId: channelId, timestamp: TIMESTAMP_1244, messageId: "1244"},
         });
         await flushPromises()
 
@@ -62,7 +64,7 @@ describe("CLPR_MessageDetails.vue", () => {
 
         const wrapper = mount(CLPR_MessageDetails, {
             global: {plugins: [router, Oruga]},
-            props: {channelId: CLPR_MOCK_CHANNELS[0].channel_id!, messageId: "999999"},
+            props: {channelId: CLPR_MOCK_CHANNELS[0].channel_id!, timestamp: TIMESTAMP_1244, messageId: "999999"},
         });
         await flushPromises()
 
@@ -74,7 +76,7 @@ describe("CLPR_MessageDetails.vue", () => {
     it("Should keep the CLPR tabs, with Messages selected, and go back to the table from the Messages tab", async () => {
 
         const channelId = CLPR_MOCK_CHANNELS[0].channel_id!
-        await router.push("/mainnet/clpr/messages/" + channelId + "/1244")
+        await router.push("/mainnet/clpr/messages/" + channelId + "/" + TIMESTAMP_1244 + "/1244")
 
         const wrapper = mount(CLPR, {
             global: {plugins: [router, Oruga]},
