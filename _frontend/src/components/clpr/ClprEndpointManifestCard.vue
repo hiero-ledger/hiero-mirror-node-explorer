@@ -42,8 +42,7 @@
     </template>
     <template #footer>
       <div class="note">
-        The endpoints peers deliver bundles through. On Hiero every consensus node is a CLPR endpoint, so this
-        manifest follows the consensus roster.
+        The endpoints peers deliver bundles through. On Hiero every consensus node is a CLPR endpoint.
       </div>
     </template>
   </DashboardCardV2>
