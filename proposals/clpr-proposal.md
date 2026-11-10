@@ -16,6 +16,10 @@ design doc), and follows the existing explorer UX patterns:
 - Table views
 - Detail pages, with sub-tabs where needed
 
+Design principle: **no fan-out**. The API only allows querying messages and connectors within one channel. No view or
+search issues one request per channel to aggregate or look up across channels: every view works from channel-level
+data, or from a single channel.
+
 Every displayed value has one of three sources, used as a legend in this document:
 
 | Tag | Source |
@@ -100,7 +104,7 @@ Note:
 - Remain consistent with the existing Explorer convention for tables: 
   - A click everywhere in a row routes to the entity details
   - (Hence) there is **no link inside table cells**.
-- Rows without a destination are not clickable (e.g. pending channels, which have no channel id yet). 
+- Rows without a destination are not clickable (e.g. pending channels and pending connectors, which have no channel id or connector id yet). 
 - The page pagination buttons are hidden when everything fits in one page, and the page size selector is
   hidden when there are fewer rows than its smallest option.
 - Where a view needs a channel selector over channels (because the API requires one channel), there is
@@ -120,17 +124,16 @@ that pay for delivery.
 | Tile | Value | Source |
 | --- | --- | --- |
 | Channels | Active / total | [DERIVED] from channels |
-| Paused or stale | Count, with the paused and stale split | [DERIVED] health |
+| Paused channels | Count | [DERIVED] from channels |
 | Outbound backlog | Sum of channel backlogs | [DERIVED] |
-| Connectors at risk | Near ban, Banned or Low stake, out of all connectors | [DERIVED] connector state |
-| Pending registrations | Pending channels + pending connectors | [API] counts |
+| Pending channels | Channels registered and not completed | [API] count, `status=PENDING` |
 
 ### Channel Status Table
 
-| Channel | Peer Chain | Status | Backlog | Health |
-| --- | --- | --- | --- | --- |
+| Channel | Peer Chain | Status | Backlog |
+| --- | --- | --- | --- |
 
-A click on a row routes to the channel details.
+Paused channels come first. A click on a row routes to the channel details.
 
 ### Needs Attention
 
@@ -140,14 +143,15 @@ A click on a row routes to the channel details.
 [DERIVED] list, built from:
 
 - Paused channels
-- Stale channels
-- Connectors one slash from the ban threshold, or below the minimum stake
 - Pending channel registrations committed more than 24 hours ago
 
-A click on a row routes to the channel or connector details when there is one. The Since column is shown only where the
-API gives a reliable date (not for connector states, see 10.0).
+A click on a row routes to the channel details, when there is one (not for a pending registration).
 
-API: channels, connectors of every channel, messages of stale-candidate channels, pending connectors.
+The Overview is limited to channel-level data (see the no fan-out principle in 1.0): connector states and stale channels
+would need one request per channel, and are therefore not part of it. The channel health and the connector states are
+shown on the channel and connector pages.
+
+API: the channels list (`GET /clpr/channels`, and the same endpoint with `status=PENDING` for the pending channels).
 
 ---
 
@@ -212,25 +216,28 @@ Header controls: `CHANNEL:` selector, state selector (`STATES: ALL`).
 
 ### Column Definitions
 
-- **Connector ID / Contract** – `connector_id`, `connector_contract_id`
+- **Connector ID / Contract** – `connector_id`, `connector_contract_id` (null until the registration is completed)
 - **Locked Stake** – `locked_stake` (tinybars, shown in ℏ), against the minimum stake [CONST], with a bar
 - **In-flight** – `in_flight_message_count`, against the connector quota [DERIVED], with a bar
 - **Slashes** – `slash_count`, against the ban threshold [CONST], with a bar
-- **State** – [DERIVED] Healthy, Low stake, Near ban, Banned or Deregistered
+- **State** – [DERIVED] from `status` (ACTIVE or DELETED), the slash count and the stake: Healthy, Low stake, Near ban, Banned or Deregistered
 - **Created** – `created_timestamp`
 
 Clicking a row routes to `/{network}/clpr/connectors/{channelId}/{connectorId}`.
 
 ### Pending Connectors Card
 
+Under the table, for the selected channel: the connectors registered on that channel and not completed yet
+(`status=PENDING`). Pending connectors are rows of the same connectors API, filtered by `status`.
+
 | Commitment | Status | Created |
 | --- | --- | --- |
 
-[API] only: the channel, connector id, submitter and stake are not known before a commitment is revealed. Rows are not
+[API] only: a pending connector has no connector id nor contract yet, and is identified by its `commitment`. Rows are not
 clickable.
 
-API: `/clpr/channels/{channelId}/connectors`, `/clpr/connectors/pending`, and `/clpr/configuration` for the
-queue depth behind the quota.
+API: `/clpr/channels/{channelId}/connectors` (and the same endpoint with `status=PENDING` for the card), and
+`/clpr/configuration` for the queue depth behind the quota.
 
 ## 4.5 Configuration Tab
 
@@ -256,7 +263,8 @@ manifest follows the list of consensus nodes.
 
 Route: `/{network}/clpr/channels/{channelId}`
 
-**Header:** `Channel {id}` with the status pill and the health pill (see 9.0).
+**Header:** `Channel {id}` with the status pill and the health pill (see 9.0). The health costs one messages call, for
+this channel only.
 
 **Sub-tabs:** Summary, Messages, Connectors, Verifier & Trust.
 
@@ -353,7 +361,7 @@ The extension adds CLPR agents, and is limited to searches which map directly on
 The REST API cannot support them with a single query:
 
 - **Connector from a single value:** connectors can only be queried within a channel. Trying a value against every
-  channel is not retained, for scalability reasons.
+  channel would be a fan-out, which we exclude.
 - **Messages from a timestamp alone, or from an integer:** messages can only be queried within a channel, and there is
   no message id filter.
 - **Channels by peer chain id:** the chain id is not filterable.
@@ -374,20 +382,13 @@ connectors and messages searchable:
 
 | Endpoint | Used by |
 | --- | --- |
-| `/clpr/channels` (`status`, `timestamp`, `limit`, `order`) | Channels tab, Overview, selectors, search by timestamp |
+| `/clpr/channels` (`status` incl. `PENDING`, `timestamp`, `limit`, `order`) | Channels tab, Overview, selectors, search by timestamp |
 | `/clpr/channels?channel.id=eq:{id}` | Channel details, search by id |
-| `/clpr/channels/{id}/messages` (`timestamp` required; `type`, `connector.id`) | Messages tabs, message details, health |
-| `/clpr/channels/{id}/connectors` (`connector.id`) | Connectors tabs, connector details, Overview |
-| `/clpr/connectors/pending` | Pending Connectors card, Overview |
+| `/clpr/channels/{id}/messages` (`timestamp` required; `type`, `connector.id`) | Messages tabs, message details, channel header health |
+| `/clpr/channels/{id}/connectors` (`status`, `connector.id`, `timestamp`) | Connectors tabs (including the Pending Connectors card, with `status=PENDING`), connector details |
 | `/clpr/configuration` | Configuration tab, connector quota |
 | `/clpr/endpoint-manifest` | Configuration tab |
 | Contract lookup, Sourcify (existing) | Verifier admin key and name |
-
-**Costs to keep in mind**:
-
-- The connectors API is per channel: the Overview (connectors at risk, attention list) needs one call per channel.
-- Channel health needs one messages call per ACTIVE channel with a backlog.
-- The messages API requires a timestamp range, and has no id lookup.
 
 # 8.0 Static Data [CONST]
 
@@ -409,13 +410,13 @@ they will be held in the Explorer code or configuration.
 | Item | Rule | Shown in |
 | --- | --- | --- |
 | Outbound backlog | `next_message_id − 1 − acked_message_id` | Channels, Overview, Channel details |
-| Channel health | Paused, Closing, Drained, Closed from `status`. An ACTIVE channel with a backlog is **Stale** when its oldest unacknowledged message is older than the stale threshold; otherwise Healthy | Overview, Channel header |
-| Oldest unacknowledged message | Channel messages newest first, limited to the backlog size: the last one returned | Health, Attention |
-| Connector state | `deleted`: Banned if slashes ≥ threshold, else Deregistered. Otherwise Near ban if slashes ≥ threshold − 1, Low stake if stake < minimum, else Healthy | Connectors, Connector header, Overview |
+| Channel health | Paused, Closing, Drained, Closed from `status`. An ACTIVE channel with a backlog is **Stale** when its oldest unacknowledged message is older than the stale threshold; otherwise Healthy | Channel header |
+| Oldest unacknowledged message | Channel messages newest first, limited to the backlog size: the last one returned | Channel health |
+| Connector state | `status` DELETED: Banned if slashes ≥ threshold, else Deregistered. Otherwise Near ban if slashes ≥ threshold − 1, Low stake if stake < minimum, else Healthy | Connectors, Connector header, Connector details |
 | Connector quota | `⌊max_queue_depth × quota % ⌋` | Connectors, Connector details |
 | Next penalty | `base penalty × multiplier^slash_count` | Connector details |
 | Limit bars | Stake against 2 × minimum, slashes against the threshold, in-flight against the quota | Connectors, Connector details |
-| Overview tiles and attention list | Counts and rules of 4.1 | Overview |
+| Overview tiles and attention list | Counts and rules of 4.1, from the channels and pending lists only | Overview |
 | Message size | Byte length of `message_data` | Message details |
 | Stake in ℏ | `locked_stake` ÷ 10⁸ | Connector views |
 | Peer explorer link | Lookup of `chain_id` in the peer explorer list | Channel details |
@@ -434,6 +435,8 @@ Not shown, because the API cannot supply or derive it:
 - Endpoint node, account and TLS certificate details
 - Channels grouped by peer chain (the API cannot filter by chain)
 - A "since" date for connector states (connector `timestamp.from` ignores counter updates)
+- Anything aggregated across channels, which would need one request per channel: connectors at risk, stale channels, the
+  health of every channel, a connector or message lookup without a channel id
 
 # 11.0 Open Points
 
@@ -445,3 +448,7 @@ Not shown, because the API cannot supply or derive it:
 4. The real channel stale rule.
 5. A way to look up a message by id (or to get its timestamp) would allow message-id links, such as "Acknowledged Through". 
 6. Whether the Hiero-internal ClprEndpointPublication can surface in the REST API.
+7. A cross-channel connector listing or lookup (the preliminary OpenAPI had `/clpr/connectors` with an optional channel).
+   This would enable to Search connectors by ID or timestamp, and to list connectors needing attention/at risk.
+8. Whether the connectors list of a channel, without a `status` filter, includes the pending connectors. The Explorer
+   assumes it does not, as for channels, and requests them with `status=PENDING`.
