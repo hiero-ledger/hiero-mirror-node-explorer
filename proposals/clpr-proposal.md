@@ -32,7 +32,11 @@ There is **no specific rendering** of the content of these transactions:
 - The transaction details show the generic transaction information (identifier, result, timestamps, payer, fees,
   transfers), as for any type without a dedicated rendering.
 - The content summary of transaction tables stays empty for these types.
-- No cross-navigation is available from transactions to CLPR channels, connectors or messages.
+- The only addition is a **cross-link** in the transaction details of `ClprCompleteChannel` transactions, to **the
+  channel**. It is shown when the channel can be resolved:
+  - found through `GET /clpr/channels?timestamp=eq:{timestamp}` which returns at most one channel
+  - not shown for a failed transaction, nor once a closed channel has been reactivated
+- No other cross-navigation is available from transactions to CLPR entities.
 
 | Type | Label                     | Purpose |
 | --- |---------------------------| --- |
