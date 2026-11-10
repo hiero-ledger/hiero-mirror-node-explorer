@@ -45,8 +45,8 @@
     </template>
     <template #footer>
       <div class="note">
-        A connector's channel and id stay secret until its registration is revealed, so a pending entry only shows
-        its commitment.
+        A connector's id stays secret until its registration is completed, so a pending entry only shows its
+        commitment.
       </div>
     </template>
   </DashboardCardV2>
@@ -59,7 +59,7 @@
 
 <script setup lang="ts">
 
-import {inject, ref} from "vue";
+import {computed, inject, ref} from "vue";
 import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import EmptyTable from "@/components/EmptyTable.vue";
@@ -69,10 +69,18 @@ import ClprTableFrame from "@/components/clpr/ClprTableFrame.vue";
 import ClprPill from "@/components/clpr/ClprPill.vue";
 import ClprHexLabel from "@/components/clpr/ClprHexLabel.vue";
 import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
-import {CLPR_MOCK_PENDING_CONNECTORS} from "@/components/clpr/ClprMockData.ts";
+import {getClprMockPendingConnectors} from "@/components/clpr/ClprMockData.ts";
 
-// Static mockup data, to be replaced by a call to GET /api/v1/clpr/connectors/pending
-const pendingConnectors = CLPR_MOCK_PENDING_CONNECTORS
+// Pending connectors of one channel
+const props = defineProps({
+  channelId: {
+    type: String,
+    required: true
+  }
+})
+
+// Static mockup data, to be replaced by a call to GET /api/v1/clpr/channels/{channelId}/connectors?status=eq:PENDING
+const pendingConnectors = computed(() => getClprMockPendingConnectors(props.channelId))
 
 const isMediumScreen = inject('isMediumScreen', true)
 const currentPage = ref(1)

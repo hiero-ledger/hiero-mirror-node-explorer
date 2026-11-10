@@ -24,8 +24,7 @@
           @cell-click="handleClick"
       >
         <o-table-column v-slot="props" field="what" label="WHAT">
-          <ClprConnectorStateLabel v-if="props.row.connector" :connector="props.row.connector"/>
-          <ClprPill v-else :label="props.row.what" :level="props.row.level"/>
+          <ClprPill :label="props.row.what" :level="props.row.level"/>
         </o-table-column>
 
         <o-table-column v-slot="props" field="where" label="WHERE">
@@ -37,17 +36,16 @@
         </o-table-column>
 
         <o-table-column v-slot="props" field="since" label="SINCE">
-          <TimestampValue v-if="props.row.since" :timestamp="props.row.since"/>
+          <TimestampValue :timestamp="props.row.since"/>
         </o-table-column>
       </o-table>
       <div v-if="!items.length" class="h-is-secondary-text">Nothing needs attention.</div>
     </template>
     <template #footer>
       <div class="note">
-        Computed by the Explorer from the channels, connectors and pending registrations it already shows: paused or
-        stale channels, connectors one slash from the ban threshold or below the minimum stake, and registrations
-        committed more than a day ago and still pending. The mirror node does not tell since when a connector is in
-        its current state.
+        Computed by the Explorer from the channels and pending registrations it already shows: paused channels, and
+        channel registrations committed more than a day ago and still pending. Nothing is queried channel by channel,
+        so connector states, pending connectors and stale channels are not part of this list.
       </div>
     </template>
   </DashboardCardV2>
@@ -63,43 +61,26 @@
 import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import TimestampValue from "@/components/values/TimestampValue.vue";
-import ClprConnectorStateLabel from "@/components/clpr/ClprConnectorStateLabel.vue";
 import ClprPill, {ClprPillLevel} from "@/components/clpr/ClprPill.vue";
 import ClprHexLabel from "@/components/clpr/ClprHexLabel.vue";
-import {CLPR_ECONOMICS, ClprConnectorState, getConnectorState} from "@/components/clpr/ClprEconomics.ts";
-import {
-  ClprChannelHealth,
-  getChannelBacklog,
-  getChannelHealth,
-  getChannelWaitingHours
-} from "@/components/clpr/ClprHealth.ts";
-import {
-  CLPR_MOCK_CONNECTORS,
-  CLPR_MOCK_NOW_SECONDS,
-  getClprMockChannels,
-  getClprMockOldestUnackedTimestamp
-} from "@/components/clpr/ClprMockData.ts";
-import {shortenHex} from "@/components/clpr/ClprUtils.ts";
-import {ClprChannelStatus, ClprConnector} from "@/schemas/MirrorNodeSchemas.ts";
+import {CLPR_MOCK_NOW_SECONDS, getClprMockChannels} from "@/components/clpr/ClprMockData.ts";
+import {ClprChannelStatus} from "@/schemas/MirrorNodeSchemas.ts";
 import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
 import {routeManager} from "@/utils/RouteManager.ts";
 
 interface AttentionItem {
   key: string
   what: string
-  level?: ClprPillLevel // color of the "what" pill (not used for connectors, which display their state)
-  connector?: ClprConnector // when set, the connector state is displayed instead of "what"
+  level: ClprPillLevel // color of the "what" pill
   where: string // hex id displayed in the WHERE column
   channelId?: string // target of a click on the row, if any
-  connectorId?: string
   detail: string
-  since: string | null // not displayed when unknown
+  since: string
 }
 
-const formatHbar = (tinybars: number): string => (tinybars / 100_000_000).toLocaleString() + " ℏ"
 const ONE_DAY_SECONDS = 24 * 3600
 
-// Static mockup data, to be replaced by the corresponding API calls (see ClprOverviewStatsCard)
+// Static mockup data, to be replaced by GET /api/v1/clpr/channels?status=eq:PAUSED and ?status=eq:PENDING
 const buildItems = (): AttentionItem[] => {
   const result: AttentionItem[] = []
 
@@ -113,50 +94,6 @@ const buildItems = (): AttentionItem[] => {
       detail: "Channel is paused on " + c.chain_id,
       since: c.timestamp?.from ?? c.created_timestamp
     })
-  }
-
-  for (const c of getClprMockChannels().filter(c => c.channel_id !== null)) {
-    const oldestUnacked = getClprMockOldestUnackedTimestamp(c)
-    if (getChannelHealth(c, oldestUnacked, CLPR_MOCK_NOW_SECONDS) === ClprChannelHealth.STALE) {
-      const waiting = getChannelWaitingHours(oldestUnacked, CLPR_MOCK_NOW_SECONDS)
-      result.push({
-        key: "stale-" + c.channel_id,
-        what: "Stale",
-        level: "warn",
-        where: c.channel_id!,
-        channelId: c.channel_id!,
-        detail: "Backlog of " + getChannelBacklog(c) + ", oldest message unacknowledged for " +
-            (waiting !== null ? Math.round(waiting) + " h" : "a long time"),
-        since: oldestUnacked
-      })
-    }
-  }
-
-  for (const cn of CLPR_MOCK_CONNECTORS) {
-    const state = getConnectorState(cn)
-    if (state === ClprConnectorState.NEAR_BAN) {
-      result.push({
-        key: "near-ban-" + cn.connector_id,
-        what: state,
-        connector: cn,
-        where: cn.connector_id,
-        channelId: cn.channel_id,
-        connectorId: cn.connector_id,
-        detail: cn.slash_count + " of " + CLPR_ECONOMICS.slashBanThreshold + " slashes on channel " + shortenHex(cn.channel_id),
-        since: null
-      })
-    } else if (state === ClprConnectorState.LOW_STAKE) {
-      result.push({
-        key: "low-stake-" + cn.connector_id,
-        what: state,
-        connector: cn,
-        where: cn.connector_id,
-        channelId: cn.channel_id,
-        connectorId: cn.connector_id,
-        detail: formatHbar(Number(cn.locked_stake)) + " locked, minimum " + formatHbar(CLPR_ECONOMICS.minLockedStake),
-        since: null
-      })
-    }
   }
 
   const dayAgo = CLPR_MOCK_NOW_SECONDS - ONE_DAY_SECONDS
@@ -173,15 +110,14 @@ const buildItems = (): AttentionItem[] => {
     }
   }
 
-  return result.sort((a, b) => Number(b.since ?? 0) - Number(a.since ?? 0))
+  return result.sort((a, b) => Number(b.since) - Number(a.since))
 }
 
 const items = buildItems()
 
+// Pending registrations have no details to route to
 const handleClick = (item: AttentionItem, c: unknown, i: number, ci: number, event: Event) => {
-  if (item.connectorId && item.channelId) {
-    routeManager.routeToClprConnector(item.channelId, item.connectorId, event)
-  } else if (item.channelId) {
+  if (item.channelId) {
     routeManager.routeToClprChannel(item.channelId, event)
   }
 }

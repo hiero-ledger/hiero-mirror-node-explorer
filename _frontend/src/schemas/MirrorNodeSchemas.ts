@@ -1128,13 +1128,22 @@ export interface ClprChannelsResponse {
 }
 
 // Subset of the fields returned by GET /api/v1/clpr/channels/{channelId}/connectors
+export enum ClprConnectorStatus {
+    PENDING = "PENDING",
+    ACTIVE = "ACTIVE",
+    DELETED = "DELETED",
+}
+
+// A completed connector (status ACTIVE or DELETED). A PENDING connector, whose registration is not completed,
+// has no connector id nor contract yet: see ClprPendingConnector.
 export interface ClprConnector {
     admin_key: Key | null
     channel_id: string
+    commitment: string
     connector_contract_id: string
     connector_id: string
     created_timestamp: string
-    deleted: boolean
+    status: ClprConnectorStatus
     in_flight_message_count: number
     locked_stake: string // tinybars
     slash_count: number
@@ -1142,11 +1151,15 @@ export interface ClprConnector {
     timestamp: TimestampRange
 }
 
-// A connector registration whose commitment is not yet revealed (GET /api/v1/clpr/connectors/pending)
+// A connector registration not completed yet: GET /api/v1/clpr/channels/{channelId}/connectors?status=eq:PENDING.
+// Its connector id and contract are not known before completion: it is identified by its commitment.
 export interface ClprPendingConnector {
+    channel_id: string
     commitment: string
+    connector_contract_id: null
+    connector_id: null
     created_timestamp: string
-    status: "OPEN"
+    status: ClprConnectorStatus.PENDING
 }
 
 export interface ClprConnectorsResponse {
