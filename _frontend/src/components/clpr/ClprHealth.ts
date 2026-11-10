@@ -53,7 +53,3 @@ export function getChannelHealth(channel: ClprChannel, oldestUnackedTimestamp: s
     }
     return result
 }
-
-export function getChannelWaitingHours(oldestUnackedTimestamp: string | null, nowSeconds: number): number | null {
-    return oldestUnackedTimestamp !== null ? (nowSeconds - Number(oldestUnackedTimestamp)) / 3600 : null
-}

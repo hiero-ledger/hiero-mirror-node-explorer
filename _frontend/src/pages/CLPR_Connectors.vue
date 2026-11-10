@@ -17,7 +17,7 @@
     </template>
   </ClprConnectorsCard>
 
-  <ClprPendingConnectorsCard/>
+  <ClprPendingConnectorsCard :channel-id="selectedChannelId"/>
 
 </template>
 

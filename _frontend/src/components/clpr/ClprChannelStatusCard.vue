@@ -40,10 +40,6 @@
             <PlainAmount :amount="getChannelBacklog(props.row) ?? undefined"/>
           </o-table-column>
 
-          <o-table-column v-slot="props" field="health" label="HEALTH">
-            <ClprChannelHealthLabel :health="props.row.health"/>
-          </o-table-column>
-
           <template v-slot:bottomLeft>
             <TablePageSize v-model:size="perPage"/>
           </template>
@@ -52,9 +48,8 @@
     </template>
     <template #footer>
       <div class="note">
-        <b>Backlog</b> is messages sent from this ledger that the peer has not yet acknowledged. An active channel
-        is flagged <b>stale</b> when the oldest of them has been waiting for more than {{ CLPR_HEALTH.staleAfterHours }}
-        hours. Health is an indicator derived by the Explorer, not protocol state.
+        <b>Backlog</b> is messages sent from this ledger that the peer has not yet acknowledged. Paused channels come
+        first.
       </div>
     </template>
   </DashboardCardV2>
@@ -76,35 +71,24 @@ import TablePageSize from "@/components/transaction/TablePageSize.vue";
 import ClprHexLabel from "@/components/clpr/ClprHexLabel.vue";
 import ClprTableFrame from "@/components/clpr/ClprTableFrame.vue";
 import ClprChannelStatusLabel from "@/components/clpr/ClprChannelStatusLabel.vue";
-import ClprChannelHealthLabel from "@/components/clpr/ClprChannelHealthLabel.vue";
-import {CLPR_HEALTH, ClprChannelHealth, getChannelBacklog, getChannelHealth} from "@/components/clpr/ClprHealth.ts";
-import {
-  CLPR_MOCK_COMPLETED_CHANNELS,
-  CLPR_MOCK_NOW_SECONDS,
-  getClprMockOldestUnackedTimestamp
-} from "@/components/clpr/ClprMockData.ts";
-import {ClprChannel} from "@/schemas/MirrorNodeSchemas.ts";
+import {getChannelBacklog} from "@/components/clpr/ClprHealth.ts";
+import {CLPR_MOCK_COMPLETED_CHANNELS} from "@/components/clpr/ClprMockData.ts";
+import {ClprChannel, ClprChannelStatus} from "@/schemas/MirrorNodeSchemas.ts";
 import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
 import {routeManager} from "@/utils/RouteManager.ts";
 
-// Needing attention first
-const HEALTH_ORDER = [
-  ClprChannelHealth.PAUSED,
-  ClprChannelHealth.STALE,
-  ClprChannelHealth.HEALTHY,
-  ClprChannelHealth.CLOSING,
-  ClprChannelHealth.DRAINED,
-  ClprChannelHealth.CLOSED
+// Paused channels first, as they are the ones needing attention
+const STATUS_ORDER = [
+  ClprChannelStatus.PAUSED,
+  ClprChannelStatus.ACTIVE,
+  ClprChannelStatus.CLOSING,
+  ClprChannelStatus.DRAINED,
+  ClprChannelStatus.CLOSED
 ]
 
 // Static mockup data, to be replaced by GET /api/v1/clpr/channels
-// (and, for the channels with a backlog, GET /api/v1/clpr/channels/{channelId}/messages)
-const channels = CLPR_MOCK_COMPLETED_CHANNELS
-    .map(c => ({
-      ...c,
-      health: getChannelHealth(c, getClprMockOldestUnackedTimestamp(c), CLPR_MOCK_NOW_SECONDS)
-    }))
-    .sort((a, b) => HEALTH_ORDER.indexOf(a.health) - HEALTH_ORDER.indexOf(b.health))
+const channels = CLPR_MOCK_COMPLETED_CHANNELS.slice()
+    .sort((a, b) => STATUS_ORDER.indexOf(a.status) - STATUS_ORDER.indexOf(b.status))
 
 const handleClick = (channel: ClprChannel, c: unknown, i: number, ci: number, event: Event) => {
   if (channel.channel_id !== null) {

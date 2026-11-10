@@ -4,7 +4,7 @@
 // as constants known by the Explorer. Amounts are in tinybars.
 // NOTE: values are the ones of the HTML mockup, which flags them as placeholders to be verified.
 
-import {ClprConnector} from "@/schemas/MirrorNodeSchemas.ts";
+import {ClprConnector, ClprConnectorStatus} from "@/schemas/MirrorNodeSchemas.ts";
 
 const TINYBARS_PER_HBAR = 100_000_000
 
@@ -29,7 +29,7 @@ export enum ClprConnectorState {
 // but needs the connector balance, which is not available for now.
 export function getConnectorState(connector: ClprConnector): ClprConnectorState {
     let result: ClprConnectorState
-    if (connector.deleted) {
+    if (connector.status === ClprConnectorStatus.DELETED) {
         result = connector.slash_count >= CLPR_ECONOMICS.slashBanThreshold
             ? ClprConnectorState.BANNED
             : ClprConnectorState.DEREGISTERED

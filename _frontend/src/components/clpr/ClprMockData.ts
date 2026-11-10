@@ -8,6 +8,7 @@ import {
     ClprChannel,
     ClprChannelStatus,
     ClprConnector,
+    ClprConnectorStatus,
     ClprCurrentEndpointManifest,
     ClprLedgerConfiguration,
     ClprMessage,
@@ -651,10 +652,11 @@ export const CLPR_MOCK_CONNECTORS: ClprConnector[] = [
     {
         admin_key: {_type: KeyType.ED25519, key: "302a300506032b6570032100" + "e5b2".repeat(16)},
         channel_id: CHANNEL_1A2B,
+        commitment: hexId("%s", "c0de"),
         connector_contract_id: "0.0.789",
         connector_id: CONNECTOR_4D5E,
         created_timestamp: "1789917600.000000000",
-        deleted: false,
+        status: ClprConnectorStatus.ACTIVE,
         in_flight_message_count: 2,
         locked_stake: "100000000",
         slash_count: 0,
@@ -664,10 +666,11 @@ export const CLPR_MOCK_CONNECTORS: ClprConnector[] = [
     {
         admin_key: {_type: KeyType.ED25519, key: "302a300506032b6570032100" + "e5b2".repeat(16)},
         channel_id: CHANNEL_1A2B,
+        commitment: hexId("%s", "c0de"),
         connector_contract_id: "0.0.790",
         connector_id: CONNECTOR_88AA,
         created_timestamp: "1789034400.000000000",
-        deleted: false,
+        status: ClprConnectorStatus.ACTIVE,
         in_flight_message_count: 0,
         locked_stake: "20000000",
         slash_count: 4,
@@ -677,10 +680,11 @@ export const CLPR_MOCK_CONNECTORS: ClprConnector[] = [
     {
         admin_key: {_type: KeyType.ED25519, key: "302b300506032b6570032100" + "e5b2".repeat(16)},
         channel_id: CHANNEL_2F91,
+        commitment: hexId("%s", "c0de"),
         connector_contract_id: "0.0.791",
         connector_id: CONNECTOR_55CC,
         created_timestamp: "1790070300.000000000",
-        deleted: false,
+        status: ClprConnectorStatus.ACTIVE,
         in_flight_message_count: 1,
         locked_stake: "200000000",
         slash_count: 1,
@@ -690,10 +694,11 @@ export const CLPR_MOCK_CONNECTORS: ClprConnector[] = [
     {
         admin_key: {_type: KeyType.ED25519, key: "302c300506032b6570032100" + "e5b2".repeat(16)},
         channel_id: hexId("7cd4", "11aa"),
+        commitment: hexId("%s", "c0de"),
         connector_contract_id: "0.0.792",
         connector_id: hexId("1234", "abcd"),
         created_timestamp: "1786705500.000000000",
-        deleted: false,
+        status: ClprConnectorStatus.ACTIVE,
         in_flight_message_count: 0,
         locked_stake: "100000000",
         slash_count: 0,
@@ -703,10 +708,11 @@ export const CLPR_MOCK_CONNECTORS: ClprConnector[] = [
     {
         admin_key: {_type: KeyType.ED25519, key: "302d300506032b6570032100" + "e5b2".repeat(16)},
         channel_id: CHANNEL_5B60,
+        commitment: hexId("%s", "c0de"),
         connector_contract_id: "0.0.793",
         connector_id: CONNECTOR_77EE,
         created_timestamp: "1783009800.000000000",
-        deleted: false,
+        status: ClprConnectorStatus.ACTIVE,
         in_flight_message_count: 6,
         locked_stake: "500000000",
         slash_count: 0,
@@ -716,10 +722,11 @@ export const CLPR_MOCK_CONNECTORS: ClprConnector[] = [
     {
         admin_key: {_type: KeyType.ED25519, key: "3032300506032b6570032100" + "e5b2".repeat(16)},
         channel_id: CHANNEL_5B60,
+        commitment: hexId("%s", "c0de"),
         connector_contract_id: "0.0.798",
         connector_id: CONNECTOR_3344,
         created_timestamp: "1783641600.000000000",
-        deleted: true,
+        status: ClprConnectorStatus.DELETED,
         in_flight_message_count: 0,
         locked_stake: "0",
         slash_count: 5,
@@ -729,10 +736,11 @@ export const CLPR_MOCK_CONNECTORS: ClprConnector[] = [
     {
         admin_key: {_type: KeyType.ED25519, key: "302e300506032b6570032100" + "e5b2".repeat(16)},
         channel_id: hexId("3d82", "c701"),
+        commitment: hexId("%s", "c0de"),
         connector_contract_id: "0.0.794",
         connector_id: hexId("9900", "aabb"),
         created_timestamp: "1790770200.000000000",
-        deleted: false,
+        status: ClprConnectorStatus.ACTIVE,
         in_flight_message_count: 0,
         locked_stake: "100000000",
         slash_count: 0,
@@ -742,10 +750,11 @@ export const CLPR_MOCK_CONNECTORS: ClprConnector[] = [
     {
         admin_key: {_type: KeyType.ED25519, key: "302f300506032b6570032100" + "e5b2".repeat(16)},
         channel_id: hexId("9e14", "4420"),
+        commitment: hexId("%s", "c0de"),
         connector_contract_id: "0.0.795",
         connector_id: hexId("4411", "9922"),
         created_timestamp: "1781078700.000000000",
-        deleted: false,
+        status: ClprConnectorStatus.ACTIVE,
         in_flight_message_count: 0,
         locked_stake: "50000000",
         slash_count: 2,
@@ -755,10 +764,11 @@ export const CLPR_MOCK_CONNECTORS: ClprConnector[] = [
     {
         admin_key: {_type: KeyType.ED25519, key: "3030300506032b6570032100" + "e5b2".repeat(16)},
         channel_id: hexId("ab33", "7760"),
+        commitment: hexId("%s", "c0de"),
         connector_contract_id: "0.0.796",
         connector_id: hexId("6655", "4433"),
         created_timestamp: "1789761300.000000000",
-        deleted: false,
+        status: ClprConnectorStatus.ACTIVE,
         in_flight_message_count: 3,
         locked_stake: "150000000",
         slash_count: 0,
@@ -768,10 +778,11 @@ export const CLPR_MOCK_CONNECTORS: ClprConnector[] = [
     {
         admin_key: {_type: KeyType.ED25519, key: "3031300506032b6570032100" + "e5b2".repeat(16)},
         channel_id: hexId("f002", "d8e1"),
+        commitment: hexId("%s", "c0de"),
         connector_contract_id: "0.0.797",
         connector_id: hexId("2200", "ee11"),
         created_timestamp: "1777593900.000000000",
-        deleted: true,
+        status: ClprConnectorStatus.DELETED,
         in_flight_message_count: 0,
         locked_stake: "0",
         slash_count: 0,
@@ -810,12 +821,33 @@ export function getClprMockChannel(channelId: string): ClprChannel | null {
     return CLPR_MOCK_CHANNELS.find(c => c.channel_id === channelId) ?? null
 }
 
-// Pending connector commitments as returned by GET /api/v1/clpr/connectors/pending, newest first.
-// Neither the channel nor the connector id is known until the commitment is revealed.
+// Pending connectors as returned by GET /api/v1/clpr/channels/{channelId}/connectors?status=eq:PENDING.
+// The connector id is not known until the commitment is revealed.
 export const CLPR_MOCK_PENDING_CONNECTORS: ClprPendingConnector[] = [
-    {commitment: hexId("0a0a", "b1b1"), created_timestamp: "1790965200.000000000", status: "OPEN"},
-    {commitment: hexId("9f9f", "e2e2"), created_timestamp: "1790766000.000000000", status: "OPEN"},
+    {
+        channel_id: CHANNEL_5B60,
+        commitment: hexId("0a0a", "b1b1"),
+        connector_contract_id: null,
+        connector_id: null,
+        created_timestamp: "1790965200.000000000",
+        status: ClprConnectorStatus.PENDING
+    },
+    {
+        channel_id: CHANNEL_AB33,
+        commitment: hexId("9f9f", "e2e2"),
+        connector_contract_id: null,
+        connector_id: null,
+        created_timestamp: "1790766000.000000000",
+        status: ClprConnectorStatus.PENDING
+    },
 ]
+
+// Pending connectors of a channel, newest first
+export function getClprMockPendingConnectors(channelId: string): ClprPendingConnector[] {
+    return CLPR_MOCK_PENDING_CONNECTORS
+        .filter(c => c.channel_id === channelId)
+        .sort((a, b) => Number(b.created_timestamp) - Number(a.created_timestamp))
+}
 
 export function getClprMockConnector(channelId: string, connectorId: string): ClprConnector | null {
     return CLPR_MOCK_CONNECTORS.find(c => c.channel_id === channelId && c.connector_id === connectorId) ?? null
