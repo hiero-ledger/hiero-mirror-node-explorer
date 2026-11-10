@@ -21,9 +21,7 @@
         <Property id="channel" full-width>
           <template #name>Channel</template>
           <template #value>
-            <router-link :to="routeManager.makeRouteToClprChannel(connector.channel_id)">
-              <HexaValue :byte-string="connector.channel_id" :copyable="false"/>
-            </router-link>
+            <ClprChannelLink :channel-id="connector.channel_id"/>
           </template>
         </Property>
         <Property id="contract" full-width>
@@ -125,12 +123,12 @@ import KeyValue from "@/components/values/KeyValue.vue";
 import PlainAmount from "@/components/values/PlainAmount.vue";
 import TimestampValue from "@/components/values/TimestampValue.vue";
 import AccountLink from "@/components/values/link/AccountLink.vue";
+import ClprChannelLink from "@/components/clpr/ClprChannelLink.vue";
 import ClprBar from "@/components/clpr/ClprBar.vue";
 import ClprConnectorStateLabel from "@/components/clpr/ClprConnectorStateLabel.vue";
 import {CLPR_ECONOMICS, getConnectorQuota, getNextPenalty} from "@/components/clpr/ClprEconomics.ts";
 import {CLPR_MOCK_LEDGER_CONFIGURATION} from "@/components/clpr/ClprMockData.ts";
 import {ClprConnector} from "@/schemas/MirrorNodeSchemas.ts";
-import {routeManager} from "@/utils/RouteManager.ts";
 
 const props = defineProps({
   connector: {
