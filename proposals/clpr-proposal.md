@@ -34,7 +34,7 @@ There is **no specific rendering** of the content of these transactions:
 - The content summary of transaction tables stays empty for these types.
 - The only addition is a **cross-link** in the transaction details of `ClprCompleteChannel` transactions, to **the
   channel**. It is shown when the channel can be resolved:
-  - found through `GET /clpr/channels?timestamp=eq:{timestamp}` which returns at most one channel
+  - found through `/clpr/channels?timestamp=eq:{timestamp}` which returns at most one channel
   - not shown for a failed transaction, nor once a closed channel has been reactivated
 - No other cross-navigation is available from transactions to CLPR entities.
 
@@ -145,7 +145,7 @@ A click on a row routes to the channel details.
 - Pending channel registrations committed more than 24 hours ago
 
 A click on a row routes to the channel or connector details when there is one. The Since column is shown only where the
-API gives a reliable date (not for connector states, see 9.0).
+API gives a reliable date (not for connector states, see 10.0).
 
 API: channels, connectors of every channel, messages of stale-candidate channels, pending connectors.
 
@@ -175,7 +175,7 @@ selector (`TYPES: ALL`).
 
 Clicking a row routes to `/{network}/clpr/messages/{channelId}/{timestamp}/{messageId}`.
 
-API: `GET /clpr/channels/{channelId}/messages` (`type`, `connector.id`, `timestamp`, `limit`, `order`). The API requires a
+API: `/clpr/channels/{channelId}/messages` (`type`, `connector.id`, `timestamp`, `limit`, `order`). The API requires a
 `timestamp` range, and the `type` filter is only allowed with it.
 
 ## 4.3 Channels Tab
@@ -199,7 +199,7 @@ Header controls: status selector (`STATUS: ALL`, PENDING, ACTIVE, PAUSED, CLOSIN
 Pending channels (`status=PENDING`) have no channel id, peer chain, verifier or backlog, and their rows are not
 clickable. Other rows route to `/{network}/clpr/channels/{channelId}`.
 
-API: `GET /clpr/channels` (`status`, `timestamp`, `limit`, `order`). Peer chain is not filterable.
+API: `/clpr/channels` (`status`, `timestamp`, `limit`, `order`). Peer chain is not filterable.
 
 ## 4.4 Connectors Tab
 
@@ -229,12 +229,12 @@ Clicking a row routes to `/{network}/clpr/connectors/{channelId}/{connectorId}`.
 [API] only: the channel, connector id, submitter and stake are not known before a commitment is revealed. Rows are not
 clickable.
 
-API: `GET /clpr/channels/{channelId}/connectors`, `GET /clpr/connectors/pending`, and `GET /clpr/configuration` for the
+API: `/clpr/channels/{channelId}/connectors`, `/clpr/connectors/pending`, and `/clpr/configuration` for the
 queue depth behind the quota.
 
 ## 4.5 Configuration Tab
 
-### Ledger Configuration (API: `GET /clpr/configuration`)
+### Ledger Configuration (API: `/clpr/configuration`)
 
 Chain ID, CLPR service address, protocol version, throttles (max messages per bundle, max message payload, max gas per
 message, max queue depth, max sync size, max local endpoints, max peer endpoints), initial trust anchor, and the
@@ -243,24 +243,20 @@ timestamp it is in effect since. All [API].
 ### Economic Configuration [CONST]
 
 Minimum locked stake, base penalty, penalty multiplier, slash ban threshold, endpoint margin and connector queue quota.
-Not provided by the mirror node (see 7.0): the card states that these values are held by the Explorer.
+Not provided by the mirror node (see 8.0): the card states that these values are held by the Explorer.
 
-### Endpoint Manifest (API: `GET /clpr/endpoint-manifest`)
+### Endpoint Manifest (API: `/clpr/endpoint-manifest`)
 
 Version, in-effect-since timestamp, service address, and the list of service endpoints (`ip:port`). On Hiero the
-manifest follows the consensus roster.
-
-On extra large screens, the Ledger Configuration and Economic Configuration cards are displayed side by side.
+manifest follows the list of consensus nodes.
 
 # 5.0 Detail Pages
-
-On extra large screens, the first cards of the detail pages are placed side by side, as noted below.
 
 ## 5.1 Channel Details
 
 Route: `/{network}/clpr/channels/{channelId}`
 
-**Header:** `Channel {id}` with the status pill and the health pill (see 8.0).
+**Header:** `Channel {id}` with the status pill and the health pill (see 9.0).
 
 **Sub-tabs:** Summary, Messages, Connectors, Verifier & Trust.
 
@@ -272,8 +268,6 @@ Route: `/{network}/clpr/channels/{channelId}`
 | Queues | Next Message ID, Acknowledged Through, Outbound Backlog [DERIVED], Received Through (peer message id) |
 | Peer | Peer Explorer link [CONST], Peer Endpoint Manifest, Peer Throttles, Last Config Update, Config Acknowledged by Peer |
 | Closing Progress | CLOSING or DRAINED channels only: Outbound Messages Left [DERIVED] |
-
-Queues and Peer are displayed side by side on extra large screens.
 
 "Last Status or Anchor Change" is the API `timestamp.from`: it does not move on counter-only updates, so it is not a
 "last activity" time.
@@ -304,7 +298,7 @@ key**, Sourcify for the **contract name**, "None" when the contract is not verif
 
 Route: `/{network}/clpr/connectors/{channelId}/{connectorId}`
 
-**Header:** `Connector {id}` with the state pill (see 8.0).
+**Header:** `Connector {id}` with the state pill (see 9.0).
 
 **Sub-tabs:** Summary, Messages.
 
@@ -333,17 +327,60 @@ Route: `/{network}/clpr/messages/{channelId}/{timestamp}/{messageId}`
 
 The In Reply To value is a peer message, which is not stored on this ledger: it is not linked.
 
-# 6.0 API Calls
+# 6 Search Bar
+
+The search bar resolves the typed text with a set of search agents, one per kind of entity, which run in parallel and
+each return candidates. Several kinds of entities may match the same input: a 32-byte hexa value is already tried
+as an EVM transaction hash and as a public key, and a timestamp is already tried as a transaction timestamp.
+
+The extension adds CLPR agents, and is limited to searches which map directly onto **one query** supported by the REST API.
+
+## 6.1 Supported Searches
+
+| Input                                     | Query | Result | Destination |
+|-------------------------------------------| --- | --- | --- |
+| 32-byte hexa value (`0x` prefix optional) | `/clpr/channels?channel.id=eq:{value}` | 0 or 1 channel | Channel details |
+| Timestamp `seconds.nanoseconds`           | `/clpr/channels?timestamp=eq:{value}` | 0 or 1 channel | Channel details |
+
+- A channel has a unique id, and a unique creation timestamp (timestamp of completion transaction), hence at most
+  one result for each search.
+- The channel candidate is displayed next to the existing ones. For a timestamp, the `ClprCompleteChannel` transaction candidate and the channel candidate may both be listed.
+- The candidate will display the abbreviated channel id and the peer chain.
+- Pending channels are not searched: they have no id, and no details page.
+
+## 6.2 Searches Not Supported
+
+The REST API cannot support them with a single query:
+
+- **Connector from a single value:** connectors can only be queried within a channel. Trying a value against every
+  channel is not retained, for scalability reasons.
+- **Messages from a timestamp alone, or from an integer:** messages can only be queried within a channel, and there is
+  no message id filter.
+- **Channels by peer chain id:** the chain id is not filterable.
+- **Reverse lookups** (channels using a verifier contract, messages sent by an address, etc.): no matching API filter.
+
+## 6.3 Possible Evolution: Combined Searches
+
+Searches combining **two values** typed together (syntax to be defined) can also map onto a single query, and would make
+connectors and messages searchable:
+
+| Input | Query | Result | Destination                             |
+| --- | --- | --- |-----------------------------------------|
+| Channel ID + connector ID | `/clpr/channels/{channelId}/connectors?connector.id=eq:{connectorId}` | 0 or 1 connector | Connector details                       |
+| Channel ID + timestamp | `/clpr/channels/{channelId}/connectors?timestamp=eq:{timestamp}` | 0 or 1 connector (the one created at that timestamp) | Connector details                       |
+| Channel ID + timestamp | `/clpr/channels/{channelId}/messages?timestamp=eq:{timestamp}` | 0 to N messages | Specific result page with message table |
+
+# 7.0 API Calls
 
 | Endpoint | Used by |
 | --- | --- |
-| `GET /clpr/channels` (`status`, `timestamp`, `limit`, `order`) | Channels tab, Overview, selectors |
-| `GET /clpr/channels?channel.id=eq:{id}` | Channel details |
-| `GET /clpr/channels/{id}/messages` (`timestamp` required; `type`, `connector.id`) | Messages tabs, message details, health |
-| `GET /clpr/channels/{id}/connectors` (`connector.id`) | Connectors tabs, connector details, Overview |
-| `GET /clpr/connectors/pending` | Pending Connectors card, Overview |
-| `GET /clpr/configuration` | Configuration tab, connector quota |
-| `GET /clpr/endpoint-manifest` | Configuration tab |
+| `/clpr/channels` (`status`, `timestamp`, `limit`, `order`) | Channels tab, Overview, selectors, search by timestamp |
+| `/clpr/channels?channel.id=eq:{id}` | Channel details, search by id |
+| `/clpr/channels/{id}/messages` (`timestamp` required; `type`, `connector.id`) | Messages tabs, message details, health |
+| `/clpr/channels/{id}/connectors` (`connector.id`) | Connectors tabs, connector details, Overview |
+| `/clpr/connectors/pending` | Pending Connectors card, Overview |
+| `/clpr/configuration` | Configuration tab, connector quota |
+| `/clpr/endpoint-manifest` | Configuration tab |
 | Contract lookup, Sourcify (existing) | Verifier admin key and name |
 
 **Costs to keep in mind**:
@@ -352,7 +389,7 @@ The In Reply To value is a peer message, which is not stored on this ledger: it 
 - Channel health needs one messages call per ACTIVE channel with a backlog.
 - The messages API requires a timestamp range, and has no id lookup.
 
-# 7.0 Static Data [CONST]
+# 8.0 Static Data [CONST]
 
 | Constant | Placeholder value | Used for |
 | --- | --- | --- |
@@ -367,7 +404,7 @@ The In Reply To value is a peer message, which is not stored on this ledger: it 
 The economic values and the stale threshold are not exposed by the mirror node, so the current assumptions is that
 they will be held in the Explorer code or configuration.
 
-# 8.0 Derived Data [DERIVED]
+# 9.0 Derived Data [DERIVED]
 
 | Item | Rule | Shown in |
 | --- | --- | --- |
@@ -383,7 +420,7 @@ they will be held in the Explorer code or configuration.
 | Stake in ℏ | `locked_stake` ÷ 10⁸ | Connector views |
 | Peer explorer link | Lookup of `chain_id` in the peer explorer list | Channel details |
 
-# 9.0 Out of Scope
+# 10.0 Out of Scope
 
 Not shown, because the API cannot supply or derive it:
 
@@ -398,7 +435,7 @@ Not shown, because the API cannot supply or derive it:
 - Channels grouped by peer chain (the API cannot filter by chain)
 - A "since" date for connector states (connector `timestamp.from` ignores counter updates)
 
-# 10.0 Open Points
+# 11.0 Open Points
 
 1. Where the connector's funded balance lives, and whether it is the ℏ balance of the connector contract. This would
    enable a Balance column and the Low balance state.
