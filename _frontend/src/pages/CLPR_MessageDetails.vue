@@ -20,7 +20,7 @@
         <Property id="channelId" full-width>
           <template #name>Channel</template>
           <template #value>
-            <HexaValue :byte-string="message?.channel_id ?? null" :show-none="true"/>
+            <ClprChannelLink :channel-id="message?.channel_id ?? null"/>
           </template>
         </Property>
         <Property id="messageId" full-width>
@@ -50,7 +50,7 @@
         <Property id="connectorId" full-width>
           <template #name>Connector</template>
           <template #value>
-            <HexaValue :byte-string="message?.connector_id ?? null" :show-none="true"/>
+            <ClprConnectorLink :channel-id="message?.channel_id ?? null" :connector-id="message?.connector_id ?? null"/>
           </template>
         </Property>
         <Property id="acknowledged" full-width>
@@ -156,6 +156,8 @@ import HexaValue from "@/components/values/HexaValue.vue";
 import PlainAmount from "@/components/values/PlainAmount.vue";
 import StringValue from "@/components/values/StringValue.vue";
 import TimestampValue from "@/components/values/TimestampValue.vue";
+import ClprChannelLink from "@/components/clpr/ClprChannelLink.vue";
+import ClprConnectorLink from "@/components/clpr/ClprConnectorLink.vue";
 import ClprPill from "@/components/clpr/ClprPill.vue";
 import {getReplyStatusLevel} from "@/components/clpr/ClprUtils.ts";
 import {ClprMessageType} from "@/schemas/MirrorNodeSchemas.ts";
