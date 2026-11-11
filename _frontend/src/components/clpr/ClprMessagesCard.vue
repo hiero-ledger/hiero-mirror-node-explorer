@@ -65,6 +65,7 @@ const slots = useSlots()
 const hasFilters = computed(() => !props.connectorId || !!slots['channel-filter'])
 
 const selectedConnectorId = ref<string>("")
+// Only the completed connectors can be filtered on: pending ones have no connector id yet
 const connectors = computed(() => getClprMockConnectors(props.channelId))
 // Connectors belong to a channel: the connector filter is reset whenever the channel changes
 watch(() => props.channelId, () => selectedConnectorId.value = "")

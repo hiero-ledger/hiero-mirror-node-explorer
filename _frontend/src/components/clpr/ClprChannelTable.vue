@@ -17,6 +17,7 @@
         @update:current-page="currentPage = $event as number"
         :per-page="perPage"
         row-key="ownership_commitment"
+        :row-class="(row: ClprChannel) => clprRowClass(row.channel_id !== null)"
         @cell-click="handleClick"
     >
       <o-table-column v-slot="props" field="channel_id" label="CHANNEL ID">
@@ -73,6 +74,7 @@ import StringValue from "@/components/values/StringValue.vue";
 import TimestampValue from "@/components/values/TimestampValue.vue";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
 import {routeManager} from "@/utils/RouteManager.ts";
+import {clprRowClass} from "@/components/clpr/ClprUtils.ts";
 import ClprTableFrame from "@/components/clpr/ClprTableFrame.vue";
 import ClprChannelStatusLabel from "@/components/clpr/ClprChannelStatusLabel.vue";
 import ClprHexLabel from "@/components/clpr/ClprHexLabel.vue";

@@ -16,12 +16,12 @@
 
 import {computed, PropType} from "vue";
 import ClprPill, {ClprPillLevel} from "@/components/clpr/ClprPill.vue";
-import {ClprConnector} from "@/schemas/MirrorNodeSchemas.ts";
+import {ClprConnectorRow} from "@/schemas/MirrorNodeSchemas.ts";
 import {ClprConnectorState, getConnectorState} from "@/components/clpr/ClprEconomics.ts";
 
 const props = defineProps({
   connector: {
-    type: Object as PropType<ClprConnector>,
+    type: Object as PropType<ClprConnectorRow>,
     required: true
   }
 })

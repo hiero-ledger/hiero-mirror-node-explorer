@@ -17,8 +17,6 @@
     </template>
   </ClprConnectorsCard>
 
-  <ClprPendingConnectorsCard :channel-id="selectedChannelId"/>
-
 </template>
 
 <!-- --------------------------------------------------------------------------------------------------------------- -->
@@ -30,7 +28,6 @@
 import {ref} from "vue";
 import SelectView from "@/elements/SelectView.vue";
 import {shortenHex} from "@/components/clpr/ClprUtils.ts";
-import ClprPendingConnectorsCard from "@/components/clpr/ClprPendingConnectorsCard.vue";
 import ClprConnectorsCard from "@/components/clpr/ClprConnectorsCard.vue";
 import {CLPR_MOCK_COMPLETED_CHANNELS} from "@/components/clpr/ClprMockData.ts";
 import {ClprChannel} from "@/schemas/MirrorNodeSchemas.ts";
