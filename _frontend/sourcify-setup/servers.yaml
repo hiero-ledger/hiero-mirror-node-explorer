@@ -1,8 +1,0 @@
-- description: The current REST API server
-  url: ""
-- description: The production REST API server
-  url: "https://server-verify.hashscan.io"
-- description: The staging REST API server
-  url: "https://server-sourcify.hedera-devops.com"
-- description: Local development server address on default port 5555
-  url: "https://localhost/server"

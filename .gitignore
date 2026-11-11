@@ -54,7 +54,3 @@ coverage
 # Branding customization
 /_frontend/src/styles
 /_frontend/public
-
-# Sourcify setup
-/_frontend/sourcify-setup/data
-/_frontend/sourcify-setup/nginx/certificate

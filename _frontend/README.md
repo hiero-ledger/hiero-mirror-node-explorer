@@ -132,34 +132,6 @@ An example:
   ]
 ```
 
-## Testing smart contract verification with a local sourcify server
-
-The default sourcify configuration in `networks-config.json` allows the explorer to contact a local installation of sourcify for verifying contracts.
-Note that the production sourcify server will not accept verification requests from an explorer running on localhost.
-
-Use the following commands to use sourcify locally:
-
-### Check environment set-up for running sourcify locally
-
-```bash
-npm run sourcify:setup
-```
-
-### Start sourcify service. This should open a page saying that the server is alive
-
-```bash
-npm run sourcify:start
-```
-
-### Stop sourcify service
-
-```bash
-npm run sourcify:stop
-```
-
-Please see
-[sourcify-setup/README.md](https://github.com/hashgraph/hedera-mirror-node-explorer/blob/main/_frontend/sourcify-setup/README.md) for more details.
-
 ## Contributing
 
 Contributions are welcome. Please see the
