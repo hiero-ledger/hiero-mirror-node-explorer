@@ -43,7 +43,7 @@
       <template v-else>
         <DocSnippet
             doc-hint="See how to verify a contract"
-            doc-url="https://docs.hedera.com/hedera/core-concepts/smart-contracts/verifying-smart-contracts-beta"
+            docUrl="https://docs.hedera.com/evm/development/verifying"
         >
           <p>The contract source code will be available once the contract is verified.</p>
         </DocSnippet>
