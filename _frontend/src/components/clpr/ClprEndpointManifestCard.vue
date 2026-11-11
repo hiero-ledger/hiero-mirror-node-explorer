@@ -27,17 +27,20 @@
         </template>
       </Property>
 
-      <o-table
-          :data="manifest.endpoints"
-          :hoverable="true"
-          :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
-          :paginated="false"
-          :striped="false"
-      >
-        <o-table-column v-slot="props" field="service_endpoint" label="SERVICE ENDPOINT">
-          {{ props.row.service_endpoint.ip_address }}:{{ props.row.service_endpoint.port }}
-        </o-table-column>
-      </o-table>
+      <ClprTableFrame>
+        <o-table
+            :data="manifest.endpoints"
+            :hoverable="true"
+            :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
+            :paginated="false"
+            :striped="false"
+            :row-class="() => clprRowClass(false)"
+        >
+          <o-table-column v-slot="props" field="service_endpoint" label="SERVICE ENDPOINT">
+            {{ props.row.service_endpoint.ip_address }}:{{ props.row.service_endpoint.port }}
+          </o-table-column>
+        </o-table>
+      </ClprTableFrame>
       <EmptyTable v-if="!manifest.endpoints.length"/>
     </template>
     <template #footer>
@@ -57,6 +60,8 @@
 
 import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
+import ClprTableFrame from "@/components/clpr/ClprTableFrame.vue";
+import {clprRowClass} from "@/components/clpr/ClprUtils.ts";
 import EmptyTable from "@/components/EmptyTable.vue";
 import Property from "@/components/Property.vue";
 import HexaValue from "@/components/values/HexaValue.vue";

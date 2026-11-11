@@ -37,7 +37,7 @@ import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import SelectView from "@/elements/SelectView.vue";
 import {ClprConnectorState, getConnectorState} from "@/components/clpr/ClprEconomics.ts";
 import ClprConnectorTable from "@/components/clpr/ClprConnectorTable.vue";
-import {getClprMockConnectors} from "@/components/clpr/ClprMockData.ts";
+import {getClprMockConnectorRows} from "@/components/clpr/ClprMockData.ts";
 
 // Connectors of one channel. The channel selection, if any, is up to the parent (see channel-filter slot).
 const props = defineProps({
@@ -53,9 +53,10 @@ const props = defineProps({
 
 const slots = useSlots()
 
-// Static mockup data, to be replaced by a call to GET /api/v1/clpr/channels/{channelId}/connectors
+// Static mockup data, to be replaced by a call to GET /api/v1/clpr/channels/{channelId}/connectors, which returns
+// the pending connectors as well as the completed ones
 const selectedState = ref<string>("")
-const connectors = computed(() => getClprMockConnectors(props.channelId)
+const connectors = computed(() => getClprMockConnectorRows(props.channelId)
     .filter(c => selectedState.value === "" || getConnectorState(c) === selectedState.value))
 
 </script>

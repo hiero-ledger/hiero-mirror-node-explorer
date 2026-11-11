@@ -16,7 +16,8 @@
         :current-page="currentPage"
         @update:current-page="currentPage = $event as number"
         :per-page="perPage"
-        row-key="connector_id"
+        row-key="commitment"
+        :row-class="(row: ClprConnectorRow) => clprRowClass(row.connector_id !== null)"
         @cell-click="handleClick"
     >
       <o-table-column v-slot="props" field="connector_id" label="CONNECTOR ID">
@@ -28,33 +29,43 @@
       </o-table-column>
 
       <o-table-column v-slot="props" field="locked_stake" label="LOCKED STAKE" position="right">
-        <HbarAmount :amount="Number(props.row.locked_stake)" :decimals="2"/>
-        <span class="h-is-secondary-text"> / {{ minStakeLabel }} min</span>
-        <ClprBar
-            :value="Number(props.row.locked_stake)"
-            :max="CLPR_ECONOMICS.minLockedStake * 2"
-            :level="Number(props.row.locked_stake) < CLPR_ECONOMICS.minLockedStake ? 'bad' : ''"
-        />
+        <template v-if="!isPending(props.row)">
+          <HbarAmount :amount="Number(props.row.locked_stake)" :decimals="2"/>
+          <span class="h-is-secondary-text"> / {{ minStakeLabel }} min</span>
+          <ClprBar
+              :value="Number(props.row.locked_stake)"
+              :max="CLPR_ECONOMICS.minLockedStake * 2"
+              :level="Number(props.row.locked_stake) < CLPR_ECONOMICS.minLockedStake ? 'bad' : ''"
+          />
+        </template>
       </o-table-column>
 
       <o-table-column v-slot="props" field="in_flight_message_count" label="IN-FLIGHT" position="right">
-        <PlainAmount :amount="props.row.in_flight_message_count"/>
-        <span class="h-is-secondary-text"> / {{ quota.toLocaleString() }}</span>
-        <ClprBar :value="props.row.in_flight_message_count" :max="quota" level="info"/>
+        <template v-if="!isPending(props.row)">
+          <PlainAmount :amount="props.row.in_flight_message_count"/>
+          <span class="h-is-secondary-text"> / {{ quota.toLocaleString() }}</span>
+          <ClprBar :value="props.row.in_flight_message_count" :max="quota" level="info"/>
+        </template>
       </o-table-column>
 
       <o-table-column v-slot="props" field="slash_count" label="SLASHES" position="right">
-        <PlainAmount :amount="props.row.slash_count"/>
-        <span class="h-is-secondary-text"> / {{ CLPR_ECONOMICS.slashBanThreshold }}</span>
-        <ClprBar
-            :value="props.row.slash_count"
-            :max="CLPR_ECONOMICS.slashBanThreshold"
-            :level="props.row.slash_count >= CLPR_ECONOMICS.slashBanThreshold - 1 ? 'bad' : props.row.slash_count ? 'warn' : ''"
-        />
+        <template v-if="!isPending(props.row)">
+          <PlainAmount :amount="props.row.slash_count"/>
+          <span class="h-is-secondary-text"> / {{ CLPR_ECONOMICS.slashBanThreshold }}</span>
+          <ClprBar
+              :value="props.row.slash_count"
+              :max="CLPR_ECONOMICS.slashBanThreshold"
+              :level="props.row.slash_count >= CLPR_ECONOMICS.slashBanThreshold - 1 ? 'bad' : props.row.slash_count ? 'warn' : ''"
+          />
+        </template>
       </o-table-column>
 
       <o-table-column v-slot="props" field="state" label="STATE">
         <ClprConnectorStateLabel :connector="props.row"/>
+      </o-table-column>
+
+      <o-table-column v-slot="props" field="commitment" label="COMMITMENT">
+        <ClprHexLabel :value="props.row.commitment"/>
       </o-table-column>
 
       <o-table-column v-slot="props" field="created_timestamp" label="CREATED">
@@ -79,7 +90,7 @@
 
 import {inject, PropType, ref, watch} from "vue";
 import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
-import {ClprConnector} from "@/schemas/MirrorNodeSchemas.ts";
+import {ClprConnectorRow, ClprConnectorStatus} from "@/schemas/MirrorNodeSchemas.ts";
 import {ORUGA_MOBILE_BREAKPOINT} from "@/BreakPoints";
 import EmptyTable from "@/components/EmptyTable.vue";
 import HbarAmount from "@/components/values/HbarAmount.vue";
@@ -88,6 +99,7 @@ import TimestampValue from "@/components/values/TimestampValue.vue";
 import StringValue from "@/components/values/StringValue.vue";
 import TablePageSize from "@/components/transaction/TablePageSize.vue";
 import {routeManager} from "@/utils/RouteManager.ts";
+import {clprRowClass} from "@/components/clpr/ClprUtils.ts";
 import ClprTableFrame from "@/components/clpr/ClprTableFrame.vue";
 import ClprBar from "@/components/clpr/ClprBar.vue";
 import ClprConnectorStateLabel from "@/components/clpr/ClprConnectorStateLabel.vue";
@@ -97,14 +109,20 @@ import ClprHexLabel from "@/components/clpr/ClprHexLabel.vue";
 
 const props = defineProps({
   connectors: {
-    type: Array as PropType<ClprConnector[]>,
+    type: Array as PropType<ClprConnectorRow[]>,
     required: true
   }
 })
 
-const handleClick = (connector: ClprConnector, c: unknown, i: number, ci: number, event: Event) => {
-  routeManager.routeToClprConnector(connector.channel_id, connector.connector_id, event)
+// A pending connector has no connector id yet: there are no details to navigate to
+const handleClick = (connector: ClprConnectorRow, c: unknown, i: number, ci: number, event: Event) => {
+  if (connector.connector_id !== null) {
+    routeManager.routeToClprConnector(connector.channel_id, connector.connector_id, event)
+  }
 }
+
+// The limits only make sense for completed connectors
+const isPending = (connector: ClprConnectorRow): boolean => connector.status === ClprConnectorStatus.PENDING
 
 // The quota is a share of the max queue depth of the ledger configuration
 // (mock for now, to be replaced by GET /api/v1/clpr/configuration)

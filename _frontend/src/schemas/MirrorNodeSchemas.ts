@@ -1151,7 +1151,8 @@ export interface ClprConnector {
     timestamp: TimestampRange
 }
 
-// A connector registration not completed yet: GET /api/v1/clpr/channels/{channelId}/connectors?status=eq:PENDING.
+// A connector registration not completed yet (GET /api/v1/clpr/channels/{channelId}/connectors?status=eq:PENDING,
+// and also part of the list returned without status filter).
 // Its connector id and contract are not known before completion: it is identified by its commitment.
 export interface ClprPendingConnector {
     channel_id: string
@@ -1162,8 +1163,11 @@ export interface ClprPendingConnector {
     status: ClprConnectorStatus.PENDING
 }
 
+// A row of the connectors list of a channel: completed or pending
+export type ClprConnectorRow = ClprConnector | ClprPendingConnector
+
 export interface ClprConnectorsResponse {
-    connectors: ClprConnector[] | undefined
+    connectors: ClprConnectorRow[] | undefined
     links: Links | undefined
 }
 
