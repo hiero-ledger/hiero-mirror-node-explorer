@@ -333,8 +333,7 @@ The content of the file is an array of the following structure:
 
 ### Sourcify Setup Object
 
-This setup configures the use of a _contract verification server_ based on the
-[hedera-sourcify](https://github.com/hashgraph/hedera-sourcify) project.
+This setup configures the use of a _contract verification service_ based on the [sourcify.eth](https://sourcify.dev) project.
 
 | Parameter Key | Type      | When `undefined` or `null` | Comments                    |
 |---------------|-----------|----------------------------|-----------------------------|

@@ -18,10 +18,7 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-pattern ../.gitignore",
     "docker:build": "npm run build && docker build . --tag ghcr.io/hiero-ledger/hiero-mirror-node-explorer/hiero-explorer:latest",
     "docker:start": "docker-compose up -d",
-    "docker:stop": "docker-compose down",
-    "sourcify:setup": "bash scripts/sourcify-setup.sh",
-    "sourcify:start": "npm run sourcify:setup && docker compose -f ./sourcify-setup/docker-compose.yaml up -d && sleep 3 && open https://localhost/server/health",
-    "sourcify:stop": "docker compose -f ./sourcify-setup/docker-compose.yaml down"
+    "docker:stop": "docker-compose down"
   },
   "dependencies": {
     "@bokuweb/zstd-wasm": "0.0.27",
