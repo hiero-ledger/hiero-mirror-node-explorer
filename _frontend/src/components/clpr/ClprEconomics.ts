@@ -4,7 +4,7 @@
 // as constants known by the Explorer. Amounts are in tinybars.
 // NOTE: values are the ones of the HTML mockup, which flags them as placeholders to be verified.
 
-import {ClprConnector, ClprConnectorStatus} from "@/schemas/MirrorNodeSchemas.ts";
+import {ClprConnector, ClprConnectorRow, ClprConnectorStatus} from "@/schemas/MirrorNodeSchemas.ts";
 
 const TINYBARS_PER_HBAR = 100_000_000
 
@@ -23,13 +23,17 @@ export enum ClprConnectorState {
     LOW_STAKE = "Low stake",
     BANNED = "Banned",
     DEREGISTERED = "Deregistered",
+    PENDING = "Pending", // registration not completed
 }
 
 // Derived from the connector fields and the economic constants. A "Low balance" state exists in the mockup
 // but needs the connector balance, which is not available for now.
-export function getConnectorState(connector: ClprConnector): ClprConnectorState {
+export function getConnectorState(row: ClprConnectorRow): ClprConnectorState {
     let result: ClprConnectorState
-    if (connector.status === ClprConnectorStatus.DELETED) {
+    const connector = row as ClprConnector
+    if (row.status === ClprConnectorStatus.PENDING) {
+        result = ClprConnectorState.PENDING
+    } else if (connector.status === ClprConnectorStatus.DELETED) {
         result = connector.slash_count >= CLPR_ECONOMICS.slashBanThreshold
             ? ClprConnectorState.BANNED
             : ClprConnectorState.DEREGISTERED

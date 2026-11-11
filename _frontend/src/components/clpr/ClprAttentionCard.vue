@@ -14,31 +14,34 @@
       <span class="h-is-secondary-text">{{ items.length }} items</span>
     </template>
     <template #content>
-      <o-table
-          :data="items"
-          :hoverable="true"
-          :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
-          :paginated="false"
-          :striped="false"
-          row-key="key"
-          @cell-click="handleClick"
-      >
-        <o-table-column v-slot="props" field="what" label="WHAT">
-          <ClprPill :label="props.row.what" :level="props.row.level"/>
-        </o-table-column>
+      <ClprTableFrame>
+        <o-table
+            :data="items"
+            :hoverable="true"
+            :mobile-breakpoint="ORUGA_MOBILE_BREAKPOINT"
+            :paginated="false"
+            :striped="false"
+            row-key="key"
+            :row-class="(row: AttentionItem) => clprRowClass(row.channelId !== undefined)"
+            @cell-click="handleClick"
+        >
+          <o-table-column v-slot="props" field="what" label="WHAT">
+            <ClprPill :label="props.row.what" :level="props.row.level"/>
+          </o-table-column>
 
-        <o-table-column v-slot="props" field="where" label="WHERE">
-          <ClprHexLabel :value="props.row.where"/>
-        </o-table-column>
+          <o-table-column v-slot="props" field="where" label="WHERE">
+            <ClprHexLabel :value="props.row.where"/>
+          </o-table-column>
 
-        <o-table-column v-slot="props" field="detail" label="DETAIL">
-          <div class="h-should-wrap">{{ props.row.detail }}</div>
-        </o-table-column>
+          <o-table-column v-slot="props" field="detail" label="DETAIL">
+            <div class="h-should-wrap">{{ props.row.detail }}</div>
+          </o-table-column>
 
-        <o-table-column v-slot="props" field="since" label="SINCE">
-          <TimestampValue :timestamp="props.row.since"/>
-        </o-table-column>
-      </o-table>
+          <o-table-column v-slot="props" field="since" label="SINCE">
+            <TimestampValue :timestamp="props.row.since"/>
+          </o-table-column>
+        </o-table>
+      </ClprTableFrame>
       <div v-if="!items.length" class="h-is-secondary-text">Nothing needs attention.</div>
     </template>
     <template #footer>
@@ -62,6 +65,8 @@ import {OTable, OTableColumn} from "@oruga-ui/oruga-next";
 import DashboardCardV2 from "@/components/DashboardCardV2.vue";
 import TimestampValue from "@/components/values/TimestampValue.vue";
 import ClprPill, {ClprPillLevel} from "@/components/clpr/ClprPill.vue";
+import ClprTableFrame from "@/components/clpr/ClprTableFrame.vue";
+import {clprRowClass} from "@/components/clpr/ClprUtils.ts";
 import ClprHexLabel from "@/components/clpr/ClprHexLabel.vue";
 import {CLPR_MOCK_NOW_SECONDS, getClprMockChannels} from "@/components/clpr/ClprMockData.ts";
 import {ClprChannelStatus} from "@/schemas/MirrorNodeSchemas.ts";

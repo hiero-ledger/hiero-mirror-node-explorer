@@ -9,3 +9,11 @@ export function shortenHex(value: string): string {
 export function getReplyStatusLevel(replyStatus: string): "success" | "error" {
     return replyStatus === "SUCCESS" ? "success" : "error"
 }
+
+// Class of the table rows which do not route anywhere (no entity details to navigate to): see ClprTableFrame.vue.
+// To be used with the row-class property of o-table, e.g. :row-class="row => rowClass(isClickable(row))"
+export const CLPR_STATIC_ROW_CLASS = "clpr-static-row"
+
+export function clprRowClass(clickable: boolean): string {
+    return clickable ? "" : CLPR_STATIC_ROW_CLASS
+}
