@@ -123,7 +123,7 @@ that pay for delivery.
 
 | Tile | Value | Source |
 | --- | --- | --- |
-| Channels | Active / total | [DERIVED] from channels |
+| Channels | Active / total (channels with an id) | [DERIVED] from channels |
 | Paused channels | Count | [DERIVED] from channels |
 | Outbound backlog | Sum of channel backlogs | [DERIVED] |
 | Pending channels | Channels registered and not completed | [API] count, `status=PENDING` |
@@ -200,43 +200,43 @@ Header controls: status selector (`STATUS: ALL`, PENDING, ACTIVE, PAUSED, CLOSIN
 - **Ownership Commitment** – `ownership_commitment`, the only identifier of a pending channel
 - **Created** – `created_timestamp`
 
-Pending channels (`status=PENDING`) have no channel id, peer chain, verifier or backlog, and their rows are not
-clickable. Other rows route to `/{network}/clpr/channels/{channelId}`.
+Without a status filter, the API returns both completed and pending channels: with `STATUS: ALL`, pending channels are
+listed along with the others, in creation order. Pending channels (`status=PENDING`) have no channel id, peer chain,
+verifier or backlog, and their rows are not clickable. Other rows route to `/{network}/clpr/channels/{channelId}`.
+
+The views which need a channel (the `CHANNEL:` selectors, the Overview counts) only consider the channels which have an
+id, i.e. they ignore the pending rows.
 
 API: `/clpr/channels` (`status`, `timestamp`, `limit`, `order`). Peer chain is not filterable.
 
 ## 4.4 Connectors Tab
 
-Header controls: `CHANNEL:` selector, state selector (`STATES: ALL`).
+Header controls: `CHANNEL:` selector, state selector (`STATES: ALL`, including Pending).
 
 ### Table Columns
 
-| Connector ID | Contract | Locked Stake | In-flight | Slashes | State | Created |
-| --- | --- | --- | --- | --- | --- | --- |
+| Connector ID | Contract | Locked Stake | In-flight | Slashes | State | Commitment | Created |
+| --- | --- | --- | --- | --- | --- | --- | --- |
 
 ### Column Definitions
 
-- **Connector ID / Contract** – `connector_id`, `connector_contract_id` (null until the registration is completed)
+- **Connector ID / Contract** – `connector_id`, `connector_contract_id` (both null until the registration is completed)
 - **Locked Stake** – `locked_stake` (tinybars, shown in ℏ), against the minimum stake [CONST], with a bar
 - **In-flight** – `in_flight_message_count`, against the connector quota [DERIVED], with a bar
 - **Slashes** – `slash_count`, against the ban threshold [CONST], with a bar
-- **State** – [DERIVED] from `status` (ACTIVE or DELETED), the slash count and the stake: Healthy, Low stake, Near ban, Banned or Deregistered
+- **State** – [DERIVED] from `status`, the slash count and the stake: Pending, Healthy, Low stake, Near ban, Banned or Deregistered
+- **Commitment** – `commitment`, the only identifier of a pending connector
 - **Created** – `created_timestamp`
 
-Clicking a row routes to `/{network}/clpr/connectors/{channelId}/{connectorId}`.
+Without a status filter, the API returns both completed and pending connectors of the channel: the table lists them
+together, in creation order. A pending connector (`status=PENDING`) has no connector id nor contract yet, and its limit
+columns (stake, in-flight, slashes) are empty. Its row is not clickable. Other rows route to
+`/{network}/clpr/connectors/{channelId}/{connectorId}`.
 
-### Pending Connectors Card
+The connector selector of the Messages views only offers the completed connectors, since a pending one has no connector id
+to filter on.
 
-Under the table, for the selected channel: the connectors registered on that channel and not completed yet
-(`status=PENDING`). Pending connectors are rows of the same connectors API, filtered by `status`.
-
-| Commitment | Status | Created |
-| --- | --- | --- |
-
-[API] only: a pending connector has no connector id nor contract yet, and is identified by its `commitment`. Rows are not
-clickable.
-
-API: `/clpr/channels/{channelId}/connectors` (and the same endpoint with `status=PENDING` for the card), and
+API: `/clpr/channels/{channelId}/connectors` (`status`, `connector.id`, `timestamp`, `limit`, `order`), and
 `/clpr/configuration` for the queue depth behind the quota.
 
 ## 4.5 Configuration Tab
@@ -354,7 +354,8 @@ The extension adds CLPR agents, and is limited to searches which map directly on
   one result for each search.
 - The channel candidate is displayed next to the existing ones. For a timestamp, the `ClprCompleteChannel` transaction candidate and the channel candidate may both be listed.
 - The candidate will display the abbreviated channel id and the peer chain.
-- Pending channels are not searched: they have no id, and no details page.
+- A pending channel has no id and no details page. A timestamp search can return one, since the channels list includes the
+  pending channels: it is ignored.
 
 ## 6.2 Searches Not Supported
 
@@ -385,10 +386,13 @@ connectors and messages searchable:
 | `/clpr/channels` (`status` incl. `PENDING`, `timestamp`, `limit`, `order`) | Channels tab, Overview, selectors, search by timestamp |
 | `/clpr/channels?channel.id=eq:{id}` | Channel details, search by id |
 | `/clpr/channels/{id}/messages` (`timestamp` required; `type`, `connector.id`) | Messages tabs, message details, channel header health |
-| `/clpr/channels/{id}/connectors` (`status`, `connector.id`, `timestamp`) | Connectors tabs (including the Pending Connectors card, with `status=PENDING`), connector details |
+| `/clpr/channels/{id}/connectors` (`status`, `connector.id`, `timestamp`) | Connectors tabs, connector details |
 | `/clpr/configuration` | Configuration tab, connector quota |
 | `/clpr/endpoint-manifest` | Configuration tab |
 | Contract lookup, Sourcify (existing) | Verifier admin key and name |
+
+Without a `status` filter, the channels list and the connectors list of a channel return the pending items as well as the
+completed ones.
 
 # 8.0 Static Data [CONST]
 
@@ -412,11 +416,11 @@ they will be held in the Explorer code or configuration.
 | Outbound backlog | `next_message_id − 1 − acked_message_id` | Channels, Overview, Channel details |
 | Channel health | Paused, Closing, Drained, Closed from `status`. An ACTIVE channel with a backlog is **Stale** when its oldest unacknowledged message is older than the stale threshold; otherwise Healthy | Channel header |
 | Oldest unacknowledged message | Channel messages newest first, limited to the backlog size: the last one returned | Channel health |
-| Connector state | `status` DELETED: Banned if slashes ≥ threshold, else Deregistered. Otherwise Near ban if slashes ≥ threshold − 1, Low stake if stake < minimum, else Healthy | Connectors, Connector header, Connector details |
+| Connector state | `status` PENDING: Pending. `status` DELETED: Banned if slashes ≥ threshold, else Deregistered. Otherwise Near ban if slashes ≥ threshold − 1, Low stake if stake < minimum, else Healthy | Connectors, Connector header, Connector details |
 | Connector quota | `⌊max_queue_depth × quota % ⌋` | Connectors, Connector details |
 | Next penalty | `base penalty × multiplier^slash_count` | Connector details |
 | Limit bars | Stake against 2 × minimum, slashes against the threshold, in-flight against the quota | Connectors, Connector details |
-| Overview tiles and attention list | Counts and rules of 4.1, from the channels and pending lists only | Overview |
+| Overview tiles and attention list | Counts and rules of 4.1, from the channels list only | Overview |
 | Message size | Byte length of `message_data` | Message details |
 | Stake in ℏ | `locked_stake` ÷ 10⁸ | Connector views |
 | Peer explorer link | Lookup of `chain_id` in the peer explorer list | Channel details |
@@ -450,5 +454,3 @@ Not shown, because the API cannot supply or derive it:
 6. Whether the Hiero-internal ClprEndpointPublication can surface in the REST API.
 7. A cross-channel connector listing or lookup (the preliminary OpenAPI had `/clpr/connectors` with an optional channel).
    This would enable to Search connectors by ID or timestamp, and to list connectors needing attention/at risk.
-8. Whether the connectors list of a channel, without a `status` filter, includes the pending connectors. The Explorer
-   assumes it does not, as for channels, and requests them with `status=PENDING`.
