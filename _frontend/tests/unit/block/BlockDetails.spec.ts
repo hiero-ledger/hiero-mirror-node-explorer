@@ -17,6 +17,7 @@ import {fetchGetURLs} from "../MockUtils";
 import router from "@/utils/RouteManager.ts";
 import BlockDetails_Transactions from "@/pages/BlockDetails_Transactions.vue";
 import BlockDetails_Summary from "@/pages/BlockDetails_Summary.vue";
+import KeyValue from "@/components/values/KeyValue.vue";
 
 /*
     Bookmarks
@@ -33,6 +34,43 @@ describe("BlockDetails.vue", () => {
     const BLOCK_NUMBER = BLOCK.number.toString()
     const BLOCK_HASH = BLOCK.hash
     const NORMALIZED_BLOCK_HASH = PathParam.parseBlockLoc(BLOCK_HASH)!.toString()
+
+    it.each([
+        {hash: "0x" + "ab".repeat(32), digestType: "SHA-256"},
+        {hash: BLOCK_HASH, digestType: "SHA-384"},
+        {hash: "0x" + "ab".repeat(20), digestType: "Unknown algorithm"},
+        {hash: "", digestType: null},
+        {hash: null, digestType: null},
+    ])("Should display $digestType for block hash $hash", async ({hash, digestType}) => {
+        await router.push("/")
+
+        const mock = new MockAdapter(axios as any)
+        mock.onGet("/api/v1/blocks/" + BLOCK_NUMBER).reply(200, {...BLOCK, hash})
+
+        const wrapper = mount(BlockDetails_Summary, {
+            global: {
+                plugins: [router, Oruga],
+                provide: {"isMediumScreen": false}
+            },
+            props: {
+                blockHon: BLOCK_NUMBER
+            },
+        })
+
+        const keyValue = wrapper.getComponent(KeyValue)
+        expect(keyValue.props("keyType")).toBeNull()
+        expect(wrapper.get("#blockHashValue").text()).toBe("None")
+
+        await flushPromises()
+
+        expect(keyValue.props("keyType")).toBe(digestType)
+        expect(wrapper.get("#blockHashValue").text()).toBe(
+            hash === null ? "None" : (hash || "0x") + "Copy" + (digestType ?? ""))
+
+        mock.restore()
+        wrapper.unmount()
+        await flushPromises()
+    })
 
     it("Should display block details from block number", async () => {
 
@@ -67,7 +105,7 @@ describe("BlockDetails.vue", () => {
 
         expect(wrapper.get("#countValue").text()).toBe("3")
         expect(wrapper.get("#blockHashValue").text()).toBe(
-            "0xe9630d7d8cc86d0e0d3de5316995bbdf9f2a584524cf18da233abdcff82df97da0a0ec38c6b4046101294896ff88a86bCopySHA384")
+            "0xe9630d7d8cc86d0e0d3de5316995bbdf9f2a584524cf18da233abdcff82df97da0a0ec38c6b4046101294896ff88a86bCopySHA-384")
         expect(wrapper.get("#fromTimestampValue").text()).toBe("6:58:31.3281 AMSep 23, 2022, UTC")
         expect(wrapper.get("#toTimestampValue").text()).toBe("6:58:31.3281 AMSep 23, 2022, UTC")
         expect(wrapper.get("#gasUsedValue").text()).toBe("0")
@@ -163,7 +201,7 @@ describe("BlockDetails.vue", () => {
 
         expect(wrapper.get("#countValue").text()).toBe("3")
         expect(wrapper.get("#blockHashValue").text()).toBe(
-            "0xe9630d7d8cc86d0e0d3de5316995bbdf9f2a584524cf18da233abdcff82df97da0a0ec38c6b4046101294896ff88a86bCopySHA384")
+            "0xe9630d7d8cc86d0e0d3de5316995bbdf9f2a584524cf18da233abdcff82df97da0a0ec38c6b4046101294896ff88a86bCopySHA-384")
         expect(wrapper.get("#fromTimestampValue").text()).toBe("6:58:31.3281 AMSep 23, 2022, UTC")
         expect(wrapper.get("#toTimestampValue").text()).toBe("6:58:31.3281 AMSep 23, 2022, UTC")
         expect(wrapper.get("#gasUsedValue").text()).toBe("0")
@@ -266,7 +304,7 @@ describe("BlockDetails.vue", () => {
 
         expect(wrapper.get("#countValue").text()).toBe("3")
         expect(wrapper.get("#blockHashValue").text()).toBe(
-            "0xe9630d7d8cc86d0e0d3de5316995bbdf9f2a584524cf18da233abdcff82df97da0a0ec38c6b4046101294896ff88a86bCopySHA384")
+            "0xe9630d7d8cc86d0e0d3de5316995bbdf9f2a584524cf18da233abdcff82df97da0a0ec38c6b4046101294896ff88a86bCopySHA-384")
         expect(wrapper.get("#fromTimestampValue").text()).toBe("6:58:31.3281 AMSep 23, 2022, UTC")
         expect(wrapper.get("#toTimestampValue").text()).toBe("6:58:31.3281 AMSep 23, 2022, UTC")
         expect(wrapper.get("#gasUsedValue").text()).toBe("0")
@@ -298,7 +336,7 @@ describe("BlockDetails.vue", () => {
 
         expect(wrapper.get("#countValue").text()).toBe("5")
         expect(wrapper.get("#blockHashValue").text()).toBe(
-            "0x7ece042fa9369ac7d6a407ffd4d4b76b284b54077abf2f5212e969a9fcbe34676f9eaae9dc718e8ca9987a48f92aa7c6CopySHA384")
+            "0x7ece042fa9369ac7d6a407ffd4d4b76b284b54077abf2f5212e969a9fcbe34676f9eaae9dc718e8ca9987a48f92aa7c6CopySHA-384")
         expect(wrapper.get("#fromTimestampValue").text()).toBe("6:58:28.2114 AMSep 23, 2022, UTC")
         expect(wrapper.get("#toTimestampValue").text()).toBe("6:58:29.2397 AMSep 23, 2022, UTC")
         expect(wrapper.get("#gasUsedValue").text()).toBe("0")
