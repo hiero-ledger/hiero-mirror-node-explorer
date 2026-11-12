@@ -47,7 +47,7 @@
     "multiformats": "14.0.5",
     "prismjs": "1.30.0",
     "topojson-client": "3.1.0",
-    "vue": "3.5.44",
+    "vue": "3.5.45",
     "vue-router": "5.4.0"
   },
   "devDependencies": {
