@@ -85,8 +85,8 @@ describe("NftFile.vue", () => {
         const image = wrapper.find('img')
         expect(image.exists()).toBe(true)
         expect(image.attributes('src')).toBe(contentUrl)
-        expect(image.attributes('style')).toContain('max-width: 248px')
-        expect(image.attributes('style')).toContain('max-height: 248px')
+        expect(image.element.style.maxWidth).toBe('248px')
+        expect(image.element.style.maxHeight).toBe('248px')
 
         expect(wrapper.find('video').exists()).toBe(false)
 
