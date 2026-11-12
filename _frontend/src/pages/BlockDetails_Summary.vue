@@ -18,7 +18,7 @@
       <Property id="blockHash" full-width>
         <template v-slot:name>Hash</template>
         <template v-slot:value>
-          <KeyValue :key-bytes="block?.hash" :show-none="true" key-type="SHA384"/>
+          <KeyValue :key-bytes="block?.hash" :key-type="digestType" :show-none="true"/>
         </template>
       </Property>
       <Property id="count" full-width>
@@ -88,6 +88,24 @@ const blockLocParser = new BlockLocParser(computed(() => props.blockHon ?? null)
 onMounted(() => blockLocParser.mount())
 onBeforeUnmount(() => blockLocParser.unmount())
 const block = blockLocParser.block
+
+const digestType = computed(() => {
+  if (block.value?.hash) {
+    let type: string
+    switch (block.value.hash.length) {
+      case 66:
+        type = "SHA-256"
+        break
+      case 98:
+        type = "SHA-384"
+        break
+      default:
+        type = "Unknown algorithm"
+    }
+    return type
+  }
+  return null
+})
 
 </script>
 
