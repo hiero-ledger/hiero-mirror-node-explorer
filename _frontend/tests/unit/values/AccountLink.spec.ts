@@ -103,4 +103,77 @@ describe("AccountLink.vue", () => {
     });
 
 
+    it("props.enableCopy unset: no copy button", async () => {
+
+        const mock = new MockAdapter(axios as any);
+        const matcher1 = "/api/v1/network/nodes"
+        mock.onGet(matcher1).reply(200, SAMPLE_NETWORK_NODES);
+
+        const wrapper = mount(AccountLink, {
+            global: {
+                plugins: [router]
+            },
+            props: {
+                accountId: "0.0.42"
+            },
+        });
+        await flushPromises()
+
+        expect(wrapper.find("button.copy-icon-button").exists()).toBe(false)
+
+        wrapper.unmount()
+        await flushPromises()
+        mock.restore()
+    });
+
+
+    it("props.enableCopy set: copy button next to the account id", async () => {
+
+        const mock = new MockAdapter(axios as any);
+        const matcher1 = "/api/v1/network/nodes"
+        mock.onGet(matcher1).reply(200, SAMPLE_NETWORK_NODES);
+
+        const testAccountId = "0.0.42"
+        const wrapper = mount(AccountLink, {
+            global: {
+                plugins: [router]
+            },
+            props: {
+                accountId: testAccountId,
+                noAnchor: true,
+                enableCopy: true
+            },
+        });
+        await flushPromises()
+
+        expect(wrapper.text()).toBe(testAccountId)
+        expect(wrapper.get("button.copy-icon-button").attributes("aria-label")).toBe("Copy " + testAccountId)
+
+        wrapper.unmount()
+        await flushPromises()
+        mock.restore()
+    });
+
+
+    it("props.enableCopy set but accountId unset: no copy button", async () => {
+
+        const wrapper = mount(AccountLink, {
+            global: {
+                plugins: [router]
+            },
+            props: {
+                nullLabel: "MINT",
+                enableCopy: true
+            },
+        });
+        await flushPromises()
+
+        expect(wrapper.text()).toBe("MINT")
+        expect(wrapper.find("button.copy-icon-button").exists()).toBe(false)
+
+        wrapper.unmount()
+        await flushPromises()
+    });
+
+
 });

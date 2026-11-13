@@ -12,6 +12,8 @@
       <AccountIOL :account-id="accountId" :null-label="nullLabel"/>
     </EntityLink>
 
+    <CopyIconButton v-if="enableCopy && accountId" :content-to-copy="accountId"/>
+
     <template v-if="showExtra && extra.length > 0">
       <span class="ml-2 h-is-extra-text h-is-numeric">
         {{ extra }}
@@ -34,6 +36,7 @@ import {ContractByIdCache} from "@/utils/cache/ContractByIdCache";
 import {RouteLocationRaw} from "vue-router";
 import EntityLink from "@/components/values/link/EntityLink.vue";
 import AccountIOL from "@/components/values/link/AccountIOL.vue";
+import CopyIconButton from "@/elements/CopyIconButton.vue";
 import {makeOperatorDescription} from "@/schemas/MirrorNodeUtils.ts";
 import {routeManager} from "@/utils/RouteManager.ts";
 
@@ -53,6 +56,10 @@ const props = defineProps({
   nullLabel: {
     type: String,
     default: null
+  },
+  enableCopy: {
+    type: Boolean,
+    default: false
   },
 })
 
