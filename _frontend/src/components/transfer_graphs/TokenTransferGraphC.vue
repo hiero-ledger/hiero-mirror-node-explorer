@@ -18,6 +18,7 @@
             <template v-if="i <= tokenTransferLayout[s-1].sources.length">
               <AccountLink v-bind:account-id="tokenTransferLayout[s-1].sources[i-1].account"
                            v-bind:no-anchor="true"
+                           v-bind:enable-copy="true"
                            null-label="MINT"
                            data-cy="sourceAccount"/>
             </template>
@@ -52,6 +53,7 @@
             <template v-if="i <= tokenTransferLayout[s-1].destinations.length">
               <AccountLink v-bind:account-id="tokenTransferLayout[s-1].destinations[i-1].account"
                            v-bind:no-anchor="true"
+                           v-bind:enable-copy="true"
                            null-label="BURN"
                            data-cy="destinationAccount"/>
             </template>

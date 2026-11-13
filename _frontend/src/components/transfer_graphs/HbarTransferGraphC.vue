@@ -16,6 +16,7 @@
           <AccountLink v-if="i <= hbarTransferLayout.sources.length"
                        v-bind:account-id="hbarTransferLayout.sources[i-1].transfer.account"
                        v-bind:no-anchor="true"
+                       v-bind:enable-copy="true"
                        null-label="MINT"
                        data-cy="sourceAccount"/>
         </div>
@@ -47,6 +48,7 @@
           <AccountLink v-if="i <= hbarTransferLayout.destinations.length"
                        v-bind:account-id="hbarTransferLayout.destinations[i-1].transfer.account"
                        v-bind:no-anchor="true"
+                       v-bind:enable-copy="true"
                        null-label="BURN"
                        data-cy="destinationAccount"/>
         </div>
