@@ -55,13 +55,13 @@ describe("ContractResultLogEntry.vue", () => {
             "api/v1/accounts/" + SAMPLE_CONTRACT.evm_address,
         ])
 
-        expect(wrapper.get("#transactionHash").text()).toBe("Transaction Hashc7b2 ecff defd ec56 b809 f93b ef6c 8528 dad2 2e58 a02a 33c2 0d27 5f2e f279 36d5 6b1e d64b 53f9 20fb ac85 d9ca da4a 4e78Copy")
+        expect(wrapper.get("#transactionHash").text()).toBe("Transaction Hashc7b2 ecff defd ec56 b809 f93b ef6c 8528 dad2 2e58 a02a 33c2 0d27 5f2e f279 36d5 6b1e d64b 53f9 20fb ac85 d9ca da4a 4e78")
         expect(wrapper.get("#blockNumber").find("a").exists()).toBeTruthy()
         expect(wrapper.get("#blockNumber").get("a").text()).toBe('9')
         expect(wrapper.get("#blockNumber").text()).toBe("Block9")
-        expect(wrapper.get("#address").text()).toBe("Address0x00…0b70cfCopy(TestEvent)")
-        expect(wrapper.get("#Args").text()).toBe("LogsFlightEvent (index_topic_1 string phase, int256 airspeed, int256 verticalSpeed)Topic 0  signature hash0x01f789d670afa3030578cc570ac4d43ace6f1575dd6c395a711e72a30051efd2CopyTopic 1string  phase[object Object]Copyint256  airspeed10int256  verticalSpeed0")
-        expect(wrapper.get("#logArg_phase").text()).toBe("string  phase[object Object]Copy")
+        expect(wrapper.get("#address").text()).toBe("Address0x00…0b70cf(TestEvent)")
+        expect(wrapper.get("#Args").text()).toBe("LogsFlightEvent (index_topic_1 string phase, int256 airspeed, int256 verticalSpeed)Topic 0  signature hash0x01f789d670afa3030578cc570ac4d43ace6f1575dd6c395a711e72a30051efd2Topic 1string  phase[object Object]int256  airspeed10int256  verticalSpeed0")
+        expect(wrapper.get("#logArg_phase").text()).toBe("string  phase[object Object]")
         expect(wrapper.get("#logArg_airspeed").text()).toBe("int256  airspeed10")
         expect(wrapper.get("#logArg_verticalSpeed").text()).toBe("int256  verticalSpeed0")
 
@@ -96,16 +96,16 @@ describe("ContractResultLogEntry.vue", () => {
             "api/v1/accounts/" + SAMPLE_CONTRACT.evm_address,
         ])
 
-        expect(wrapper.get("#transactionHash").text()).toBe("Transaction Hashc7b2 ecff defd ec56 b809 f93b ef6c 8528 dad2 2e58 a02a 33c2 0d27 5f2e f279 36d5 6b1e d64b 53f9 20fb ac85 d9ca da4a 4e78Copy")
+        expect(wrapper.get("#transactionHash").text()).toBe("Transaction Hashc7b2 ecff defd ec56 b809 f93b ef6c 8528 dad2 2e58 a02a 33c2 0d27 5f2e f279 36d5 6b1e d64b 53f9 20fb ac85 d9ca da4a 4e78")
         expect(wrapper.get("#blockNumber").find("a").exists()).toBeTruthy()
         expect(wrapper.get("#blockNumber").get("a").text()).toBe('9')
         expect(wrapper.get("#blockNumber").text()).toBe("Block9")
-        expect(wrapper.get("#address").text()).toBe(`Address0x00…0b70cfCopy(${SAMPLE_CONTRACT.contract_id})`)
+        expect(wrapper.get("#address").text()).toBe(`Address0x00…0b70cf(${SAMPLE_CONTRACT.contract_id})`)
         expect(wrapper.get("#Args").text()).toBe(
             "Logs" +
-            "Topic " + "0" + "01f7 89d6 70af a303 0578 cc57 0ac4 d43a ce6f 1575 dd6c 395a 711e 72a3 0051 efd2" + "Copy" +
-            "Topic " + "1" + "3f42 6e69 ebfe 4b95 ac58 4a1d c00b e8e9 6c9e ba18 57fc 765e ec04 81a1 2a57 641c" + "Copy" +
-            "Data" + "0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 000a 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000" + "Copy" )
+            "Topic " + "0" + "01f7 89d6 70af a303 0578 cc57 0ac4 d43a ce6f 1575 dd6c 395a 711e 72a3 0051 efd2" +
+            "Topic " + "1" + "3f42 6e69 ebfe 4b95 ac58 4a1d c00b e8e9 6c9e ba18 57fc 765e ec04 81a1 2a57 641c" +
+            "Data" + "0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 000a 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000" )
 
         wrapper.unmount()
         await flushPromises()

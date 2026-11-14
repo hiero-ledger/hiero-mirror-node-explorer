@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
-import {describe, expect, it} from 'vitest'
+import {describe, expect, it, vi} from 'vitest'
 import {flushPromises, mount} from "@vue/test-utils"
 import AccountLink from "@/components/values/link/AccountLink.vue";
 import {SAMPLE_NETWORK_NODES} from "../Mocks";
@@ -100,6 +100,84 @@ describe("AccountLink.vue", () => {
         wrapper.unmount()
         await flushPromises()
         mock.restore()
+    });
+
+
+    it("props.enableCopy unset: no copy button", async () => {
+
+        const mock = new MockAdapter(axios as any);
+        const matcher1 = "/api/v1/network/nodes"
+        mock.onGet(matcher1).reply(200, SAMPLE_NETWORK_NODES);
+
+        const wrapper = mount(AccountLink, {
+            global: {
+                plugins: [router]
+            },
+            props: {
+                accountId: "0.0.42"
+            },
+        });
+        await flushPromises()
+
+        expect(wrapper.find("button.copy-button").exists()).toBe(false)
+
+        wrapper.unmount()
+        await flushPromises()
+        mock.restore()
+    });
+
+
+    it("props.enableCopy set: copy button next to the account id", async () => {
+
+        const mock = new MockAdapter(axios as any);
+        const matcher1 = "/api/v1/network/nodes"
+        mock.onGet(matcher1).reply(200, SAMPLE_NETWORK_NODES);
+
+        const testAccountId = "0.0.42"
+        const wrapper = mount(AccountLink, {
+            global: {
+                plugins: [router]
+            },
+            props: {
+                accountId: testAccountId,
+                noAnchor: true,
+                enableCopy: true
+            },
+        });
+        await flushPromises()
+
+        expect(wrapper.text()).toBe(testAccountId)
+        expect(wrapper.get("#shyCopyButton button.copy-button").attributes("aria-label")).toBe("Copy")
+
+        const writeText = vi.fn().mockResolvedValue(undefined)
+        Object.defineProperty(navigator, "clipboard", {value: {writeText}, configurable: true})
+        await wrapper.get("button.copy-button").trigger("click")
+        expect(writeText).toHaveBeenCalledWith(testAccountId)
+
+        wrapper.unmount()
+        await flushPromises()
+        mock.restore()
+    });
+
+
+    it("props.enableCopy set but accountId unset: no copy button", async () => {
+
+        const wrapper = mount(AccountLink, {
+            global: {
+                plugins: [router]
+            },
+            props: {
+                nullLabel: "MINT",
+                enableCopy: true
+            },
+        });
+        await flushPromises()
+
+        expect(wrapper.text()).toBe("MINT")
+        expect(wrapper.find("button.copy-button").exists()).toBe(false)
+
+        wrapper.unmount()
+        await flushPromises()
     });
 
 

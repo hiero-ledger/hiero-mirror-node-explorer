@@ -95,11 +95,11 @@ describe("ContractDetails.vue", () => {
 
         expect(wrapper.getComponent(PageHeader).text()).toMatch("Contract " + SAMPLE_CONTRACT.contract_id)
 
-        expect(wrapper.get("#entityIdValue").text()).toBe(SAMPLE_CONTRACT.contract_id + "Copy-cqohr")
+        expect(wrapper.get("#entityIdValue").text()).toBe(SAMPLE_CONTRACT.contract_id + "-cqohr")
         expect(wrapper.get("#obtainerValue").text()).toBe("None")
         expect(wrapper.get("#proxyAccountValue").text()).toBe("None")
         expect(wrapper.get("#fileValue").text()).toBe("0.0.749773")
-        expect(wrapper.get("#evmAddress").text()).toBe("EVM Address 0x00000000000000000000000000000000000b70cfCopy")
+        expect(wrapper.get("#evmAddress").text()).toBe("EVM Address 0x00000000000000000000000000000000000b70cf")
 
         // None of the elements related to contract verification should be present in this context
         expect(wrapper.find('#re-verify-button').exists()).toBe(false)
@@ -253,11 +253,11 @@ describe("ContractDetails.vue", () => {
 
         expect(wrapper.getComponent(PageHeader).text()).toMatch("Contract " + SAMPLE_CONTRACT.contract_id)
 
-        expect(wrapper.get("#entityIdValue").text()).toBe(SAMPLE_CONTRACT.contract_id + "Copy-cqohr")
+        expect(wrapper.get("#entityIdValue").text()).toBe(SAMPLE_CONTRACT.contract_id + "-cqohr")
         expect(wrapper.get("#obtainerValue").text()).toBe("None")
         expect(wrapper.get("#proxyAccountValue").text()).toBe("None")
         expect(wrapper.get("#fileValue").text()).toBe("0.0.749773")
-        expect(wrapper.get("#evmAddress").text()).toBe("EVM Address 0x00000000000000000000000000000000000b70cfCopy")
+        expect(wrapper.get("#evmAddress").text()).toBe("EVM Address 0x00000000000000000000000000000000000b70cf")
 
         // None of the elements related to contract verification should be present in this context
         expect(wrapper.find('#re-verify-button').exists()).toBe(false)
@@ -464,8 +464,8 @@ describe("ContractDetails.vue", () => {
 
         expect(wrapper.findComponent(NotificationBanner).exists()).toBe(false)
 
-        expect(wrapper.get("#entityId").text()).toBe("Contract ID " + SAMPLE_CONTRACT.contract_id + "Copy-cqohr")
-        expect(wrapper.get("#evmAddress").text()).toBe("EVM Address 0x00000000000000000000000000000000000b70cfCopy")
+        expect(wrapper.get("#entityId").text()).toBe("Contract ID " + SAMPLE_CONTRACT.contract_id + "-cqohr")
+        expect(wrapper.get("#evmAddress").text()).toBe("EVM Address 0x00000000000000000000000000000000000b70cf")
 
         const contract2 = SAMPLE_CONTRACT_DUDE
 
@@ -487,8 +487,8 @@ describe("ContractDetails.vue", () => {
             "http://localhost:3000/v2/contract/295/" + SAMPLE_CONTRACT_DUDE.evm_address + "?fields=metadata,sources",
         ])
 
-        expect(wrapper.get("#entityId").text()).toBe("Contract ID " + SAMPLE_CONTRACT_DUDE.contract_id + "Copy-gazpt")
-        expect(wrapper.get("#evmAddress").text()).toBe("EVM Address 0x00000000000000000000000000000000000c41dfCopy")
+        expect(wrapper.get("#entityId").text()).toBe("Contract ID " + SAMPLE_CONTRACT_DUDE.contract_id + "-gazpt")
+        expect(wrapper.get("#evmAddress").text()).toBe("EVM Address 0x00000000000000000000000000000000000c41df")
 
         mock.restore()
         wrapper.unmount()

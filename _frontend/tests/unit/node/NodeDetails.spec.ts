@@ -75,15 +75,15 @@ describe("NodeDetails.vue", () => {
 
         expect(wrapper.text()).toMatch(RegExp("Node " + node))
 
-        expect(wrapper.get("#adminKeyValue").text()).toBe("0xc67e3c4172e3eea8e4f45714240e453ab8702e7fc13d7ea58e523e6caeb8a38e" + "Copy" + "ED25519")
+        expect(wrapper.get("#adminKeyValue").text()).toBe("0xc67e3c4172e3eea8e4f45714240e453ab8702e7fc13d7ea58e523e6caeb8a38e" + "ED25519")
         expect(wrapper.get("#nodeAccountValue").text()).toBe("0.0.3")
         expect(wrapper.get("#descriptionValue").text()).toBe("Hosted by Hedera | East Coast, USA")
         expect(wrapper.get("#declineRewardValue").text()).toBe("false")
-        expect(wrapper.get("#publicKeyValue").text()).toBe("0x308201a2300d0609CopyRSA")
+        expect(wrapper.get("#publicKeyValue").text()).toBe("0x308201a2300d0609RSA")
         expect(wrapper.get("#fileValue").text()).toBe("0.0.102")
         expect(wrapper.get("#rangeFromValue").text()).toBe("4:10:06.0411 PMJun 6, 2022, UTC")
         expect(wrapper.get("#rangeToValue").text()).toBe("None")
-        expect(wrapper.get("#nodeCertHashValue").text()).toBe("0xa171e3ba83476747aeb2e2ac4d0e115caaab918203b0dfe1cdeab443438fc289abc8ba8a6aff83db5f1b334046da88c8Copy")
+        expect(wrapper.get("#nodeCertHashValue").text()).toBe("0xa171e3ba83476747aeb2e2ac4d0e115caaab918203b0dfe1cdeab443438fc289abc8ba8a6aff83db5f1b334046da88c8")
         expect(wrapper.get("#serviceEndpointsValue").text()).toBe(
             "www.example.com:50211(3.211.248.172)" +
             "www.example.com:50212" +
@@ -142,7 +142,7 @@ describe("NodeDetails.vue", () => {
         expect(wrapper.get("#nodeAccountValue").text()).toBe("0.0.3")
         expect(wrapper.get("#descriptionValue").text()).toBe("Hosted by Hedera | East Coast, USA")
         expect(wrapper.get("#declineRewardValue").text()).toBe("false")
-        expect(wrapper.get("#nodeCertHashValue").text()).toBe("0xa171e3ba83476747aeb2e2ac4d0e115caaab918203b0dfe1cdeab443438fc289abc8ba8a6aff83db5f1b334046da88c8Copy")
+        expect(wrapper.get("#nodeCertHashValue").text()).toBe("0xa171e3ba83476747aeb2e2ac4d0e115caaab918203b0dfe1cdeab443438fc289abc8ba8a6aff83db5f1b334046da88c8")
 
         mock.resetHistory()
         node = 1
@@ -161,7 +161,7 @@ describe("NodeDetails.vue", () => {
         expect(wrapper.get("#nodeAccountValue").text()).toBe("0.0.4")
         expect(wrapper.get("#descriptionValue").text()).toBe("Hosted by Hedera | East Coast, USA")
         expect(wrapper.get("#declineRewardValue").text()).toBe("true")
-        expect(wrapper.get("#nodeCertHashValue").text()).toBe("0x7409dec2e494b627ee49c69b294be1ceaebca3fdcaf36789e88fc7d5b0eef5561f52b82d35191a39c2fbed6027267166Copy")
+        expect(wrapper.get("#nodeCertHashValue").text()).toBe("0x7409dec2e494b627ee49c69b294be1ceaebca3fdcaf36789e88fc7d5b0eef5561f52b82d35191a39c2fbed6027267166")
 
         mock.restore()
         wrapper.unmount()

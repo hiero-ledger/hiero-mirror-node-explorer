@@ -33,6 +33,7 @@
           <AccountLink
               :account-id="nftTransferLayout[i-1].sender_account_id"
               :no-anchor="compact"
+              :enable-copy="compact"
               null-label="MINT"
               data-cy="sourceAccount"/>
         </div>
@@ -66,6 +67,7 @@
           <AccountLink
               :account-id="nftTransferLayout[i-1].receiver_account_id"
               :no-anchor="compact"
+              :enable-copy="compact"
               null-label="BURN"
               data-cy="destinationAccount"/>
         </div>

@@ -65,7 +65,7 @@ describe("BlockDetails.vue", () => {
 
         expect(keyValue.props("keyType")).toBe(digestType)
         expect(wrapper.get("#blockHashValue").text()).toBe(
-            hash === null ? "None" : (hash || "0x") + "Copy" + (digestType ?? ""))
+            hash === null ? "None" : (hash || "0x") + (digestType ?? ""))
 
         mock.restore()
         wrapper.unmount()
@@ -105,7 +105,7 @@ describe("BlockDetails.vue", () => {
 
         expect(wrapper.get("#countValue").text()).toBe("3")
         expect(wrapper.get("#blockHashValue").text()).toBe(
-            "0xe9630d7d8cc86d0e0d3de5316995bbdf9f2a584524cf18da233abdcff82df97da0a0ec38c6b4046101294896ff88a86bCopySHA-384")
+            "0xe9630d7d8cc86d0e0d3de5316995bbdf9f2a584524cf18da233abdcff82df97da0a0ec38c6b4046101294896ff88a86bSHA-384")
         expect(wrapper.get("#fromTimestampValue").text()).toBe("6:58:31.3281 AMSep 23, 2022, UTC")
         expect(wrapper.get("#toTimestampValue").text()).toBe("6:58:31.3281 AMSep 23, 2022, UTC")
         expect(wrapper.get("#gasUsedValue").text()).toBe("0")
@@ -201,7 +201,7 @@ describe("BlockDetails.vue", () => {
 
         expect(wrapper.get("#countValue").text()).toBe("3")
         expect(wrapper.get("#blockHashValue").text()).toBe(
-            "0xe9630d7d8cc86d0e0d3de5316995bbdf9f2a584524cf18da233abdcff82df97da0a0ec38c6b4046101294896ff88a86bCopySHA-384")
+            "0xe9630d7d8cc86d0e0d3de5316995bbdf9f2a584524cf18da233abdcff82df97da0a0ec38c6b4046101294896ff88a86bSHA-384")
         expect(wrapper.get("#fromTimestampValue").text()).toBe("6:58:31.3281 AMSep 23, 2022, UTC")
         expect(wrapper.get("#toTimestampValue").text()).toBe("6:58:31.3281 AMSep 23, 2022, UTC")
         expect(wrapper.get("#gasUsedValue").text()).toBe("0")
@@ -304,7 +304,7 @@ describe("BlockDetails.vue", () => {
 
         expect(wrapper.get("#countValue").text()).toBe("3")
         expect(wrapper.get("#blockHashValue").text()).toBe(
-            "0xe9630d7d8cc86d0e0d3de5316995bbdf9f2a584524cf18da233abdcff82df97da0a0ec38c6b4046101294896ff88a86bCopySHA-384")
+            "0xe9630d7d8cc86d0e0d3de5316995bbdf9f2a584524cf18da233abdcff82df97da0a0ec38c6b4046101294896ff88a86bSHA-384")
         expect(wrapper.get("#fromTimestampValue").text()).toBe("6:58:31.3281 AMSep 23, 2022, UTC")
         expect(wrapper.get("#toTimestampValue").text()).toBe("6:58:31.3281 AMSep 23, 2022, UTC")
         expect(wrapper.get("#gasUsedValue").text()).toBe("0")
@@ -336,7 +336,7 @@ describe("BlockDetails.vue", () => {
 
         expect(wrapper.get("#countValue").text()).toBe("5")
         expect(wrapper.get("#blockHashValue").text()).toBe(
-            "0x7ece042fa9369ac7d6a407ffd4d4b76b284b54077abf2f5212e969a9fcbe34676f9eaae9dc718e8ca9987a48f92aa7c6CopySHA-384")
+            "0x7ece042fa9369ac7d6a407ffd4d4b76b284b54077abf2f5212e969a9fcbe34676f9eaae9dc718e8ca9987a48f92aa7c6SHA-384")
         expect(wrapper.get("#fromTimestampValue").text()).toBe("6:58:28.2114 AMSep 23, 2022, UTC")
         expect(wrapper.get("#toTimestampValue").text()).toBe("6:58:29.2397 AMSep 23, 2022, UTC")
         expect(wrapper.get("#gasUsedValue").text()).toBe("0")

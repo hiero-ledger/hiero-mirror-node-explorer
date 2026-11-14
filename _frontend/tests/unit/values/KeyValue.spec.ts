@@ -15,7 +15,7 @@ describe("KeyValue.vue", () => {
             },
         });
 
-        expect(wrapper.text()).toBe("0x000102030405060708090A0B0C0D0E0FCopy")
+        expect(wrapper.text()).toBe("0x000102030405060708090A0B0C0D0E0F")
 
         wrapper.unmount()
     });

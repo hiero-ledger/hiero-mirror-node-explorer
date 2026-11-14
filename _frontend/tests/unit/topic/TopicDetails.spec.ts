@@ -81,8 +81,8 @@ describe("TopicDetails.vue", () => {
         expect(card1.get('#creation-dateValue').text()).toMatch('1:31:15.0767 PMJun 4, 2024, UTC')
         expect(card1.get('#auto-renew-periodValue').text()).toMatch('92d 14h 13min 20s')
         expect(card1.get('#auto-renew-accountValue').text()).toMatch('0.0.31393')
-        expect(card1.get('#admin-keyValue').text()).toMatch('0xc249a323c878f5b5e2daccda6d731e6fdc32f870228d1cd4fae559d947dbc36cCopyED25519')
-        expect(card1.get('#submit-keyValue').text()).toMatch('0x8ebc7a7fa141bae14ce76669f6f91d533f3365d6a9a465741f7e6e4abbf7aaf3CopyED25519')
+        expect(card1.get('#admin-keyValue').text()).toMatch('0xc249a323c878f5b5e2daccda6d731e6fdc32f870228d1cd4fae559d947dbc36cED25519')
+        expect(card1.get('#submit-keyValue').text()).toMatch('0x8ebc7a7fa141bae14ce76669f6f91d533f3365d6a9a465741f7e6e4abbf7aaf3ED25519')
 
         expect(fetchGetURLs(mock)).toStrictEqual([
             "api/v1/network/exchangerate",
@@ -175,7 +175,7 @@ describe("TopicDetails.vue", () => {
         ])
 
         expect(wrapper.get('#memoValue').text()).toMatch('None')
-        expect(wrapper.get('#fee-schedule-keyValue').text()).toMatch('0x021ef47310b559d5b6502239e021acc618a55f96f03b6664eb22e36583e4063a7d' + 'Copy' + 'ECDSA_SECP256K1')
+        expect(wrapper.get('#fee-schedule-keyValue').text()).toMatch('0x021ef47310b559d5b6502239e021acc618a55f96f03b6664eb22e36583e4063a7d' + '' + 'ECDSA_SECP256K1')
 
         //
         // TopicDetails_Others
@@ -201,8 +201,8 @@ describe("TopicDetails.vue", () => {
 
         expect(wrapper2.get('#custom-fee-created-atValue').text()).toMatch('5:46:48.0000 AMMar 12, 2025, UTC')
         expect(wrapper2.get('#fee-exempt-key-listValue').text()).toMatch(
-            '0x022759f5dcaba76d2c6cad9766643fd9bb3fce2ae6eda25afdae8bbef5badb4e95' + 'Copy' + 'ECDSA_SECP256K1' +
-            '0x03b6902642e758d03e35f1b9aff9048ee0448476d134478d3f02be35a6c639b3ed' + 'Copy' + 'ECDSA_SECP256K1'
+            '0x022759f5dcaba76d2c6cad9766643fd9bb3fce2ae6eda25afdae8bbef5badb4e95' + '' + 'ECDSA_SECP256K1' +
+            '0x03b6902642e758d03e35f1b9aff9048ee0448476d134478d3f02be35a6c639b3ed' + '' + 'ECDSA_SECP256K1'
         )
 
         const table = wrapper2.findComponent(FixedFeeTable)

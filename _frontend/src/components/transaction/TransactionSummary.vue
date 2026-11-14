@@ -14,7 +14,9 @@
     />
 
     <div v-else-if="isTokenAssociation" class="h-should-wrap tx-summary">
-      <EntityIOL :entity-id="entityId"/>
+      <Copyable :content-to-copy="entityId ?? ''">
+        <EntityIOL :entity-id="entityId"/>
+      </Copyable>
       <template v-if="tokens.length">
         <Link :size="16" :stroke-width="2.5" class="h-is-low-contrast"/>
         <TokenExtra :token-id="tokens[0]"/>
@@ -30,7 +32,9 @@
 
     <div v-else-if="entityType && entityId" class="h-should-wrap tx-summary">
       <span>{{ entityType + ':' }}</span>
-      <EntityIOL :entity-id="entityId"/>
+      <Copyable :content-to-copy="entityId">
+        <EntityIOL :entity-id="entityId"/>
+      </Copyable>
     </div>
 
   </template>
@@ -50,6 +54,7 @@ import TransferGraphSection from "@/components/transfer_graphs/TransferGraphSect
 import {TransactionAnalyzer} from "@/components/transaction/TransactionAnalyzer";
 import TokenExtra from "@/components/values/link/TokenExtra.vue";
 import EntityIOL from "@/components/values/link/EntityIOL.vue";
+import Copyable from "@/elements/Copyable.vue";
 import {Link} from "@lucide/vue";
 
 const GRAPH_TRANSACTION_TYPES = [
