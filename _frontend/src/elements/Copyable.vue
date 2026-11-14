@@ -9,7 +9,9 @@
     <slot/>
     <div v-if="enableCopy && contentToCopy" id="shyCopyButton" class="shy">
       <div v-if="enableCopy" class="copy-button-container">
-        <button class="copy-button" v-on:click.stop="copyToClipboard">Copy</button>
+        <button class="copy-button" type="button" title="Copy" aria-label="Copy" v-on:click.stop="copyToClipboard">
+          <Copy :size="14" :stroke-width="2"/>
+        </button>
       </div>
     </div>
   </div>
@@ -20,6 +22,8 @@
 <!-- --------------------------------------------------------------------------------------------------------------- -->
 
 <script setup lang="ts">
+
+import {Copy} from "@lucide/vue";
 
 const props = defineProps({
   contentToCopy: String,
@@ -79,13 +83,17 @@ div.copy-button-container {
 }
 
 button.copy-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background-color: var(--copy-button-background);
-  border-radius: 16px;
+  border: none;
+  border-radius: 4px;
   color: var(--copy-button-text);
-  font-size: 12px;
-  height: 28px;
-  padding: 6px 12px;
-  width: 100px;
+  cursor: pointer;
+  height: 20px;
+  padding: 0;
+  width: 20px;
   opacity: 80%;
 }
 

@@ -8,11 +8,11 @@
 
   <div class="is-inline-block">
 
-    <EntityLink :route="accountRoute">
-      <AccountIOL :account-id="accountId" :null-label="nullLabel"/>
-    </EntityLink>
-
-    <CopyIconButton v-if="enableCopy && accountId" :content-to-copy="accountId"/>
+    <Copyable :content-to-copy="accountId ?? ''" :enable-copy="enableCopy">
+      <EntityLink :route="accountRoute">
+        <AccountIOL :account-id="accountId" :null-label="nullLabel"/>
+      </EntityLink>
+    </Copyable>
 
     <template v-if="showExtra && extra.length > 0">
       <span class="ml-2 h-is-extra-text h-is-numeric">
@@ -36,7 +36,7 @@ import {ContractByIdCache} from "@/utils/cache/ContractByIdCache";
 import {RouteLocationRaw} from "vue-router";
 import EntityLink from "@/components/values/link/EntityLink.vue";
 import AccountIOL from "@/components/values/link/AccountIOL.vue";
-import CopyIconButton from "@/elements/CopyIconButton.vue";
+import Copyable from "@/elements/Copyable.vue";
 import {makeOperatorDescription} from "@/schemas/MirrorNodeUtils.ts";
 import {routeManager} from "@/utils/RouteManager.ts";
 

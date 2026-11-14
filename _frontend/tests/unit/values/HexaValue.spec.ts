@@ -69,7 +69,7 @@ describe("HexaValue.vue", () => {
 
         // console.log(wrapper.html())
 
-        expect(wrapper.text()).toBe("0x0102030405060708090A0B0C0D0E0FCopy")
+        expect(wrapper.text()).toBe("0x0102030405060708090A0B0C0D0E0F")
 
         // Lines below ...
         //
@@ -100,7 +100,7 @@ describe("HexaValue.vue", () => {
 
         // console.log(wrapper.html())
 
-        expect(wrapper.text()).toBe("0x0102030405060708090A0B0C0D0E0FCopy")
+        expect(wrapper.text()).toBe("0x0102030405060708090A0B0C0D0E0F")
 
         wrapper.unmount()
         await flushPromises()

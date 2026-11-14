@@ -76,7 +76,7 @@ describe("ComplexKeyValue.vue", () => {
             },
         });
 
-        expect(wrapper.text()).toBe("THRESHOLD (2 of 2)THRESHOLD (1 of 2)ef2d 877b 88b7 464d 9253 560b 8851 316f 5c2f 6ddf 935e b4ee c076 1a32 62b0 a48cCopyED25519a95d 54cf 49c1 d08c d16d 8908 f37d fad9 5637 134f faf5 28a1 d96d a7f2 8d45 f139CopyED25519THRESHOLD (2 of 4)c44c 911f a451 66e3 56b4 9846 3184 459d d9ee 760b acc0 83de 3486 91d6 357e 0634CopyED25519ef2d 877b 88b7 464d 9253 560b 8851 316f 5c2f 6ddf 935e b4ee c076 1a32 62b0 a48cCopyED25519a95d 54cf 49c1 d08c d16d 8908 f37d fad9 5637 134f faf5 28a1 d96d a7f2 8d45 f139CopyED25519daa5 da86 6bf4 e990 c14e ff43 36f5 ab4b 416c 85a3 1289 c8cb 8ae1 b4a5 4ce8 c111CopyED25519")
+        expect(wrapper.text()).toBe("THRESHOLD (2 of 2)THRESHOLD (1 of 2)ef2d 877b 88b7 464d 9253 560b 8851 316f 5c2f 6ddf 935e b4ee c076 1a32 62b0 a48cED25519a95d 54cf 49c1 d08c d16d 8908 f37d fad9 5637 134f faf5 28a1 d96d a7f2 8d45 f139ED25519THRESHOLD (2 of 4)c44c 911f a451 66e3 56b4 9846 3184 459d d9ee 760b acc0 83de 3486 91d6 357e 0634ED25519ef2d 877b 88b7 464d 9253 560b 8851 316f 5c2f 6ddf 935e b4ee c076 1a32 62b0 a48cED25519a95d 54cf 49c1 d08c d16d 8908 f37d fad9 5637 134f faf5 28a1 d96d a7f2 8d45 f139ED25519daa5 da86 6bf4 e990 c14e ff43 36f5 ab4b 416c 85a3 1289 c8cb 8ae1 b4a5 4ce8 c111ED25519")
 
         wrapper.unmount()
     });
