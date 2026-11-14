@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
-import {describe, expect, it} from 'vitest'
+import {describe, expect, it, vi} from 'vitest'
 import {flushPromises, mount} from "@vue/test-utils"
 import AccountLink from "@/components/values/link/AccountLink.vue";
 import {SAMPLE_NETWORK_NODES} from "../Mocks";
@@ -119,7 +119,7 @@ describe("AccountLink.vue", () => {
         });
         await flushPromises()
 
-        expect(wrapper.find("button.copy-icon-button").exists()).toBe(false)
+        expect(wrapper.find("button.copy-button").exists()).toBe(false)
 
         wrapper.unmount()
         await flushPromises()
@@ -147,7 +147,12 @@ describe("AccountLink.vue", () => {
         await flushPromises()
 
         expect(wrapper.text()).toBe(testAccountId)
-        expect(wrapper.get("button.copy-icon-button").attributes("aria-label")).toBe("Copy " + testAccountId)
+        expect(wrapper.get("#shyCopyButton button.copy-button").attributes("aria-label")).toBe("Copy")
+
+        const writeText = vi.fn().mockResolvedValue(undefined)
+        Object.defineProperty(navigator, "clipboard", {value: {writeText}, configurable: true})
+        await wrapper.get("button.copy-button").trigger("click")
+        expect(writeText).toHaveBeenCalledWith(testAccountId)
 
         wrapper.unmount()
         await flushPromises()
@@ -169,7 +174,7 @@ describe("AccountLink.vue", () => {
         await flushPromises()
 
         expect(wrapper.text()).toBe("MINT")
-        expect(wrapper.find("button.copy-icon-button").exists()).toBe(false)
+        expect(wrapper.find("button.copy-button").exists()).toBe(false)
 
         wrapper.unmount()
         await flushPromises()

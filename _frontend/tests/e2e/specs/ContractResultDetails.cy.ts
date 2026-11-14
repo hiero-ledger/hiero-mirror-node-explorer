@@ -25,8 +25,8 @@ describe('ContractResultDetails', () => {
 
         cy.contains('Contract Result')
         cy.get('#resultValue').should('have.text', 'SUCCESS')
-        cy.get('#fromValue').should('have.text', '0x00000000000000000000000000000000000cf475Copy(0.0.849013)')
-        cy.get('#toValue').should('have.text', '0x0000000000000000000000000000000000121951Copy(0.0.1186129)')
+        cy.get('#fromValue').should('have.text', '0x00000000000000000000000000000000000cf475(0.0.849013)')
+        cy.get('#toValue').should('have.text', '0x0000000000000000000000000000000000121951(0.0.1186129)')
     })
 
     it('should display contract result of child (contract call) transaction', () => {
@@ -46,8 +46,8 @@ describe('ContractResultDetails', () => {
 
         cy.contains('Contract Result')
         cy.get('#resultValue').should('have.text', 'SUCCESS')
-        cy.get('#fromValue').should('have.text', '0xb6d4c5a61a0c104b6c9222630fac403178725f7fCopy(0.0.1463739)')
-        cy.get('#toValue').should('have.text', '0x0000000000000000000000000000000000000167Copy(Hedera Token Service System Contract)')
+        cy.get('#fromValue').should('have.text', '0xb6d4c5a61a0c104b6c9222630fac403178725f7f(0.0.1463739)')
+        cy.get('#toValue').should('have.text', '0x0000000000000000000000000000000000000167(Hedera Token Service System Contract)')
     })
 
     it('should display contract result of child (token burn) transaction', () => {
@@ -67,8 +67,8 @@ describe('ContractResultDetails', () => {
 
         cy.contains('Contract Result')
         cy.get('#resultValue').should('have.text', 'SUCCESS')
-        cy.get('#fromValue').should('have.text', '0x0000000000000000000000000000000000163b59Copy(0.0.1456985)')
-        cy.get('#toValue').should('have.text', '0x0000000000000000000000000000000000000167Copy(Hedera Token Service System Contract)')
+        cy.get('#fromValue').should('have.text', '0x0000000000000000000000000000000000163b59(0.0.1456985)')
+        cy.get('#toValue').should('have.text', '0x0000000000000000000000000000000000000167(Hedera Token Service System Contract)')
     })
 
     it('should display contract result of child (crypto transfer) transaction', () => {
@@ -88,7 +88,7 @@ describe('ContractResultDetails', () => {
 
         cy.contains('Contract Result')
         cy.get('#resultValue').should('have.text', 'SUCCESS')
-        cy.get('#fromValue').should('have.text', '0x0000000000000000000000000000000000163b59Copy(0.0.1456985)')
-        cy.get('#toValue').should('have.text', '0x0000000000000000000000000000000000000167Copy(Hedera Token Service System Contract)')
+        cy.get('#fromValue').should('have.text', '0x0000000000000000000000000000000000163b59(0.0.1456985)')
+        cy.get('#toValue').should('have.text', '0x0000000000000000000000000000000000000167(Hedera Token Service System Contract)')
     })
 })

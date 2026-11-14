@@ -119,6 +119,10 @@ table.o-table > tbody > tr {
     cursor: pointer;
 }
 
+.o-table--hoverable tr:not(.o-table__tr--selected):hover:has(button.copy-button:hover) {
+    background-color: var(--oruga-table-background-color);
+}
+
 /*
 
 table.o-table > tbody > tr {
@@ -164,6 +168,10 @@ div.o-table__pagination {
     .o-table__wrapper--mobile tr:not(.o-table--detailed):not(.o-table--empty):not(.o-table__footer) td:not(:first-child):not(:last-child):hover,
     .o-table__wrapper--mobile tr:not(.o-table--detailed):not(.o-table--empty):not(.o-table__footer) td:last-child:hover {
         background-color: var(--background-primary);
+    }
+
+    .o-table__wrapper--mobile tr:not(.o-table--detailed):not(.o-table--empty):not(.o-table__footer) td:hover:has(button.copy-button:hover) {
+        background-color: var(--background-tertiary);
     }
 
     .o-table__wrapper--mobile tr:not(.o-table--detailed):not(.o-table--empty):not(.o-table__footer) td:before {

@@ -176,7 +176,7 @@ describe("AccountDetails.vue", () => {
 
         expect(wrapper.text()).toMatch("Account  Account ID " + SAMPLE_ACCOUNT.account)
         expect(wrapper.get("#balanceValue").text()).toContain("23.42647909ℏ$5.76369")
-        expect(wrapper.get("#keyValue").text()).toBe("0x" + SAMPLE_ACCOUNT.key.key + "CopyED25519")
+        expect(wrapper.get("#keyValue").text()).toBe("0x" + SAMPLE_ACCOUNT.key.key + "ED25519")
 
         expect(wrapper.get("#memoValue").text()).toBe("None")
         expect(wrapper.get("#createTransactionValue").text()).toBe(TransactionID.normalizeForDisplay(SAMPLE_TRANSACTION.transaction_id))
@@ -187,7 +187,7 @@ describe("AccountDetails.vue", () => {
         expect(wrapper.get("#receiverSigRequiredValue").text()).toBe("false")
 
         expect(wrapper.get("#evmAddress").text()).toBe(
-            "EVM Address 0x00000000000000000000000000000000000b2607Copy")
+            "EVM Address 0x00000000000000000000000000000000000b2607")
         expect(wrapper.get("#ethereumNonceValue").text()).toBe("0")
 
         expect(wrapper.get("#stakedToName").text()).toBe("Staked to")
@@ -391,7 +391,7 @@ describe("AccountDetails.vue", () => {
 
         expect(wrapper.text()).toMatch("Account  Account ID " + SAMPLE_ACCOUNT.account)
         expect(wrapper.get("#keyValue").text()).toBe(
-            "0xaa2f7b3e759f4531ec2e7941afa449e6a6e610efb52adae89e9cd8e9d40ddcbfCopyED25519")
+            "0xaa2f7b3e759f4531ec2e7941afa449e6a6e610efb52adae89e9cd8e9d40ddcbfED25519")
 
         const account2 = SAMPLE_ACCOUNT_DUDE
         matcher1 = "/api/v1/accounts/" + account2.account
@@ -420,7 +420,7 @@ describe("AccountDetails.vue", () => {
         ].sort())
 
         expect(wrapper.text()).toMatch("Account  Account ID " + SAMPLE_ACCOUNT_DUDE.account)
-        expect(wrapper.get("#keyValue").text()).toBe("0x" + SAMPLE_ACCOUNT_DUDE.key.key + "CopyED25519")
+        expect(wrapper.get("#keyValue").text()).toBe("0x" + SAMPLE_ACCOUNT_DUDE.key.key + "ED25519")
         expect(wrapper.get("#memoValue").text()).toBe("Account Dude Memo in clear")
         expect(wrapper.find("#aliasValue").exists()).toBe(false)
         expect(wrapper.get("#expiresAtValue").text()).toBe("3:33:21.4109 AMApr 11, 2022, UTC")
