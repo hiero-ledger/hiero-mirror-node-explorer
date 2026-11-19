@@ -58,7 +58,7 @@ describe("RegisteredNodeDetails.vue", () => {
         expect(wrapper.get("#node-idValue").text()).toBe("0")
         expect(wrapper.get("#descriptionValue").text()).toBe("Block Node | East Coast, USA")
         expect(wrapper.get("#admin-keyValue").text()).toBe(
-            "0xd6e8334cd8594e88c82ff266b4974b4e4ac596962dcfab7314f935e7fdda672f" + "Copy" + "ED25519"
+            "0xd6e8334cd8594e88c82ff266b4974b4e4ac596962dcfab7314f935e7fdda672f" + "ED25519"
         )
 
         // Service endpoints table: 3 endpoints (all have ip_address or domain_name)
