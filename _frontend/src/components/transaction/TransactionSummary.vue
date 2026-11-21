@@ -14,7 +14,7 @@
     />
 
     <div v-else-if="isTokenAssociation" class="h-should-wrap tx-summary">
-      <Copyable :content-to-copy="entityId ?? ''">
+      <Copyable :content-to-copy="entityId ?? ''" copy-on-click>
         <EntityIOL :entity-id="entityId"/>
       </Copyable>
       <template v-if="tokens.length">
@@ -32,7 +32,7 @@
 
     <div v-else-if="entityType && entityId" class="h-should-wrap tx-summary">
       <span>{{ entityType + ':' }}</span>
-      <Copyable :content-to-copy="entityId">
+      <Copyable :content-to-copy="entityId" copy-on-click>
         <EntityIOL :entity-id="entityId"/>
       </Copyable>
     </div>

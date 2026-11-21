@@ -101,4 +101,75 @@ describe("Copyable.vue", () => {
         await flushPromises()
     });
 
+    it("copyOnClick: the whole content is the click target and the icon is only a hint", async () => {
+
+        const parentClick = vi.fn()
+        const Parent = defineComponent({
+            render: () => h("div", {onClick: parentClick}, [
+                h(Copyable, {contentToCopy: "0.0.42", copyOnClick: true}, () => h("span", {class: "content"}, "0.0.42"))
+            ])
+        })
+        const wrapper = mount(Parent)
+        await flushPromises()
+
+        const target = wrapper.get(".copy-on-click")
+        expect(target.attributes("role")).toBe("button")
+        expect(target.attributes("aria-label")).toBe("Copy")
+        expect(wrapper.find("button.copy-button").exists()).toBe(false)
+        expect(wrapper.get("#shyCopyButton .copy-button").attributes("aria-hidden")).toBe("true")
+
+        await wrapper.get("span.content").trigger("click")
+        await flushPromises()
+
+        expect(writeText).toHaveBeenCalledWith("0.0.42")
+        expect(wrapper.findComponent(Copyable).emitted("copyMade")).toHaveLength(1)
+        expect(parentClick).not.toHaveBeenCalled()
+
+        wrapper.unmount()
+        await flushPromises()
+    });
+
+    it("copyOnClick: copies with the keyboard (Enter)", async () => {
+
+        const wrapper = mount(Copyable, {
+            props: {
+                contentToCopy: "0.0.42",
+                copyOnClick: true
+            },
+            slots: {
+                default: "0.0.42"
+            }
+        })
+        await flushPromises()
+
+        await wrapper.get(".copy-on-click").trigger("keydown", {key: "Enter"})
+        await flushPromises()
+
+        expect(writeText).toHaveBeenCalledWith("0.0.42")
+
+        wrapper.unmount()
+        await flushPromises()
+    });
+
+    it("copyOnClick is ignored when there is nothing to copy", async () => {
+
+        const wrapper = mount(Copyable, {
+            props: {
+                contentToCopy: "",
+                copyOnClick: true
+            },
+            slots: {
+                default: "None"
+            }
+        })
+        await flushPromises()
+
+        expect(wrapper.find(".copy-on-click").exists()).toBe(false)
+        await wrapper.trigger("click")
+        expect(writeText).not.toHaveBeenCalled()
+
+        wrapper.unmount()
+        await flushPromises()
+    });
+
 });

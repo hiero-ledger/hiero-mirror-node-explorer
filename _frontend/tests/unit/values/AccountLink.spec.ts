@@ -127,7 +127,7 @@ describe("AccountLink.vue", () => {
     });
 
 
-    it("props.enableCopy set: copy button next to the account id", async () => {
+    it("props.enableCopy and props.noAnchor set: the whole account id is the copy target", async () => {
 
         const mock = new MockAdapter(axios as any);
         const matcher1 = "/api/v1/network/nodes"
@@ -147,11 +147,15 @@ describe("AccountLink.vue", () => {
         await flushPromises()
 
         expect(wrapper.text()).toBe(testAccountId)
-        expect(wrapper.get("#shyCopyButton button.copy-button").attributes("aria-label")).toBe("Copy")
+        const target = wrapper.get(".copy-on-click")
+        expect(target.attributes("aria-label")).toBe("Copy")
+        expect(target.attributes("role")).toBe("button")
+        expect(wrapper.get("#shyCopyButton .copy-button").attributes("aria-hidden")).toBe("true")
+        expect(wrapper.find("button.copy-button").exists()).toBe(false)
 
         const writeText = vi.fn().mockResolvedValue(undefined)
         Object.defineProperty(navigator, "clipboard", {value: {writeText}, configurable: true})
-        await wrapper.get("button.copy-button").trigger("click")
+        await wrapper.get(".h-is-numeric").trigger("click")
         expect(writeText).toHaveBeenCalledWith(testAccountId)
 
         wrapper.unmount()
@@ -175,6 +179,7 @@ describe("AccountLink.vue", () => {
 
         expect(wrapper.text()).toBe("MINT")
         expect(wrapper.find("button.copy-button").exists()).toBe(false)
+        expect(wrapper.find(".copy-on-click").exists()).toBe(false)
 
         wrapper.unmount()
         await flushPromises()
