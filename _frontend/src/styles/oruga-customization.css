@@ -119,7 +119,8 @@ table.o-table > tbody > tr {
     cursor: pointer;
 }
 
-.o-table--hoverable tr:not(.o-table__tr--selected):hover:has(button.copy-button:hover) {
+.o-table--hoverable tr:not(.o-table__tr--selected):hover:has(button.copy-button:hover),
+.o-table--hoverable tr:not(.o-table__tr--selected):hover:has(.copy-on-click:hover) {
     background-color: var(--oruga-table-background-color);
 }
 
@@ -170,7 +171,8 @@ div.o-table__pagination {
         background-color: var(--background-primary);
     }
 
-    .o-table__wrapper--mobile tr:not(.o-table--detailed):not(.o-table--empty):not(.o-table__footer) td:hover:has(button.copy-button:hover) {
+    .o-table__wrapper--mobile tr:not(.o-table--detailed):not(.o-table--empty):not(.o-table__footer) td:hover:has(button.copy-button:hover),
+    .o-table__wrapper--mobile tr:not(.o-table--detailed):not(.o-table--empty):not(.o-table__footer) td:hover:has(.copy-on-click:hover) {
         background-color: var(--background-tertiary);
     }
 

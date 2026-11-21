@@ -8,7 +8,7 @@
 
   <div class="is-inline-block">
 
-    <Copyable :content-to-copy="accountId ?? ''" :enable-copy="enableCopy">
+    <Copyable :content-to-copy="accountId ?? ''" :enable-copy="enableCopy" :copy-on-click="enableCopy && noAnchor">
       <EntityLink :route="accountRoute">
         <AccountIOL :account-id="accountId" :null-label="nullLabel"/>
       </EntityLink>
