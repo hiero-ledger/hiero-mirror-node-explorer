@@ -40,12 +40,12 @@ describe("EthPrecompileAddress", () => {
             },
         })
 
-        expect(wrapper.text()).toBe("0x01Copy(ecRecover)")
+        expect(wrapper.text()).toBe("0x01(ecRecover)")
 
         await wrapper.setProps({
             showType: true
         })
-        expect(wrapper.text()).toBe("0x01Copy(ecRecover)PRECOMPILE")
+        expect(wrapper.text()).toBe("0x01(ecRecover)PRECOMPILE")
 
     })
 
@@ -63,12 +63,12 @@ describe("EthPrecompileAddress", () => {
             },
         })
 
-        expect(wrapper.text()).toBe("0xb5b1759836516c95df61e264ec0cfd1e62b6ae7aCopy")
+        expect(wrapper.text()).toBe("0xb5b1759836516c95df61e264ec0cfd1e62b6ae7a")
 
         await wrapper.setProps({
             showType: true
         })
-        expect(wrapper.text()).toBe("0xb5b1759836516c95df61e264ec0cfd1e62b6ae7aCopyPRECOMPILE")
+        expect(wrapper.text()).toBe("0xb5b1759836516c95df61e264ec0cfd1e62b6ae7aPRECOMPILE")
 
     })
 

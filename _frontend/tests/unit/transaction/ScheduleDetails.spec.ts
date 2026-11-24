@@ -106,13 +106,13 @@ describe("TransactionDetails.vue", () => {
 
         const keyPrefixes = wrapper.findAll("#key-prefixValue")
         expect(keyPrefixes.length).toBe(2)
-        expect(keyPrefixes[0].text()).toBe("0x02c7afbeda329af3029987bdf8c4f2c809afd0685788878b7268e7b07033d932fa" + "Copy")
-        expect(keyPrefixes[1].text()).toBe("0x02d1a8c8de9aea78ecaa3cfad59388f87d8cc474feb6d49a08f1fc4e974f5d1c62" + "Copy")
+        expect(keyPrefixes[0].text()).toBe("0x02c7afbeda329af3029987bdf8c4f2c809afd0685788878b7268e7b07033d932fa")
+        expect(keyPrefixes[1].text()).toBe("0x02d1a8c8de9aea78ecaa3cfad59388f87d8cc474feb6d49a08f1fc4e974f5d1c62")
 
         const signatures = wrapper.findAll("#signatureValue")
         expect(signatures.length).toBe(2)
-        expect(signatures[0].text()).toBe("0x0ad75895d50136b0d4bf5e29017e4de170d83a26e81240c03d57a556b35af484521fecfbdb0902935ab4e864e0cc3619f119690438c521894a68762cd91b25f7" + "Copy" + "ECDSA_SECP256K1")
-        expect(signatures[1].text()).toBe("0x1226fba76e1737250b4ef97281563989031c039287432ff45aa203d72186d1885e226b96836f17c01eec43440b2cf2bb58849ac5da9723ce6b0c6a5a0a00d9e7" + "Copy" + "ECDSA_SECP256K1")
+        expect(signatures[0].text()).toBe("0x0ad75895d50136b0d4bf5e29017e4de170d83a26e81240c03d57a556b35af484521fecfbdb0902935ab4e864e0cc3619f119690438c521894a68762cd91b25f7" + "ECDSA_SECP256K1")
+        expect(signatures[1].text()).toBe("0x1226fba76e1737250b4ef97281563989031c039287432ff45aa203d72186d1885e226b96836f17c01eec43440b2cf2bb58849ac5da9723ce6b0c6a5a0a00d9e7" + "ECDSA_SECP256K1")
 
         wrapper.unmount()
         await flushPromises()

@@ -120,7 +120,7 @@ describe("TokenDetails.vue", () => {
         expect(wrapper.get("#maxSupplyValue").text()).toBe("Infinite")
         expect(wrapper.get("#decimalsValue").text()).toBe("0")
         expect(wrapper.get("#evmAddress").text()).toMatch(
-            RegExp("^EVM Address0x0000000000000000000000000000000001c49eecCopy"))
+            RegExp("^EVM Address0x0000000000000000000000000000000001c49eec"))
 
         expect(wrapper.get("#createTransactionValue").text()).toBe(TransactionID.normalizeForDisplay(SAMPLE_TRANSACTION.transaction_id))
 
@@ -214,7 +214,7 @@ describe("TokenDetails.vue", () => {
         expect(wrapper.get("#metadataValue").text()).toBe("None")
 
         expect(wrapper.find("#adminKey").text()).toBe(
-            "Admin Key0xc1a8c8c5b446ce053b6eff4fe4f0192f76535ea9ed6b2b91981177ba237f4b5dCopyED25519"
+            "Admin Key0xc1a8c8c5b446ce053b6eff4fe4f0192f76535ea9ed6b2b91981177ba237f4b5dED25519"
         )
 
         //
@@ -420,14 +420,14 @@ describe("TokenDetails.vue", () => {
         expect(wrapper.text()).toContain("NFT Collection" + testTokenName + ' (' + testTokenSymbol + ')' + 'Token ID' + testTokenId)
 
         expect(wrapper.text()).toMatch("Token Keys")
-        expect(wrapper.find("#adminKey").text()).toBe("Admin Key0xc539536f9599daefeeb777677aa1aeea2242dfc7cca92348c228a5187a0faf2bCopyED25519")
-        expect(wrapper.find("#kycKey").text()).toBe("KYC Key0xc539536f9599daefeeb777677aa1aeea2242dfc7cca92348c228a5187a0faf2bCopyED25519")
-        expect(wrapper.find("#freezeKey").text()).toBe("Freeze Key0xc539536f9599daefeeb777677aa1aeea2242dfc7cca92348c228a5187a0faf2bCopyED25519")
-        expect(wrapper.find("#wipeKey").text()).toBe("Wipe Key0xc539536f9599daefeeb777677aa1aeea2242dfc7cca92348c228a5187a0faf2bCopyED25519")
-        expect(wrapper.find("#supplyKey").text()).toBe("Supply Key0xc539536f9599daefeeb777677aa1aeea2242dfc7cca92348c228a5187a0faf2bCopyED25519")
-        expect(wrapper.find("#feeScheduleKey").text()).toBe("Fee Schedule Key0xc539536f9599daefeeb777677aa1aeea2242dfc7cca92348c228a5187a0faf2bCopyED25519")
-        expect(wrapper.find("#pauseKey").text()).toBe("Pause Key0xc539536f9599daefeeb777677aa1aeea2242dfc7cca92348c228a5187a0faf2bCopyED25519")
-        expect(wrapper.find("#metadataKey").text()).toBe("Metadata Key0xc539536f9599daefeeb777677aa1aeea2242dfc7cca92348c228a5187a0faf2bCopyED25519")
+        expect(wrapper.find("#adminKey").text()).toBe("Admin Key0xc539536f9599daefeeb777677aa1aeea2242dfc7cca92348c228a5187a0faf2bED25519")
+        expect(wrapper.find("#kycKey").text()).toBe("KYC Key0xc539536f9599daefeeb777677aa1aeea2242dfc7cca92348c228a5187a0faf2bED25519")
+        expect(wrapper.find("#freezeKey").text()).toBe("Freeze Key0xc539536f9599daefeeb777677aa1aeea2242dfc7cca92348c228a5187a0faf2bED25519")
+        expect(wrapper.find("#wipeKey").text()).toBe("Wipe Key0xc539536f9599daefeeb777677aa1aeea2242dfc7cca92348c228a5187a0faf2bED25519")
+        expect(wrapper.find("#supplyKey").text()).toBe("Supply Key0xc539536f9599daefeeb777677aa1aeea2242dfc7cca92348c228a5187a0faf2bED25519")
+        expect(wrapper.find("#feeScheduleKey").text()).toBe("Fee Schedule Key0xc539536f9599daefeeb777677aa1aeea2242dfc7cca92348c228a5187a0faf2bED25519")
+        expect(wrapper.find("#pauseKey").text()).toBe("Pause Key0xc539536f9599daefeeb777677aa1aeea2242dfc7cca92348c228a5187a0faf2bED25519")
+        expect(wrapper.find("#metadataKey").text()).toBe("Metadata Key0xc539536f9599daefeeb777677aa1aeea2242dfc7cca92348c228a5187a0faf2bED25519")
 
         mock.restore()
         wrapper.unmount()
@@ -510,7 +510,7 @@ describe("TokenDetails.vue", () => {
         const testTokenId = "0.0.91961"
         const testTokenName = SAMPLE_TOKEN_WITHOUT_KEYS.name
         const testTokenSymbol = SAMPLE_TOKEN_WITHOUT_KEYS.symbol
-        const testTokenIdWithChecksum = "0.0.91961Copy-mkkua"
+        const testTokenIdWithChecksum = "0.0.91961-mkkua"
         const testTokenEVMAddress = "0x0000000000000000000000000000000000016739"
         const matcher1 = "/api/v1/tokens/" + testTokenId
         mock.onGet(matcher1).reply(200, SAMPLE_TOKEN_WITHOUT_KEYS);
@@ -552,7 +552,7 @@ describe("TokenDetails.vue", () => {
         expect(wrapper.text()).toContain(
             "NFT Collection" + testTokenName + ' (' + testTokenSymbol + ')'
             + 'Token ID' + testTokenIdWithChecksum
-            + 'EVM Address' + testTokenEVMAddress + "Copy")
+            + 'EVM Address' + testTokenEVMAddress)
         expect(wrapper.text()).toMatch("Token is deleted")
 
         mock.restore()

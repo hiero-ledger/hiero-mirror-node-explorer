@@ -123,10 +123,10 @@ describe("TransactionDetails.vue", () => {
             "api/v1/contracts/" + SAMPLE_TRANSACTION.token_transfers[1].account,
         ])
 
-        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(SAMPLE_TRANSACTION.transaction_id) + "Copy")
+        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(SAMPLE_TRANSACTION.transaction_id))
         expect(wrapper.get("#transactionTypeValue").text()).toBe("CRYPTO TRANSFER")
         expect(wrapper.get("#consensusAtValue").text()).toBe("5:12:31.6676 AMFeb 28, 2022, UTC") // UTC because of HMSF.forceUTC
-        expect(wrapper.get("#transactionHashValue").text()).toBe("0xa012961232ed7d2842836e95f7e9c4356fdfe2de08199091701a969c1d1fd93671d3078ee83b28fb460a88b4cbd8ecd2Copy")
+        expect(wrapper.get("#transactionHashValue").text()).toBe("0xa012961232ed7d2842836e95f7e9c4356fdfe2de08199091701a969c1d1fd93671d3078ee83b28fb460a88b4cbd8ecd2")
         expect(wrapper.get("#blockNumberValue").text()).toBe("25175998")
 
         expect(wrapper.get("#highVolumeValue").text()).toBe("True")
@@ -253,11 +253,11 @@ describe("TransactionDetails.vue", () => {
 
         expect(wrapper.text()).toMatch(RegExp("^Contract Result"))
         expect(wrapper.get("#resultValue").text()).toBe("SUCCESS")
-        expect(wrapper.get("#evm-hashValue").text()).toBe("0xc43db9eacf72c91629ac03088535dd9ae41059a2c1eefce3a528e04e7e908d2dCopy")
-        expect(wrapper.get("#fromValue").text()).toBe("0x00000000000000000000000000000000000ce9b4Copy(0.0.846260)")
-        expect(wrapper.get("#toValue").text()).toBe("0x0000000000000000000000000000000000103783Copy(0.0.1062787)")
+        expect(wrapper.get("#evm-hashValue").text()).toBe("0xc43db9eacf72c91629ac03088535dd9ae41059a2c1eefce3a528e04e7e908d2d")
+        expect(wrapper.get("#fromValue").text()).toBe("0x00000000000000000000000000000000000ce9b4(0.0.846260)")
+        expect(wrapper.get("#toValue").text()).toBe("0x0000000000000000000000000000000000103783(0.0.1062787)")
         expect(wrapper.find("#typeValue").exists()).toBe(false)
-        // expect(wrapper.get("#functionParametersValue").text()).toBe("18cb afe5 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0017 4876 e800 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 001b 2702 b2a0 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 00a0 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 000c e9b4 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0183 1e10 602d 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0003 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 000c ba44 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 000d 1ea6 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0010 3708Copy")
+        // expect(wrapper.get("#functionParametersValue").text()).toBe("18cb afe5 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0017 4876 e800 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 001b 2702 b2a0 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 00a0 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 000c e9b4 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0183 1e10 602d 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0003 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 000c ba44 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 000d 1ea6 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0010 3708")
         expect(wrapper.get("#errorMessageValue").text()).toBe("None")
         expect(wrapper.get("#gasLimitValue").text()).toBe("480,000")
         expect(wrapper.get("#gasUsedValue").text()).toBe("384,000")
@@ -355,11 +355,11 @@ describe("TransactionDetails.vue", () => {
 
         expect(wrapper.text()).toMatch(RegExp("^Contract Result"))
         expect(wrapper.get("#resultValue").text()).toBe("SUCCESS")
-        expect(wrapper.get("#evm-hashValue").text()).toBe("0xc43db9eacf72c91629ac03088535dd9ae41059a2c1eefce3a528e04e7e908d2dCopy")
-        expect(wrapper.get("#fromValue").text()).toBe("0x00000000000000000000000000000000000ce9b4Copy(0.0.846260)")
-        expect(wrapper.get("#toValue").text()).toBe("0x0000000000000000000000000000000000103783Copy(0.0.1062787)")
+        expect(wrapper.get("#evm-hashValue").text()).toBe("0xc43db9eacf72c91629ac03088535dd9ae41059a2c1eefce3a528e04e7e908d2d")
+        expect(wrapper.get("#fromValue").text()).toBe("0x00000000000000000000000000000000000ce9b4(0.0.846260)")
+        expect(wrapper.get("#toValue").text()).toBe("0x0000000000000000000000000000000000103783(0.0.1062787)")
         expect(wrapper.find("#typeValue").exists()).toBe(false)
-        // expect(wrapper.get("#functionParametersValue").text()).toBe("18cb afe5 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0017 4876 e800 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 001b 2702 b2a0 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 00a0 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 000c e9b4 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0183 1e10 602d 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0003 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 000c ba44 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 000d 1ea6 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0010 3708Copy")
+        // expect(wrapper.get("#functionParametersValue").text()).toBe("18cb afe5 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0017 4876 e800 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 001b 2702 b2a0 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 00a0 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 000c e9b4 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0183 1e10 602d 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0003 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 000c ba44 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 000d 1ea6 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0010 3708")
         // expect(wrapper.get("#errorMessageValue").text()).toBe("None")
         expect(wrapper.get("#gasLimitValue").text()).toBe("480,000")
         expect(wrapper.get("#gasUsedValue").text()).toBe("384,000")
@@ -420,7 +420,7 @@ describe("TransactionDetails.vue", () => {
             "api/v1/contracts/" + SAMPLE_TRANSACTION.token_transfers[1].account,
         ])
 
-        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(SAMPLE_TRANSACTION.transaction_id) + "Copy")
+        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(SAMPLE_TRANSACTION.transaction_id))
         expect(wrapper.get("#transactionTypeValue").text()).toBe("CRYPTO TRANSFER")
         expect(wrapper.get("#memoValue").text()).toBe("None")
 
@@ -465,7 +465,7 @@ describe("TransactionDetails.vue", () => {
             "api/v1/blocks",
         ])
 
-        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(transaction.transaction_id) + "Copy")
+        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(transaction.transaction_id))
         expect(wrapper.get("#transactionTypeValue").text()).toBe("CONTRACT CALL")
         expect(wrapper.get("#memoValue").text()).toBe("Mirror Node acceptance test: 2022-03-07T15:09:26.066680977Z Execute contract")
 
@@ -613,7 +613,7 @@ describe("TransactionDetails.vue", () => {
             "api/v1/blocks",
         ])
 
-        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(transaction.transaction_id) + "Copy")
+        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(transaction.transaction_id))
 
         expect(wrapper.get("#transactionTypeValue").text()).toBe("CONTRACT CALL")
         expect(wrapper.get("#entityId").text()).toBe("Contract IDHedera Token Service System Contract")
@@ -670,7 +670,7 @@ describe("TransactionDetails.vue", () => {
             "api/v1/transactions",
         ])
 
-        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(INNER.transaction_id) + "Copy")
+        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(INNER.transaction_id))
         expect(wrapper.get("#transactionTypeValue").text()).toBe("TOKEN MINT")
 
         const link = wrapper.get("#batchTransactionValue")
@@ -678,7 +678,7 @@ describe("TransactionDetails.vue", () => {
         expect(link.get('a').attributes("href")).toBe("/mainnet/transaction/" + OUTER.consensus_timestamp)
 
         expect(wrapper.get("#batchKeyValue").text()).toBe(
-            "0x027936af0fe67d21e15f53abb4c15d7d0a45edd5409b8136d7ae183a116ec4a7ad" + "Copy" + "ECDSA_SECP256K1"
+            "0x027936af0fe67d21e15f53abb4c15d7d0a45edd5409b8136d7ae183a116ec4a7ad" + "ECDSA_SECP256K1"
         )
 
         expect(wrapper.find("#innerTransactions").exists()).toBe(false)
@@ -753,7 +753,7 @@ describe("TransactionDetails.vue", () => {
             "api/v1/tokens/" + INNER1.entity_id,
         ])
 
-        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(OUTER.transaction_id) + "Copy")
+        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(OUTER.transaction_id))
 
         expect(wrapper.get("#transactionTypeValue").text()).toBe("ATOMIC BATCH")
 
@@ -835,7 +835,7 @@ describe("TransactionDetails.vue", () => {
             "api/v1/transactions",
         ])
 
-        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(SCHEDULING.transaction_id) + "Copy")
+        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(SCHEDULING.transaction_id))
 
         const scheduled = wrapper.get("#scheduledTransactionValue")
         expect(scheduled.text()).toBe("0.0.503733@1666754898.238965661" + "EXECUTED")
@@ -912,7 +912,7 @@ describe("TransactionDetails.vue", () => {
             "api/v1/transactions",
         ])
 
-        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(SCHEDULING.transaction_id) + "Copy")
+        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(SCHEDULING.transaction_id))
 
         const scheduling = wrapper.get("#scheduleCreateTransactionValue")
         expect(scheduling.text()).toBe(TransactionID.normalizeForDisplay(SCHEDULING.transaction_id))
@@ -980,7 +980,7 @@ describe("TransactionDetails.vue", () => {
             "api/v1/tokens/" + CHILD.entity_id,
         ])
 
-        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(PARENT.transaction_id) + "Copy")
+        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(PARENT.transaction_id))
 
         const link = wrapper.get("#parentTransactionValue")
         expect(link.text()).toBe("CONTRACT CALL")
@@ -1073,7 +1073,7 @@ describe("TransactionDetails.vue", () => {
             "/mainnet/token/" + TARGETED_TOKEN
         )
 
-        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(PARENT.transaction_id) + "Copy")
+        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(PARENT.transaction_id))
         expect(wrapper.find("#batchTransaction").exists()).toBe(false)
         expect(wrapper.find("#innerTransactions").exists()).toBe(false)
         expect(wrapper.find("#scheduledTransaction").exists()).toBe(false)
@@ -1127,7 +1127,7 @@ describe("TransactionDetails.vue", () => {
             "api/v1/blocks",
         ])
 
-        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(NONCE_1.transaction_id) + "Copy")
+        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(NONCE_1.transaction_id))
         expect(wrapper.find("#batchTransaction").exists()).toBe(false)
         expect(wrapper.find("#innerTransactions").exists()).toBe(false)
         expect(wrapper.find("#scheduledTransaction").exists()).toBe(false)
@@ -1183,7 +1183,7 @@ describe("TransactionDetails.vue", () => {
             "api/v1/contracts/" + SAMPLE_PARENT_CHILD_AND_UNRELATED_TRANSACTIONS.transactions![1].transfers[4].account,
         ])
 
-        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(NONCE_1.transaction_id) + "Copy")
+        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(NONCE_1.transaction_id))
         expect(wrapper.find("#batchTransaction").exists()).toBe(false)
         expect(wrapper.find("#innerTransactions").exists()).toBe(false)
         expect(wrapper.find("#scheduledTransaction").exists()).toBe(false)
@@ -1260,10 +1260,10 @@ describe("TransactionDetails.vue", () => {
             "api/v1/tokens/" + SAMPLE_ASSOCIATED_TOKEN_2.token_id,
         ])
 
-        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(transactionId) + "Copy")
+        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(transactionId))
         expect(wrapper.get("#transactionTypeValue").text()).toBe("TOKEN ASSOCIATE")
         expect(wrapper.get("#consensusAtValue").text()).toBe("6:51:52.1505 PMDec 21, 2022, UTC") // UTC because of HMSF.forceUTC
-        expect(wrapper.get("#transactionHashValue").text()).toBe("0x4786079999df169a38349249d3c9a5489a83f1c7c51b6b1edeb81347a496d93183e24a43ad03372ebc501528a6032debCopy")
+        expect(wrapper.get("#transactionHashValue").text()).toBe("0x4786079999df169a38349249d3c9a5489a83f1c7c51b6b1edeb81347a496d93183e24a43ad03372ebc501528a6032deb")
 
         expect(wrapper.get("#associatedTokenIdValue").text()).toBe("0.0.34332104HSuite0.0.49292859TokenA7")
         expect(wrapper.get("#entityIdValue").text()).toBe("0.0.642949")
@@ -1329,7 +1329,7 @@ describe("TransactionDetails.vue", () => {
         // console.log(wrapper.html())
         // console.log(wrapper.text())
 
-        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(transactionId) + "Copy")
+        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(transactionId))
         expect(wrapper.text()).toMatch(RegExp("CONTRACT CALL"))
         expect(wrapper.get("#entityIdName").text()).toBe("Token ID")
         expect(wrapper.get("#entityIdValue").text()).toMatch(entityId)
@@ -1396,7 +1396,7 @@ describe("TransactionDetails.vue", () => {
             "api/v1/blocks",
         ])
 
-        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(transactionId) + "Copy")
+        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(transactionId))
         expect(wrapper.text()).toMatch(RegExp("ETHEREUM TRANSACTION"))
         expect(wrapper.get("#entityIdName").text()).toBe("Account ID")
         expect(wrapper.get("#entityIdValue").text()).toMatch(entityId)
@@ -1460,7 +1460,7 @@ describe("TransactionDetails.vue", () => {
             "api/v1/blocks",
         ])
 
-        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(transactionId) + "Copy")
+        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(transactionId))
         expect(wrapper.text()).toMatch(RegExp("ETHEREUM TRANSACTION"))
         expect(wrapper.get("#entityIdName").text()).toBe("Contract ID")
         expect(wrapper.get("#entityIdValue").text()).toMatch(entityId)
@@ -1598,7 +1598,7 @@ describe("TransactionDetails.vue", () => {
             "api/v1/tokens/" + SAMPLE_ETHEREUM_TRANSACTIONS_ASSOCIATING_TOKEN.transactions[0].entity_id,
         ])
 
-        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(transactionId) + "Copy")
+        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(transactionId))
         expect(wrapper.text()).toMatch(RegExp("ETHEREUM TRANSACTION"))
         expect(wrapper.get("#entityIdName").text()).toBe("Token ID")
         expect(wrapper.get("#entityIdValue").text()).toMatch(entityId)
@@ -1609,11 +1609,11 @@ describe("TransactionDetails.vue", () => {
         // expect(actionTable.get('tbody').text()).toBe(
         //     "1" +
         //     "CALL" +
-        //     "0x000000000000000000000000000000000000a4f0" + "Copy" + "(0.0.42224)" +
+        //     "0x000000000000000000000000000000000000a4f0" + "(0.0.42224)" +
         //     "→" +
         //     "0.00000000" + "$0.00000" +
         //     "→" +
-        //     "0x00000000000000000000000000000000000382a1" + "Copy" + "(0.0.230049)" +
+        //     "0x00000000000000000000000000000000000382a1" + "(0.0.230049)" +
         //     "3979000"
         // )
         //
@@ -1675,7 +1675,7 @@ describe("TransactionDetails.vue", () => {
 
         expect(wrapper.text()).not.toContain("FAILURE")
 
-        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(transaction.transaction_id) + "Copy")
+        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(transaction.transaction_id))
         expect(wrapper.get("#transactionTypeValue").text()).toBe("FILE UPDATE")
         expect(wrapper.get("#resultValue").text()).toBe("FEE_SCHEDULE_FILE_PART_UPLOADED")
         expect(wrapper.get("#consensusAtValue").text()).toBe("5:42:14.5350 PMJun 9, 2022, UTC")
@@ -1735,7 +1735,7 @@ describe("TransactionDetails.vue", () => {
             "api/v1/contracts/" + SAMPLE_TRANSACTION.token_transfers[1].account,
         ])
 
-        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(SAMPLE_TRANSACTION.transaction_id) + "Copy")
+        expect(wrapper.get("#transactionIDValue").text()).toBe(TransactionID.normalizeForDisplay(SAMPLE_TRANSACTION.transaction_id))
         expect(wrapper.get("#transactionTypeValue").text()).toBe("CRYPTO TRANSFER")
         expect(wrapper.get("#consensusAtValue").text()).toBe("5:12:31.6676 AMFeb 28, 2022, UTC") // UTC because of HMSF.forceUTC
         expect(wrapper.get("#blockNumberValue").text()).toBe("0")
@@ -1821,18 +1821,18 @@ describe("TransactionDetails.vue", () => {
         expect(rows[0].text()).toBe("NONCE" + "DELEGATED ADDRESS" + "CHAIN ID" + "R" + "S" + "PARITY")
         expect(rows[1].text()).toBe(
             "5" +
-            "0x00…000001" + "Copy" + "(0.0.1)" +
+            "0x00…000001" + "(0.0.1)" +
             "0x127" +
-            "0x22…222222" + "Copy" +
-            "0x33…333333" + "Copy" +
+            "0x22…222222" +
+            "0x33…333333" +
             "Odd"
         )
         expect(rows[2].text()).toBe(
             "8" +
-            "0x00…000002" + "Copy" + "(0.0.2)" +
+            "0x00…000002" + "(0.0.2)" +
             "0x128" +
-            "0x44…444444" + "Copy" +
-            "0x55…555555" + "Copy" +
+            "0x44…444444" +
+            "0x55…555555" +
             "Even"
         )
 
@@ -1843,17 +1843,17 @@ describe("TransactionDetails.vue", () => {
         expect(items).toHaveLength(2)
         expect(items[0].text()).toBe(
             "Address" +
-            "0xec…55c849" + "Copy" +
+            "0xec…55c849" +
             "Storage Keys" +
-            "#00000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0081" + "Copy" +
-            "#10000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0082" + "Copy"
+            "#00000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0081" +
+            "#10000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0082"
         )
         expect(items[1].text()).toBe(
             "Address" +
-            "0xa0…568150" + "Copy" +
+            "0xa0…568150" +
             "Storage Keys" +
-            "#00000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0083" + "Copy" +
-            "#10000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0084" + "Copy"
+            "#00000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0083" +
+            "#10000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0084"
         )
 
         wrapper.unmount()
