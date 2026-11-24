@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CLPR Explorer Mockup v3</title>
+<style>
+/* Layout: HashScan page chrome, one content column (max 1180px), cards per entity; tokens copied from the explorer's theme file. */
+:root {
+    --text-primary: #050505;
+    --text-secondary: #888888;
+    --text-success: #00722D;
+    --text-error: #EA1548;
+    --background-primary: #F6F6F6;
+    --background-secondary: #EFEFEF;
+    --background-tertiary: #FFFFFF;
+    --border-primary: #EFEFEF;
+    --border-secondary: #D7D7D7;
+    --table-border: #EFEFEF;
+    --tab-background: rgba(5, 5, 5, 0.05);
+    --button-background-secondary: #EFEFEF;
+    --search-bar-default: #FFFFFF;
+    --status-success-color: #00722D;
+    --status-warn-color: #B86E00;
+    --status-error-color: #C40E3A;
+    --status-info-color: #1F5FBF;
+    --network-button-color: #7A1B80;
+    --network-chip-color: #A7449D;
+    --network-text-accent-color: #E0007B;
+    --network-border-accent-color: #B664AE;
+    --banner-bg: #3a2a00;
+    --banner-fg: #FFDE00;
+    --font-heading: "Arial Black", "Helvetica Neue", Arial, sans-serif;
+    --font-body: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        --text-primary: #FFFFFF; --text-secondary: #A2A2A2;
+        --background-primary: #131313; --background-secondary: #050505; --background-tertiary: #171717;
+        --border-primary: #171717; --border-secondary: #2C2C2C; --table-border: #1F1F1F;
+        --tab-background: rgba(255, 255, 255, 0.05); --button-background-secondary: #2C2C2C;
+        --search-bar-default: #2C2C2C; --network-text-accent-color: #F258AC;
+        --status-success-color: #1E9A4A; --status-warn-color: #D18A1C; --status-info-color: #4A86E0;
+        color-scheme: dark;
+    }
+}
+:root[data-theme="dark"] {
+    --text-primary: #FFFFFF; --text-secondary: #A2A2A2;
+    --background-primary: #131313; --background-secondary: #050505; --background-tertiary: #171717;
+    --border-primary: #171717; --border-secondary: #2C2C2C; --table-border: #1F1F1F;
+    --tab-background: rgba(255, 255, 255, 0.05); --button-background-secondary: #2C2C2C;
+    --search-bar-default: #2C2C2C; --network-text-accent-color: #F258AC;
+    --status-success-color: #1E9A4A; --status-warn-color: #D18A1C; --status-info-color: #4A86E0;
+    color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html, body { background: var(--background-primary); color: var(--text-primary); font-family: var(--font-body); font-size: 14px; margin: 0; padding: 0; }
+a { color: inherit; text-decoration: none; cursor: pointer; }
+a:hover { color: var(--network-text-accent-color); }
+button { font-family: inherit; }
+:focus-visible { outline: 2px solid var(--network-text-accent-color); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+
+.mockup-banner { background: var(--banner-bg); border-bottom: 1px solid var(--banner-fg); color: var(--banner-fg); font-size: 12px; padding: 6px 16px; text-align: center; }
+.mockup-banner button { background: #050505; border: 1px solid var(--banner-fg); border-radius: 4px; color: var(--banner-fg); cursor: pointer; font-size: 11px; margin-left: 10px; padding: 2px 8px; }
+
+.site-header { align-items: center; background: var(--background-tertiary); border-bottom: 1px solid var(--border-primary); display: flex; flex-wrap: wrap; gap: 10px 16px; justify-content: space-between; padding: 14px 32px; }
+.site-header .brand-row { align-items: center; display: flex; flex-wrap: wrap; gap: 8px 28px; min-width: 0; }
+.site-header .brand { align-items: center; display: flex; font-family: var(--font-heading); font-size: 17px; font-weight: 700; gap: 8px; }
+.site-header .brand .mark { background: var(--text-primary); border-radius: 3px; display: inline-block; height: 20px; transform: rotate(45deg); width: 20px; }
+.site-nav { align-items: center; display: flex; flex-wrap: wrap; gap: 6px 22px; font-size: 14px; }
+.site-nav a { color: var(--text-secondary); }
+.site-nav a.current { color: var(--text-primary); font-weight: 600; }
+.site-header-right { align-items: center; display: flex; gap: 14px; }
+.network-select { color: var(--text-primary); font-size: 13px; font-weight: 600; letter-spacing: .03em; }
+.connect-wallet-btn { background: var(--network-button-color); border: none; border-radius: 20px; color: #FFFFFF; cursor: pointer; font-size: 13px; font-weight: 700; padding: 10px 18px; }
+.theme-toggle { align-items: center; background: var(--button-background-secondary); border: none; border-radius: 50%; color: var(--text-primary); cursor: pointer; display: flex; font-size: 16px; height: 32px; justify-content: center; width: 32px; }
+
+.page-header-row { align-items: center; background: var(--background-primary); display: flex; flex-wrap: wrap; gap: 12px 24px; justify-content: space-between; padding: 24px 32px 16px; position: relative; }
+.page-header-row::before { background-image: repeating-linear-gradient(135deg, rgba(122,27,128,.05) 0 2px, transparent 2px 28px); content: ""; inset: 0; pointer-events: none; position: absolute; }
+.page-title { font-family: var(--font-heading); font-size: 28px; font-weight: 700; position: relative; }
+.search-bar { align-items: center; display: flex; flex: 1 1 320px; max-width: 460px; min-width: 0; position: relative; }
+.search-bar input { background: var(--search-bar-default); border: 1px solid var(--border-secondary); border-radius: 24px 0 0 24px; color: var(--text-primary); flex: 1 1 auto; font-size: 13px; min-width: 0; padding: 11px 18px; width: 100%; }
+.search-bar input::placeholder { color: var(--text-secondary); }
+.search-bar button { align-items: center; background: var(--network-button-color); border: none; border-radius: 50%; color: #fff; cursor: pointer; display: flex; flex: 0 0 38px; height: 38px; justify-content: center; margin-left: -19px; width: 38px; }
+.search-results { background: var(--background-tertiary); border: 1px solid var(--border-secondary); border-radius: 10px; box-shadow: 0 6px 20px rgba(0,0,0,.12); left: 0; max-height: 320px; overflow-y: auto; position: absolute; right: 0; top: 46px; z-index: 20; }
+.search-results[hidden] { display: none; }
+.search-results .hit { border-top: 1px solid var(--table-border); cursor: pointer; display: flex; gap: 12px; padding: 10px 14px; }
+.search-results .hit:first-child { border-top: none; }
+.search-results .hit:hover { background: var(--background-primary); }
+.search-results .hit .kind { color: var(--text-secondary); flex: 0 0 90px; font-size: 11px; font-weight: 600; letter-spacing: .03em; text-transform: uppercase; }
+.search-results .hit .what { font-family: var(--font-mono); font-size: 13px; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.search-results .none { color: var(--text-secondary); font-size: 13px; padding: 12px 14px; }
+
+.toolbar { padding: 0 32px 16px; }
+.page-content { margin: 0 auto; max-width: 1180px; padding: 0 32px 64px; }
+.page-subtitle { color: var(--text-secondary); font-size: 13px; margin-bottom: 20px; }
+ul.tabs-pill { display: flex; flex-wrap: wrap; gap: 4px; list-style: none; margin: 0 0 20px; padding: 0; }
+ul.tabs-pill.sub { gap: 6px; margin-bottom: 16px; }
+li.tab-pill { border-radius: 8px; color: var(--text-secondary); cursor: pointer; font-size: 14px; font-weight: 600; padding: 8px 14px; }
+li.tab-pill.sub { font-size: 13px; padding: 7px 14px; }
+li.tab-pill.active { background: var(--tab-background); color: var(--text-primary); }
+.view, .panel { display: none; }
+.view.active, .panel.active { display: block; }
+.header-blurb { color: var(--text-secondary); font-size: 13px; line-height: 1.5; margin-bottom: 16px; max-width: 820px; }
+.detail-page-title { align-items: center; display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+.detail-page-title h2 { font-family: var(--font-heading); font-size: 22px; font-weight: 700; margin: 0; min-width: 0; overflow-wrap: anywhere; }
+.crumbs { color: var(--text-secondary); display: flex; flex-wrap: wrap; font-size: 12px; gap: 6px; margin-bottom: 14px; }
+.crumbs a { color: var(--network-text-accent-color); }
+
+.dashboard-card { background: var(--background-tertiary); border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,.06); margin-bottom: 20px; min-width: 0; padding: 24px; }
+.dashboard-card .card-header { align-items: center; border-bottom: 2px solid var(--network-text-accent-color); display: flex; flex-wrap: wrap; gap: 8px 12px; justify-content: space-between; margin-bottom: 16px; padding-bottom: 14px; }
+.dashboard-card .card-header h3 { font-family: var(--font-heading); font-size: 16px; font-weight: 700; margin: 0; }
+.dashboard-card .card-header .count { color: var(--text-secondary); font-size: 12px; }
+.dashboard-card .card-header .header-right { align-items: center; display: flex; flex-wrap: wrap; gap: 12px; }
+.history-link { color: var(--network-text-accent-color); cursor: pointer; font-size: 12px; font-weight: 600; }
+.card-grid { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.card-grid .dashboard-card { margin-bottom: 0; }
+
+.property-grid { display: grid; column-gap: 40px; grid-template-columns: 1fr 1fr; row-gap: 18px; }
+.property-item { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.property-label { color: var(--text-secondary); font-size: 11px; font-weight: 600; letter-spacing: .03em; text-transform: uppercase; }
+.property-value { color: var(--text-primary); font-family: var(--font-mono); font-size: 14px; min-width: 0; overflow-wrap: anywhere; }
+.property-value .muted, .muted { color: var(--text-secondary); }
+.property-value .sub { color: var(--text-secondary); font-family: var(--font-body); font-size: 12px; }
+
+.filter-bar { display: flex; flex-wrap: wrap; gap: 8px 10px; margin-bottom: 16px; }
+.filter-bar select, .filter-bar input { background: var(--background-tertiary); border: 1px solid var(--border-secondary); border-radius: 6px; color: var(--text-primary); font-size: 12px; max-width: 100%; padding: 6px 10px; }
+.toggle-row { align-items: center; color: var(--text-secondary); display: flex; font-size: 12px; gap: 6px; margin-bottom: 12px; }
+
+.table-scroll { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; }
+thead th { color: var(--text-secondary); font-size: 11px; font-weight: 600; letter-spacing: .03em; padding: 10px 14px; text-align: left; white-space: nowrap; }
+tbody td { border-top: 1px solid var(--table-border); font-family: var(--font-mono); font-size: 13px; font-variant-numeric: tabular-nums; padding: 12px 14px; white-space: nowrap; }
+td.prop { font-family: var(--font-body); }
+td.num { text-align: right; }
+th.num { text-align: right; }
+tbody tr.clickable { cursor: pointer; }
+tbody tr.clickable:hover td, tbody tr.clickable:focus-visible td { background: var(--background-primary); }
+.link-color { color: var(--network-text-accent-color); cursor: pointer; }
+.row-count { color: var(--text-secondary); font-size: 12px; margin-bottom: 8px; }
+.pagination { align-items: center; display: flex; justify-content: center; gap: 6px; padding: 16px 0 4px; }
+.pagination .page-pill { align-items: center; background: none; border: none; border-radius: 50%; color: var(--text-secondary); display: flex; font-size: 12px; height: 32px; justify-content: center; width: 32px; }
+.pagination .page-pill.active { background: var(--network-button-color); color: #FFFFFF; }
+.empty-note { color: var(--text-secondary); font-size: 13px; padding: 24px 4px; text-align: center; }
+.inline-note { color: var(--text-secondary); font-size: 12px; line-height: 1.5; margin-bottom: 12px; }
+
+.h-has-pill { border-radius: 32px; color: #FFFFFF; display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: .02em; line-height: 1.4; padding: 3px 10px; white-space: nowrap; }
+.h-chip-type { background-color: var(--network-chip-color); }
+.h-chip-success { background-color: var(--status-success-color); }
+.h-chip-warn { background-color: var(--status-warn-color); }
+.h-chip-error { background-color: var(--status-error-color); }
+.h-chip-info { background-color: var(--status-info-color); }
+.h-chip-default { background-color: var(--button-background-secondary); color: var(--text-primary); }
+.dir { border: 1px solid var(--border-secondary); border-radius: 4px; color: var(--text-primary); display: inline-block; font-family: var(--font-mono); font-size: 11px; font-weight: 700; letter-spacing: .04em; padding: 1px 6px; }
+.dir.out { border-color: var(--status-info-color); color: var(--status-info-color); }
+.dir.in { border-color: var(--status-success-color); color: var(--status-success-color); }
+
+.stat-grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); margin-bottom: 20px; }
+.stat { background: var(--background-tertiary); border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,.06); display: flex; flex-direction: column; gap: 4px; min-width: 0; padding: 16px 18px; }
+.stat .label { color: var(--text-secondary); font-size: 11px; font-weight: 600; letter-spacing: .03em; text-transform: uppercase; }
+.stat .value { font-family: var(--font-heading); font-size: 26px; font-variant-numeric: tabular-nums; line-height: 1.1; }
+.stat .sub { color: var(--text-secondary); font-size: 12px; }
+.stat.attn .value { color: var(--status-error-color); }
+.stat.warn .value { color: var(--status-warn-color); }
+
+.bar { background: var(--background-secondary); border-radius: 4px; height: 8px; margin-top: 6px; max-width: 260px; overflow: hidden; width: 100%; }
+.bar .fill { background: var(--status-success-color); border-radius: 4px; height: 100%; }
+.bar .fill.warn { background: var(--status-warn-color); }
+.bar .fill.bad { background: var(--status-error-color); }
+.bar .fill.info { background: var(--status-info-color); }
+
+.timeline { display: flex; flex-direction: column; gap: 0; margin: 4px 0 0; padding: 0; list-style: none; }
+.timeline li { display: grid; gap: 2px 14px; grid-template-columns: 18px 1fr; padding: 0 0 18px; position: relative; }
+.timeline li::before { background: var(--background-tertiary); border: 3px solid var(--status-success-color); border-radius: 50%; content: ""; grid-row: 1 / span 3; height: 14px; margin-top: 2px; width: 14px; }
+.timeline li.pending::before { border-color: var(--border-secondary); border-style: dashed; }
+.timeline li.bad::before { border-color: var(--status-error-color); }
+.timeline li::after { background: var(--border-secondary); bottom: 0; content: ""; left: 6px; position: absolute; top: 20px; width: 2px; }
+.timeline li:last-child::after { display: none; }
+.timeline .t-title { font-weight: 600; }
+.timeline .t-meta { color: var(--text-secondary); font-size: 12px; }
+.timeline .t-tx { font-family: var(--font-mono); font-size: 12px; }
+
+.code { background: var(--background-primary); border-radius: 8px; font-family: var(--font-mono); font-size: 12px; line-height: 1.6; overflow-x: auto; padding: 12px 14px; white-space: pre; }
+.copy-btn { background: var(--button-background-secondary); border: none; border-radius: 4px; color: var(--text-secondary); cursor: pointer; font-size: 11px; margin-left: 6px; padding: 1px 6px; vertical-align: middle; }
+.copy-btn:hover { color: var(--text-primary); }
+.notes { border-top: 1px solid var(--border-secondary); color: var(--text-secondary); font-size: 12px; line-height: 1.6; margin-top: 4px; padding-top: 14px; }
+.notes b { color: var(--text-primary); font-weight: 600; }
+.back-link { color: var(--network-text-accent-color); display: inline-block; font-size: 12px; margin-bottom: 14px; }
+time[title] { cursor: help; }
+
+@media (max-width: 720px) {
+    .site-header, .page-header-row, .toolbar { padding-left: 16px; padding-right: 16px; }
+    .page-content { padding: 0 16px 48px; }
+    .site-nav { display: none; }
+    .connect-wallet-btn { display: none; }
+    .page-title { font-size: 22px; }
+    .search-bar { max-width: none; }
+    .property-grid { grid-template-columns: 1fr; }
+    .dashboard-card { padding: 16px; }
+    .stat .value { font-size: 22px; }
+}
+.status-bar { display: flex; height: 14px; border-radius: 7px; overflow: hidden; gap: 2px; margin: 4px 0; }
+.status-bar span { display: block; min-width: 6px; }
+</style>
+</head>
+<body>
+<style>
+/* Reviewer context blocks: NOT part of the design. Hidden by the banner toggle. */
+.ctx { background: rgba(255, 222, 0, .10); border: 1px dashed var(--status-warn-color); border-radius: 10px; color: var(--text-primary); font-size: 12px; line-height: 1.55; margin: 0 0 16px; padding: 10px 14px; }
+.ctx::before { color: var(--status-warn-color); content: "REVIEW NOTE · context, not part of the design"; display: block; font-size: 10px; font-weight: 700; letter-spacing: .06em; margin-bottom: 4px; }
+.ctx.inline { margin-top: 12px; }
+.ctx ul { margin: 4px 0 0; padding-left: 18px; }
+.ctx li { margin: 2px 0; }
+html.hide-ctx .ctx { display: none; }
+.design-tag { background: var(--status-info-color); border-radius: 3px; color: #fff; display: inline-block; font-size: 9px; font-weight: 700; letter-spacing: .06em; margin-left: 8px; padding: 1px 5px; vertical-align: middle; }
+html.hide-ctx .design-tag { display: none; }
+/* Data-source tags: reviewer annotation of where each card's data comes from. Hidden with the review notes. */
+.src { background: rgba(255, 222, 0, .14); border: 1px dashed var(--status-warn-color); border-radius: 3px; color: var(--text-primary); cursor: help; display: inline-block; font-size: 9px; font-weight: 700; letter-spacing: .06em; line-height: 1.5; margin-left: 6px; padding: 0 5px; text-transform: uppercase; vertical-align: middle; }
+.src-row { color: var(--text-secondary); font-size: 11px; margin: 0 0 10px; }
+.src-legend .src { margin: 0 2px 0 0; }
+html.hide-ctx .src, html.hide-ctx .src-row { display: none; }
+</style>
+
+<div class="mockup-banner">
+    MOCKUP v3 · mock data, for design review only · 2026-11-11 · built from the final mirror node design (five read endpoints) · yellow dashed boxes are reviewer context, everything else is the proposed design
+    <button type="button" onclick="toggleCtx()" id="ctx-btn">Hide review notes</button>
+    <button type="button" onclick="toggleTheme()">Toggle dark/light</button>
+</div>
+
+<div class="site-header">
+    <div class="brand-row">
+        <div class="brand"><span class="mark"></span>HashScan</div>
+        <nav class="site-nav" id="site-nav">
+            <a>Home</a><a data-nav="transactions" onclick="go('transactions')">Transactions</a><a>Tokens</a><a>Topics</a>
+            <a data-nav="clpr" class="current" onclick="go('overview')">CLPR</a>
+            <a>Contracts</a><a>Accounts</a><a>Network</a><a>Staking</a><a>Blocks</a><a>Metrics</a>
+        </nav>
+    </div>
+    <div class="site-header-right">
+        <div class="network-select">MAINNET ▾</div>
+        <button type="button" class="connect-wallet-btn">CONNECT WALLET</button>
+        <button type="button" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">◑</button>
+    </div>
+</div>
+
+<div class="page-header-row">
+    <div class="page-title" id="page-title">CLPR</div>
+    <div class="search-bar">
+        <input id="search" placeholder="Channel ID, connector ID, transaction ID of a sent message, peer chain ID, or pending commitment" autocomplete="off" oninput="runSearch()" onkeydown="searchKey(event)">
+        <button type="button" onclick="runSearch(true)" aria-label="Search">🔍</button>
+        <div class="search-results" id="search-results" hidden></div>
+    </div>
+</div>
+
+<div class="toolbar" id="toolbar">
+    <ul class="tabs-pill" id="main-tabs">
+        <li class="tab-pill" data-group="clpr" data-key="overview" onclick="go('overview')">Overview</li>
+        <li class="tab-pill" data-group="clpr" data-key="channels" onclick="go('channels')">Channels</li>
+        <li class="tab-pill" data-group="clpr" data-key="configuration" onclick="go('configuration')">Configuration</li>
+    </ul>
+</div>
+
+<div class="page-content">
+
+    <div class="ctx" id="ctx-intro">
+        <b>What changed from v2, and why.</b> v2 was drawn before the mirror node's CLPR design was final. v3 keeps only what the five mirror node read endpoints
+        (<code>/channels</code>, <code>/channels/{id}/messages</code>, <code>/channels/{id}/connectors</code>, <code>/configuration</code>, <code>/endpoint-manifest</code>) and the existing accounts, contracts and transactions APIs can supply.
+        <ul>
+            <li><b>Three tabs, not six.</b> Messages and Connectors moved under their Channel (both endpoints require a channel). The Bundles tab and the Endpoint page are gone: the mirror node has no bundle concept and returns only endpoint addresses.</li>
+            <li><b>No history tabs.</b> The API returns one version at a point in time, so Channel, Connector, Configuration and Manifest pages get a <b>View as of</b> control instead of History lists.</li>
+            <li><b>Messages are this ledger's outbound queue.</b> Inbound Data is never stored; the Response this ledger generated for it is, and shows how the inbound message turned out. No Direction, Gas, Delivery or "responded" state.</li>
+            <li><b>Connector pages show current values only.</b> Minimum stake, ban threshold and quota are node-local, so there are no bars, "Near ban" chips or Economics card.</li>
+            <li><b>Overview is Network Health and Ecosystem.</b> It opens with <b>search</b> (channel ID, connector ID, <code>sendMessage</code> transaction ID, consensus timestamp or peer chain ID), then which networks this ledger is connected to, all-time message totals from the channel counters, and a short list of what needs attention. A transaction ID is matched by its consensus timestamp against each channel, because the mirror node has no transaction-ID lookup (try <code>0.0.2101@1762842900.555000111</code>). Messages per day and similar trends are not shown: no endpoint provides them.</li>
+            <li>Every view has a URL (the part after <code>#</code>). Press the browser back button to go back.</li>
+        </ul>
+        <b>Data-source tags</b> (hidden with these notes) name the endpoint behind each card:
+        <span class="src-legend"><span class="src" title="GET /api/v1/clpr/channels">channels</span> <span class="src" title="GET /api/v1/clpr/channels/{channelId}/messages">messages</span> <span class="src" title="GET /api/v1/clpr/channels/{channelId}/connectors">connectors</span> <span class="src" title="GET /api/v1/clpr/configuration">configuration</span> <span class="src" title="GET /api/v1/clpr/endpoint-manifest">manifest</span> <span class="src" title="An existing mirror node API: accounts, contracts or transactions">existing</span> <span class="src" title="Computed by the explorer from the data above">derived</span> <span class="src" title="Explorer configuration, not on the ledger">config</span></span>.
+        Implementation status as of 2026-11-17: none of it is on mirror node <code>main</code> except the schema and an empty message hook. Channels (#14689), Messages (#14694), Connectors (#14691) and Configuration/Endpoint Manifest (#14695) are in open PRs, and transaction ingestion is in #14626 and #14636 (draft).
+    </div>
+
+    <!-- ============================================================ OVERVIEW -->
+    <div class="view panel" data-group="clpr" data-key="overview">
+        <div class="header-blurb">Cross Ledger Protocol on this network: which networks it is connected to, how healthy those connections are, and how much traffic they carry.</div>
+        <div class="dashboard-card" id="find-card">
+            <div class="card-header"><h3>Search a message, connector or channel<span class="src" title="An existing mirror node API: transactions">existing</span><span class="src" title="GET /api/v1/clpr/channels">channels</span><span class="src" title="GET /api/v1/clpr/channels/{channelId}/connectors">connectors</span><span class="src" title="GET /api/v1/clpr/channels/{channelId}/messages">messages</span></h3></div>
+            <div class="filter-bar">
+                <input id="find-msg" style="flex:1 1 320px;min-width:0;padding:10px 14px;font-size:15px;border:1px solid var(--border-secondary);border-radius:8px;background:var(--search-bar-default);color:var(--text-primary)" placeholder="Channel ID, connector ID, transaction ID of a sendMessage call, consensus timestamp, or peer chain ID" autocomplete="off" onkeydown="if (event.key === 'Enter') overviewSearch()">
+                <button type="button" class="copy-btn" onclick="overviewSearch()">Search</button>
+            </div>
+            <div class="filter-bar" style="gap:8px;flex-wrap:wrap">
+                <span class="sub">Try a sample:</span>
+                <button type="button" class="copy-btn" onclick="sampleSearch('0.0.2101@1762842900.555000111')">Transaction ID</button>
+                <button type="button" class="copy-btn" onclick="sampleSearch(CHANNELS[0].full)">Channel ID</button>
+                <button type="button" class="copy-btn" onclick="sampleSearch(connFull(CONNECTORS[0]))">Connector ID</button>
+            </div>
+            <div class="inline-note" id="find-msg-result" hidden></div>
+            <div class="notes">
+                <b>How each lookup works.</b> A channel ID is one call. A connector ID or a transaction ID is tried against every channel, because the connectors and messages endpoints need a channel: the explorer asks each channel in turn and shows progress.
+                A transaction ID is matched by its consensus timestamp (looked up in the existing transactions API), because the mirror node stores messages by channel and timestamp, not by transaction ID. It finds outbound Data messages only.
+                Not searchable: a message ID on its own, a running hash, or a bundle.
+            </div>
+        </div>
+
+        <div class="src-row">Ecosystem totals: <span class="src" title="Computed by the explorer from the data above">derived</span> sums over <span class="src" title="GET /api/v1/clpr/channels">channels</span> (all-time totals from the channel counters, not rates)</div>
+        <div class="stat-grid" id="stat-grid"></div>
+
+        <div class="dashboard-card">
+            <div class="card-header"><h3>Connected networks<span class="src" title="GET /api/v1/clpr/channels">channels</span><span class="src" title="Computed by the explorer from the data above">derived</span></h3><div class="header-right"><span class="count" id="networks-count"></span> <a class="link-color" onclick="go('channels.chains')">View all networks</a></div></div>
+            <div class="table-scroll"><table>
+                <thead><tr><th>NETWORK</th><th class="num">CHANNELS (ACTIVE / TOTAL)</th><th>STATUS MIX</th><th class="num">MESSAGES SENT / RECEIVED</th></tr></thead>
+                <tbody id="tbl-networks"></tbody>
+            </table></div>
+            <div class="notes">
+                Networks are shown as claimed, not verified: anyone can register a channel and claim any peer chain ID. Busiest first.
+                Last message time and connector counts per network are not shown: they need a query per channel (see the design's asks of the mirror node).
+            </div>
+        </div>
+
+        <div class="dashboard-card">
+            <div class="card-header"><h3>Network health<span class="src" title="GET /api/v1/clpr/channels">channels</span><span class="src" title="GET /api/v1/clpr/configuration">configuration</span><span class="src" title="GET /api/v1/clpr/endpoint-manifest">manifest</span></h3><div class="header-right"><span class="count" id="health-count"></span> <a class="link-color" onclick="go('channels.all')">View all channels</a></div></div>
+            <div class="status-bar" id="status-bar"></div>
+            <div class="sub" id="status-legend" style="margin:6px 0 12px"></div>
+            <div class="table-scroll"><table>
+                <thead><tr><th>NEEDS ATTENTION: CHANNEL</th><th>PEER CHAIN</th><th>STATUS</th><th class="num">BACKLOG</th><th>STATUS SINCE</th></tr></thead>
+                <tbody id="tbl-health"></tbody>
+            </table></div>
+            <div class="notes">
+                Shown: channels that are paused, closing or drained, or whose backlog is at least 80% of this ledger's max queue depth (80% is a display choice, not a protocol value). Worst first, at most 10.
+                <b>Backlog</b> is messages sent from this ledger that the peer has not yet acknowledged (next message ID − 1 − acknowledged through).
+                <b>Status since</b> is the start of the channel's current record version; counter-only updates do not start a new version.
+            </div>
+            <div class="property-grid" id="ledger-state" style="margin-top:12px"></div>
+        </div>
+
+    </div>
+
+    <!-- ============================================================ CHANNELS -->
+    <div class="view panel" data-group="clpr" data-key="channels">
+        <ul class="tabs-pill sub">
+            <li class="tab-pill sub" data-group="channels" data-key="all" onclick="go('channels.all')">All</li>
+            <li class="tab-pill sub" data-group="channels" data-key="chains" onclick="go('channels.chains')">By Chain</li>
+            <li class="tab-pill sub" data-group="channels" data-key="pending" onclick="go('channels.pending')">Pending</li>
+        </ul>
+
+        <div class="panel" data-group="channels" data-key="all">
+            <div class="header-blurb">Every channel registered on this ledger. Peer chains are claimed, not verified.</div>
+            <div class="dashboard-card">
+                <div class="card-header"><h3>Channels<span class="src" title="GET /api/v1/clpr/channels">channels</span></h3><span class="count" id="channel-count"></span></div>
+                <div class="filter-bar">
+                    <select id="flt-ch-status" onchange="renderChannelList()"><option value="">Status: All</option><option>ACTIVE</option><option>PAUSED</option><option>CLOSING</option><option>DRAINED</option><option>CLOSED</option></select>
+                    <select id="flt-ch-chain" onchange="renderChannelList()"></select>
+                </div>
+                <div class="table-scroll"><table>
+                    <thead><tr><th>CHANNEL ID</th><th>PEER CHAIN</th><th>STATUS</th><th>VERIFIER CONTRACT</th><th class="num">BACKLOG</th><th>CREATED</th></tr></thead>
+                    <tbody id="tbl-channels"></tbody>
+                </table></div>
+                <div class="ctx inline">Status is a server-side filter. Peer chain is not filterable on the server (<code>chain_id</code> is returned but not queryable), so that select filters the full listing in the browser. A channel with no verifier contract recorded shows a dash: the mirror node stores no name or version for built-in verifiers.</div>
+            </div>
+        </div>
+
+        <div class="panel" data-group="channels" data-key="chains">
+            <div class="header-blurb">Channels grouped by the peer chain they claim to connect to (CAIP-2 chain IDs), grouped in the browser from the Channels listing.</div>
+            <div class="dashboard-card">
+                <div class="card-header"><h3>Peer Chains<span class="src" title="GET /api/v1/clpr/channels">channels</span><span class="src" title="Computed by the explorer from the data above">derived</span><span class="src" title="Explorer configuration, not on the ledger">config</span></h3></div>
+                <div class="table-scroll"><table>
+                    <thead><tr><th>PEER CHAIN ID</th><th class="num">CHANNELS</th><th class="num">ACTIVE</th><th>PEER EXPLORER</th></tr></thead>
+                    <tbody id="tbl-chains"></tbody>
+                </table></div>
+                <div class="notes">Peer explorer links come from a curated allow-list the explorer maintains, keyed by chain ID. A chain with no entry shows none.</div>
+            </div>
+        </div>
+
+        <div class="panel" data-group="channels" data-key="pending">
+            <div class="header-blurb">Registrations that are committed on this ledger but not yet complete.</div>
+            <div class="dashboard-card">
+                <div class="card-header"><h3>Pending Channel Registrations<span class="src" title="GET /api/v1/clpr/channels?status=eq:PENDING">channels</span></h3><span class="count" id="pending-count"></span></div>
+                <div class="table-scroll"><table>
+                    <thead><tr><th>OWNERSHIP COMMITMENT</th><th>COMMITTED</th><th class="num">AGE</th></tr></thead>
+                    <tbody id="tbl-pending"></tbody>
+                </table></div>
+                <div class="notes">A channel's ID stays secret until its registration is completed, so each entry shows only the commitment and when it was committed. Rows are not clickable; there is no detail page.
+                Pending connector registrations are shown per channel, on the channel's Connectors sub-tab.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ CONFIGURATION -->
+    <div class="view panel" data-group="clpr" data-key="configuration">
+        <div class="header-blurb">This ledger's CLPR configuration as peers see it, and the endpoints peers deliver bundles through.</div>
+        <div class="dashboard-card">
+            <div class="card-header"><h3>Ledger Configuration<span class="src" title="GET /api/v1/clpr/configuration">configuration</span></h3>
+                <div class="header-right"><label class="count">View as of <select id="cfg-asof" onchange="renderConfiguration()"></select></label></div></div>
+            <div class="property-grid" id="cfg-ledger"></div>
+            <div class="notes">One configuration is in effect at a time. <b>View as of</b> asks for the configuration in effect at a past time; there is no list of past configurations.</div>
+        </div>
+        <div class="dashboard-card">
+            <div class="card-header"><h3>Endpoint Manifest<span class="src" title="GET /api/v1/clpr/endpoint-manifest">manifest</span></h3>
+                <div class="header-right"><label class="count">View as of <select id="man-asof" onchange="renderConfiguration()"></select></label></div></div>
+            <div class="property-grid" id="man-meta" style="margin-bottom:18px"></div>
+            <div class="table-scroll"><table>
+                <thead><tr><th>SERVICE ENDPOINT</th></tr></thead>
+                <tbody id="tbl-manifest"></tbody>
+            </table></div>
+            <div class="notes">On Hiero every consensus node is a CLPR endpoint, so this manifest follows the consensus roster. The mirror node returns each endpoint's address and port only: no node ID, account or certificate, so rows do not link to node pages.</div>
+        </div>
+    </div>
+
+    <!-- ============================================================ PEER CHAIN -->
+    <div class="view" id="view-peerchain">
+        <div class="crumbs"><a onclick="go('channels.chains')">Peer chains</a> › <span>Peer chain</span></div>
+        <div class="detail-page-title"><h2 id="peerchain-title"></h2></div>
+        <div class="header-blurb">The chain ID is chosen by whoever created the channel, so a listing here is not evidence that the peer is genuine.</div>
+        <div class="dashboard-card">
+            <div class="card-header"><h3>Channels<span class="src" title="GET /api/v1/clpr/channels">channels</span><span class="src" title="Computed by the explorer from the data above">derived</span></h3><span class="count" id="peerchain-count"></span></div>
+            <div class="filter-bar"><select id="flt-status" onchange="renderPeerChainChannels()"><option value="">Status: All</option><option>ACTIVE</option><option>PAUSED</option><option>CLOSING</option><option>DRAINED</option><option>CLOSED</option></select></div>
+            <div class="table-scroll"><table>
+                <thead><tr><th>CHANNEL ID</th><th>STATUS</th><th>VERIFIER CONTRACT</th><th class="num">BACKLOG</th><th>CREATED</th></tr></thead>
+                <tbody id="tbl-peerchain-channels"></tbody>
+            </table></div>
+            <div class="ctx inline">The mirror node has no per-chain endpoint. This list is the Channels listing filtered in the browser.</div>
+        </div>
+    </div>
+
+    <!-- ============================================================ CHANNEL -->
+    <div class="view" id="view-channel">
+        <div class="crumbs" id="channel-crumbs"></div>
+        <div class="detail-page-title"><h2 id="channel-page-title"></h2><span id="channel-status-pill"></span>
+            <label class="count" style="margin-left:auto">View as of <select id="channel-asof" onchange="renderChannelAsOf()"></select></label></div>
+        <div class="inline-note" id="channel-asof-banner" hidden></div>
+        <ul class="tabs-pill sub">
+            <li class="tab-pill sub" data-group="chdetail" data-key="summary" onclick="goTab('summary')">Summary</li>
+            <li class="tab-pill sub" data-group="chdetail" data-key="messages" onclick="goTab('messages')">Messages</li>
+            <li class="tab-pill sub" data-group="chdetail" data-key="connectors" onclick="goTab('connectors')">Connectors</li>
+            <li class="tab-pill sub" data-group="chdetail" data-key="verifier" onclick="goTab('verifier')">Verifier &amp; Trust</li>
+        </ul>
+
+        <div class="panel" data-group="chdetail" data-key="summary">
+            <div class="dashboard-card">
+                <div class="card-header"><h3>Overview<span class="src" title="GET /api/v1/clpr/channels?channel.id=eq:{channelId}">channels</span></h3></div>
+                <div class="property-grid" id="channel-overview"></div>
+            </div>
+            <div class="card-grid">
+                <div class="dashboard-card">
+                    <div class="card-header"><h3>Queues<span class="src" title="GET /api/v1/clpr/channels?channel.id=eq:{channelId}">channels</span></h3></div>
+                    <div class="property-grid" id="channel-queue"></div>
+                    <div class="notes"><b>Outbound backlog</b> = next message ID − 1 − acknowledged through. A backlog that keeps growing while the channel is active suggests the peer has stopped acknowledging.</div>
+                </div>
+                <div class="dashboard-card">
+                    <div class="card-header"><h3>Peer<span class="src" title="GET /api/v1/clpr/channels?channel.id=eq:{channelId}">channels</span></h3></div>
+                    <div class="property-grid" id="channel-peer" style="grid-template-columns:1fr"></div>
+                    <div class="notes">What this ledger knows about the other side: the limits the peer asked us to respect, and the peer's endpoints. The peer's service address is not recorded.</div>
+                </div>
+            </div>
+            <div class="dashboard-card" id="channel-drain-card" hidden>
+                <div class="card-header"><h3>Closing Progress<span class="src" title="GET /api/v1/clpr/channels?channel.id=eq:{channelId}">channels</span></h3></div>
+                <div class="property-grid" id="channel-drain"></div>
+                <div class="notes">A closing channel accepts no new messages and waits for every outstanding message and response to be delivered. It becomes drained when both sides are empty, then closed.</div>
+            </div>
+        </div>
+
+        <div class="panel" data-group="chdetail" data-key="messages">
+            <div class="header-blurb">This ledger's outbound queue for the channel, newest first: data messages its applications sent, the responses it generated for inbound data (one per inbound message dispatched here), and control messages.
+                Inbound data messages themselves are not stored, so they do not appear; the response for each one does.</div>
+            <div class="dashboard-card">
+                <div class="card-header"><h3>Messages<span class="src" title="GET /api/v1/clpr/channels/{channelId}/messages">messages</span></h3><span class="count" id="channel-msg-count"></span></div>
+                <div class="filter-bar" id="msg-filters">
+                    <select id="flt-type" onchange="renderChannelMessages()"><option value="">Type: All</option><option>DATA</option><option>RESPONSE</option><option>CONTROL</option></select>
+                    <select id="flt-connector" onchange="renderChannelMessages()"></select>
+                    <select id="flt-ack" onchange="renderChannelMessages()"><option value="">Acknowledged: All</option><option value="no">Not acknowledged</option><option value="yes">Acknowledged</option></select>
+                </div>
+                <div class="table-scroll"><table>
+                    <thead><tr><th class="num">ID</th><th>TYPE</th><th>SENDER</th><th>TARGET</th><th>CONNECTOR</th><th>REPLY STATUS</th><th>REPLIES TO</th><th>ACKNOWLEDGED</th><th class="num">SIZE</th><th>TIME</th></tr></thead>
+                    <tbody id="tbl-channel-messages"></tbody>
+                </table></div>
+                <div class="inline-note" style="margin-top:12px">Showing the 30 days to now, the largest window the server allows. <button type="button" class="copy-btn" onclick="mockOutbound('the previous 30-day window')">Load older</button></div>
+                <div class="notes">
+                    <b>Reply status</b> is the status on a response message. <b>Replies to</b> is the peer's message ID the response answers: this is how an inbound message's outcome is shown.
+                    <b>Acknowledged</b> is computed by the mirror node (the message ID is at or below the channel's acknowledged-through counter); the Acknowledged filter is applied in the browser, as the server filters only by type and connector. <b>Connector</b> is blank on response and control rows.
+                    The server requires a time bound on every messages query. Messages that arrived in the same bundle share one timestamp, so a page boundary inside such a group can skip or repeat rows.
+                </div>
+            </div>
+        </div>
+
+        <div class="panel" data-group="chdetail" data-key="connectors">
+            <div class="dashboard-card">
+                <div class="card-header"><h3>Connectors<span class="src" title="GET /api/v1/clpr/channels/{channelId}/connectors">connectors</span><span class="src" title="An existing mirror node API: accounts, contracts or transactions">existing</span></h3><span class="count" id="channel-connector-count"></span></div>
+                <div class="filter-bar"><select id="flt-cn-status" onchange="renderChannelConnectors()"><option value="ACTIVE">Status: Active</option><option value="PENDING">Status: Pending</option><option value="DELETED">Status: Deleted</option></select></div>
+                <div class="table-scroll"><table>
+                    <thead id="thead-channel-connectors"></thead>
+                    <tbody id="tbl-channel-connectors"></tbody>
+                </table></div>
+                <div class="notes">
+                    <b>State</b> is read from the connector record: Pending (registered, not completed), Active, Banned (deleted, no stake recipient) or Deregistered (deleted, with a stake recipient).
+                    <b>Balance</b> is the connector contract's balance from the accounts API. The mirror node does not publish the minimum stake, ban threshold or in-flight quota, so no column is shown against a limit.
+                </div>
+            </div>
+        </div>
+
+        <div class="panel" data-group="chdetail" data-key="verifier">
+            <div class="dashboard-card">
+                <div class="card-header"><h3>Verifier on this ledger<span class="src" title="GET /api/v1/clpr/channels?channel.id=eq:{channelId}">channels</span><span class="src" title="An existing mirror node API: accounts, contracts or transactions">existing</span></h3></div>
+                <div class="property-grid" id="channel-verifier"></div>
+                <div class="notes">A verifier is fixed for the life of a channel. Contract and fingerprint are what the mirror node stores. Upgradeability and admin key come from the existing contract APIs and are facts for vetting the channel, not a verdict.</div>
+            </div>
+            <div class="dashboard-card">
+                <div class="card-header"><h3>Paired Network<span class="src" title="GET /api/v1/clpr/channels?channel.id=eq:{channelId}">channels</span><span class="src" title="Explorer configuration, not on the ledger">config</span></h3></div>
+                <div class="property-grid" id="channel-paired"></div>
+                <div class="notes">The other end of this channel. The chain ID is chosen by whoever created the channel, so it is not evidence that the peer is genuine. The mirror node stores only this ledger's verifier. The peer's verifier contract and service address live on the peer ledger and are not recorded here, so they are not shown.</div>
+            </div>
+            <div class="dashboard-card">
+                <div class="card-header"><h3>Trust Anchor<span class="src" title="GET /api/v1/clpr/channels?channel.id=eq:{channelId}">channels</span></h3></div>
+                <div class="property-grid" id="channel-anchor"></div>
+                <div class="notes">The trust anchor is the verifier's current reference point on the peer (a validator set, a sync-committee period, a block header). Only the current value is shown. To see an earlier one, use <b>View as of</b> at the top of the page.</div>
+            </div>
+            <div class="dashboard-card">
+                <div class="card-header"><h3>Running Hashes<span class="src" title="GET /api/v1/clpr/channels?channel.id=eq:{channelId}">channels</span></h3></div>
+                <div class="property-grid" id="channel-hashes"></div>
+                <div class="notes">Each queue keeps a running hash: SHA-256 of the previous hash and the newest message. Both sides must agree on these for a bundle to be accepted.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ CONNECTOR -->
+    <div class="view" id="view-connector">
+        <div class="crumbs" id="connector-crumbs"></div>
+        <div class="detail-page-title"><h2 id="connector-page-title"></h2><span id="connector-state-pill"></span>
+            <label class="count" style="margin-left:auto">View as of <select id="connector-asof" onchange="renderConnectorAsOf()"></select></label></div>
+        <div class="inline-note" id="connector-asof-banner" hidden></div>
+        <ul class="tabs-pill sub">
+            <li class="tab-pill sub" data-group="condetail" data-key="summary" onclick="goTab('summary')">Summary</li>
+            <li class="tab-pill sub" data-group="condetail" data-key="messages" onclick="goTab('messages')">Messages</li>
+        </ul>
+        <div class="panel" data-group="condetail" data-key="summary">
+            <div class="dashboard-card">
+                <div class="card-header"><h3>Overview<span class="src" title="GET /api/v1/clpr/channels/{channelId}/connectors?connector.id=eq:{connectorId}">connectors</span></h3></div>
+                <div class="property-grid" id="connector-overview"></div>
+                <div class="ctx inline" id="connector-banned-note" hidden>The ledger deletes a connector's record on a ban or a deregistration, but the mirror node keeps a soft-deleted row. The page renders from that row. A ban has no stake recipient; a deregistration records one. The ban time is the row's last-changed time, and the bundle that caused it is the CLPR Submit Bundle transaction at that timestamp.</div>
+            </div>
+            <div class="dashboard-card">
+                <div class="card-header"><h3>Limits<span class="src" title="GET /api/v1/clpr/channels/{channelId}/connectors?connector.id=eq:{connectorId}">connectors</span><span class="src" title="An existing mirror node API: accounts, contracts or transactions">existing</span></h3></div>
+                <div class="property-grid" id="connector-limits"></div>
+                <div class="notes">Spendable balance is the leading indicator of <code>CONNECTOR_UNDERFUNDED</code>; in-flight messages block a clean deregistration, and the link next to the count lists exactly which messages are still unacknowledged. Message volume is counted by the explorer from the Channel's messages. These are current values only: the mirror node does not publish the thresholds they would be compared with.</div>
+            </div>
+        </div>
+        <div class="panel" data-group="condetail" data-key="messages">
+            <div class="header-blurb">The channel's messages, filtered to this connector. Only data messages carry a connector, so this lists the messages it authorized.</div>
+            <div class="dashboard-card">
+                <div class="card-header"><h3>Messages<span class="src" title="GET /api/v1/clpr/channels/{channelId}/messages?connector.id=eq:{connectorId}">messages</span></h3><span class="count" id="connector-msg-count"></span></div>
+                <div class="filter-bar"><select id="flt-cn-ack" onchange="renderConnectorMessages()"><option value="">Acknowledged: All</option><option value="no">Not acknowledged</option><option value="yes">Acknowledged</option></select></div>
+                <div class="table-scroll"><table>
+                    <thead><tr><th class="num">ID</th><th>TYPE</th><th>SENDER</th><th>TARGET</th><th>ACKNOWLEDGED</th><th class="num">SIZE</th><th>TIME</th></tr></thead>
+                    <tbody id="tbl-connector-messages"></tbody>
+                </table></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ MESSAGE -->
+    <div class="view" id="view-message">
+        <div class="crumbs" id="message-crumbs"></div>
+        <div class="detail-page-title"><h2 id="message-page-title"></h2><span id="message-type-pill"></span><span id="message-ack-pill"></span></div>
+        <div class="inline-note" id="message-outcome"></div>
+        <div class="ctx">Route: <code>/clpr/channel/{channelId}/message/{consensusTimestamp}/{messageId}</code>. The mirror node cannot look up one message by ID, so the route carries the consensus timestamp and the page loads that bundle's messages with <code>timestamp=eq:…</code>, then picks the message by ID.</div>
+        <div class="dashboard-card">
+            <div class="card-header"><h3>Overview<span class="src" title="GET /api/v1/clpr/channels/{channelId}/messages?timestamp=eq:{consensusTimestamp}">messages</span></h3></div>
+            <div class="property-grid" id="message-overview"></div>
+        </div>
+        <div class="card-grid">
+            <div class="dashboard-card">
+                <div class="card-header"><h3>Lifecycle<span class="src" title="GET /api/v1/clpr/channels/{channelId}/messages?timestamp=eq:{consensusTimestamp}">messages</span></h3></div>
+                <ul class="timeline" id="message-timeline"></ul>
+                <div class="notes">States only what the mirror node records. The acknowledgement time is not recorded. This ledger does not record the reply to its own outbound message (HIP-1535 §6.4), so no "response received" step is shown for outbound data.</div>
+            </div>
+            <div class="dashboard-card">
+                <div class="card-header"><h3>Payload<span class="src" title="GET /api/v1/clpr/channels/{channelId}/messages?timestamp=eq:{consensusTimestamp}">messages</span></h3><span class="count" id="message-payload-size"></span></div>
+                <div class="code" id="message-payload"></div>
+                <div class="property-grid" id="message-hashes" style="margin-top:16px;grid-template-columns:1fr"></div>
+                <div class="notes">Raw bytes, hex only. A control message is shown decoded as key/value pairs. Decoding a data payload needs the target application's ABI; the explorer can offer that when the contract is verified on HashScan and falls back to raw bytes otherwise.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ TRANSACTIONS (existing page) -->
+    <div class="view" id="view-transactions">
+        <div class="header-blurb">The existing Transactions page with the CLPR transaction types added to its labels and type filter. A CLPR transaction opens the standard transaction detail page. The mirror node returns no channel or connector ID on transactions, but a <code>sendMessage</code> call gets a <b>CLPR messages</b> link: its consensus timestamp is looked up against each channel's messages. This column stands in for that card on the transaction detail page.</div>
+        <div class="dashboard-card">
+            <div class="card-header"><h3>Transactions<span class="src" title="An existing mirror node API: accounts, contracts or transactions">existing</span></h3><span class="count">sample rows</span></div>
+            <div class="filter-bar"><select><option>Type: CLPR (all)</option><option>CLPR Register Channel</option><option>CLPR Complete Channel</option><option>CLPR Close Channel</option><option>CLPR Submit Bundle</option><option>CLPR Register Connector</option><option>CLPR Complete Connector</option><option>CLPR Deregister Connector</option><option>CLPR Update Ledger Configuration</option><option>CLPR Maintenance</option></select></div>
+            <div class="table-scroll"><table>
+                <thead><tr><th>TRANSACTION ID</th><th>TYPE</th><th>RESULT</th><th>TIME</th><th>CLPR MESSAGES</th></tr></thead>
+                <tbody id="tbl-transactions"></tbody>
+            </table></div>
+            <div class="notes">
+                Eight of the nine types are on mirror node <code>main</code> today. <b>CLPR Maintenance</b> (system-initiated, no submitter, no fee) exists only on the open ingestion PR, so that filter value will not exist until it merges.
+                Sending a message is not its own type: it appears as a contract call to the CLPR system contract (<code>0x16e</code>). Endpoint publication (node-internal) and redaction (being removed) have no label.
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div id="outbound-toast" hidden style="position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:var(--text-primary); color:var(--background-tertiary); border-radius:8px; padding:8px 14px; font-size:12px; z-index:50; max-width:calc(100% - 32px)"></div>
+
+<script>
+/* ============================================================ MOCK DATA
+   Everything here is invented. Field names follow the five mirror node read endpoints:
+   channels, messages, connectors, configuration, endpoint-manifest. */
+const NOW = new Date("2026-11-11T12:00:00Z");
+const PEER_EXPLORERS = { "eip155:1": "etherscan.io", "eip155:137": "polygonscan.com", "hedera:testnet": "hashscan.io/testnet" };
+
+function fid(a, b) { return "0x" + a + "0".repeat(56) + b; }
+function connFull(c) { const p = c.id.slice(2).split("…"); return fid(p[0], p[1]); }
+const CHAIN_NAMES = { "eip155:1": "Ethereum", "eip155:137": "Polygon", "hedera:testnet": "Hedera Testnet" };
+function sid(a, b) { return "0x" + a + "…" + b; }
+
+const LEDGER_VERSIONS = [
+    { label: "Latest", ts: "2026-10-03 08:30", maxMsgs: 1000, maxPayload: "64 KB", maxGas: 15000000, maxDepth: 10000, maxSync: "4 MB", maxLocal: 39, maxPeer: 39, anchor: "0x3344…aa01", anchorId: "0x9f8e…7a61" },
+    { label: "2026-09-10 00:00", ts: "2026-09-01 09:00", maxMsgs: 500, maxPayload: "32 KB", maxGas: 8000000, maxDepth: 5000, maxSync: "4 MB", maxLocal: 39, maxPeer: 39, anchor: "0x3344…aa01", anchorId: "0x9f8e…7a61" }
+];
+const LEDGER_FIXED = { chainId: "hedera:mainnet", service: "0x…016e", protocolVersion: 1 };
+const MANIFEST_VERSIONS = [
+    { label: "Latest", version: 7, ts: "2026-10-29 00:00", endpoints: ["52.14.88.201:50212", "52.14.90.17:50212", "34.72.10.5:50212", "34.72.10.6:50212", "18.205.14.9:50212"] },
+    { label: "2026-10-01 00:00", version: 6, ts: "2026-09-29 00:00", endpoints: ["52.14.88.201:50212", "52.14.90.17:50212", "34.72.10.5:50212", "34.72.10.6:50212"] }
+];
+
+const CHANNELS = [
+    { key: "1a2b", id: sid("1a2b", "3c4d"), full: fid("1a2b", "3c4d"), chain: "eip155:1", status: "ACTIVE", since: "2026-10-28 08:15", verifier: "0.0.456", fingerprint: "0x55aa…bb01", upgradeability: "Proxy: upgradeable", admin: "0.0.2290", created: "2026-09-20 14:05",
+      queue: { next: 1245, acked: 1240, received: 998 }, hashes: { out: "0x6f1a…e02c", in: "0x3b77…c1d9" }, anchor: "0x77aa…bbcc", anchorId: "0x9f8e…7a61",
+      peer: { throttles: { msgs: 500, payload: "32 KB", gas: 3000000, depth: 1000, sync: "4 MB" }, manifestVersion: 4, manifest: ["34.72.10.5:50212", "34.72.10.6:50212"] },
+      past: [{ label: "2026-10-20 00:00", status: "ACTIVE", since: "2026-09-20 14:05", queue: { next: 1120, acked: 1118, received: 912 }, anchor: "0x66aa…0f12", anchorId: "0x51c0…9e77" }] },
+    { key: "2f91", id: sid("2f91", "8e02"), full: fid("2f91", "8e02"), chain: "eip155:137", status: "PAUSED", since: "2026-11-10 03:12", verifier: null, fingerprint: "0x7d20…4402", upgradeability: "Not applicable", admin: "None", created: "2026-09-12 09:30",
+      queue: { next: 499, acked: 488, received: 481 }, hashes: { out: "0x2c90…77ab", in: "0x84e1…05d3" }, anchor: "0x1d2e…3f40", anchorId: "0x42b7…c910",
+      peer: { throttles: { msgs: 200, payload: "16 KB", gas: 2000000, depth: 500, sync: "2 MB" }, manifestVersion: 2, manifest: ["147.75.1.20:50212"] },
+      past: [{ label: "2026-11-09 12:00", status: "ACTIVE", since: "2026-09-12 09:30", queue: { next: 492, acked: 488, received: 481 }, anchor: "0x1d2e…3f40", anchorId: "0x42b7…c910" }] },
+    { key: "5b60", id: sid("5b60", "9f3e"), full: fid("5b60", "9f3e"), chain: "hedera:testnet", status: "ACTIVE", since: "2026-09-25 10:00", verifier: null, fingerprint: "0x0a0b…0c0d", upgradeability: "Not applicable", admin: "None", created: "2026-09-25 10:00",
+      queue: { next: 8781, acked: 8780, received: 8765 }, hashes: { out: "0x90ab…12cd", in: "0xe4f5…6071" }, anchor: "0x5566…7788", anchorId: "0x99aa…bbcc",
+      peer: { throttles: null, manifestVersion: 1, manifest: ["3.18.4.9:50212"] }, past: [] },
+    { key: "7c10", id: sid("7c10", "aa21"), full: fid("7c10", "aa21"), chain: "eip155:1", status: "CLOSING", since: "2026-11-09 06:00", verifier: "0.0.601", fingerprint: "0x31f2…9a10", upgradeability: "Not a proxy", admin: "None", created: "2026-10-05 12:00",
+      queue: { next: 205, acked: 201, received: 77 }, hashes: { out: "0x3a4b…5c6d", in: "0x7e8f…9a0b" }, anchor: "0xaa11…bb22", anchorId: "0xcc33…dd44",
+      peer: { throttles: { msgs: 500, payload: "32 KB", gas: 3000000, depth: 1000, sync: "4 MB" }, manifestVersion: 3, manifest: ["34.72.10.5:50212"] }, past: [] },
+    { key: "3d77", id: sid("3d77", "1b90"), full: fid("3d77", "1b90"), chain: "eip155:137", status: "DRAINED", since: "2026-11-05 18:20", verifier: "0.0.512", fingerprint: "0x6b6c…6d6e", upgradeability: "Not a proxy", admin: "None", created: "2026-09-30 08:00",
+      queue: { next: 64, acked: 63, received: 40 }, hashes: { out: "0x1b2c…3d4e", in: "0x5f60…7182" }, anchor: "0xee55…ff66", anchorId: "0x1122…3344",
+      peer: { throttles: { msgs: 200, payload: "16 KB", gas: 2000000, depth: 500, sync: "2 MB" }, manifestVersion: 2, manifest: ["147.75.1.20:50212"] }, past: [] },
+    { key: "9e44", id: sid("9e44", "02cd"), full: fid("9e44", "02cd"), chain: "eip155:1", status: "ACTIVE", since: "2026-10-02 11:00", verifier: "0.0.456", fingerprint: "0x55aa…bb01", upgradeability: "Proxy: upgradeable", admin: "0.0.2290", created: "2026-10-02 11:00",
+      queue: { next: 33, acked: 31, received: 12 }, hashes: { out: "0xd1e2…f304", in: "0x4a5b…6c7d" }, anchor: "0x77aa…bbcc", anchorId: "0x9f8e…7a61",
+      peer: { throttles: { msgs: 500, payload: "32 KB", gas: 3000000, depth: 1000, sync: "4 MB" }, manifestVersion: 4, manifest: ["34.72.10.5:50212", "34.72.10.6:50212"] }, past: [] }
+];
+const SAMPLE_ID = CHANNELS[0].full;
+
+const PENDING = [
+    { commitment: "0xcc44…8801", ts: "2026-11-10 07:40" },
+    { commitment: "0x1199…55aa", ts: "2026-11-08 22:05" },
+    { commitment: "0x8a3e…d2f0", ts: "2026-11-11 09:10" }
+];
+
+/* status: PENDING | ACTIVE | DELETED. A deleted row with no recipient is a ban; with a recipient, a deregistration. */
+const CONNECTORS = [
+    { key: "4d5e", ch: "1a2b", id: sid("4d5e", "6f70"), status: "ACTIVE", contract: "0.0.789", admin: "302a…e5b2", stake: 1, balance: 25.4, inFlight: 2, slashes: 0, created: "2026-09-20 15:20", changed: "2026-11-10 09:12", recipient: null, past: [] },
+    { key: "88aa", ch: "1a2b", id: sid("88aa", "22bb"), status: "ACTIVE", contract: "0.0.790", admin: "302a…91c4", stake: 0.2, balance: 1.1, inFlight: 0, slashes: 4, created: "2026-09-21 10:00", changed: "2026-11-09 11:02", recipient: null,
+      past: [{ label: "2026-11-01 00:00", stake: 0.8, slashes: 2, inFlight: 1, changed: "2026-10-31 09:40" }] },
+    { key: "p1", ch: "1a2b", id: null, status: "PENDING", commitment: "0x9c2e…4a11", created: "2026-11-10 16:40", past: [] },
+    { key: "0a0a", ch: "2f91", id: sid("0a0a", "b1b1"), status: "DELETED", contract: "0.0.805", admin: "302a…77d0", stake: 0, balance: 0.3, inFlight: 0, slashes: 5, created: "2026-09-13 09:00", changed: "2026-11-10 03:12", recipient: null, past: [] },
+    { key: "5c5c", ch: "5b60", id: sid("5c5c", "9d9d"), status: "DELETED", contract: "0.0.901", admin: "302a…55e1", stake: 0, balance: 2, inFlight: 0, slashes: 1, created: "2026-09-25 11:00", changed: "2026-10-30 14:00", recipient: "0.0.5555", past: [] },
+    { key: "6e6e", ch: "5b60", id: sid("6e6e", "0a0a"), status: "ACTIVE", contract: "0.0.902", admin: "302a…b3a8", stake: 1, balance: 12, inFlight: 0, slashes: 0, created: "2026-09-26 08:30", changed: "2026-11-11 07:20", recipient: null, past: [] },
+    { key: "7d7d", ch: "7c10", id: sid("7d7d", "3f3f"), status: "ACTIVE", contract: "0.0.950", admin: "302a…0c19", stake: 1, balance: 6.2, inFlight: 3, slashes: 1, created: "2026-10-05 13:00", changed: "2026-11-10 19:44", recipient: null, past: [] },
+    { key: "9a9a", ch: "9e44", id: sid("9a9a", "1e1e"), status: "ACTIVE", contract: "0.0.960", admin: "302a…44f6", stake: 1, balance: 0.4, inFlight: 1, slashes: 0, created: "2026-10-02 11:30", changed: "2026-11-10 14:05", recipient: null, past: [] }
+];
+
+/* The outbound queue only: data sent from this ledger, responses it generated for inbound data, control messages. */
+const MESSAGES = [
+    { ch: "1a2b", id: 1244, type: "DATA", tx: "0.0.2101@1762842900.555000111", sender: "0.0.2101", target: "0x7788…1a1a", cn: "4d5e", size: 112, ts: "2026-11-10 09:12", hash: "0x91c2…ab07", payload: "0x7b227072696365223a22302e3132227d…" },
+    { ch: "1a2b", id: 1243, type: "CONTROL", size: null, ts: "2026-11-10 08:00", hash: "0x5d1e…c3a9", ctrl: [["payload", "config_update"], ["configuration version", "3"], ["max messages per bundle", "1000"], ["max message payload", "65536"], ["max gas per message", "15000000"]] },
+    { ch: "1a2b", id: 1242, type: "RESPONSE", reply: "CONNECTOR_UNDERFUNDED", replyTo: 998, size: 0, ts: "2026-11-10 06:05", hash: "0x0e4f…8812", payload: "0x" },
+    { ch: "1a2b", id: 1241, type: "DATA", tx: "0.0.2101@1762796700.201000000", sender: "0.0.2101", target: "0x7788…1a1a", cn: "4d5e", size: 96, ts: "2026-11-09 17:45", hash: "0x73b0…e6d4", payload: "0x7b227072696365223a22302e3131227d…" },
+    { ch: "1a2b", id: 1240, type: "RESPONSE", reply: "SUCCESS", replyTo: 997, size: 0, ts: "2026-11-09 10:20", hash: "0xa2c8…1f35", payload: "0x" },
+    { ch: "1a2b", id: 1239, type: "DATA", tx: "0.0.2144@1762610400.330000000", sender: "0.0.2144", target: "0x4455…9e9e", cn: "88aa", size: 64, ts: "2026-11-08 14:00", hash: "0x6c19…07be", payload: "0x686f6c6c61…" },
+    { ch: "2f91", id: 498, type: "RESPONSE", reply: "APPLICATION_ERROR", replyTo: 480, size: 36, ts: "2026-11-10 03:05", hash: "0xf0e1…d2c3", payload: "0x08c379a0000000000000000000000000000000000000000000000000000000000000002000…" },
+    { ch: "2f91", id: 497, type: "DATA", tx: "0.0.3100@1762727400.410000000", sender: "0.0.3100", target: "0x91aa…0b0b", cn: "0a0a", size: 128, ts: "2026-11-09 22:30", hash: "0x1357…9bdf", payload: "0x7b226f726465724964223a3432…" },
+    { ch: "2f91", id: 496, type: "DATA", tx: "0.0.3100@1762722600.120000000", sender: "0.0.3100", target: "0x91aa…0b0b", cn: "0a0a", size: 128, ts: "2026-11-09 21:10", hash: "0x2468…ace0", payload: "0x7b226f726465724964223a3431…" },
+    { ch: "5b60", id: 8780, type: "DATA", tx: "0.0.4410@1762845600.050000000", sender: "0.0.4410", target: "0x0000…0c0c", cn: "6e6e", size: 200, ts: "2026-11-11 07:20", hash: "0xbeef…0123", payload: "0x7b2274797065223a2268656172746265617422…" },
+    { ch: "7c10", id: 204, type: "DATA", tx: "0.0.5021@1762803840.700000000", sender: "0.0.5021", target: "0x2211…dd00", cn: "7d7d", size: 88, ts: "2026-11-10 19:44", hash: "0x4455…6677", payload: "0x70696e67…" },
+    { ch: "7c10", id: 203, type: "RESPONSE", reply: "SUCCESS", replyTo: 76, size: 0, ts: "2026-11-10 12:10", hash: "0x8899…aabb", payload: "0x" },
+    { ch: "7c10", id: 202, type: "DATA", tx: "0.0.5021@1762763400.260000000", sender: "0.0.5021", target: "0x2211…dd00", cn: "7d7d", size: 88, ts: "2026-11-10 08:30", hash: "0xccdd…eeff", payload: "0x70696e67…" },
+    { ch: "9e44", id: 32, type: "DATA", tx: "0.0.6120@1762783500.880000000", sender: "0.0.6120", target: "0xabcd…ef01", cn: "9a9a", size: 150, ts: "2026-11-10 14:05", hash: "0x1020…3040", payload: "0x7b22616d6f756e74223a31307d…" }
+];
+
+const TRANSACTIONS = [
+    ["0.0.4@1762843201.123456789", "CLPR Submit Bundle", "SUCCESS", "2026-11-11 11:30"],
+    ["0.0.2101@1762842900.555000111", "Contract Call to 0x16e (sendMessage)", "SUCCESS", "2026-11-10 09:12"],
+    ["0.0.3303@1762841000.000000042", "CLPR Register Channel", "SUCCESS", "2026-11-10 07:40"],
+    ["0.0.2290@1762838400.000000001", "CLPR Update Ledger Configuration", "SUCCESS", "2026-11-10 08:00"],
+    ["system@1762830000.000000000", "CLPR Maintenance", "SUCCESS", "2026-11-10 00:00"],
+    ["0.0.790@1762826000.222000000", "CLPR Complete Connector", "SUCCESS", "2026-11-09 11:02"],
+    ["0.0.2290@1762700000.100000000", "CLPR Close Channel", "SUCCESS", "2026-11-09 06:00"],
+    ["0.0.5555@1762600000.300000000", "CLPR Deregister Connector", "SUCCESS", "2026-10-30 14:00"]
+];
+
+/* ============================================================ HELPERS */
+function pill(text, variant) { return '<span class="h-has-pill h-chip-' + variant + '">' + text + '</span>'; }
+function typeChip(t) { return pill(t, "type"); }
+function statusPill(s) { return pill(s, { ACTIVE: "success", PAUSED: "error", CLOSING: "warn", DRAINED: "default", CLOSED: "default" }[s] || "default"); }
+function statePill(s) { return pill(s, { Active: "success", Pending: "default", Banned: "error", Deregistered: "default" }[s] || "default"); }
+function replyPill(r) { return r ? pill(r, r === "SUCCESS" ? "success" : "error") : "—"; }
+function ackPill(a) { return pill(a ? "Yes" : "No", a ? "success" : "default"); }
+function hbar(n) { return (Math.round(n * 100) / 100).toLocaleString() + " ℏ"; }
+function num(n) { return n.toLocaleString(); }
+function prop(label, value) { return '<div class="property-item"><div class="property-label">' + label + '</div><div class="property-value">' + value + '</div></div>'; }
+function copyBtn(text) { return '<button type="button" class="copy-btn" onclick="copyText(this, \'' + text + '\')" aria-label="Copy">copy</button>'; }
+function copyText(btn, text) { try { navigator.clipboard.writeText(text); } catch (e) {} const old = btn.textContent; btn.textContent = "copied"; setTimeout(function () { btn.textContent = old; }, 1200); }
+function parseTs(ts) { return new Date(ts.replace(" ", "T") + ":00Z"); }
+function hoursSince(ts) { return (NOW - parseTs(ts)) / 36e5; }
+function rel(ts) { const h = hoursSince(ts); if (h < 1) return Math.max(1, Math.round(h * 60)) + " min ago"; if (h < 24) return Math.round(h) + " h ago"; return Math.round(h / 24) + " d ago"; }
+function when(ts) { return ts ? '<time title="' + ts + ' UTC">' + rel(ts) + '</time> <span class="muted">' + ts.slice(5) + '</span>' : "—"; }
+function whenAbs(ts) { return ts ? ts + ' UTC <span class="muted">(' + rel(ts) + ')</span>' : "—"; }
+function age(ts) { const h = hoursSince(ts); return h < 24 ? Math.max(1, Math.round(h)) + " h" : Math.round(h / 24) + " d"; }
+function chainKey(chain) { return chain.replace(/:/g, "~"); }
+function chainFromKey(k) { return k.replace(/~/g, ":"); }
+function channelByKey(k) { return CHANNELS.find(function (c) { return c.key === k; }); }
+function connectorByKey(chKey, k) { return CONNECTORS.find(function (c) { return c.ch === chKey && c.key === k; }); }
+function backlog(c) { return c.queue.next - 1 - c.queue.acked; }
+function isAcked(m) { return m.id <= channelByKey(m.ch).queue.acked; }
+function connectorState(cn) { return cn.status === "PENDING" ? "Pending" : cn.status === "ACTIVE" ? "Active" : (cn.recipient ? "Deregistered" : "Banned"); }
+function chLink(key) { return '<a class="link-color" onclick="event.stopPropagation(); go(\'channel-' + key + '\')">' + channelByKey(key).id + '</a>'; }
+function cnLink(chKey, key) { if (!key) return "—"; return '<a class="link-color" onclick="event.stopPropagation(); go(\'connector-' + chKey + '_' + key + '\')">' + connectorByKey(chKey, key).id + '</a>'; }
+function acctLink(a, what) { return '<a class="link-color" title="Opens the ' + (what || "account") + ' on HashScan" onclick="event.stopPropagation(); mockOutbound(\'' + (what || "account") + ' ' + a + '\')">' + a + '</a>'; }
+function mockOutbound(what) { const el = document.getElementById("outbound-toast"); el.textContent = "Mockup: would open " + what; el.hidden = false; clearTimeout(el._t); el._t = setTimeout(function () { el.hidden = true; }, 1800); }
+function fillOptions(sel, first, items) { sel.innerHTML = '<option value="">' + first + '</option>' + items.map(function (i) { return '<option value="' + i[0] + '">' + i[1] + '</option>'; }).join(""); }
+function stat(label, value, sub, cls) { return '<div class="stat ' + (cls || "") + '"><div class="label">' + label + '</div><div class="value">' + value + '</div><div class="sub">' + sub + '</div></div>'; }
+function verifierCell(c) { return c.verifier ? acctLink(c.verifier, "contract") : '<span class="muted">—</span>'; }
+function step(cls, title, meta) { return '<li class="' + cls + '"><div class="t-title">' + title + '</div><div class="t-meta">' + meta + '</div></li>'; }
+function msgsForTx(tx) { return MESSAGES.filter(function (m) { return m.tx === tx; }); }
+function oldestUnackedHours(chKey) { const u = MESSAGES.filter(function (m) { return m.ch === chKey && !isAcked(m); }); return u.length ? Math.max.apply(null, u.map(function (m) { return hoursSince(m.ts); })) : null; }
+function sampleSearch(v) { document.getElementById("find-msg").value = v; overviewSearch(); }
+function overviewSearch() {
+    const q = document.getElementById("find-msg").value, res = document.getElementById("find-msg-result");
+    const hits = searchHits(q);
+    if (hits.length === 1) { res.hidden = true; go(hits[0][2]); return; }
+    res.hidden = false;
+    const byTime = /@|^\d+\.\d+$/.test(q.trim());
+    res.innerHTML = hits.length
+        ? hits.length + " results: " + hits.map(function (h) { return '<a class="link-color" onclick="go(\'' + h[2] + '\')">' + h[0] + " · " + h[1] + "</a>"; }).join(" · ") + (byTime ? '<div class="sub">Matched by consensus timestamp: the mirror node stores messages by channel and timestamp, not by transaction ID.</div>' : "")
+        : "Nothing found. Checked this network's channels, connectors, messages (by consensus timestamp) and peer chains. If this is a transaction ID, the transaction may not be a <code>sendMessage</code> call, may not have sent a Data message, or may be older than the 30-day messages window.";
+}
+function sortedMessages(list) { return list.slice().sort(function (a, b) { return b.id - a.id; }); }
+const ORDER = { PAUSED: 0, CLOSING: 1, DRAINED: 2, ACTIVE: 3, CLOSED: 4 };
+
+/* ============================================================ OVERVIEW */
+function renderOverview() {
+    const active = CHANNELS.filter(function (c) { return c.status === "ACTIVE"; });
+    const sent = CHANNELS.reduce(function (t, c) { return t + c.queue.next - 1; }, 0);
+    const recv = CHANNELS.reduce(function (t, c) { return t + c.queue.received; }, 0);
+    const chains = {};
+    CHANNELS.forEach(function (c) { (chains[c.chain] = chains[c.chain] || []).push(c); });
+    const connected = Object.keys(chains).filter(function (k) { return chains[k].some(function (c) { return c.status === "ACTIVE"; }); }).length;
+    document.getElementById("stat-grid").innerHTML =
+        stat("Connected networks", connected, "with an active channel (claimed)") +
+        stat("Channels", active.length + " / " + CHANNELS.length, "active / total") +
+        stat("Messages sent", num(sent), "all types, all time") +
+        stat("Messages received", num(recv), "peer messages processed");
+    const keys = Object.keys(chains).sort(function (a, b) {
+        const t = function (k) { return chains[k].reduce(function (n, c) { return n + c.queue.next - 1 + c.queue.received; }, 0); };
+        return t(b) - t(a);
+    });
+    document.getElementById("networks-count").textContent = keys.length + " networks";
+    document.getElementById("tbl-networks").innerHTML = keys.map(function (k) {
+        const cs = chains[k], mix = {};
+        cs.forEach(function (c) { mix[c.status] = (mix[c.status] || 0) + 1; });
+        const mixText = Object.keys(ORDER).filter(function (st) { return mix[st]; }).map(function (st) { return mix[st] + " " + st.toLowerCase(); }).join(", ");
+        const nm = CHAIN_NAMES[k] ? CHAIN_NAMES[k] + ' <span class="sub">(' + k + ")</span>" : k;
+        return '<tr class="clickable" tabindex="0" onclick="go(\'chain-' + chainKey(k) + '\')" onkeydown="rowKey(event)"><td class="link-color">' + nm + '</td><td class="num">' + cs.filter(function (c) { return c.status === "ACTIVE"; }).length + " / " + cs.length + "</td><td>" + mixText + '</td><td class="num">' + num(cs.reduce(function (n, c) { return n + c.queue.next - 1; }, 0)) + " / " + num(cs.reduce(function (n, c) { return n + c.queue.received; }, 0)) + "</td></tr>";
+    }).join("");
+    const COLORS = { ACTIVE: "#2e9e5b", PAUSED: "#d64545", CLOSING: "#e0a030", DRAINED: "#8a8f98", CLOSED: "#c4c7cc" };
+    const counts = {}; CHANNELS.forEach(function (c) { counts[c.status] = (counts[c.status] || 0) + 1; });
+    document.getElementById("status-bar").innerHTML = Object.keys(ORDER).filter(function (st) { return counts[st]; }).map(function (st) { return '<span title="' + counts[st] + " " + st.toLowerCase() + '" style="flex:' + counts[st] + ";background:" + COLORS[st] + '"></span>'; }).join("");
+    document.getElementById("status-legend").textContent = Object.keys(ORDER).filter(function (st) { return counts[st]; }).map(function (st) { return counts[st] + " " + st.toLowerCase(); }).join(" · ");
+    const maxDepth = LEDGER_VERSIONS[0].maxDepth;
+    const attn = CHANNELS.filter(function (c) { return c.status === "PAUSED" || c.status === "CLOSING" || c.status === "DRAINED" || backlog(c) >= 0.8 * maxDepth; })
+        .sort(function (a, b) { return ORDER[a.status] - ORDER[b.status] || backlog(b) - backlog(a); }).slice(0, 10);
+    document.getElementById("health-count").textContent = attn.length ? attn.length + " need attention" : "";
+    document.getElementById("tbl-health").innerHTML = attn.map(function (c) {
+        return '<tr class="clickable" tabindex="0" onclick="go(\'channel-' + c.key + '\')" onkeydown="rowKey(event)"><td class="link-color">' + c.id + "</td><td>" + c.chain + "</td><td>" + statusPill(c.status) + '</td><td class="num">' + num(backlog(c)) + '</td><td class="prop">' + when(c.since) + "</td></tr>";
+    }).join("") || '<tr><td colspan="5"><div class="empty-note">No channel needs attention.</div></td></tr>';
+    const L = LEDGER_VERSIONS[0], M = MANIFEST_VERSIONS[0];
+    document.getElementById("ledger-state").innerHTML =
+        prop("This ledger's configuration", 'in effect since ' + whenAbs(L.ts) + ' · max queue depth ' + num(L.maxDepth) + ' · <a class="link-color" onclick="go(\'configuration\')">Configuration</a>') +
+        prop("Endpoint manifest", "version " + M.version + " · " + M.endpoints.length + " endpoints · updated " + whenAbs(M.ts));
+}
+
+/* ============================================================ CHANNELS */
+function renderChannelList() {
+    const st = document.getElementById("flt-ch-status").value, ch = document.getElementById("flt-ch-chain").value;
+    const rows = CHANNELS.filter(function (c) { return (!st || c.status === st) && (!ch || c.chain === ch); });
+    document.getElementById("channel-count").textContent = rows.length + " channel(s)";
+    document.getElementById("tbl-channels").innerHTML = rows.map(function (c) {
+        return '<tr class="clickable" tabindex="0" onclick="go(\'channel-' + c.key + '\')" onkeydown="rowKey(event)"><td class="link-color">' + c.id + '</td><td>' + c.chain + '</td><td>' + statusPill(c.status) + '</td><td>' + verifierCell(c) + '</td><td class="num">' + num(backlog(c)) + '</td><td class="prop">' + when(c.created) + '</td></tr>';
+    }).join("") || '<tr><td colspan="6"><div class="empty-note">No channels match.</div></td></tr>';
+}
+function renderChains() {
+    const chains = {};
+    CHANNELS.forEach(function (c) { (chains[c.chain] = chains[c.chain] || []).push(c); });
+    document.getElementById("tbl-chains").innerHTML = Object.keys(chains).sort().map(function (k) {
+        const ex = PEER_EXPLORERS[k];
+        return '<tr class="clickable" tabindex="0" onclick="go(\'chain-' + chainKey(k) + '\')" onkeydown="rowKey(event)"><td class="link-color">' + k + '</td><td class="num">' + chains[k].length + '</td><td class="num">' + chains[k].filter(function (c) { return c.status === "ACTIVE"; }).length + '</td><td class="prop">' + (ex ? '<a class="link-color" onclick="event.stopPropagation(); mockOutbound(\'' + ex + '\')">' + ex + '</a>' : '<span class="muted">none listed</span>') + '</td></tr>';
+    }).join("");
+}
+function renderPending() {
+    document.getElementById("pending-count").textContent = PENDING.length + " open";
+    document.getElementById("tbl-pending").innerHTML = PENDING.slice().sort(function (a, b) { return parseTs(b.ts) - parseTs(a.ts); }).map(function (p) {
+        return '<tr><td>' + p.commitment + '</td><td class="prop">' + when(p.ts) + '</td><td class="num">' + age(p.ts) + '</td></tr>';
+    }).join("");
+}
+
+/* ============================================================ CONFIGURATION */
+function renderConfiguration() {
+    const v = LEDGER_VERSIONS[Number(document.getElementById("cfg-asof").value || 0)];
+    document.getElementById("cfg-ledger").innerHTML =
+        prop("Chain ID", LEDGER_FIXED.chainId) + prop("CLPR Service Address", LEDGER_FIXED.service) + prop("Protocol Version", LEDGER_FIXED.protocolVersion) +
+        prop("Max Messages per Bundle", num(v.maxMsgs)) + prop("Max Message Payload", v.maxPayload) + prop("Max Gas per Message", num(v.maxGas)) +
+        prop("Max Queue Depth", num(v.maxDepth)) + prop("Max Sync Size", v.maxSync) + prop("Max Local Endpoints", v.maxLocal) + prop("Max Peer Endpoints", v.maxPeer) +
+        prop("Initial Trust Anchor", v.anchor + ' <span class="sub">ID ' + v.anchorId + "</span>") + prop("Last Updated", whenAbs(v.ts));
+    const m = MANIFEST_VERSIONS[Number(document.getElementById("man-asof").value || 0)];
+    document.getElementById("man-meta").innerHTML = prop("Version", "v" + m.version) + prop("Last Updated", whenAbs(m.ts)) + prop("Endpoints", m.endpoints.length);
+    document.getElementById("tbl-manifest").innerHTML = m.endpoints.map(function (e) { return "<tr><td>" + e + "</td></tr>"; }).join("");
+}
+
+/* ============================================================ PEER CHAIN */
+let currentChain = null;
+function openPeerChain(chain) {
+    if (currentChain !== chain) document.getElementById("flt-status").value = "";
+    currentChain = chain;
+    document.getElementById("peerchain-title").textContent = "Peer chain " + chain;
+    renderPeerChainChannels();
+}
+function renderPeerChainChannels() {
+    const st = document.getElementById("flt-status").value;
+    const rows = CHANNELS.filter(function (c) { return c.chain === currentChain && (!st || c.status === st); });
+    document.getElementById("peerchain-count").textContent = rows.length + " channel(s)";
+    document.getElementById("tbl-peerchain-channels").innerHTML = rows.map(function (c) {
+        return '<tr class="clickable" tabindex="0" onclick="go(\'channel-' + c.key + '\')" onkeydown="rowKey(event)"><td class="link-color">' + c.id + '</td><td>' + statusPill(c.status) + '</td><td>' + verifierCell(c) + '</td><td class="num">' + num(backlog(c)) + '</td><td class="prop">' + when(c.created) + '</td></tr>';
+    }).join("") || '<tr><td colspan="5"><div class="empty-note">No channels match.</div></td></tr>';
+}
+
+/* ============================================================ CHANNEL */
+let currentChannelKey = null;
+function openChannel(key, tab) {
+    const c = channelByKey(key);
+    if (currentChannelKey !== key) {
+        currentChannelKey = key;
+        document.getElementById("channel-asof").innerHTML = '<option value="0">Now</option>' + c.past.map(function (p, i) { return '<option value="' + (i + 1) + '">' + p.label + '</option>'; }).join("");
+        document.getElementById("flt-type").value = "";
+        document.getElementById("flt-ack").value = "";
+        fillOptions(document.getElementById("flt-connector"), "Connector: All", CONNECTORS.filter(function (x) { return x.ch === key && x.id; }).map(function (x) { return [x.key, x.id]; }));
+        document.getElementById("flt-cn-status").value = "ACTIVE";
+    }
+    document.getElementById("channel-crumbs").innerHTML = '<a onclick="go(\'channels\')">Channels</a> › <a onclick="go(\'chain-' + chainKey(c.chain) + '\')">' + c.chain + '</a> › <span>Channel</span>';
+    document.getElementById("channel-page-title").textContent = "Channel " + c.id;
+    renderChannelAsOf();
+    renderChannelMessages();
+    renderChannelConnectors();
+    activate("chdetail", tab || "summary");
+}
+function renderChannelAsOf() {
+    const c = channelByKey(currentChannelKey), idx = Number(document.getElementById("channel-asof").value || 0);
+    const past = idx > 0 ? c.past[idx - 1] : null;
+    const v = past ? Object.assign({}, c, { status: past.status, since: past.since, queue: past.queue, anchor: past.anchor, anchorId: past.anchorId }) : c;
+    const banner = document.getElementById("channel-asof-banner");
+    banner.hidden = !past;
+    if (past) banner.innerHTML = "Showing this channel as it was at <b>" + past.label + " UTC</b> (a point-in-time lookup: status, queue counters and trust anchor). Messages and connectors below are not affected.";
+    document.getElementById("channel-status-pill").innerHTML = statusPill(v.status);
+    const bl = v.queue.next - 1 - v.queue.acked;
+    document.getElementById("channel-overview").innerHTML =
+        prop("Channel ID", c.id + copyBtn(c.full)) + prop("Peer Chain ID", '<a class="link-color" onclick="go(\'chain-' + chainKey(c.chain) + '\')">' + c.chain + "</a>") +
+        prop("Status", statusPill(v.status) + ' <span class="sub">since ' + v.since + "</span>") + prop("Verifier Contract", verifierCell(c)) +
+        prop("Trust Anchor", v.anchor) + prop("Created", whenAbs(c.created));
+    document.getElementById("channel-queue").innerHTML =
+        prop("Next Message ID", num(v.queue.next)) + prop("Acknowledged Through", num(v.queue.acked)) +
+        prop("Outbound Backlog", num(bl)) + prop("Received Through", num(v.queue.received) + ' <span class="sub">peer message ID</span>');
+    const t = c.peer.throttles;
+    document.getElementById("channel-peer").innerHTML =
+        prop("Peer Throttles", t ? num(t.msgs) + " msgs/bundle · " + t.payload + " payload · " + num(t.gas) + " gas · queue depth " + num(t.depth) + " · " + t.sync + " sync" : '<span class="muted">not yet received</span><br><span class="sub">the peer has not sent its first configuration update</span>') +
+        prop("Peer Endpoint Manifest", "v" + c.peer.manifestVersion + ' <span class="sub">' + c.peer.manifest.length + " endpoint(s)</span><br>" + c.peer.manifest.join("<br>"));
+    const drain = document.getElementById("channel-drain-card");
+    if (v.status === "CLOSING" || v.status === "DRAINED") {
+        drain.hidden = false;
+        document.getElementById("channel-drain").innerHTML = prop("Status Since", whenAbs(v.since)) + prop("Outbound Messages Left", num(bl));
+    } else drain.hidden = true;
+    document.getElementById("channel-verifier").innerHTML = c.verifier
+        ? prop("Verifier Contract", acctLink(c.verifier, "contract")) + prop("Code Fingerprint", c.fingerprint) + prop("Upgradeability", c.upgradeability) + prop("Admin Key", c.admin === "None" ? "None" : acctLink(c.admin))
+        : prop("Verifier Contract", '<span class="muted">none recorded</span><br><span class="sub">the mirror node stores no name or version for a built-in verifier</span>') + prop("Code Fingerprint", c.fingerprint);
+    const pex = PEER_EXPLORERS[c.chain];
+    document.getElementById("channel-paired").innerHTML =
+        prop("Paired Network", '<a class="link-color" onclick="go(\'chain-' + chainKey(c.chain) + '\')">' + c.chain + "</a>" + ' <span class="sub">peer of ' + LEDGER_FIXED.chainId + "</span>") +
+        prop("Peer Explorer", pex ? '<a class="link-color" onclick="mockOutbound(\'' + pex + '\')">' + pex + "</a>" : '<span class="muted">none listed</span>') +
+        prop("Peer Verifier Contract", '<span class="muted">not recorded on this ledger</span><br><span class="sub">the verifier that checks this ledger\'s bundles on ' + c.chain + " is not stored here</span>");
+    document.getElementById("channel-anchor").innerHTML = prop("Trust Anchor", v.anchor + copyBtn(v.anchor)) + prop("Trust Anchor ID", v.anchorId);
+    document.getElementById("channel-hashes").innerHTML = prop("Outbound Running Hash", c.hashes.out + copyBtn(c.hashes.out) + '<br><span class="sub">after message ' + num(c.queue.next - 1) + "</span>") + prop("Inbound Running Hash", c.hashes.in + copyBtn(c.hashes.in) + '<br><span class="sub">after peer message ' + num(c.queue.received) + "</span>");
+}
+function messageRow(m, cols) {
+    const cells = {
+        id: '<td class="num link-color">' + m.id + "</td>", type: "<td>" + typeChip(m.type) + "</td>", sender: "<td>" + (m.sender || "—") + "</td>", target: "<td>" + (m.target || "—") + "</td>",
+        cn: "<td>" + cnLink(m.ch, m.cn) + "</td>", reply: "<td>" + replyPill(m.reply) + "</td>", replyTo: "<td>" + (m.replyTo ? "peer msg " + m.replyTo : "—") + "</td>",
+        ack: "<td>" + ackPill(isAcked(m)) + "</td>", size: '<td class="num">' + (m.size === null ? "—" : m.size + " B") + "</td>", ts: '<td class="prop">' + when(m.ts) + "</td>"
+    };
+    return '<tr class="clickable" tabindex="0" onclick="go(\'message-' + m.ch + '-' + m.id + '\')" onkeydown="rowKey(event)">' + cols.map(function (c) { return cells[c]; }).join("") + "</tr>";
+}
+function renderChannelMessages() {
+    const t = document.getElementById("flt-type").value, cn = document.getElementById("flt-connector").value, ak = document.getElementById("flt-ack").value;
+    const msgs = sortedMessages(MESSAGES.filter(function (m) { return m.ch === currentChannelKey && (!t || m.type === t) && (!cn || m.cn === cn) && (!ak || (ak === "yes") === isAcked(m)); }));
+    document.getElementById("channel-msg-count").textContent = msgs.length + " in the last 30 days";
+    document.getElementById("tbl-channel-messages").innerHTML = msgs.map(function (m) { return messageRow(m, ["id", "type", "sender", "target", "cn", "reply", "replyTo", "ack", "size", "ts"]); }).join("") || '<tr><td colspan="10"><div class="empty-note">No messages match.</div></td></tr>';
+}
+function renderChannelConnectors() {
+    const st = document.getElementById("flt-cn-status").value;
+    const rows = CONNECTORS.filter(function (x) { return x.ch === currentChannelKey && x.status === st; });
+    document.getElementById("channel-connector-count").textContent = rows.length + " " + st.toLowerCase();
+    const thead = document.getElementById("thead-channel-connectors");
+    if (st === "PENDING") {
+        thead.innerHTML = "<tr><th>COMMITMENT</th><th>REGISTERED</th></tr>";
+        document.getElementById("tbl-channel-connectors").innerHTML = rows.map(function (x) { return "<tr><td>" + x.commitment + '</td><td class="prop">' + when(x.created) + "</td></tr>"; }).join("") || '<tr><td colspan="2"><div class="empty-note">No pending connector registrations on this channel.</div></td></tr>';
+        return;
+    }
+    thead.innerHTML = '<tr><th>CONNECTOR ID</th><th>CONTRACT</th><th class="num">LOCKED STAKE</th><th class="num">BALANCE</th><th class="num">IN-FLIGHT</th><th class="num">SLASHES</th><th>STATE</th><th>CREATED</th></tr>';
+    document.getElementById("tbl-channel-connectors").innerHTML = rows.map(function (x) {
+        return '<tr class="clickable" tabindex="0" onclick="go(\'connector-' + x.ch + '_' + x.key + '\')" onkeydown="rowKey(event)"><td class="link-color">' + x.id + "</td><td>" + acctLink(x.contract, "contract") + '</td><td class="num">' + hbar(x.stake) + '</td><td class="num">' + hbar(x.balance) + '</td><td class="num">' + x.inFlight + '</td><td class="num">' + x.slashes + "</td><td>" + statePill(connectorState(x)) + '</td><td class="prop">' + when(x.created) + "</td></tr>";
+    }).join("") || '<tr><td colspan="8"><div class="empty-note">No ' + st.toLowerCase() + ' connectors on this channel.</div></td></tr>';
+}
+
+/* ============================================================ CONNECTOR */
+let currentConnector = null;
+function openConnector(arg, tab) {
+    const p = arg.split("_"), cn = connectorByKey(p[0], p[1]);
+    if (!currentConnector || currentConnector.ch !== p[0] || currentConnector.key !== p[1]) {
+        currentConnector = cn;
+        document.getElementById("connector-asof").innerHTML = '<option value="0">Now</option>' + cn.past.map(function (x, i) { return '<option value="' + (i + 1) + '">' + x.label + "</option>"; }).join("");
+        document.getElementById("flt-cn-ack").value = "";
+    }
+    const c = channelByKey(cn.ch);
+    document.getElementById("connector-crumbs").innerHTML = '<a onclick="go(\'channels\')">Channels</a> › <a onclick="go(\'channel-' + cn.ch + '.connectors\')">' + c.id + "</a> › <span>Connector</span>";
+    document.getElementById("connector-page-title").textContent = "Connector " + cn.id;
+    renderConnectorAsOf();
+    renderConnectorMessages();
+    activate("condetail", tab || "summary");
+}
+function renderConnectorMessages() {
+    const cn = currentConnector, ak = document.getElementById("flt-cn-ack").value;
+    const msgs = sortedMessages(MESSAGES.filter(function (m) { return m.ch === cn.ch && m.cn === cn.key && (!ak || (ak === "yes") === isAcked(m)); }));
+    document.getElementById("connector-msg-count").textContent = msgs.length + " in the last 30 days";
+    document.getElementById("tbl-connector-messages").innerHTML = msgs.map(function (m) { return messageRow(m, ["id", "type", "sender", "target", "ack", "size", "ts"]); }).join("") || '<tr><td colspan="7"><div class="empty-note">No messages match in the window.</div></td></tr>';
+}
+function renderConnectorAsOf() {
+    const cn = currentConnector, idx = Number(document.getElementById("connector-asof").value || 0);
+    const past = idx > 0 ? cn.past[idx - 1] : null;
+    const v = past ? Object.assign({}, cn, { stake: past.stake, slashes: past.slashes, inFlight: past.inFlight, changed: past.changed }) : cn;
+    const banner = document.getElementById("connector-asof-banner");
+    banner.hidden = !past;
+    if (past) banner.innerHTML = "Showing this connector as it was at <b>" + past.label + " UTC</b> (a point-in-time lookup).";
+    const state = connectorState(cn);
+    document.getElementById("connector-state-pill").innerHTML = statePill(state);
+    document.getElementById("connector-overview").innerHTML =
+        prop("Connector ID", cn.id + copyBtn(cn.id)) + prop("Channel", chLink(cn.ch)) + prop("Connector Contract", acctLink(cn.contract, "contract")) + prop("Admin Key", cn.admin) +
+        prop("State", statePill(state) + (cn.status === "DELETED" ? ' <span class="sub">' + (cn.recipient ? "stake returned to " + cn.recipient : "no stake recipient recorded") + "</span>" : "")) +
+        prop("Created", whenAbs(cn.created)) + prop("Last Changed", whenAbs(v.changed));
+    document.getElementById("connector-banned-note").hidden = cn.status !== "DELETED";
+    document.getElementById("connector-limits").innerHTML = prop("Locked Stake", hbar(v.stake)) + prop("Spendable Balance", hbar(cn.balance) + ' <span class="sub">connector contract balance</span>') + prop("Slashes", v.slashes) +
+        prop("In-flight Messages", v.inFlight + (cn.status === "ACTIVE" && v.inFlight ? ' <a class="link-color" onclick="document.getElementById(\'flt-cn-ack\').value = \'no\'; goTab(\'messages\')">show the unacknowledged messages</a>' : "")) +
+        prop("Messages, last 7 days", MESSAGES.filter(function (m) { return m.ch === cn.ch && m.cn === cn.key && hoursSince(m.ts) <= 168; }).length + ' <span class="sub">data messages sent through this connector</span>');
+}
+
+/* ============================================================ MESSAGE */
+function openMessage(arg) {
+    const p = arg.split("-"), m = MESSAGES.find(function (x) { return x.ch === p[0] && x.id === Number(p[1]); }), c = channelByKey(m.ch);
+    document.getElementById("message-crumbs").innerHTML = '<a onclick="go(\'channels\')">Channels</a> › <a onclick="go(\'channel-' + m.ch + '.messages\')">' + c.id + "</a> › <span>Message</span>";
+    document.getElementById("message-page-title").textContent = "Message " + m.id;
+    document.getElementById("message-type-pill").innerHTML = typeChip(m.type);
+    const ack = isAcked(m);
+    document.getElementById("message-ack-pill").innerHTML = ackPill(ack).replace(">Yes<", ">Acknowledged<").replace(">No<", ">Not acknowledged<");
+    const ex = PEER_EXPLORERS[c.chain];
+    const oldest = oldestUnackedHours(m.ch), oc = document.getElementById("message-outcome");
+    let out;
+    if (m.type === "CONTROL") out = "<b>Control message.</b> Peer-to-peer configuration traffic, no application action needed. " + (ack ? "The peer has acknowledged it." : "Not yet acknowledged by the peer.");
+    else if (m.type === "RESPONSE") out = m.reply === "SUCCESS" ? "<b>Delivered.</b> Peer message " + m.replyTo + " was handed to its target application here and succeeded."
+        : "<b>Peer message " + m.replyTo + " failed here: " + m.reply + ".</b> " + ({ APPLICATION_ERROR: "The target application reverted. The peer-side sender should check the application, not the channel.", CONNECTOR_UNDERFUNDED: "The connector's balance could not cover the delivery. The connector operator needs to top up. The response carries no connector ID, so find the connector from the peer's message.", CONNECTOR_NOT_FOUND: "No connector was registered here for that message. The peer-side sender needs a registered connector on this channel." })[m.reply];
+    else if (ack) out = "<b>Acknowledged.</b> The peer confirmed receipt of this message. This ledger does not record a reply to its own outbound message, so the application result is seen on the peer ledger.";
+    else if (c.status === "PAUSED") out = "<b>Waiting: channel PAUSED since " + c.since + ".</b> Nothing moves on this channel until it resumes. Next step: the channel operator or the peer.";
+    else if (c.status === "CLOSING" || c.status === "DRAINED") out = "<b>Waiting: channel is " + c.status + ".</b> The channel is draining and will deliver this message before it closes.";
+    else out = "<b>Queued, waiting for the peer to acknowledge.</b> " + (oldest !== null ? "The oldest unacknowledged message on this channel is " + (oldest < 24 ? Math.round(oldest) + " h" : Math.round(oldest / 24) + " d") + " old. " : "") + "If this keeps growing while the channel is ACTIVE, the peer's relay has likely stopped: escalate to the peer-side operator.";
+    oc.className = "inline-note"; oc.innerHTML = out;
+    let ov = prop("Channel", chLink(m.ch)) + prop("Message ID", m.id) + prop("Type", typeChip(m.type));
+    if (m.type === "DATA") ov += prop("Sender", m.sender) + prop("Target Application", m.target) + prop("Connector", cnLink(m.ch, m.cn));
+    if (m.type === "RESPONSE") ov += prop("Reply Status", replyPill(m.reply)) + prop("Replies To", "peer message " + m.replyTo);
+    if (m.type === "DATA" && m.tx) ov += prop("Sent By Transaction", '<a class="link-color" title="Opens the transaction on HashScan" onclick="mockOutbound(\'transaction ' + m.tx + '\')">' + m.tx + "</a>" + copyBtn(m.tx));
+    ov += prop("Acknowledged", ackPill(ack)) + prop("Size", m.size === null ? "—" : m.size + " bytes") + prop("Recorded On This Ledger", whenAbs(m.ts)) +
+        prop("Peer Transaction", ex ? '<a class="link-color" onclick="mockOutbound(\'' + ex + ' · message ' + m.id + '\')">open on ' + ex + "</a>" : '<span class="muted">no peer explorer listed for ' + c.chain + "</span>");
+    document.getElementById("message-overview").innerHTML = ov;
+    let tl = "";
+    if (m.type === "RESPONSE") tl += step("", "In reply to peer message " + m.replyTo, "dispatched to the target application here with result " + m.reply);
+    tl += step("", "Recorded on this ledger", whenAbs(m.ts));
+    tl += step(ack ? "" : "pending", "Acknowledged by the peer", ack ? "yes · the acknowledgement time is not recorded" : "not yet: the peer's next bundle will carry the acknowledgement");
+    document.getElementById("message-timeline").innerHTML = tl;
+    document.getElementById("message-payload-size").textContent = m.size === null ? "control message" : m.size + " bytes";
+    document.getElementById("message-payload").textContent = m.ctrl ? m.ctrl.map(function (d) { return d[0] + ": " + d[1]; }).join("\n") : m.payload;
+    document.getElementById("message-hashes").innerHTML = prop("Running Hash After", m.hash + copyBtn(m.hash));
+}
+
+/* ============================================================ TRANSACTIONS (existing page) */
+function renderTransactions() {
+    document.getElementById("tbl-transactions").innerHTML = TRANSACTIONS.map(function (t) { return "<tr><td>" + t[0] + "</td><td>" + typeChip(t[1]) + "</td><td>" + pill(t[2], "success") + '</td><td class="prop">' + when(t[3]) + "</td><td>" + (msgsForTx(t[0]).map(function (m) { return '<a class="link-color" onclick="go(\'message-' + m.ch + '-' + m.id + '\')">message ' + m.id + " on " + channelByKey(m.ch).id + "</a>"; }).join("<br>") || '<span class="muted">—</span>') + "</td></tr>"; }).join("");
+}
+
+/* ============================================================ SEARCH */
+function searchHits(q) {
+    q = q.trim().toLowerCase(); if (!q) return [];
+    const hits = [], norm = function (s) { return String(s).toLowerCase().replace(/…/g, ""); };
+    CHANNELS.forEach(function (c) { if (c.full.toLowerCase() === q) hits.push(["channel", c.id + " · " + c.chain, "channel-" + c.key]); });
+    if (!hits.length) CONNECTORS.forEach(function (c) { if (c.id && connFull(c).toLowerCase() === q) hits.push(["connector", c.id + " · on channel " + channelByKey(c.ch).id, "connector-" + c.ch + "_" + c.key]); });
+    MESSAGES.forEach(function (m) { if (m.tx && (m.tx.toLowerCase() === q || m.tx.toLowerCase().slice(m.tx.indexOf("@") + 1) === q)) hits.push(["message", "message " + m.id + " on " + channelByKey(m.ch).id, "message-" + m.ch + "-" + m.id]); });
+    if (q.length >= 3) {
+        const seen = {};
+        CHANNELS.forEach(function (c) { if (c.chain.toLowerCase().indexOf(q) >= 0 && !seen[c.chain]) { seen[c.chain] = 1; hits.push(["peer chain", c.chain, "chain-" + chainKey(c.chain)]); } });
+        PENDING.forEach(function (p) { if (norm(p.commitment).indexOf(q.replace(/…/g, "")) === 0) hits.push(["commitment", p.commitment + " (pending)", "channels.pending"]); });
+    }
+    return hits;
+}
+function runSearch(openFirst) {
+    const q = document.getElementById("search").value, box = document.getElementById("search-results");
+    const hits = searchHits(q);
+    if (!q.trim()) { box.hidden = true; return; }
+    if (openFirst && hits.length) { box.hidden = true; document.getElementById("search").value = ""; go(hits[0][2]); return; }
+    box.innerHTML = hits.length ? hits.map(function (h) { return '<div class="hit" onclick="document.getElementById(\'search-results\').hidden = true; document.getElementById(\'search\').value = \'\'; go(\'' + h[2] + '\')"><span class="kind">' + h[0] + '</span><span class="what">' + h[1] + "</span></div>"; }).join("") : '<div class="none">No match. Paste the transaction ID of a sendMessage call, or the full 32-byte channel ID. Connectors and bundles cannot be searched by ID or hash.</div>';
+    box.hidden = false;
+}
+function searchKey(ev) { if (ev.key === "Enter") runSearch(true); if (ev.key === "Escape") document.getElementById("search-results").hidden = true; }
+document.addEventListener("click", function (ev) { if (!ev.target.closest(".search-bar")) document.getElementById("search-results").hidden = true; });
+
+/* ============================================================ ROUTING: the hash is the URL of every view */
+function go(route) { if (location.hash.slice(1) === route) render(); else location.hash = route; }
+function goTab(tab) { const r = location.hash.slice(1).split(".")[0]; go(r + "." + tab); }
+function rowKey(ev) { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); ev.currentTarget.click(); } }
+function activate(group, key) { document.querySelectorAll('[data-group="' + group + '"]').forEach(function (el) { el.classList.toggle("active", el.dataset.key === key); }); }
+const DETAIL_VIEWS = ["view-peerchain", "view-channel", "view-connector", "view-message", "view-transactions"];
+function setNav(which) {
+    document.querySelectorAll("#site-nav a[data-nav]").forEach(function (a) { a.classList.toggle("current", a.dataset.nav === which); });
+    document.getElementById("page-title").textContent = which === "transactions" ? "Transactions" : "CLPR";
+}
+function showMain(tab) {
+    DETAIL_VIEWS.forEach(function (id) { document.getElementById(id).classList.remove("active"); });
+    document.getElementById("toolbar").hidden = false;
+    document.getElementById("ctx-intro").hidden = tab !== "overview";
+    activate("clpr", tab); setNav("clpr");
+}
+function showDetail(id) {
+    DETAIL_VIEWS.forEach(function (v) { document.getElementById(v).classList.toggle("active", v === id); });
+    document.getElementById("toolbar").hidden = id === "view-transactions";
+    document.getElementById("ctx-intro").hidden = true;
+    activate("clpr", "none"); setNav(id === "view-transactions" ? "transactions" : "clpr");
+}
+function render() {
+    const route = location.hash.slice(1) || "overview";
+    const dot = route.indexOf("."), base = dot < 0 ? route : route.slice(0, dot), tab = dot < 0 ? null : route.slice(dot + 1);
+    const dash = base.indexOf("-"), kind = dash < 0 ? base : base.slice(0, dash), arg = dash < 0 ? null : base.slice(dash + 1);
+    try {
+        if (kind === "overview") { renderOverview(); showMain("overview"); }
+        else if (kind === "channels") { renderChannelList(); renderChains(); renderPending(); activate("channels", tab || "all"); showMain("channels"); }
+        else if (kind === "configuration") { renderConfiguration(); showMain("configuration"); }
+        else if (kind === "transactions") { renderTransactions(); showDetail("view-transactions"); }
+        else if (kind === "chain") { openPeerChain(chainFromKey(arg)); showDetail("view-peerchain"); }
+        else if (kind === "channel") { openChannel(arg, tab); showDetail("view-channel"); }
+        else if (kind === "connector") { openConnector(arg, tab); showDetail("view-connector"); }
+        else if (kind === "message") { openMessage(arg); showDetail("view-message"); }
+        else { location.hash = "overview"; return; }
+    } catch (e) { console.error("route failed", route, e); location.hash = "overview"; return; }
+    window.scrollTo(0, 0);
+}
+window.addEventListener("hashchange", render);
+
+/* ============================================================ THEME + CONTEXT TOGGLES */
+function toggleTheme() {
+    const root = document.documentElement, explicit = root.getAttribute("data-theme");
+    const dark = explicit ? explicit === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+    root.setAttribute("data-theme", dark ? "light" : "dark");
+}
+function toggleCtx() {
+    const on = document.documentElement.classList.toggle("hide-ctx");
+    document.getElementById("ctx-btn").textContent = on ? "Show review notes" : "Hide review notes";
+    try { localStorage.setItem("clpr-mock-hide-ctx", on ? "1" : ""); } catch (e) {}
+}
+
+/* ============================================================ INIT */
+(function init() {
+    document.getElementById("sample-id").textContent = SAMPLE_ID;
+    fillOptions(document.getElementById("flt-ch-chain"), "Peer chain: All", Object.keys(CHANNELS.reduce(function (a, c) { a[c.chain] = 1; return a; }, {})).sort().map(function (x) { return [x, x]; }));
+    document.getElementById("cfg-asof").innerHTML = LEDGER_VERSIONS.map(function (v, i) { return '<option value="' + i + '">' + v.label + "</option>"; }).join("");
+    document.getElementById("man-asof").innerHTML = MANIFEST_VERSIONS.map(function (v, i) { return '<option value="' + i + '">' + v.label + "</option>"; }).join("");
+    try { if (localStorage.getItem("clpr-mock-hide-ctx") === "1") { document.documentElement.classList.add("hide-ctx"); document.getElementById("ctx-btn").textContent = "Show review notes"; } } catch (e) {}
+    render();
+})();
+</script>
+
+</body>
+</html>
