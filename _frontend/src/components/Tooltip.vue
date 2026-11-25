@@ -10,7 +10,7 @@
       v-if="props.text || slots.content"
       :label="props.text ?? undefined"
       :position="props.position"
-      :delay="props.delay ?? undefined"
+      :delay="0"
       multiline
   >
     <slot/>
@@ -40,10 +40,6 @@ const props = defineProps({
   position: {
     type: String as PropType<"auto" | "left" | "right" | "bottom" | "top" | "bottom-left" | "top-right" | "top-left" | "bottom-right">,
     default: 'auto'
-  },
-  delay: {
-    type: Number as PropType<number | null>,
-    default: 100
   }
 })
 
