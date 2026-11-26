@@ -139,6 +139,7 @@ export class TransactionAnalyzer {
     private readonly transactionDidChange = async () => {
 
         if (this.transaction.value !== null) {
+            this.senderAccount.value = null
             const entityId = this.transaction.value?.entity_id ?? null
             if (entityId !== null) {
                 switch (this.transaction.value.name) {
@@ -146,9 +147,13 @@ export class TransactionAnalyzer {
                     case TransactionType.ETHEREUMTRANSACTION: {
                         const contract = await ContractByIdCache.instance.lookup(entityId)
                         this.contractId.value = contract ? entityId : null
-                        const result = await ContractResultByTransactionIdCache.instance.lookup(this.transaction.value?.transaction_id)
-                        const account = await AccountByAddressCache.instance.lookup(result?.from ?? '')
-                        this.senderAccount.value = account?.account ?? null
+                        if (this.isEthereumTransaction.value) {
+                            const result = await ContractResultByTransactionIdCache.instance.lookup(this.transaction.value.transaction_id)
+                            if (result?.from) {
+                                const account = await AccountByAddressCache.instance.lookup(result.from)
+                                this.senderAccount.value = account?.account ?? null
+                            }
+                        }
                         break
                     }
                     case TransactionType.CONTRACTCREATEINSTANCE:
@@ -183,6 +188,7 @@ export class TransactionAnalyzer {
                 this.outerTransaction.value = await TransactionByTsCache.instance.lookup(this.parentTimestamp.value)
             }
         } else {
+            this.senderAccount.value = null
             this.contractId.value = null
             this.blockNumber.value = null
             this.tokenRelationships.value = []
