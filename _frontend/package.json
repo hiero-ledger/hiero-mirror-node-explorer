@@ -63,8 +63,8 @@
     "@types/topojson-specification": "1.0.5",
     "@vitejs/plugin-basic-ssl": "2.3.0",
     "@vitejs/plugin-vue": "6.0.11",
-    "@vitest/coverage-v8": "5.1.0",
-    "@vitest/web-worker": "5.1.0",
+    "@vitest/coverage-v8": "5.1.1",
+    "@vitest/web-worker": "5.1.1",
     "@vue/eslint-config-typescript": "14.9.0",
     "@vue/test-utils": "2.6.0",
     "@vue/tsconfig": "0.9.1",
@@ -83,7 +83,7 @@
     "typescript": "6.0.3",
     "typescript-eslint": "8.73.0",
     "vite": "8.3.8",
-    "vitest": "5.1.0",
+    "vitest": "5.1.1",
     "vue-tsc": "3.3.14"
   },
   "overrides": {
