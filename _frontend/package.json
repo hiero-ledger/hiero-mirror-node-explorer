@@ -72,7 +72,7 @@
     "cypress": "16.3.0",
     "esbuild": "0.28.2",
     "eslint": "10.15.0",
-    "eslint-plugin-cypress": "7.0.5",
+    "eslint-plugin-cypress": "7.2.0",
     "eslint-plugin-vue": "10.12.1",
     "fast-check": "4.10.2",
     "globals": "17.14.0",
