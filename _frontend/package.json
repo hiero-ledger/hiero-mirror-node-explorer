@@ -74,7 +74,7 @@
     "eslint": "10.15.0",
     "eslint-plugin-cypress": "7.2.0",
     "eslint-plugin-vue": "10.12.1",
-    "fast-check": "4.10.2",
+    "fast-check": "4.11.0",
     "globals": "17.14.0",
     "jsdom": "31.0.1",
     "npm-run-all": "4.1.5",
