@@ -33,6 +33,9 @@ describe('ContractResultDetails', () => {
         const transactionId = "0.0.1753656@1674816661.856939387"
         const consensusTimestamp = "1674816673.923476354"
 
+        cy.intercept({method: 'GET', pathname: `/api/v1/contracts/results/${makeExchangeFormat(transactionId)}`})
+            .as('resultByTransactionId')
+
         cy.visit('mainnet/transaction/' + consensusTimestamp + "?tid=" + makeExchangeFormat(transactionId))
         cy.url().should('include', '/mainnet/transaction/')
         cy.url().should('include', makeExchangeFormat(transactionId))
@@ -48,6 +51,8 @@ describe('ContractResultDetails', () => {
         cy.get('#resultValue').should('have.text', 'SUCCESS')
         cy.get('#fromValue').should('have.text', '0xb6d4c5a61a0c104b6c9222630fac403178725f7f(0.0.1463739)')
         cy.get('#toValue').should('have.text', '0x0000000000000000000000000000000000000167(Hedera Token Service System Contract)')
+
+        cy.get('@resultByTransactionId.all').should('have.length', 0)
     })
 
     it('should display contract result of child (token burn) transaction', () => {
