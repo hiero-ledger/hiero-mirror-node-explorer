@@ -237,15 +237,13 @@ describe("TransactionDetails.vue", () => {
             "api/v1/network/fees",
             "api/v1/contracts/" + SAMPLE_CONTRACTCALL_TRANSACTIONS.transactions[0].entity_id,
             "api/v1/contracts/results",
-            "api/v1/contracts/results/" + SAMPLE_CONTRACTCALL_TRANSACTIONS.transactions[0].transaction_id,
             "api/v1/contracts/" + SAMPLE_CONTRACT_RESULT_DETAILS.contract_id + "/results/" + SAMPLE_CONTRACTCALL_TRANSACTIONS.transactions[0].consensus_timestamp,
-            "api/v1/accounts/",
+            "api/v1/blocks",
             "api/v1/contracts/0.0.846260", // SAMPLE_CONTRACT_RESULT_DETAILS.from as entity id
             "api/v1/contracts/0.0.1062787", // SAMPLE_CONTRACT_RESULT_DETAILS.to as entity id
             "api/v1/contracts/" + SAMPLE_CONTRACT_RESULT_DETAILS.from,
             "api/v1/contracts/" + SAMPLE_CONTRACT_RESULT_DETAILS.to,
             "api/v1/tokens/0.0.846260", // SAMPLE_CONTRACT_RESULT_DETAILS.from as entity id
-            "api/v1/blocks",
             "api/v1/tokens/0.0.1062787", // SAMPLE_CONTRACT_RESULT_DETAILS.to as entity id
             "https://www.4byte.directory/api/v1/signatures/?format=json&hex_signature=0x18cbafe5",
         ])
@@ -338,15 +336,13 @@ describe("TransactionDetails.vue", () => {
             "api/v1/network/fees",
             "api/v1/contracts/" + SAMPLE_CONTRACTCALL_TRANSACTIONS.transactions[0].entity_id,
             "api/v1/contracts/results",
-            "api/v1/contracts/results/" + SAMPLE_CONTRACTCALL_TRANSACTIONS.transactions[0].transaction_id,
             "api/v1/contracts/" + SAMPLE_CONTRACT_RESULT_DETAILS.contract_id + "/results/" + SAMPLE_CONTRACTCALL_TRANSACTIONS.transactions[0].consensus_timestamp,
-            "api/v1/accounts/",
+            "api/v1/blocks",
             "api/v1/contracts/0.0.846260", // SAMPLE_CONTRACT_RESULT_DETAILS.from as entity id
             "api/v1/contracts/0.0.1062787", // SAMPLE_CONTRACT_RESULT_DETAILS.to as entity id
             "api/v1/contracts/" + SAMPLE_CONTRACT_RESULT_DETAILS.from,
             "api/v1/contracts/" + SAMPLE_CONTRACT_RESULT_DETAILS.to,
             "api/v1/tokens/0.0.846260", // SAMPLE_CONTRACT_RESULT_DETAILS.from as entity id
-            "api/v1/blocks",
             "api/v1/accounts/" + SAMPLE_CONTRACT_RESULT_DETAILS.from,
             "api/v1/accounts/" + SAMPLE_CONTRACT_RESULT_DETAILS.to,
             "api/v1/tokens/0.0.1062787", // SAMPLE_CONTRACT_RESULT_DETAILS.to as entity id
@@ -460,8 +456,6 @@ describe("TransactionDetails.vue", () => {
             "api/v1/transactions/" + transaction.transaction_id,
             "api/v1/contracts/" + transaction.node,
             "api/v1/contracts/" + transaction.transfers[2].account,
-            "api/v1/contracts/results/" + transaction.transaction_id,
-            "api/v1/accounts/",
             "api/v1/blocks",
         ])
 
@@ -517,8 +511,6 @@ describe("TransactionDetails.vue", () => {
             "api/v1/transactions",
             "api/v1/contracts/" + SAMPLE_FAILED_TRANSACTION.entity_id,
             "api/v1/contracts/results",
-            "api/v1/contracts/results/" + SAMPLE_FAILED_TRANSACTION.transaction_id,
-            "api/v1/accounts/",
             "api/v1/blocks",
         ])
 
@@ -608,8 +600,6 @@ describe("TransactionDetails.vue", () => {
             "api/v1/contracts/results",
             "api/v1/transactions/" + transaction.transaction_id,
             "api/v1/contracts/0.0.29511696",
-            "api/v1/contracts/results/" + transaction.transaction_id,
-            "api/v1/accounts/",
             "api/v1/blocks",
         ])
 
@@ -1048,8 +1038,6 @@ describe("TransactionDetails.vue", () => {
             "api/v1/contracts/" + PARENT.transfers[1].account,
             "api/v1/contracts/" + PARENT.transfers[0].account,
             "api/v1/tokens/" + CHILD1.entity_id,
-            "api/v1/contracts/results/" + SAMPLE_PARENT_CHILD_TRANSACTIONS.transactions![0].transaction_id,
-            "api/v1/accounts/",
             "api/v1/blocks",
             "api/v1/tokens/" + PARENT.entity_id,
         ])
@@ -1391,7 +1379,6 @@ describe("TransactionDetails.vue", () => {
             "api/v1/contracts/" + SAMPLE_ETHEREUM_TRANSACTIONS_ON_ACCOUNT.transactions[0].transfers[4].account,
             "api/v1/contracts/" + SAMPLE_ETHEREUM_TRANSACTIONS_ON_ACCOUNT.transactions[0].transfers[1].account,
             "api/v1/contracts/results/" + SAMPLE_ETHEREUM_TRANSACTIONS_ON_ACCOUNT.transactions[0].transaction_id,
-            "api/v1/accounts/",
             "api/v1/accounts/" + SAMPLE_ETHEREUM_TRANSACTIONS_ON_ACCOUNT.transactions[0].entity_id,
             "api/v1/blocks",
         ])
@@ -1456,7 +1443,6 @@ describe("TransactionDetails.vue", () => {
             "api/v1/contracts/results/" + SAMPLE_ETHEREUM_TRANSACTIONS_ON_CONTRACT.transactions[0].transaction_id,
             "api/v1/contracts/" + SAMPLE_ETHEREUM_TRANSACTIONS_ON_CONTRACT.transactions[0].transfers[3].account,
             "api/v1/contracts/" + SAMPLE_ETHEREUM_TRANSACTIONS_ON_CONTRACT.transactions[0].transfers[1].account,
-            "api/v1/accounts/",
             "api/v1/blocks",
         ])
 
@@ -1592,7 +1578,6 @@ describe("TransactionDetails.vue", () => {
             "api/v1/contracts/" + SAMPLE_ETHEREUM_TRANSACTIONS_ASSOCIATING_TOKEN.transactions[0].transfers[1].account,
             "api/v1/tokens/" + SAMPLE_ETHEREUM_TRANSACTIONS_ASSOCIATING_TOKEN.transactions[0].transfers[3].account,
             "api/v1/contracts/results/" + SAMPLE_ETHEREUM_TRANSACTIONS_ASSOCIATING_TOKEN.transactions[0].transaction_id,
-            "api/v1/accounts/",
             "api/v1/accounts/" + SAMPLE_ETHEREUM_TRANSACTIONS_ASSOCIATING_TOKEN.transactions[0].entity_id,
             "api/v1/blocks",
             "api/v1/tokens/" + SAMPLE_ETHEREUM_TRANSACTIONS_ASSOCIATING_TOKEN.transactions[0].entity_id,
@@ -1792,8 +1777,8 @@ describe("TransactionDetails.vue", () => {
             "api/v1/contracts/" + transaction.node,
             "api/v1/contracts/" + transaction.transfers[2].account,
             "api/v1/contracts/" + contractResult.contract_id + "/results/" + transaction.consensus_timestamp,
-            "api/v1/contracts/results/" + transaction.transaction_id,
-            "api/v1/accounts/",
+            "api/v1/blocks",
+            "api/v1/tokens/" + transaction.entity_id,
             "api/v1/contracts/0.0.1", // authList[0].address as entity id
             "api/v1/contracts/0.0.2", // authList[1].address as entity id
             "api/v1/contracts/" + contractResult.contract_id,
@@ -1802,14 +1787,12 @@ describe("TransactionDetails.vue", () => {
             "api/v1/contracts/" + authList[0].address,
             "api/v1/contracts/" + authList[1].address,
             "api/v1/tokens/" + "0.0.1", // authList[0].address as entity id
-            "api/v1/blocks",
             "api/v1/accounts/" + "0xec5a142db59c15c177f65985fbb380b55555c849",
             "api/v1/accounts/" + "0xa02457e5dfd32bda5fc7e1f1b008aa5979568150",
             "api/v1/accounts/" + "0x0000000000000000000000000000000000000001",
             "api/v1/accounts/" + "0x0000000000000000000000000000000000000002",
             "api/v1/tokens/" + "0.0.2", // authList[1].address as entity id
             "api/v1/tokens/" + contractResult.contract_id,
-            "api/v1/tokens/" + transaction.entity_id,
             "https://www.4byte.directory/api/v1/signatures/?format=json&hex_signature=0x18cbafe5",
         ])
 
