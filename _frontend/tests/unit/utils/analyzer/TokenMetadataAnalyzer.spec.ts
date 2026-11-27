@@ -456,4 +456,39 @@ describe("TokenMetadataAnalyzer.spec.ts", () => {
 
         mock.restore()
     })
+
+    test("metadata with unsafe image and file URIs", async () => {
+
+        const unsafeURIs = [
+            "javascript:alert(1)",
+            " JavaScript:alert(1)",
+            "data:text/html,<script>alert(1)</script>",
+            "vbscript:msgbox(1)",
+            "blob:https://example.com/1234"
+        ]
+
+        for (const unsafeURI of unsafeURIs) {
+            const mock = new MockAdapter(axios as any)
+            mock.onGet(IPFS_METADATA_CONTENT_URL).reply(200, {
+                image: unsafeURI,
+                files: [
+                    {uri: unsafeURI, type: "image/png"},
+                    {uri: 12345, type: "image/png"},
+                    {uri: "https://example.com/safe.png", type: "image/png"}
+                ]
+            })
+
+            const metadata = ref(IPFS_METADATA)
+            const analyzer = new TokenMetadataAnalyzer(metadata, IPFS_GATEWAY_PREFIX)
+            analyzer.mount()
+            await flushPromises()
+
+            expect(analyzer.imageUrl.value).toBeNull()
+            expect(analyzer.files.value.map(f => f.url)).toStrictEqual([null, null, "https://example.com/safe.png"])
+
+            analyzer.unmount()
+            await flushPromises()
+            mock.restore()
+        }
+    })
 })

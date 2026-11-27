@@ -270,6 +270,41 @@ describe("BlobValue.vue", () => {
         await flushPromises()
     })
 
+    //
+    // Link safety
+    //
+
+    it("blobValue url opens in a new tab with noopener noreferrer", async () => {
+
+        const wrapper = mount(BlobValue, {
+            props: {
+                blobValue: BLOB_URL
+            },
+        });
+        await flushPromises()
+
+        const anchor = wrapper.find("a")
+        expect(anchor.attributes("target")).toBe("_blank")
+        expect(anchor.attributes("rel")).toBe("noopener noreferrer")
+
+        wrapper.unmount()
+        await flushPromises()
+    })
+
+    it("blobValue javascript: url is not rendered as a link", async () => {
+
+        const wrapper = mount(BlobValue, {
+            props: {
+                blobValue: "javascript:alert(1)"
+            },
+        });
+        await flushPromises()
+
+        expect(wrapper.find("a").exists()).toBe(false)
+        expect(wrapper.text()).toBe("javascript:alert(1)")
+
+        wrapper.unmount()
+        await flushPromises()
+    })
 
 })
-
