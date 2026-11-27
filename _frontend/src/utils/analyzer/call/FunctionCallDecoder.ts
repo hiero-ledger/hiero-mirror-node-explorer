@@ -8,6 +8,9 @@ import {labelForResponseCode} from "@/schemas/MirrorNodeUtils.ts";
 
 export class FunctionCallDecoder {
 
+    public static MAX_INPUTS_LENGTH = 20
+    // ABI fragment with more than MAX_INPUTS_LENGTH arguments is considered as a malicious fragment and not decoded.
+
     private readonly contractAnalyzer: ContractAnalyzer
     private readonly fourByteAnalyzer: FourByteAnalyzer
 
@@ -115,7 +118,7 @@ export class FunctionCallDecoder {
 
         const ff = this.fragment.value
         const functionParams = this.functionParams.value
-        if (ff !== null && functionParams !== null) {
+        if (ff !== null && functionParams !== null && ff.inputs.length <= FunctionCallDecoder.MAX_INPUTS_LENGTH) {
             try {
                 const fragmentInputs = ff.inputs
                 const r = ethers.AbiCoder.defaultAbiCoder().decode(fragmentInputs, functionParams)
@@ -140,7 +143,7 @@ export class FunctionCallDecoder {
 
         const ff = this.fragment.value
         const functionParams = this.functionParams.value
-        if (ff !== null && functionParams !== null) {
+        if (ff !== null && functionParams !== null && ff.inputs.length <= FunctionCallDecoder.MAX_INPUTS_LENGTH) {
             try {
                 ethers.AbiCoder.defaultAbiCoder().decode(ff.inputs, functionParams)
                 result = null
@@ -159,7 +162,7 @@ export class FunctionCallDecoder {
 
         const ff = this.fragment.value
         const output = this.output.value
-        if (ff instanceof ethers.FunctionFragment && output !== null) {
+        if (ff instanceof ethers.FunctionFragment && output !== null && ff.inputs.length <= FunctionCallDecoder.MAX_INPUTS_LENGTH) {
             try {
                 const fragmentOutputs = ff.outputs
                 const r = ethers.AbiCoder.defaultAbiCoder().decode(fragmentOutputs, output)
@@ -184,7 +187,7 @@ export class FunctionCallDecoder {
 
         const ff = this.fragment.value
         const output = this.output.value
-        if (ff instanceof ethers.FunctionFragment && output !== null) {
+        if (ff instanceof ethers.FunctionFragment && output !== null && ff.inputs.length <= FunctionCallDecoder.MAX_INPUTS_LENGTH) {
             try {
                 ethers.AbiCoder.defaultAbiCoder().decode(ff.outputs, output)
                 result = null
