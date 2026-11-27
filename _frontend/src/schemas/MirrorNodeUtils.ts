@@ -136,12 +136,6 @@ export function makeNodeOwnerDescription(node: NetworkNode, short = false): stri
     return short ? result.split('|')[0].trimEnd() : result
 }
 
-export function makeNodeOwnerName(node: NetworkNode): string {
-    const description = makeNodeOwnerDescription(node)
-    const pipeIndex = description.indexOf("|")
-    return pipeIndex >= 0 ? description.substring(0, pipeIndex).trim() : description
-}
-
 export function makeDefaultNodeDescription(nodeId: number | null): string {
     return nodeId ? "Node " + nodeId : "?"
 }
@@ -274,10 +268,6 @@ export function decodeGenericError(message: string|null): ethers.ErrorDescriptio
     return result
 }
 
-export function makeUnclampedStake(node: NetworkNode): number {
-    return (node.stake_rewarded ?? 0) + (node.stake_not_rewarded ?? 0)
-}
-
 export function makeStakePercentage(node: NetworkNode, stakeTotal: number): string {
     const formatter = new Intl.NumberFormat("en-US", {
         style: 'percent',
@@ -363,58 +353,6 @@ export function lookupNFTTransfer(transaction: Transaction, tokenId: string): Nf
         }
     }
     return result
-}
-
-export function decodeRedirectForTokenInput(functionFragment: ethers.FunctionFragment, inputArgs: string): ethers.Result {
-    try {
-        return ethers.AbiCoder.defaultAbiCoder().decode(functionFragment.inputs, inputArgs)
-    } catch {
-        const tokenAddress = `0x${inputArgs.slice(2, 42)}`
-        const encodedFunctionSelector = `0x${inputArgs.slice(42)}`
-        return new ethers.Result(tokenAddress, encodedFunctionSelector)
-    }
-}
-
-export function decodeRedirectForTokenOutput(output: string): ethers.Result {
-    // Official signature of redirectToken is:
-    //      function redirectForToken(address token, bytes encodedFunctionSelector) returns (int64 responseCode, bytes response)
-    // But output params return by mirror node contains "bytes response".
-    return new ethers.Result([output])
-}
-
-export function resolveFunctionFragmentForHTSProxyContract(functionFragment: ethers.FunctionFragment, inputArgs: string): ethers.FunctionFragment {
-    const inputResult = decodeRedirectForTokenInput(functionFragment, inputArgs)
-    const encodedFunction4BytesSignature = inputResult[1].slice(0, 10)
-
-    // @notice this is the list of supported method which is collected based on HIP-218 https://hips.hedera.com/hip/hip-218
-    const ABI_FOR_SUPPORTED_METHODS = [
-        "function name() public view returns (string name)",
-        "function symbol() public view returns (string symbol)",
-        "function decimals() public view returns (uint8 decimals)",
-        "function totalSupply() external view returns (uint256 totalSupply)",
-        "function setApprovalForAll(address _operator, bool _approved) external",
-        "function ownerOf(uint256 _tokenId) external view returns (address ownerOf)",
-        "function tokenURI(uint256 _tokenId) external view returns (string tokenURI)",
-        "function balanceOf(address _owner) external view returns (uint256 balanceOf)",
-        "function balanceOf(address account) external view returns (uint256 balanceOf)",
-        "function approve(address spender, uint256 amount) external returns (bool approve)",
-        "function tokenByIndex(uint256 _index) external view returns (uint256 tokenByIndex)",
-        "function getApproved(uint256 _tokenId) external view returns (address getApproved)",
-        "function transferFrom(address _from, address _to, uint256 _tokenId) external payable",
-        "function transfer(address recipient, uint256 amount) external returns (bool transfer)",
-        "function safeTransferFrom(address _from, address _to, uint256 _tokenId) external payable",
-        "function allowance(address owner, address spender) external view returns (uint256 allowance)",
-        "function safeTransferFrom(address _from, address _to, uint256 _tokenId, bytes data) external payable",
-        "function isApprovedForAll(address _owner, address _operator) external view returns (bool isApprovedForAll)",
-        "function transferFrom(address sender, address recipient, uint256 amount) external returns (bool transferFrom)",
-        "function tokenOfOwnerByIndex(address _owner, uint256 _index) external view returns (uint256 tokenOfOwnerByIndex)",
-    ];
-
-    const iface = new ethers.Interface(ABI_FOR_SUPPORTED_METHODS)
-    return ethers.FunctionFragment.from({
-        ...functionFragment,
-        outputs: iface.getFunction(encodedFunction4BytesSignature)?.outputs
-    })
 }
 
 export function isRedirectForTokenTx(contractId: string, functionHash: string): boolean {
@@ -594,7 +532,7 @@ export async function drainContractResultsLogs(r: ContractResultsLogResponse, li
 //
 //in ports to other languages, answer can be a string, digits an int32[] and the rest int32 (or uint32[] and uint32)
 
- 
+
 export function hip15checksum(ledgerId: string, addr: string) {
     let answer = "";
     const d = [];      //digits with 10 for ".", so if addr == "0.0.123" then d == [0, 10, 0, 10, 1, 2, 3] *** FIX ***
@@ -723,7 +661,7 @@ export function makeRegisteredServiceEndpointDetails(endpoint: RegisteredService
     return result
 }
 
- 
+
 export function sortRegisteredServiceEndPoint(a: RegisteredServiceEndPoint, b: RegisteredServiceEndPoint): number {
     if (a.type !== b.type) return a.type.localeCompare(b.type)
     if (a.domain_name !== b.domain_name) return (a.domain_name || "").localeCompare(b.domain_name || "")
