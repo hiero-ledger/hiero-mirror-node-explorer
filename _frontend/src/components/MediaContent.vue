@@ -149,9 +149,19 @@ const showPlaceHolder = computed(
     () => !props.url || mediaError.value
 )
 
+const isNavigableURL = (url: string): boolean => {
+  let navigable: boolean
+  try {
+    navigable = new URL(url.trim()).protocol === 'https:'
+  } catch {
+    navigable = false
+  }
+  return navigable
+}
+
 const onClick = () => {
-  if (props.url && !props.noAnchor) {
-    window.location.assign(props.url)
+  if (props.url && !props.noAnchor && isNavigableURL(props.url)) {
+    window.open(props.url, '_blank', 'noopener,noreferrer')
   }
 }
 
