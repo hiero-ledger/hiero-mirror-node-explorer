@@ -14,7 +14,7 @@
 
       <template v-if="decodedURL">
         <span v-if="noAnchor">{{ decodedValue }}</span>
-        <a v-else :href="decodedURL">{{ decodedValue }}</a>
+        <a v-else :href="decodedURL" target="_blank" rel="noopener noreferrer">{{ decodedValue }}</a>
       </template>
 
       <template v-else-if="jsonValue && isNaN(jsonValue)">
