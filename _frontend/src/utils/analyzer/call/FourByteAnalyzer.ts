@@ -3,6 +3,7 @@
 import {Ref, shallowRef, watch, WatchStopHandle} from "vue";
 import {SignatureCache, SignatureRecord, sortSignatureRecordById} from "@/utils/cache/SignatureCache.ts";
 import {ethers} from "ethers";
+import {FunctionCallDecoder} from "@/utils/analyzer/call/FunctionCallDecoder.ts";
 
 export class FourByteAnalyzer {
 
@@ -76,11 +77,15 @@ export class FourByteAnalyzer {
         for (const r of [...records].sort(sortSignatureRecordById)) {
             try {
                 const ff = ethers.FunctionFragment.from(r.text_signature)
-                const decodedArgs = ethers.AbiCoder.defaultAbiCoder().decode(ff.inputs, callParams)
-                const encodedArgs = ethers.AbiCoder.defaultAbiCoder().encode(ff.inputs, decodedArgs)
-                if (encodedArgs == callParams) {
-                    result = r
-                    break
+                if (ff.inputs.length <= FunctionCallDecoder.MAX_INPUTS_LENGTH) {
+                    const decodedArgs = ethers.AbiCoder.defaultAbiCoder().decode(ff.inputs, callParams)
+                    const encodedArgs = ethers.AbiCoder.defaultAbiCoder().encode(ff.inputs, decodedArgs)
+                    if (encodedArgs == callParams) {
+                        result = r
+                        break
+                    }
+                } else {
+                    // Ignored because we consider it's a malicious ABI fragment
                 }
             } catch {
                 // Ignored
