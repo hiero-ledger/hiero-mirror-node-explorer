@@ -37,6 +37,7 @@
 import {computed, PropType, useSlots} from "vue";
 import Tooltip from "@/components/Tooltip.vue";
 import {SquareArrowOutUpRight} from '@lucide/vue';
+import {isSecureURL} from "@/utils/URLUtils.ts";
 
 const MAX_LABEL_SIZE = 35
 
@@ -64,8 +65,8 @@ const label = computed(() =>
 )
 
 const navigate = (url: string | null) => {
-  if (url) {
-    window.open(url, '_blank');
+  if (url && isSecureURL(url)) {
+    window.open(url, '_blank', 'noopener,noreferrer');
   }
 };
 
