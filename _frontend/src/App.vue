@@ -145,14 +145,17 @@ function insertGoogleTag(tagId: string) {
   s1.setAttribute('src', src1);
   document.head.appendChild(s1);
 
+  // Defined in code rather than through an inline <script> so that it complies with a strict Content-Security-Policy
   // https://developers.google.com/analytics/devguides/collection/ga4/views?client_type=gtag#manual_pageviews
-  const src2 = `window.dataLayer = window.dataLayer || [];
-    function gtag() {dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', '${tagId}',{ send_page_view: false });`
-  const s2 = document.createElement('script');
-  s2.innerHTML = src2;
-  document.head.appendChild(s2);
+  const w = window as unknown as { dataLayer?: unknown[] }
+  w.dataLayer = w.dataLayer || []
+  window.gtag = function () {
+    // gtag.js expects the 'arguments' object, not an array
+    // eslint-disable-next-line prefer-rest-params
+    w.dataLayer?.push(arguments)
+  }
+  window.gtag('js', new Date())
+  window.gtag('config', tagId, {send_page_view: false})
 }
 
 </script>
