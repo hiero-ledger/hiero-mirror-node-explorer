@@ -19,7 +19,7 @@ export interface NftAttribute {
 
 export interface NftFile {
     uri: string                       // "uri to file - REQUIRED",
-    url: string                       // we compute this
+    url: string | null                // we compute this; null if not resolvable to a safe URL
     checksum: string | undefined      // "cryptographic hash of the representation of the resource the author expects to load - OPTIONAL",
     type: string                      // "mime type - REQUIRED",
     is_default_file: boolean | undefined
@@ -139,7 +139,9 @@ export class TokenMetadataAnalyzer {
         if (Array.isArray(files)) {
             for (const file of files) {
                 if (file.uri && file.type) { // both required by HIP-412
-                    const url = blob2URL(file.uri, this.ipfsGatewayPrefix, this.arweaveServer) ?? file.uri
+                    const url = typeof file.uri === 'string'
+                        ? blob2URL(file.uri, this.ipfsGatewayPrefix, this.arweaveServer)
+                        : null
                     result.push({
                         uri: file.uri,
                         url: url,
@@ -242,9 +244,7 @@ export class TokenMetadataAnalyzer {
                 const hcsUri = HCSURI.parse(uri)
                 if (hcsUri && hcsUri.version === '1') { // HCS-1 topic
                     const content = await HCSAssetCache.instance.lookup(hcsUri.topicId)
-                    url = content?.getDataURL() ?? uri
-                } else {
-                    url = uri
+                    url = content?.getDataURL() ?? null
                 }
             }
             this.imageUrl.value = url
